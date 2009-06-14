@@ -42,7 +42,7 @@ get '/' do
   %~
     <html>
       <head>
-        <title>Learn HTML</title>
+        <title>?????</title>
         <meta name="verify-v1" content="Blj1lh0s7UYhIw92PuNfg6EJzZOrUGSZ3Zj4G+GWOlg=" />
         <style type="text/css">
 
