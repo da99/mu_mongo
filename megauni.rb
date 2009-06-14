@@ -67,18 +67,16 @@ get '/' do
         </style>
       </head>
       <body>
-        <p>All books listed have 3 or more stars.</p>
-        <ul>
-          <li>Learn HTML ==&gt; <a href="http://www.amazon.com/gp/product/0321430840?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321430840">HTML, XHTML, and CSS, Sixth Edition (Visual Quickstart Guide) </a></li>
-          <li>Learn JS ==&gt; <a href="http://www.amazon.com/gp/product/0596101996?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596101996">JavaScript: The Definitive Guide</a></li>
-          <li>Learn CSS ==&gt; <a href="http://www.amazon.com/gp/product/0596527330?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596527330">CSS: The Definitive Guide</a></li>
-        </ul>
-        <p>This domain for sale. Contact <span id="email">sales [at] megauni [dot] com</span>
-        <script type="text/javascript">
-        <!--
-          document.getElementById('email').innerHTML = '<a hre' + 'f="mail' + 'to:sales' + '@megauni' + '.com">' + 'sales' + '@megauni' + '.com</a>'
-        //-->
-        </script>
+        <p>megaUni.com - More info. this week.</p>
+        <p>Status:
+        <br />
+        I'm working on the database schema.
+        
+        <br />
+        - <a href="http://www.da01.tv">diego</a>
+        <br />
+        - (<a href="http://www.twitter.com/da01tv">on twitter</a>)
+        </p>
       </body>
     </html>
   ~
