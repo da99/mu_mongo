@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>css_classes (scraps/model/survey_question.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/model/survey_question.rb, line 74</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">css_classes</span>
+
+    <span class="ruby-identifier">class_names</span> = [ <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">underscore</span> ]
+
+    <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:question_type</span>]
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">MOST_FAV</span>
+        <span class="ruby-identifier">class_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'most_fav'</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">MOST_FAV_LEAST_FAV</span>
+        <span class="ruby-identifier">class_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'most_fav_least_fav'</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">YES_NO</span>
+        <span class="ruby-identifier">class_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'yes_no'</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">items</span>.<span class="ruby-identifier">zero?</span>
+      <span class="ruby-identifier">class_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'no_items'</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">class_names</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">''</span>)
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

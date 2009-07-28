@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (SSController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/ss_resource.rb, line 160</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">old_proc</span>)
+        <span class="ruby-identifier">props</span> = <span class="ruby-identifier">resource_generic_props</span>( <span class="ruby-identifier">__method_name_sym__</span> , <span class="ruby-identifier">:post</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+        
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">generic_action</span>( <span class="ruby-identifier">props</span>, <span class="ruby-value str">%~
+            find_instance_vars
+            ancestors_are_required!
+
+            begin
+              @child = @child_profile[:record] ||= @child_model.new
+              @child.changes_from_editor( clean_room , current_member )
+              if just_one_model?
+                current_member.send( &quot;add_\#{@child_model.name_underscored}&quot;, @child)
+              else
+                @parent.send(&quot;add_\#{@child_model.name_underscored}&quot;, @child)
+              end
+              load_instance_vars
+              render_success_msg( @child.success_msg )
+            rescue @child_model::Invalid
+              render_error_msg( @child.error_msg )
+            end       
+        ~</span> )
+        
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

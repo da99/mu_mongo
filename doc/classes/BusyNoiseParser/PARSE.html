@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: BusyNoiseParser::PARSE</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">BusyNoiseParser::PARSE</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/scraps/busy_noise_parser_rb.html">
+                scraps/busy_noise_parser.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">FIND_COL_NAME</td>
+          <td>=</td>
+          <td class="context-item-value">/([^\#]+)\ +\#(\s+|\Z)(.{0,})/m</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">STOP_EXTRACTION</td>
+          <td>=</td>
+          <td class="context-item-value">/\A[\s]*\#{1,}[\s]*\Z/im</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">WITH_EXTRACTOR</td>
+          <td>=</td>
+          <td class="context-item-value">/^([^\#\n]{1,})\ {1,}\#(.*?)/im</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">UNKNOWN_BEGINNING_TEXT</td>
+          <td>=</td>
+          <td class="context-item-value">/\A(?:(?!^[^\#\n]{1,}\#\s{1,})[\S\s]){0,}/mi</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">END_EXTRACTION</td>
+          <td>=</td>
+          <td class="context-item-value">/(.*)^(([\*\ ]{1,}END)|\ {0,}\#{1,5}\s{0,}$)/im</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DIVIDER_CHAR</td>
+          <td>=</td>
+          <td class="context-item-value">'#'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ESCAPE_CHAR</td>
+          <td>=</td>
+          <td class="context-item-value">'!'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ESCAPES</td>
+          <td>=</td>
+          <td class="context-item-value">{&quot;#&quot; =&gt; '--ESCAPED-POUND--', &quot;**&quot; =&gt; '--ESCAPED-END--' }</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SPECIAL_COLS</td>
+          <td>=</td>
+          <td class="context-item-value">[ /Busy\ {0,}ID/i, /Busy\ {0,}Tags?/i ]</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">COMBINE_COLS</td>
+          <td>=</td>
+          <td class="context-item-value">{ 'REMOVE TAGS' =&gt; /^Remove\ {0,}Tags{0,}$/i, 'ADD TAGS' =&gt; /^Add\ {0,}Tags{0,}$/i }</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (SSController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/ss_controller.rb, line 45</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">raw_controller_name</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">new_actions</span>)
+        <span class="ruby-identifier">controller_name</span> = <span class="ruby-identifier">raw_controller_name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-comment cmt"># Check if controller was made before.</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-constant">SSController</span>.<span class="ruby-identifier">controllers</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">controller_name</span>)
+            <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;CONTROLLER ALREADY TAKEN: #{controller_name}&quot;</span> 
+        <span class="ruby-keyword kw">end</span>    
+        <span class="ruby-ivar">@controller_name</span> = <span class="ruby-identifier">controller_name</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">controllers</span>[<span class="ruby-identifier">controller_name</span>] = {}        
+        <span class="ruby-identifier">create_actions</span> <span class="ruby-operator">&amp;</span><span class="ruby-identifier">new_actions</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

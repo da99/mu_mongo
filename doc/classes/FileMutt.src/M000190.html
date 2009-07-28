@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>go_fetch (FileMutt)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/file_mutt.rb, line 124</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">go_fetch</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">blok</span>)
+  
+    <span class="ruby-ivar">@find_files</span>.<span class="ruby-identifier">uniq!</span>
+    <span class="ruby-ivar">@not_files</span>.<span class="ruby-identifier">uniq!</span>
+    
+    <span class="ruby-ivar">@dirs</span>.<span class="ruby-identifier">uniq!</span>
+    <span class="ruby-ivar">@not_dirs</span>.<span class="ruby-identifier">uniq!</span>
+    
+    <span class="ruby-identifier">file_patterns_used</span> = {}
+    <span class="ruby-identifier">dirs_patterns_used</span> = {}
+    
+    <span class="ruby-identifier">files</span> = []
+    <span class="ruby-identifier">rejected_files</span> = []
+    <span class="ruby-identifier">dirs</span> = []
+    <span class="ruby-identifier">rejected_dirs</span> = []
+    <span class="ruby-identifier">unknown_types</span> = []
+    
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'find'</span>
+     
+    <span class="ruby-constant">Find</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@wd</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">full_path</span><span class="ruby-operator">|</span>
+    
+      <span class="ruby-identifier">filename</span>    = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">full_path</span>)
+      <span class="ruby-identifier">dir</span>         = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">full_path</span>)
+      <span class="ruby-identifier">folder_name</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">dir</span>)
+      <span class="ruby-identifier">basedir</span>     = <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-ivar">@wd</span>, <span class="ruby-value str">''</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/^\/|\/$/</span>,<span class="ruby-value str">''</span>) <span class="ruby-comment cmt"># Dirname minus current working directory. </span>
+      
+            
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">full_path</span>)
+        <span class="ruby-comment cmt"># Check if this file is not allowed.</span>
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">file_allowed?</span>(<span class="ruby-identifier">full_path</span>)
+          <span class="ruby-identifier">rejected_files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">full_path</span>
+          <span class="ruby-keyword kw">next</span>
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-identifier">files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">full_path</span>
+        <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">full_path</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+      <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">full_path</span>)
+      
+        <span class="ruby-comment cmt"># Check if this directory is allowed.</span>
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">dir_allowed?</span>(<span class="ruby-identifier">full_path</span>)
+          <span class="ruby-identifier">rejected_dirs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">full_path</span>
+          <span class="ruby-constant">Find</span>.<span class="ruby-identifier">prune</span>
+          <span class="ruby-keyword kw">next</span>
+        <span class="ruby-keyword kw">end</span>   
+        
+        <span class="ruby-identifier">dirs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">full_path</span>
+        
+      <span class="ruby-keyword kw">else</span>
+      
+        <span class="ruby-identifier">unknown_types</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">full_path</span>
+        
+      <span class="ruby-keyword kw">end</span>
+      
+    <span class="ruby-keyword kw">end</span>
+    
+    {<span class="ruby-identifier">:rejected_files</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">rejected_files</span>, <span class="ruby-identifier">:rejected_dirs=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">rejected_dirs</span>, <span class="ruby-identifier">:files</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">files</span>, <span class="ruby-identifier">:dirs</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">:unknown=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">unknown_types</span> }   
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

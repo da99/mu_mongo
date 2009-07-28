@@ -1,32 +1,81 @@
 $KCODE = 'UTF8'
 
+# ===============================================
+# Important Gems
+# ===============================================
+
 require 'rubygems'
 require 'sinatra'
-require 'markaby'
 require 'pow'
 
+def require_these( dir );
+    Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
+end
+
+
+# ===============================================
+# Configurations
+# ===============================================
+
+`reset` if Sinatra::Application.development?
+
+use Rack::Session::Pool
+
+set :site_title     , 'MegaUni'
+set :site_tag_line  , 'A marketplace of predictions.'
+set :site_keywords  , 'predict the future'
+set :site_domain    , 'megauni.com'
+set :site_url       , "http://www.#{Sinatra::Application.site_domain}/"
+set :site_support_email ,  "helpme@#{Sinatra::Application.site_domain}"
 
 configure do
 
-  # Markaby::Builder.set(:indent, 2) 
+    # Special sanitization library for both Models and Sinatra Helpers.
+    #require Pow!( 'helpers/wash' )
+    
+    # === Set the environment.
+    #require Pow!( 'secret_closet' )
 
-  error do
-    File.read( Pow('public/error.html')  ) 
-  end 
+    # === Include models.
+    #require Pow!('models/init')
+    #require_these 'models'
 
-  not_found do
-    File.read( Pow('public/not_found.html' ) )
-  end 
-  
-end
+end # === configure
 
 
+# ===============================================
+# Filters
+# ===============================================
 
-get '/' do
-  
-  mab  = Markaby::Builder.new( {} )
-  mab.instance_eval(  Pow(  'views/index.mab' ).read  ).to_s
 
-end
+# ===============================================
+# Helpers
+# ===============================================
+# require_these 'helpers/sinatra'
+require Pow('helpers/sinatra/club_manager')
+require Pow('helpers/sinatra/render_mab')
+require Pow('helpers/sinatra/ss_controller')
+require Pow('helpers/sinatra/flash_it')
+
+# ===============================================
+# Require the actions.
+# ===============================================
+#require_these 'actions'
+require Pow('actions/css')
+
+
+controller(:Main) {
+    
+    get( :show, '/',  :STRANGER ) 
+    
+    get( :reset_everything, '/reset', :STRANGER) {
+        TemplateCache.reset
+        CSSCache.reset
+        redirect '/'
+    }
+    
+}
+
+
 
 

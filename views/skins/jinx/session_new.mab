@@ -1,0 +1,31 @@
+save_to('title') { 'Login' }
+
+div.nav_bar! {
+  h2 'Login'
+  ul {
+    li { a('Home', :href=>'/') }
+    li { a('Create Account', :href=>'/signup') }
+  } # ul
+} # nav_bar!
+
+
+# ================= div.flash_msg =============================
+if flash_msg?
+  partial '__flash_msg'
+end
+
+div.form_holder.login_form_holder! {
+  form.login_form!( :action=>"/login", :method=>"post" ) {
+    fieldset.username.input_text {
+      label 'Username'
+      input( :id=>"member_username", :name=>"username", :type=>"text" )
+    }
+    fieldset.password.input_text {
+      label 'Password'
+      input( :id=>"member_password", :name=>"password", :type=>"password" )
+    }
+    div.buttons {
+      a( 'Login', :href=>"#login", :onclick=>"document.getElementById('login_form').submit(); return false;" )
+    }
+  } # form.login_form!
+} # div.form_holder

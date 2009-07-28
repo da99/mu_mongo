@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>sort_it_like_excel (SwissSort)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/swiss_sort.rb, line 37</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort_it_like_excel</span>(<span class="ruby-identifier">a</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">blok</span>)
+        <span class="ruby-comment cmt"># First, take out the exact numerals from column</span>
+        
+        <span class="ruby-identifier">nums</span>      = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">raw_i</span><span class="ruby-operator">|</span>
+                                        <span class="ruby-identifier">i</span> = <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">raw_i</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">raw_i</span>) 
+                                        <span class="ruby-keyword kw">begin</span>
+                                          <span class="ruby-constant">Float</span>( <span class="ruby-identifier">i</span> )
+                                        <span class="ruby-keyword kw">rescue</span>
+                                          <span class="ruby-keyword kw">false</span>
+                                        <span class="ruby-keyword kw">end</span>
+                                      }
+        <span class="ruby-identifier">strs</span>        = <span class="ruby-identifier">a</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nums</span>
+
+        <span class="ruby-comment cmt"># Then sort the strings: http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/215370</span>
+        <span class="ruby-identifier">sorted_strs</span> = <span class="ruby-identifier">strs</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">raw_i</span><span class="ruby-operator">|</span>
+                                                    <span class="ruby-identifier">i</span> = <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">raw_i</span> <span class="ruby-operator">:</span>  <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">raw_i</span>)
+                                                    [ <span class="ruby-identifier">i</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-identifier">i</span>.<span class="ruby-identifier">to_s</span>]
+                                                  }
+
+        <span class="ruby-comment cmt"># Then sort the numerals</span>
+        <span class="ruby-identifier">sorted_nums</span> = <span class="ruby-identifier">nums</span>.<span class="ruby-identifier">sort</span> { <span class="ruby-operator">|</span> <span class="ruby-identifier">raw_i</span>, <span class="ruby-identifier">raw_j</span><span class="ruby-operator">|</span> 
+                                                    <span class="ruby-identifier">i</span> = <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">raw_i</span>  <span class="ruby-operator">:</span> <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">raw_i</span>)
+                                                    <span class="ruby-identifier">j</span> = <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">raw_j</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">blok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">raw_j</span>)
+                                                    <span class="ruby-identifier">i</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">j</span>.<span class="ruby-identifier">to_f</span>
+                                                  }
+
+        <span class="ruby-comment cmt"># Then combine them with numerals first.</span>
+        <span class="ruby-identifier">sorted</span> = <span class="ruby-identifier">sorted_nums</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sorted_strs</span>
+        
+        
+        <span class="ruby-identifier">sorted</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

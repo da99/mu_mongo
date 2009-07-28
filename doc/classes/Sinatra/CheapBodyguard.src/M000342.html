@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>guard_it_for (Sinatra::CheapBodyguard)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File extensions/cheap_bodyguard.rb, line 112</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">guard_it_for</span>( <span class="ruby-identifier">method_type</span>, <span class="ruby-identifier">perm_level</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">raw_controller_name</span>, <span class="ruby-identifier">raw_action_name</span>, <span class="ruby-identifier">raw_is_partial</span> = <span class="ruby-identifier">:no_partial</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">custom_action</span> )
+            
+            <span class="ruby-comment cmt"># === Validate partial option.</span>
+            <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;INVALID PARTIAL OPTIONAL: #{raw_is_partial}&quot;</span> <span class="ruby-keyword kw">unless</span> [<span class="ruby-identifier">:no_partial</span>, <span class="ruby-identifier">:partial</span>, <span class="ruby-identifier">:no_template</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">raw_is_partial</span>)
+            <span class="ruby-identifier">is_partial</span> = <span class="ruby-identifier">raw_is_partial</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">:no_partial</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">true</span>
+            <span class="ruby-identifier">has_template</span> = <span class="ruby-identifier">raw_is_partial</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">:no_template</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">true</span>
+            
+            <span class="ruby-comment cmt"># Set names of controller and action.</span>
+            <span class="ruby-identifier">temp_controller_name</span> = <span class="ruby-identifier">raw_controller_name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">camelize</span>.<span class="ruby-identifier">to_sym</span>
+            <span class="ruby-identifier">temp_action_name</span> = <span class="ruby-identifier">raw_action_name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_sym</span>
+            
+            
+            <span class="ruby-comment cmt"># === Validate HTTP verb.</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">valid_http_resourceful_actions</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">method_type</span>)
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;INVALID HTTP METHOD: #{method_type.inspect }&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+            
+            <span class="ruby-comment cmt"># === Page must not exist.</span>
+            <span class="ruby-identifier">cache_name</span> = <span class="ruby-identifier">path</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:strip</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">strip</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">path</span> <span class="ruby-comment cmt"># Previous way ==&gt; path.to_s + method_type.to_s</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">pages_made_cache</span>[ <span class="ruby-identifier">cache_name</span> ] 
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;PATH ALREADY TAKEN: #{:path} in #{self.pages_made_cache[ cache_name ][:controller_name]} &quot;</span> <span class="ruby-operator">+</span> 
+                            <span class="ruby-node">&quot;#{self.pages_made_cache[ cache_name ][:action_name]}&quot;</span>
+            <span class="ruby-keyword kw">elsif</span>( <span class="ruby-identifier">existing_controller_action</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">pages_made_cache</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">detect</span> {   <span class="ruby-operator">|</span><span class="ruby-identifier">vals</span><span class="ruby-operator">|</span> 
+                        <span class="ruby-identifier">vals</span>[<span class="ruby-identifier">:controller_name</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">temp_controller_name</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">vals</span>[<span class="ruby-identifier">:action_name</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">temp_action_name</span>) })
+                 <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;CONTROLLER NAME AND ACTION NAME TAKEN: #{temp_controller_name.inspect} #{temp_action_name.inspect}&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+                                                                           
+            <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">pages_made_cache</span>[ <span class="ruby-identifier">cache_name</span> ] = {  <span class="ruby-identifier">:perm_level=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">perm_level</span>, 
+                    <span class="ruby-identifier">:path</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">path</span>, 
+                    <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span><span class="ruby-identifier">temp_action_name</span>,
+                    <span class="ruby-identifier">:is_partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">is_partial</span>, 
+                    <span class="ruby-identifier">:controller</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">controller_name</span>,
+                    <span class="ruby-identifier">:template</span> =<span class="ruby-operator">&gt;</span> [ (<span class="ruby-identifier">is_partial</span> <span class="ruby-value">? </span><span class="ruby-value str">'__'</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>),  <span class="ruby-identifier">controller_name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span>,  <span class="ruby-identifier">temp_action_name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span>  ].<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">'_'</span>),
+                    <span class="ruby-identifier">:orm_class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_defined?</span>( <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:controller</span>] ) <span class="ruby-operator">?</span> 
+                                                <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_get</span>( <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:controller</span>]  ) <span class="ruby-operator">:</span>
+                                                <span class="ruby-keyword kw">nil</span>
+            }
+            
+            
+            <span class="ruby-comment cmt"># === E.g.:    </span>
+            <span class="ruby-comment cmt">#  get( &quot;/&quot; ) { </span>
+            <span class="ruby-comment cmt">#      check_creditials!(STRANGER) </span>
+            <span class="ruby-comment cmt">#   }</span>
+            <span class="ruby-identifier">eval</span>( <span class="ruby-node">%~
+                #{ method_type.to_s.underscore  }( #{path.inspect} ) do
+                    describe_action #{path.inspect}
+                    
+                    #{  strigify_proc( custom_action )  }
+                    
+                    #{ has_template ? &quot;render_mab&quot; : '' } 
+                end
+            ~</span> )
+            
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

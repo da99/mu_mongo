@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>template_file_name (Sinatra::RenderMarkaby::Helpers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/render_mab.rb, line 98</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">template_file_name</span>
+                <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_action</span>
+                    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;CURRENT ACTION PROPERTIES NOT DEFINED for: #{self.inspect}&quot;</span>
+                <span class="ruby-keyword kw">end</span>
+                <span class="ruby-ivar">@template_file_name</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:controller</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:action</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.mab'</span>
+                <span class="ruby-identifier">regular_file_path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">skins_dir</span>, <span class="ruby-ivar">@template_file_name</span>) 
+                <span class="ruby-identifier">partial_file_path</span>  = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">skins_dir</span>, <span class="ruby-value str">&quot;__&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@template_file_name</span>)
+                
+                <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@template_file_name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">TemplateCache</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">regular_file_path</span>)
+                <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;__&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@template_file_name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">TemplateCache</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">partial_file_path</span>)
+                
+                <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@template_file_name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>( <span class="ruby-identifier">regular_file_path</span> )
+                <span class="ruby-keyword kw">return</span>  <span class="ruby-value str">&quot;__&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@template_file_name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>( <span class="ruby-identifier">partial_file_path</span> )
+                
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;TEMPLATE NOT FOUND: #{ regular_file_path }&quot;</span>
+
+            <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

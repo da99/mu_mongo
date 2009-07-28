@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>do_this (HookSwitchboardCache)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/model/hook_switchboard.rb, line 73</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">do_this</span>( <span class="ruby-identifier">action_as_sym</span>, <span class="ruby-identifier">item</span>)
+    <span class="ruby-comment cmt"># Validate model names and cache results so we don't have to do it next time..</span>
+    <span class="ruby-ivar">@model_names_validated</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">begin</span>
+        <span class="ruby-identifier">__switch__</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">sym_name</span><span class="ruby-operator">|</span> 
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">InvalidClassName</span>, <span class="ruby-node">&quot;Invalid model name: #{sym_name.inspect}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_defined?</span>(<span class="ruby-identifier">sym_name</span>)
+        }    
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">hooks</span> = <span class="ruby-identifier">__switch__</span>[<span class="ruby-identifier">item</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>]
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">hooks</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">hooks</span>[<span class="ruby-identifier">action_as_sym</span>]
+      <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">dev_log_it</span> <span class="ruby-node">&quot;Executing: #{item.class.name.inspect} for #{action_as_sym.inspect}&quot;</span>
+      <span class="ruby-identifier">hooks</span>[<span class="ruby-identifier">action_as_sym</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">stuff</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">stuff</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">item</span>)
+      }
+    <span class="ruby-comment cmt">#else</span>
+    <span class="ruby-comment cmt">#  BusyConfig.dev_log_it &quot;^^^ No action found. Not going to do anything: #{item.class.name.inspect} for #{action_as_sym.inspect}&quot;</span>
+    <span class="ruby-keyword kw">end</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

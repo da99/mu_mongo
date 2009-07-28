@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>strip_and_utc_everything (Sequel::Model)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File models/init.rb, line 247</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">strip_and_utc_everything</span>
+  
+    <span class="ruby-identifier">schema</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">db_schema</span>
+        
+    <span class="ruby-comment cmt"># --- PROCESS NEW VALUES</span>
+    <span class="ruby-identifier">new_vals</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">columns</span>.<span class="ruby-identifier">inject</span>({}) {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span>,<span class="ruby-identifier">col</span><span class="ruby-operator">|</span> 
+                  <span class="ruby-identifier">k</span> , <span class="ruby-identifier">v</span>  = <span class="ruby-identifier">col</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">col</span>)
+                  <span class="ruby-identifier">skema</span> =  <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">db_schema</span>[<span class="ruby-identifier">k</span>]
+                  
+                  <span class="ruby-comment cmt"># -------- STRIP STRINGS</span>
+                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:strip</span>)
+                    <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">keep_spaces_and_tabs?</span>(<span class="ruby-identifier">k</span>)
+                      <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">:include_spaces</span>, <span class="ruby-identifier">:include_tabs</span>) 
+                    <span class="ruby-keyword kw">else</span>
+                      <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>(<span class="ruby-identifier">v</span>) 
+                    <span class="ruby-keyword kw">end</span>
+                    <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">skema</span>[<span class="ruby-identifier">:allow_null</span>]
+                  <span class="ruby-keyword kw">end</span>
+                  
+                  <span class="ruby-comment cmt"># ---------- UTC-ify DateTimes</span>
+                  <span class="ruby-comment cmt"># Note: If value is originally a String, then </span>
+                  <span class="ruby-comment cmt">#  String#to_sequel_time is used to typecase it </span>
+                  <span class="ruby-comment cmt">#  before it gets here.</span>
+                  <span class="ruby-comment cmt">#        </span>
+                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:utc?</span>)
+                        <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">utc?</span>  <span class="ruby-value">?
+</span>                                   <span class="ruby-identifier">v</span> <span class="ruby-operator">:</span>
+                                   <span class="ruby-identifier">v</span>.<span class="ruby-identifier">utc</span>;
+                  <span class="ruby-keyword kw">end</span>
+                  
+                  <span class="ruby-comment cmt"># ---------------- RETURN</span>
+                  <span class="ruby-identifier">m</span>
+    }
+    
+    <span class="ruby-identifier">set</span>(<span class="ruby-identifier">new_vals</span>)
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

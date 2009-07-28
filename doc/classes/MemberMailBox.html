@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: MemberMailBox</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">MemberMailBox</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/scraps/member_mail_box_rb.html">
+                scraps/member_mail_box.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Adds ability for <a href="Member.html">Member</a> to have their own mail
+box on server. Useful for adding email capabilites to web app.
+</p>
+<p>
+Migration:
+</p>
+<pre>
+             integer :mail_box_number
+             boolean :mail_box_open, :default=&gt;true
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000318">attach_owner_to_letter</a>&nbsp;&nbsp;
+      <a href="#M000321">expand_text_shortcuts</a>&nbsp;&nbsp;
+      <a href="#M000317">included</a>&nbsp;&nbsp;
+      <a href="#M000319">mail_box</a>&nbsp;&nbsp;
+      <a href="#M000320">mail_box_owner_or_not!</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+    <div id="class-list">
+      <h3 class="section-bar">Classes and Modules</h3>
+
+      Class <a href="MemberMailBox/DoesNotOwnMailBox.html" class="link">MemberMailBox::DoesNotOwnMailBox</a><br />
+Class <a href="MemberMailBox/MailBoxIsClosed.html" class="link">MemberMailBox::MailBoxIsClosed</a><br />
+Class <a href="MemberMailBox/MailCommandNotFound.html" class="link">MemberMailBox::MailCommandNotFound</a><br />
+
+    </div>
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">MAIL_BOXES</td>
+          <td>=</td>
+          <td class="context-item-value">BusyConfig::MAIL_BOXES</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+Constants
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000318" class="method-detail">
+        <a name="M000318"></a>
+
+        <div class="method-heading">
+          <a href="MemberMailBox.src/M000318.html" target="Code" class="method-signature"
+            onclick="popupCode('MemberMailBox.src/M000318.html');return false;">
+          <span class="method-name">attach_owner_to_letter</span><span class="method-args">( letter )</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Accepts a letter (Hash) from SurferMail. If either address is not approved
+either as a primary address or a email alias, then a letter is mailed to <a
+href="Member.html">Member</a> telling them to confirm address as an alias.
+Exception &#8216;EmailAlias::ERRORS::PendingAlias&#8217; is thrown.
+</p>
+<p>
+Retrieves the <a href="Member.html">Member</a> belonging to a letter.
+Creates email alias if :sender and :from does not match. Calls :<a
+href="MemberMailBox.html#M000320">mail_box_owner_or_not!</a> to validate
+mail box address. Adds :owner_mail_box to letter.
+</p>
+<p>
+Raises ERRORS::NoRecordFound if member can not be located from either
+address.
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000321" class="method-detail">
+        <a name="M000321"></a>
+
+        <div class="method-heading">
+          <a href="MemberMailBox.src/M000321.html" target="Code" class="method-signature"
+            onclick="popupCode('MemberMailBox.src/M000321.html');return false;">
+          <span class="method-name">expand_text_shortcuts</span><span class="method-args">(raw_str)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000317" class="method-detail">
+        <a name="M000317"></a>
+
+        <div class="method-heading">
+          <a href="MemberMailBox.src/M000317.html" target="Code" class="method-signature"
+            onclick="popupCode('MemberMailBox.src/M000317.html');return false;">
+          <span class="method-name">included</span><span class="method-args">(mem_class)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000319" class="method-detail">
+        <a name="M000319"></a>
+
+        <div class="method-heading">
+          <a href="MemberMailBox.src/M000319.html" target="Code" class="method-signature"
+            onclick="popupCode('MemberMailBox.src/M000319.html');return false;">
+          <span class="method-name">mail_box</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns: an email address this member can send and receive mail from the
+site.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000320" class="method-detail">
+        <a name="M000320"></a>
+
+        <div class="method-heading">
+          <a href="MemberMailBox.src/M000320.html" target="Code" class="method-signature"
+            onclick="popupCode('MemberMailBox.src/M000320.html');return false;">
+          <span class="method-name">mail_box_owner_or_not!</span><span class="method-args">(target_mail_box)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

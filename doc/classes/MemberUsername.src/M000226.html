@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_username_validation_errors (MemberUsername)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/model/member_username.rb, line 35</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_username_validation_errors</span>
+    <span class="ruby-comment cmt"># ==== Username</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">new?</span>
+        <span class="ruby-ivar">@old_username</span> = <span class="ruby-identifier">this</span>.<span class="ruby-identifier">naked</span>.<span class="ruby-identifier">first</span>[<span class="ruby-identifier">:username</span>]
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>
+      
+      <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">MIN_USERNAME_LENGTH</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:username</span>, <span class="ruby-node">&quot;Username too short. Has to be #{MIN_USERNAME_LENGTH} or more characters.&quot;</span>)
+      <span class="ruby-keyword kw">elsif</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">MAX_USERNAME_LENGTH</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:username</span>, <span class="ruby-node">&quot;Username too big. Has to be between #{MIN_USERNAME_LENGTH} and #{MAX_USERNAME_LENGTH} characters.&quot;</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">Member</span>.<span class="ruby-identifier">valid_username_format?</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span>)
+          <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:username</span>, <span class="ruby-node">&quot;Username is invalid. Try using just: #{VALID_USERNAME_FORMAT_IN_WORDS}&quot;</span>)
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">changed_columns</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:username</span>) 
+        <span class="ruby-identifier">old_member</span> = <span class="ruby-constant">Member</span>[<span class="ruby-identifier">:username=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">username</span>]
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">old_member</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">old_member</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>
+          <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:username</span>, <span class="ruby-value str">&quot;Username already taken. Try another.&quot;</span>) 
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

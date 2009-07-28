@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_instance_vars (Sinatra::TheSSResource::Helpers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/ss_resource.rb, line 49</span>
+                  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_instance_vars</span>
+
+                    <span class="ruby-ivar">@child_model</span>   = <span class="ruby-identifier">controller_model_class</span>
+                    <span class="ruby-ivar">@family_models</span> = [ ]
+
+                    <span class="ruby-identifier">current_model</span> = <span class="ruby-ivar">@child_model</span>
+                    <span class="ruby-keyword kw">while</span>( <span class="ruby-identifier">current_model</span> ) <span class="ruby-keyword kw">do</span>
+                    
+                      <span class="ruby-ivar">@family_models</span>.<span class="ruby-identifier">unshift</span>( 
+                      { <span class="ruby-identifier">:model</span>    =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_model</span>, 
+                        <span class="ruby-identifier">:id</span>       =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>,
+                        <span class="ruby-identifier">:dataset</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_model</span>.<span class="ruby-identifier">name_underscored</span>.<span class="ruby-identifier">pluralize</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_dataset'</span> ,
+                        <span class="ruby-identifier">:all_dataset</span> =<span class="ruby-operator">&gt;</span>  <span class="ruby-value str">'all_'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_model</span>.<span class="ruby-identifier">name_underscored</span>.<span class="ruby-identifier">pluralize</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_dataset'</span>
+                      } )
+                      
+                      <span class="ruby-identifier">current_model</span> =  <span class="ruby-identifier">current_model</span>.<span class="ruby-identifier">parent_model?</span> <span class="ruby-value">? </span>
+                                       <span class="ruby-constant">Kernel</span>.<span class="ruby-identifier">const_get</span>( <span class="ruby-identifier">current_model</span><span class="ruby-operator">::</span><span class="ruby-constant">PARENT_MODEL</span> ) <span class="ruby-operator">:</span>
+                                       <span class="ruby-keyword kw">nil</span>
+                    <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># === while</span>
+
+                    <span class="ruby-ivar">@family_models</span>.<span class="ruby-identifier">each_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+                      <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:id</span>] = <span class="ruby-constant">Integer</span>( <span class="ruby-constant">Ramaze</span><span class="ruby-operator">::</span><span class="ruby-constant">Action</span>.<span class="ruby-identifier">current</span>.<span class="ruby-identifier">params</span>[ <span class="ruby-identifier">i</span> ] )
+                    }
+
+                    <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:perm_level</span>]
+                    <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Member</span><span class="ruby-operator">::</span><span class="ruby-constant">STRANGER</span> 
+                      <span class="ruby-ivar">@family_models</span>.<span class="ruby-identifier">each_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+                        <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:record</span>] = <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:model</span>][<span class="ruby-identifier">:trashed=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">:id=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:id</span>] ]
+                      }
+                    <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Member</span><span class="ruby-operator">::</span><span class="ruby-constant">MEMBER</span> 
+                      <span class="ruby-ivar">@family_models</span>.<span class="ruby-identifier">each_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">zero?</span>
+                          <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:record</span>] = <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{@family_models[i][:all_dataset]}&quot;</span>)[ <span class="ruby-identifier">:id=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:id</span>] ]
+                        <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>][<span class="ruby-identifier">:record</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:id</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                          <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:record</span>] = <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">send</span>( <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:all_dataset</span>] )[ <span class="ruby-identifier">:id=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:id</span>] ]
+                        <span class="ruby-keyword kw">else</span>
+                          <span class="ruby-ivar">@family_models</span>[<span class="ruby-identifier">i</span>][<span class="ruby-identifier">:record</span>] = <span class="ruby-keyword kw">nil</span>
+                        <span class="ruby-keyword kw">end</span>
+                      }
+                    <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># === case</span>
+
+                    <span class="ruby-identifier">load_instance_vars</span>
+                    
+                  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

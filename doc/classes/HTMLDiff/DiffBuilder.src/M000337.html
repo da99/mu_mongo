@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>operations (HTMLDiff::DiffBuilder)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File vendor/htmldiff/lib/htmldiff.rb, line 40</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">operations</span>
+      <span class="ruby-identifier">position_in_old</span> = <span class="ruby-identifier">position_in_new</span> = <span class="ruby-value">0</span>
+      <span class="ruby-identifier">operations</span> = []
+      
+      <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">matching_blocks</span>
+      <span class="ruby-comment cmt"># an empty match at the end forces the loop below to handle the unmatched tails</span>
+      <span class="ruby-comment cmt"># I'm sure it can be done more gracefully, but not at 23:52</span>
+      <span class="ruby-identifier">matches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Match</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@old_words</span>.<span class="ruby-identifier">length</span>, <span class="ruby-ivar">@new_words</span>.<span class="ruby-identifier">length</span>, <span class="ruby-value">0</span>)
+      
+      <span class="ruby-identifier">matches</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">match_starts_at_current_position_in_old</span> = (<span class="ruby-identifier">position_in_old</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_old</span>)
+        <span class="ruby-identifier">match_starts_at_current_position_in_new</span> = (<span class="ruby-identifier">position_in_new</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_new</span>)
+        
+        <span class="ruby-identifier">action_upto_match_positions</span> = 
+          <span class="ruby-keyword kw">case</span> [<span class="ruby-identifier">match_starts_at_current_position_in_old</span>, <span class="ruby-identifier">match_starts_at_current_position_in_new</span>]
+          <span class="ruby-keyword kw">when</span> [<span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">false</span>]
+            <span class="ruby-identifier">:replace</span>
+          <span class="ruby-keyword kw">when</span> [<span class="ruby-keyword kw">true</span>, <span class="ruby-keyword kw">false</span>]
+            <span class="ruby-identifier">:insert</span>
+          <span class="ruby-keyword kw">when</span> [<span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">true</span>]
+            <span class="ruby-identifier">:delete</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-comment cmt"># this happens if the first few words are same in both versions</span>
+            <span class="ruby-identifier">:none</span>
+          <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">action_upto_match_positions</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">:none</span>
+          <span class="ruby-identifier">operation_upto_match_positions</span> = 
+              <span class="ruby-constant">Operation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">action_upto_match_positions</span>, 
+                  <span class="ruby-identifier">position_in_old</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_old</span>, 
+                  <span class="ruby-identifier">position_in_new</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_new</span>)
+          <span class="ruby-identifier">operations</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">operation_upto_match_positions</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">match_operation</span> = <span class="ruby-constant">Operation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:equal</span>, 
+              <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_old</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">end_in_old</span>, 
+              <span class="ruby-identifier">match</span>.<span class="ruby-identifier">start_in_new</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">end_in_new</span>)
+          <span class="ruby-identifier">operations</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">match_operation</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">position_in_old</span> = <span class="ruby-identifier">match</span>.<span class="ruby-identifier">end_in_old</span>
+        <span class="ruby-identifier">position_in_new</span> = <span class="ruby-identifier">match</span>.<span class="ruby-identifier">end_in_new</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">operations</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

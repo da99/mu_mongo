@@ -1,0 +1,50 @@
+save_to('title') { 'Signup' }
+
+div.nav_bar! {
+  h2 'Create New Account'
+  ul {
+    li { a('Home', :href=>'/') } 
+    li { a('Login', :href=>'/login') }
+  } # ul
+} # div.the_header!
+
+
+# ================= div.flash_msg =============================
+if flash_msg?
+  partial '__flash_msg'
+end
+
+
+div.form_holder.signup_form_holder! {
+
+  form.signup_form!(:action=>"/member", :method=>"post") {
+    
+    fieldset.username.input_text {
+      label 'Username'
+      input( :id=>"member_username", :name=>"username", :type=>"text", :value=>flash(:username) )
+    }
+    
+    fieldset.password.input_text {
+      label 'Password'
+      input( :id=>"member_password", :name=>"password", :type=>"password" )
+    }
+    
+    fieldset.password.input_text {
+      label { span 'Confirm Password'  }
+      input( :id=>"member_confirm_password", :name=>"confirm_password", :type=>"password" )
+    }
+
+    fieldset.email.input_text {
+      label { 
+        span 'Email'
+      }
+      input( :id=>"member_email", :name=>"email", :type=>"text", :value=>flash(:email) )
+    }
+
+    div.buttons {
+      a( 'Signup', :href=>"#signup", :onclick=>"document.getElementById('signup_form').submit(); return false;" )                   
+    }
+
+  } # form.signup_form!
+
+} # div.form_holder

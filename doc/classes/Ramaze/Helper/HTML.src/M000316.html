@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_template_filename_on_disk_or_inline (Ramaze::Helper::HTML)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File extensions/html.rb, line 3</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_template_filename_on_disk_or_inline</span>(<span class="ruby-identifier">raw_filename</span>)
+    <span class="ruby-identifier">orig_filename</span> = <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">filename</span>( <span class="ruby-identifier">raw_filename</span> )
+
+    <span class="ruby-identifier">filename</span> = [ <span class="ruby-node">&quot;#{orig_filename}.sass&quot;</span> , <span class="ruby-node">&quot;#{orig_filename}.haml&quot;</span>, <span class="ruby-identifier">orig_filename</span>].<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">fn</span><span class="ruby-operator">|</span> 
+                          <span class="ruby-constant">Sinatra</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">templates</span>.<span class="ruby-identifier">has_key?</span>( <span class="ruby-identifier">fn</span>.<span class="ruby-identifier">to_sym</span> ) 
+               } <span class="ruby-operator">||</span> <span class="ruby-identifier">orig_filename</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

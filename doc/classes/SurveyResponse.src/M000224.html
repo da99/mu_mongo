@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_validation_errors (SurveyResponse)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/model/survey_response.rb, line 26</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_validation_errors</span>
+    <span class="ruby-comment cmt"># === :name</span>
+    <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:name</span>] = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>
+
+    <span class="ruby-comment cmt"># === :score</span>
+    <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:score</span>] = <span class="ruby-constant">Integer</span>(<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:score</span>])
+    <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">SurveyQuestion</span><span class="ruby-operator">::</span><span class="ruby-constant">VALID_SCORES</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:score</span>])
+      <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;Programmer error. Invalid score.&quot;</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># === :ip_address</span>
+    <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:ip_address</span>]
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:ip_address</span>, <span class="ruby-value str">'Can not be saved. Programmer error. Contact programmer with code: survey-response-001'</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

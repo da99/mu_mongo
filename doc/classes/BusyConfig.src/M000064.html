@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>deliver_msg_to_support (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 353</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">deliver_msg_to_support</span>( <span class="ruby-identifier">raw_subject</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span> )
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'yaml'</span>
+
+    <span class="ruby-identifier">raw_body</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> 
+                          <span class="ruby-identifier">v</span> = [<span class="ruby-identifier">v</span>.<span class="ruby-identifier">message</span>, <span class="ruby-identifier">v</span>.<span class="ruby-identifier">backtrace</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:backtrace</span>) <span class="ruby-comment cmt"># i.e. an Exception?</span>
+                          <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">dump</span> <span class="ruby-identifier">v</span>
+                        }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n\n------------------------------------------------------------------------------------------\n\n&quot;</span>)
+                        
+    <span class="ruby-identifier">deliver_letter</span>( <span class="ruby-identifier">:to=</span><span class="ruby-operator">&gt;</span><span class="ruby-constant">SITE_SUPPORT_EMAIL</span>, <span class="ruby-identifier">:from=</span><span class="ruby-operator">&gt;</span><span class="ruby-constant">SITE_SUPPORT_EMAIL</span>, <span class="ruby-identifier">:subject=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">raw_subject</span>, <span class="ruby-identifier">:body=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">raw_body</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

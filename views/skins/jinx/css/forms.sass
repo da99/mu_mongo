@@ -1,0 +1,106 @@
+form
+  fieldset
+    border-width: 0
+    padding-bottom: 15px
+    label
+      display: block
+      text-transform: uppercase
+      span.sub
+        font-weight: normal
+    select, select option
+      font-size: 20px
+    ul.radios
+      padding: 5px 0 0 0
+      list-style-type: none
+      li
+        padding: 5px 0
+      li.selected
+        background-color= !highlight
+  div.buttons
+    +link_font_size
+    +clearfix
+    padding: 0
+    a
+      display: block
+      float: left
+      margin-right: 15px
+    a.trash
+      padding: 2px 5px 2px 5px
+      margin-top: -2px
+    a.trash:hover, a.trash:active
+      background-color = !red
+      color: #fff
+  &.loading
+    div.buttons
+      background: transparent url("/css/jinx/loading.gif") no-repeat center center
+      a
+        visibility: hidden
+  div.status_msg
+    font-size = !p_font_size
+    div.title
+      text-transform: uppercase
+      font-weight: bold
+      font-size: 80%
+     
+    div.success_msg, div.error_msg
+      padding: 8px 10px 10px 10px
+      margin-bottom: 10px
+
+    div.success_msg
+      background-color= !highlight
+      div.title
+        color= !red
+    div.error_msg
+      background-color= !red        
+      div.title
+        color= !highlight
+      div.msg
+        font-weight: bold
+        color: #fff
+
+      
+div.form_holder
+  background: #fff
+  border: 1px solid #000
+    color = !text_box_border
+  font-size = !p_font_size
+  form
+    div.qa_answer, div.display_qa_answer
+      display: none
+      border: 1px dashed #fff
+        color= !dark_blue
+        width: 2px 0
+      padding: 5px 5px 5px 9px
+      p
+        padding: 0
+      ul
+        padding: 0 0 0 60px
+        margin: 0      
+    div.display_qa_answer
+      display: block
+      margin: 10px 0
+    fieldset
+      label
+        font-size = !small_p_font_size
+      ul.radios
+        li
+          div.hide
+            display: none
+            padding: 7px 0 10px 28px
+            background-color= !highlight           
+            .label
+              font-size: 12px
+              font-weight: bold
+              color= !dark_grey
+              text-transform: uppercase
+          &.selected
+            div.hide
+              display: block        
+    fieldset.input_text input, fieldset textarea
+      background-color = !text_box_bg
+      font-size = !text_box_font_size
+      text-align: left
+      border: 1px solid #000
+        color = !text_box_border
+    div.buttons
+      text-align: right        

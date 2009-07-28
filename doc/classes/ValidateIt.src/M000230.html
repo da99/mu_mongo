@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>require_valid_menu_item! (ValidateIt)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/model/validate_it.rb, line 33</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">require_valid_menu_item!</span>( <span class="ruby-identifier">field_name</span>, <span class="ruby-identifier">raw_error_msg</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">raw_menu</span> = <span class="ruby-keyword kw">nil</span> )
+    <span class="ruby-identifier">error_msg</span> = ( <span class="ruby-identifier">raw_error_msg</span> <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;Invalid menu choice. Contact support.&quot;</span> )
+    <span class="ruby-identifier">menu</span>      = ( <span class="ruby-identifier">raw_menu</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-node">&quot;VALID_#{field_name.to_s.pluralize.upcase}&quot;</span>) )
+    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>( <span class="ruby-identifier">field_name</span>, <span class="ruby-identifier">error_msg</span> ) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">menu</span>.<span class="ruby-identifier">include?</span>( <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field_name</span>] )
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

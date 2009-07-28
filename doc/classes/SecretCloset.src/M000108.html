@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>connect! (SecretCloset)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File secret_closet.rb, line 10</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">connect!</span>
+        <span class="ruby-ivar">@env</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_defined?</span>(<span class="ruby-identifier">:Sinatra</span>) <span class="ruby-operator">?</span>
+                        <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Application</span>.<span class="ruby-identifier">environment</span> <span class="ruby-operator">:</span>
+                        <span class="ruby-identifier">:development</span>;
+                        
+        <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@env</span>
+          <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:test</span>, <span class="ruby-identifier">:development</span>
+              <span class="ruby-comment cmt"># -----------------------------------------------------------------------------------------------</span>
+              <span class="ruby-comment cmt"># Setup logger.</span>
+              <span class="ruby-comment cmt"># -----------------------------------------------------------------------------------------------</span>
+              <span class="ruby-identifier">require</span> <span class="ruby-value str">'logger'</span>
+              <span class="ruby-identifier">test_file_path</span> = <span class="ruby-constant">Pow!</span>(<span class="ruby-value str">'../../sequel_log.txt'</span>)
+              <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">test_file_path</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">test_file_path</span>)          
+              <span class="ruby-identifier">new_logger</span> =  <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">test_file_path</span>)
+              <span class="ruby-comment cmt"># -----------------------------------------------------------------------------------------------</span>
+              <span class="ruby-ivar">@db_conn</span> = <span class="ruby-constant">Sequel</span>.<span class="ruby-identifier">connect</span>( <span class="ruby-identifier">db_connection_string</span>  , {<span class="ruby-identifier">:loggers=</span><span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">new_logger</span>]}  )
+              
+          <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:production</span>
+              <span class="ruby-ivar">@db_conn</span> = <span class="ruby-constant">Sequel</span>.<span class="ruby-identifier">connect</span>( <span class="ruby-identifier">db_connection_string</span> )         
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;#{new_env.inspect} - is not a valid environment for SurferDB&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

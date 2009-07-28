@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (CheckListController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/controller/check_list.rb, line 19</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span> <span class="ruby-comment cmt"># POST</span>
+    
+    <span class="ruby-comment cmt"># ========================================================</span>
+    <span class="ruby-comment cmt"># Set id to zero just in case it is nil or an empty string.</span>
+    <span class="ruby-comment cmt"># ========================================================</span>
+    <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:bundle_id</span>] = <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:bundle_id</span>].<span class="ruby-identifier">to_i</span> 
+    <span class="ruby-comment cmt"># ========================================================</span>
+    
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-comment cmt"># Create bundle if necessary</span>
+      <span class="ruby-identifier">old_bundle</span>      = <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:bundle_id</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'new_bundle'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">bundles_dataset</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">:title=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:new_bundle_title</span>]).<span class="ruby-identifier">first</span>
+      <span class="ruby-identifier">create_bundle</span>   = <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:bundle_id</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'new_bundle'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">old_bundle</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">use_old_bundle</span>  = <span class="ruby-identifier">old_bundle</span>
+      
+      <span class="ruby-identifier">bundle_id</span> = <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">create_bundle</span>
+                    <span class="ruby-identifier">new_bundle</span> = <span class="ruby-constant">Bundle</span>.<span class="ruby-identifier">new</span>
+                    <span class="ruby-identifier">new_bundle</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:new_bundle_title</span>]
+                    <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">add_bundle</span>(<span class="ruby-identifier">new_bundle</span>)
+                    <span class="ruby-identifier">new_bundle</span>.<span class="ruby-identifier">id</span>
+                  <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">use_old_bundle</span>
+                    <span class="ruby-identifier">old_bundle</span>.<span class="ruby-identifier">id</span>
+                  <span class="ruby-keyword kw">else</span>
+                    <span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:bundle_id</span>]
+                  <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-comment cmt"># Now, let's create the check list.</span>
+      <span class="ruby-identifier">check_list</span> = <span class="ruby-constant">CheckList</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">check_list</span>.<span class="ruby-identifier">new_values_from_member</span>(<span class="ruby-identifier">clean_room</span>)
+      <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">add_check_list</span>(<span class="ruby-identifier">check_list</span>)
+      <span class="ruby-identifier">success_msg!</span>(<span class="ruby-identifier">check_list</span>.<span class="ruby-identifier">success_msg</span>, <span class="ruby-identifier">:redirect_to=</span><span class="ruby-operator">&gt;</span><span class="ruby-node">&quot;/check_list/#{check_list.id}&quot;</span>)
+      
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Bundle</span><span class="ruby-operator">::</span><span class="ruby-constant">Invalid</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-identifier">new_bundle</span>.<span class="ruby-identifier">error_msg</span>)
+      
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">CheckList</span><span class="ruby-operator">::</span><span class="ruby-constant">Invalid</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-identifier">check_list</span>.<span class="ruby-identifier">error_msg</span>)
+
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

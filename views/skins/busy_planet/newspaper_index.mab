@@ -1,0 +1,58 @@
+# ===============================================================
+#          This is the frontpage of the Newspaper.
+# ===============================================================
+
+save_to('h1_and_h2') {
+          h1(  @newspaper.title )
+          h2(  @newspaper.description )
+}
+
+div.breaking_news_column {
+
+  div.tagline @newspaper.description
+
+  div.most_popular {
+  }
+
+} # === breaking_news_column
+
+
+div.latest_articles_column {
+
+  @newspaper.articles_dataset.order(:created_at.desc).limit(10).each { |article| 
+    
+    div.article {
+      div.created_at article.created_at.to_s
+      div.title article.title
+      div.body article.body
+    }
+
+  } # articles iterator
+
+} # === div.latest_articles_column
+
+
+unless @newspaper.sidebars.empty?
+
+  div.sidebar_column {
+    
+    @newspaper.sidebars.each { |sidebar| 
+      div.sidebar {
+        div.title sidebar.title
+        div.articles_list {
+          sidebar.articles.each { |article|
+            div.article {
+              div.title article.title
+              div.summary article.summary
+              div.read_more {
+                a('Read more...', :href=>article.a_href(:index))
+              }
+            } # div.article
+          } # sidebar.articles.each
+        } # div.articles_list
+      } # div.sidebar
+    } # @newspaper.sidebars.each
+
+  } # === sidebar_column
+
+end

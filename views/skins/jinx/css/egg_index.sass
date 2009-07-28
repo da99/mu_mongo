@@ -1,0 +1,515 @@
+// keep the LVHA order, as decribed by 
+// www.positioniseverything.net_articles_common.html
+a:link, a:visited 
+  color: #F00919
+  padding: 0 2px 4px 2px
+  font: bold 14px !sans_serif
+a:hover, a:active 
+  color: #fff
+  background: #F00919
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td 
+  margin: 0
+  padding: 0
+
+!yellow_highlighter = #FFFF88
+!blue = #A2D3E0
+!red = #F00919
+!dark_blue = #073D6F
+!orange = #FFBE2C
+!green = #B0C460
+!pink = #FF477C
+!heaven_white = #F4FAFC
+!sans_serif = "helvetica, arial, sans-serif"
+
+#busy_body
+  text-align: center
+  background:
+    color= !blue 
+    image: url("/egg/images/logo_bg.gif")
+    repeat: repeat-x
+#content
+  margin: 0 auto
+  text-align: left
+  width: 790px
+  background:
+    image: url("/egg/images/spotlights.gif")
+    repeat: no-repeat
+    position: 0 51px
+#current_time
+  overflow: hidden
+  width: 263px
+  height: 70px
+  position: absolute
+  text-align: center
+  background:
+    image: url("/egg/images/current_time_bg.gif")
+    repeat: no-repeat
+    position: top right
+  #big_date
+    padding-top: 10px
+    color: #fff
+    font:
+      size: 16px
+      family= !sans_serif
+      weight: bold
+  #big_time
+    color: #fff
+    font:
+      size: 24px
+      family= !sans_serif
+      weight: bold   
+    #big_seconds
+      color= !orange
+      font:
+        style: italic  
+        size: 16px
+h1
+  height: 91px
+  width: 100%
+  overflow: hidden
+  text-indent: -200px
+  background:
+    image: url("/egg/images/logo.gif")
+    repeat: no-repeat
+    position: 567px 0
+  font:
+    size: 10px
+    family: sans-serif
+h2
+  display: none
+  
+form
+  font-size: 16px
+  div.fieldset_block
+    fieldset.days
+      display: none
+    fieldset
+      border-width: 0
+    label
+      text-align: left
+      display: block
+      color= !red
+      font:
+        size: 120%
+        weight: bold
+        style: italic
+    input, textarea
+      font:
+        size: 28px
+        weight: bold
+        family: courier, serif   
+        style: normal  
+    select option
+      font:
+        size: 28px
+        weight: bold    
+        style: normal              
+  div.headline
+    input
+      width: 650px  
+  div.details
+    textarea
+      width: 650px
+  div.time_units_block
+    div.title
+      color= !red
+      font:
+        size: 120%
+        weight: bold
+        style: italic      
+    input
+      width: 70px
+      text-align: right
+    fieldset
+      display: inline
+      padding: 0 20px 0 0
+    label
+      display: inline
+      color= !dark_blue
+  div.buttons
+    button
+      color= !dark_blue
+      font:
+        size: 120%
+        weight: bold          
+
+  
+  
+#add_stuff
+  visibility: hidden
+  font-family= !sans_serif
+  padding: 10px 0 20px 0
+  ul.binder
+    width: 780px
+    overflow: auto
+    list-style-type: none
+    li
+      display: inline
+      width: 140px
+      overflow: hidden
+      text-align: center
+      float: left
+    li.instructions
+      margin-left: 150px
+    li.create_countdown
+      width: 160px
+    li.create_alarm
+      width: 120px
+    li.create_note
+      width: 120px
+    li.selected_link
+      a:link, a:hover, a:visited
+        color= !red
+        cursor: default
+        text-decoration: none
+        background:
+          color= !heaven_white
+    a:link, a:visited
+      padding: 5px 0 5px 0
+      font:
+        weight: bold
+        size: 16px
+      display: block
+      margin: 0 5px
+    a:hover
+      color: #fff
+      background:
+        color= !red
+  #folders
+    div.island
+      display: none
+      padding: 15px 10px 20px 20px
+      background:
+        color= !heaven_white
+    div.selected_folder
+      display: block
+    div.intro
+      margin: 0 0 10px 0
+      padding: 5px 10px
+      border:
+        width: 1px 0
+        style: dashed
+        color= !dark_blue
+    #instructions
+      background:
+        image: url("/egg/images/instruction_arrows.gif")
+        repeat: no-repeat
+        position: 360px 10px
+      ol
+        margin: 0
+        padding: 0
+        list-style-type: none
+        li
+          margin: 0
+          padding: 20px 0 10px 50px
+          font:
+            size: 22px
+            weight: bold
+          background:
+            image: url("/egg/images/instruction_numbers.gif")
+            repeat: no-repeat
+          div.title
+            color= !red
+          div.body
+            color= !dark_blue
+            font-size: 80%
+            width: 600px
+        li.step_1
+          margin-right: 400px
+          background-position: 0 24px
+          padding-bottom: 0
+        li.step_2
+          background-position: 0 -97px
+          padding-top: 20px
+          a.stop_buzzer
+            display: none
+        li.step_3
+          background-position: 0 -250px        
+          padding-top: 20px
+      div.about
+        padding-top: 10px
+        border:
+          width: 1px 0 0 0
+          style: dashed
+          color= !dark_blue
+        p
+          padding-bottom: 10px   
+        p.advertisement
+          padding: 10px
+          width: 400px
+          background:
+            color= !yellow_highlighter
+    #instructions.testing_buzzer
+      ol li.step_2 
+        a.test_buzzer
+          display: none         
+        a.stop_buzzer
+          display: inline
+#work
+  visibility: hidden
+  text-align: center
+  div.egg, div.edit_egg
+    overflow: auto
+    text-align: left
+    width: 700px
+    margin: 0 auto 10px auto
+    padding-bottom: 10px
+    font:
+      family= !sans_serif
+    background:
+      color: #D3ECF2
+      image: url("/egg/images/blue_sky_bg.jpg")   
+      repeat: repeat-x    
+    a:link, a:visited
+      text-transform: uppercase    
+      font:
+        size: 12px
+        weight: bold      
+    div.undo
+      display: none
+    div.buttons
+      overflow: auto
+      padding-left: 10px
+      a:link, a:visited
+        float: left
+        display: block
+        margin-right: 10px    
+    div.status
+      overflow: auto
+      float: left
+      div.time_status
+        float: left
+        padding: 5px 20px 5px 10px     
+        span
+          padding: 0 5px 0 0
+          font:
+            size: 15px
+            family= !sans_serif    
+            weight: bold       
+        span.number
+          padding: 0
+          font:
+            size: 40px   
+      div.buzzer_option
+        float: left
+        clear: both      
+        text-transform: uppercase
+        padding: 0 15px 3px 5px
+        font:
+          size: 12px
+          weight: bold
+          family= !sans_serif
+      div.selected_buzzer
+        padding-left: 33px
+        background:
+          image: url("/egg/images/music_note.gif")
+          repeat: no-repeat
+          position: 8px 0
+      div.time_status_in_words
+        float: left
+        clear: both
+        text-align: center
+        color= !red
+        padding-left: 50px
+        text-transform: uppercase
+        font:
+          weight: bold
+          size: 80%        
+    div.summary
+      float: left
+      h4
+        font:
+          size: 30px
+      div.setting
+        text-transform: uppercase
+        font:
+          style: italic
+          size: 12px
+      div.visible_show_body
+        text-align: right
+      div.body
+        padding: 0 0 10px 0
+        font:
+          size: 110%
+      div.details
+        padding-top: 10px
+        font: 
+          size: 20px
+          weight: bold          
+  div.ready_to_start
+    div.buttons
+      a.pause, a.ready_to_start
+        display: none
+    div.status
+      display: none
+    div.summary
+      padding-left: 13px
+      h4
+        color= !dark_blue
+  div.at_play
+    color: #fff
+    a:link, a:visited
+      color: #fff
+    a:hover, a:active
+      color= !red
+      background-color: #fff
+    background:
+      color= !red
+      image: url("/egg/images/humble_red_bg.gif")
+      repeat: repeat-x
+    div.buttons
+      a.play, a.edit, a.ready_to_start
+        display: none
+    div.status
+      div.time_status_in_words
+        display: none
+    div.summary
+      div.setting
+        color: #000
+      div.body
+        color: #ffc
+        font-weight: bold
+  div.paused
+    div.buttons
+      a.pause 
+        display: none 
+    div.status
+      div.time_status
+        color= !dark_blue
+      div.buzzer_option
+        display: none
+      div.time_status_in_words  
+        display: block
+    div.summary
+      h4
+        color= !dark_blue
+  div.x_marked
+    div.buttons
+      a.pause, a.ready_to_start, a.x_mark
+        display: none
+    div.status
+      width: 72px
+      height: 70px         
+      background:
+        image: url("/egg/images/xmark.gif")
+        repeat: no-repeat
+        position: 15px 10px   
+      div.time_status, div.buzzer_option, div.time_status_in_words
+        display: none             
+    div.summary
+      h4
+        text-decoration: line-through
+        color= !dark_blue              
+  div.check_marked
+    div.buttons
+      a:link.pause, a:visited.pause,
+      a:link.ready_to_start, a:visited.ready_to_start,
+      a:link.check_mark, a:visited.check_mark
+        display: none     
+    div.status
+      width: 72px
+      height: 70px
+      background:
+        image: url("/egg/images/checkmark.gif")
+        repeat: no-repeat
+        position: 15px 10px
+      div.time_status, div.buzzer_option, div.time_status_in_words
+        display: none
+    div.summary
+      h4
+        text-decoration: line-through      
+        color= !dark_blue  
+  div.no_details
+    div.summary
+      div.details_control_panel, div.details
+        display: none      
+  div.show_details
+    div.summary
+      div.details_control_panel
+        a.show
+          display: none
+    div.details
+      display: block
+  div.hide_details
+    div.summary
+      div.details_control_panel
+        a.hide
+          display: none  
+    div.details
+      display: none
+  div.edit
+    display: none    
+  div.deleted
+    padding: 0
+    div.undo
+      display: block
+      text-align: center
+      padding: 20px 10px   
+      border: 
+        width: 3px 
+        style: dashed 
+        color= !red
+      span.short_headline
+        color= !dark_blue
+        font: 
+          weight: bold
+          size: 120%
+          style: italic
+    div.control_panel, div.status, div.summary
+      display: none
+  div.egg_template_note
+    div.control_panel div.buttons a.ready_to_start
+      display: inline
+  div.ready_to_start
+    div.control_panel div.buttons a.ready_to_start
+      display: none
+  div.times_up
+    div.buttons
+      a.pause, a.ready_to_start
+        display: none
+    div.status
+      div.time_status
+        color= !red
+      div.time_status span.number
+        font-size: 35px
+      div.time_status_in_words, div.buzzer_option
+        display: none
+    div.summary
+      h4
+        color= !dark_blue
+  div.edit_egg
+    margin-bottom: 15px
+    font:
+      size: 120%
+      style: italic
+    div.short_headline 
+      color= !red
+      margin: 5px 10px 0 10px
+      padding-left: 10px
+      border:
+        width: 0 0 2px 0 
+        color= !dark_blue
+        style: dashed
+      font:
+        size: 120%
+        weight: bold
+      span.short_headline
+        color= !dark_blue
+        font-style: normal
+    div.land
+      padding: 10px 10px 10px 20px
+      div.time_units_block
+        text-align: center
+        div.title
+          text-align: left  
+      div.buttons
+        padding-left: 0
+        text-align: center
+        button.save, button.cancel
+          margin-right: 25px    
+#dom_templates
+  display: none
+#alarm_wall
+  #alarm_holder
+    visibility: hidden
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>ramaze_options (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 63</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ramaze_options</span>
+    
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">EnvironmentNotSet</span>, <span class="ruby-value str">&quot;This method can not be called until environment has been set.&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">environment</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">AppSetNotToRun</span>, <span class="ruby-value str">&quot;Can't run the app while using Rake.&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_defined?</span>(<span class="ruby-identifier">:Rake</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">AppSetNotToRun</span>, <span class="ruby-value str">&quot;Can't run the app while testing.&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">test?</span>
+    
+    <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">environment</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">ENV_DEV</span>
+        {
+          <span class="ruby-identifier">:adapter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:thin</span>,
+          <span class="ruby-identifier">:port</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">4567</span>,
+          <span class="ruby-identifier">:sourcereload</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+        }
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">ENV_PROD</span>
+        {
+          <span class="ruby-identifier">:adapter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:thin</span>,
+          <span class="ruby-identifier">:port</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">9123</span>,
+          <span class="ruby-identifier">:sourcereload</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>,
+          <span class="ruby-identifier">:boring</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-regexp re">/\.css$/</span>, <span class="ruby-regexp re">/\.js$/</span>, <span class="ruby-regexp re">/\.img$/</span>] <span class="ruby-comment cmt"># from: http://justkez.com/deploying-ramaze-to-production/</span>
+        }
+    <span class="ruby-keyword kw">end</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

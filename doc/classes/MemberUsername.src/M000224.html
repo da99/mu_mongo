@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>included (MemberUsername)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/model/member_username.rb, line 6</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">target</span>)
+        <span class="ruby-identifier">target</span>.<span class="ruby-identifier">extend</span> <span class="ruby-constant">ClassMethods</span>
+        <span class="ruby-identifier">target</span>.<span class="ruby-identifier">hook_for</span>( <span class="ruby-identifier">target</span>, <span class="ruby-identifier">:before_validate</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">mem</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">mem</span>.<span class="ruby-identifier">find_username_validation_errors</span>
+        }
+        <span class="ruby-identifier">target</span>.<span class="ruby-identifier">hook_for</span>(<span class="ruby-identifier">target</span>, <span class="ruby-identifier">:after_update</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">u_m</span><span class="ruby-operator">|</span>
+            <span class="ruby-comment cmt"># :paper_trail_for_username_change</span>
+            <span class="ruby-identifier">username_diff</span> = <span class="ruby-constant">PaperTrail</span>.<span class="ruby-identifier">diff_hash</span>( {<span class="ruby-identifier">:username=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">old_username</span>}, {<span class="ruby-identifier">:username=</span><span class="ruby-operator">&gt;</span> <span class="ruby-identifier">u_m</span>.<span class="ruby-identifier">username</span>} ) 
+
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">username_diff</span>
+              <span class="ruby-identifier">new_paper_trail</span> = <span class="ruby-constant">PaperTrail</span>.<span class="ruby-identifier">new</span>( <span class="ruby-identifier">:model_class_name=</span><span class="ruby-operator">&gt;</span> <span class="ruby-identifier">u_m</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>, 
+                                                <span class="ruby-identifier">:action=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'UPDATE'</span>, 
+                                                <span class="ruby-identifier">:body=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">username_diff</span> )
+              <span class="ruby-identifier">u_m</span>.<span class="ruby-identifier">add_paper_trail</span>( <span class="ruby-identifier">new_paper_trail</span> )  
+            <span class="ruby-keyword kw">end</span>
+          } 
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

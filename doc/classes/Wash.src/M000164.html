@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>plaintext (Wash)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/wash.rb, line 218</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_str</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">opts</span>)
+    <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span>  <span class="ruby-identifier">raw_str</span>
+
+    <span class="ruby-comment cmt"># Check options.</span>
+    <span class="ruby-ivar">@plaintext_allowed_options</span> <span class="ruby-operator">||=</span> [ <span class="ruby-identifier">:spaces</span>, <span class="ruby-identifier">:tabs</span> ]
+    <span class="ruby-identifier">invalid_opts</span> = <span class="ruby-identifier">opts</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@plaintext_allowed_options</span>
+    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;INVALID OPTION: #{invalid_opts.inspect}&quot;</span> )  <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">invalid_opts</span>.<span class="ruby-identifier">empty?</span>
+
+    <span class="ruby-comment cmt"># Save tabs if requested.</span>
+    <span class="ruby-identifier">raw_str</span> = <span class="ruby-identifier">raw_str</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-value str">&quot;\t&quot;</span>, <span class="ruby-value str">&quot;&amp;#09;&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:tabs</span>)
+    
+    <span class="ruby-comment cmt"># First: Normalize characters.</span>
+    <span class="ruby-comment cmt"># Second: Strip out control characters.</span>
+    <span class="ruby-comment cmt"># Note: Must be normalize first, then strip. See: http://msdn.microsoft.com/en-us/library/ms776393(VS.85).aspx    </span>
+    <span class="ruby-identifier">final_str</span> = <span class="ruby-identifier">raw_str</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;\n&quot;</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span> 
+                        <span class="ruby-identifier">line</span>.<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">normalize</span>.<span class="ruby-identifier">gsub</span>( <span class="ruby-regexp re">/[[:cntrl:]\x00-\x1f]*/</span>, <span class="ruby-value str">''</span> ) 
+                        <span class="ruby-comment cmt"># Don't use &quot;\x20&quot; because that is the space character.</span>
+                    }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+
+    <span class="ruby-comment cmt"># Save whitespace or strip.</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:spaces</span>)
+        <span class="ruby-identifier">final_str</span> = <span class="ruby-identifier">final_str</span>.<span class="ruby-identifier">strip</span>
+    <span class="ruby-keyword kw">end</span>
+  
+    <span class="ruby-comment cmt"># Normalize quotations and other characters through HTML entity encoding/decoding.</span>
+    <span class="ruby-identifier">coder</span> = <span class="ruby-constant">HTMLEntities</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">normalised_str</span> = <span class="ruby-constant">HTML_ESCAPE_TABLE</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">coder</span>.<span class="ruby-identifier">encode</span>( <span class="ruby-identifier">final_str</span>, <span class="ruby-identifier">:named</span> )) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span>, <span class="ruby-identifier">kv</span><span class="ruby-operator">|</span>
+       <span class="ruby-identifier">m</span>.<span class="ruby-identifier">gsub</span>( <span class="ruby-identifier">kv</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">kv</span>.<span class="ruby-identifier">last</span>)
+    <span class="ruby-keyword kw">end</span>    
+    <span class="ruby-identifier">final_str</span> = <span class="ruby-identifier">coder</span>.<span class="ruby-identifier">decode</span>( <span class="ruby-identifier">normalised_str</span>  )
+
+    <span class="ruby-comment cmt"># Put back tabs by request.</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:tabs</span>)
+        <span class="ruby-identifier">final_str</span> = <span class="ruby-identifier">final_str</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-value str">&quot;&amp;#09;&quot;</span>, <span class="ruby-value str">&quot;\t&quot;</span>) 
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">final_str</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

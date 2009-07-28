@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>busy_action_for (Sinatra::BusyActions)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/busy_actions.rb, line 95</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">busy_action_for</span>(  <span class="ruby-identifier">raw_class_name</span>, <span class="ruby-identifier">perm_level</span>, <span class="ruby-identifier">action_name</span>, <span class="ruby-identifier">path</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">custom_action</span> )
+
+            <span class="ruby-comment cmt"># === Set default values.</span>
+            <span class="ruby-identifier">class_name</span> = <span class="ruby-identifier">raw_class_name</span>.<span class="ruby-identifier">to_sym</span>
+            <span class="ruby-identifier">path</span> <span class="ruby-operator">||=</span> <span class="ruby-node">/\/#{class_name.to_s.underscore}\/#{action_name.to_s.underscore}([\/\d]+)?$/</span>
+
+            <span class="ruby-comment cmt"># === Validate action name.</span>
+            <span class="ruby-identifier">busy_action_validate!</span>( <span class="ruby-identifier">action_name</span> )            
+            
+            <span class="ruby-comment cmt"># === Make sure class name and action name have not </span>
+            <span class="ruby-comment cmt"># === been used before.</span>
+            <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">busy_action_cache</span>[<span class="ruby-identifier">class_name</span>] <span class="ruby-operator">||=</span> []
+            <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">busy_action_cache</span>[<span class="ruby-identifier">class_name</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">action_name</span>)
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot; #{action_name.inspect}, already used for,  #{class_name.inspect}&quot;</span> 
+            <span class="ruby-keyword kw">end</span>
+            <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">busy_action_cache</span>[<span class="ruby-identifier">class_name</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">action_name</span>
+            
+            <span class="ruby-comment cmt"># === Create the actions.</span>
+            <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">action_name</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:INDEX</span>, <span class="ruby-identifier">:NEW</span>, <span class="ruby-identifier">:EDIT</span>
+                    <span class="ruby-identifier">method_type</span> = <span class="ruby-identifier">:GET</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:UPDATE</span>, <span class="ruby-identifier">:TRASH</span>, <span class="ruby-identifier">:UNTRASH</span>
+                    <span class="ruby-identifier">method_type</span> = <span class="ruby-identifier">:PUT</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:CREATE</span>
+                    <span class="ruby-identifier">method_type</span> = <span class="ruby-identifier">:POST</span>
+                <span class="ruby-keyword kw">else</span>
+                    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Programmer error: Forgot to add specify method name for busy action: #{action_name}&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+            
+            <span class="ruby-comment cmt"># === Create Sinatra actions like:  </span>
+            <span class="ruby-comment cmt">#  get( &quot;/newspaper&quot; ) { </span>
+            <span class="ruby-comment cmt">#      do_busy_action </span>
+            <span class="ruby-comment cmt">#  } </span>
+            <span class="ruby-identifier">eval</span>( <span class="ruby-node">%~
+                #{method_type.to_s.underscore}_it_for( #{perm_level.inspect}, #{path.inspect} ) do
+                    describe_action #{class_name}, &quot;#{action_name}&quot;
+                    def self.do_busy_action
+                        send( 'busy_#{action_name.to_s.underscore}' )
+                    end
+                    
+                    #{ 
+                        custom_action ?
+                            strigify_proc(custom_action): 
+                            'do_busy_action' 
+                      }
+                    
+                end
+            ~</span>)
+          
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

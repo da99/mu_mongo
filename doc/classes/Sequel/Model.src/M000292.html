@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>update_from_editor (Sequel::Model)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File models/init.rb, line 405</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_from_editor</span>(<span class="ruby-identifier">raw_hash</span>,  <span class="ruby-identifier">editor</span> = <span class="ruby-keyword kw">nil</span>)
+    <span class="ruby-identifier">current_editor</span> = <span class="ruby-identifier">editor</span>
+    <span class="ruby-identifier">new_vals</span> = <span class="ruby-identifier">raw_hash</span>.<span class="ruby-identifier">dup</span> <span class="ruby-comment cmt"># Just in case we delete any values,</span>
+                                            <span class="ruby-comment cmt"># we do not want to affect the original Hash</span>
+                                            <span class="ruby-comment cmt"># if :raw_hash is passed by reference.</span>
+                            
+    <span class="ruby-identifier">editable_fields</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">oo_get</span>(<span class="ruby-identifier">:editor_may_change</span>).<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Proc</span>) <span class="ruby-operator">?</span>
+                                    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">oo_get</span>(<span class="ruby-identifier">:editor_may_change</span>).<span class="ruby-identifier">call</span>(<span class="ruby-keyword kw">self</span>) <span class="ruby-operator">:</span>
+                                    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">oo_get</span>(<span class="ruby-identifier">:editor_may_change</span>) ;
+
+    (<span class="ruby-identifier">new_vals</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span> <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>} <span class="ruby-operator">-</span> <span class="ruby-identifier">editable_fields</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span> <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>}).<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">banned_field</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">FieldNotAllowedToBeUpdatedByOwner</span>, <span class="ruby-node">&quot;method #{banned_field}= is not allowed when using input from user.&quot;</span>
+    }
+    
+    <span class="ruby-identifier">editable_fields</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">fieldname</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_vals</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_s</span>)
+        <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">new_vals</span>[<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_s</span>]
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_vals</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_sym</span>)
+        <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">new_vals</span>[<span class="ruby-identifier">fieldname</span>.<span class="ruby-identifier">to_sym</span>]
+      <span class="ruby-keyword kw">end</span>
+    }
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

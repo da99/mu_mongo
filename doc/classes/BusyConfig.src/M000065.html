@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>deliver_letter (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 364</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">deliver_letter</span>( <span class="ruby-identifier">raw_letter</span> )
+    
+    <span class="ruby-identifier">require</span> <span class="ruby-constant">Pow!</span>(<span class="ruby-value str">'../lib/pony/lib/pony'</span>)
+        
+    <span class="ruby-identifier">letter</span> = { 
+      <span class="ruby-identifier">:to</span>       =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_letter</span>[<span class="ruby-identifier">:to</span>] ),
+      <span class="ruby-identifier">:from</span>     =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_letter</span>[<span class="ruby-identifier">:from</span>] ),
+      <span class="ruby-identifier">:subject</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_letter</span>[<span class="ruby-identifier">:subject</span>] ),
+      <span class="ruby-identifier">:body</span>     =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Wash</span>.<span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_letter</span>[<span class="ruby-identifier">:body</span>], <span class="ruby-identifier">:spaces</span>, <span class="ruby-identifier">:tabs</span> )
+    }
+    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">test?</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">letter</span> 
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">development?</span>
+      <span class="ruby-constant">Ramaze</span><span class="ruby-operator">::</span><span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-identifier">letter</span>.<span class="ruby-identifier">inspect</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">letter</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-constant">Pony</span>.<span class="ruby-identifier">mail</span>(<span class="ruby-identifier">letter</span>)
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

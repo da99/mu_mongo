@@ -1,0 +1,73 @@
+
+!nav_bar_font_size = 11px
+!h3_font_size = 12px
+!p_font_size = 14px
+!small_p_font_size = 12px
+!large_p_font_size = 18px
+!extra_large_p_font_size = 20px
+
+!red = #F00919
+!blue = #33CCFF
+!grey = #666666
+!pink = #FF477C
+!highlight = #ff9
+
+!dark_blue = #214D81
+!light_green = #E0FF92
+!dark_green = #133B00
+!light_grey = #E8E9E7
+!dark_grey = #333333
+
+!light_plasticine = #CBFFEB
+!dark_plasticine = #1A8D9C
+
+!link_on_black_bg = #84DB5C
+!link_on_light_bg = #39781B
+!bg = #EEEEFF
+
+!text_box_font_size = 20px
+!text_box_border = #BEBEBE
+!text_box_border_green = #38761B
+!text_box_bg = #EAEAF0
+!text_box_bg_dark = #D6D6D6
+
+!sans_serif = "'Helvetica Neue','HelveticaNeue',Helvetica,Arial,sans-serif"
+!serif = "'Century Schoolbook L', 'Times New Roman', 'Times', serif"
+!black_text = #242424
+!orange = #FFE759
+
+!title_bg = #DAE6B4
+
+
+
+ul.tabs
+  +no-bullets
+  +clearfix
+  padding: 0 0 0 16px
+  position: relative
+  top: 1px
+  li
+    text-align: center
+    float: left
+    a:link, a:visited, a:active, a:hover
+      display: block
+      font-size = !nav_bar_font_size
+      text-transform: uppercase
+      padding: 5px 10px 4px 10px
+      background: transparent
+      margin: 0 5px
+    &.tab_selected
+      a:link, a:active, a:hover, a:visited
+        cursor: default
+        text-decoration: none
+        color: #000
+        background: #fff
+        border: 1px solid #fff
+          color = !text_box_border
+          width: 1px 1px 0 1px
+
+div.tab_selected
+  display:block
+
+div.tab_unselected
+  display: none

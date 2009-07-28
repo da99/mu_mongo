@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: HTML5_Sanitize</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">HTML5_Sanitize</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/lib/html5_sanitize_rb.html">
+                lib/html5_sanitize.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h2>Introduction</h2>
+<p>
+This module provides sanitization of XHTML+MathML+SVG and of inline style
+attributes. Its genesis is <a
+href="http://golem.ph.utexas.edu/~distler/blog/archives/001181.html">described
+here</a>.
+</p>
+<p>
+Uses the <a href="http://code.google.com/p/html5lib/">HTML5lib parser</a>,
+so that the parsing behaviour should resemble that of browsers.
+</p>
+<pre>
+ sanitize_xhtml() is a case-sensitive sanitizer, suitable for XHTML
+ HTML5_Sanitize.html() is a case-insensitive sanitizer suitable for HTML
+ sanitize_rexml() sanitizes a REXML tree, returning a string
+</pre>
+<h2>Files</h2>
+<p>
+<a
+href="http://golem.ph.utexas.edu/~distler/code/instiki/svn/lib/sanitize.rb">sanitize.rb</a>,
+<a
+href="http://golem.ph.utexas.edu/~distler/code/instiki/svn/vendor/plugins/HTML5lib/">HTML5lib</a>
+</p>
+<h2>Author</h2>
+<p>
+<a href="http://golem.ph.utexas.edu/~distler/">Jacques Distler</a>
+</p>
+<h2>License</h2>
+<p>
+Ruby License
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000335">html</a>&nbsp;&nbsp;
+      <a href="#M000336">rexml</a>&nbsp;&nbsp;
+      <a href="#M000334">xhtml</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">HTML5</span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000335" class="method-detail">
+        <a name="M000335"></a>
+
+        <div class="method-heading">
+          <a href="HTML5_Sanitize.src/M000335.html" target="Code" class="method-signature"
+            onclick="popupCode('HTML5_Sanitize.src/M000335.html');return false;">
+          <span class="method-name">HTML5_Sanitize.html( string )                    &rarr;  string<br />
+HTML5_Sanitize.html( string, {:encoding => 'iso-8859-1', :to_tree => true} ) &rarr;  REXML::Document<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sanitize a string, parsed using HTML parsing rules.
+</p>
+<p>
+Unless otherwise specified, the string is assumed to be utf-8 encoded. By
+default, the output is a string. But, optionally, you can return a REXML
+tree.
+</p>
+<p>
+The string returned is utf-8 encoded. If you want, you can use iconv to
+convert it to some other encoding. (REXML trees are always utf-8 encoded.)
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000336" class="method-detail">
+        <a name="M000336"></a>
+
+        <div class="method-heading">
+          <a href="HTML5_Sanitize.src/M000336.html" target="Code" class="method-signature"
+            onclick="popupCode('HTML5_Sanitize.src/M000336.html');return false;">
+          <span class="method-name">sanitize_rexml(tree)                    &rarr; string<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sanitize a REXML tree. The output is a string.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000334" class="method-detail">
+        <a name="M000334"></a>
+
+        <div class="method-heading">
+          <a href="HTML5_Sanitize.src/M000334.html" target="Code" class="method-signature"
+            onclick="popupCode('HTML5_Sanitize.src/M000334.html');return false;">
+          <span class="method-name">sanitize_xhtml(string)                    &rarr; string<br />
+sanitize_xhtml(string, {:encoding => 'iso-8859-1', :to_tree => true}) &rarr; REXML::Document<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sanitize a string, parsed using XHTML parsing rules.
+</p>
+<p>
+Unless otherwise specified, the string is assumed to be utf-8 encoded. By
+default, the output is a string. But, optionally, you can return a REXML
+tree.
+</p>
+<p>
+The string returned is utf-8 encoded. If you want, you can use iconv to
+convert it to some other encoding. (REXML trees are always utf-8 encoded.)
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

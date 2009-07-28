@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>required_gems (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 169</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">required_gems</span>
+        <span class="ruby-identifier">gems_that_are_required</span> = <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">gems_for_production</span>
+
+        <span class="ruby-keyword kw">if</span> <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">development?</span> 
+          <span class="ruby-identifier">gems_that_are_required</span> = <span class="ruby-identifier">gems_that_are_required</span>.<span class="ruby-identifier">merge</span>( <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">gems_for_development</span> )
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-identifier">installed_gems</span>  = <span class="ruby-value">`gem list`</span>.<span class="ruby-identifier">split</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\(/</span> }.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> }.<span class="ruby-identifier">uniq</span>
+        
+        <span class="ruby-identifier">install_these_gems</span> = <span class="ruby-identifier">gems_that_are_required</span>.<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">new_gem</span>, <span class="ruby-identifier">special_instructions</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">gem_name</span> = <span class="ruby-identifier">new_gem</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
+            <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Empty gem name: #{new_gem.inspect}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">gem_name</span>.<span class="ruby-identifier">empty?</span> 
+            <span class="ruby-identifier">installed_gems</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">gem_name</span>) 
+        }
+        
+        <span class="ruby-identifier">install_these_gems</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

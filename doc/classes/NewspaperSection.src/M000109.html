@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>changes_from_editor (NewspaperSection)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File models/newspaper_section.rb, line 35</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">changes_from_editor</span>( <span class="ruby-identifier">params</span>, <span class="ruby-identifier">mem</span> )
+    
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new?</span> 
+            <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:newspaper_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:newspaper_id</span>]
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">newspaper</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">mem</span>)
+            <span class="ruby-ivar">@current_editor</span> = <span class="ruby-identifier">mem</span>
+            <span class="ruby-ivar">@editable_by_editor</span> = [<span class="ruby-identifier">:title</span>, <span class="ruby-identifier">:description</span>, <span class="ruby-identifier">:trashed</span>]
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-keyword kw">super</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>render_success_msg (Sinatra::ClubManager::Helpers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/sinatra/club_manager.rb, line 54</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_success_msg</span>(<span class="ruby-identifier">msg</span>)
+              <span class="ruby-identifier">describe_action</span> <span class="ruby-identifier">:Main</span>, <span class="ruby-identifier">:success_msg</span>
+              <span class="ruby-identifier">delete_form_draft_cookie</span>
+              <span class="ruby-ivar">@success_msg</span> = <span class="ruby-identifier">msg</span>
+              <span class="ruby-ivar">@partial</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">template_name</span>
+              
+              <span class="ruby-identifier">halt</span>( <span class="ruby-value">200</span>, <span class="ruby-identifier">render_mab</span> )
+            <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

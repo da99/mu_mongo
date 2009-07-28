@@ -1,0 +1,159 @@
+# save_to('title'){ options.site_title }
+# save_to('javascripts')  { 'default' }
+
+
+# ================= div.flash_msg =============================
+
+if flash_msg?
+    partial('__flash_msg') 
+end
+
+
+h1 options.site_title
+
+# ================= nav_bar ====================================
+div.nav_bar! {
+
+  if logged_in?
+    h2.hello_member! {
+      span.hello 'Hello,'
+      span.usename current_member.username
+      #ul {
+      #  li { a('test', :href=>'/test/') }
+      #}
+    }
+  end 
+
+  ul {
+
+
+    if logged_in?
+      li.admin { a('Admin', :href=>'/admin') }
+      li.bugs { a('Bugs', :href=>'/1') }
+      li.logout { a('Logout', :href=>'/logout')  }
+    else 
+      li.login { a('Login', :href=>'/login') }
+      li.bugs { a('Bugs', :href=>'/1') }
+      li.signup { a('Create Account', :href=>'/signup') }
+    end
+
+  } # ul.nav_bar!
+ 
+} # div.nav_bar!
+
+div.pricing! {
+  h3 'Pricing'
+  p "$99 - 12 months."
+  p "$39 - 3 months."
+  p "Free 3-month trial."
+  
+} # pricing!
+
+
+div.why! {
+  h3 "What is #{options.site_title}?"
+  p "Divide up resources around the office."
+  p "Let your co-workers sign-up online for conference rooms, projectors, etc."
+  p "Schedule use online and limit contact with your co-workers."
+} # why!
+
+div.showcase! {
+
+  h3 'Examples'
+
+  ul {
+    li { a('Surfer Hearts', :href=>'http://www.surferhearts.com/' ) }
+    li { a('Prediction News', :href=>'http://www.thepredictionnews.com/') }
+    li { a('This Week on Earth', :href=>'http://www.thisweekonearth.com/') }
+  } # ul
+
+} # showcase!
+
+div.manual! {
+
+  h3 'The Manual'
+
+  ul.manual_tabs! {
+    onclick_action = "Swiss.vertical_tab.select(this); return false;"
+    li.tab_unselected { a('Italics', :href=>'#manual_italics', :onclick=>onclick_action) }
+    li.tab_unselected { a('Bold', :href=>'#manual_bold', :onclick=>onclick_action) }
+    li.tab_unselected { a('Underline', :href=>'#manual_underline', :onclick=>onclick_action) }
+    li.tab_unselected { a('YouTube', :href=>'#manual_youtube', :onclick=>onclick_action) }
+    li.tab_unselected { a('Vimeo', :href=>'#manual_vimeo', :onclick=>onclick_action) }
+    li.tab_unselected { a('Flickr', :href=>'#manual_flickr', :onclick=>onclick_action) }
+    li.tab_unselected { a('Regular Photos', :href=>'#manual_regular_photos', :onclick=>onclick_action) }
+  }
+
+
+
+  div.step.tab_unselected.manual_italics! {
+    a('',:name=>'manual_italics')
+
+    div.details {
+      p %~ To slant your text, surround it with stars and the letter "i" at the very beginning. ~
+      div.write_this {
+        div.header { span 'Write this...' }
+        div.content {
+          p %~  /Spring is here./  ~ 
+        }
+      }
+      div.displayed_as {
+        div.header { span 'It will be displayed like this...' }
+        div.content {
+            p { %~ <i> Spring is here. </i> ~ }
+        }
+      }
+    } # div.details
+
+  } # manual_italics!
+
+
+  div.step.tab_unselected.manual_bold! {
+ 
+    a('',:name=>'manual_bold')
+    
+    div.details {
+      p %~ Make your text bold by surrounding it with stars and the letter "b" at the very beginning. ~
+      div.write_this {
+        div.header { span 'Write this...' }
+        div.content {
+          p{ %~  *Nippon Robotics Inc.* ~ } 
+        }
+      }
+      div.displayed_as {
+        div.header { span 'It will be displayed like this...' }
+        div.content {
+           p {   %~  <strong> Nippon Robotics Inc. </strong>  ~  }
+        }
+      }
+    } # div.details
+
+  } # manual_italics!
+
+  div.step.tab_unselected.manual_underline! {
+    a('', :name=>'manual_underline')
+    div.details { p { 'Not implemented yet. <br /><br /><br />' } }
+  } # manual_underline
+
+  div.step.tab_unselected.manual_youtube! {
+    a('', :name=>'manual_youtube')
+    div.details { p { 'Not implemented yet. <br /><br /><br />' } }
+  }
+
+  div.step.tab_unselected.manual_vimeo! {
+    a('', :name=>'manual_vimeo')
+    div.details { p { 'Not implemented yet. <br /><br /><br />' } }
+  }
+
+  div.step.tab_unselected.manual_flickr! {
+    a('', :name=>'manual_flickr')
+    div.details { p { 'Not implemented yet. <br /><br /><br />' } }
+  }
+
+  div.step.tab_unselected.manual_regular_photos! {
+    a('', :name=>'manual_regular_photos')
+    div.details { p { 'Not implemented yet. <br /><br /><br />' } }
+  }
+
+
+} # manual!

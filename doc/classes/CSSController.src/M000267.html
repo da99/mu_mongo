@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>grab_and_render (CSSController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File actions/css.rb, line 26</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">grab_and_render</span>( <span class="ruby-identifier">raw_layout_dir</span>, <span class="ruby-identifier">raw_filename</span> )
+    
+    <span class="ruby-identifier">response</span>[<span class="ruby-value str">'Content-Type'</span>] = <span class="ruby-value str">'text/css'</span> 
+
+    <span class="ruby-identifier">css_dir</span>       = <span class="ruby-constant">LAYOUTS_DIR</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">raw_layout_dir</span> <span class="ruby-operator">/</span> <span class="ruby-value str">'css'</span>
+    <span class="ruby-identifier">sass_template</span> = <span class="ruby-identifier">css_dir</span> <span class="ruby-operator">/</span> (<span class="ruby-identifier">raw_filename</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.sass'</span>)
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">development?</span>
+      <span class="ruby-identifier">raise</span>( <span class="ruby-constant">SASSFileNotFound</span>, <span class="ruby-node">&quot;Not found: #{sass_template}&quot;</span> ) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">sass_template</span>.<span class="ruby-identifier">file?</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">engine</span> = <span class="ruby-constant">Sass</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">new</span>(
+                <span class="ruby-identifier">sass_template</span>.<span class="ruby-identifier">read</span>, 
+                <span class="ruby-identifier">:load_paths=</span><span class="ruby-operator">&gt;</span>[  
+                  <span class="ruby-identifier">css_dir</span>,
+                  <span class="ruby-constant">COMPASS_SASS_DIR</span>,
+                  <span class="ruby-constant">SASS_960_DIR</span>
+                ]
+    )
+
+    <span class="ruby-identifier">engine</span>.<span class="ruby-identifier">render</span> 
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

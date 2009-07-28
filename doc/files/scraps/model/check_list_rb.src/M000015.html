@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_validation_errors (scraps/model/check_list.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/model/check_list.rb, line 145</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_validation_errors</span>
+    <span class="ruby-comment cmt"># === title</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:title</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:body</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:title</span>, <span class="ruby-value str">&quot;Either a title or body is required.&quot;</span>)
+      <span class="ruby-keyword kw">elsif</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:title</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:body</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:title</span>] = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>, <span class="ruby-value">30</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'...'</span> 
+      <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-comment cmt"># === template_id</span>
+      <span class="ruby-comment cmt"># make sure template belongs to proper owner</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_clone?</span>
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">eql?</span>( <span class="ruby-identifier">template_dataset</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">owner</span> )
+          <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Mismatch with Template :owner_id --&gt; self.owner_id: #{self.owner_id}, template.owner_id: #{template_dataset.first.owner_id}&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-comment cmt"># === bundle_id</span>
+      <span class="ruby-comment cmt"># make sure bundle belongs to proper owner.</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">bundle_dataset</span>.<span class="ruby-identifier">first</span>
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">owner</span>.<span class="ruby-identifier">eql?</span>( <span class="ruby-identifier">bundle_dataset</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">owner</span> )
+          <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Mismatch with Bundle :owner_id --&gt; self.owner_id: #{self.owner_id}, bundle.owner_id: #{bundle_dataset.first.owner_id}&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

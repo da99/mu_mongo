@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>filename (Wash)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File helpers/wash.rb, line 111</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filename</span>( <span class="ruby-identifier">raw_filename</span> )
+    <span class="ruby-identifier">semi_safe_filename</span> = <span class="ruby-identifier">plaintext</span>( <span class="ruby-identifier">raw_filename</span> ).<span class="ruby-identifier">downcase</span>
+    
+    <span class="ruby-ivar">@filename_washers</span> <span class="ruby-operator">||=</span> [
+                            [ <span class="ruby-regexp re">/\.{1,}/</span>, <span class="ruby-value str">'.'</span> ] ,             <span class="ruby-comment cmt"># get rid of repeating dots</span>
+                            [ <span class="ruby-regexp re">/[^a-z0-9\_\.]{1,}/i</span>, <span class="ruby-value str">'-'</span> ] , <span class="ruby-comment cmt"># replace invalid chars with a dash</span>
+                            [ <span class="ruby-regexp re">/[^a-z0-9]{1,}\Z/</span>, <span class="ruby-value str">''</span> ]       <span class="ruby-comment cmt"># delete ending non alphanum </span>
+                          ]
+    <span class="ruby-identifier">filename</span> = <span class="ruby-ivar">@filename_washers</span>.<span class="ruby-identifier">inject</span>( <span class="ruby-identifier">semi_safe_filename</span>.<span class="ruby-identifier">multibyte_chars</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">memo</span>, <span class="ruby-identifier">pair</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">memo</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">pair</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">pair</span>[<span class="ruby-value">1</span>])
+    }
+    
+    <span class="ruby-identifier">filename</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

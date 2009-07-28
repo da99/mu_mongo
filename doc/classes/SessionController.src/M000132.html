@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (SessionController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File actions/session.rb, line 20</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>  <span class="ruby-comment cmt"># POST</span>
+
+    <span class="ruby-comment cmt"># Before clearing session, get the most recent URL from the stack.</span>
+    <span class="ruby-identifier">stack</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:STACK</span>]
+    <span class="ruby-identifier">target_url</span> = (  <span class="ruby-identifier">inside_stack?</span> <span class="ruby-value">? </span><span class="ruby-identifier">stack</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>  )
+
+    <span class="ruby-comment cmt"># Clear everything else in the session.</span>
+    <span class="ruby-identifier">session</span>.<span class="ruby-identifier">clear</span>
+
+    <span class="ruby-comment cmt"># Put URL back into the stack.</span>
+    <span class="ruby-keyword kw">if</span>  <span class="ruby-identifier">target_url</span>
+      <span class="ruby-identifier">push</span>( <span class="ruby-identifier">target_url</span> ) 
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">begin</span> 
+      <span class="ruby-identifier">mem</span> = <span class="ruby-constant">Member</span>.<span class="ruby-identifier">authenticate</span>(<span class="ruby-identifier">clean_room</span>[<span class="ruby-value str">'username'</span>], <span class="ruby-identifier">clean_room</span>[<span class="ruby-value str">'password'</span>], <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-value str">'REMOTE_ADDR'</span>])
+      <span class="ruby-identifier">store_member_to_session</span>(<span class="ruby-identifier">mem</span>)
+      <span class="ruby-identifier">inside_stack?</span> <span class="ruby-value">? </span><span class="ruby-identifier">answer</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">redirect</span>(<span class="ruby-value str">'/admin'</span>)  
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Member</span><span class="ruby-operator">::</span><span class="ruby-constant">NoRecordFound</span>, <span class="ruby-constant">Member</span><span class="ruby-operator">::</span><span class="ruby-constant">IncorrectPassword</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:error_msg</span>] = <span class="ruby-value str">&quot;Incorrect info. Try again.&quot;</span>
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoginAttempt</span><span class="ruby-operator">::</span><span class="ruby-constant">TooMany</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:error_msg</span>] = <span class="ruby-value str">&quot;Too many failed login attempts. Contact support.&quot;</span>  
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">redirect</span> <span class="ruby-value str">'/login'</span>      
+      
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,38 @@
+@title = @section.title
+save_to('h1_and_h2') {
+  h1 @section.title
+}
+
+div.latest_articles_column {
+
+  @section.articles_dataset.order(:created_at.desc).limit(10).each { |article| 
+    
+    div.article {
+      div.created_at article.created_at.to_s
+      div.title article.title
+      div.body article.body
+    }
+
+  } # articles iterator
+
+} # div.latest_articles
+
+div.sidebar_column {
+  div.most_popular {
+    div.title "Most popular:"
+    div.body {
+      @section.articles_dataset.order(:total_views.desc).limit(10).each { |article|
+
+        div.article {
+          div.created_at article.created_at.to_s
+          div.title article.title
+          div.summary article.summary
+          div.read_more {
+            a( 'Read article.', article.a_href(:index))
+          }
+        } # div.article
+
+      } # article iterator
+    } # div.body
+  } # div.most_popular
+}

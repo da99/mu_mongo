@@ -1,0 +1,38 @@
+@title = @article.title
+save_to('h1_and_h2') {
+  h1 @article.title
+  h2 @article.summary
+}
+
+div.article_column {
+
+  div.title @article.title
+
+  div.by_line {
+    span.by 'By:'
+    span.full_name @article.author.full_name
+  }
+
+  div.created_at @article.created_at.to_s
+
+  if @article.modified_at
+    div.modified_at {
+      span "Last updated at:"
+      span.datetime @article.modified_at
+    }
+  end
+
+  div.body @article.body
+} # div.article_column
+
+
+div.sidebar_column {
+
+  ul.links {
+    li { 
+      a('Printer-friendly version', :href=>@article.a_href(:print)) 
+    }
+  }
+
+} # div.sidebar_column
+

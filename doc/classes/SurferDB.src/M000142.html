@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>default_data! (SurferDB)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File models/surfer_db.rb, line 74</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">default_data!</span>
+    <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">Kernel</span>.<span class="ruby-identifier">const_defined?</span>(<span class="ruby-identifier">:Member</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;:default_data! is not allowed in :production environment.&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">production?</span>
+    <span class="ruby-identifier">raise</span>( <span class="ruby-constant">ExistingData</span>, <span class="ruby-value str">&quot;Existing data.&quot;</span>) <span class="ruby-keyword kw">if</span> (<span class="ruby-constant">Member</span>.<span class="ruby-identifier">first</span>)
+    
+    <span class="ruby-comment cmt"># m = Member.new( :email =&gt; 'diego@BusyNoise.com', :timezone=&gt;'America/New_York', :password=&gt;'sample')</span>
+    <span class="ruby-comment cmt"># m.username= 'da01'</span>
+    <span class="ruby-comment cmt"># m.save</span>
+    <span class="ruby-comment cmt"># raise ArgumentError, &quot;First Member needs to have an :id of 1.&quot; unless m.id.eql?(1)  </span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

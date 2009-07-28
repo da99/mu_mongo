@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>setup_for_shared_host! (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 215</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">setup_for_shared_host!</span>
+    <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">:webfaction</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:webfaction</span>
+        <span class="ruby-constant">Ramaze</span><span class="ruby-operator">::</span><span class="ruby-constant">Log</span>.<span class="ruby-identifier">info</span> <span class="ruby-value str">&quot;&gt;&gt;&gt;&gt; Using :webfaction setup.&quot;</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:hosting_railts</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;This methods is not finished.&quot;</span>
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">__FILE__</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/releases\/\d{5,}/</span>
+        <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'GEM_HOME'</span>] = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-value str">'~/.gems'</span>)
+        <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'GEM_PATH'</span>] = <span class="ruby-node">&quot;#{ENV['GEM_HOME']}:/opt/ruby-enterprise-1.8.6-20080810/lib/ruby/gems/1.8&quot;</span>   
+        
+        <span class="ruby-identifier">require</span> <span class="ruby-value str">'rubygems'</span>
+        <span class="ruby-constant">Gem</span>.<span class="ruby-identifier">clear_paths</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,155 @@
+@import layout.sass
+@import nav_bar.sass
+
+!page_width = 790
+!splash_gif_height = 82
+
+#the_content
+  text-align: center
+  +center_this_block( !page_width + "px" )
+  
+
+#flash_msg
+  font-size = !p_font_size
+  padding-bottom: 0
+  h4
+    padding: 20px 0 0 0
+#flash_msg.success_msg
+  background-color: #000
+  padding-top: 20px
+  color = !highlight
+
+
+h1
+  margin-bottom: -15px
+  text-align: left
+  text-indent: -500px
+  overflow: hidden
+  height: 130px
+  background: #000 url("/css/jinx/splash.gif") no-repeat bottom right
+  display: none
+
+#nav_bar
+  margin-bottom: 10px
+  h2
+    text-transform: none
+    font-size = !p_font_size
+    padding-top: 10px 
+  ul
+    background-image: none
+    padding-right: 0
+    li.admin, li.login
+      background-image: none
+    
+=content_divider
+  border-top: 1px solid #000
+    color= !text_box_border_green
+  padding: 0 0 0 0
+  margin: 10px 0 0 0
+  text-align: left
+  p
+    padding-right: 30px
+    padding-bottom: 10px
+
+=manual-step-example(!step_width = 260px)
+  width = !step_width
+  padding: 10px 0 0 0
+  float: left
+  div.header
+    font-weight: bold 
+    font-size: 90%
+  div.content
+    padding: 10px 0
+    p
+      padding: 10px 10px 10px 15px
+      text-align: center
+
+
+#pricing
+  +content_divider 
+  background: transparent url("/css/jinx/splash2.gif") no-repeat top left
+  width: 300px
+  float: left
+  font-size = !p_font_size
+  h3, p
+    margin-left: 140px
+
+#why
+  +content_divider
+  font-size = !p_font_size
+  width: 360px
+  float: left
+
+#showcase
+  +content_divider
+  width: 130px
+  float: left
+  ul
+    +no-bullets
+    li
+      padding: 0 25px 10px 0
+      +link_font_size( !p_font_size )
+
+      a
+        text-transform: none
+
+#manual
+  +content_divider
+  float: left
+  width = !page_width
+  h3
+    padding-bottom: 15px
+  +clearfix
+  #manual_tabs
+    +no-bullets
+    width: 130px
+    li
+      +link_font_size( !p_font_size )
+      padding: 0
+      margin: 0
+      a
+        display: block
+        padding: 5px 5px 5px 10px
+        text-transform: none
+    li.tab_selected
+      a
+        text-decoration: none
+        cursor: default
+        color: #000
+        background: #fff
+        border: 1px solid #fff
+          color= !text_box_border
+          width: 1px 0 1px 1px
+
+
+  div.step
+    +clearfix
+    font-size = !p_font_size
+    width: 580px
+    div.details
+      +clearfix   
+      padding: 10px
+      border: 1px solid #fff
+        color = !text_box_border
+      background:
+        color: #fff
+      div.write_this
+        +manual-step-example(280px)
+        div.content
+          background: transparent url("/css/jinx/manual_step_example_bg_left.gif") no-repeat top right
+            color = !text_box_bg
+      div.displayed_as
+        +manual-step-example(260px)
+        div.content
+          background: transparent url("/css/jinx/manual_step_example_bg_right.gif") no-repeat top left
+            color = !text_box_bg_dark
+          p
+            padding-left: 20px
+  div.tab_selected
+    display: block
+  div.tab_unselected
+    display: none
+
+
+#the_footer
+  padding: 15px 0 15px 0

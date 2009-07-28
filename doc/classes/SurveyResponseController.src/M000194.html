@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (SurveyResponseController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/controller/survey_response.rb, line 5</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">raw_survey_id</span>) <span class="ruby-comment cmt"># POST</span>
+    
+    <span class="ruby-identifier">require_post!</span>
+    <span class="ruby-identifier">survey_id</span> = <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">raw_survey_id</span>)
+    
+    <span class="ruby-keyword kw">begin</span> <span class="ruby-comment cmt"># Find the survey.</span>
+      <span class="ruby-identifier">survey</span> = <span class="ruby-constant">Survey</span>.<span class="ruby-identifier">first_or_raise</span>(<span class="ruby-identifier">:id=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">survey_id</span>)
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span><span class="ruby-operator">::</span><span class="ruby-constant">NoRecordFound</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-value str">&quot;Survey not found. It might have been deleted while you were filling it out.&quot;</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-comment cmt"># Add values to response.</span>
+    <span class="ruby-identifier">survey_response</span> = <span class="ruby-constant">SurveyResponse</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">owner_name</span>  = <span class="ruby-identifier">clean_room</span>[<span class="ruby-value str">'name'</span>]
+    <span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">item_id</span>     = <span class="ruby-identifier">clean_room</span>[<span class="ruby-value str">'item_id'</span>]
+    <span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">rating</span>      = <span class="ruby-identifier">clean_room</span>[<span class="ruby-value str">'rating'</span>]
+    <span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">ip_address</span>  = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-value str">'REMOTE_ADDR'</span>]
+    <span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">owner_id</span>    = <span class="ruby-identifier">current_member</span>[<span class="ruby-identifier">:id</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">logged_in?</span>
+
+    <span class="ruby-keyword kw">begin</span> <span class="ruby-comment cmt"># Save response.</span>
+      <span class="ruby-identifier">survey</span>.<span class="ruby-identifier">add_response</span>(<span class="ruby-identifier">survey_response</span>)
+      <span class="ruby-comment cmt"># Send back success message.</span>
+      <span class="ruby-identifier">success_msg!</span>(<span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">success_msg</span>, <span class="ruby-identifier">:redirect_to=</span><span class="ruby-operator">&gt;</span><span class="ruby-node">&quot;/survey/#{survey[:id]}/results&quot;</span>)
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">SurveyResponse</span><span class="ruby-operator">::</span><span class="ruby-constant">Invalid</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-identifier">survey_response</span>.<span class="ruby-identifier">error_msg</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

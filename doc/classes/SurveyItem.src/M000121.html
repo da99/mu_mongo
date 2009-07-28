@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>responses_changed! (SurveyItem)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/model/survey_item.rb, line 23</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">responses_changed!</span>
+
+    <span class="ruby-comment cmt"># Setup dynamic aggregates</span>
+    <span class="ruby-identifier">response_stats</span> = <span class="ruby-identifier">responses_dataset</span>.<span class="ruby-identifier">query</span> {
+      <span class="ruby-identifier">select</span>(<span class="ruby-identifier">:id</span>, <span class="ruby-identifier">:score</span>, <span class="ruby-identifier">:COUNT</span>.<span class="ruby-identifier">sql_function</span>(<span class="ruby-identifier">:id</span>).<span class="ruby-identifier">as</span>(<span class="ruby-identifier">:total_responses</span>))
+      <span class="ruby-identifier">where</span>( <span class="ruby-identifier">:item_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:id</span>])
+      <span class="ruby-identifier">group</span>(<span class="ruby-identifier">:score</span>)
+    }.<span class="ruby-identifier">all</span>
+  
+    <span class="ruby-comment cmt"># Find the new value of :total_score</span>
+    <span class="ruby-comment cmt"># using dynamic aggregates.</span>
+    <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:total_score</span>] = <span class="ruby-identifier">response_stats</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">memo</span>,<span class="ruby-identifier">resp</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">memo</span> <span class="ruby-operator">+=</span> ( <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">resp</span>[<span class="ruby-identifier">:score</span>]) <span class="ruby-operator">*</span> <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">resp</span>[<span class="ruby-identifier">:total_responses</span>]) )
+      <span class="ruby-identifier">memo</span>
+    }
+
+    <span class="ruby-comment cmt"># Find the new values for :total_ratings_positive</span>
+    <span class="ruby-comment cmt"># and :total_ratings_negative </span>
+    <span class="ruby-comment cmt"># using dynamic aggregates.</span>
+    <span class="ruby-identifier">response_stats</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">stat</span><span class="ruby-operator">|</span>
+      <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">stat</span>[<span class="ruby-identifier">:score</span>]) <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span>
+        <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:total_ratings_positive</span>] = <span class="ruby-identifier">stat_record</span>[<span class="ruby-identifier">:total_responses</span>] <span class="ruby-operator">:</span>
+        <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:total_ratings_negative</span>] = <span class="ruby-identifier">stat_record</span>[<span class="ruby-identifier">:total_responses</span>]
+    }
+    
+    <span class="ruby-identifier">save</span>    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>check_creditials! (Sinatra::CheapBodyguard::Helpers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File extensions/cheap_bodyguard.rb, line 46</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_creditials!</span>
+              <span class="ruby-comment cmt"># return true if Ramaze::Action.current.method.to_s.eql?('error')</span>
+              <span class="ruby-identifier">dev_log_it</span>(<span class="ruby-node">&quot;CREDITIAL CHECK &gt;&gt;&gt; #{current_action[:controller].inspect} #{current_action[:action].inspect}&quot;</span>)
+              
+              <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">logged_in?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">has_permission_level?</span>( <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:perm_level</span>] )
+              <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_action</span>[<span class="ruby-identifier">:perm_level</span>].<span class="ruby-identifier">eql?</span>( <span class="ruby-constant">Member</span><span class="ruby-operator">::</span><span class="ruby-constant">STRANGER</span> )
+              
+              <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+                <span class="ruby-identifier">redirect</span>(<span class="ruby-value str">'/login'</span>)
+              <span class="ruby-keyword kw">else</span>
+                <span class="ruby-identifier">error_msg!</span>( <span class="ruby-value">200</span>, <span class="ruby-value str">&quot;Not logged in. Login first and try again.&quot;</span>  )
+              <span class="ruby-keyword kw">end</span>
+              
+            <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

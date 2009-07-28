@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>require_at_least_one_string! (Sequel::Model)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File models/init.rb, line 515</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">require_at_least_one_string!</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">raw_args</span> )
+
+    <span class="ruby-identifier">field_names</span>       = <span class="ruby-identifier">raw_args</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) }
+    <span class="ruby-identifier">default_error_msg</span> = <span class="ruby-identifier">raw_args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span>
+                           <span class="ruby-node">&quot;At least one of these is require: #{field_names.join(', ')}&quot;</span> <span class="ruby-operator">:</span>
+                           <span class="ruby-identifier">raw_args</span>.<span class="ruby-identifier">pop</span>
+
+    <span class="ruby-identifier">all_are_empty</span>  =  <span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">name</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">''</span>) }.<span class="ruby-identifier">size</span>
+
+    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>( <span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">default_error_msg</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">all_are_empty</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

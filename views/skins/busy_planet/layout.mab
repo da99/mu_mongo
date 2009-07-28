@@ -1,0 +1,79 @@
+xhtml_transitional {
+
+  head {
+    meta( :'http-equiv'=>"Content-Script-Type" , :content=>"text/javascript" )
+    meta( :'http-equiv'=>"Content-Style-Type"  , :content=>"text/css" )
+    meta( :'http-equiv'=>"Content-Language"    , :content=>"en-US" )
+
+    title( @title || @newspaper.title )
+
+    link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
+
+    link( :rel=>"stylesheet",   
+          :href=>"/css/#{@newspaper.css_layout_filename}/#{css_filename}?v=#{Time.now.to_i}", 
+          :media=>"screen", 
+          :type=>"text/css" )
+  } # head
+
+  body.the_body! {
+
+    if @loading
+      div.loading 'Loading...'
+    end
+
+    div.the_wrapper! {
+
+      # ================= the_headers ==================================
+      div.the_headers! {
+        
+        if @h1_and_h2
+          self << @h1_and_h2
+        end 
+        
+        if logged_in?
+          div.hello_member! {
+            span.hello 'Hello,'
+            span.usename current_member.username
+          }
+        end
+
+        # ================= nav_bar ====================================
+        ul.nav_bar! {
+        
+          @newspaper.sections.each { |section|
+            
+              selected       = request.fullpath =~ /^section\/#{@newspaper[:id]}\/#{section[:id]}?$/i
+              if selected
+                li.selected section.title 
+              else
+                li {
+                  a( section.title, :href=> section.a_href(:index) )
+                }
+              end
+
+          }
+          
+        } # ul.nav_bar!
+      } # the_headers
+
+      # ================= the_content ================================
+      div.the_content! {
+        the_content
+      }
+
+      # ================= the_footer ================================
+      div.the_footer! {
+        span @newspaper.copyright
+      } # the_footer
+      
+    
+    }  # the_wrapper
+    
+  } # the_body
+}
+
+
+ 
+
+
+

@@ -1,0 +1,83 @@
+@import layout.sass
+@import tabs.sass
+@import forms.sass
+@import nav_bar.sass
+
+
+#loading
+  display: block
+#the_wrapper
+  display: none
+  width: 790px
+  margin: 0 auto
+
+
+div.newspaper
+  +clearfix
+  background: #fff url("/css/jinx/title_bg.jpg") repeat-x
+    color = !title_bg
+  border: 1px solid #000
+    color = !text_box_border
+  padding: 10px
+  margin: 0 0 20px 0
+  div.intro
+    float: left
+    width: 350px
+    border: 1px solid #000
+      width: 0 1px 0 0
+      color = !text_box_border_green
+    div.title
+      font-weight: bold
+      padding: 0 10px 0 0
+      font-size = !extra_large_p_font_size
+    div.description
+      font-size = !p_font_size
+      padding: 0 10px 0 0
+    ul
+      +no-bullets
+      li
+        display: inline
+        padding: 0 10px 0 0
+        +link_font_size
+  div.summary
+    float: left
+    margin-left: -1px
+    border: 1px solid #000
+      width: 0 0 0 1px
+      color = !text_box_border_green
+    div.field, div.last_article_at, div.next_article_at, div.last_comment_at
+      padding: 0 10px
+    span.title
+      font-size = !nav_bar_font_size
+      font-weight: bold
+      text-transform: uppercase
+    span.datetime, span.field_value
+      font-size = !nav_bar_font_size
+    span.editable
+      font-size = !nav_bar_font_size
+    span.loading, span.field_value
+      text-transform: uppercase
+    span.error_msg
+      text-transform: uppercase
+      color = !red
+
+
+div.form_holder
+  padding: 20px
+  h3
+    border: 1px solid #000
+      width: 1px 0 0 0
+  form
+    fieldset.input_text input, fieldset textarea
+      width = ( 790 - 2 - 2 - 20 - 20 - 2) + "px"
+    fieldset textarea
+      height: 150px
+    div.buttons
+      text-align: left
+  form.update_password
+    margin-top: 20px
+
+#the_footer
+  +center_this_block
+
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>timezones (BusyConfig)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/busy_config.rb, line 332</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">timezones</span>
+    <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@us_zones</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@us_zones</span>
+    
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'tzinfo'</span>
+    <span class="ruby-identifier">countries</span> = [ [<span class="ruby-value str">'JP'</span>, <span class="ruby-value str">'Nippon'</span> ], [<span class="ruby-value str">'US'</span>, <span class="ruby-value str">'U.S.A.'</span>] , [<span class="ruby-value str">'CA'</span>, <span class="ruby-value str">'Canada'</span>], [<span class="ruby-value str">'GB'</span>, <span class="ruby-value str">'United Kingdom'</span>] , [<span class="ruby-value str">'IE'</span>, <span class="ruby-value str">'Ireland'</span>], [<span class="ruby-value str">'AU'</span>, <span class="ruby-value str">'Australia'</span>], [<span class="ruby-value str">'NZ'</span>, <span class="ruby-value str">'New Zealand'</span>] ]
+    
+    <span class="ruby-ivar">@us_zones</span> = {}
+    
+    <span class="ruby-identifier">countries</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+      <span class="ruby-ivar">@us_zones</span>[<span class="ruby-identifier">c</span>[<span class="ruby-value">1</span>]] = <span class="ruby-constant">TZInfo</span><span class="ruby-operator">::</span><span class="ruby-constant">Country</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">c</span>[<span class="ruby-value">0</span>]).<span class="ruby-identifier">zones</span>.<span class="ruby-identifier">sort</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">y</span>.<span class="ruby-identifier">current_period</span>.<span class="ruby-identifier">utc_total_offset</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">current_period</span>.<span class="ruby-identifier">utc_total_offset</span>}.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> 
+                                      <span class="ruby-identifier">num_sign</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">current_period</span>.<span class="ruby-identifier">utc_total_offset</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value str">'+'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">''</span>
+                                      [ <span class="ruby-identifier">t</span>.<span class="ruby-identifier">identifier</span>,  <span class="ruby-node">&quot;(GMT#{num_sign}#{t.current_period.utc_total_offset/60/60} Hrs.) #{t.name.split('/')[1,10].join('/').gsub('_', ' ')}&quot;</span> ]
+                                    }
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-ivar">@us_zones</span>[<span class="ruby-value str">'World'</span>] = [ [<span class="ruby-value str">'UTC'</span>, <span class="ruby-value str">'Universal Time (GMT)'</span>] ]
+    
+    <span class="ruby-ivar">@us_zones</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

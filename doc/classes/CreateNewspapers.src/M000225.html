@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>up (CreateNewspapers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File migrations/016_create_newspapers.rb, line 3</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">up</span>  
+    <span class="ruby-identifier">create_table</span>( <span class="ruby-identifier">:newspapers</span> ) {
+      <span class="ruby-comment cmt"># === Associations</span>
+      <span class="ruby-identifier">primary_key</span> <span class="ruby-identifier">:id</span>
+      <span class="ruby-identifier">foreign_key</span> <span class="ruby-identifier">:owner_id</span>, <span class="ruby-identifier">:members</span>
+            
+      <span class="ruby-comment cmt"># === Attributes</span>
+      <span class="ruby-identifier">boolean</span> <span class="ruby-identifier">:private</span>, <span class="ruby-identifier">:default=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">:null=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">false</span>
+      <span class="ruby-identifier">boolean</span> <span class="ruby-identifier">:trashed</span>, <span class="ruby-identifier">:default=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">false</span>
+      <span class="ruby-identifier">smallint</span> <span class="ruby-identifier">:layout_id</span>, <span class="ruby-identifier">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">smallint</span> <span class="ruby-identifier">:css_layout_id</span>, <span class="ruby-identifier">:default=</span><span class="ruby-operator">&gt;</span><span class="ruby-value">1</span>
+      <span class="ruby-identifier">varchar</span> <span class="ruby-identifier">:title</span>
+      <span class="ruby-identifier">text</span>    <span class="ruby-identifier">:description</span>
+      
+      <span class="ruby-comment cmt"># === Date Times</span>
+      <span class="ruby-identifier">timestamp</span>   <span class="ruby-identifier">:created_at</span>
+      <span class="ruby-identifier">timestamp</span>   <span class="ruby-identifier">:modified_at</span>, <span class="ruby-identifier">:null=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">true</span>
+            
+      <span class="ruby-comment cmt"># === Aggregate Statistics</span>
+      <span class="ruby-comment cmt"># None so far.  </span>
+    }
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

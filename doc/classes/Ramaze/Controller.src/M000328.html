@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>error (Ramaze::Controller)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File actions/init.old.rb, line 16</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">error</span>
+  
+    <span class="ruby-identifier">response</span>[<span class="ruby-value str">'Content-Type'</span>] = <span class="ruby-value str">'text/html'</span> <span class="ruby-comment cmt"># In case the controller changed it, like the CSSController.</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">development?</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">error_wo_customizations</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+
+      <span class="ruby-identifier">error</span> = <span class="ruby-constant">Ramaze</span><span class="ruby-operator">::</span><span class="ruby-constant">Dispatcher</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>.<span class="ruby-identifier">current</span>
+      <span class="ruby-identifier">title</span> = <span class="ruby-identifier">error</span>.<span class="ruby-identifier">message</span>
+
+      <span class="ruby-identifier">respond</span> <span class="ruby-node">%(
+        &lt;div class=&quot;error_msg&quot;&gt;
+          &lt;div class=&quot;title&quot;&gt;#{error.message}&lt;/div&gt;
+          &lt;div class=&quot;msg&quot;&gt;&lt;pre&gt;
+            #{PP.pp request, '', 200}
+            &lt;br /&gt;&lt;hr /&gt;&lt;br /&gt;
+            #{error.backtrace.join(&quot;\n            &quot;)}
+          &lt;/pre&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      )</span>.<span class="ruby-identifier">ui</span>
+      
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-constant">BusyConfig</span>.<span class="ruby-identifier">deliver_msg_to_support</span>(<span class="ruby-node">&quot;Exception: #{Ramaze::Dispatcher::Error.current.class.name}&quot;</span>, <span class="ruby-constant">Ramaze</span><span class="ruby-operator">::</span><span class="ruby-constant">Dispatcher</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>.<span class="ruby-identifier">current</span>, <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>)
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-value str">&quot;Bug has been found and Website Support has been contacted. Try again later when it is fixed.&quot;</span>, <span class="ruby-value">500</span>)
+    <span class="ruby-keyword kw">rescue</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-identifier">respond</span> <span class="ruby-constant">Pow!</span>(<span class="ruby-value str">'../public/500.html'</span>).<span class="ruby-identifier">read</span>
+    <span class="ruby-keyword kw">rescue</span>
+      <span class="ruby-identifier">respond</span> <span class="ruby-value str">%~
+        &lt;html&gt;
+          &lt;head&gt;
+            &lt;title&gt;Error Page&lt;/title&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+            Something went wrong. Check back later :(
+          &lt;/body&gt;
+        &lt;/html&gt;
+      ~</span>.<span class="ruby-identifier">unindent</span>
+    <span class="ruby-keyword kw">end</span>
+      
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

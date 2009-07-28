@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (CheckListItemController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File scraps/controller/check_list_item.rb, line 8</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>( <span class="ruby-identifier">check_list_id</span> = <span class="ruby-value">0</span>) <span class="ruby-comment cmt"># POST</span>
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-ivar">@check_list</span> = <span class="ruby-identifier">current_member</span>.<span class="ruby-identifier">check_lists_dataset</span>.<span class="ruby-identifier">first_or_raise</span>( <span class="ruby-identifier">:id=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">clean_room</span>[<span class="ruby-identifier">:id</span>] )
+      <span class="ruby-ivar">@item</span> = <span class="ruby-constant">CheckListItem</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-ivar">@item</span>.<span class="ruby-identifier">new_values_from_member</span>(<span class="ruby-identifier">clean_room</span>)
+      <span class="ruby-ivar">@check_list</span>.<span class="ruby-identifier">add_item</span>(<span class="ruby-ivar">@item</span>)
+      <span class="ruby-identifier">success_msg!</span>(<span class="ruby-ivar">@item</span>.<span class="ruby-identifier">success_msg</span>, <span class="ruby-identifier">:partial=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'__ajax_check_list_item'</span><span class="ruby-value str">'__ajax_check_list_item'</span>)
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">CheckList</span><span class="ruby-operator">::</span><span class="ruby-constant">NoRecordFound</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-value str">&quot;Check list not found. Contact support.&quot;</span>)
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">CheckListItem</span><span class="ruby-operator">::</span><span class="ruby-constant">Invalid</span>
+      <span class="ruby-identifier">error_msg!</span>(<span class="ruby-ivar">@item</span>.<span class="ruby-identifier">error_msg</span>)
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
