@@ -1,6 +1,7 @@
 html {
 	head {
-		title "Lista"
+	  meta( :name=>"verify-v1", :content=>"Blj1lh0s7UYhIw92PuNfg6EJzZOrUGSZ3Zj4G+GWOlg=" )
+		title "Coming Soon..."
 		style( :type=>"text/css" ) {
 		  %~
 		    div.intro {
@@ -38,93 +39,7 @@ html {
 	
 	body {
 		
-		div.intro {
-		  %~ 
-		  Mis favoritas.
-		  ~
-		}
+		p "A marketplace for predictions."
 		
-		div.revols {
-		  p 'Longevinex - (866) 405-4000'
-		  ul {
-		    li {
-		      a( :href=>"http://www.longevinexadvantage.com" ) { 'Longevinex Advantage' } 
-		      br
-		      span ' - Nueva formula.'
-		    }
-		  }
-		  
-		  p 'Life Span Nutrition - (800) 247-5731'
-		  ul {
-
-		    li {
-		      a( :href=>"http://www.lifespannutrition.com/products.asp?itemnumber=660" ) { "30 Minutes of Sunshine" }
-		      br 
-		      span ' - 3 botellas - $30 - Vitamin D3 with Magnesium Citrate.'
-		    }
-		    
-		    li {
-		      a( :href=>"http://www.lifespannutrition.com/products.asp?itemnumber=29") { "Forti-Flax" }
-		      br 
-		      span ' - $8 - polvo'
-		    }
-		    
-		    li {
-		      a( :href=>"http://www.lifespannutrition.com/products.asp?itemnumber=67") { "Perfect Multi Super Greens "}
-		      br 
-		      span ' - $33 - 120 pastillas '
-		    }
-		  }
-		  
-		  p {
-		    span 'Lucky Vitamin - 888-635-0474'
-		  }
-		  ul {
-		    li {
-		      a( :href=>"http://www.luckyvitamin.com/item/itemKey/69152" ) { 'Source Naturals Hyaluronic Joint Complex' }
-		      br 
-		      span ' - $15 - 60 pastillas - Osteo-arthritis knee pain (dolor de rodilla).'
-		    }		
-		    li {
-		      a( :href=>"http://www.luckyvitamin.com/item/itemKey/59157") { 'Super Omega-3 Carlson' }
-		      br 
-		      span ' - $13 - 130 pastillas'
-		    }  
-		    li {
-		      a(:href=>"http://www.luckyvitamin.com/item/itemKey/58713") { 'Brevail' } 
-		      br 
-		      span ' - $14 - 30 pastillas - (extracto de linaza)'
-		    }
-		    li {
-		      a(:href=>"http://www.luckyvitamin.com/item/itemKey/56415") { 'Forti-Flax' } 
-		      br 
-		      span ' - $6 - (polvo de linaza)'
-		    }
-		    li {
-		      a( :href=>"http://www.luckyvitamin.com/item/itemKey/67144") { 'Source Naturals IP-6' }
-		      br
-		      span ' - $10 - 90 pastillas - (Usa esto cuando tiene tumores. Estomago vacilo, con agua, no tome otra vitamina o comida hasta 2 horas antes y despues.)'
-		    }
-		  }
-		  
-		  p {
-		    span 'Books (Libros en Ingles)'
-		  }
-		  
-		  ul {
-		    li {
-		      a( :href=>"http://www.thecancerbook.com" ) { 'You Don\'t Have to Be Afraid of Cancer Anymore' }
-		      br
-		      span " - (El libro de cancer) - 500+ pages - (800) 247-5731"
-		    }
-		    li {
-		      a( :href=>"http://www.naturalhealthlibrarian.com/" ) { 'Natural Health Librarian' }
-		      br 
-		      span "E-books. (Libros digitales)"
-		    }		    
-		  }
-		  
-
-		} # div.revols
 	} # body
 } # html
