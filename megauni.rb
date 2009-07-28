@@ -8,14 +8,14 @@ require 'pow'
 
 configure do
 
-  Markaby::Builder.set(:indent, 2) 
+  # Markaby::Builder.set(:indent, 2) 
 
   error do
-    File.read( Pow!('public/error.html')  ) 
+    File.read( Pow('public/error.html')  ) 
   end 
 
   not_found do
-    File.read( Pow!('public/not_found.html' ) )
+    File.read( Pow('public/not_found.html' ) )
   end 
   
 end
@@ -23,9 +23,9 @@ end
 
 
 get '/' do
-  # "test is done"
+  
   mab  = Markaby::Builder.new( {} )
-  mab.instance_eval(  File.read( Pow!(  'views/index.mab' ) )  ).to_s
+  mab.instance_eval(  Pow(  'views/index.mab' ).read  ).to_s
 
 end
 
