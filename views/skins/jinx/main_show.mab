@@ -1,3 +1,4 @@
 save_to('title'){ "Coming Soon..." }
+img(:src=>"/logo.png")
+p "Coming Soon."
 
-p "A marketplace for predictions."
