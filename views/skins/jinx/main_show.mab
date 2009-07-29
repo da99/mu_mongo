@@ -1,4 +1,5 @@
 save_to('title'){ "Coming Soon..." }
 div( :id=>'logo') { "MEGA UNI" }
+p "Predictions tracker."
 p "Coming Soon."
 
