@@ -34,7 +34,7 @@ configure do
     #require Pow!( 'helpers/wash' )
     
     # === Set the environment.
-    require Pow!( 'secret_closet' )
+    # require Pow!( 'secret_closet' )
 
     # === Include models.
     #require Pow!('models/init')
