@@ -18,7 +18,7 @@ class LoginAttempt < Sequel::Model
   #                   INSTANCE METHODS
   # =========================================================
   
-  def find_validation_errors
+  def validate_new_values
     if self.total  >= MAX
         raise TooManyFailedAttempts, "#{self.total} login attemps for #{self.created_at}" 
     end

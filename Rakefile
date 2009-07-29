@@ -215,8 +215,8 @@ class #{m} < Sequel::Model
     super
   end # === def changes_from_editor
 
-  def find_validation_errors
-  end # === def find_validation_errors
+  def validate_new_values
+  end # === def validate_new_values
 
 end # === end #{m}
 EOF

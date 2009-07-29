@@ -56,8 +56,8 @@ class Member < Sequel::Model
     super
   end # === def
 
-  def find_validation_errors
-    true
+  def validate_new_values
+    
   end # === find_validation_errors 
   
 

@@ -1,12 +1,53 @@
-# =========================================================
-# Adds instance methods to Sequel::Model (:validate_it) and other methods to be
-# used in :find_validation_errors.
-# =========================================================
 module ValidateIt
+
+  
+  # =========================================================
+  #        Instance Methods that can be over-ridden
+  # =========================================================
+  
+  def columns_for_editor( params, editor )
+    []
+  end  
+  
+  def validate_create( *args )
+    validate_new_values(args.first)
+  end
+  
+  def validate_update( *args )
+    validate_new_values(args.first)
+  end
+   
   
   # =========================================================
   #              Instance: Validation Methods
   # =========================================================
+
+  def validate_action( action, raw_params, editor = nil)
+    
+    # Make sure editor can only edit certain columns.
+    params = {}
+    columns_for_editor(raw_params, editor).each { |col|
+      params[col] = raw_params[col]
+    }
+    
+    return if params.empty?
+    
+    # Validate new column values.
+    send( "validate_#{action}", params, editor )
+    
+    
+    # Were there any errors?.
+    raise Invalid  if !self.errors.empty?
+    
+    # Set new column values.
+    params.each { |k,v| 
+      send("#{k}=", Wash.plaintext(v)
+    } 
+    
+    # Save it.
+    save    
+    
+  end # === def alter_with_editor
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )

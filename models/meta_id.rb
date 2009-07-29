@@ -29,7 +29,7 @@ class MetaId < Sequel::Model
     super
   end # === def changes_from_editor
 
-  def find_validation_errors
+  def validate_new_values
   end # === def find_validation_errors
 
 end # === end MetaId
