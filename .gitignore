@@ -4,7 +4,7 @@ secret*
 
 # A few more files used only for development
 # and not important.
-doc
+doc/*
 coverage/*
 spec/coverage
 test/coverage
