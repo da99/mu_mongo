@@ -454,7 +454,7 @@ namespace :db do
 	task :migrate_up do
 		print_this "Migrating..."
 		require Pow!('secret_closet')
-		Sequel::Migrator.apply( SecretCloset.connect!, Pow!('migrations') )
+		Sequel::Migrator.apply( DB, Pow!('migrations') )
 		print_this "Done."		
 	end # === 
 
@@ -462,18 +462,16 @@ namespace :db do
 	desc "Delete all tables, migrate up, and create default data."
 	task :reset!  do
 	
-	    raise ArgumentError, "This task not allowed in :production" unless Pow!.to_s =~ /\/home\/da01/
-	    
-        print_this '', 'Setting up...'
+    raise ArgumentError, "This task not allowed in :production" unless Pow!.to_s =~ /\/home\/da01/
+
+    print_this '', 'Setting up...'
+    require 'sequel/extensions/migration' 
+    require Pow!('secret_closet')
+
+    print_this "Reseting database..."
+    Sequel::Migrator.apply( DB, Pow!('migrations'), 0 )
+    Rake::Task["db:migrate_up"].invoke
         
-        require 'sequel/extensions/migration' 
-        require Pow!('secret_closet')
-        
-	    print_this '', "Reseting database..."
-	    SecretCloset.connect!
-        Sequel::Migrator.apply( SecretCloset.connection, Pow!('migrations'), 0 )
-        Rake::Task["db:migrate_up"].invoke
-        print_this( "Finished resetting database.")
 	end # ===
 	
 end # ==== :namespace: db

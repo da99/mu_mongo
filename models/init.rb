@@ -158,11 +158,7 @@ class Sequel::Model
   #                      Functionality
   # =========================================================  
   
-  # include NormalizeData  
-  # include InitDefaultValues
-  # include EditorGuard
-  # include AncestorModels
-  # include TimestampIt
+  
   include ValidateIt
   include Trashable
   
