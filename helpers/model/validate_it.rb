@@ -4,23 +4,6 @@
 # =========================================================
 module ValidateIt
   
-  attr_accessor :error_msg
-  
-  def self.included(target)
-    target.before_validation {
-      find_validation_errors
-          
-      # === set error_msg
-      self.error_msg = begin
-          all_errors = self.errors.values.flatten
-          all_errors.size === 1 ?
-              all_errors.first  :
-              '* ' + all_errors.join("\n* ")   
-      end
-      true
-    }
-  end
-  
   # =========================================================
   #              Instance: Validation Methods
   # =========================================================

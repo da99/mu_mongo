@@ -81,6 +81,15 @@ module Sinatra
             # Template helpers.
             # ==================================================================
             
+            def array_to_string(arr)
+               
+                  all_errors = arr.flatten
+                  all_errors.size === 1 ?
+                      all_errors.first  :
+                      '* ' + all_errors.join("\n* ")   
+               
+            end
+            
             def skin_name
                 @skin_name ||= 'jinx'
             end
