@@ -1,13 +1,13 @@
-class CreateProjects < Sequel::Migration
+class CreateUsernames < Sequel::Migration
 
   def up  
-    create_table( :projects ) {
+    create_table( :usernames ) {
       # === Associations
       primary_key :id
       
       
       # === Attributes
-      
+      varchar :username, :size=>25, :unique=>true, :null=>false
       
       # === Date Times
       timestamp   :created_at
@@ -19,7 +19,7 @@ class CreateProjects < Sequel::Migration
   end
 
   def down
-    drop_table(:projects) if table_exists?(:projects)
+    drop_table(:usernames) if table_exists?(:usernames)
   end
 
-end # === end CreateProjects
+end # === end CreateUsernames

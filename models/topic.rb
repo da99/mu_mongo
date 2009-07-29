@@ -1,4 +1,4 @@
-class Tagging < Sequel::Model
+class Topic < Sequel::Model
 
   # ==== CONSTANTS =====================================================
   
@@ -32,4 +32,4 @@ class Tagging < Sequel::Model
   def find_validation_errors
   end # === def find_validation_errors
 
-end # === end Tagging
+end # === end Topic

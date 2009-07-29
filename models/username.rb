@@ -1,4 +1,4 @@
-class Project < Sequel::Model
+class Username < Sequel::Model
 
   # ==== CONSTANTS =====================================================
   
@@ -32,4 +32,4 @@ class Project < Sequel::Model
   def find_validation_errors
   end # === def find_validation_errors
 
-end # === end Project
+end # === end Username

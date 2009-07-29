@@ -1,4 +1,4 @@
-controller(:Project) do
+controller(:Topic) do
     
     show
     new
@@ -6,4 +6,4 @@ controller(:Project) do
     edit
     update
                           
-end # === class Project
+end # === class Topic

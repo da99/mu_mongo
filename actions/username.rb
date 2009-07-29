@@ -1,4 +1,4 @@
-controller(:ExamChoice) do
+controller(:Username) do
     
     show
     new
@@ -6,4 +6,4 @@ controller(:ExamChoice) do
     edit
     update
                           
-end # === class ExamChoice
+end # === class Username

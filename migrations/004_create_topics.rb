@@ -1,13 +1,14 @@
-class CreatePermissions < Sequel::Migration
+class CreateTopics < Sequel::Migration
 
   def up  
-    create_table( :permissions ) {
+    create_table( :topics ) {
       # === Associations
       primary_key :id
       
       
       # === Attributes
-      
+      smallint :parent_topic, :null=>false, :default=>0
+      varchar :title, :null=>false
       
       # === Date Times
       timestamp   :created_at
@@ -19,7 +20,7 @@ class CreatePermissions < Sequel::Migration
   end
 
   def down
-    drop_table(:permissions) if table_exists?(:permissions)
+    drop_table(:topics) if table_exists?(:topics)
   end
 
-end # === end CreatePermissions
+end # === end CreateTopics

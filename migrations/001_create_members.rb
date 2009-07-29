@@ -5,16 +5,16 @@ class CreateMembers < Sequel::Migration
     
       # === Attributes
       primary_key :id
-      varchar :username, :size=>30, :unique=>true, :null=>false
-      varchar :email, :size=>100
+      
+      # varchar :email, :size=>100
       varchar :hashed_password, :size=>255
       varchar :salt, :size=>255
       
-      smallint :karma_good_total, :null=>false, :default=>0
-      smallint :karma_bad_total, :null=>false, :default=>0
-      smallint :spam_total, :null=>false, :default=>0
-      smallint :scam_total, :null=>false, :default=>0
-      boolean :verified, :null=>false, :default=>false
+      # smallint :karma_good_total, :null=>false, :default=>0
+      # smallint :karma_bad_total, :null=>false, :default=>0
+      # smallint :spam_total, :null=>false, :default=>0
+      # smallint :scam_total, :null=>false, :default=>0
+      # boolean :verified, :null=>false, :default=>false
 
       # === Date Times
       timestamp :created_at, :null=>false
