@@ -13,23 +13,21 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
 
 #busy_body {
   text-align: center;
-  background-color: #a2d3e0;
-  background-image: url("/eggs/images/logo_bg.gif");
-  background-repeat: repeat-x; }
+  background: #C9E6FF url('/eggs/images/logo_bg.gif') repeat-x;
+  
+  }
 
 #content {
   margin: 0 auto;
   text-align: left;
   width: 790px;
-  background-image: url("/eggs/images/spotlights.gif");
-  background-repeat: no-repeat;
-  background-position: 0 51px; }
+   }
 
 #current_time {
   overflow: hidden;
   width: 263px;
   height: 70px;
-  position: absolute;
+  float: right;
   text-align: center;
   background-image: url("/eggs/images/current_time_bg.gif");
   background-repeat: no-repeat;
@@ -51,15 +49,12 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
       font-size: 16px; }
 
 h1 {
-  height: 91px;
-  width: 100%;
-  overflow: hidden;
-  text-indent: -200px;
-  background-image: url("/eggs/images/logo.gif");
-  background-repeat: no-repeat;
-  background-position: 567px 0;
-  font-size: 10px;
-  font-family: sans-serif; }
+  height: 80px;
+  color: #F00919; 
+  font-size: 28px;
+  font-weight: bold;
+  font-family: courier, helvetica, arial, sans-serif;
+   }
 
 h2 {
   display: none; }

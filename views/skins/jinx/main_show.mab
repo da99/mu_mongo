@@ -1,5 +1,9 @@
 save_to('title'){ "Coming Soon..." }
 div( :id=>'logo') { "MEGA UNI" }
-p "Predictions tracker."
+
 p "Coming Soon."
+p {
+  span "In the meanwhile, here is a little app:"
+  a(:href=>"/eggs/") { "Timer + Alarm"}
+}  
 
