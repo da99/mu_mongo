@@ -78,10 +78,10 @@ controller(:Main) {
 
 
 controller(:Egg) {
-  get(:redirect_to_eggs_slash, '/egg/?s?', :STRANGER ) {
-    redirect( '/eggs/' )
-  }
-  get(:show, '/eggs/', :STRANGER ) {
+  get(:redirect_to_timer_slash, '/timer', :STRANGER ) {
+    redirect( '/timer/' )
+  } 
+  get(:show, '/timer/', :STRANGER ) {
     Pow("public/eggs/index.html").read
   }  
 }
