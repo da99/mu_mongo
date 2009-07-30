@@ -71,11 +71,15 @@ controller(:Main) {
     get( :reset_everything, '/reset', :STRANGER) {
         TemplateCache.reset
         CSSCache.reset
-        redirect '/'
+        redirect( env['HTTP_REFERER'] || '/' )
     }
     
 }
 
+
+controller(:Egg) {
+  get(:show, '/egg', :STRANGER )
+}
 
 
 
