@@ -1,9 +1,16 @@
 save_to('title'){ "Coming Soon..." }
 div( :id=>'logo') { "MEGA UNI" }
 
-p "Coming Soon."
-p {
-  span "In the meanwhile, here is a little app: "
-  a(:href=>"/timer/") { "Timer + Alarm"}
-}  
+div( :id=> 'timeline' ) {
+
+  p "Coming Soon."
+  
+  ul {
+    li {
+      span 'In the meanwhile: '
+      a(:href=>"/timer/") { "Timer + Alarm"}
+    }
+  }
+
+}
 

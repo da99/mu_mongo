@@ -27,6 +27,7 @@ set :site_keywords  , 'predict the future'
 set :site_domain    , 'megauni.com'
 set :site_url       , "http://www.#{Sinatra::Application.site_domain}/"
 set :site_support_email ,  "helpme@#{Sinatra::Application.site_domain}"
+set :cache_the_templates, !Sinatra::Application.development?
 
 configure do
 

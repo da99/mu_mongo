@@ -129,7 +129,11 @@ module Sinatra
             end
             
             def template_file_content
-                TemplateCache.cache[ template_file_path ] ||= File.read( template_file_path )
+                if self.options.cache_the_templates
+                  TemplateCache.cache[ template_file_path ] ||= File.read( template_file_path )
+                else
+                  File.read( template_file_path )
+                end
             end
             
             def layout_file_path
