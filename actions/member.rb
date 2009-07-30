@@ -2,10 +2,10 @@ controller( :Member ) do
 
     # ============================= STRANGERS =========================================
     
-    get( :new,  "/signup", Member::STRANGER ) 
+    get( :new,  "/sign-up", :STRANGER ) 
 
     
-    post( :create,  "/member", Member::STRANGER  ) do
+    post( :create,  "/member", :STRANGER  ) do
         old_clean = clean_room
         session.clear 
         
@@ -24,7 +24,7 @@ controller( :Member ) do
           flash( :username,  clean_room['username'] )
           flash( :email,  clean_room['email'] )
                    
-          redirect('/signup', :status => 302)
+          redirect('/sign-up', :status => 302)
         end
         
     end # == post :create
@@ -33,13 +33,13 @@ controller( :Member ) do
     # =========================== MEMBER ONLY ==========================================
     
     # Show account and HTML pages on same view.
-    get( :show, "/admin", Member::MEMBER ) do
+    get( :show, "/admin", :MEMBER ) do
       @slice_locations = []
       render_mab
     end # == get :show
     
           
-    put( :update, "/member",  Member::MEMBER)  do
+    put( :update, "/member",  :MEMBER)  do
         current_member.changes_from_editor( clean_room, current_member )
         begin
             current_member.save
@@ -50,7 +50,7 @@ controller( :Member ) do
     end # === put :update
 
 
-    put( :trash, "/trash", Member::MEMBER )  do
+    put( :trash, "/trash", :MEMBER )  do
         current_member.trash_it!
         flash( :success_msg,  "Your account has been trashed." )
     end # === put :trash

@@ -14,3 +14,16 @@ div( :id=> 'timeline' ) {
 
 }
 
+
+if options.development?
+
+  ul {
+    li {
+      a(:href=>"/sign-up/") { 'sign-up' }
+    }
+    li {
+      a(:href=>"/log-in/") { 'login' }
+    }    
+  }
+
+end

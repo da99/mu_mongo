@@ -34,7 +34,7 @@ div.nav_bar! {
     else 
       li.login { a('Login', :href=>'/login') }
       li.bugs { a('Bugs', :href=>'/1') }
-      li.signup { a('Create Account', :href=>'/signup') }
+      li.signup { a('Create Account', :href=>'/sign-up') }
     end
 
   } # ul.nav_bar!

@@ -1,4 +1,4 @@
-save_to('title') { 'Signup' }
+save_to('title') { 'Sign-up' }
 
 div.nav_bar! {
   h2 'Create New Account'
@@ -42,7 +42,7 @@ div.form_holder.signup_form_holder! {
     }
 
     div.buttons {
-      a( 'Signup', :href=>"#signup", :onclick=>"document.getElementById('signup_form').submit(); return false;" )                   
+      a( 'Sign-up', :href=>"#sign-up", :onclick=>"document.getElementById('signup_form').submit(); return false;" )                   
     }
 
   } # form.signup_form!

@@ -79,13 +79,15 @@ controller(:Main) {
 
 
 controller(:Egg) {
-  get(:redirect_to_timer_slash, '/timer', :STRANGER ) {
-    redirect( '/timer/' )
+  get(:redirect_to_timer_slash, '/timer/', :STRANGER ) {
+    redirect( '/timer' )
   } 
-  get(:show, '/timer/', :STRANGER ) {
+  get(:show, '/timer', :STRANGER ) {
     Pow("public/eggs/index.html").read
   }  
 }
 
+
+require Pow('actions/member')
 
 

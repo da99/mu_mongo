@@ -26,14 +26,14 @@ module Sinatra
                 end         
                 
                 # require_url_with_www!
-                  missing_www = request.local_net? ?
-                                false :
-                                request.env['HTTP_HOST'] !~ /^www\./i
-                                    
-                  url_with_www = "http://www.#{request.env['HTTP_HOST']}#{request.env['REQUEST_URI']}"  
-                  if missing_www                
-                      redirect( url_with_www, 301) 
-                  end            
+                  #missing_www = request.local_net? ?
+                  #              false :
+                  #              request.env['HTTP_HOST'] !~ /^www\./i
+                  #                  
+                  #url_with_www = "http://www.#{request.env['HTTP_HOST']}#{request.env['REQUEST_URI']}"  
+                  #if missing_www                
+                  ##    redirect( url_with_www, 301) 
+                  #end            
                   
                 # url must not be blank
                 if test? && request.env['REQUEST_URI'].to_s.strip.length.zero? 

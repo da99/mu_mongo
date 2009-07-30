@@ -8,6 +8,7 @@ doc/*
 coverage/*
 spec/coverage
 test/coverage
+.sass-cache/*
 
 
 # Ignore these files too.
