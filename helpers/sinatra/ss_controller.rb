@@ -11,14 +11,14 @@ end
 
 module Sinatra
 
-    module TheSSController
+    module SSController
     
         def self.registered( app )
             app.helpers Helpers
         end
         
         def controller( raw_controller_name, &new_actions)
-            new_controller = SSController.new(raw_controller_name, &new_actions)
+            new_controller = SSControllerBase.new(raw_controller_name, &new_actions)
         end # === controller   
         
         module Helpers
@@ -27,11 +27,11 @@ module Sinatra
         
     end # === module SSController
     
-    register TheSSController
+    register SSController
 
 end # === module SSController
 
-class SSController
+class SSControllerBase
 
     class << self
         def controllers
@@ -45,7 +45,7 @@ class SSController
     def initialize(raw_controller_name, &new_actions)
         controller_name = raw_controller_name.to_s.strip.to_sym
         # Check if controller was made before.
-        if SSController.controllers.keys.include?(controller_name)
+        if SSControllerBase.controllers.keys.include?(controller_name)
             raise "CONTROLLER ALREADY TAKEN: #{controller_name}" 
         end    
         @controller_name = controller_name
@@ -68,6 +68,7 @@ class SSController
                 #{ old_proc ? "#{old_proc.to_ruby}.call(*args)" : "render_mab" }
             end
         ~
+
         eval( new_code , self.original_scope )
     end
 
@@ -150,7 +151,7 @@ class SSController
         }
         
         # Send new props.
-        SSController.controllers[controller_name][new_action_name] = {  :action => new_action_name, 
+        SSControllerBase.controllers[controller_name][new_action_name] = {  :action => new_action_name, 
             :path=>path, 
             :http_verb=>http_verb, 
             :perm_level=>perm_level,

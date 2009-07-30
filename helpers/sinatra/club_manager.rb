@@ -1,8 +1,3 @@
-require 'ruby2ruby'
-require 'parse_tree'
-require 'parse_tree_extensions'
-
-require 'sequel'
 require 'sequel/extensions/inflector'
 
 # ============= Include lib files.
@@ -17,29 +12,7 @@ module Sinatra
         def self.registered(app)
             app.helpers Helpers    
             app.set :valid_resource_actions, [:view, :index, :show, :create, :list, :edit, :update, :trash, :untrash]
-            app.before {
-          
-            
-                # Chop off trailing slash.
-                if request.get? && request.path_info.size > 2 && request.path_info[ request.path_info.size - 1 , 1] == '/' 
-                    redirect( request.path_info.sub(/\/$/, '' ) , 301 ) # Permanent redirect.
-                end         
-                
-                # require_url_with_www!
-                  #missing_www = request.local_net? ?
-                  #              false :
-                  #              request.env['HTTP_HOST'] !~ /^www\./i
-                  #                  
-                  #url_with_www = "http://www.#{request.env['HTTP_HOST']}#{request.env['REQUEST_URI']}"  
-                  #if missing_www                
-                  ##    redirect( url_with_www, 301) 
-                  #end            
-                  
-                # url must not be blank
-                if test? && request.env['REQUEST_URI'].to_s.strip.length.zero? 
-                    raise ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank." 
-                end
-            } # === before                    
+                             
         end 
         
         module Helpers # ===============================   
@@ -95,7 +68,7 @@ module Sinatra
             end # === integerize_splat_or_captures
             
             def dev_log_it( msg )
-                puts(msg) if development?
+                puts(msg) if options.development?
             end                    
             
             # === Member related helpers ========================
@@ -117,7 +90,7 @@ module Sinatra
             end # === def
             
             def check_creditials!
-              # return true if Ramaze::Action.current.method.to_s.eql?('error')
+              
               dev_log_it("CREDITIAL CHECK >>> #{current_action[:controller].inspect} #{current_action[:action].inspect}")
               
               return true if logged_in? && current_member.has_permission_level?( current_action[:perm_level] )
@@ -134,16 +107,25 @@ module Sinatra
             
             
             # === Action related helpers. ===========================
-                            
+               def current_action
+                    @current_action_props
+               end 
+                           
+               def describe(c_name, a_name, level)
+                @current_action_props = {  :action => a_name, 
+                                  :path=>request.path_info, 
+                                  :http_verb=>request.request_method, 
+                                  :perm_level=>level,
+                                  :controller =>c_name }
+                check_creditials!
+               end      
             
                def  describe_action( props )
                     @current_action_props = props
                     check_creditials!
                end
                 
-               def current_action
-                    @current_action_props
-               end    
+   
             
         end # === module: Helpers
 

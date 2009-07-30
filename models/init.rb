@@ -79,7 +79,7 @@ module ValidateIt
     
     # Set new column values.
     params.each { |k,v| 
-      send("#{k}=", Wash.plaintext(v)
+      send("#{k}=", Wash.plaintext(v))
     } 
     
     # Save it.
@@ -195,6 +195,6 @@ class Sequel::Model
  
 end # === model: Sequel::Model -------------------------------------------------
 
-
+require Pow( 'secret_closet' )
 
 

@@ -50,7 +50,7 @@ module Sinatra
                 record = Object.const_get(controller_name).new
             end
             
-            action_props = SSController.controllers[controller_name][action_name]
+            action_props = SSControllerBase.controllers[controller_name][action_name]
             if !action_props
                 raise "UNKNOWN PROPS FOR ACTION: #{controller_name.inspect} #{action_name.inspect}"
             end

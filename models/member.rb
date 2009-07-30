@@ -3,10 +3,10 @@
 # ==================================================
 class Member < Sequel::Model
   
-  include MemberAuthAuth
-  include MemberEmail
-  include MemberPassword
-  include MemberUsername
+  # include MemberAuthAuth
+  #include MemberEmail
+  #include MemberPassword
+  #include MemberUsername
   
   # =========================================================
   #                   ASSOCIATIONS

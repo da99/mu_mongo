@@ -1,4 +1,4 @@
-require Pow!("ss_controller") if !Object.const_defined?(:SSController)
+require Pow!("ss_controller") if !Object.const_defined?(:SSControllerBase)
 
 # ==============================================
 # index       GET /posts        
@@ -134,7 +134,7 @@ end # === Sinatra
  # ================================================================
 
 
-class SSController
+class SSControllerBase
 
     def show(*args, &old_proc)
       new_action_name, path, perm_level =  args
@@ -289,7 +289,7 @@ class SSController
         props
     end
     
-end # === SSController
+end # === SSControllerBase
 
 
 __END__

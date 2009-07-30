@@ -66,13 +66,14 @@ class Markaby::Builder
   
 end # === class Markaby::Builder
         
-Markaby::Builder.set(:indent, 2)  if !production?
+
 
 module Sinatra
-    module RenderMarkaby
+    module RenderMab
         
         def self.registered(app)
-            app.helpers RenderMarkaby::Helpers
+            app.helpers RenderMab::Helpers
+            Markaby::Builder.set(:indent, 2)  if !app.production?
         end
         
         module Helpers
@@ -214,8 +215,8 @@ module Sinatra
               
             end # === render_mab           
         end # === module: Helpers
-    end # === module: RenderMarkaby
+    end # === module: RenderMab
     
-    register RenderMarkaby
+    register RenderMab
 
 end # === module: Sinatra

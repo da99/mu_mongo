@@ -7,16 +7,14 @@ module Sinatra
         
         def self.registered(app)        
             app.helpers Helpers
-        end  # === def
-        
-        def setup_flash
-            before {
+            app.before {
                 if session[:flash_hash]
                     @flash_cache = session[:flash_hash]
                     session[:flash_hash] = nil
                 end
-            }        
-        end
+            }
+        end  # === def
+        
     
         module Helpers
         
@@ -69,4 +67,4 @@ module Sinatra
 
 end # === Sinatra
 
-setup_flash
+
