@@ -3,7 +3,7 @@ div( :id=>'logo') { "MEGA UNI" }
 
 p "Coming Soon."
 p {
-  span "In the meanwhile, here is a little app:"
-  a(:href=>"/eggs/") { "Timer + Alarm"}
+  span "In the meanwhile, here is a little app: "
+  a(:href=>"/timer/") { "Timer + Alarm"}
 }  
 
