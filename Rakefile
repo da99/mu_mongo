@@ -129,6 +129,7 @@ namespace :git do
       q.gather = 'commit'
     }
     results = `git commit -m '#{new_comment.join("\n").gsub("'", "\\\\'")}'`
+    print_this ''
     print_this results
   end
   
@@ -136,6 +137,7 @@ namespace :git do
   task :minor_commit do
     Rake::Task['git:update'].invoke
     commit_results = `git commit -m "Development checkpoint."`
+    print_this ''
     print_this commit_results
   end
 
