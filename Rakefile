@@ -134,7 +134,7 @@ namespace :git do
   end
   
   desc "Used to update and commit development checkpoint. Includes the commit comment for you."
-  task :minor_commit do
+  task :dev_check do
     Rake::Task['git:update'].invoke
     commit_results = `git commit -m "Development checkpoint."`
     print_this ''
