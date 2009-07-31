@@ -124,11 +124,19 @@ namespace :git do
 
   desc "Gathers comment and commits it using: git commit -m '[your input]' "
   task :commit do
+    Rake::Task['git:update'].invoke
     new_comment = ask('Enter comment (type "commit" to end it):') { |q|
       q.gather = 'commit'
     }
     results = `git commit -m '#{new_comment.join("\n").gsub("'", "\\\\'")}'`
     print_this results
+  end
+  
+  desc "Used to update and commit development checkpoint. Includes the commit comment for you."
+  task :minor_commit do
+    Rake::Task['git:update'].invoke
+    commit_results = `git commit -m "Development checkpoint."`
+    print_this commit_results
   end
 
 end # ==== namespace :git
