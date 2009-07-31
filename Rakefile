@@ -513,7 +513,7 @@ namespace :maintain do
   task :start do
     
     maintain_file = Pow('helpers/maintain.rb')
-    raise "File not found: #{helper_dir}" if !maintain_file.exists?
+    raise "File not found: #{maintain_file}" if !maintain_file.exists?
     
     # Copy file to helpers/sinatra
     maintain_file.move_to( Pow('helpers/sinatra/maintain.rb'))
@@ -521,10 +521,10 @@ namespace :maintain do
     # add_then_commit_and_push 
     Rake::Task['git:update'].invoke
     
-    commit_results = 'git commit -m "Added temporary maintainence page." 2>&1'
+    commit_results = `git commit -m "Added temporary maintainence page." 2>&1`
     print_this commit_results
     
-    push_results = 'git push heroku master  2>&1'
+    push_results = `git push heroku master  2>&1`
     print_this push_results
     
   end # === task :start
@@ -540,10 +540,10 @@ namespace :maintain do
     # add_then_commit_and_push 
     Rake::Task['git:update'].invoke
     
-    commit_results = 'git commit -m "Removed temporary maintainence page." 2>&1'
+    commit_results = `git commit -m "Removed temporary maintainence page." 2>&1`
     print_this commit_results
     
-    push_results = 'git push heroku master  2>&1'
+    push_results = `git push heroku master  2>&1`
     print_this push_results
     
   end # === task :over

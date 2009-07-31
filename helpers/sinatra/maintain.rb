@@ -58,7 +58,7 @@ before {
                 var right_now = (new Date()).getTime();
                 if( parseInt(ends - right_now) < 1 ) {
                   clearInterval(timer_id);  
-                  ele.innerHTML = 'Ok. This page is going to automatically reload...';
+                  ele.innerHTML = 'Reloading...';
                   try_again();
                 } else {
                   ele.innerHTML = parseInt((ends - right_now)/1000) + '';
