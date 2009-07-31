@@ -22,7 +22,7 @@ if options.development?
       a(:href=>"/sign-up/") { 'sign-up' }
     }
     li {
-      a(:href=>"/log-in/") { 'login' }
+      a(:href=>"/log-in/") { 'log-in' }
     }    
   }
 

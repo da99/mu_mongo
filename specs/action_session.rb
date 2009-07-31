@@ -2,8 +2,8 @@ require 'specs/start_test'
 
 describe 'Login (session new)' do
 
-    it_renders_ok_on "/login"
-    it_has_assets( "/login", :css )
+    it_renders_ok_on "/log-in"
+    it_has_assets( "/log-in", :css )
     
 end # === describe
 

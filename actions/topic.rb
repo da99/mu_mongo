@@ -1,9 +1,6 @@
-controller(:Topic) do
-    
-    show
-    new
-    create
-    edit
-    update
-                          
-end # === class Topic
+set :topic_actions, [ :show, 
+                      :new, 
+                      :create, 
+                      :edit, 
+                      :update ]
+

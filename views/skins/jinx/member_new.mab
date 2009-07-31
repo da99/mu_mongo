@@ -4,7 +4,7 @@ div.nav_bar! {
   h2 'Create New Account'
   ul {
     li { a('Home', :href=>'/') } 
-    li { a('Login', :href=>'/login') }
+    li { a('Log-in', :href=>'/log-in') }
   } # ul
 } # div.the_header!
 

@@ -32,7 +32,7 @@ div.nav_bar! {
       li.bugs { a('Bugs', :href=>'/1') }
       li.logout { a('Logout', :href=>'/logout')  }
     else 
-      li.login { a('Login', :href=>'/login') }
+      li.login { a('Log-in', :href=>'/log-in') }
       li.bugs { a('Bugs', :href=>'/1') }
       li.signup { a('Create Account', :href=>'/sign-up') }
     end

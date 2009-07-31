@@ -1,7 +1,4 @@
-controller(:Work) do
-
-    get( :show, "/my-work", Member::MEMBER ) do
-        render_mab
-    end # === show
-
-end  # === Admin_Roadie
+get "/my-work" do
+  describe :work, :show, :MEMBER
+  render_mab
+end

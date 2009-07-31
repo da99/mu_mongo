@@ -374,15 +374,11 @@ namespace :controller do # =====================================================
     raise ArgumentError, "File: #{file_path} already exists." if File.exists?(file_path )
 
     txt = <<-EOF
-controller(:#{m}) do
-    
-    show
-    new
-    create
-    edit
-    update
-                          
-end # === class #{m}
+set :#{m}_actions, [ :show,
+                     :new,
+                     :create,
+                     :edit,
+                     :update ]
     
 EOF
     write_this_file(file_path, txt)

@@ -1,9 +1,6 @@
-controller(:Username) do
-    
-    show
-    new
-    create
-    edit
-    update
-                          
-end # === class Username
+set :username_actions, [ :show,
+                          :new,
+                          :create,
+                          :edit,
+                          :update ]
+                      

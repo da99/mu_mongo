@@ -89,7 +89,7 @@ helpers do # ===============================
       
       if request.get?
         session[:desired_uri] = request.env['REQUEST_URI']
-        redirect('/login')
+        redirect('/log-in')
       else
         render_error_msg( 200, "Not logged in. Login first and try again."  )
       end

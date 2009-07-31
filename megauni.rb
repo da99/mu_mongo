@@ -26,7 +26,7 @@ set :site_keywords  , 'predict the future'
 set :site_domain    , 'megauni.com'
 set :site_url       , Proc.new { "http://www.#{options.site_domain}/" }
 set :site_support_email ,  Proc.new { "helpme@#{options.site_domain}" }
-set :cache_the_templates, Proc.new { !options.development? }
+set :cache_the_templates, Proc.new { !development? }
   
 
 
