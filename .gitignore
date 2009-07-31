@@ -9,7 +9,7 @@ coverage/*
 spec/coverage
 test/coverage
 .sass-cache/*
-
+views/skins/jinx/sass/.sass-cache/*
 
 # Ignore these files too.
 tmp/*

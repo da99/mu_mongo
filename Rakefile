@@ -558,8 +558,8 @@ end # === namespace :maintain
 
 namespace :css do
   task :compile do
-    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass/ --css-dir public/css/ `
-    print_thiss results
+    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/css/jinx -s compressed`
+    print_this results
   end
 end
 
