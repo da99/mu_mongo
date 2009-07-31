@@ -125,8 +125,8 @@ namespace :git do
   desc "Gathers comment and commits it using: git commit -m '[your input]' "
   task :commit do
     Rake::Task['git:update'].invoke
-    new_comment = ask('Enter comment (type "commit" to end it):') { |q|
-      q.gather = 'commit'
+    new_comment = ask('Enter comment (type "E" to end it):') { |q|
+      q.gather = 'E'
     }
     results = `git commit -m '#{new_comment.join("\n").gsub("'", "\\\\'")}'`
     print_this ''
