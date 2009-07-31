@@ -554,6 +554,26 @@ namespace :maintain do
     
   end # === task :over
   
+end # === namespace :maintain
+
+namespace :css do
+  task :compile do
+    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass/ --css-dir public/css/ `
+    print_thiss results
+  end
+end
+
+namespace :run do
+
+  task :dev do
+    Rake::Task['css:compile'].invoke
+    exec "DATABASE_URL='postgres://da01:xd19yzxkrp10@localhost/newsprint-db' thin start --rackup config.ru -p 4567"
+  end
+  
+  task :tests do
+    exec 'postgres://da01:xd19yzxkrp10@localhost/newsprint-db-test'
+  end
+
 end
 
 class MyHelper

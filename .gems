@@ -1,8 +1,7 @@
 sequel
 postgres
 pow
-ruby2ruby
-ParseTree
 markaby
-haml
-
+mattetti-multibyte
+rgrove-sanitize
+htmlentities

@@ -1,65 +1,69 @@
-module Sinatra
-  module MemberActions 
-    def self.registered(app)
-      app.controller( :Member ) do
-
-          # ============================= STRANGERS =========================================
+# ============================= STRANGERS =========================================
           
-          get( :new,  "/sign-up", :STRANGER ) 
+get( "/sign\-?up" ) do
+  describe :member, :new
+  render_mab
+end
 
           
-          post( :create,  "/member", :STRANGER  ) do
-              old_clean = clean_room
-              session.clear 
-              
-              begin
-                m = Member.new
-                m.changes_from_editor( clean_room )
-                m.save  
-                                  
-                flash( :success_msg,  "Your account has been created." )
-                session[:member_username] = m.username
-                redirect('/admin')
-                
-              rescue Sequel::ValidationFailed
-                session.clear
-                flash( :error_msg, m.error_msg )
-                flash( :username,  clean_room['username'] )
-                flash( :email,  clean_room['email'] )
-                         
-                redirect('/sign-up', :status => 302)
-              end
-              
-          end # == post :create
-          
-          
-          # =========================== MEMBER ONLY ==========================================
-          
-          # Show account and HTML pages on same view.
-          get( :show, "/admin", :MEMBER ) do
-            @slice_locations = []
-            render_mab
-          end # == get :show
-          
-                
-          put( :update, "/member",  :MEMBER)  do
-              current_member.changes_from_editor( clean_room, current_member )
-              begin
-                  current_member.save
-                  render_success_msg( "Your account has been updated." )
-              rescue Sequel::ValidationFailed
-                  render_error_msg( current_member.error_msg )
-              end
-          end # === put :update
+post( "/member" ) do
+  
+  old_clean = clean_room
+  session.clear 
+  
+  begin
+    m = Member.new
+    m.changes_from_editor( clean_room )
+    m.save  
+                      
+    flash( :success_msg,  "Your account has been created." )
+    session[:member_username] = m.username
+    redirect('/admin')
+    
+  rescue Sequel::ValidationFailed
+    session.clear
+    flash( :error_msg, m.error_msg )
+    flash( :username,  clean_room['username'] )
+    flash( :email,  clean_room['email'] )
+             
+    redirect('/sign-up', :status => 302)
+  end
+    
+end # == post :create
 
 
-          put( :trash, "/trash", :MEMBER )  do
-              current_member.trash_it!
-              flash( :success_msg,  "Your account has been trashed." )
-          end # === put :trash
+# =========================== MEMBER ONLY ==========================================
+
+# Show account and HTML pages on same view.
+get( "/admin" ) do
+  protected_for( :MEMBER, :member, :show ) {
+    @slice_locations = []
+    render_mab
+  }
+end # == get :show
+
+      
+put( "/member" )  do
+  protected_for( :MEMBER, :member, :update ) {
+    current_member.changes_from_editor( clean_room, current_member )
+    begin
+        current_member.save
+        render_success_msg( "Your account has been updated." )
+    rescue Sequel::ValidationFailed
+        render_error_msg( current_member.error_msg )
+    end
+  }
+end # === put :update
 
 
-      end # === class Member
-    end # === def self.registered
-  end # === module MemberActions
-end # === module Sinatra
+put( "/trash" )  do
+  protected_for( :MEMBER, :member, :trash ) {
+    current_member.trash_it!
+    flash( :success_msg,  "Your account has been trashed." )
+  }
+end # === put :trash
+
+
+
+
+

@@ -1,5 +1,5 @@
-get "/log-in" do
-  describe :session, :new, :STRANGER
+get "/log\-?in" do
+  describe :session, :new
   render_mab
 end
 
@@ -9,7 +9,7 @@ get "/log-out" do
   redirect('/')
 end
 
-post( "/log-in",   ) do
+post( "/log-in"  ) do
 
     # Before clearing session, get the most recent URL from the stack.
     target_url = session[:desired_uri] || '/admin' 

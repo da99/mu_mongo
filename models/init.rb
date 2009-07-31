@@ -195,6 +195,30 @@ class Sequel::Model
  
 end # === model: Sequel::Model -------------------------------------------------
 
-require Pow( 'secret_closet' )
+
+
+DB = begin
+        env ||= Object.const_defined?(:Sinatra) ?
+                        Sinatra::Application.environment :
+                        :development;
+        case env
+
+          when :production
+              Sequel.connect ENV['DATABASE_URL']
+
+          when :development, :test
+              # === Setup logger
+              require 'logger'  
+              new_file = Pow( File.expand_path('~/sequel_log.txt') )
+              new_file.delete if new_file.file?
+              new_logger = {:loggers=> [ Logger.new(new_file) ]}
+              
+              # Finally...
+              Sequel.connect( ENV['DATABASE_URL']  ,  new_logger )
+
+          else
+            raise ArgumentError, "#{env.inspect} - is not a valid environment for database connection."
+        end
+end # === SecretCloset
 
 

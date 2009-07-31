@@ -1,6 +1,7 @@
-require 'sass'
+
 
 configure do
+  require 'sass'
   SKINS_DIR              = Pow( Sinatra::Application.views, 'skins')
   SASS_FRAMEWORKS        = Pow( Sinatra::Application.views, 'sass_frameworks' )
   FRAMEWORK_960          = SASS_FRAMEWORKS / "960"
@@ -45,7 +46,7 @@ get( "/css/:skin/:file.css" ) do |raw_skin, raw_file|
       
       raise( "CSS file not found: #{request.path_info}" ) if !sass_template.file?
           
-      css_content = Sass::Engine.new( 
+      css_content = ::Sass::Engine.new( 
           sass_template.read, 
           :load_paths=>[ css_dir, FRAMEWORK_960,  FRAMEWORK_COMPASS ]
       ).render 
@@ -57,9 +58,5 @@ get( "/css/:skin/:file.css" ) do |raw_skin, raw_file|
     end
    
 end # === get
-
-
- 
-
 
 
