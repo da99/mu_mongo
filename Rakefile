@@ -95,7 +95,7 @@ namespace :gems do
         RequiredGems.required_gems.each { |raw_gem_name, special_instructions| 
 
             execute_this = %~gem install --no-ri --no-rdoc "#{raw_gem_name.strip}"~
-            results = `#{execute_this} 2>&1`
+            results = `#{execute_this} 2>&1` # 2>&1 is needed to capture errors in standard output.
             print_this "\nResults for:    #{execute_this}"
             print_this results
             print_this "\n"
@@ -506,6 +506,50 @@ namespace :miscell do
     end
 end
 
+
+namespace :maintain do
+  
+  desc 'Puts up a maintenence page for all actions. Takes into account AJAX and POST requests.'
+  task :start do
+    
+    maintain_file = Pow('helpers/maintain.rb')
+    raise "File not found: #{helper_dir}" if !maintain_file.exists?
+    
+    # Copy file to helpers/sinatra
+    maintain_file.move_to( Pow('helpers/sinatra/maintain.rb'))
+    
+    # add_then_commit_and_push 
+    Rake::Task['git:update'].invoke
+    
+    commit_results = 'git commit -m "Added temporary maintainence page." 2>&1'
+    print_this commit_results
+    
+    push_results = 'git push heroku master  2>&1'
+    print_this push_results
+    
+  end # === task :start
+  
+  desc 'Takes down maintence page.'
+  task :over do
+  
+    # Delete file from helpers/sinatra
+    maintain_file = Pow('helpers/sinatra/maintain.rb')
+    raise "File does not exists: #{maintain_file}" if !maintain_file.exists?
+    maintain_file.move_to(Pow('helpers'))
+    
+    # add_then_commit_and_push 
+    Rake::Task['git:update'].invoke
+    
+    commit_results = 'git commit -m "Removed temporary maintainence page." 2>&1'
+    print_this commit_results
+    
+    push_results = 'git push heroku master  2>&1'
+    print_this push_results
+    
+  end # === task :over
+  
+end
+
 class MyHelper
   def self.get_skin_name_and_dir
     skin_name = ask('Skin name. (Default is "jinx"):' ) { |q| q.default =  'jinx' }
@@ -623,6 +667,6 @@ class RequiredGems
 
   
   
-end # RequiredGems -------------------------------------------------------------------------
+end # class RequiredGems -------------------------------------------------------------------------
 
 

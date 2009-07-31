@@ -18,6 +18,7 @@ module Sinatra
         end
         
         def controller( raw_controller_name, &new_actions)
+          return
             new_controller = SSControllerBase.new(raw_controller_name, &new_actions)
         end # === controller   
         

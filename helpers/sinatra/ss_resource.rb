@@ -125,7 +125,7 @@ module Sinatra
     
     end # === TheSSResource
     
-    register TheSSResource
+    # register TheSSResource
     
 end # === Sinatra
 
@@ -281,7 +281,7 @@ class SSControllerBase
     end # === def    
     
     def resource_generic_props(new_action_name, http_verb, raw_path = nil, raw_perm_level = nil)
-        perm_level = raw_perm_level || Member::MEMBER
+        perm_level = raw_perm_level || :MEMBER
         
         path = raw_path || resource_generic_path(http_verb, new_action_name)
         props = generic_props(new_action_name, http_verb, perm_level,  path)
