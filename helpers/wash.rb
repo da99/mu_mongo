@@ -1,7 +1,7 @@
 $KCODE = 'u' unless $KCODE.eql?( 'UTF8' )
 require 'multibyte'
 # require 'sanitize'
-require 'dryopteris'
+# require 'dryopteris'
 require 'htmlentities'
 
 
@@ -189,7 +189,7 @@ class Wash
     # which is good or else they too will be escaped into HTML too.
     # Strip it after conversion.
     utf8_text = plaintext(raw_text).strip
-    return Dryopteris.sanitize(utf8_text)
+    # return Dryopteris.sanitize(utf8_text)
     # Now encode it.
     coder = HTMLEntities.new
     encoded_text = coder.encode( utf8_text, :named )
@@ -200,7 +200,7 @@ class Wash
        m.gsub( kv.first, kv.last)
     end
     
-    sanitized_text = Sanitize.clean(normalized_encoded_text) 
+    # sanitized_text = Sanitize.clean(normalized_encoded_text) 
   end # === def self.html
  
   

@@ -3,6 +3,4 @@ pg --version '>= 0.8.0'
 pow --version '>= 0.2.2'
 markaby --version '>= 0.5'
 mattetti-multibyte --source http://gems.github.com
-nokogiri
-mdalessio-dryopteris --source http://gems.github.com
 htmlentities
