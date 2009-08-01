@@ -135,6 +135,12 @@ namespace :git do
     print_this results
   end
   
+  task :status do
+    Rake::Task['css:compile'].invoke
+    print_this `git status`
+    Rake::Task['css:delete'].invoke
+  end
+  
   desc "Used to update and commit development checkpoint. Includes the commit comment for you."
   task :dev_check do
     Rake::Task['git:update'].invoke
@@ -561,8 +567,8 @@ end # === namespace :maintain
 namespace :css do
   task :compile do
     compile_command = "compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed"
-    results = `#{compile_command}`
-    print_this "Compiled SASS to CSS: \n#{compile_command}"
+    `#{compile_command}`
+    # print_this "Compiled SASS to CSS: \n#{compile_command}"
   end
   task :delete do
     Pow('views/skins/jinx/sass').each { |f| 
