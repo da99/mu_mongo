@@ -152,7 +152,7 @@ namespace :git do
   task :push do
     status_results = `rake git:status 2>&1`
     if status_results['nothing to commit']
-      push_results = `rake push heroku master 2>&1`
+      push_results = `git push heroku master 2>&1`
       print_this push_results
     else
       raise "Uncommited code: \n\n #{status_results}"
