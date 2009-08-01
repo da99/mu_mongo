@@ -39,8 +39,8 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-  require Pow!('models/init')
-  require_these 'models'
+  # require Pow!('models/init')
+  # require_these 'models'
 
 end # === configure 
 
