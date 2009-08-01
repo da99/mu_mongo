@@ -4,5 +4,5 @@ pow --version '>= 0.2.2'
 markaby --version '>= 0.5'
 hpricot 
 mattetti-multibyte --source http://gems.github.com
-rgove-sanitize --source http://gems.github.com
+rgrove-sanitize --source http://gems.github.com
 htmlentities
