@@ -8,7 +8,7 @@ doc/*
 coverage/*
 spec/coverage
 test/coverage
-.sass-cache/*
+.sass-cache
 views/skins/jinx/sass/.sass-cache/*
 
 # Ignore these files too.

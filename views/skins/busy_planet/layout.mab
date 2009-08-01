@@ -10,7 +10,7 @@ xhtml_transitional {
     link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
 
     link( :rel=>"stylesheet",   
-          :href=>"/css/#{@newspaper.css_layout_filename}/#{css_filename}?v=#{Time.now.to_i}", 
+          :href=>"/skins/#{@newspaper.css_layout_filename}/css/#{css_filename}?v=#{Time.now.to_i}", 
           :media=>"screen", 
           :type=>"text/css" )
   } # head

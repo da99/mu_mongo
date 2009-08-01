@@ -25,7 +25,7 @@ xhtml_transitional {
     title( @title || ' ---- ' )
 
     link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
-    link( :rel=>"stylesheet",    :href=>"/css/#{skin_name}/#{page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+    link( :rel=>"stylesheet",    :href=>"/skins/#{skin_name}/css/#{page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
   } # head
 
   body.the_body! {

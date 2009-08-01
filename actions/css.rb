@@ -29,7 +29,7 @@ end # === configure
 
  
 
-get( "/css/:skin/:file.css" ) do |raw_skin, raw_file|
+get( "/skins/:skin/css/:file.css" ) do |raw_skin, raw_file|
     
     response['Content-Type'] = 'text/css'
     

@@ -118,6 +118,7 @@ namespace :git do
 
   desc "Execute: git add . && git add -u && git status"
   task :update do
+    Rake::Task['css:compile'].invoke
     results = `git add . && git add -u && git status`
     print_this results
   end
@@ -438,7 +439,7 @@ namespace :view do # ===========================================================
         
         # If not a partial, create a corressponding SASS file.
         if !action_name[/\A\_\_/]
-          file_path = Pow!("views/skins/#{skin_name}/css/#{controller_name}_#{action_name}.sass")
+          file_path = Pow!("views/skins/#{skin_name}/sas/#{controller_name}_#{action_name}.sass")
           raise ArgumentError, "File: #{file_path} already exists." if File.exists?(file_path )
 
           txt = "@import layout.sass"
@@ -558,7 +559,7 @@ end # === namespace :maintain
 
 namespace :css do
   task :compile do
-    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/css/jinx -s compressed`
+    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed`
     print_this results
   end
 end
@@ -566,12 +567,13 @@ end
 namespace :run do
 
   task :dev do
-    Rake::Task['css:compile'].invoke
+    
     exec "DATABASE_URL='postgres://da01:xd19yzxkrp10@localhost/newsprint-db' thin start --rackup config.ru -p 4567"
   end
   
   task :tests do
-    exec 'postgres://da01:xd19yzxkrp10@localhost/newsprint-db-test'
+    Rake::Task['css:compile'].invoke
+    exec 'DATABASE_URL=postgres://da01:xd19yzxkrp10@localhost/newsprint-db-test'
   end
 
 end
