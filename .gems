@@ -1,8 +1,8 @@
 sequel --version '>= 3.2.0'
-postgres
-pow
-markaby
-hpricot
+pg --version '>= 0.8.0'
+pow --version '>= 0.2.2'
+markaby --version '>= 0.5'
+hpricot 
 mattetti-multibyte --source http://gems.github.com
-sanitize
+rgove-sanitize --source http://gems.github.com
 htmlentities

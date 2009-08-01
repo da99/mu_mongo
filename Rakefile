@@ -155,6 +155,7 @@ namespace :git do
   task :push do
     status_results = `rake git:status 2>&1`
     if status_results['nothing to commit']
+      print_this 'Please wait as code is being pushed to Heroku...'
       push_results = `git push heroku master 2>&1`
       print_this push_results
     else
