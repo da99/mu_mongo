@@ -7,6 +7,7 @@ $KCODE = 'UTF8'
 require 'rubygems'
 require 'sinatra'
 require 'pow'
+require 'sequel' 
 
 def require_these( dir );
     Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
