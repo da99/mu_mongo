@@ -562,12 +562,20 @@ namespace :css do
     results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed`
     print_this results
   end
+  task :delete do
+    Pow('views/skins/jinx/sass').each { |f| 
+      if f.file? && f.to_s =~ /\.sass$/ 
+        css_file = Pow( 'public/skins/jinx/css', File.basename(f.to_s).sub( /\.sass$/, '') + '.css' )
+        css_file.delete if css_file.exists? 
+      end
+    }
+  end
 end
 
 namespace :run do
 
   task :dev do
-    
+    Rake::Task['css:delete'].invoke
     exec "DATABASE_URL='postgres://da01:xd19yzxkrp10@localhost/newsprint-db' thin start --rackup config.ru -p 4567"
   end
   

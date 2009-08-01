@@ -78,7 +78,7 @@ require_these 'helpers/sinatra'
 # Require the actions.
 # ===============================================
 require_these 'actions'
-
+require Pow('helpers/css') if Sinatra::Application.development?
 
 get( '/' ) {
   describe :main, :show
