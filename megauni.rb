@@ -8,6 +8,7 @@ require 'rubygems'
 require 'sinatra'
 require 'pow'
 require 'sequel' 
+require 'sequel/extensions/inflector'
 
 def require_these( dir );
     Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
@@ -17,11 +18,6 @@ end
 # ===============================================
 # Configurations
 # ===============================================
-if Sinatra::Application.development?
-  `reset` 
-  set :dump_errors, false
-end
-
 use Rack::Session::Pool
 
 set :site_title     , 'Mega Uni'
@@ -31,8 +27,11 @@ set :site_domain    , 'megaUni.com'
 set :site_url       , Proc.new { "http://www.#{options.site_domain}/" }
 set :site_support_email , Proc.new { "helpme@#{options.site_domain}" }
 set :cache_the_templates, Proc.new { !development? }
-  
 
+configure :development do
+  `reset` 
+  Pow('helpers/css')
+end
 
 configure do
 
@@ -44,6 +43,7 @@ configure do
   # require_these 'models'
 
 end # === configure 
+
 
 
 # ===============================================
@@ -79,7 +79,7 @@ require_these 'helpers/sinatra'
 # Require the actions.
 # ===============================================
 require_these 'actions'
-require Pow('helpers/css') if Sinatra::Application.development?
+
 
 get( '/' ) {
   describe :main, :show
@@ -99,10 +99,6 @@ get('/timer/') {
 get('/timer') {
   Pow("public/eggs/index.html").read
 }
-
-  
-
-
 
 
 

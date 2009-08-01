@@ -1,8 +1,8 @@
-configure do
-  require 'sass'
-  require 'compass'
-  require 'ninesixty'
-end # === configure
+
+require 'sass'
+require 'compass'
+require 'ninesixty'
+
 
 get( "/skins/:skin/css/:file.css" ) do |raw_skin, raw_file|
     

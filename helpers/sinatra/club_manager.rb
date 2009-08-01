@@ -1,4 +1,4 @@
-require 'sequel/extensions/inflector'
+
 
 # ============= Include lib files.
 # require Pow!( '../lib/wash' )

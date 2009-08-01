@@ -121,6 +121,7 @@ namespace :git do
     Rake::Task['css:compile'].invoke
     results = `git add . && git add -u && git status`
     print_this results
+    Rake::Task['css:delete'].invoke
   end
 
   desc "Gathers comment and commits it using: git commit -m '[your input]' "
@@ -559,8 +560,9 @@ end # === namespace :maintain
 
 namespace :css do
   task :compile do
-    results = `compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed`
-    print_this results
+    compile_command = "compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed"
+    results = `#{compile_command}`
+    print_this "Compiled SASS to CSS: \n#{compile_command}"
   end
   task :delete do
     Pow('views/skins/jinx/sass').each { |f| 
