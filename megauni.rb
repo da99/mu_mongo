@@ -30,7 +30,7 @@ set :cache_the_templates, Proc.new { !development? }
 
 configure :development do
   `reset` 
-  Pow('helpers/css')
+  require Pow('helpers/css')
 end
 
 configure do
@@ -39,8 +39,8 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-  # require Pow!('models/init')
-  # require_these 'models'
+  require Pow!('models/init')
+  require_these 'models'
 
 end # === configure 
 

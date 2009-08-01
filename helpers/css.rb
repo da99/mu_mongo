@@ -5,7 +5,7 @@ require 'ninesixty'
 
 
 get( "/skins/:skin/css/:file.css" ) do |raw_skin, raw_file|
-    
+
     response['Content-Type'] = 'text/css'
     
     skin_name = ( raw_skin =~ /([a-zA-Z0-9\_\-]{2,})/ && $1)
