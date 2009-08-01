@@ -2,6 +2,6 @@ sequel
 postgres
 pow
 markaby
-mattetti-multibyte
-rgrove-sanitize
+mattetti-multibyte --source http://gems.github.com
+rgrove-sanitize --source http://gems.github.com
 htmlentities
