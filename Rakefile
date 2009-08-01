@@ -1,9 +1,11 @@
 require 'pow'
 require "highline/import"
 
-if defined? print_this
-  raise "Method :print_this already defined."
+def dev?
+  !ENV.keys.include?('HEROKU_ENV') && ENV.keys.include?('DESKTOP_SESSION')
 end
+
+`reset` if dev?
 
 def print_this(*args)
   args.each {|new_line|
@@ -15,10 +17,15 @@ def print_this(*args)
   }
 end
 
-
-if defined? check_file_does_not_exist!
-  raise "Method :check_file_does_not_exist! already defined."
+def exec_this(command)
+  `#{command} 2>&1`
 end
+
+def raise_this( error_str )
+  print_this '', error_str, ''
+  raise
+end
+
 
 def check_file_does_not_exist!(raw_file_path)
   file_path = raw_file_path.to_s.strip
@@ -27,10 +34,6 @@ def check_file_does_not_exist!(raw_file_path)
   false
 end
 
-
-if defined? write_this_file
-  raise "Method :write_this_file already defined."
-end
 
 def write_this_file(raw_file_path, raw_txt)
   file_path = raw_file_path.to_s.strip
@@ -155,7 +158,7 @@ namespace :git do
       push_results = `git push heroku master 2>&1`
       print_this push_results
     else
-      raise "Uncommited code: \n\n #{status_results}"
+      raise_this "Uncommited code: \n\n #{status_results}"
     end
   end
 
@@ -576,9 +579,16 @@ end # === namespace :maintain
 
 namespace :css do
   task :compile do
-    compile_command = "compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed"
-    `#{compile_command}`
-    # print_this "Compiled SASS to CSS: \n#{compile_command}"
+    
+    compile_results = exec_this "compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed"
+    clean_results   = compile_results.split("\n").reject { |line| 
+                                                            line =~ /^unchanged\ / ||
+                                                            line.strip =~ /^(compile|exists|create)/
+                                                         }.join("\n")
+    
+    raise_this( clean_results ) if compile_results['WARNING:'] || compile_results['SyntaxError']
+    
+    print_this "Compiled SASS to CSS"
   end
   task :delete do
     Pow('views/skins/jinx/sass').each { |f| 

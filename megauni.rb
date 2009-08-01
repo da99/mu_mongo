@@ -93,7 +93,7 @@ get( '/reset' ) {
 }
 
 get('/timer/') {
-  redirect( '/timer' )
+  redirect( '/timer' , 301 )
 }
 
 get('/timer') {
