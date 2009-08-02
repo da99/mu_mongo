@@ -605,7 +605,7 @@ namespace :run do
 
   task :dev do
     Rake::Task['css:delete'].invoke
-    exec  "DATABASE_URL='postgres://da01:xd19yzxkrp10@localhost/newsprint-db' thin start --rackup config.ru -p 4567"
+    exec  "thin start --rackup config.ru -p 4567"
     # print_this results
   end
   

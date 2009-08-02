@@ -21,8 +21,8 @@ end
 use Rack::Session::Pool
 
 set :site_title     , 'Mega Uni'
-set :site_tag_line  , 'This website predicts the future.'
-set :site_keywords  , 'predicts the future'
+set :site_tag_line  , 'The website that predicts the future.'
+set :site_keywords  , 'predict, predictions, future'
 set :site_domain    , 'megaUni.com'
 set :site_url       , Proc.new { "http://www.#{options.site_domain}/" }
 set :site_support_email , Proc.new { "helpme@#{options.site_domain}" }

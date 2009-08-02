@@ -33,20 +33,20 @@ helpers do # ===============================
     end
 
     # === Miscellaneous helpers ========================
-       def publicize_path(path)
-         File.join( options.public, Wash.path( path ) )
-      end
+    def publicize_path(path)
+     File.join( options.public, Wash.path( path ) )
+    end
 
-        def clean_room
-          @clean_room = params.inject({}) { |m, (k, val)|
-            if val.to_s.strip.empty?
-                m[k] = nil
-            else
-                m[k] = Wash.plaintext(val)
-            end
-            m
-          }
+    def clean_room
+      @clean_room = params.inject({}) { |m, (k, val)|
+        if val.to_s.strip.empty?
+            m[k] = nil
+        else
+            m[k] = Wash.plaintext(val)
         end
+        m
+      }
+    end
 
     def integerize_splat_or_captures
         raw_vals = ( params[:splat] || params[ :captures ] )

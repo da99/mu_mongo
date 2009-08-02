@@ -8,6 +8,9 @@ class CreateUsernames < Sequel::Migration
       
       # === Attributes
       varchar :username, :size=>25, :unique=>true, :null=>false
+      varchar :email, :size=>65
+      boolean :email_verified, :null=>false, :default=>false
+      varchar :category, :size=>65
       
       # === Date Times
       timestamp   :created_at

@@ -18,11 +18,29 @@ module MemberUsername
 
     end # === def    
     
-    def by_line_name
-        username
-    end 
     
-    def find_username_validation_errors
+    def self.wash_username(raw_name)
+
+      
+      
+    end # === find_username_errors
+    
+    def self.wash_email(raw_email)
+
+      
+    end
+      
+    def validate_new_values( raw_params, editor = nil )
+      cols = columns_for_editor(raw_params, editor)
+      params = raw_params.values_at( *cols )
+      params.keys.each { |k|
+        case k.to_sym
+          when :username
+            new_username, username_errors = self.class.wash_username(params[k])
+          when :email
+
+        end # === case
+      }
     # ==== Username
       if !new?
         @old_username = this.naked.first[:username]

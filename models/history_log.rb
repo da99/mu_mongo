@@ -1,4 +1,4 @@
-class MetaId < Sequel::Model
+class HistoryLog < Sequel::Model
 
   # ==== CONSTANTS =====================================================
   
@@ -18,7 +18,7 @@ class MetaId < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def columns_for_editor( params, mem )
+  def changes_from_editor( params, mem )
     if new?
         self[:owner_id] = mem[:id]
     end
@@ -30,6 +30,6 @@ class MetaId < Sequel::Model
   end # === def changes_from_editor
 
   def validate_new_values
-  end # === def find_validation_errors
+  end # === def validate_new_values
 
-end # === end MetaId
+end # === end HistoryLog

@@ -132,7 +132,7 @@ class Sequel::Model
   # =========================================================
   #                     Plugins
   # =========================================================  
-  Sequel::Model.plugin :hook_class_methods 
+   
   
   
   # =========================================================
@@ -214,7 +214,7 @@ DB = begin
               new_logger = {:loggers=> [ Logger.new(new_file) ]}
               
               # Finally...
-              Sequel.connect( ENV['DATABASE_URL']  ,  new_logger )
+              Sequel.connect( 'postgres://da01:xd19yzxkrp10@localhost/newsprint-db' ,  new_logger )
 
           else
             raise ArgumentError, "#{env.inspect} - is not a valid environment for database connection."

@@ -72,13 +72,6 @@ class Wash
   end    
 
   # ===============================================
-  def self.search_text( search_text )
-    search_text = '%' +  search_text + '%'
-    
-    search_text.gsub(/[^a-zA-Z0-9]{1,}/, '%')
-  end
-
-  # ===============================================
   def self.column_key( str )
     plaintext( str ).strip.upcase.gsub(/[[:space:]]{1,}/, ' ')
   end
@@ -161,6 +154,10 @@ class Wash
     raw_tag.strip.downcase.gsub(/^[\,\.]{1,}|[\"]{1,}|[\,\.]{1,}$/, '').gsub(/\ /, '-')
   end    
 
+  # ===============================================
+  
+
+  
   # ===============================================
   def self.validate_twitter_username(raw_name)
     valid_twitter_username_chars   = /\A[a-z0-9\_]{1,100}\Z/i
