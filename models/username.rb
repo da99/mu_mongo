@@ -1,7 +1,8 @@
 class Username < Sequel::Model
 
   # ==== CONSTANTS =====================================================
-  
+  EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
+  VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
   
 
   # ==== ERRORS ========================================================
@@ -39,7 +40,7 @@ class Username < Sequel::Model
       case k.to_sym
       
         when :email
-            with_valid_chars = v.to_s.gsub( /[^a-zA-Z0-9\-\_\.\@]/ , '')
+            with_valid_chars = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
             
             self.errors.add( :email, 
                             "Email contains invalid characters." 
@@ -47,13 +48,21 @@ class Username < Sequel::Model
             
             self.errors.add( :email,  
                              "Email is too short." 
-                            ) if with_valid_chars.length < 4
+                            ) if with_valid_chars.length < 6
+
+            #begin
+            #  require 'tmail'
+            #  validated_email = TMail::Address.parse( email_address ).to_s
+            #rescue TMail::SyntaxError
+            #  raise( Sequel::ValidationFailed,  "Invalid Format: Email format could not be recognized."  )
                             
             clean_params[:emails] = with_valid_chars
             
         when :username
         
-          # Delete invalid characters and reduce any suspicious characters. '..' becomes '.', '--' becomes '-'
+          # Delete invalid characters and 
+          # reduce any suspicious characters. 
+          # '..*' becomes '.', '--' becomes '-'
           sanitized = raw_name.gsub( /[^a-z0-9]{2,}/i  ) { |s| 
             ['_', '.', '-'].include?( s[0,1] ) ?
               s[0,1] :
