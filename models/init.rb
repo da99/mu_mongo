@@ -37,17 +37,7 @@ module ValidateIt
   #        Instance Methods that can be over-ridden
   # =========================================================
   
-  def columns_for_editor( params, editor )
-    []
-  end  
-  
-  def validate_create( *args )
-    validate_new_values(args.first)
-  end
-  
-  def validate_update( *args )
-    validate_new_values(args.first)
-  end
+
    
   
   # =========================================================
@@ -167,8 +157,8 @@ class Sequel::Model
   # =========================================================
   #                  CLASS INSTANCE METHODS
   # =========================================================
-  
-  
+
+    
   # =========================================================
   # From: http://snippets.dzone.com/posts/show/2992
   # Note: Don't cache subclasses because new classes may be
@@ -183,6 +173,12 @@ class Sequel::Model
     all_subclasses 
   end # ---- self.all_subclasses --------------------
   
+    
+  def self.create_it( raw_params, editor )
+    new_entry = new( :owner_id => editor[:id] )
+    new_entry.set new_entry.validate_new_values( raw_params, editor )
+    new_entry.save
+  end
 
   
   # =========================================================
@@ -192,6 +188,17 @@ class Sequel::Model
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
   end
 
+  def columns_for_editor( raw_params, editor )
+    raise "You have to define this method."
+  end
+  
+  def validate_new_values( raw_params, editor )
+    raise "You have to define this method."
+  end
+  
+  def update_it( raw_params, editor )    
+    update validate_new_values( raw_params, editor )
+  end # === def  
  
 end # === model: Sequel::Model -------------------------------------------------
 

@@ -19,17 +19,16 @@ class Username < Sequel::Model
   # ==== INSTANCE METHODS ==============================================
 
   def columns_for_editor( params, mem )
-    if new?
-        self[:owner_id] = mem[:id]
+        
+    if mem 
+      if mem.admin? || self.owner == mem
+        return [ :username, :email ]
+      end
     end
-    if [self.owner].include?(mem)
-        @current_editor = mem
-        @editable_by_editor = []       
-    end
-    super
+    
   end # === def changes_from_editor
 
-  def validate_it( raw_params , editor = nil)
+  def validate_new_values( raw_params , editor = nil)
   
     cols            = columns_for_editor( raw_params, editor )
     allowed_params  = raw_params.values_at( *cols )    
@@ -53,11 +52,13 @@ class Username < Sequel::Model
             clean_params[:emails] = with_valid_chars
             
         when :username
-          # Sanitize raw name
-          with_valid_chars = raw_name.to_s.gsub( /[^a-zA-Z0-9\-\_\.]/ , '' )
-          
-          # Reduce any suspicious characters
-          sanitized = with_valid_chars.gsub( /[\-\.]{2,}/  ) { |s| s[0,1] }
+        
+          # Delete invalid characters and reduce any suspicious characters. '..' becomes '.', '--' becomes '-'
+          sanitized = raw_name.gsub( /[^a-z0-9]{2,}/i  ) { |s| 
+            ['_', '.', '-'].include?( s[0,1] ) ?
+              s[0,1] :
+              '' ;
+          }          
           
           # Check to see if there is at least one alphanumeric character          
           self.errors.add( :username,  
@@ -83,10 +84,11 @@ class Username < Sequel::Model
     
   end # === def validate_new_values
   
-  def update_it( raw_params, editor = nil )
+  
+  def update_it( raw_params, editor )
     
     orig_vals  = this
-    vals       = validate_values( raw_params, editor )
+    vals       = validate_new_values( raw_params, editor )
     
     update params
     

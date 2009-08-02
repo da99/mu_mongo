@@ -19,7 +19,7 @@ xhtml_transitional {
     end
 
     if @meta_keywords
-      meta( :name=>'keywords'   , :content=>'')
+      meta( :name=>'keywords'   , :content=>@meta_keywords)
     end
 
     title( @title || ' ---- ' )
