@@ -15,21 +15,10 @@ class HistoryLog < Sequel::Model
 
   # ==== CLASS METHODS =================================================
 
+  def self.create_it( params )
+    create( params )
+  end
 
   # ==== INSTANCE METHODS ==============================================
-
-  def changes_from_editor( params, mem )
-    if new?
-        self[:owner_id] = mem[:id]
-    end
-    if [self.owner].include?(mem)
-        @current_editor = mem
-        @editable_by_editor = []       
-    end
-    super
-  end # === def changes_from_editor
-
-  def validate_new_values
-  end # === def validate_new_values
 
 end # === end HistoryLog
