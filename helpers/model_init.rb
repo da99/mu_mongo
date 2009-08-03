@@ -2,101 +2,93 @@ require 'sequel'
 require 'sequel/extensions/inflector'
 require 'sequel/extensions/blank'
 
-DB = begin
-        env ||= Object.const_defined?(:Sinatra) ?
-                        Sinatra::Application.environment :
-                        :development;
-        case env
+require Pow('helpers/db_conn')
 
-          when :production
-              Sequel.connect ENV['DATABASE_URL']
 
-          when :development, :test
-              # === Setup logger
-              require 'logger'  
-              new_file = Pow( File.expand_path('~/sequel_log.txt') )
-              new_file.delete if new_file.file?
-              new_logger = {:loggers=> [ Logger.new(new_file) ]}
-              
-              # Finally...
-              Sequel.connect( 'postgres://da01:xd19yzxkrp10@localhost/newsprint-db' ,  new_logger )
 
-          else
-            raise ArgumentError, "#{env.inspect} - is not a valid environment for database connection."
-        end
-end # === SecretCloset
 
-module Trashable
+class Sequel::Model
 
-    def self.included(target)
-        target.extend(ClassMethods)
-    end
+
+  # =========================================================
+  #                     Plugins
+  # =========================================================  
+   
     
-    module ClassMethods
-        def trashable(*args, &cond_block)
-            raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
-            
-            name_of_assoc, opts = args
-
-            if opts.is_a?(Hash) && opts[:class]
-                opts[:class]
-            else
-                opts ||= {}
-                opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
-            end
-            
-            self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
-            self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
-        end
-    end # === module ClassMethods
-
-end # === module Trashable
-
-
-module ValidateIt
-
-  
   # =========================================================
-  #        Instance Methods that can be over-ridden
+  #                     Error Constants
+  # =========================================================    
+  class NoRecordFound < RuntimeError;  end
+
+
   # =========================================================
+  #                      Attributes
+  # =========================================================  
+  self.raise_on_save_failure = true
+  self.raise_on_typecast_failure  = false
+
+
+  # =========================================================
+  #                        OPTIONS
+  # =========================================================  
+ 
   
 
   # =========================================================
-  #              Instance: Validation Methods
+  #                  CLASS METHODS
   # =========================================================
 
-  def validate_action( action, raw_params, editor = nil)
+  def self.filter_params( raw_params, keys )
+    keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
+  end
     
-    # Make sure editor can only edit certain columns.
-    params = {}
-    columns_for_editor(raw_params, editor).each { |col|
-      params[col] = raw_params[col]
+  def self.create_it( raw_params, editor )
+    raise "You have to define this method."
+  end
+
+  def trashable(*args, &cond_block)
+      raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
+      
+      name_of_assoc, opts = args
+
+      if opts.is_a?(Hash) && opts[:class]
+          opts[:class]
+      else
+          opts ||= {}
+          opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
+      end
+      
+      self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
+      self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
+  end
+    
+  # =========================================================
+  # From: http://snippets.dzone.com/posts/show/2992
+  # Note: Don't cache subclasses because new classes may be
+  # defined after the first call to this method is executed.
+  # =========================================================
+  def self.all_subclasses
+    all_subclasses = []
+    ObjectSpace.each_object(Class) { |c|
+              next unless c.ancestors.include?(self) and (c != self)
+              all_subclasses << c
     }
-    
-    if new?
-      self.created_at = Time.now.utc if self.class.columns.include?(:created_at)
-    else
-      return if raw_params.empty?
-      self.modified_at = Time.now.utc  if self.class.columns.include?(:modified_at)
-      validate_new_values(args.first)
-    end
-    
-    # Validate new column values.
-    send( "validate_#{action}", params, editor )
-    
-    
-    # Were there any errors?.
-    raise Invalid  if !self.errors.empty?
-    
-    # Set new column values.
-    params.each { |k,v| 
-      send("#{k}=", Wash.plaintext(v))
-    } 
-    
-    # Save it.
-    save    
-    
-  end # === def alter_with_editor
+    all_subclasses 
+  end # ---- self.all_subclasses --------------------
+  
+  
+  # =========================================================
+  #                  PUBLIC INSTANCE METHODS
+  # =========================================================
+  
+  def dev_log(msg)
+    puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
+  end
+  
+  def update_it( raw_params, editor )    
+    raise "You have to define this method."
+  end # === def  
+ 
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
@@ -129,90 +121,8 @@ module ValidateIt
 
     self.errors.add( field_names.first, default_error_msg ) if all_are_empty
     
-  end
-
-
-end # === module ValidateIt
-
-
-
-
-class Sequel::Model
-
-
-  # =========================================================
-  #                     Plugins
-  # =========================================================  
-   
-  
-  
-  # =========================================================
-  #                     Error Constants
-  # =========================================================    
-  class NoRecordFound < RuntimeError;  end
-
-
-
-  # =========================================================
-  #                      Attributes
-  # =========================================================  
-  self.raise_on_save_failure = true
-  self.raise_on_typecast_failure  = false
-
-
-  # =========================================================
-  #                        OPTIONS
-  # =========================================================  
-
-
-  # =========================================================
-  #                      Functionality
-  # =========================================================  
-  
-  
-  include ValidateIt
-  include Trashable
-  
-
-
-  # =========================================================
-  #                  CLASS INSTANCE METHODS
-  # =========================================================
-
-  def self.filter_params( raw_params, keys )
-    keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
-  end
-    
-  def self.create_it( raw_params, editor )
-    raise "You have to define this method."
-  end
-    
-  # =========================================================
-  # From: http://snippets.dzone.com/posts/show/2992
-  # Note: Don't cache subclasses because new classes may be
-  # defined after the first call to this method is executed.
-  # =========================================================
-  def self.all_subclasses
-    all_subclasses = []
-    ObjectSpace.each_object(Class) { |c|
-              next unless c.ancestors.include?(self) and (c != self)
-              all_subclasses << c
-    }
-    all_subclasses 
-  end # ---- self.all_subclasses --------------------
-  
-  
-  # =========================================================
-  #                  PUBLIC INSTANCE METHODS
-  # =========================================================
-  
-  def dev_log(msg)
-    puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
-  end
-  
-  def update_it( raw_params, editor )    
-    raise "You have to define this method."
-  end # === def  
+  end 
+ 
  
 end # === model: Sequel::Model -------------------------------------------------
 

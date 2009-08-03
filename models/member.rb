@@ -7,6 +7,9 @@ class Member < Sequel::Model
   #                     CONSTANTS
   # =========================================================  
 
+  class IncorrectPassword < RuntimeError; end
+  class UnknownPermissionLevel < RuntimeError; end
+  
   NO_ACCESS   = -1000
   ADMIN       = 1000
   EDITOR      = 10
@@ -42,10 +45,10 @@ class Member < Sequel::Model
 
       unless target_member
         LoginAttempt.log_failed_attempt( ip_address )
-        raise Member::NoRecordFound, "#{username} was not found." 
+        raise NoRecordFound, "#{username} was not found." 
       end
 
-      is_correct_password = Member.encrypt(pass, target_member.salt).eql?( target_member.hashed_password )
+      is_correct_password = Digest::SHA1.hexdigest(pass + target_member.salt).eql?( target_member.hashed_password )
       return target_member if is_correct_password
 
       LoginAttempt.log_failed_attempt( ip_address )
@@ -121,14 +124,14 @@ class Member < Sequel::Model
  
   
   def has_permission_level?(raw_level)
+      
+      # Example:
+      # 1000 => 1000
+      # :ADMIN => 1000
       target_perm_level = raw_level.instance_of?(Symbol) ? 
                             self.class.const_get(raw_level) : 
                             Integer(raw_level) ;
-                            
-      if !SECURITY_LEVELS.include?(target_perm_level)
-        raise UnknownPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
-      end
-      
+                                  
       case target_perm_level
         when STRANGER
           true
@@ -136,6 +139,10 @@ class Member < Sequel::Model
           new? ? false : true
         when ADMIN
           self[:id] === 1
+        when EDITOR
+          self[:has_permission_level] === EDITOR
+        else
+          raise UnknownPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
       end
   end # ===   
 

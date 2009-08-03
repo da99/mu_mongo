@@ -477,11 +477,14 @@ end # === namespace :controoler
 
 namespace :db do
 
+  task :connect do
+    require Pow!('helpers/db_conn')
+  end
 
 	desc "Env: :test, :development."
 	task :migrate_up do
 		print_this "Migrating..."
-		require Pow!('secret_closet')
+		Rake::Task['db:connect'].invoke
 		Sequel::Migrator.apply( DB, Pow!('migrations') )
 		print_this "Done."		
 	end # === 
@@ -494,7 +497,7 @@ namespace :db do
 
     print_this '', 'Setting up...'
     require 'sequel/extensions/migration' 
-    require Pow!('secret_closet')
+    Rake::Task['db:connect'].invoke
 
     print_this "Reseting database..."
     Sequel::Migrator.apply( DB, Pow!('migrations'), 0 )
