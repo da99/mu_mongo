@@ -158,6 +158,13 @@ class Sequel::Model
   #                  CLASS INSTANCE METHODS
   # =========================================================
 
+  def self.filter_params( raw_params, keys )
+    keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
+  end
+    
+  def self.create_it( raw_params, editor )
+    raise "You have to define this method."
+  end
     
   # =========================================================
   # From: http://snippets.dzone.com/posts/show/2992
@@ -173,31 +180,17 @@ class Sequel::Model
     all_subclasses 
   end # ---- self.all_subclasses --------------------
   
-    
-  def self.create_it( raw_params, editor )
-    new_entry = new( :owner_id => editor[:id] )
-    new_entry.set new_entry.validate_new_values( raw_params, editor )
-    new_entry.save
-  end
-
   
   # =========================================================
   #                  PUBLIC INSTANCE METHODS
   # =========================================================
+  
   def dev_log(msg)
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
   end
-
-  def columns_for_editor( raw_params, editor )
-    raise "You have to define this method."
-  end
-  
-  def validate_new_values( raw_params, editor )
-    raise "You have to define this method."
-  end
   
   def update_it( raw_params, editor )    
-    update validate_new_values( raw_params, editor )
+    raise "You have to define this method."
   end # === def  
  
 end # === model: Sequel::Model -------------------------------------------------
