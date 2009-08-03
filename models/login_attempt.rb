@@ -10,7 +10,7 @@ class LoginAttempt < Sequel::Model
   def self.log_failed_attempt( ip_address )
     new_values = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
     la = LoginAttempt[ new_values ] || LoginAttempt.new( new_values)
-    la.total = la.total.to_i + 1
+    la.total = la.total.to_i + 1 # <== Blatant race condition problem, but it will do for now.
     la.save
   end
   

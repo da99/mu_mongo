@@ -56,7 +56,7 @@ class Member < Sequel::Model
   def self.create_it( raw_params, editor)
     allowed_params = case editor
       when nil
-        self.class.filter_params( raw_params,  [ :password, :confirm_password ] )
+        filter_params( raw_params,  [ :password, :confirm_password ] )
       else
         {}
     end
