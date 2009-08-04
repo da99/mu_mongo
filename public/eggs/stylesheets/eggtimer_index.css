@@ -13,7 +13,8 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
 
 #busy_body {
   text-align: center;
-  background: #C9E6FF url('/eggs/images/logo_bg.gif') repeat-x;
+  background: #C9E6FF 
+  background: #fff
   
   }
 
@@ -130,7 +131,7 @@ form {
       color: #f00919;
       cursor: default;
       text-decoration: none;
-      background-color: #f4fafc; }
+      background-color: #90CBFF; }
     #add_stuff ul.binder a:link, #add_stuff ul.binder a:visited {
       padding: 5px 0 5px 0;
       font-weight: bold;
@@ -143,7 +144,7 @@ form {
   #add_stuff #folders div.island {
     display: none;
     padding: 15px 10px 20px 20px;
-    background-color: #f4fafc; }
+    background-color: #90CBFF; }
   #add_stuff #folders div.selected_folder {
     display: block; }
   #add_stuff #folders div.intro {
@@ -211,9 +212,8 @@ form {
     margin: 0 auto 10px auto;
     padding-bottom: 10px;
     font-family: helvetica, arial, sans-serif;
-    background-color: #D3ECF2;
-    background-image: url("/eggs/images/blue_sky_bg.jpg");
-    background-repeat: repeat-x; }
+    background: #D3ECF2 url("/eggs/images/blue_sky_bg.jpg") repeat-x 0 -10px;
+    }
     #work div.egg a:link, #work div.egg a:visited,     #work div.edit_egg a:link, #work div.edit_egg a:visited {
       text-transform: uppercase;
       font-size: 12px;

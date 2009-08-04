@@ -8,31 +8,34 @@ save_to('meta_keywords') {
   options.site_keywords
 }
 
-div( :id=>'nippon') { "幸せな、脂肪の <br /> ウェブサイト。"}
-div( :id=>'logo') { "MEGA UNI" }
+
+div( :id=>'logo') { 
+  p.nippon { "幸せな、脂肪の <br /> ウェブサイト。"}
+  p.english { "MEGA UNI" }
+  
+}
 
 div( :id=> 'timeline' ) {
-
-  p "Coming Soon."
   
-  p {
-      span 'In the meanwhile: '
-      br 
+  ul {
+    li {
       a(:href=>"/timer/") { "Timer + Alarm"}
+    }
+    if options.development?
+
+
+      li {
+        a(:href=>"/sign-up/") { 'sign-up' }
+      }
+      li {
+        a(:href=>"/log-in/") { 'log-in' }
+      }    
+
+    end
+    
   }
 
 }
 
 
-if options.development?
 
-  ul {
-    li {
-      a(:href=>"/sign-up/") { 'sign-up' }
-    }
-    li {
-      a(:href=>"/log-in/") { 'log-in' }
-    }    
-  }
-
-end
