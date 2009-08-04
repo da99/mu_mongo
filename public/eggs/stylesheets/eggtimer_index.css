@@ -69,7 +69,7 @@ form {
   form div.fieldset_block label {
     text-align: left;
     display: block;
-    color: #f00919;
+    color: #073D6F;
     font-size: 120%;
     font-weight: bold;
     font-style: italic; }
@@ -87,7 +87,7 @@ form {
   form div.details textarea {
     width: 650px; }
   form div.time_units_block div.title {
-    color: #f00919;
+    color: #073D6F;
     font-size: 120%;
     font-weight: bold;
     font-style: italic; }
@@ -131,7 +131,7 @@ form {
       color: #f00919;
       cursor: default;
       text-decoration: none;
-      background-color: #90CBFF; }
+      background-color: #FFE15F; }
     #add_stuff ul.binder a:link, #add_stuff ul.binder a:visited {
       padding: 5px 0 5px 0;
       font-weight: bold;
@@ -144,7 +144,7 @@ form {
   #add_stuff #folders div.island {
     display: none;
     padding: 15px 10px 20px 20px;
-    background-color: #90CBFF; }
+    background-color: #FFE15F; }
   #add_stuff #folders div.selected_folder {
     display: block; }
   #add_stuff #folders div.intro {
@@ -166,7 +166,7 @@ form {
         padding: 20px 0 10px 50px;
         font-size: 22px;
         font-weight: bold;
-        background-image: url("/eggs/images/instruction_numbers.gif");
+        background-image: url("/eggs/images/instruction_numbers.jpg");
         background-repeat: no-repeat; }
         #add_stuff #folders #instructions ol li div.title {
           color: #f00919; }
