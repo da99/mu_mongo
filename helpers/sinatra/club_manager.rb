@@ -74,9 +74,9 @@ helpers do # ===============================
     end    
 
     def current_member
-      return Member.new if session[:member_username].to_s.strip.empty?
+      return nil if !session[:member_username]
       @current_member ||= Member[:username => session[:member_username] ]
-      return Member.new unless @current_member
+      return nil unless @current_member
       @current_member
     end # === def
     
