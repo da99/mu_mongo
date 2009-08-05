@@ -12,50 +12,49 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
   padding: 0; }
 
 #busy_body {
-  text-align: center;
-  background: #C9E6FF 
+
+  background: #C9E6FF;
   background: #fff
   
   }
 
 #content {
-  margin: 0 auto;
+  float: left;
   text-align: left;
   width: 790px;
+  border-left: 3px dashed #000;
+  margin: 0 0 0 217px;
    }
+#nav_bar  {
+  border-width: 0;
+  margin-right: 0;
+  position: absolute;
+}
+#nav_bar ul li.selected  {
+      margin-right: 0 ;
 
+     }
 #current_time {
   overflow: hidden;
-  width: 263px;
   height: 70px;
-  float: right;
   text-align: center;
-  background-image: url("/eggs/images/current_time_bg.gif");
-  background-repeat: no-repeat;
-  background-position: top right; }
+ }
   #current_time #big_date {
     padding-top: 10px;
-    color: #fff;
     font-size: 16px;
     font-family: helvetica, arial, sans-serif;
     font-weight: bold; }
   #current_time #big_time {
-    color: #fff;
     font-size: 24px;
     font-family: helvetica, arial, sans-serif;
     font-weight: bold; }
     #current_time #big_time #big_seconds {
-      color: #ffbe2c;
+      color: #f00919;
       font-style: italic;
       font-size: 16px; }
 
 h1 {
-  height: 80px;
-  color: #F00919; 
-  font-size: 28px;
-  font-weight: bold;
-  font-family: courier, helvetica, arial, sans-serif;
-   }
+  display: none; }
 
 h2 {
   display: none; }
@@ -108,7 +107,9 @@ form {
 #add_stuff {
   visibility: hidden;
   font-family: helvetica, arial, sans-serif;
-  padding: 10px 0 0px 0; }
+  padding: 10px ; 
+  
+  }
   #add_stuff ul.binder {
     width: 780px;
     overflow: auto;

@@ -100,5 +100,9 @@ get('/timer') {
   Pow("public/eggs/index.html").read
 }
 
+get('/eggs?/?') {
+  describe :egg, :show
+  render_mab
+}
 
 

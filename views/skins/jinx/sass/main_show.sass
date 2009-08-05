@@ -6,8 +6,30 @@ p
   padding: 0
   margin: 0
 
+#nav_bar 
+  width: 220px
+  padding-top: 15px
+  float: left
+  border-right: 3px dashed #000
+  ul
+    li
+      display: none
+      padding: 4px 4px 6px 0
+      list-style: none
+      a
+        display: block
+        padding: 7px 5px 10px 0
+    li.selected 
+      display: block
+      text-align: left
+      padding: 10px 0 10px 10px
+      background: #fff url("/skins/jinx/images/selected_nav_bar_bg.jpg") repeat-y
+      margin-right: -3px    
+      font-weight: bold
+      border: 3px dashed #000
+        width: 3px 0 3px 3px
+
 #logo
-  width: 200px
   text-align: center
   color: #000
   p.nippon
@@ -15,29 +37,25 @@ p
     font-weight: bold
     font-size: 25px 
     padding: 0 0 8px 0  
+    margin: 0 10px
   p.english
     font-family: courier, helvetica, segoe
     font-size: 20px 
     font-weight: bold
-    border-top: 2px dashed #000
-    padding: 8px 0 0 0
+    border-top: 6px dotted #f00919
+    padding: 8px 0 
+    margin: 0 35px
 
 #timeline
-  width: 200px
   text-align: right
+  padding-bottom: 100px
+
   
-  ul
-    li
-      padding: 5px
-      list-style: none
-      a
-        padding: 5px
-  
-body  
+#the_body  
   font-family: "bitstream vera sans", helvetica, segoe
   font-size: 14px  
   
-  padding: 15px
+  padding: 0px
   margin: 0
 
   
