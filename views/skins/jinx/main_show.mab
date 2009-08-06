@@ -8,38 +8,12 @@ save_to('meta_keywords') {
   options.site_keywords
 }
 
-div( :id=> 'nav_bar' ) {
-  div( :id=>'logo') { 
-    p.nippon { "幸せな、脂肪の <br /> ウェブサイト。"}
-    p.english { "MEGA UNI" }
-    
-  }
 
-  div( :id=> 'timeline' ) {
-    
-    ul {
-      li.selected {
-        span { "Coming Soon."}
-      }     
-      li {
-        a(:href=>"/timer/") { "Timer + Alarm"}
-      }
-     
-      if options.development?
+partial('__nav_bar')
 
 
-        li {
-          a(:href=>"/sign-up/") { 'sign-up' }
-        }
-        li {
-          a(:href=>"/log-in/") { 'log-in' }
-        }    
+div.content! {
+  
 
-      end
-      
-    }
-
-  }
-
-} # div( :id=> 'nav_bar' )
+}
 

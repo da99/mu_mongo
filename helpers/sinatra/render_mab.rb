@@ -205,7 +205,7 @@ module Sinatra
                 dev_log_it "Rendering Markaby: #{template_file_name}"            
                 
             
-                mab.save_to('the_content' ) { instance_eval template_file_content } 
+                mab.save_to('the_content' ) { instance_eval template_file_content, template_file_path, 1 } 
 
                 #  =================================================================
                 # Update iv_hash for :the_content.

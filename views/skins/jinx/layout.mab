@@ -38,20 +38,18 @@ xhtml_transitional {
       div.loading! 'Loading...'
     end
 
-    div.the_wrapper! {
 
-      # ================= the_content ================================
-      div.the_content! {
-        @the_content
-      }
 
-      # ================= the_footer ================================
-      div.the_footer! {
-        span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{options.site_domain}. Some rights reserved."
-      } # the_footer
-      
+    # ================= the_content ================================
+    self << @the_content
+
+    # ================= the_footer ================================
+    div.the_footer! {
+      span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{options.site_domain}. Some rights reserved."
+    } # the_footer
     
-    }  # the_wrapper
+  
+
 
     if @javascripts
       if @javascripts.eql?( 'default' )

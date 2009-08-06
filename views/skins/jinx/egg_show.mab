@@ -19,363 +19,103 @@ save_to('title') {
 }
 
 
-div( :id=>"nav_bar" ) { 
-  div( :id=>"logo" ) { 
+save_to('opening_msg') {
     div( :id=>'current_time' ) { 
       div( :id=>'big_datetime' ) { 
         div( :id=>'big_date' ) { "------" }
         div( :id=>'big_time' ) { 
           span( :id=>'big_hour' ) { "Loading" }
-          span( :id=>'big_seconds' ) { "..." }
+          span( :id=>'big_seconds' ) { "...." }
         }
       }
     }
-    p( :class=>"english" ) { "MEGA UNI"      }
-  }
+} # === save_to
 
-  div( :id=>"timeline" ) { 
-    ul { 
-      li { 
-        a( :href=>"/" ) { "Home" }
-      }
-      li( :class=>"selected" ) { 
-        span { "Timer + Alarm"          }
-      }
-
-    }
-  }
-  
-} # === div.nav_bar!
-
+partial('__nav_bar')
 
 
 div.content! { 
   
-  h1 { "--" }
+
+  div.column.work!('')
   
-  div.column(  :id=>'work'  ) { }
+  ul.tabs { 
+    li.tab_selected { 
+      a( 'Instructions:', :href=>'#instructions', :onclick=>"Swiss.tab.select( this ); return false;" )         
+    }
+    li  { 
+      a( 'Add Egg Timer:', :href=>'#create_countdown', :onclick=>"Swiss.tab.select( this ); return false;" )   
+    }
+    li  { 
+      a( 'Add Alarm:',  :href=>'#create_alarm', :onclick=>"Swiss.tab.select( this ); return false;" ) 
+    }
+    li  { 
+      a(  'Add Note:', :href=>'#create_note', :onclick=>"Swiss.tab.select( this ); return false;" ) 
+    }
+  } # === ul.binder  
   
-  div.column.add_stuff!  {
-        ul.binder { 
-          li.instructions.selected_link { 
-            a( :href=>'#instructions', :onclick=>"Swiss.show_folder(  $(this).getParent('li'), '#add_stuff ul li', '#folders div.island' ); return false;" ) { 
-              'Instructions:'
-            }
-          }
-          li.create_countdown { 
-            a( :href=>'#create_countdown', :onclick=>"Swiss.show_folder(  $(this).getParent('li'), '#add_stuff ul li', '#folders div.island' ); return false;" ) { 
-              'Add Egg Timer:'
-            }
-          }
-          li.create_alarm { 
-            a( :href=>'#create_alarm', :onclick=>"Swiss.show_folder(  $(this).getParent('li'), '#add_stuff ul li', '#folders div.island' ); return false;" ) { 
-              'Add Alarm:'
-            }
-          }
-          li.create_note { 
-            a( :href=>'#create_note', :onclick=>"Swiss.show_folder(  $(this).getParent('li'), '#add_stuff ul li', '#folders div.island' ); return false;" ) { 
-              'Add Note:'
-            }
-          }
-        } # === ul.binder
-        
-        
-        div.folders!  { 
-          div.island.selected_folder.instructions!  { 
-            ol { 
-              li( :class=>'step step_1' ) { 
-                div.title { "Create a new alarm, note or egg timer." }
-              }
-              li( :class=>'step step_2' ) { 
-                div.title { "Turn up speaker volumn." }
-                div.body { 
-                  a.test_buzzer(  :href=>'#test_sound', :onclick=>"EggClock.start_buzzer('test');  return false;" ) { "Click here to test your speakers." }
-                  a.stop_buzzer(  :href=>'#stop_test_sound', :onclick=>"EggClock.stop_buzzer('test');  return false;" ) { "Stop test." }
-                }
-              }
-              li( :class=>'step step_3' ) { 
-                div.title { "Repeat step 1." }
-                div.body { 
-                  span { "You can add multiple countdowns/alarms/notes." }
-                }
-              }
-            }
-            div.about { 
-              p.contact { 
-                span { "Have a  complaint? Post it at:" }
-                a( :href=>'http://eggtimer.posterous.com/' ) { "http://eggtimer.posterous.com/" }
-                br 
-                "This website has only been tested on the Firefox/Ubuntu browser."
-                br  
-                
-              }
-            }
-          } # === div.instructions!
-          
-          div.island.create_note!  { 
-            div.land { 
-              form( :action=>'/', :class=>'create_egg', :id=>'form_note' , :method=>'post'  ) { 
-                div.fieldset_block.headline { 
-                  fieldset { 
-                    label { "Title:" }
-                    input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
-                  }
-                }
-                div.fieldset_block.details { 
-                  fieldset { 
-                    label { "Details:" }
-                    textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-                  }
-                }
-                div.buttons { 
-                  button.save { "Save" }
-                }
-              }
-            }
-          } # === div.create_note!          
-          
-          div.island.create_countdown!  { 
-            div.land { 
-              form( :action=>'/', :class=>'create_egg', :id=>'form_countdown' , :method=>'post'  ) { 
-                div.fieldset_block.time_units_block { 
-                  div.title { "Type in units:" }
-                  fieldset.days { 
-                    input( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
-                    label { "Days" }
-                  }
-                  fieldset { 
-                    input( :maxlength=>'3', :name=>'hours', :type=>'text' , :value=>'0'   ) 
-                    label { "Hrs." }
-                  }
-                  fieldset { 
-                    input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   )  
-                    label { "Mins." }
-                  }
-                  fieldset { 
-                    input( :maxlength=>'3', :name=>'seconds', :type=>'text' , :value=>'0'   )  
-                    label { "Secs." }
-                  }
-                }
-                div.fieldset_block.headline { 
-                  fieldset { 
-                    label { "Title:" }
-                    input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''   )  
-                  }
-                }
-                div.fieldset_block.details { 
-                  fieldset { 
-                    label { "Details:" }
-                    textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-                  }
-                }
-                div.buttons { 
-                  button.save { "Save" }
-                }
-              }
-            }
-          } # === div.create_countdown!          
 
-
-          div.island.create_alarm!  { 
-            div.land { 
-              form( :action=>'/', :class=>'create_egg', :id=>'form_alarm' , :method=>'post'  ) { 
-                div.fieldset_block.time_units_block { 
-                  div.title { "Select Time:" }
-                  fieldset { 
-                    select.hours(  :name=>'hours'  ) { 
-                      option( :selected=>'selected', :value=>'1'  ) { "1" }
-                      (2..11).to_a.each { |i|
-                        option( :value=>i ) { i.to_s }
-                      }
-                      option( :value=>'0' ) { "12" }
-                    }
-                  }
-                  fieldset { 
-                    select.minutes(  :name=>'minutes'  ) { 
-                      option( :selected=>'selected', :value=>'0'  ) { "00" }
-                      option( :value=>'15' ) { "15" }
-                      option( :value=>'30' ) { "30" }
-                      option( :value=>'45' ) { "45" }
-                    }
-                  }
-                  fieldset { 
-                    select.am_pm(  :name=>'am_pm'  ) { 
-                      option( :selected=>'selected', :value=>'am'  ) { "AM" }
-                      option( :value=>'pm' ) { "PM" }
-                    }
-                  }
-                }
-                div.fieldset_block.headline { 
-                  fieldset { 
-                    label { "Title:" }
-                    input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
-                  }
-                }
-                div.fieldset_block.details { 
-                  fieldset { 
-                    label { "Details:" }
-                    textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-                  }
-                }
-                div.buttons { 
-                  button.save.set_date_countdown!  { "Save" }
-                }
-              }
-            }
-          } # === div.create_alarm!          
-          
-        } # === div.folders
-        
-  } # == div.add_stuff!  
-} # === div.content!
-
-
-div.dom_templates!  { 
-  div.task.countdown.egg_template_countdown.egg { 
-    div.undo { 
-      div { 
-        span { "You have deleted egg timer:&nbsp;" }
-        span.short_headline { "---" }
+  div.form.tab_selected.instructions!  { 
+  
+    ol { 
+      li( :class=>'step step_1' ) { 
+        div.title "Create a new alarm, note or egg timer."
       }
-      div { 
-        a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
-      }
-    }
-    div.control_panel { 
-      div.buttons { 
-        a.pause(  :href=>'#egg_paused'  ) { "Pause" }
-        a.play(  :href=>'#egg_at_play'  ) { "Play" }
-        a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
-        a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
-        a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
-        a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
-      }
-    }
-    div.status { 
-      div.time_status { 
-        div.number { "* * * *" }
-      }
-      div.buzzer_option.selected_buzzer { 
-        input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
-        span { "Ring when done." }
-      }
-      div.time_status_in_words { "---" }
-    }
-    div.summary { 
-      h4 { "[title]" }
-      div.setting { "[x mins]" }
-      div.details_control_panel { 
-        a.show(  :href=>'#egg_show_details'  ) { "View Details" }
-        a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
-      }
-      div.details { "[details]" }
-    }
-  }
-  div.task.alarm.egg_template_alarm.egg { 
-    div.undo { 
-      div { 
-        span { "You have deleted alarm:&nbsp;" }
-        span.short_headline { "--" }
-      }
-      div { 
-        a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
-      }
-    }
-    div.control_panel { 
-      div.buttons { 
-        a.play(  :href=>'#egg_at_play'  ) { "Play" }
-        a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
-        a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
-        a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
-        a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
-      }
-    }
-    div.status { 
-      div.time_status { 
-        span.number { "* * * *" }
-      }
-      div.buzzer_option.selected_buzzer { 
-        input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   ) 
-        span { "Ring when done." }
-      }
-      div.time_status_in_words { "---" }
-    }
-    div.summary { 
-      h4 { "[title]" }
-      div.setting { "[x mins]" }
-      div.details_control_panel { 
-        a.show(  :href=>'#egg_show_details'  ) { "View Details" }
-        a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
-      }
-      div.details { "[details]" }
-    }
-  }
-  div.task.note.egg_template_note.egg { 
-    div.undo { 
-      div { 
-        span { "You have deleted note:&nbsp;" }
-        span.short_headline { "---" }
-      }
-      div { 
-        a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
-      }
-    }
-    div.control_panel { 
-      div.buttons { 
-        a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
-        a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
-        a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
-        a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
-      }
-    }
-    div.status { }
-    div.summary { 
-      h4 { "[title]" }
-      div.setting { "Note" }
-      div.details_control_panel { 
-        a.show(  :href=>'#egg_show_details'  ) { "View Details" }
-        a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
-      }
-      div.details { "[details]" }
-    }
-  }
-  div.create_note.edit_egg { 
-    div.short_headline { 
-      span { "Editing:&nbsp;" }
-      span.short_headline { }
-    }
-    div.land { 
-      form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
-        div.fieldset_block.headline { 
-          fieldset { 
-            label { "Headline:" }
-            input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''  )  
-          }
-        }
-        div.fieldset_block.details { 
-          fieldset { 
-            label { "Details:" }
-            textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-          }
-        }
-        div.buttons { 
-          button.save { "Save" }
-          button.cancel { "Cancel" }
-          button.delete {  "Delete Note" }
+      li( :class=>'step step_2' ) { 
+        div.title "Turn up speaker volumn." 
+        div.body { 
+          a.test_buzzer(  :href=>'#test_sound', :onclick=>"EggClock.start_buzzer('test');  return false;" ) { "Click here to test your speakers." }
+          a.stop_buzzer(  :href=>'#stop_test_sound', :onclick=>"EggClock.stop_buzzer('test');  return false;" ) { "Stop test." }
         }
       }
-    }
-  }
-  div.create_countdown.edit_egg { 
-    div.short_headline { 
-      span { "Editing:&nbsp;" }
-      span.short_headline { }
-    }
-    div.land { 
-      form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
+      li( :class=>'step step_3' ) { 
+        div.title  "Repeat step 1." 
+        div.body { 
+          span "You can add multiple countdowns/alarms/notes."
+        }
+      }
+    } # === ol
+    
+    div.about { 
+      p.contact { 
+        span "Have a  complaint? Post it at:"
+        a( :href=>'http://eggtimer.posterous.com/' ) { "http://eggtimer.posterous.com/" }
+        br 
+        "This website has only been tested on the Firefox/Ubuntu browser."
+        br  
+        
+      }
+    } # === div.about
+  } # === div.instructions!
+  
+  div.form.tab_unselected.create_note!  { 
+
+    form( :action=>'/', :class=>'create_egg', :id=>'form_note' , :method=>'post'  ) { 
+      div.fieldset_block.headline { 
+        fieldset { 
+          label { "Title:" }
+          input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
+        }
+      }
+      div.fieldset_block.details { 
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+        }
+      }
+      div.buttons { 
+        button.save { "Save" }
+      }
+    } # === div.form
+
+  } # === div.create_note!          
+  
+  div.form.tab_unselected.create_countdown!  { 
+
+      form( :action=>'/', :class=>'create_egg', :id=>'form_countdown' , :method=>'post'  ) { 
         div.fieldset_block.time_units_block { 
           div.title { "Type in units:" }
-          fieldset { 
+          fieldset.days { 
             input( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
             label { "Days" }
           }
@@ -384,7 +124,7 @@ div.dom_templates!  {
             label { "Hrs." }
           }
           fieldset { 
-            input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   ) 
+            input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   )  
             label { "Mins." }
           }
           fieldset { 
@@ -395,7 +135,7 @@ div.dom_templates!  {
         div.fieldset_block.headline { 
           fieldset { 
             label { "Title:" }
-            input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
+            input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''   )  
           }
         }
         div.fieldset_block.details { 
@@ -406,24 +146,21 @@ div.dom_templates!  {
         }
         div.buttons { 
           button.save { "Save" }
-          button.cancel { "Cancel" }
-          button.delete { "Delete EggTimer" }
         }
       }
-    }
-  }
-  div.create_alarm.edit_egg { 
-    div.short_headline { 
-      span { "Editing: &nbsp;" }
-      span.short_headline { }
-    }
-    div.land { 
-      form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
+
+  } # === div.create_countdown!          
+
+
+  div.form.tab_unselected.create_alarm!  { 
+
+      form( :action=>'/', :class=>'create_egg', :id=>'form_alarm' , :method=>'post'  ) { 
         div.fieldset_block.time_units_block { 
           div.title { "Select Time:" }
           fieldset { 
             select.hours(  :name=>'hours'  ) { 
-              (1..11).to_a.each { |i|
+              option( :selected=>'selected', :value=>'1'  ) { "1" }
+              (2..11).to_a.each { |i|
                 option( :value=>i ) { i.to_s }
               }
               option( :value=>'0' ) { "12" }
@@ -431,7 +168,7 @@ div.dom_templates!  {
           }
           fieldset { 
             select.minutes(  :name=>'minutes'  ) { 
-              option( :value=>'0' ) { "00" }
+              option( :selected=>'selected', :value=>'0'  ) { "00" }
               option( :value=>'15' ) { "15" }
               option( :value=>'30' ) { "30" }
               option( :value=>'45' ) { "45" }
@@ -439,7 +176,7 @@ div.dom_templates!  {
           }
           fieldset { 
             select.am_pm(  :name=>'am_pm'  ) { 
-              option( :value=>'am' ) { "AM" }
+              option( :selected=>'selected', :value=>'am'  ) { "AM" }
               option( :value=>'pm' ) { "PM" }
             }
           }
@@ -457,13 +194,260 @@ div.dom_templates!  {
           }
         }
         div.buttons { 
-          button.save { "Save" }
-          button.cancel { "Cancel" }
-          button.delete { "Delete Alarm" }
+          button.save.set_date_countdown!  { "Save" }
         }
+      }
+
+  } # === div.create_alarm!          
+        
+  
+} # === div.content!
+
+
+
+div.template.countdown { 
+  div.undo { 
+    div { 
+      span  "You have deleted egg timer: " 
+      span.short_headline  "---" 
+    }
+    div { 
+      a.undo( "Undo deletion.", :href=>'#egg_undelete'  ) 
+    }
+  }
+  div.control_panel { 
+    div.buttons { 
+      a.pause( "Pause", :href=>'#egg_paused'  )
+      a.play(  "Play", :href=>'#egg_at_play'  )
+      a.check_mark( "Check Mark This", :href=>'#egg_check_marked'  ) 
+      a.x_mark( "X Mark This" , :href=>'#egg_x_marked'  ) 
+      a.ready_to_start( "Start All Over", :href=>'#egg_ready_to_start'  ) 
+      a.edit( "Edit / Delete" , :href=>'#egg_edit'  ) 
+    }
+  }
+  div.status { 
+    div.time_status { 
+      div.number { "* * * *" }
+    }
+    div.buzzer_option.selected_buzzer { 
+      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
+      span { "Ring when done." }
+    }
+    div.time_status_in_words { "---" }
+  }
+  div.summary { 
+    h4 { "[title]" }
+    div.setting { "[x mins]" }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "[details]" }
+  }
+} # === div.template.countdown
+
+
+div.template.alarm { 
+  div.undo { 
+    div { 
+      span { "You have deleted alarm:&nbsp;" }
+      span.short_headline { "--" }
+    }
+    div { 
+      a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
+    }
+  }
+  div.control_panel { 
+    div.buttons { 
+      a.play(  :href=>'#egg_at_play'  ) { "Play" }
+      a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
+      a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
+      a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
+      a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
+    }
+  }
+  div.status { 
+    div.time_status { 
+      span.number { "* * * *" }
+    }
+    div.buzzer_option.selected_buzzer { 
+      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   ) 
+      span { "Ring when done." }
+    }
+    div.time_status_in_words { "---" }
+  }
+  div.summary { 
+    h4 { "[title]" }
+    div.setting { "[x mins]" }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "[details]" }
+  }
+} # === div.template.alarm
+
+
+div.template.note { 
+  div.undo { 
+    div { 
+      span { "You have deleted note:&nbsp;" }
+      span.short_headline { "---" }
+    }
+    div { 
+      a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
+    }
+  }
+  div.control_panel { 
+    div.buttons { 
+      a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
+      a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
+      a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
+      a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
+    }
+  }
+  div.status { }
+  div.summary { 
+    h4 { "[title]" }
+    div.setting { "Note" }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "[details]" }
+  }
+} # === div.template.note
+
+
+div.form.template.note_editor! { 
+  div.short_headline { 
+    span { "Editing:&nbsp;" }
+    span.short_headline { }
+  }
+  div.land { 
+    form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
+      div.fieldset_block.headline { 
+        fieldset { 
+          label { "Headline:" }
+          input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''  )  
+        }
+      }
+      div.fieldset_block.details { 
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+        }
+      }
+      div.buttons { 
+        button.save { "Save" }
+        button.cancel { "Cancel" }
+        button.delete {  "Delete Note" }
       }
     }
   }
-} # === div.dom_templates!
+}
+
+
+div.form.editor.countdown_editor! { 
+  div.short_headline { 
+    span { "Editing:&nbsp;" }
+    span.short_headline { }
+  }
+  div.land { 
+    form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
+      div.fieldset_block.time_units_block { 
+        div.title { "Type in units:" }
+        fieldset { 
+          input( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
+          label { "Days" }
+        }
+        fieldset { 
+          input( :maxlength=>'3', :name=>'hours', :type=>'text' , :value=>'0'   ) 
+          label { "Hrs." }
+        }
+        fieldset { 
+          input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   ) 
+          label { "Mins." }
+        }
+        fieldset { 
+          input( :maxlength=>'3', :name=>'seconds', :type=>'text' , :value=>'0'   )  
+          label { "Secs." }
+        }
+      }
+      div.fieldset_block.headline { 
+        fieldset { 
+          label { "Title:" }
+          input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
+        }
+      }
+      div.fieldset_block.details { 
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+        }
+      }
+      div.buttons { 
+        button.save { "Save" }
+        button.cancel { "Cancel" }
+        button.delete { "Delete EggTimer" }
+      }
+    }
+  }
+}
+
+
+div.form.editor.alarm_editor!  { 
+  div.short_headline { 
+    span { "Editing: &nbsp;" }
+    span.short_headline { }
+  }
+  div.land { 
+    form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
+      div.fieldset_block.time_units_block { 
+        div.title { "Select Time:" }
+        fieldset { 
+          select.hours(  :name=>'hours'  ) { 
+            (1..11).to_a.each { |i|
+              option( :value=>i ) { i.to_s }
+            }
+            option( :value=>'0' ) { "12" }
+          }
+        }
+        fieldset { 
+          select.minutes(  :name=>'minutes'  ) { 
+            option( :value=>'0' ) { "00" }
+            option( :value=>'15' ) { "15" }
+            option( :value=>'30' ) { "30" }
+            option( :value=>'45' ) { "45" }
+          }
+        }
+        fieldset { 
+          select.am_pm(  :name=>'am_pm'  ) { 
+            option( :value=>'am' ) { "AM" }
+            option( :value=>'pm' ) { "PM" }
+          }
+        }
+      }
+      div.fieldset_block.headline { 
+        fieldset { 
+          label { "Title:" }
+          input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
+        }
+      }
+      div.fieldset_block.details { 
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+        }
+      }
+      div.buttons { 
+        button.save { "Save" }
+        button.cancel { "Cancel" }
+        button.delete { "Delete Alarm" }
+      }
+    }
+  }
+} # === div.edit_alarm
+
   
   

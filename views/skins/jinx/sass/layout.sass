@@ -1,7 +1,9 @@
 @import compass/reset.sass
 @import compass/utilities/lists/horizontal_list.sass
 
-!nav_bar_font_size = 11px
+
+!nav_bar_width = 200px
+!nav_bar_font_size = 13px
 !h3_font_size = 12px
 !p_font_size = 14px
 !small_p_font_size = 12px
@@ -25,7 +27,7 @@
 
 !link_on_black_bg = #ff9
 !link_on_light_bg = #f00919
-!bg = #EEEEFF
+!bg_color = #fff
 
 !text_box_font_size = 20px
 !text_box_border = #BEBEBE
@@ -33,7 +35,7 @@
 !text_box_bg = #EAEAF0
 !text_box_bg_dark = #D6D6D6
 
-!sans_serif = "'Helvetica Neue','HelveticaNeue',Helvetica,Arial,sans-serif"
+!sans_serif = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
 !serif = "'Century Schoolbook L', 'Times New Roman', 'Times', serif"
 !black_text = #242424
 !orange = #FFE759
@@ -75,15 +77,22 @@ h3
     weight: bold
 
 a:link, a:visited
-  color = !link_on_light_bg
+  color = !red
   text-transform: uppercase
   font:
     family = !sans_serif
     weight: bold
 a:hover, a:active
-  color = !red
+  color: #fff
+  background= !red
 
 
+#the_body
+  padding: 0
+    left= !nav_bar_width
+  font-family= !sans_serif
+  background= !bg_color 
+  
 #the_timestamp
   display: none
 
@@ -121,20 +130,112 @@ a:hover, a:active
     div.msg
       color: #fff
 
-body
-  padding: 0
-  font-family = !sans_serif
-  background: transparent url("/skins/jinx/images/body_bg.jpg") repeat-x
-    color= !bg 
 
-#the_content
-  padding-bottom: 20px
 
-       
+
+
+#nav_bar 
+  background: #fff
+  width= !nav_bar_width
+  padding-top: 15px
+  position: absolute
+  top: 0
+  left: 0
+  ul
+    padding: 0 0 0 20px
+    margin: 0
+    li
+      text-transform: uppercase
+      padding: 4px
+      margin: 0
+      list-style: none
+      font-size= !nav_bar_font_size
+      a
+        display: block
+        padding: 7px 5px 10px 0
+    li.selected 
+      text-align: left
+      padding: 8px 0 8px 8px
+      margin-left: 4px
+      background: #fff url("/skins/jinx/images/selected_nav_bar_bg.jpg") repeat-y
+      margin-right: -3px    
+      font-weight: bold
+      border: 2px dashed #000
+        width: 1px 0 1px 1px
+
+
+
+#content
+  
+  padding: 20px
+  border-left: 1px dashed #000
 
 #the_footer
   display: none
   text-align: left
   font:
     size: 80%
+    
+    
+#logo
+  text-align: center
+  color: #000
+  p.nippon
+    font-family: sans-serif
+    font-weight: bold
+    font-size: 25px 
+    padding: 0 0 8px 0  
+    margin: 0 10px
+  p.english
+    font-family: courier, helvetica, segoe
+    font-size: 20px 
+    font-weight: bold
+    border-top: 6px dotted #f00919
+    padding: 8px 0 
+    margin: 0 35px
+
+#timeline
+  text-align: right
+  padding-bottom: 100px
+
+
+
+ul.tabs
+  +no-bullets
+  +clearfix
+  padding: 0 0 0 16px
+  position: relative
+  top: 1px
+  li
+    text-align: center
+    float: left
+    a:link, a:visited, a:active, a:hover
+      display: block
+      font-size= !nav_bar_font_size
+      text-transform: uppercase
+      padding: 5px 10px 4px 10px
+      margin: 0 5px
+    &.tab_selected
+      a:link, a:active, a:hover, a:visited
+        cursor: default
+        text-decoration: none
+        color: #000
+        background: #ff9
+        border: 1px solid #fff
+          color = !text_box_border
+          width: 1px 1px 0 1px
+
+div.tab_selected
+  display: block
+
+
+div.tab_unselected
+  display: none
+  
+  
+div.form
+  background: #ff9
+  padding: 15px
+  border: 1px solid #000  
+    color = !text_box_border
 

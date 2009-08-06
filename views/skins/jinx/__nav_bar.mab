@@ -1,0 +1,41 @@
+div( :id=>"nav_bar" ) { 
+
+  div( :id=>"logo" ) { 
+    if @opening_msg
+      self << @opening_msg
+    else
+      p.nippon { "幸せな、脂肪の <br /> ウェブサイト。"}
+    end
+    p.english { "MEGA UNI" }
+  }
+
+  div( :id=>"timeline" ) { 
+    ul { 
+      [ ['/', 'Home', :main, :show], ['/egg', 'Timer + Alarm', :egg, :show] ].each { |path, text, c_name, a_name|
+        if current_action[:controller] == c_name && current_action[:action] == a_name
+          li.selected { 
+            span text
+          }        
+        else
+          li { 
+            a( text, :href=> path )
+          }
+        end
+      } # === each
+      
+      if options.development?
+
+
+        li {
+          a(:href=>"/sign-up") { 'sign-up' }
+        }
+        li {
+          a(:href=>"/log-in") { 'log-in' }
+        }    
+
+      end      
+      
+    } # === ul
+  } # === div
+  
+} # === div.nav_bar!

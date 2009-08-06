@@ -249,13 +249,16 @@ Swiss.dom = {
  * Handle JavaScript hide/show tabs. Example:
  *   ul
  *     li.tab_selected
- *        a :onclick=> 'Swiss.tab.select(this); return false;'
+ *        a :href=>'#folder_1', :onclick=> 'Swiss.tab.select(this); return false;'
  *     li
  *     li
- *   div.folder_1.tab_selected
- *   div.folder_2.tab_unselected
+ *   div.tab_selected.folder_1!
+ *   div.tab_unselected.folder_2!
  *
  * Give the folders a class of :tab_unselected to hide them.
+ * It does not matter that UL has no class.
+ * Class 'tab_selected' was chosen to prevent classing from possible
+ * future features.
  *
  * ========== OPTIONAL:
  * :page_finished is already included in Swiss.loading.page_finished.
