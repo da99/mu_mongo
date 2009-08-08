@@ -9,8 +9,10 @@ save_to('description') {
 
 save_to('javascripts') {
   script_tag('/js/vendor/jquery.1.3.2.min.js')
-  script_tag('/eggs/js/vendor/soundmanager2/script/soundmanager2.js')
-  script_tag('/javascripts/pages/egg_show.js')
+  script_tag('/js/vendor/jquery.cookie.js')
+  # script_tag('/eggs/js/vendor/soundmanager2/script/soundmanager2.js')
+  script_tag('/js/pages/egg_show.js')
+  script_tag('/js/swiss.js')
 }
 
 
@@ -92,9 +94,9 @@ div.content! {
 
     form( :action=>'/', :class=>'create_egg', :id=>'form_note' , :method=>'post'  ) { 
       div.fieldset_block.headline { 
-        fieldset { 
+        fieldset.input_text { 
           label { "Title:" }
-          input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
+          input.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
         }
       }
       div.fieldset_block.details { 
@@ -115,25 +117,25 @@ div.content! {
       form( :action=>'/', :class=>'create_egg', :id=>'form_countdown' , :method=>'post'  ) { 
         div.fieldset_block.time_units_block { 
           div.title { "Type in units:" }
-          fieldset.days { 
+          fieldset.input_text.days { 
             input( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
             label { "Days" }
           }
-          fieldset { 
+          fieldset.input_text { 
             input( :maxlength=>'3', :name=>'hours', :type=>'text' , :value=>'0'   ) 
             label { "Hrs." }
           }
-          fieldset { 
+          fieldset.input_text { 
             input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   )  
             label { "Mins." }
           }
-          fieldset { 
+          fieldset.input_text { 
             input( :maxlength=>'3', :name=>'seconds', :type=>'text' , :value=>'0'   )  
             label { "Secs." }
           }
         }
         div.fieldset_block.headline { 
-          fieldset { 
+          fieldset.input_text { 
             label { "Title:" }
             input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''   )  
           }
@@ -182,7 +184,7 @@ div.content! {
           }
         }
         div.fieldset_block.headline { 
-          fieldset { 
+          fieldset.input_text { 
             label { "Title:" }
             input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
           }

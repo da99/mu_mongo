@@ -1,6 +1,4 @@
-# <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-# <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-xhtml_transitional {
+xhtml_strict  {
 
   head {
     meta( :'http-equiv'=>"Content-Script-Type" , :content=>"text/javascript" )
@@ -31,42 +29,41 @@ xhtml_transitional {
   } # head
 
   body.the_body! {
-
-    div.the_timestamp! to_js_epoch_time(Time.now.utc.to_i).to_s
-
-    if @loading
-      div.loading! 'Loading...'
-    end
-
-
-
-    # ================= the_content ================================
-    self << @the_content
-
-    # ================= the_footer ================================
-    div.the_footer! {
-      span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{options.site_domain}. Some rights reserved."
-    } # the_footer
+    div.container! { 
     
-  
+      div.timestamp! to_js_epoch_time(Time.now.utc.to_i).to_s
 
-
-    if @javascripts
-      if @javascripts.eql?( 'default' )
-        text [ script_tag('/js/vendor/jquery.1.3.2.min.js'),
-                  script_tag('/js/vendor/jquery.cookie.js') ,
-                  script_tag('/js/swiss.js'),
-                ''
-              ].join("\n")
-       
-        self << "\n"      
-        self <<  script_tag("#{page_name}.js")
-      else
-        self << @javascripts
+      if @loading
+        div.loading! 'Loading...'
       end
 
-    end
+      # ================= the_content ================================
+      self << @the_content
+
+      # ================= the_footer ================================
+      div.footer! {
+        span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{options.site_domain}. Some rights reserved."
+      } # the_footer
+      
     
+
+
+      if @javascripts
+        if @javascripts.eql?( 'default' )
+          text [ script_tag('/js/vendor/jquery.1.3.2.min.js'),
+                    script_tag('/js/vendor/jquery.cookie.js') ,
+                    script_tag('/js/swiss.js'),
+                  ''
+                ].join("\n")
+         
+          self << "\n"      
+          self <<  script_tag("#{page_name}.js")
+        else
+          self << @javascripts
+        end
+
+      end
+    } # === container
   } # the_body
 }
 

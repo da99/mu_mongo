@@ -189,6 +189,7 @@ module Sinatra
                 sin = SinatraMabWrapper.new
                 sin.app_scope= self                
                 mab  = Markaby::Builder.new( iv_hash, sin )
+                mab_orig_vars = mab.instance_variables
 
                 # Add dirs of templates to Markaby to help find partials. ========
                 mab.add_template_root( skins_dir )
@@ -211,9 +212,26 @@ module Sinatra
                 # Update iv_hash for :the_content.
                 # Grab & Render Markaby content for layout.
                 dev_log_it "Rendering Markaby layout: #{layout_file_name}" 
-                mab.instance_eval(  layout_file_content,  layout_file_path  ).to_s
-              
-            end # === render_mab           
+                partial_vars_hash = mab.instance_variables.inject({}) { |m, iv|
+                                       key = iv.gsub('@', '').to_sym
+                                       unless mab_orig_vars.include?( "@#{iv}" )
+                                        m[key] = mab.instance_variable_get(iv) 
+                                       end
+                                       m
+                                    }                   
+                Markaby::Builder.new( partial_vars_hash , sin ) {
+                  instance_eval(  layout_file_content,  layout_file_path  )
+                }.to_s
+                
+            end # === render_mab   
+            
+            def instance_variables_to_hash( target ) 
+                target.instance_variables.inject({}) { |m, iv|
+                   key = iv.gsub('@', '').to_sym
+                   m[key] = target.instance_variable_get(iv)
+                   m
+                }              
+            end        
         end # === module: Helpers
     end # === module: RenderMab
     
