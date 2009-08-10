@@ -1,17 +1,78 @@
 @import layout.sass
 
++dev_bg
 
+#big_clock
+  padding: 0 15px 10px 0
+  p 
+    padding: 0
+    text-transform: uppercase
+    font-weight: bold
+  p.day
+    font-size: 12px
+    color= !grey
+  p.date
+    font-size: 15px
+    color= !dark_grey
+  p.time
+    font-size: 25px
+    color= !red
+    font-family: monospace
+  p.seconds
+    font-size: 12px
+    font-style: italic
+    text-transform: lowercase
+
+#instructions
+  ol
+    font-weight: bold
+    color: #003860
+    margin-left: 0
+    padding: 20px
+    li
+      margin: 0
+      list-style-type: none
+      padding: 0 0 35px 35px
+      line-height: 1em
+      font-size: 20px   
+      background: transparent url("/skins/jinx/images/i_one.jpg") no-repeat
+      div.body
+        font-size: 18px
+        font-weight: bold
+        text-transform: none  
+        color= #000
+        a
+          font-size: 18px
+          text-transform: none
+    li.one
+      background-image: url("/skins/jinx/images/i_one.jpg")
+      background-position: 3px 0
+    li.two
+      background-image: url("/skins/jinx/images/i_two.jpg")
+      a.stop
+        display: none
+
+    li.three
+      background-image: url("/skins/jinx/images/i_three.jpg")  
+      background-position: 3px 0
+
+#create_countdown
+  
+  div.time_units_block
+    fieldset
+      padding-right: 20px
+      input.text
+        width: 50px
+      
+    
 div.template
   display: none
 
 div.editor
   display: none
   
-#instructions
-  ol
-    list-style-type: decimal
-    margin: 0 0 0 40px
-    li
-      line-height: 1em
-      font-size: 120%    
-      padding: 0 0 20px 0
+#loading
+  display: block
+  
+#content
+  display: none  

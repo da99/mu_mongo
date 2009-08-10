@@ -11,7 +11,11 @@ div( :id=>"nav_bar" ) {
 
 
   ul { 
-    [ ['/', 'Home', :main, :show], ['/egg', 'Timer + Alarm', :egg, :show] ].each { |path, text, c_name, a_name|
+    [ 
+      ['/', 'Home', :main, :show], 
+      ['/egg', 'Timer + Alarm', :egg, :show],
+      ['/help', 'Help', :main, :help]
+    ].each { |path, text, c_name, a_name|
       if current_action[:controller] == c_name && current_action[:action] == a_name
         li.selected { 
           span text

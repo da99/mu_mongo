@@ -13,8 +13,8 @@ partial('__nav_bar')
 
 
 div.content! { 
-  div.summary! { "<p>this is a summary.</p>" * 10 }
-  div.article! { "<p>this is the main content.</p>" * 10   }
+  div.form.summary! { "<p>this is a summary.</p>" * 10 }
+  div.form.article! { "<p>this is the main content.</p>" * 10   }
   
 }
 

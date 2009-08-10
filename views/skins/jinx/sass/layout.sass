@@ -1,13 +1,10 @@
 @import compass/utilities/lists/horizontal_list.sass
-@import compass/utilities/general/reset.sass
+@import blueprint/_reset.sass
 @import 960/grid.sass
-@import 960/text.sass
 
-+global-reset
-+text
-
-
-
+p
+  padding-bottom: 10px
+  margin-bottom: 0
 
 !red = #F00919
 !blue = #33CCFF
@@ -34,25 +31,47 @@
 !custom_black_text = #242424
 !custom_orange = #FFE759
 
-!custom_title_bg = #DAE6B4
+!light_green = #DAE6B4
 
 =dev_bg
   #the_body
     background: #fff url("/16_col.gif") repeat-y center center
   #container
-    border-top: 2px solid red  
-    border-top= !nav_bar_border "solid" #000
+    border-top= 2px "solid" #000
+
+=input_text
+  font-size: 22px
+  font-weight: bold
+  font-family: courier, monospace
 
 !ninesixty_columns = 16
 
-!nav_bar_border = 3px
+!nav_bar_border = 2px
 !nav_bar_width = 220px
 
-#timestamp, #loading
+
+  
+a:link, a:visited
+  color = !red
+  text-transform: uppercase
+  border: 1px dotted transparent
+  font:
+    family = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
+    weight: bold
+
+a:hover, a:active
+  color: #fff
+  background: #E40051
+  border: 1px dotted #fff
+
+    
+#timestamp
   display: none
 
-#the_body
 
+
+#the_body
+  :font= "13px/1.5" "Helvetica, Arial, 'Liberation Sans', FreeSans, sans-serif"
   
 #container
   +grid-container
@@ -66,72 +85,119 @@
   float: none
   display: block
   position: absolute
-  
+  padding: 0 0 200px 0
+  border-right= !nav_bar_border  "dashed" #000
   ul
     +no-bullets
-    margin-left: 20px
-    text-align: center
+    margin-left: 50px
+    text-align: right
     li
-      margin: 0 0 15px 0
+      margin: 0 -2px 0 0
       span
         display: block
         padding: 5px 15px 5px 5px
+        margin: 3px 0 
         border= !nav_bar_border  "dashed" #000
           right-width: 0  
         background: #fff url("/skins/jinx/images/selected_nav_bar_bg.jpg") repeat-y
         font-weight: bold
         text-transform: uppercase      
-      a
+      a:link, a:visited
         display: block
         padding: 5px 15px 5px 5px
         text-transform: uppercase
         font-weight: bold
         color: #f00919
-        margin-right= !nav_bar_border * 3
-        margin-left=  !nav_bar_border * 2
-      a:hover
+      a:hover, a:active
         color: #fff
-        background: #f00919
+        background: #E40051
+        
   #logo
-    text-align: center
+    text-align: right
     color: #000
+    padding-bottom: 5px
     p.nippon
       font-family: sans-serif
       font-weight: bold
       font-size: 25px 
       line-height: 1.3em
-      padding: 0 0 9px 0  
+      padding: 0 15px 5px 0
       margin: 0 
     p.english
       font-family: courier, monospace
       font-size: 20px 
       font-weight: bold
-      border-top: 8px dotted #f00919
-      padding: 5px 0 30px 0 
-      margin: 0 30px 0 37px
+      border-top: 2px dotted #f00919
+      padding: 2px 0 0 0
+      margin: 0 15px 0 0
+
+#loading
+  +input_text
+  +grid(12)
+  +grid-prefix(4)
+  text-align: center
+
 
 #content
-  width= 720px - !ninesixty_gutter_width
-  padding-left= 20px 
-  margin-right: 10px
-  float: right
-  border-left= !nav_bar_border "dashed" #000
+  padding-bottom: 50px
+  +grid(12)
+  +grid-prefix(4)
+
+div.tab_selected
+  display: block
+div.tab_unselected
+  display: none
   
+ul.tabs
+  +horizontal-list
+  margin-bottom: -1px
+  padding-left: 15px
+  a:link, a:visited, a:hover, a:active
+    padding: 5px 5px 8px 5px 
+  li
+    padding: 5px
+  li.tab_selected
+    background= !light_grey   
+    border= 1px "solid" #717171
+      bottom: 0
+    a:link, a:visited, a:hover, a:active
+      background: transparent
+      color: #00233C
+      padding-bottom: 12px
+      text-decoration: none
   
-#summary
-  +grid(2)
-  +alpha
-  background: #ff1
+div.form
+  background= !light_grey   
+  border= 1px "solid" #717171
   
-#article
-  +grid(10)
-  +omega    
-  background: #ff4
+
+form  
+  padding: 20px
+  label, div.title
+    text-transform: uppercase
+    font-weight: bold
+    color: #003860
+    display: block
+  fieldset
+    input.text, select, option, textarea
+      +input_text
+    input.text, textarea
+      width: 600px
+    padding: 0 0 15px 0
+  div.group
+    +clearfix
+    fieldset
+      float: left
+  div.buttons
+    button
+      text-transform: uppercase
+
   
 #footer
   +grid-unit-base
   +grid-width(12)
-  
+  +grid-prefix(4)
+  display: none
 
 
 

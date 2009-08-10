@@ -1,3 +1,5 @@
+
+
 save_to('keywords') {
   'online web timer'
 } 
@@ -8,11 +10,13 @@ save_to('description') {
 
 
 save_to('javascripts') {
+
+  # script_tag('/js/vendor/soundmanager2/script/soundmanager2.js')
   script_tag('/js/vendor/jquery.1.3.2.min.js')
   script_tag('/js/vendor/jquery.cookie.js')
-  # script_tag('/eggs/js/vendor/soundmanager2/script/soundmanager2.js')
-  script_tag('/js/pages/egg_show.js')
   script_tag('/js/swiss.js')
+  script_tag('/js/pages/egg_show.js')
+  
 }
 
 
@@ -22,19 +26,17 @@ save_to('title') {
 
 
 save_to('opening_msg') {
-    div( :id=>'current_time' ) { 
-      div( :id=>'big_datetime' ) { 
-        div( :id=>'big_date' ) { "------" }
-        div( :id=>'big_time' ) { 
-          span( :id=>'big_hour' ) { "Loading" }
-          span( :id=>'big_seconds' ) { "...." }
-        }
-      }
+    div( :id=>'big_clock' ) { 
+      p.day "Saturday"
+      p.date "Aug. 8, 2009"
+      p.time  "3:03 PM" 
+      p.seconds "22 seconds"
     }
 } # === save_to
 
 partial('__nav_bar')
 
+div.loading! "Loading..."
 
 div.content! { 
   
@@ -42,17 +44,21 @@ div.content! {
   div.column.work!('')
   
   ul.tabs { 
+  
     li.tab_selected { 
       a( 'Instructions:', :href=>'#instructions', :onclick=>"Swiss.tab.select( this ); return false;" )         
     }
+    
     li  { 
-      a( 'Add Egg Timer:', :href=>'#create_countdown', :onclick=>"Swiss.tab.select( this ); return false;" )   
+      a( 'Egg Timer:', :href=>'#create_countdown', :onclick=>"Swiss.tab.select( this ); return false;" )   
     }
+    
     li  { 
-      a( 'Add Alarm:',  :href=>'#create_alarm', :onclick=>"Swiss.tab.select( this ); return false;" ) 
+      a( 'Time Alarm:',  :href=>'#create_alarm', :onclick=>"Swiss.tab.select( this ); return false;" ) 
     }
+       
     li  { 
-      a(  'Add Note:', :href=>'#create_note', :onclick=>"Swiss.tab.select( this ); return false;" ) 
+      a( 'Notes:',  :href=>'#create_note', :onclick=>"Swiss.tab.select( this ); return false;" ) 
     }
   } # === ul.binder  
   
@@ -60,54 +66,52 @@ div.content! {
   div.form.tab_selected.instructions!  { 
   
     ol { 
-      li( :class=>'step step_1' ) { 
+      
+      li.one  { 
         div.title "Create a new alarm, note or egg timer."
       }
-      li( :class=>'step step_2' ) { 
+      
+      li.two  { 
         div.title "Turn up speaker volumn." 
         div.body { 
-          a.test_buzzer(  :href=>'#test_sound', :onclick=>"EggClock.start_buzzer('test');  return false;" ) { "Click here to test your speakers." }
-          a.stop_buzzer(  :href=>'#stop_test_sound', :onclick=>"EggClock.stop_buzzer('test');  return false;" ) { "Stop test." }
+          a.start( :href=>'#test_sound', :onclick=>"EggClock.start_buzzer('test');  return false;" ) { "Click here to test your speakers." }
+          a.stop(  :href=>'#stop_test_sound', :onclick=>"EggClock.stop_buzzer('test');  return false;" ) { "Stop test." }
         }
       }
-      li( :class=>'step step_3' ) { 
+      
+      li.three  { 
         div.title  "Repeat step 1." 
         div.body { 
           span "You can add multiple countdowns/alarms/notes."
         }
       }
+      
     } # === ol
     
-    div.about { 
-      p.contact { 
-        span "Have a  complaint? Post it at:"
-        a( :href=>'http://eggtimer.posterous.com/' ) { "http://eggtimer.posterous.com/" }
-        br 
-        "This website has only been tested on the Firefox/Ubuntu browser."
-        br  
-        
-      }
-    } # === div.about
   } # === div.instructions!
   
   div.form.tab_unselected.create_note!  { 
 
     form( :action=>'/', :class=>'create_egg', :id=>'form_note' , :method=>'post'  ) { 
-      div.fieldset_block.headline { 
-        fieldset.input_text { 
-          label { "Title:" }
-          input.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
-        }
-      }
-      div.fieldset_block.details { 
+    
+
         fieldset { 
-          label { "Details:" }
-          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+          label { "Title:" }
+          input.text(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
         }
-      }
+
+    
+
+        fieldset.textarea { 
+          label { "Details:" }
+          textarea(  '', :cols=>'10', :name=>'details' , :rows=>'5'  )  
+        }
+
+    
       div.buttons { 
-        button.save { "Save" }
+        button.save  "Save & Post" 
       }
+      
     } # === div.form
 
   } # === div.create_note!          
@@ -115,41 +119,50 @@ div.content! {
   div.form.tab_unselected.create_countdown!  { 
 
       form( :action=>'/', :class=>'create_egg', :id=>'form_countdown' , :method=>'post'  ) { 
-        div.fieldset_block.time_units_block { 
+
+        div.time_units_block.group { 
+          
           div.title { "Type in units:" }
+          
           fieldset.input_text.days { 
-            input( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
-            label { "Days" }
+            input.text( :maxlength=>'3', :name=>'days', :type=>'text' , :value=>'0'   ) 
+            label  "Days" 
           }
+          
           fieldset.input_text { 
-            input( :maxlength=>'3', :name=>'hours', :type=>'text' , :value=>'0'   ) 
-            label { "Hrs." }
+            input.text( :maxlength=>'3', :name=>'hours', :type=>'text' , :value=>'0'   ) 
+            label  "Hrs." 
           }
+          
           fieldset.input_text { 
-            input( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   )  
-            label { "Mins." }
+            input.text( :maxlength=>'3', :name=>'minutes', :type=>'text' , :value=>'15'   )  
+            label  "Mins." 
           }
+          
           fieldset.input_text { 
-            input( :maxlength=>'3', :name=>'seconds', :type=>'text' , :value=>'0'   )  
-            label { "Secs." }
+            input.text( :maxlength=>'3', :name=>'seconds', :type=>'text' , :value=>'0'   )  
+            label  "Secs." 
           }
+          
+        } # === div.time_units_block
+        
+
+        fieldset { 
+          label  "Title:" 
+          input.text(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''   )  
         }
-        div.fieldset_block.headline { 
-          fieldset.input_text { 
-            label { "Title:" }
-            input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>''   )  
-          }
+        
+
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name( ' ', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
         }
-        div.fieldset_block.details { 
-          fieldset { 
-            label { "Details:" }
-            textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-          }
-        }
+
         div.buttons { 
-          button.save { "Save" }
+          button.save "Save & Run" 
         }
-      }
+        
+      } # === form
 
   } # === div.create_countdown!          
 
@@ -157,8 +170,10 @@ div.content! {
   div.form.tab_unselected.create_alarm!  { 
 
       form( :action=>'/', :class=>'create_egg', :id=>'form_alarm' , :method=>'post'  ) { 
-        div.fieldset_block.time_units_block { 
-          div.title { "Select Time:" }
+
+        div.title  "Select Time:" 
+        
+        div.group {
           fieldset { 
             select.hours(  :name=>'hours'  ) { 
               option( :selected=>'selected', :value=>'1'  ) { "1" }
@@ -168,6 +183,7 @@ div.content! {
               option( :value=>'0' ) { "12" }
             }
           }
+          
           fieldset { 
             select.minutes(  :name=>'minutes'  ) { 
               option( :selected=>'selected', :value=>'0'  ) { "00" }
@@ -176,29 +192,34 @@ div.content! {
               option( :value=>'45' ) { "45" }
             }
           }
+          
           fieldset { 
             select.am_pm(  :name=>'am_pm'  ) { 
               option( :selected=>'selected', :value=>'am'  ) { "AM" }
               option( :value=>'pm' ) { "PM" }
             }
           }
+        
+        } # === div.group
+        
+        fieldset { 
+          label { "Title:" }
+          input.text(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
         }
-        div.fieldset_block.headline { 
-          fieldset.input_text { 
-            label { "Title:" }
-            input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
-          }
+
+        
+
+        fieldset { 
+          label { "Details:" }
+          textarea.text.name( '', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
         }
-        div.fieldset_block.details { 
-          fieldset { 
-            label { "Details:" }
-            textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
-          }
-        }
+
+        
         div.buttons { 
-          button.save.set_date_countdown!  { "Save" }
+          button.save.set_date_countdown!  "Save & Run" 
         }
-      }
+        
+      } # === form 
 
   } # === div.create_alarm!          
         
@@ -337,13 +358,13 @@ div.form.template.note_editor! {
       div.fieldset_block.details { 
         fieldset { 
           label { "Details:" }
-          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+          textarea.text.name( '', :cols=>'10', :name=>'details' , :rows=>'5'  )
         }
       }
       div.buttons { 
-        button.save { "Save" }
-        button.cancel { "Cancel" }
-        button.delete {  "Delete Note" }
+        button.save  "Save" 
+        button.cancel  "Cancel" 
+        button.delete   "Delete Note" 
       }
     }
   }
@@ -385,13 +406,13 @@ div.form.editor.countdown_editor! {
       div.fieldset_block.details { 
         fieldset { 
           label { "Details:" }
-          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+          textarea.text.name(  '', :cols=>'10', :name=>'details' , :rows=>'5'  )  
         }
       }
       div.buttons { 
-        button.save { "Save" }
-        button.cancel { "Cancel" }
-        button.delete { "Delete EggTimer" }
+        button.save  "Save" 
+        button.cancel  "Cancel" 
+        button.delete  "Delete EggTimer" 
       }
     }
   }
@@ -439,13 +460,13 @@ div.form.editor.alarm_editor!  {
       div.fieldset_block.details { 
         fieldset { 
           label { "Details:" }
-          textarea.text.name(  :cols=>'10', :name=>'details' , :rows=>'5'  ) { }
+          textarea.text.name(  '', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
         }
       }
       div.buttons { 
-        button.save { "Save" }
-        button.cancel { "Cancel" }
-        button.delete { "Delete Alarm" }
+        button.save  "Save" 
+        button.cancel  "Cancel" 
+        button.delete  "Delete Alarm" 
       }
     }
   }

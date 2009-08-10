@@ -399,9 +399,11 @@ Swiss.tab = {
 
       if(li == LI) {
         Swiss.tab.css_select(li, folder );
+        $(folder).show();
         Swiss.tab.record_to_history( UL, index);
       } else {
         Swiss.tab.css_deselect( li , folder );
+        $(folder).hide();
       };
 
     });
