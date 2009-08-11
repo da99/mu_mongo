@@ -64,6 +64,10 @@ helpers do # ===============================
     
     # === Member related helpers ========================
     
+    def socket_and_host
+      "http#{ using_ssl? ? 's' : '' }://#{request.host}"
+    end
+    
     def using_ssl?
       (env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] =='https' || env['rack.url_scheme'] == 'https' || request.port == 443)
     end

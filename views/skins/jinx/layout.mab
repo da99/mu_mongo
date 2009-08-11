@@ -26,7 +26,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 
     title( @title || ' ---- ' )
 
-    link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
+    link( :rel=>"shortcut icon", :href=>"#{socket_and_host}/favicon.ico", :type=>"image/x-icon")
     link( :rel=>"stylesheet",    :href=>"/skins/#{skin_name}/css/#{page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
     
     if @head_content

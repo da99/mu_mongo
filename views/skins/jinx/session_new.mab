@@ -24,7 +24,7 @@ div.content! {
     }
     
     div.buttons {
-      button.create 'Login', :onclick=>"document.getElementById('login_form').submit(); return false;" 
+      button.create 'Log-in', :onclick=>"document.getElementById('login_form').submit(); return false;" 
     }
     
   } # === form.login_form!
