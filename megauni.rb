@@ -50,14 +50,25 @@ end # === configure
 # Filters
 # ===============================================
 before {
-            
+    
+    # Redirect to SSL
+    # SSL detection from: http://www.ruby-forum.com/topic/155956
+    if !(env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] =='https' || env['rack.url_scheme'] == 'https' || request.port == 443)
+      if request.cookies["logged_in"]
+        if request.post?
+          raise "POST not allowed using unsecure line." 
+        end
+        redirect 'https://' + request.url.sub('http://', '') , 307 # temporary redirect
+      end
+    end
+    
     # Chop off trailing slash and use a  permanent redirect.
     if request.get? && 
         request.path_info != '/' &&
           request.path_info[ request.path_info.size - 1 , 1] == '/'
-      new_path = request.path_info.sub(/\/$/, '' )
-      new_path += "?#{request.query_string}"if !request.query_string.empty?
-      redirect( new_path , 301 )  
+      # new_path = request.path_info
+      # new_path += "?#{request.query_string}"if !request.query_string.empty?
+      redirect( request.url.sub('/?', '/').sub(/\/$/, '' ) , 301 )  
     end 
                
     # url must not be blank. Sometimes I get error reports where the  URL is blank.

@@ -1,3 +1,6 @@
+save_to('title') {
+  'Egg Timer'
+}
 
 
 save_to('keywords') {
@@ -11,7 +14,7 @@ save_to('description') {
 
 save_to('javascripts') {
 
-  # script_tag('/js/vendor/soundmanager2/script/soundmanager2.js')
+  script_tag('/js/vendor/soundmanager2/script/soundmanager2.js')
   script_tag('/js/vendor/jquery.1.3.2.min.js')
   script_tag('/js/vendor/jquery.cookie.js')
   script_tag('/js/swiss.js')
@@ -20,17 +23,14 @@ save_to('javascripts') {
 }
 
 
-save_to('title') {
-  'Online Egg Timer'
-}
 
 
 save_to('opening_msg') {
     div( :id=>'big_clock' ) { 
-      p.day "Saturday"
-      p.date "Aug. 8, 2009"
-      p.time  "3:03 PM" 
-      p.seconds "22 seconds"
+      p.day "---"
+      p.date "----"
+      p.time  "---" 
+      p.seconds "----"
     }
 } # === save_to
 
@@ -41,7 +41,208 @@ div.loading! "Loading..."
 div.content! { 
   
 
-  div.column.work!('')
+  div.work! {
+div.countdown.job { 
+  div.undo(:style=>'display: none') { 
+    div { 
+      span  "You have deleted egg timer: " 
+      span.short_headline  "---" 
+    }
+    div { 
+      a.undo( "Undo deletion.", :href=>'#egg_undelete'  ) 
+    }
+  }
+
+  div.status { 
+    a.play 'Play', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    div.time_status { 
+      
+      span.number '9'
+      span.unit 'm'
+      span.number '19'
+      span.unit 's'
+    }
+    a.pause 'Pause', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    div.buzzer_option.selected_buzzer { 
+      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
+      span { "Ring when done." }
+    }
+    
+  }
+  div.summary { 
+    h4 { "Dinner's ready" }
+    div.setting { "9 min countdown" }
+    ul.control_panel { 
+      li {
+        a.check_mark( "Check Mark", :href=>'#egg_check_marked'  ) 
+      }
+      li {
+        a.x_mark( "X Mark" , :href=>'#egg_x_marked'  ) 
+      }
+
+      li {
+        a.edit( "Edit / Delete" , :href=>'#egg_edit'  ) 
+      }
+    }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "Travel to Europe." }
+  }
+} # === div.countdown
+
+
+div.countdown.job.running { 
+  div.undo(:style=>'display: none') { 
+    div { 
+      span  "You have deleted egg timer: " 
+      span.short_headline  "---" 
+    }
+    div { 
+      a.undo( "Undo deletion.", :href=>'#egg_undelete'  ) 
+    }
+  }
+
+  div.status { 
+    a.play 'Play', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    div.time_status { 
+      span.unit '-'
+      span.number '8'
+      span.unit 'm'
+      span.number '12'
+      span.unit 's'
+    }
+    a.pause 'Pause', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    div.buzzer_option.selected_buzzer { 
+      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
+      span { "Ring when done." }
+    }
+    
+  }
+  div.summary { 
+    h4 { "Dinner's ready" }
+    div.setting { "9 min countdown" }
+    ul.control_panel { 
+      li {
+        a.check_mark( "Check Mark", :href=>'#egg_check_marked'  ) 
+      }
+      li {
+        a.x_mark( "X Mark" , :href=>'#egg_x_marked'  ) 
+      }
+
+      li {
+        a.edit( "Edit / Delete" , :href=>'#egg_edit'  ) 
+      }
+    }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "Travel to Europe." }
+  }
+} # === div.countdown
+
+
+div.countdown.job.paused { 
+  div.undo(:style=>'display: none') { 
+    div { 
+      span  "You have deleted egg timer: " 
+      span.short_headline  "---" 
+    }
+    div { 
+      a.undo( "Undo deletion.", :href=>'#egg_undelete'  ) 
+    }
+  }
+
+  div.status { 
+    a.play 'Play', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    a.continue 'Continue', :href=>'#continue', :onclick=>'javascript:EggClock.play(this)'
+    a.start_over 'Start Over', :href=>'#start_over', :onclick=>'javascript:EggClock.play(this)'
+    a.pause 'Pause', :href=>'#play', :onclick=>'javascript:EggClock.play(this)'
+    div.time_status { 
+      span.unit '-'
+      span.number '4'
+      span.unit 'm'
+      span.number '8'
+      span.unit 's'
+    }
+    
+    div.buzzer_option.selected_buzzer { 
+      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
+      span { "Ring when done." }
+    }
+    
+  }
+  div.summary { 
+    h4 { "Dinner's ready" }
+    div.setting { "9 min countdown" }
+    ul.control_panel { 
+      li {
+        a.check_mark( "Check Mark", :href=>'#egg_check_marked'  ) 
+      }
+      li {
+        a.x_mark( "X Mark" , :href=>'#egg_x_marked'  ) 
+      }
+
+      li {
+        a.edit( "Edit / Delete" , :href=>'#egg_edit'  ) 
+      }
+    }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "Travel to Europe." }
+  }
+} # === div.countdown
+
+
+div.job.alarm { 
+  div.undo { 
+    div { 
+      span { "You have deleted alarm:&nbsp;" }
+      span.short_headline { "--" }
+    }
+    div { 
+      a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
+    }
+  }
+
+  div.status { 
+    div.time_status { 
+      span.number { "* * * *" }
+    }     
+  }
+  div.summary { 
+    h4 "[title]"
+    div.setting  "[x mins]" 
+    ul.control_panel { 
+      li {
+        a.play(  :href=>'#egg_at_play'  ) { "Play" }
+      }
+      li {
+        a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
+      }
+      li {
+        a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
+      }
+      li {
+        a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
+      }
+      li {
+        a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
+      }
+    }
+    div.details_control_panel { 
+      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
+      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
+    }
+    div.details { "[details]" }
+  }
+} # === div.template.alarm
+
+  } # === div.work!
   
   ul.tabs { 
   
@@ -228,87 +429,10 @@ div.content! {
 
 
 
-div.template.countdown { 
-  div.undo { 
-    div { 
-      span  "You have deleted egg timer: " 
-      span.short_headline  "---" 
-    }
-    div { 
-      a.undo( "Undo deletion.", :href=>'#egg_undelete'  ) 
-    }
-  }
-  div.control_panel { 
-    div.buttons { 
-      a.pause( "Pause", :href=>'#egg_paused'  )
-      a.play(  "Play", :href=>'#egg_at_play'  )
-      a.check_mark( "Check Mark This", :href=>'#egg_check_marked'  ) 
-      a.x_mark( "X Mark This" , :href=>'#egg_x_marked'  ) 
-      a.ready_to_start( "Start All Over", :href=>'#egg_ready_to_start'  ) 
-      a.edit( "Edit / Delete" , :href=>'#egg_edit'  ) 
-    }
-  }
-  div.status { 
-    div.time_status { 
-      div.number { "* * * *" }
-    }
-    div.buzzer_option.selected_buzzer { 
-      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   )  
-      span { "Ring when done." }
-    }
-    div.time_status_in_words { "---" }
-  }
-  div.summary { 
-    h4 { "[title]" }
-    div.setting { "[x mins]" }
-    div.details_control_panel { 
-      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
-      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
-    }
-    div.details { "[details]" }
-  }
-} # === div.template.countdown
 
 
-div.template.alarm { 
-  div.undo { 
-    div { 
-      span { "You have deleted alarm:&nbsp;" }
-      span.short_headline { "--" }
-    }
-    div { 
-      a.undo(  :href=>'#egg_undelete'  ) { "Undo deletion." }
-    }
-  }
-  div.control_panel { 
-    div.buttons { 
-      a.play(  :href=>'#egg_at_play'  ) { "Play" }
-      a.check_mark(  :href=>'#egg_check_marked'  ) { "Check Mark This" }
-      a.x_mark(  :href=>'#egg_x_marked'  ) { "X Mark This" }
-      a.ready_to_start(  :href=>'#egg_ready_to_start'  ) { "Start All Over" }
-      a.edit(  :href=>'#egg_edit'  ) { "Edit / Delete" }
-    }
-  }
-  div.status { 
-    div.time_status { 
-      span.number { "* * * *" }
-    }
-    div.buzzer_option.selected_buzzer { 
-      input( :checked=>'checked', :name=>'sound_alarm', :type=>'checkbox' , :value=>'true'   ) 
-      span { "Ring when done." }
-    }
-    div.time_status_in_words { "---" }
-  }
-  div.summary { 
-    h4 { "[title]" }
-    div.setting { "[x mins]" }
-    div.details_control_panel { 
-      a.show(  :href=>'#egg_show_details'  ) { "View Details" }
-      a.hide(  :href=>'#egg_hide_details'  ) { "Hide Details" }
-    }
-    div.details { "[details]" }
-  }
-} # === div.template.alarm
+
+
 
 
 div.template.note { 

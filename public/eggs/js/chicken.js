@@ -908,20 +908,8 @@ var Chicken = {
 
 
 
-//                                  // For MSIE. If the page is unloading, document won't has access to certain methods and properties.
-//                                  //  Function '$' would then cause an error.
-//                                  if(!document.getElementById) 
-//                                    return false;
-//                                  
-//                                  var canister = $(egg['id']);
-//                                  
-//                                  if(!canister)
-//                                    return false;
 
 
 
-///////////   see_if_any_hatched
-                                                // Safari does not give you access to the datastore during unload events so save them
-                                                //  every 5 seconds.
-                                                // if( window.webkit && ((new Date()).getSeconds() % 5) == 0 ) 
-                                                //  Chicken.save_eggs();    
+
+

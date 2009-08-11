@@ -1,6 +1,6 @@
 @import layout.sass
 
-+dev_bg
+
 
 #big_clock
   padding: 0 15px 10px 0
@@ -23,6 +23,88 @@
     font-style: italic
     text-transform: lowercase
 
+#work
+  div.job
+    +clearfix
+    background: #D4EBF1 url("/eggs/images/blue_sky_bg.jpg") repeat-x
+    margin-bottom: 20px
+    div.undo
+      display: none
+    ul.control_panel      
+      li
+        display: inline
+        float: none
+        padding: 0 10px 0 0
+    div.buzzer_option
+      display: none
+    div.status
+      float: left
+      padding: 5px 15px 5px 10px
+      font-weight: bold
+      text-align: center
+      a:link, a:visited
+        padding: 5px
+      a.pause
+        display: none
+      a.play
+        display: inline
+      a.pause
+        display: none
+      a.contine
+        display: none        
+      a.start_over
+        display: none
+    div.time_status
+      text-align: center
+      color: #073D6F      
+      span.number
+        font-size: 30px
+      span.unit
+        font-size: 20px
+    div.details_control_panel
+      display: none
+    div.summary
+      float: left
+      padding: 5px 5px 10px 5px
+      h4
+        font-size: 25px
+        font-weight: bold
+        padding: 0
+        margin: 0
+        line-height: 1em
+        color: #073D6F
+      div.setting
+        font-style: italic
+        font-family: serif
+        font-size: 16px
+      div.details
+        font-size: 18px
+        font-family: serif
+
+  div.running
+    div.status
+      a.play
+        display: none
+      a.pause
+        display: inline
+      a.contine
+        display: none        
+      a.start_over
+        display: none
+    div.time_status
+      color= !red
+
+  
+  div.paused
+    div.status
+      a.play
+        display: none
+      a.pause
+        display: none
+      a.contine
+        display: inline        
+      a.start_over
+        display: inline
 #instructions
   ol
     font-weight: bold

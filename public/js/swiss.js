@@ -86,8 +86,13 @@ Swiss.loading = {
   page_finished :  function(){
     
     Swiss.tab.page_finished();
+    
     // Set default radios, highlight radios, reset any forms.
     Swiss.form.page_finished();
+    
+  
+
+    
     return Swiss.loading.switch_it();
 
   },
@@ -105,7 +110,19 @@ Swiss.loading = {
 
 
 
-
+Swiss.email = {
+    
+  transform : function() {
+    $.each(arguments, function(i, ele) {
+      $(ele).each(function(j) {
+        var new_email = '';
+        new_email = $(this).html().replace(' [at] ', '@').replace(' -at- ', '@').replace(' [dot] ', '.').replace(' -dot- ', '.');
+        $(this).html('<a href="mailto:'+new_email+'" title="Send me bug reports.">'+new_email+'</a>');
+      });
+    } );
+  }
+  
+}; // === Swiss.email
 
 /*
  * ========== HOW TO USE:
