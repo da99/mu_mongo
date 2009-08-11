@@ -51,16 +51,7 @@ end # === configure
 # ===============================================
 before {
     
-    # Redirect to SSL
-    # SSL detection from: http://www.ruby-forum.com/topic/155956
-    if !(env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] =='https' || env['rack.url_scheme'] == 'https' || request.port == 443)
-      if request.cookies["logged_in"]
-        if request.post?
-          raise "POST not allowed using unsecure line." 
-        end
-        redirect 'https://' + request.url.sub('http://', '') , 307 # temporary redirect
-      end
-    end
+    require_ssl! if request.cookies["logged_in"] || request.post?
     
     # Chop off trailing slash and use a  permanent redirect.
     if request.get? && 
@@ -84,6 +75,7 @@ before {
 # Helpers
 # ===============================================
 require_these 'helpers/sinatra'
+
 
 
 # ===============================================

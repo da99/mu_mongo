@@ -11,10 +11,13 @@ div( :id=>"nav_bar" ) {
 
 
   ul { 
+  
     [ 
       ['/', 'Home', :main, :show], 
       ['/egg', 'Timer + Alarm', :egg, :show],
-      ['/help', 'Help', :main, :help]
+      ['/help', 'Help', :main, :help],
+      ['/sign-up', 'Sign-up', :member, :new],
+      ['/log-in', 'Log-in', :session, :new]
     ].each { |path, text, c_name, a_name|
       if current_action[:controller] == c_name && current_action[:action] == a_name
         li.selected { 
@@ -26,18 +29,7 @@ div( :id=>"nav_bar" ) {
         }
       end
     } # === each
-    
-    if options.development?
-
-
-      li {
-        a(:href=>"/sign-up") { 'sign-up' }
-      }
-      li {
-        a(:href=>"/log-in") { 'log-in' }
-      }    
-
-    end      
+       
     
   } # === ul
 

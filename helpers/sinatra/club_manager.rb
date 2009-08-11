@@ -64,6 +64,25 @@ helpers do # ===============================
     
     # === Member related helpers ========================
     
+    def using_ssl?
+      (env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] =='https' || env['rack.url_scheme'] == 'https' || request.port == 443)
+    end
+    
+    def require_ssl!
+    
+      return nil if using_ssl?
+      
+      if request.post?
+        raise "POST not allowed using unsecure line." 
+      end
+            
+      # Redirect to SSL
+      # SSL detection from: http://www.ruby-forum.com/topic/155956
+      redirect 'https://' + request.url.sub('http://', '') , 301 # permanent redirect
+
+    end # === def 
+    
+    
     def logged_in?
       session[:member_username] && !current_member.new?
     end # === def      

@@ -1,4 +1,5 @@
 get "/log\-?in" do
+  require_ssl!
   describe :session, :new
   render_mab
 end

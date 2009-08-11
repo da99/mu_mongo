@@ -2,6 +2,10 @@
 @import blueprint/_reset.sass
 @import 960/grid.sass
 
+h3 
+  font-size: 20px
+  font-weight: bold
+  
 p
   padding-bottom: 10px
   margin-bottom: 0
@@ -192,7 +196,12 @@ form
     button
       text-transform: uppercase
 
-  
+form.single
+  padding: 0
+  fieldset
+    input.text
+      width: 220px
+      
 #footer
   +grid-unit-base
   +grid-width(12)

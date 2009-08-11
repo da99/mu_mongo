@@ -1,50 +1,50 @@
 save_to('title') { 'Sign-up' }
 
-div.nav_bar! {
-  h2 'Create New Account'
-  ul {
-    li { a('Home', :href=>'/') } 
-    li { a('Log-in', :href=>'/log-in') }
-  } # ul
-} # div.the_header!
+
+partial('__nav_bar')
 
 
-# ================= div.flash_msg =============================
-if flash_msg?
-  partial '__flash_msg'
-end
+div.content! { 
 
+  # ================= div.flash_msg =============================
+  if flash_msg?
+    partial '__flash_msg'
+  end
 
-div.form_holder.signup_form_holder! {
-
-  form.signup_form!(:action=>"/member", :method=>"post") {
+  h3 'Create a New Account'
+  
+  form.single.signup_form!(:action=>"/member", :method=>"post") {
     
-    fieldset.username.input_text {
+    fieldset {
       label 'Username'
-      input( :id=>"member_username", :name=>"username", :type=>"text", :value=>flash(:username) )
+      input.text( :id=>"member_username", :name=>"username", :type=>"text", :value=>flash(:username) )
     }
     
-    fieldset.password.input_text {
+    fieldset {
       label 'Password'
-      input( :id=>"member_password", :name=>"password", :type=>"password" )
+      input.text( :id=>"member_password", :name=>"password", :type=>"password" )
     }
     
-    fieldset.password.input_text {
+    fieldset {
       label { span 'Confirm Password'  }
-      input( :id=>"member_confirm_password", :name=>"confirm_password", :type=>"password" )
-    }
-
-    fieldset.email.input_text {
-      label { 
-        span 'Email'
-      }
-      input( :id=>"member_email", :name=>"email", :type=>"text", :value=>flash(:email) )
+      input.text( :id=>"member_confirm_password", :name=>"confirm_password", :type=>"password" )
     }
 
     div.buttons {
-      a( 'Sign-up', :href=>"#sign-up", :onclick=>"document.getElementById('signup_form').submit(); return false;" )                   
+      button.create 'Create My New Account', :onclick=>"document.getElementById('signup_form').submit(); return false;" 
     }
 
-  } # form.signup_form!
+  } # === form.signup_form!
 
-} # div.form_holder
+  
+} # === div.content!
+
+
+
+
+
+
+
+
+
+

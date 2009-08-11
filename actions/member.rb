@@ -1,6 +1,7 @@
 # ============================= STRANGERS =========================================
           
 get( "/sign\-?up" ) do
+  require_ssl!
   describe :member, :new
   render_mab
 end

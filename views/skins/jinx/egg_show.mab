@@ -545,13 +545,13 @@ div.form.editor.countdown_editor! {
 
 div.form.editor.alarm_editor!  { 
   div.short_headline { 
-    span { "Editing: &nbsp;" }
+    span  "Editing: &" 
     span.short_headline { }
   }
   div.land { 
     form( :action=>'/', :class=>'create_egg', :method=>'post'  ) { 
       div.fieldset_block.time_units_block { 
-        div.title { "Select Time:" }
+        div.title  "Select Time:" 
         fieldset { 
           select.hours(  :name=>'hours'  ) { 
             (1..11).to_a.each { |i|
@@ -577,13 +577,13 @@ div.form.editor.alarm_editor!  {
       }
       div.fieldset_block.headline { 
         fieldset { 
-          label { "Title:" }
+          label  "Title:" 
           input.text.name(  :maxlength=>'200', :name=>'headline' , :type=>'text', :value=>''   )  
         }
       }
       div.fieldset_block.details { 
         fieldset { 
-          label { "Details:" }
+          label  "Details:" 
           textarea.text.name(  '', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
         }
       }

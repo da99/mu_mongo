@@ -1,31 +1,33 @@
 save_to('title') { 'Login' }
 
-div.nav_bar! {
-  h2 'Login'
-  ul {
-    li { a('Home', :href=>'/') }
-    li { a('Create Account', :href=>'/sign-up') }
-  } # ul
-} # nav_bar!
+partial('__nav_bar')
 
+div.content! {
 
-# ================= div.flash_msg =============================
-if flash_msg?
-  partial '__flash_msg'
-end
+  # ================= div.flash_msg =============================
+  if flash_msg?
+    partial '__flash_msg'
+  end
 
-div.form_holder.login_form_holder! {
-  form.login_form!( :action=>"/log-in", :method=>"post" ) {
-    fieldset.username.input_text {
+  h3 'Log-in'
+  
+  form.single.login_form!( :action=>"/log-in", :method=>"post" ) {
+  
+    fieldset {
       label 'Username'
-      input( :id=>"member_username", :name=>"username", :type=>"text" )
+      input.text( :id=>"member_username", :name=>"username", :type=>"text" )
     }
-    fieldset.password.input_text {
+    
+    fieldset {
       label 'Password'
-      input( :id=>"member_password", :name=>"password", :type=>"password" )
+      input.text( :id=>"member_password", :name=>"password", :type=>"password" )
     }
+    
     div.buttons {
-      a( 'Login', :href=>"#login", :onclick=>"document.getElementById('login_form').submit(); return false;" )
+      button.create 'Login', :onclick=>"document.getElementById('login_form').submit(); return false;" 
     }
-  } # form.login_form!
-} # div.form_holder
+    
+  } # === form.login_form!
+
+
+} # === div.content!
