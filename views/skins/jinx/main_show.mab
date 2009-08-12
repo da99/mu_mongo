@@ -12,5 +12,5 @@ save_to('meta_keywords') {
 partial('__nav_bar')
 
 
-div.content!  "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold; text-align: center;"
+div.content!  "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold;"
 
