@@ -58,9 +58,6 @@ html {
 		div(:id=>"about_me") {
 		  p {
 		    span "Below is a list of my favorite products."
-		    br
-		    span "Currently, I am working on "
-		    a(:href=>"http://www.megauni.com/") { "Mega Uni."}
 		  }
 		}
 				
