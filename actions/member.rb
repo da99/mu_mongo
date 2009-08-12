@@ -9,25 +9,22 @@ end
           
 post( "/member" ) do
   
-  old_clean = clean_room
   session.clear 
   
   begin
-    m = Member.new
-    m.changes_from_editor( clean_room )
+    m = Member.create_it( clean_room, nil )
     m.save  
                       
     flash( :success_msg,  "Your account has been created." )
     session[:member_username] = m.username
-    redirect('/admin')
+    redirect('/account')
     
   rescue Sequel::ValidationFailed
-    session.clear
+
     flash( :error_msg, m.error_msg )
     flash( :username,  clean_room['username'] )
-    flash( :email,  clean_room['email'] )
              
-    redirect('/sign-up', :status => 302)
+    redirect('/sign-up', 307) # temporary redirect
   end
     
 end # == post :create

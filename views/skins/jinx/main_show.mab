@@ -12,9 +12,5 @@ save_to('meta_keywords') {
 partial('__nav_bar')
 
 
-div.content! { 
-  div.form.summary! { "<p>this is a summary.</p>" * 10 }
-  div.form.article! { "<p>this is the main content.</p>" * 10   }
-  
-}
+div.content!  "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold; text-align: center;"
 

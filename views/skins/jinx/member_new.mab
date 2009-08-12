@@ -7,9 +7,8 @@ partial('__nav_bar')
 div.content! { 
 
   # ================= div.flash_msg =============================
-  if flash_msg?
-    partial '__flash_msg'
-  end
+  partial '__flash_msg' if flash_msg?
+
 
   h3 'Create a New Account'
   
@@ -17,17 +16,17 @@ div.content! {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"member_username", :name=>"username", :type=>"text", :value=>flash(:username) )
+      input.text( :id=>"username_name", :name=>"username[name]", :type=>"text", :value=>flash(:username) )
     }
     
     fieldset {
       label 'Password'
-      input.text( :id=>"member_password", :name=>"password", :type=>"password" )
+      input.text( :id=>"password", :name=>"password", :type=>"password" )
     }
     
     fieldset {
       label { span 'Confirm Password'  }
-      input.text( :id=>"member_confirm_password", :name=>"confirm_password", :type=>"password" )
+      input.text( :id=>"confirm_password", :name=>"confirm_password", :type=>"password" )
     }
 
     div.buttons {

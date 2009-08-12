@@ -9,13 +9,21 @@ class Username < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  
+  many_to_one :owner, :class_name=>'Member'
   
   # ==== HOOKS =========================================================
   
 
   # ==== CLASS METHODS =================================================
 
+  def self.create_it( raw_params )
+    allowed_params = filter_params( raw_params, [:owner, :name, :nickname, :category] )
+    un = new
+    un.set un.wash_values( allowed_params )
+    un.require_string! :name
+    un.require_assoc! :owner
+    un.save
+  end
 
   # ==== INSTANCE METHODS ==============================================
 

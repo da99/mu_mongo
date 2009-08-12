@@ -6,7 +6,7 @@ class CreateMembers < Sequel::Migration
       # === Attributes
       primary_key :id
       
-      # varchar :email, :size=>100
+      
       varchar :hashed_password, :size=>255
       varchar :salt, :size=>255
       smallint :permission_level, :null=>false, :default=>1

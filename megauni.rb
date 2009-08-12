@@ -89,6 +89,12 @@ get( '/' ) {
   render_mab
 }
 
+get '/salud' do
+  describe :main, :salud
+  render_mab :layout=>nil
+end
+
+
 get( '/reset' ) {
     TemplateCache.reset
     CSSCache.reset

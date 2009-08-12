@@ -176,7 +176,7 @@ module Sinatra
                 # Find template. ==================================================
                 
                 # ======= See if we need to use a layout.
-                use_layout = !template_is_a_partial?
+                use_layout = !template_is_a_partial? && ( !opts.has_key?(:layout) || ( opts.has_key?(:layout) && opts[:layout] ) )
                                 
                 # Setup instance variables for Markaby. ==========================
                 iv_hash = instance_variables.inject({}) do |m, iv|

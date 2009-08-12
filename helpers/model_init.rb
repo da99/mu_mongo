@@ -97,6 +97,14 @@ class Sequel::Model
   end
 
 
+  def require_assoc! assoc_name, raw_error_msg  = nil
+    field_name = "#{assoc_name}_id".to_sym
+    self[field_name] = self[field_name].to_i
+    error_msg  = "No id for #{assoc_name} specified."
+    
+    self.errors.add( field_name , error_msg ) if self[field_name].zero?
+  end
+  
   # Sets field to new value using :to_s and :strip
   # Then, adds to :errors if new string is empty.
   def require_string! field_name, raw_error_msg  = nil
