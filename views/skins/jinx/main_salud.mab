@@ -207,9 +207,12 @@ html {
 		  ul {
 		    li {
 		      span {'Prices continue to slowly climb. Here is one possible solution:'}
-		      a( :href=>"http://www.bullionvault.com/" ) { 'Bullion Vault' }
+		      a( 'Bullion Vault', :href=>"http://www.bullionvault.com/" ) 
 		    }
-		    
+		    li {
+		      span 'This article explains how  gov\'t spending (local/state/federal) is now 50%:'
+		      a( 'Bank on Inflation', :href=>'http://www.atimes.com/atimes/Global_Economy/KH14Dj01.html' )
+		    }
 		  }		  
 		  
 		}
