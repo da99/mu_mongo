@@ -41,7 +41,7 @@ class Member < Sequel::Model
   # =========================================================
 
   # === See: Sinatra-authentication (on github)
-  # Raises: TooManyFailedAttempts based on ip_address.
+  # Raises: LoginAttempt::TooManyFailedAttempts based on ip_address.
   def self.authenticate(username, pass, ip_address)
       target_member = self[:username => username]
 

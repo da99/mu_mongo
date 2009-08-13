@@ -8,16 +8,21 @@ class LoginAttempt < Sequel::Model
   # =========================================================
   
   def self.log_failed_attempt( ip_address )
-    new_values = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
-    la = LoginAttempt[ new_values ] || LoginAttempt.new( new_values)
-    la.total = la.total.to_i + 1 # <== Blatant race condition problem, but it will do for now.
+    params = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
+    old_la = LoginAttempt.filter params 
     
-    if self.total  >= MAX
-        raise TooManyFailedAttempts, "#{self.total} login attemps for #{self.created_at}" 
+    return LoginAttempt.create( new_values ).total if !old_la
+    
+    old_la.update :total => 'total + 1'.lit
+    new_total = old_la.total + 1
+    
+    if new_total >= MAX
+        raise TooManyFailedAttempts, "#{new_total} login attemps for #{old_la.ip_address}" 
     end
-        
-    la.save
-  end
+    
+    new_total
+
+  end # === def self.log_failed_attempt
   
   # =========================================================
   #                   INSTANCE METHODS
