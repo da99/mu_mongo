@@ -58,7 +58,7 @@ class Markaby::Builder
     dev_log_it "Rendering partial: #{partial_filepath}"
     text( 
         capture { 
-            eval(File.read(partial_filepath))  
+            eval File.read(partial_filepath), nil, partial_filepath, 1  
         } 
     )
     ''
@@ -220,7 +220,7 @@ module Sinatra
                                        m
                                     }                   
                 Markaby::Builder.new( partial_vars_hash , sin ) {
-                  instance_eval(  layout_file_content,  layout_file_path  )
+                  instance_eval(  layout_file_content,  layout_file_path, 1  )
                 }.to_s
                 
             end # === render_mab   

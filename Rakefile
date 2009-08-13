@@ -605,6 +605,11 @@ namespace :css do
 end
 
 namespace :run do
+  # These use 'exec', which replaces the current process (i.e. Rake)
+  # More info: http://blog.jayfields.com/2006/06/ruby-kernel-system-exec-and-x.html
+  task :light do
+    exec "sudo /etc/init.d/lighttpd start"
+  end
 
   task :dev do
     Rake::Task['css:delete'].invoke

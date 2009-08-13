@@ -64,6 +64,12 @@ helpers do # ===============================
     
     # === Member related helpers ========================
     
+    def urlize(url)
+      return url if !url[/^\//]
+      return "http://#{request.host}#{url}" if !logged_in?
+      "https://#{url}"
+    end
+    
     def socket_and_host
       "http#{ using_ssl? ? 's' : '' }://#{request.host}"
     end

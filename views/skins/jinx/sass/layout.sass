@@ -38,21 +38,35 @@ p
 
 !light_green = #DAE6B4
 
-=dev_bg
-  #the_body
-    background: #fff url("/16_col.gif") repeat-y center center
-  #container
-    border-top= 2px "solid" #000
-
-=input_text
-  font-size: 22px
-  font-weight: bold
-  font-family: courier, monospace
 
 !ninesixty_columns = 16
 
 !nav_bar_border = 2px
 !nav_bar_width = 220px
+
+
+=dev_bg
+  #the_body
+    background: #fff url("/16_col.gif") repeat-y center center
+  #container
+    border-top= 2px "solid" #000
+  #content
+    border-top: 1px solid red
+    
+=input_text
+  font-size: 22px
+  font-weight: bold
+  font-family: courier, monospace
+
+=single_form
+  #container
+    +grid-width(10)
+  #nav_bar
+    padding: 0 0 200px
+    
+  #content
+    +grid-width(5)
+
 
 
   
@@ -82,13 +96,10 @@ a:hover, a:active
   
   
 #nav_bar
-  +grid-width(4)
-  margin= 0 0 0 !ninesixty_gutter_width / 2
-  float: none
-  display: block
-  position: absolute
-  padding: 0 0 200px 0
+  +grid(4)
+  margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
   border-right= !nav_bar_border  "dashed" #000
+  padding-bottom: 200px
   ul
     +no-bullets
     margin-left: 50px
@@ -125,6 +136,8 @@ a:hover, a:active
       line-height: 1.3em
       padding: 0 15px 5px 0
       margin: 0 
+      text-shadow: #bbb 0px 2px 2px
+      
     p.english
       font-family: courier, monospace
       font-size: 20px 
@@ -143,7 +156,6 @@ a:hover, a:active
 #content
   padding-bottom: 50px
   +grid(12)
-  +grid-prefix(4)
 
 div.tab_selected
   display: block
