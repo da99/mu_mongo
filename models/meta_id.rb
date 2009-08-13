@@ -18,18 +18,5 @@ class MetaId < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def columns_for_editor( params, mem )
-    if new?
-        self[:owner_id] = mem[:id]
-    end
-    if [self.owner].include?(mem)
-        @current_editor = mem
-        @editable_by_editor = []       
-    end
-    super
-  end # === def changes_from_editor
-
-  def validate_new_values
-  end # === def find_validation_errors
 
 end # === end MetaId

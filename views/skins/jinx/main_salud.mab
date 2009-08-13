@@ -210,7 +210,7 @@ html {
 		      a( 'Bullion Vault', :href=>"http://www.bullionvault.com/" ) 
 		    }
 		    li {
-		      span 'This article explains how  gov\'t spending (local/state/federal) is now 50%:'
+		      span 'This article explains gov\'t (local/state/federal) is taking 50% of wealth out of the economy:'
 		      a( 'Bank on Inflation', :href=>'http://www.atimes.com/atimes/Global_Economy/KH14Dj01.html' )
 		    }
 		  }		  

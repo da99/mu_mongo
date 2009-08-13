@@ -1,10 +1,7 @@
 require 'sequel'
 require 'sequel/extensions/inflector'
 require 'sequel/extensions/blank'
-
 require Pow('helpers/db_conn')
-
-
 
 
 class Sequel::Model
@@ -80,6 +77,18 @@ class Sequel::Model
   # =========================================================
   #                  PUBLIC INSTANCE METHODS
   # =========================================================
+  
+  
+  def save_with_meta_id
+    if new? && self.class != MetaId && self.class.columns.include?(:id)
+      self[:id]=MetaId.create[:id]
+    end
+    save_wo_meta_id
+  end
+    
+  alias_method :save_wo_meta_id, :save 
+  alias_method :save, :save_with_meta_id 
+
   
   def dev_log(msg)
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
