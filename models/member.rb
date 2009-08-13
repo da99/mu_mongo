@@ -8,20 +8,21 @@ class Member < Sequel::Model
   # =========================================================  
 
   class IncorrectPassword < RuntimeError; end
-  class UnknownPermissionLevel < RuntimeError; end
+  class InvalidPermissionLevel < RuntimeError; end
   
   NO_ACCESS   = -1000
   ADMIN       = 1000
   EDITOR      = 10
   MEMBER      = 1
   STRANGER    = 0 # Used mainly by other classes/objects to identity
-                                 # someone who is unknown or not logged in.
+                  # someone who is unknown or not logged in.
+                  
   SECURITY_LEVELS   = [ NO_ACCESS, ADMIN , MEMBER , EDITOR, STRANGER ]
   
   # =========================================================
   #                   ASSOCIATIONS
   # =========================================================  
-  one_to_many :usernames
+  one_to_many :usernames, :key=>:owner_id
   
     
   # =========================================================
@@ -40,6 +41,7 @@ class Member < Sequel::Model
   # =========================================================
 
   # === See: Sinatra-authentication (on github)
+  # Raises: TooManyFailedAttempts based on ip_address.
   def self.authenticate(username, pass, ip_address)
       target_member = self[:username => username]
 
@@ -54,16 +56,18 @@ class Member < Sequel::Model
       LoginAttempt.log_failed_attempt( ip_address )
 
       raise IncorrectPassword
-  end 
-        
+  end # === self.authenticate
+  
+  
   def self.create_it( raw_params )
       
     mem = new
-    mem.set_password raw_params
+    mem.set_these( raw_params, [ :password ] )
     
     # Create username.
     if mem.save
-      Username.create_it(  { :owner=>mem }.merge( raw_params ), mem )
+      un_vals = { :owner=>mem }.merge( raw_params )
+      Username.create_it( un_vals , mem )
       mem
     end
     
@@ -75,64 +79,64 @@ class Member < Sequel::Model
   
   def update_it( raw_params, editor )
   
-    allowed_params = case editor
+    case editor
       when self
-        self.class.filter_params( raw_params,  [ :password, :confirm_password ] )
+        set_these( raw_params, [ :password ] )
       else
         if editor.has_permission_level?(ADMIN)
-          self.class.filter_params( raw_params,  [ :permission_level ] )
-        else
-        {}
+          set_these( raw_params, [ :permission_level ] )
         end
     end
     
-    update wash_values( allowed_params  )
+    save
 
-  end # === update_it
+  end # === def update_it
   
   
-  def set_password pass, pass_confirm, required = true
+  def set_password( raw_params )
+      pass = raw_params[:password].to_s.trim
+      confirm_pass = raw_params[:confirm_password].to_s.trim
       
-      errors[:password] << "Password and password confirmation do not match." if pass != pass_confirm   
-      errors[:password] << "Password must be longer than 5 characters." if pass.length < 5   
-      errors[:password] << "Password must have at least one number." if !pass[/0-9/]
+      if pass.empty?
+        errors[:password] << "Password is required."
+      else
+        errors[:password] << "Password and password confirmation do not match." if pass != confirm_pass 
+        errors[:password] << "Password must be longer than 5 characters." if pass.length < 5   
+        errors[:password] << "Password must have at least one number." if !pass[/0-9/]
+      end
+
+      return nil if !errors[:password].empty?
       
       # Salt and encrypt values.
-      if errors[:password].empty?
-        clean_params[:salt] = begin
-          chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-          (1..10).inject('') { |new_pass, i|  
-            new_pass << chars[rand(chars.size-1)] 
-          }
-        end
-        
-        clean_params[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
-      end # === if
-  end
+      clean_params[:salt] = begin
+                              chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                              (1..10).inject('') { |new_pass, i|  
+                                new_pass += chars[rand(chars.size-1)] 
+                                new_pass
+                              }
+                            end
+      
+      clean_params[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
+      pass_confirm
+      
+  end # === def set_password
   
-  def wash_values( raw_params  )
-    clean_params = {}
+  
+  def set_permission_level( raw_params )
+    new_perm_level = raw_params[:permission_level]
+    if SECURITY_LEVELS.include?(new_perm_level)
+      self[:permission_level] = new_perm_level
+    else
+      raise InvalidPermissionLevel, "#{new_perm_level} is not a valid permission level."  
+    end
     
-    raw_params.keys.each { |k|
-      case k
-        when :permission_level
-            if !SECURITY_LEVELS.include?(target_perm_level)
-              raise ArguementError, "#{raw_params[k]} is not a valid permission level."  
-            end
-            clean_params[:permission_level] 
-        when :password
-          
-
-      end # === case
-    }
-    
-    clean_params
-  end # === def
- 
+    new_perm_level
+  end # === def set_permission_level
+  
   
   def has_permission_level?(raw_level)
       
-      # Example:
+      # Turn raw value into a proper instance:
       # 1000 => 1000
       # :ADMIN => 1000
       target_perm_level = raw_level.instance_of?(Symbol) ? 
@@ -147,11 +151,12 @@ class Member < Sequel::Model
         when ADMIN
           self[:id] === 1
         when EDITOR
-          self[:has_permission_level] === EDITOR
+          self[:permission_level] === EDITOR
         else
-          raise UnknownPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
+          raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
       end
-  end # ===   
+      
+  end # === def has_permission_level?
 
 end # Member
 ########################################################################################

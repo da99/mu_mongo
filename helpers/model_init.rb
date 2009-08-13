@@ -88,7 +88,14 @@ class Sequel::Model
   def update_it( raw_params, editor )    
     raise "You have to define this method."
   end # === def  
- 
+
+  def set_these raw_params, keys
+    keys.each { |k| 
+      if raw_params.has_key?( k )
+        send( "set_#{k}", raw_params)
+      end
+    }
+  end 
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
