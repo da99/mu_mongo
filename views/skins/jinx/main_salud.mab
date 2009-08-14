@@ -240,11 +240,34 @@ html {
 		    li {
 		      span( 'Mailstopper Tonic:' )
 		      br
-		      a( :href=>'http://mailstopper.tonic.com' ) { 'mailstopper.tonic.com' }
+		      a( 'mailstopper.tonic.com', :href=>'http://mailstopper.tonic.com' )
 		      br 
 		      span "El sitio es ingles solamenta. (English only site.)"
 		    }
 		  }
+		  
+		  p { span 'Telefono (Cellular)' }
+		  
+		  ul {
+		  
+		    li {
+		      span('No Contract - $50 after taxes - Unlimited Night/Weekend')
+		      br 
+		      a( 'Individual 600 with FlexPay', :href=>'http://www.t-mobile.com/shop/plans/cell-phone-plans-detail.aspx?tp=tb1&rateplan=Individual-600-with-FlexPay-Monthly' )
+		    }
+		    
+		    li {
+		      span('No Contract - $60 after taxes - Unlimited Night/Weekend')
+		      br 
+		      a( 'Individual 1000 Plus with FlexPay', :href=>'http://www.t-mobile.com/shop/plans/cell-phone-plans-detail.aspx?tp=tb1&rateplan=Individual%201000%20Plus%20with%20FlexPay%20Monthly' )
+		      br 
+		      span('Make sure it says "1000 Plus".' )
+		    }
+		    li {
+		      span 'Choose EasyPay (recurring credit card billing) to avoid $5 fee each month.'
+		    }
+		  }
+		  
 		}
 		
 		

@@ -17,10 +17,14 @@ class Topic < Sequel::Model
 
   def self.create_it!( raw_params )    
     new_record = new
-    new_record.set_title! raw_params
-    new_record.set_if_key_exists( raw_params, [:parent_topic] )
-    new_record.save_it!( raw_params )
     
+    # Required fields.
+    new_record.set_title! raw_params
+    
+    # Optional fields.
+    new_record.set_if_key_exists( raw_params, [:parent_topic] )
+    
+    new_record.save_it!( raw_params )
   end # === create_it
   
 
