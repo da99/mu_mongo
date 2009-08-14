@@ -62,9 +62,11 @@ class Member < Sequel::Model
   def self.create_it!( raw_params )
       
     mem = new
+    
+    # Required fields.
     mem.set_password raw_params
     
-    # Create username.
+    # Save and create username.
     if mem.save_it!( raw_params )
       un_vals = { :owner_id=>mem[:id] }.merge( raw_params )
       Username.create_it!( un_vals  )

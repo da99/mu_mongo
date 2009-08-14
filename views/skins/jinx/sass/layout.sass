@@ -77,10 +77,10 @@ a:link, a:visited
     family = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
     weight: bold
 
-a:hover, a:active
+a:hover, a:active, a:focus
   color: #fff
   background: #E40051
-    
+
 #timestamp
   display: none
 
@@ -121,9 +121,11 @@ a:hover, a:active
         text-transform: uppercase
         font-weight: bold
         color: #f00919
-      a:hover, a:active
+      a:hover, a:active, a:focus
         color: #fff
         background: #E40051
+      
+        
         
   #logo
     text-align: right
@@ -166,7 +168,7 @@ ul.tabs
   +horizontal-list
   margin-bottom: -1px
   padding-left: 15px
-  a:link, a:visited, a:hover, a:active
+  a:link, a:visited, a:hover, a:active, a:focus
     padding: 5px 5px 8px 5px 
   li
     padding: 5px
@@ -174,7 +176,7 @@ ul.tabs
     background= !light_grey   
     border= 1px "solid" #717171
       bottom: 0
-    a:link, a:visited, a:hover, a:active
+    a:link, a:visited, a:hover, a:active, a:focus
       background: transparent
       color: #00233C
       padding-bottom: 12px

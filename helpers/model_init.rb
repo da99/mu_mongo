@@ -101,7 +101,7 @@ class Sequel::Model
   
   def save_it!(hash_or_mem)
     editor = hash_or_mem.respond_to?(:has_key?) ? hash_or_mem[:EDITOR] : hash_or_mem
-    action = __previous_method_name__.to_s.sub( /\_it$/, '').to_sym # e.g.: :create_it => :create
+    action = __previous_method_name__.to_s.sub( /\_it\!?$/, '').to_sym # e.g.: :create_it! => :create
     raise( InvalidEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
     save
   end
@@ -109,6 +109,10 @@ class Sequel::Model
   def update_it!( raw_params, editor )    
     raise "You have to define this method."
   end # === def  
+  
+  def has_permission?(*args)
+    raise "You have to define this method."
+  end
 
   def set_these raw_params, keys
     keys.each { |k| 

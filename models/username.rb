@@ -18,9 +18,14 @@ class Username < Sequel::Model
 
   def self.create_it!( raw_params )
     new_un = new
-    new_un.set_these( raw_params, [:owner_id, :username, :nickname, :category] )
-    new_un.require_string! :username
-    new_un.require_assoc! :owner
+    
+    # Required fields.
+    new_un.set_owner_id raw_params
+    new_un.set_username raw_params
+    
+    # Optional fields.
+    new_un.set_these( raw_params, [ :nickname, :category] )
+    
     un.save_it!( raw_params )
   end
 
