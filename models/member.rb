@@ -59,25 +59,25 @@ class Member < Sequel::Model
   end # === self.authenticate
   
   
-  def self.create_it( raw_params )
+  def self.create_it!( raw_params )
       
     mem = new
-    mem.set_these( raw_params, [ :password ] )
+    mem.set_password raw_params
     
     # Create username.
-    if mem.save
-      un_vals = { :owner=>mem }.merge( raw_params )
-      Username.create_it( un_vals , mem )
+    if mem.save_it!( raw_params )
+      un_vals = { :owner_id=>mem[:id] }.merge( raw_params )
+      Username.create_it!( un_vals  )
       mem
     end
     
-  end # === def self.create_it
+  end # === def self.create_it!
   
   # =========================================================
   #                    Instance Methods
   # ========================================================= 
   
-  def update_it( raw_params, editor )
+  def update_it!( raw_params, editor )
   
     case editor
       when self
@@ -88,9 +88,21 @@ class Member < Sequel::Model
         end
     end
     
-    save
+    save_it! raw_params
 
-  end # === def update_it
+  end # === def update_it!
+  
+  
+  def has_permission?( action, editor )
+    case action
+      when :create
+        true
+      when :update
+        self == editor || ( editor && editor.has_permission_level?(ADMIN) )
+      else 
+        false
+    end 
+  end
   
   
   def set_password( raw_params )
@@ -123,14 +135,14 @@ class Member < Sequel::Model
   
   
   def set_permission_level( raw_params )
-    new_perm_level = raw_params[:permission_level]
-    if SECURITY_LEVELS.include?(new_perm_level)
-      self[:permission_level] = new_perm_level
-    else
+  
+    new_level = raw_params[:permission_level]
+    if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_perm_level} is not a valid permission level."  
     end
     
-    new_perm_level
+    self[:permission_level] = new_level
+    
   end # === def set_permission_level
   
   

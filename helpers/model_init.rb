@@ -15,8 +15,8 @@ class Sequel::Model
   # =========================================================
   #                     Error Constants
   # =========================================================    
-  class NoRecordFound < RuntimeError;  end
-
+  class NoRecordFound < RuntimeError; end
+  class InvalidEditor < RuntimeError; end
 
   # =========================================================
   #                      Attributes
@@ -39,7 +39,7 @@ class Sequel::Model
     keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
   end
     
-  def self.create_it( raw_params, editor )
+  def self.create_it!( raw_params, editor )
     raise "You have to define this method."
   end
 
@@ -94,14 +94,28 @@ class Sequel::Model
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
   end
   
-  def update_it( raw_params, editor )    
+  def set_string_column( col_name, value)
+    new_val = value.respond_to?( :strip ) ? value.strip : value
+    self[col_name] = new_val
+  end  
+  
+  def save_it!(hash_or_mem)
+    editor = hash_or_mem.respond_to?(:has_key?) ? hash_or_mem[:EDITOR] : hash_or_mem
+    action = __previous_method_name__.to_s.sub( /\_it$/, '').to_sym # e.g.: :create_it => :create
+    raise( InvalidEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
+    save
+  end
+  
+  def update_it!( raw_params, editor )    
     raise "You have to define this method."
   end # === def  
 
   def set_these raw_params, keys
     keys.each { |k| 
       if raw_params.has_key?( k )
-        send( "set_#{k}", raw_params)
+        respond_to?("set_#{k}") ?
+          send( "set_#{k}", raw_params) :
+          set_string_column( k, raw_params[k] );
       end
     }
   end 
@@ -116,9 +130,9 @@ class Sequel::Model
   def require_assoc! assoc_name, raw_error_msg  = nil
     field_name = "#{assoc_name}_id".to_sym
     self[field_name] = self[field_name].to_i
-    error_msg  = "No id for #{assoc_name} specified."
-    
-    self.errors.add( field_name , error_msg ) if self[field_name].zero?
+    if self[field_name].zero?
+      self.errors.add( field_name , "No id for #{assoc_name} specified." ) 
+    end
   end
   
   # Sets field to new value using :to_s and :strip

@@ -4,14 +4,14 @@ class CreateUsernames < Sequel::Migration
     create_table( :usernames ) {
       # === Associations
       primary_key :id
-      foreign_key :member_id, :members
+      foreign_key :owner_id, :members
       
       # === Attributes
-      varchar :name, :size=>25, :unique=>true, :null=>false
+      varchar :username, :size=>25, :unique=>true, :null=>false
       varchar :nickname, :size=>100
       varchar :email, :size=>65
       boolean :email_verified, :null=>false, :default=>false
-      varchar :category, :size=>65
+      varchar :category, :size=>65, :default=>'Personal'
       
       # === Date Times
       timestamp   :created_at

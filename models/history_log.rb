@@ -15,7 +15,7 @@ class HistoryLog < Sequel::Model
 
   # ==== CLASS METHODS =================================================
 
-  def self.create_it( params )
+  def self.create_it!( params )
     create( params )
   end
 

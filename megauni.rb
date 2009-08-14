@@ -14,6 +14,13 @@ def require_these( dir );
     Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
 end
 
+module Kernel
+    private
+       def __previous_method_name__
+         caller[1] =~ /`([^']*)'/ and $1.to_sym
+       end
+end
+
 
 # ===============================================
 # Configurations
