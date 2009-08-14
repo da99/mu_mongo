@@ -42,6 +42,7 @@ class Member < Sequel::Model
 
   # === See: Sinatra-authentication (on github)
   # Raises: LoginAttempt::TooManyFailedAttempts based on ip_address.
+  # Raises: Member::IncorrectPassword
   def self.authenticate(username, pass, ip_address)
       target_member = self[:username => username]
 
@@ -55,7 +56,7 @@ class Member < Sequel::Model
 
       LoginAttempt.log_failed_attempt( ip_address )
 
-      raise IncorrectPassword
+      raise IncorrectPassword, "Try again."
   end # === self.authenticate
   
   
@@ -63,8 +64,7 @@ class Member < Sequel::Model
       
     mem = new
     
-    # Required fields.
-    mem.set_password! raw_params
+    mem.require_fields raw_params, :password
     
     # Save and create username.
     if mem.save_it!( raw_params )
@@ -81,12 +81,12 @@ class Member < Sequel::Model
   
   def update_it!( raw_params )
   
-    case editor
+    case raw_params[:EDITOR]
       when self
-        set_if_key_exists( raw_params, [ :password ] )
+        optional_fields( raw_params,  :password  )
       else
         if editor.admin?
-          set_if_key_exists( raw_params, [ :permission_level ] )
+          optional_fields( raw_params,  :permission_level  )
         end
     end
     
@@ -107,57 +107,60 @@ class Member < Sequel::Model
   end
   
   
-  def set_password!( raw_params )
-      pass = raw_params[:password].to_s.trim
+  def_set_meth( :password, :force ) { |rec, fn,  raw_params |
+      pass = raw_params[ fn ].to_s.trim
       confirm_pass = raw_params[:confirm_password].to_s.trim
       
       if pass.empty?
-        errors[:password] << "Password is required."
+        rec.errors[fn] << "Password is required."
       else
-        errors[:password] << "Password and password confirmation do not match." if pass != confirm_pass 
-        errors[:password] << "Password must be longer than 5 characters." if pass.length < 5   
-        errors[:password] << "Password must have at least one number." if !pass[/0-9/]
+        rec.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
+        rec.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
+        rec.errors[fn] << "Password must have at least one number." if !pass[/0-9/]
       end
 
-      return nil if !errors[:password].empty?
+      return nil if !rec.errors[fn].empty?
       
       # Salt and encrypt values.
-      clean_params[:salt] = begin
-                              chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                              (1..10).inject('') { |new_pass, i|  
-                                new_pass += chars[rand(chars.size-1)] 
-                                new_pass
-                              }
-                            end
+      rec[:salt] = begin
+                      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                      (1..10).inject('') { |new_pass, i|  
+                        new_pass += chars[rand(chars.size-1)] 
+                        new_pass
+                      }
+                    end
       
-      clean_params[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
+      rec[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
       pass_confirm
       
-  end # === def set_password
+  } # === def set_password
   
   
-  def set_permission_level!( raw_params )
+  def_set_meth( :permission_level ) { |rec, fn, raw_params |
   
-    new_level = raw_params[:permission_level]
+    new_level = raw_params[fn]
     if !SECURITY_LEVELS.include?(new_level)
-      raise InvalidPermissionLevel, "#{new_perm_level} is not a valid permission level."  
+      raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end
     
-    self[:permission_level] = new_level
+    rec[fn] = new_level
     
-  end # === def set_permission_level
+  } # === def set_permission_level
+  
   
   def admin?
     has_power_of?(:ADMIN)
   end
   
+  
   def editor?
     has_power_of?(:EDITOR)
   end
   
+  
   def has_power_of?(raw_level)
       
-      # Turn raw value into a proper instance:
+      # Let's turn raw value into a proper instance:
       # 1000 => 1000
       # :ADMIN => 1000
       target_perm_level = raw_level.instance_of?(Symbol) ? 
@@ -178,6 +181,7 @@ class Member < Sequel::Model
       end
       
   end # === def security_clearance?
+
 
 end # Member
 ########################################################################################

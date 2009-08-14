@@ -16,7 +16,8 @@ class Sequel::Model
   #                     Error Constants
   # =========================================================    
   class NoRecordFound < RuntimeError; end
-  class InvalidEditor < RuntimeError; end
+  class UnauthorizedEditor < RuntimeError; end
+  SET_METHODS = {}
 
   # =========================================================
   #                      Attributes
@@ -35,6 +36,16 @@ class Sequel::Model
   #                  CLASS METHODS
   # =========================================================
 
+  # Options:
+  #   :force - Allow method to be used even though field does not exist.
+  #            Example: :password used in Member even thought :password is not a field.
+  #
+  def self.def_set_meth( fn, *args, &meth )
+    raise "Field, #{fn.inspect}, does not exist." if !columns.include?(fn) && !args.include?(:force)
+    raise "Set method for #{fn.inspect} already defined." if SET_METHODS.has_key?(fn)
+    SET_METHODS[fn] = meth
+  end
+  
   def self.filter_params( raw_params, keys )
     keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
   end
@@ -43,7 +54,7 @@ class Sequel::Model
     raise "You have to define this method."
   end
 
-  def trashable(*args, &cond_block)
+  def self.trashable(*args, &cond_block)
       raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
       
       name_of_assoc, opts = args
@@ -94,15 +105,29 @@ class Sequel::Model
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
   end
   
-  def set_string_column( col_name, value)
-    new_val = value.respond_to?( :strip ) ? value.strip : value
-    self[col_name] = new_val
+  def __field_name__
+    ( caller[1] =~ /`([^']*)'/ && $1.to_sym ).to_s.sub(/\Aset_/, '').sub(/\!$/, '').to_sym
+  end
+  
+  def set_string_column( *args )
+    case args.size
+      when 1
+        col_name = 
+        new_val = args.first[col_name]
+      when 2
+        col_name, value = args
+        new_val = value.respond_to?( :strip ) ? value.strip : value
+      else
+        raise "What am I supposed to do with #{args.size} arguments for this method?"
+    end
+    
+    self[col_name] = new_val   
   end  
   
   def save_it!(hash_or_mem)
     editor = hash_or_mem.respond_to?(:has_key?) ? hash_or_mem[:EDITOR] : hash_or_mem
     action = __previous_method_name__.to_s.sub( /\_it\!?$/, '').to_sym # e.g.: :create_it! => :create
-    raise( InvalidEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
+    raise( UnauthorizedEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
     save
   end
   
@@ -114,12 +139,22 @@ class Sequel::Model
     raise "You have to define this method."
   end
 
-  def set_if_key_exists raw_params, keys
+  def require_fields raw_params, *raw_keys
+    keys = raw_keys.flatten
+    keys.each { |k| 
+      SET_METHODS[k].call(k,raw_params)
+    }
+  end
+  
+  def optional_fields raw_params, *raw_keys
+    keys = raw_keys.flatten
     keys.each { |k| 
       if raw_params.has_key?( k )
-        respond_to?("set_#{k}!") ?
-          send( "set_#{k}!", raw_params) :
-          set_string_column( k, raw_params[k] );
+        if SET_METHODS.has_key?()
+          SET_METHODS[k].call(self, k, raw_params)
+        else
+          set_string_column(k,raw_params)
+        end
       end
     }
   end 

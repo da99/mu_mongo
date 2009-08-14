@@ -22,7 +22,7 @@ class Topic < Sequel::Model
     new_record.set_title! raw_params
     
     # Optional fields.
-    new_record.set_if_key_exists( raw_params, [:parent_topic] )
+    new_record.optional_fields( raw_params, :parent_topic )
     
     new_record.save_it!( raw_params )
   end # === create_it
@@ -31,7 +31,7 @@ class Topic < Sequel::Model
   # ==== INSTANCE METHODS ==============================================
   
   def update_it!( raw_params )
-    set_if_key_exists( raw_params, [:parent_topic, :title] )
+    optional_fields( raw_params, :parent_topic, :title )
     save_it! raw_params
   end # === update_it
   

@@ -19,12 +19,9 @@ class Username < Sequel::Model
   def self.create_it!( raw_params )
     new_un = new
     
-    # Required fields.
-    new_un.set_owner_id! raw_params
-    new_un.set_username! raw_params
+    new_un.require_fields raw_params, :owner_id, :username
     
-    # Optional fields.
-    new_un.set_if_key_exists( raw_params, [ :nickname, :category] )
+    new_un.optional_fields raw_params, :nickname, :category
     
     un.save_it!( raw_params )
   end
@@ -44,7 +41,7 @@ class Username < Sequel::Model
       end
     }
     
-    set_if_key_exists( raw_params, [ :username, :nickname, :category, :email ] )
+    optional_fields raw_params,  :username, :nickname, :category, :email 
     
     if save_it!(raw_params) && !history_msgs.empty?
       HistoryLog.create_it!( 
@@ -70,38 +67,38 @@ class Username < Sequel::Model
   end # === def editor?
   
   
-  def set_owner_id!( raw_params )        
-  
-    if raw_params[:owner_id].to_i < 1
-      errors[:owner_id] << "Member id is required." 
+  def_set_meth( :owner_id ) { | rec, fn, raw_params |
+
+    if raw_params[ fn ].to_i < 1
+      rec.errors[ fn ] << "Member id is required." 
     end
     
-    return nil if !errors[:id].empty?
+    return nil if !rec.errors[:id].empty?
     
-    self[:owner_id] = raw_params[:owner_id] 
+    rec[ fn ] = rec.raw_params[ fn ] 
     
-  end # === def set_id
+  } # === def set_id
   
 
-  def set_email!( raw_params )
+  def_set_meth( :email ) { |rec, fn, raw_params|
 
-    v = raw_params[:email] 
-    return( self[:email] = nil ) if v.nil? || v.strip.empty?
+    v = raw_params[ fn ] 
+    return( rec[ fn ] = nil ) if v.nil? || v.strip.empty?
 
     
     with_valid_chars = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
     
-    self.errors.add( :email, 
+    rec.errors.add( fn, 
                     "Email contains invalid characters." 
                     ) if with_valid_chars != raw_email || with_valid_chars !~ VALID_EMAIL_FORMAT 
     
-    self.errors.add( :email,  
+    rec.errors.add( fn,  
                      "Email is too short." 
                     ) if with_valid_chars.length < 6
   
-    return nil if !self.errors[:email].empty?
+    return nil if !rec.errors[fn].empty?
     
-    self[:email] = with_valid_chars
+    rec[fn] = with_valid_chars
     
     #begin
     #  require 'tmail'
@@ -109,12 +106,12 @@ class Username < Sequel::Model
     #rescue TMail::SyntaxError
     #  raise( Sequel::ValidationFailed,  "Invalid Format: Email format could not be recognized."  )
               
-  end # === def set_email
+  } # === def set_email
   
   
-  def set_username!( raw_params)
+  def_set_meth( :username ) { |rec, fn, raw_params|
     
-    raw_name = raw_params[:username]
+    raw_name = raw_params[fn]
     
     # Delete invalid characters and 
     # reduce any suspicious characters. 
@@ -126,24 +123,23 @@ class Username < Sequel::Model
                                                     }          
     
     # Check to see if there is at least one alphanumeric character          
-    self.errors.add( :username,  
+    rec.errors.add( fn,  
                     'Username is empty.' 
                    ) if sanitized.empty?
-    self.errors.add( :username,  
+    rec.errors.add( fn,  
                     'Username is too short. (Must be 3 or more characters.)' 
                    ) if sanitized.length < 2
-    self.errors.add( :username,  
+    rec.errors.add( fn,  
                     'Username is too long. (Must be 20 characters or less.)' 
                    ) if sanitized.length > 20
-    self.errors.add( :username,  
+    rec.errors.add( fn,  
                     'Username must have at least one letter or number.' 
                    ) if !sanitized[ /[a-z0-9]/i ]
     
-    return nil if !self.errors[:username].empty?
+    return nil if !rec.errors[fn].empty?
     
-    self[:username] = sanitized
+    rec[fn] = sanitized
     
-  end # === def validate_new_values
-  
+  } # === def validate_new_values
   
 end # === end Username

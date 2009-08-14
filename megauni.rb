@@ -17,7 +17,7 @@ end
 module Kernel
     private
        def __previous_method_name__
-         caller[1] =~ /`([^']*)'/ and $1.to_sym
+         caller[1] =~ /`([^']*)'/ && $1.to_sym
        end
 end
 
