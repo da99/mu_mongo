@@ -15,29 +15,31 @@ class Topic < Sequel::Model
 
   # ==== CLASS METHODS =================================================
 
-
-  # ==== INSTANCE METHODS ==============================================
-
-
-  def self.create_it( raw_params, editor )
-    return nil unless editor.has_permission_level?(:ADMIN)
-    params = filter_params( raw_params, [:parent_topic, :title] )
-    
+  def self.create_it!( raw_params )    
     new_record = new
-    new_record.set params
-    new_record.save
+    new_record.set_title! raw_params
+    new_record.set_if_key_exists( raw_params, [:parent_topic] )
+    new_record.save_it!( raw_params )
     
   end # === create_it
   
-  def update_it( raw_params, editor )
-    return nil unless editor.has_permission_level?(:ADMIN)
-    params = self.class.filter_params( raw_params, [:parent_topic, :title] )
-    
-    update params
+
+  # ==== INSTANCE METHODS ==============================================
+  
+  def update_it!( raw_params )
+    set_if_key_exists( raw_params, [:parent_topic, :title] )
+    save_it! raw_params
   end # === update_it
   
 
-
+  def has_permission?( action, raw_params )
+    case action
+      when :create, :update, :delete
+        raw_params[:EDITOR] && raw_params[:EDITOR].admin?
+      else
+        false
+    end
+  end
   
 
 end # === end Topic

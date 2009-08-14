@@ -114,11 +114,11 @@ class Sequel::Model
     raise "You have to define this method."
   end
 
-  def set_these raw_params, keys
+  def set_if_key_exists raw_params, keys
     keys.each { |k| 
       if raw_params.has_key?( k )
-        respond_to?("set_#{k}") ?
-          send( "set_#{k}", raw_params) :
+        respond_to?("set_#{k}!") ?
+          send( "set_#{k}!", raw_params) :
           set_string_column( k, raw_params[k] );
       end
     }

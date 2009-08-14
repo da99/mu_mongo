@@ -64,7 +64,7 @@ class Member < Sequel::Model
     mem = new
     
     # Required fields.
-    mem.set_password raw_params
+    mem.set_password! raw_params
     
     # Save and create username.
     if mem.save_it!( raw_params )
@@ -79,14 +79,14 @@ class Member < Sequel::Model
   #                    Instance Methods
   # ========================================================= 
   
-  def update_it!( raw_params, editor )
+  def update_it!( raw_params )
   
     case editor
       when self
-        set_these( raw_params, [ :password ] )
+        set_if_key_exists( raw_params, [ :password ] )
       else
-        if editor.has_permission_level?(ADMIN)
-          set_these( raw_params, [ :permission_level ] )
+        if editor.admin?
+          set_if_key_exists( raw_params, [ :permission_level ] )
         end
     end
     
@@ -100,14 +100,14 @@ class Member < Sequel::Model
       when :create
         true
       when :update
-        self == editor || ( editor && editor.has_permission_level?(ADMIN) )
+        self == editor || ( editor && editor.admin? )
       else 
         false
     end 
   end
   
   
-  def set_password( raw_params )
+  def set_password!( raw_params )
       pass = raw_params[:password].to_s.trim
       confirm_pass = raw_params[:confirm_password].to_s.trim
       
@@ -136,7 +136,7 @@ class Member < Sequel::Model
   end # === def set_password
   
   
-  def set_permission_level( raw_params )
+  def set_permission_level!( raw_params )
   
     new_level = raw_params[:permission_level]
     if !SECURITY_LEVELS.include?(new_level)
@@ -147,8 +147,15 @@ class Member < Sequel::Model
     
   end # === def set_permission_level
   
+  def admin?
+    has_power_of?(:ADMIN)
+  end
   
-  def has_permission_level?(raw_level)
+  def editor?
+    has_power_of?(:EDITOR)
+  end
+  
+  def has_power_of?(raw_level)
       
       # Turn raw value into a proper instance:
       # 1000 => 1000
@@ -170,7 +177,7 @@ class Member < Sequel::Model
           raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
       end
       
-  end # === def has_permission_level?
+  end # === def security_clearance?
 
 end # Member
 ########################################################################################

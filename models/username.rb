@@ -20,11 +20,11 @@ class Username < Sequel::Model
     new_un = new
     
     # Required fields.
-    new_un.set_owner_id raw_params
-    new_un.set_username raw_params
+    new_un.set_owner_id! raw_params
+    new_un.set_username! raw_params
     
     # Optional fields.
-    new_un.set_these( raw_params, [ :nickname, :category] )
+    new_un.set_if_key_exists( raw_params, [ :nickname, :category] )
     
     un.save_it!( raw_params )
   end
@@ -44,7 +44,7 @@ class Username < Sequel::Model
       end
     }
     
-    set_these( raw_params, [ :username, :nickname, :category, :email ] )
+    set_if_key_exists( raw_params, [ :username, :nickname, :category, :email ] )
     
     if save_it!(raw_params) && !history_msgs.empty?
       HistoryLog.create_it!( 
@@ -70,7 +70,7 @@ class Username < Sequel::Model
   end # === def editor?
   
   
-  def set_owner_id( raw_params )        
+  def set_owner_id!( raw_params )        
   
     if raw_params[:owner_id].to_i < 1
       errors[:owner_id] << "Member id is required." 
@@ -83,7 +83,7 @@ class Username < Sequel::Model
   end # === def set_id
   
 
-  def set_email( raw_params )
+  def set_email!( raw_params )
 
     v = raw_params[:email] 
     return( self[:email] = nil ) if v.nil? || v.strip.empty?
@@ -112,7 +112,7 @@ class Username < Sequel::Model
   end # === def set_email
   
   
-  def set_username( raw_params)
+  def set_username!( raw_params)
     
     raw_name = raw_params[:username]
     
@@ -120,10 +120,10 @@ class Username < Sequel::Model
     # reduce any suspicious characters. 
     # '..*' becomes '.', '--' becomes '-'
     sanitized = raw_name.gsub( /[^a-z0-9]{2,}/i  ) { |s| 
-      ['_', '.', '-'].include?( s[0,1] ) ?
-        s[0,1] :
-        '' ;
-    }          
+                                                      ['_', '.', '-'].include?( s[0,1] ) ?
+                                                        s[0,1] :
+                                                        '' ;
+                                                    }          
     
     # Check to see if there is at least one alphanumeric character          
     self.errors.add( :username,  

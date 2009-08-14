@@ -113,7 +113,7 @@ helpers do # ===============================
       
       dev_log_it("CREDITIAL CHECK >>> #{current_action[:controller].inspect} #{current_action[:action].inspect}")
       
-      return true if logged_in? && current_member.has_permission_level?( current_action[:perm_level] )
+      return true if logged_in? && current_member.has_power_of?( current_action[:perm_level] )
       return true if current_action[:perm_level].eql?( :STRANGER )
       
       if request.get?
