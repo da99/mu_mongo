@@ -17,7 +17,7 @@ class Sequel::Model
   # =========================================================    
   class NoRecordFound < RuntimeError; end
   class UnauthorizedEditor < RuntimeError; end
-  SET_METHODS = {}
+  
 
   # =========================================================
   #                      Attributes
@@ -36,22 +36,25 @@ class Sequel::Model
   #                  CLASS METHODS
   # =========================================================
 
+  def self.set_methods
+    @set_methods ||= {}
+  end
+
   # Options:
   #   :force - Allow method to be used even though field does not exist.
   #            Example: :password used in Member even thought :password is not a field.
-  #
-  def self.def_set_meth( fn, *args, &meth )
+  #  
+  def self.def_setter( fn, *args, &meth )
     raise "Field, #{fn.inspect}, does not exist." if !columns.include?(fn) && !args.include?(:force)
-    raise "Set method for #{fn.inspect} already defined." if SET_METHODS.has_key?(fn)
-    SET_METHODS[fn] = meth
-  end
-  
-  def self.filter_params( raw_params, keys )
-    keys.inject( {} ) { |m| m[k] = raw_params[k] ; m }
+    raise "Set method for #{fn.inspect} already defined." if self.set_methods.has_key?(fn)
+    self.set_methods[fn] = :done
+    define_method("__set_and_validate__#{fn}__", &meth)
   end
     
-  def self.create_it!( raw_params, editor )
-    raise "You have to define this method."
+    
+  def self.create_it!( raw_params  )
+    rec = new
+    rec.create_it!(raw_params)
   end
 
   def self.trashable(*args, &cond_block)
@@ -87,11 +90,10 @@ class Sequel::Model
   
   # =========================================================
   #                  PUBLIC INSTANCE METHODS
-  # =========================================================
-  
+  # =========================================================  
   
   def save_with_meta_id
-    if new? && self.class != MetaId && self.class.columns.include?(:id)
+    if new? && self.errors.empty? && self.class != MetaId && self.class.columns.include?(:id)
       self[:id]=MetaId.create[:id]
     end
     save_wo_meta_id
@@ -105,59 +107,113 @@ class Sequel::Model
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
   end
   
+  
   def __field_name__
     ( caller[1] =~ /`([^']*)'/ && $1.to_sym ).to_s.sub(/\Aset_/, '').sub(/\!$/, '').to_sym
   end
   
-  def set_string_column( *args )
-    case args.size
-      when 1
-        col_name = 
-        new_val = args.first[col_name]
-      when 2
-        col_name, value = args
-        new_val = value.respond_to?( :strip ) ? value.strip : value
-      else
-        raise "What am I supposed to do with #{args.size} arguments for this method?"
+  
+  def human_field_name( col )
+    col.to_s.gsub('_', ' ')
+  end
+  
+  
+  def create_it!(raw_params)
+    raise "Target action is :create, but this record is not new." if !new?
+    @target_action = :create
+    @target_params = raw_params
+    save
+  end
+  
+  def update_it!(raw_params )
+    raise "Target action is :update, but this record is new." if new?
+    @target_action = :update
+    @target_params = raw_params
+  end
+  
+  
+  def validate
+  
+    return true if !@target_action && !@target_params
+        
+    if !has_permission?( @target_action, @target_params[:EDITOR] )
+      raise( UnauthorizedEditor, "#{@target_params[:EDITOR].inspect}" ) 
     end
-    
-    self[col_name] = new_val   
-  end  
+    send :"validate_#{@target_action}", @target_params
+  end
+  
   
   def save_it!(hash_or_mem)
     editor = hash_or_mem.respond_to?(:has_key?) ? hash_or_mem[:EDITOR] : hash_or_mem
     action = __previous_method_name__.to_s.sub( /\_it\!?$/, '').to_sym # e.g.: :create_it! => :create
     raise( UnauthorizedEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
+    save_failure(:invalid) if !errors.empty?
     save
   end
   
-  def update_it!( raw_params, editor )    
-    raise "You have to define this method."
-  end # === def  
-  
+    
   def has_permission?(*args)
     raise "You have to define this method."
   end
 
-  def require_fields raw_params, *raw_keys
+
+  
+  def required_fields raw_params, *raw_keys
     keys = raw_keys.flatten
     keys.each { |k| 
-      SET_METHODS[k].call(k,raw_params)
+      if self.class.set_methods.has_key?(k)
+        send "__set_and_validate_#{k}__", raw_params
+      else
+      
+        raise "Invalid field name" if !self.class.db_schema[k]
+        
+        if self.class.db_schema[k][:type] == :integer
+          if !raw_params.has_key?(k) || self[k].nil? || self[k].to_i < 1
+            self.errors[k] << "#{human_field_name(col).capitalize} is required."
+          else 
+            self[k] = raw_params[k]
+          end
+        else
+          new_val = raw_params[k].to_s.strip.empty?
+          if !raw_params.has_key?(k) || raw_params[k].nil? || new_val.empty?
+            self.errors[k] << "#{human_field_name(k).capitalize} is required."
+          else
+            self[k] = new_val
+          end
+        end
+        
+      end # === if/else 
     }
-  end
+    self
+  end # === def
+  
   
   def optional_fields raw_params, *raw_keys
     keys = raw_keys.flatten
     keys.each { |k| 
       if raw_params.has_key?( k )
-        if SET_METHODS.has_key?()
-          SET_METHODS[k].call(self, k, raw_params)
+        if self.class.set_methods.has_key?(k)
+          send "__set_and_validate_#{k}__", raw_params
         else
-          set_string_column(k,raw_params)
+          if self.class.db_schema[k][:type] == :integer
+            self[k] = if raw_params[k].nil?
+                         nil
+                      else
+                        raw_params[k].to_i
+                      end
+          else
+            self[k] = if raw_params[k].nil?
+                         nil
+                      else
+                        raw_params[k].to_s.strip
+                      end
+          end          
         end
       end
     }
-  end 
+    self
+  end # === def
+
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )

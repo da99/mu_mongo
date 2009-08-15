@@ -60,33 +60,28 @@ class Member < Sequel::Model
   end # === self.authenticate
   
   
-  def self.create_it!( raw_params )
-      
-    mem = new
-    
-    mem.require_fields raw_params, :password
-    
-    # Save and create username.
-    if mem.save_it!( raw_params )
-      un_vals = { :owner_id=>mem[:id] }.merge( raw_params )
-      Username.create_it!( un_vals  )
-      mem
-    end
-    
+  def validate_create( raw_params )
+    @username_params = raw_params
+    required_fields raw_params, :password
   end # === def self.create_it!
+  
+  def after_create
+    Username.create_it!( @username_params  )  
+    super
+  end
   
   # =========================================================
   #                    Instance Methods
   # ========================================================= 
   
-  def update_it!( raw_params )
+  def validate_update( raw_params )
   
     case raw_params[:EDITOR]
       when self
-        optional_fields( raw_params,  :password  )
+        optional_fields raw_params, :password
       else
         if editor.admin?
-          optional_fields( raw_params,  :permission_level  )
+          optional_fields raw_params, :permission_level
         end
     end
     
@@ -107,22 +102,22 @@ class Member < Sequel::Model
   end
   
   
-  def_set_meth( :password, :force ) { |rec, fn,  raw_params |
-      pass = raw_params[ fn ].to_s.trim
-      confirm_pass = raw_params[:confirm_password].to_s.trim
+  def_setter( :password, :force ){ |raw_params |
+      pass = raw_params[ fn ].to_s.strip
+      confirm_pass = raw_params[:confirm_password].to_s.strip
       
       if pass.empty?
-        rec.errors[fn] << "Password is required."
+        self.errors[fn] << "Password is required."
       else
-        rec.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
-        rec.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
-        rec.errors[fn] << "Password must have at least one number." if !pass[/0-9/]
+        self.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
+        self.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
+        self.errors[fn] << "Password must have at least one number." if !pass[/0-9/]
       end
 
-      return nil if !rec.errors[fn].empty?
+      return nil if !self.errors[fn].empty?
       
       # Salt and encrypt values.
-      rec[:salt] = begin
+      self[:salt] = begin
                       chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
                       (1..10).inject('') { |new_pass, i|  
                         new_pass += chars[rand(chars.size-1)] 
@@ -130,20 +125,20 @@ class Member < Sequel::Model
                       }
                     end
       
-      rec[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
+      self[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
       pass_confirm
       
   } # === def set_password
   
   
-  def_set_meth( :permission_level ) { |rec, fn, raw_params |
+  def_setter( :permission_level ) { |raw_params |
   
     new_level = raw_params[fn]
     if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end
     
-    rec[fn] = new_level
+    self[fn] = new_level
     
   } # === def set_permission_level
   

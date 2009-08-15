@@ -19,6 +19,22 @@ module Kernel
        def __previous_method_name__
          caller[1] =~ /`([^']*)'/ && $1.to_sym
        end
+       
+       def at_least_something?( unknown )
+       
+        return false if !unknown
+       
+        if unknown.respond_to?(:strip)
+          stripped = unknown.strip
+          return stripped if !stripped.empty?
+        elsif unknown.is_a?(Numeric)
+          return unknown if unknown > 0 
+        else
+          unknown
+        end
+        
+        false
+       end
 end
 
 
