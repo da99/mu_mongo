@@ -8,7 +8,6 @@ end
 `reset` if dev?
 
 def print_this(*args)
-  return if !dev?
   args.each {|new_line|
     if new_line.empty?
       print "\n"
@@ -494,7 +493,7 @@ namespace :db do
 	desc "Delete all tables, migrate up, and create default data."
 	task :reset!  do
 	
-    raise ArgumentError, "This task not allowed in :production" unless Pow!.to_s =~ /\/home\/da01/
+    raise ArgumentError, "This task not allowed in :production" # if !dev?
 
     print_this '', 'Setting up...'
     require 'sequel/extensions/migration' 
