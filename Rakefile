@@ -489,11 +489,10 @@ namespace :db do
 		print_this "Done."		
 	end # === 
 
-
-	desc "Delete all tables, migrate up, and create default data."
-	task :reset  do
+	desc "Env: :test, :development."
+	task :migrate_down do
 	
-    raise ArgumentError, "This task not allowed in :production" # if !dev?
+    raise ArgumentError, "This task not allowed in :production" if !dev?
 
     print_this '', 'Setting up...'
     require 'sequel/extensions/migration' 
@@ -501,6 +500,14 @@ namespace :db do
 
     print_this "Reseting database..."
     Sequel::Migrator.apply( DB, Pow!('migrations'), 0 )
+
+	end # === 
+	
+	
+	desc "Delete all tables, migrate up, and create default data."
+	task :reset  do
+	
+    Rake::Task['db:migrate_down'].invoke
     Rake::Task["db:migrate_up"].invoke
         
 	end # ===
