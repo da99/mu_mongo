@@ -21,20 +21,17 @@ class Member < Sequel::Model
   
   # =========================================================
   #                   ASSOCIATIONS
-  # =========================================================  
+  # ========================================================= 
+   
   one_to_many :usernames, :key=>:owner_id
   
     
   # =========================================================
   #                      HOOKS
   # =========================================================
-
   
-  # =========================================================
-  #               Hooks to Other Classes 
-  # =========================================================
 
-                  
+                    
 
   # =========================================================
   #                     Class Methods.
@@ -58,51 +55,38 @@ class Member < Sequel::Model
 
       raise IncorrectPassword, "Try again."
   end # === self.authenticate
-  
-  
-  def validate_create( raw_params )
-    @username_params = raw_params
-    required_fields raw_params, :password
-  end # === def self.create_it!
-  
-  def after_create
-    Username.create_it!( @username_params  )  
-    super
-  end
+
   
   # =========================================================
   #                    Instance Methods
   # ========================================================= 
   
-  def validate_update( raw_params )
+  def_alter( :create ) do
+    allow_any_stranger
+    required_fields :password
+  end # === def self.create_it!  
   
-    case raw_params[:EDITOR]
-      when self
-        optional_fields raw_params, :password
-      else
-        if editor.admin?
-          optional_fields raw_params, :permission_level
-        end
-    end
-    
-    save_it! raw_params
-
-  end # === def update_it!
-  
-  
-  def has_permission?( action, editor )
-    case action
-      when :create
-        true
-      when :update
-        self == editor || ( editor && editor.admin? )
-      else 
-        false
-    end 
+  def_alter( :after_create ) do
+    un = Username.new
+    un.raw_data=( {:owner_id=>self[:id]}.merge(raw_data) )
   end
   
   
-  def_setter( :password, :force ){ |raw_params |
+  def_alter( :update ) do
+  
+    allow_only self, :ADMIN
+    
+    if raw_data[:EDITOR] == self
+        optional_fields :password
+    elsif raw_data[:EDITOR].admin?
+        optional_fields :permission_level
+    end    
+    
+  end # === def update_it!
+  
+    
+  def_setter( :password, :force ) { |raw_params |
+      fn = :password
       pass = raw_params[ fn ].to_s.strip
       confirm_pass = raw_params[:confirm_password].to_s.strip
       
@@ -111,7 +95,7 @@ class Member < Sequel::Model
       else
         self.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
         self.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
-        self.errors[fn] << "Password must have at least one number." if !pass[/0-9/]
+        self.errors[fn] << "Password must have at least one number." if !pass[/[0-9]/]
       end
 
       return nil if !self.errors[fn].empty?
@@ -132,7 +116,7 @@ class Member < Sequel::Model
   
   
   def_setter( :permission_level ) { |raw_params |
-  
+    fn = :permission_level
     new_level = raw_params[fn]
     if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
@@ -163,6 +147,8 @@ class Member < Sequel::Model
                             Integer(raw_level) ;
                                   
       case target_perm_level
+        when self
+          true
         when STRANGER
           true
         when MEMBER
@@ -177,6 +163,17 @@ class Member < Sequel::Model
       
   end # === def security_clearance?
 
-
+  
+  def has_permission?( action, editor )
+    case action
+      when :create
+        true
+      when :update
+        self == editor || ( editor && editor.admin? )
+      else 
+        false
+    end 
+  end
+  
 end # Member
 ########################################################################################

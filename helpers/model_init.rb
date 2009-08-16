@@ -35,9 +35,9 @@ class Sequel::Model
   # =========================================================
   #                  CLASS METHODS
   # =========================================================
-
-  def self.set_methods
-    @set_methods ||= {}
+  
+  def self.__setter_method_name__(fn)
+    "__set_and_validate_#{fn}__"
   end
 
   # Options:
@@ -45,17 +45,51 @@ class Sequel::Model
   #            Example: :password used in Member even thought :password is not a field.
   #  
   def self.def_setter( fn, *args, &meth )
-    raise "Field, #{fn.inspect}, does not exist." if !columns.include?(fn) && !args.include?(:force)
-    raise "Set method for #{fn.inspect} already defined." if self.set_methods.has_key?(fn)
-    self.set_methods[fn] = :done
-    define_method("__set_and_validate__#{fn}__", &meth)
-  end
+    meth_name= __setter_method_name__(fn)
+    raise "Field, #{fn.inspect}, does not exist. (From #{__previous_line__})" if !columns.include?(fn) && !args.include?(:force)
+    raise "Set method for #{fn.inspect} already defined. (From #{__previous_line__})" if new.respond_to?(meth_name)
+    define_method(meth_name, &meth)
+  end # === def_setter
+  
+  
+  def self.def_alter( fn, &meth) 
     
+    new_name = fn.to_s.to_sym
+    @alter_meths ||= []
     
-  def self.create_it!( raw_params  )
-    rec = new
-    rec.create_it!(raw_params)
-  end
+    if @alter_meths.include?(new_name )
+      raise "Alter method already defined for #{self}: #{fn.inspect}.  (From #{__previous_line__})" 
+    end
+    
+    @alter_meths << new_name
+        
+    case new_name
+    
+      when :create
+        define_method( :__create__, &meth )
+       
+        class << self
+          def create raw_vals
+            n = new
+            n.__save__(:create, raw_vals) 
+          end
+        end
+        
+      when :update
+        define_method( :__update__, &meth )
+        def update  raw_vals
+          raise "This record is still new. :update can not be used." if new?
+          __save__(:update, raw_vals)
+        end
+
+      when :after_create, :after_update, :after_save
+        define_method(new_name, &meth)
+        
+    else
+      raise "Invaild alter methods: #{fn.inspect}. (From #{__previous_line__})" 
+    end
+  end # === def def_alter
+  
 
   def self.trashable(*args, &cond_block)
       raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
@@ -89,81 +123,91 @@ class Sequel::Model
   
   
   # =========================================================
+  #                          HOOKS
+  # =========================================================    
+  
+  # =================== NO HOOKS ARE USED. SEE :define_alter.
+  
+  # =========================================================
   #                  PUBLIC INSTANCE METHODS
   # =========================================================  
   
-  def save_with_meta_id
-    if new? && self.errors.empty? && self.class != MetaId && self.class.columns.include?(:id)
-      self[:id]=MetaId.create[:id]
-    end
-    save_wo_meta_id
-  end
-    
-  alias_method :save_wo_meta_id, :save 
-  alias_method :save, :save_with_meta_id 
-
   
   def dev_log(msg)
     puts(msg) if Pow!.to_s =~ /\/home\/da01\// && [:development, "development"].include?(Sinatra::Application.options.environment)
-  end
-  
-  
-  def __field_name__
-    ( caller[1] =~ /`([^']*)'/ && $1.to_sym ).to_s.sub(/\Aset_/, '').sub(/\!$/, '').to_sym
-  end
-  
+  end  
   
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
   end
-  
-  
-  def create_it!(raw_params)
-    raise "Target action is :create, but this record is not new." if !new?
-    @target_action = :create
-    @target_params = raw_params
-    save
+   
+  def raw_data=( raw_hash )
+    @raw_data = raw_hash
   end
   
-  def update_it!(raw_params )
-    raise "Target action is :update, but this record is new." if new?
-    @target_action = :update
-    @target_params = raw_params
+  def raw_data
+    @raw_data ||= {}
   end
   
-  
-  def validate
-  
-    return true if !@target_action && !@target_params
-        
-    if !has_permission?( @target_action, @target_params[:EDITOR] )
-      raise( UnauthorizedEditor, "#{@target_params[:EDITOR].inspect}" ) 
-    end
-    send :"validate_#{@target_action}", @target_params
+  def allow_any_stranger
+    @editor_permission_level = :STRANGER
   end
   
-  
-  def save_it!(hash_or_mem)
-    editor = hash_or_mem.respond_to?(:has_key?) ? hash_or_mem[:EDITOR] : hash_or_mem
-    action = __previous_method_name__.to_s.sub( /\_it\!?$/, '').to_sym # e.g.: :create_it! => :create
-    raise( UnauthorizedEditor, "#{editor.inspect}" ) if !has_permission?(action, editor)
-    save_failure(:invalid) if !errors.empty?
-    save
+  def allow_only( *levels)
+    raise "Only permission levels allowed. No blocks." if block_given?
+    allow_at_least(*levels)
   end
   
+  def allow_at_least(*levels, &blok)
     
-  def has_permission?(*args)
-    raise "You have to define this method."
+    raise "Only a permission level or block allowed, but not both." if !levels.empty? && blok
+    raise "Permission level or block are require." if levels.empty? && !blok
+    
+    do_it = if !raw_data[:EDITOR]
+              nil 
+            elsif levels.empty?
+              instance_eval( &blok )
+            elsif levels.include?(Member::STRANGER)
+              raise ":STRANGER not allowed in this method. Try :allow_any_stranger." 
+            else
+              levels.detect { |lev|
+                raw_data[:EDITOR] && raw_data[:EDITOR].has_power_of?(levels.first)
+              }
+            end
+    
+    raise( UnauthorizedEditor, raw_data[:EDITOR].inspect ) if !do_it
+    @editor_permission_level = perm_level || blok
   end
-
-
   
-  def required_fields raw_params, *raw_keys
+  
+  def __save__(target_action, raw_vals, &meth)
+  
+    self.raw_data = raw_vals
+
+    if new? && self.errors.empty? && self.class != MetaId && self.class.columns.include?(:id)
+      self[:id]=MetaId.create[:id]
+    end
+    
+    send "__#{target_action}__"
+        
+    if !@editor_permission_level
+      raise("Editor permission level not set for: #{self.class}.#{target_action}")  
+    else
+      @editor_permission_level = nil
+    end
+    
+    save_failure(:invalid) if !errors.empty?
+    save(:changed=>true)
+    
+  end # === def validate
+  
+  def required_fields *raw_keys
+    raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
-      if self.class.set_methods.has_key?(k)
-        send "__set_and_validate_#{k}__", raw_params
-      else
+      begin
+        send( self.class.__setter_method_name__(k), raw_params )
+      rescue NoMethodError
       
         raise "Invalid field name" if !self.class.db_schema[k]
         
@@ -188,28 +232,30 @@ class Sequel::Model
   end # === def
   
   
-  def optional_fields raw_params, *raw_keys
+  def optional_fields *raw_keys
+    raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
-      if raw_params.has_key?( k )
-        if self.class.set_methods.has_key?(k)
-          send "__set_and_validate_#{k}__", raw_params
+      next if raw_params.has_key?( k )
+      
+      begin
+        send __setter_method_name__(k), raw_params
+      catch NoMethodError
+        if self.class.db_schema[k][:type] == :integer
+          self[k] = if raw_params[k].nil?
+                       nil
+                    else
+                      raw_params[k].to_i
+                    end
         else
-          if self.class.db_schema[k][:type] == :integer
-            self[k] = if raw_params[k].nil?
-                         nil
-                      else
-                        raw_params[k].to_i
-                      end
-          else
-            self[k] = if raw_params[k].nil?
-                         nil
-                      else
-                        raw_params[k].to_s.strip
-                      end
-          end          
-        end
+          self[k] = if raw_params[k].nil?
+                       nil
+                    else
+                      raw_params[k].to_s.strip
+                    end
+        end          
       end
+
     }
     self
   end # === def

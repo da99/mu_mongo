@@ -18,5 +18,15 @@ class MetaId < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
+  def has_permission?(*args)
+    return true if new?
+    false
+  end
+  
+  def __create__
+  end
+  
+  def __update__
+  end
 
 end # === end MetaId

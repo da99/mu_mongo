@@ -29,5 +29,4 @@ class LoginAttempt < Sequel::Model
   # =========================================================
   
 
-
 end # ===== LoginAttempt

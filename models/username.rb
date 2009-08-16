@@ -14,23 +14,26 @@ class Username < Sequel::Model
   # ==== HOOKS =========================================================
   
 
+  
   # ==== CLASS METHODS =================================================
 
 
   # ==== INSTANCE METHODS ==============================================
 
-  def validate_create( raw_params )
-    raw_params[:owner_id] = raw_params[:EDITOR][:id]
-    required_fields raw_params, :owner_id, :username
-    optional_fields raw_params, :nickname, :category
+  def_alter( :create ) do
+    allow_any_stranger
+    required_fields :owner_id, :username
+    optional_fields :nickname, :category
   end
   
-  def validate_update( raw_params )
+  def_alter( :update ) do
+  
+    allow_only self, :ADMIN
+    optional_fields :username, :nickname, :category, :email 
     
     @history_msgs = []
-    @editor = raw_params[:EDITOR]
     
-    raw_params.each { |k,v|
+    raw_data.each { |k,v|
       case k.to_sym
         when :username
           history_msgs << "Changed username from: #{self[:username]}"
@@ -39,36 +42,24 @@ class Username < Sequel::Model
       end
     }
     
-    optional_fields raw_params,  :username, :nickname, :category, :email 
-    
   end # === def update_it!
   
+  def_alter( :after_update ) do
+    
+    return true if !@history_msgs.empty?
+    
+    HistoryLog.create_it!( 
+     :owner_id=>self.owner[:id], 
+     :editor_id=>raw_data[:EDITOR][:id], 
+     :action=>'UPDATE', 
+     :body=>@history_msgs.join("\n")
+    ) 
+    
+  end  
   
-  def after_update
-    if !@history_msgs.empty?
-      HistoryLog.create_it!( 
-       :owner_id=>self.owner[:id], 
-       :editor_id=>@editor[:id], 
-       :action=>'UPDATE', 
-       :body=>@history_msgs.join("\n")
-      ) 
-    end
-  end
-  
-  
-  def has_permission?(action, editor)
-    case action
-      when :create
-        true
-      when :update
-        editor == self.owner
-      else
-        false
-    end
-  end # === def editor?
-   
 
-  def_setter( :email ) {  |raw_params|
+  def_setter( :email ) { 
+    raw_params = raw_data
     fn = :email
     v = raw_params[ fn ] 
     return( self[ fn ] = nil  ) if v.nil? || v.strip.empty?
@@ -122,5 +113,17 @@ class Username < Sequel::Model
     end
     
   } # === def validate_new_values
+  
+  
+  def has_permission?(action, editor)
+    case action
+      when :create
+        true
+      when :update
+        editor == self.owner
+      else
+        false
+    end
+  end # === def editor?  
   
 end # === end Username

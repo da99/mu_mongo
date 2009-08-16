@@ -20,6 +20,10 @@ module Kernel
          caller[1] =~ /`([^']*)'/ && $1.to_sym
        end
        
+       def __previous_line__
+        caller[1].sub(File.dirname(File.expand_path('.')), '')
+       end
+       
        def at_least_something?( unknown )
        
         return false if !unknown
