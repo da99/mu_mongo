@@ -104,7 +104,13 @@ before {
 # ===============================================
 require_these 'helpers/sinatra'
 
+error {
+  "Bug found. I will look into it."
+}
 
+not_found {
+  "Page Not found. Check address for typos or contact author."
+}
 
 # ===============================================
 # Require the actions.
@@ -142,4 +148,4 @@ get('/eggs?/?') {
   render_mab
 }
 
-
+get('/e') { raise "something" }
