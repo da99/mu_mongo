@@ -10,6 +10,7 @@ require 'pow'
 require 'sequel' 
 require 'sequel/extensions/inflector'
 
+
 def require_these( dir );
     Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
 end
@@ -59,6 +60,8 @@ configure :development do
   `reset` 
   require Pow('helpers/css')
   require Pow!('helpers/model_init')
+  enable :clean_trace  
+
 end
 
 configure do
@@ -67,11 +70,24 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-  
-  
 
 end # === configure 
 
+configure do
+
+  # === Error handling.
+  require 'rack_hoptoad'
+  require Pow('helpers/public_500')
+  enable :raise_errors
+  enable :show_exceptions  
+  use Rack::Public500
+  use Rack::HoptoadNotifier , '05d03bbc87077117598fd437ce0caaa1' do |notifier|
+    notifier.environment_filters = ENV.keys.select { |k| 
+        k.to_s =~ /(session|cookie|USER|AWS|ssh|auth\_|DATABASE_URL)/i 
+    }
+  end
+  
+end # === configure
 
 
 # ===============================================
@@ -105,7 +121,7 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  Sinatroad.report! self
+  # Sinatroad.report! self
   "Programmer error found. I will look into it."
 }
 
@@ -148,4 +164,7 @@ get('/eggs?/?') {
   describe :egg, :show
   render_mab
 }
+
+
+
 
