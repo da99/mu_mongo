@@ -491,7 +491,7 @@ namespace :db do
 
 
 	desc "Delete all tables, migrate up, and create default data."
-	task :reset!  do
+	task :reset  do
 	
     raise ArgumentError, "This task not allowed in :production" # if !dev?
 
