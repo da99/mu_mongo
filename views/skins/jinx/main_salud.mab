@@ -44,7 +44,7 @@ html {
           font-weight: bold;
           padding: 0 4px;
 		    }
-		    a:hover {
+		    a:hover, a:active, a:focus {
 		      background: #D50015;
 		      color: #fff;
 		    }
