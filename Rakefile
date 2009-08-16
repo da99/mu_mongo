@@ -8,6 +8,7 @@ end
 `reset` if dev?
 
 def print_this(*args)
+  return if !dev?
   args.each {|new_line|
     if new_line.empty?
       print "\n"
