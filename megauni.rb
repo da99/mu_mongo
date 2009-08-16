@@ -149,4 +149,3 @@ get('/eggs?/?') {
   render_mab
 }
 
-get('/e') { raise "Test Hoptoad" }
