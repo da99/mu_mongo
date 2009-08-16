@@ -105,7 +105,8 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  "Bug found. I will look into it."
+  Sinatroad.report! self
+  "Programmer error found. I will look into it."
 }
 
 not_found {
@@ -148,4 +149,4 @@ get('/eggs?/?') {
   render_mab
 }
 
-get('/e') { raise "something" }
+get('/e') { raise "Test Hoptoad" }
