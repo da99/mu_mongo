@@ -41,9 +41,9 @@ class IssueClient
         url =  'https://miniuni.heroku.com/error'
         RestClient.post( url, data)
       rescue 
-        #environ.to_sym == :development ?
-          raise # :
-        #  "error"
+        environ.to_sym == :development ?
+          raise  :
+          "error"
       end  
     end    
 end
