@@ -70,7 +70,7 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-  # require Pow!('helpers/model_init')
+  require Pow!('helpers/model_init')
 end # === configure 
 
 configure do
