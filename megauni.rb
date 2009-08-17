@@ -59,7 +59,7 @@ set :cache_the_templates, Proc.new { !development? }
 configure :development do
   `reset` 
   require Pow('helpers/css')
-  require Pow!('helpers/model_init')
+  
   enable :clean_trace  
 
 end
@@ -70,7 +70,7 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-
+  require Pow!('helpers/model_init')
 end # === configure 
 
 configure do
