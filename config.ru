@@ -15,7 +15,7 @@ rescue
   info = ( $! ? [ $! ]  : ['Unknown error.', 'Exception not captured.'] )
 #  IssueClient.create( faux_env, Sinatra::Application.environment, *info) 
   faux_env = {'PATH_INFO' => "config file", 'HTTP_USER_AGENT' => 'heroku', 'REMOTE_ADDR'=>'127.0.0.1' }
-  IssueClient.create( faux_env, :production, 'Unknown error.', 'Exception not captured.') 
+  IssueClient.create( faux_env, :production, $!) 
 end
 
 run Sinatra::Application
