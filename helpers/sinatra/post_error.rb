@@ -32,15 +32,18 @@ class IssueClient
           :api_key    => 'luv.4all.29bal--w0l3mg930--3',
           :app_name   => 'Mega Uni', 
           :title      => (title || e.message),
-          :body       => (body || e.backtrace.join("\n")), 
+          :body       => (body || e.backtrace.reject {|b| b['mnt/.gems/gems'] }.join("\n")), 
           :environment   => environ.to_s ,
           :user_agent => env['HTTP_USER_AGENT'],
           :ip_address => env['REMOTE_ADDR'] || 'MISSING'
         })
-        url = environ.to_sym == :development ? 'https://localhost/error' : 'https://miniuni.heroku.com/error'
+        # url = # environ.to_sym == :development ? 'https://localhost/error' : 
+        url =  'https://miniuni.heroku.com/error'
         RestClient.post( url, data)
       rescue 
-        "error"
+        environ.to_sym == :development ?
+          raise :
+          "error"
       end  
     end    
 end

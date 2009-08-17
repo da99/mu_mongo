@@ -123,12 +123,12 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  IssueClient.create(env, options.development, env['sinatra.error'] )
+  IssueClient.create(env, options.environment, env['sinatra.error'] )
   "Programmer error found. I will look into it."
 }
 
 not_found {
-  IssueClient.create(env, options.development, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
+  IssueClient.create(env, options.environment, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
   "Page Not found. Check address for typos or contact author."
 }
 
