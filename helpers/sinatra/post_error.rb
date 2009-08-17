@@ -37,8 +37,8 @@ class IssueClient
           :user_agent => env['HTTP_USER_AGENT'],
           :ip_address => env['REMOTE_ADDR'] || 'MISSING'
         })
-        # url = # environ.to_sym == :development ? 'https://localhost/error' : 
-        url =  'https://miniuni.heroku.com/error'
+        url =  environ.to_sym == :test ? 'https://localhost/error' : 'https://miniuni.heroku.com/error'
+        # url =  'https://miniuni.heroku.com/error'
         RestClient.post( url, data)
       rescue 
         environ.to_sym == :development ?
