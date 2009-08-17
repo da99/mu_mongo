@@ -12,7 +12,8 @@ rescue
   
   require( my_app_root + '/helpers/sinatra/post_error' ) 
   faux_env = {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => self.inspect, 'REMOTE_ADDR'=>'127.0.0.1' }
-  IssueClient.create( faux_env, Sinatra::Application.environment, $!) 
+  info = ( $! ? [ $! ]  : ['Unknown error.', 'Exception not captured.'] )
+  IssueClient.create( faux_env, Sinatra::Application.environment, *info) 
 end
 
 run Sinatra::Application
