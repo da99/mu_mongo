@@ -1,6 +1,7 @@
 my_app_root = File.expand_path( File.dirname(__FILE__) )
 
-HELLO_ITS = self.inspect
+HELLO_1 = self.inspect
+HELLO_2 = self.to_s
 begin
   raise "show maintainence page"  if File.exists?(my_app_root + '/helpers/sinatra/maintain.rb')
   require( my_app_root + '/megauni' )
