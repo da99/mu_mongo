@@ -17,6 +17,8 @@ def print_this(*args)
   }
 end
 
+print_this ''
+
 def exec_this(command)
   `#{command} 2>&1`
 end

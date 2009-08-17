@@ -75,6 +75,9 @@ end # === configure
 
 configure do
 
+end # === configure
+
+configure(:production) do
   # === Error handling.
   require 'rack_hoptoad'
   require Pow('helpers/public_500')
@@ -86,8 +89,7 @@ configure do
         k.to_s =~ /(session|cookie|USER|AWS|ssh|auth\_|DATABASE_URL)/i 
     }
   end
-  
-end # === configure
+end
 
 
 # ===============================================
@@ -121,11 +123,12 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  # Sinatroad.report! self
+  IssueClient.create(env, options.development, env['sinatra.error'] )
   "Programmer error found. I will look into it."
 }
 
 not_found {
+  IssueClient.create(env, options.development, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
   "Page Not found. Check address for typos or contact author."
 }
 

@@ -75,15 +75,20 @@ helpers do # ===============================
     end
     
     def using_ssl?
-      (env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] =='https' || env['rack.url_scheme'] == 'https' || request.port == 443)
+      (env['HTTPS'] == 'on' || 
+          env['HTTP_X_FORWARDED_PROTO'] =='https' || 
+            env['rack.url_scheme'] == 'https' || 
+              request.port == 443)
+      # This: request.url =~ /\Ahttps\:/ 
+      # does not work if being used in a proxy setup.
     end
     
     def require_ssl!
     
       return nil if using_ssl?
       
-      if request.post?
-        raise "POST not allowed using unsecure line." 
+      if request.xhr? || request.post?
+        render_error_msg( "Programmer error. Using unsecure line.", 200  )
       end
             
       # Redirect to SSL
@@ -120,7 +125,7 @@ helpers do # ===============================
         session[:desired_uri] = request.env['REQUEST_URI']
         redirect('/log-in')
       else
-        render_error_msg( 200, "Not logged in. Login first and try again."  )
+        render_error_msg( "Not logged in. Login first and try again.", 200  )
       end
       
     end # === def check_creditials!            
