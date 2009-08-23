@@ -18,7 +18,7 @@ class CreateMembers < Sequel::Migration
       # boolean :verified, :null=>false, :default=>false
 
       # === Date Times
-      timestamp :created_at, :null=>false
+      column :created_at,  :"timestamp with time zone", :null => false
 
       # ==== Aggregates
       # None.

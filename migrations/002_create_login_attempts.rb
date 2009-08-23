@@ -6,7 +6,6 @@ class CreateLoginAttempts < Sequel::Migration
       cidr      :ip_address
       smallint  :total, :default=>0
       date      :created_at
-      timestamp :modified_at, :null=>true
     end
   end
   

@@ -13,7 +13,8 @@ class CreateHistoryLogs < Sequel::Migration
       text        :body, :null=>false
       
       # === Date Times
-      timestamp   :created_at
+      column :created_at,  :"timestamp with time zone", :null => false
+      
       
       # === Aggregate Statistics
       # None so far.    

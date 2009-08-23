@@ -177,3 +177,56 @@ class Member < Sequel::Model
   
 end # Member
 ########################################################################################
+
+
+__END__
+
+
+  
+  VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
+  VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
+  VALID_EMAIL_CHARS   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
+  EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
+  VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
+  
+  
+  
+  class IncorrectPassword < RuntimeError
+  end
+
+  
+  def password=(pass)
+    @password = pass.strip
+    self.salt = Member.random_string(10) if !self.salt
+    self.hashed_password = Member.encrypt(@password, self.salt)
+  end
+  
+  #############################################################
+  protected
+  #############################################################
+    
+  def self.encrypt(pass, salt)
+    Digest::SHA1.hexdigest(pass+salt)
+  end # ===
+  
+  def self.random_string(len)
+    chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+    (1..len).inject('') { |new_pass, i|  
+      new_pass << chars[rand(chars.size-1)] 
+    }
+  end # ===
+
+
+  
+  # =========================================================
+  # Returns the time passed to it to the Member's local time
+  # as a String, formatted i18n to their Country preference.
+  # Default value of :utc is Time.now.utc
+  # =========================================================
+  def local_time_as_string( utc = nil )
+    utc ||= Time.now.utc
+    @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
+    @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
+  end # ===  
+  
+  

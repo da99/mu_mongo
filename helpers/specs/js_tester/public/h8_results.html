@@ -1,0 +1,147 @@
+    <html>
+        <head>    
+            
+            <title>#{the_title}</title>
+            
+            <style type="text/css">
+                body {
+                    background: #3786FF;
+                    font-size: 120%;
+                    margin: 0;
+                    padding: 5px 20px 20px 20px;
+                }
+                #h8_start {
+                    display: block;
+                    text-align: right;
+                    margin-bottom: 10px;
+                }
+                a:link,
+                a:visited{
+                    color: white;
+                    padding: 5px 10px 7px 10px;
+                    font-family: "Bitstream Vera Sans";
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+                a:hover,
+                a:active {
+                    color: red;
+                    background: #fff;
+                }
+                
+                div.h8_test {
+                    font-family: "Segoe UI", sans-serif;
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                }
+                
+                div.h8_pass {
+                    background: #FFE43D;
+                }
+                
+                div.h8_pass div.title {
+                    background: #6ED300;
+                    padding: 5px;
+                }
+                
+                div.h8_fail  {
+                    background: #fff;
+                }
+                
+                div.h8_fail  div.title {
+                    background: #FF1618;
+                    padding: 5px;
+                }
+                
+                pre {
+                    padding: 5px 10px;
+                    margin: 0;
+                    font-family: "Bitstream Vera Sans Mono", monospace;
+                    font-size: 16px; 
+                }
+                
+                div.show_funct {
+                    padding: 0 10px 10px 10px;
+                    font-size: 80%;
+                }
+                
+                h1 {
+                    font-size: 24px;
+                    font-family: "Segoe UI";
+                    margin: 0 0 20px 0;
+                    padding: 5px 10px 5px 5px;
+                    color: #fff;
+                }
+                
+                h1.fail {
+                    color: #FF1618;
+                    background: #fff;
+                }
+                
+                h2 {
+                    border-top: 1px solid #003587;
+                    color: #fff;
+                    margin: 0;
+                    padding: 10px 0 0 0;
+                    font-family: "Segoe UI";
+                    font-size: 20px;
+                    margin: 0;
+                    padding: 10px 0 5px 0;    
+                }
+                
+                div.suite {
+                    
+                }
+                div.suite a:link,
+                div.suite a:visited{
+                    color: red;
+                    padding: 2px 5px 4px 5px;
+                    margin: 0 0 0 -5px;
+                }
+                div.suite a:hover,
+                div.suite a:active {
+                    color: red;
+                    background: #fff;
+                    padding: 2px 5px 4px 5px;
+                    margin: 0 0 0 -5px;
+                }                
+            
+            </style>    
+                    
+        </head>
+        <body>    
+            <a id="h8_start" href="/h8_start">Restart</a>
+            <h1 class="#{failed_tests.empty? ? 'pass' : 'fail'}">#{the_title}</h1>
+            
+            #{ if !H8Tester.errors.empty?  }
+                <div class="h8_errors">
+                    #{H8Tester.errors.inspect}
+                 </div>
+            #{ end }
+
+    
+            #{ H8Tester.suites.values.each do |suite| }
+              <div class="suite">
+                <h2 class="suite_name">#{suite[:name]}</h2>
+                #{ suite[:results].each do |test| }
+                        #{ div_id = (suite[:id].to_s + rand(1000).to_s).gsub('.', '_') }
+                        <div class="h8_test #{test['pass'] ? 'h8_pass' : 'h8_fail' }">
+                            <div class="title">#{test['pass'] ? 'Pass' : 'FAIL' }: #{test['name']}</div>
+                            <pre>EXPECTED:  #{test['expected']}  #{"\n"}ACTUAL:    #{test['actual']}</pre>
+                            <div class="show_funct"><a href="#view_funct" onclick="$('\##{div_id}_funct').show(); $(this).hide();return false;">View test code.</a></div>
+                            <div class="funct" style="display: none;" id="#{div_id}_funct">
+                                <pre>#{test['funct']}</pre>
+                            </div>
+                        </div>
+                #{ end }
+                </div> <!-- end div.suite -->
+            #{ end }    
+
+
+            <script src="/js/vendor/jquery.1.3.2.min.js" type="text/javascript"></script> 
+            <a href="#show_raw_results" onclick="$('#h8_raw_results').show(); $(this).hide(); return false;">Show Raw Results</a>
+            <pre id="h8_raw_results" style="display: none;">#{H8Tester.suites.to_yaml}</pre>
+            
+            
+      </body>
+    </html>

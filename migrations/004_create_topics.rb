@@ -11,8 +11,8 @@ class CreateTopics < Sequel::Migration
       varchar :title, :null=>false
       
       # === Date Times
-      timestamp   :created_at
-      timestamp   :modified_at, :null=>true
+      column :created_at,  :"timestamp with time zone", :null => false
+      column :modified_at, :"timestamp with time zone", :null => true
       
       # === Aggregate Statistics
       # None so far.    

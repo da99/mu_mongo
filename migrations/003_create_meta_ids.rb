@@ -10,8 +10,7 @@ class CreateMetaIds < Sequel::Migration
       
       
       # === Date Times
-      timestamp   :created_at
-      timestamp   :modified_at, :null=>true
+      column :created_at,  :"timestamp with time zone", :null => false
       
       # === Aggregate Statistics
       # None so far.    

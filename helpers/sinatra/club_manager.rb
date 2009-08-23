@@ -78,7 +78,8 @@ helpers do # ===============================
       (env['HTTPS'] == 'on' || 
           env['HTTP_X_FORWARDED_PROTO'] =='https' || 
             env['rack.url_scheme'] == 'https' || 
-              request.port == 443)
+              env['SERVER_PORT'].to_i == 443 ||
+                request.port == 443)
       # This: request.url =~ /\Ahttps\:/ 
       # does not work if being used in a proxy setup.
     end
