@@ -1,4 +1,6 @@
 
+raise '$KCODE not set to UTF8 in start file.' unless $KCODE == 'UTF8'
+
 class Bacon::Context
   include Rack::Test::Methods
 end
@@ -14,3 +16,7 @@ describe 'The HelloWorld App' do
     last_response.body.should =~ /mega uni/i
   end
 end
+
+
+
+
