@@ -12,8 +12,11 @@ require 'stringio'
 APP_NAME = File.basename(File.expand_path('.'))
 MEGA_APP_NAME = 'megauni'
 RAKE_HELPERS = 'helpers/rake'
-BLATO_HELPERS = '/home/da01/' + MEGA_APP_NAME + '/helpers/blato'
-
+BLATO_HELPERS = File.expand_path( '~/' + MEGA_APP_NAME + '/helpers/blato' )
+LIFE_DIR = Pow(File.expand_path('~/MyLife'))
+BACKUP_DIR = Pow('/media/Patriot/MyLifeBackup')
+MY_EMAIL = 'diego@megauni.com'
+MY_NAME = 'da01tv'
 
 
 module Blato
@@ -41,7 +44,7 @@ module Blato
   end
   
   def self.development?
-    Pow("~/Dropbox").exists? || Pow("/home/da01/megauni").exists?
+    LIFE_DIR.exists? || Pow("~/megauni").exists?
   end
 
   def self.production?
@@ -80,11 +83,7 @@ module Blato
     '<%%=color( %s , %s )%%>' % [ raw_txt.inspect, colors ]
   end
   
-  def self.get_blato_class(raw_name)
-   name = raw_name.to_s.strip.camelize
-   return nil if !blato_classes.map { |c| c.to_s }.include?(name)
-   eval name 
-  end
+
   
   def self.write_file( file_path, raw_txt )
 
@@ -115,7 +114,7 @@ module Blato
   
   def self.invoke( *args )  
 
-    instance = get_blato_class( args.first.class ) ? 
+    instance = args.first.is_a?(Blato) ? 
                 args.shift : 
                 nil
                 
@@ -125,7 +124,7 @@ module Blato
     
     task = if cmd.is_a?(Symbol) && instance
       "#{instance.class.to_s.underscore}:#{cmd}"
-    else
+    else    
       pieces = cmd.split(':').map { |s| s.strip }
       task = pieces.join(':')
     end  
@@ -203,15 +202,15 @@ module Blato
   def invoke(cmd, *args)
     case cmd
     
-      when String
-          Blato.invoke( cmd,  *args )
-                    
       when Symbol
-          Blato.invoke( self, cmd, *args  )
+          Blato.invoke( self, cmd, *args  )    
+      else
+          Blato.invoke( cmd, *args  )
+          
     end
   end # === invoke
   
-  def capture_task(cmd, *args)
+  def capture_task(*args)
       Blato.mute_on
       
       orig = $stdout
@@ -219,13 +218,13 @@ module Blato
 
       $stdout = temp
 
-      block_given? ?
-           yield :
-           Blato.invoke( (cmd.is_a?(Symbol) ? self : nil), cmd, *args )
-                  
+      if block_given?
+        yield
+      else
+        invoke( *args )
+      end
 
       $stdout = orig
-
       temp.rewind()
       
       Blato.mute_off

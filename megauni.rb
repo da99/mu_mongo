@@ -50,25 +50,20 @@ end
 # Configurations
 # ===============================================
 use Rack::Session::Pool
-set :session, true
 
-set :site_title     , 'Mega Uni'
-set :app_name       , 'megauni'
-set :site_tag_line  , 'The website that predicts the future.'
-set :site_keywords  , 'predict, predictions, future'
-set :site_domain    , 'megaUni.com'
-set :site_url       , Proc.new { "http://www.#{options.site_domain}/" }
-set :site_support_email , Proc.new { "helpme@#{options.site_domain}" }
-set :cache_the_templates, Proc.new { !development? }
-
-configure :development do
-  # `reset` 
-  require Pow('helpers/css')
-  enable :clean_trace  
-  require Pow('~/.' + options.app_name).to_s
-end
 
 configure do
+
+  set :session, true
+
+  set :site_title     , 'Mega Uni'
+
+  set :site_tag_line  , 'The website that predicts the future.'
+  set :site_keywords  , 'predict, predictions, future'
+  set :site_domain    , 'megaUni.com'
+  set :site_url       , Proc.new { "http://www.#{options.site_domain}/" }
+  set :site_support_email , Proc.new { "helpme@#{options.site_domain}" }
+  set :cache_the_templates, Proc.new { !development? }
 
   # Special sanitization library for both Models and Sinatra Helpers.
   require Pow!( 'helpers/wash' )
@@ -77,22 +72,26 @@ configure do
   # require Pow!('helpers/model_init')
 end # === configure 
 
-configure do
 
-end # === configure
+configure :development do
+  require Pow('~/.megauni') 
+  require Pow('helpers/css')
+  enable :clean_trace  
+end
+
 
 configure(:production) do
   # === Error handling.
-  require Pow('helpers/public_500')
+  #require Pow('helpers/public_500')
   enable :raise_errors
   enable :show_exceptions  
-  use Rack::Public500
+  #use Rack::Public500
   DB = Sequel.connect ENV['DATABASE_URL']
 end
 
 
-configure :text do
-  require Pow('~/.' + options.app_name).to_s
+configure :test do
+  require Pow('~/.megauni') 
 end
 
 # ===============================================
@@ -171,6 +170,11 @@ get('/timer') {
 get('/eggs?/?') {
   describe :egg, :show
   render_mab
+}
+
+
+get('/*robots.txt') {
+  redirect('/robots.txt')
 }
 
 

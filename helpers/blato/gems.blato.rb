@@ -3,10 +3,10 @@ class Gems
     include Blato 
     
     bla :update,  "Installs and updates all gems from manifest (.gems)" do
-      gem_manifest = Pow('.gems')
+      gem_manifest = Pow('~/', MEGA_APP_NAME, '.gems')
       raise "Gems manifest does not exists: .gems" if !gem_manifest.exists?
       
-      gems_to_install = gem_manifest.read.strip.split("\n")
+      gems_to_install = File.read(gem_manifest).strip.split("\n")
       installed =  capture('gem list')
       if gems_to_install.empty?
         shout  "No gems to install.", :white

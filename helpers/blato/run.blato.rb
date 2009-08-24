@@ -22,7 +22,7 @@ class Run
   
   desc :test, "Runs Thin in :test mode. (Uses :exec.)"
   def __test
-    invoke 'css:compile'
+    invoke 'sass:compile'
     exec 'DATABASE_URL=postgres://da01:xd19yzxkrp10@localhost/newsprint-db-test'
   end
 

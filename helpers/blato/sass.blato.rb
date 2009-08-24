@@ -13,7 +13,7 @@ class Sass
                                                          }.join("\n")
     
     raise( clean_results ) if compile_results['WARNING:'] || compile_results['Error']
-    
+    __delete_sass_cache
     whisper "Compiled SASS to CSS"
     
   end # === def
@@ -26,7 +26,15 @@ class Sass
         css_file.delete if css_file.exists? 
       end
     }
+    __delete_sass_cache
     whisper "Deleted compiled CSS files."
+  end
+  
+  bla :delete_sass_cache, "Delete .sass-cache dir." do 
+    if Pow('.sass-cache').directory?
+      status = capture('rm -r .sass-cache')
+      whisper( status ) if !status.to_s.strip.empty? 
+    end
   end
   
 end # === class
