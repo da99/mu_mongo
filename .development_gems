@@ -1,0 +1,3 @@
+thin
+chriseppstein-compass  --source http://gems.github.com
+chriseppstein-compass-960-plugin  --source http://gems.github.com

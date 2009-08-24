@@ -37,15 +37,17 @@ class Git
   
   bla( :push, 
        { :migrate=>false,  :open_browser=>true }, 
-       "Push code to Heroku. Options: open_browser = true, migrate = false" ) do
+       "Push code to Heroku. Options: open_browser = true, migrate = false" ) do |*args|
 
+    migrate, open_browser = args
+    
     output = capture_task(:update)
     
     if commit_pending?(output) 
       whisper output 
       shout "NO GO: You *can't* push, unless you commit."    
     else
-      shout 'Please wait as code is being pushed to Heroku...', :blue
+      shout 'Please wait as code is being pushed to Heroku...', :yellow
       shout capture( 'git push heroku master')
       
       if migrate
@@ -59,7 +61,7 @@ class Git
         `heroku open`
       end
       
-      `heroku open` if open_browser
+      `heroku open` if open_browser || open_browser.nil?
     end
     
   end # === task

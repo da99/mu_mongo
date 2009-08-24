@@ -7,6 +7,12 @@ class Gems
       raise "Gems manifest does not exists: .gems" if !gem_manifest.exists?
       
       gems_to_install = File.read(gem_manifest).strip.split("\n")
+      
+      if Blato.development?
+        dev_gems = Pow('~/', MEGA_APP_NAME, '.development_gems' )
+        gems_to_install = gems_to_install + File.read(dev_gems).strip.split("\n")
+      end
+      
       installed =  capture('gem list')
       if gems_to_install.empty?
         shout  "No gems to install.", :white

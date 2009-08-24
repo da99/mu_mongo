@@ -8,6 +8,3 @@ htmlentities
 rest-client
 sanitize
 html5 # For use with HTML5_sanitize lib
-thin
-chriseppstein-compass
-chriseppstein-compass-960-plugin
