@@ -1363,11 +1363,7 @@ var egg_clock = {
 
 				var player_html = '';
 
-				var url_prefix = (window.location.hostname && window.location.hostname.indexOf('diegoalban') > 0)
-
-									? '/myeggtimer'
-
-									: '';
+				var url_prefix = '/my-egg-timer';
 
 				if(window.ie) {
 
