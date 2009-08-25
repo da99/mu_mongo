@@ -4,7 +4,7 @@ class Bzr
   BZR_DIR = ( LIFE_DIR / '.bzr' )
   def commits_pending?
     capture('bzr add ')
-    !capture('bzr status').to_s.strip.empty? 
+    capture('bzr status').to_s.strip[ /(added|removed|modified)\:/ ]
   end
   
   bla :quiet_my_life_dev_check, {}, "Just like :my_life_dev_check, but stores all output in ~/.bzr.log" do
