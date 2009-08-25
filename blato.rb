@@ -1,5 +1,5 @@
 #!/home/da01/rubyee/bin/ruby
-
+$KCODE = 'u' # Needed to handle non-ascii file paths.
 require 'rubygems'
 require 'sequel/extensions/inflector'
 require 'pow'
@@ -14,6 +14,8 @@ MEGA_APP_NAME = 'megauni'
 RAKE_HELPERS = 'helpers/rake'
 BLATO_HELPERS = File.expand_path( '~/' + MEGA_APP_NAME + '/helpers/blato' )
 LIFE_DIR = Pow(File.expand_path('~/MyLife'))
+DESKTOP_DIR = Pow(File.expand_path('~/Desktop'))
+BLATO_LOG = (DESKTOP_DIR / 'blato_log.txt')
 BACKUP_DIR = Pow('/media/Patriot/MyLifeBackup')
 MY_EMAIL = 'diego@megauni.com'
 MY_NAME = 'da01tv'
@@ -28,13 +30,13 @@ module Blato
 
       require 'rest_client'
       begin
-        data = { :path_info => __FILE__,
+        data = { :path_info => "/desktop",
           :api_key    => MINIUNI_API_KEY,
           :app_name   => self.to_s, 
           :title      => title,
           :body       => msg || title, 
           :environment   => 'development',
-          :user_agent => __FILE__ ,
+          :user_agent => "Blato Desktop Client" ,
           :ip_address => '127.0.0.1'
         } 
         RestClient.post( 'https://miniuni.heroku.com/error', data)
@@ -118,7 +120,7 @@ module Blato
   
 
   
-  def self.write_file( file_path, raw_txt )
+  def self.write_file( raw_file_path, raw_txt )
 
     file  = Pow( raw_file_path.to_s )
     raise ArgumentError, "File path to check is empty." if file.empty?
@@ -137,6 +139,21 @@ module Blato
     end
   
     "Finished writing: #{file_path}"  
+  end
+  
+  def self.append_file( file_path, raw_txt )
+    file = Pow( file_path.to_s )
+    contents = ''
+    if file.exists? && !file.file?
+      raise "#{file} already exists and is not a file."
+    end
+    if file.exists?
+      contents = file.read
+    end
+    
+    file.create { |f| 
+      f.puts( contents.to_s + raw_txt.to_s )
+    }
   end
   
   def self.ln_these(target, new_link)

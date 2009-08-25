@@ -1,0 +1,942 @@
+                                                                                                                                                                                                                                                               
+Delivered-To: diego.alban@gmail.com
+Received: by 10.86.86.17 with SMTP id j17cs122999fgb;
+        Thu, 18 Dec 2008 18:29:26 -0800 (PST)
+Received: by 10.115.19.16 with SMTP id w16mr1574659wai.51.1229653764662;
+        Thu, 18 Dec 2008 18:29:24 -0800 (PST)
+Return-Path: <kurosawa@ajisso.com>
+Received: from nestorius.hostingrails.com (nestorius.server0571.info [74.63.8.221])
+        by mx.google.com with ESMTP id m29si3767261poh.6.2008.12.18.18.29.23;
+        Thu, 18 Dec 2008 18:29:24 -0800 (PST)
+Received-SPF: softfail (google.com: domain of transitioning kurosawa@ajisso.com does not designate 74.63.8.221 as permitted sender) client-ip=74.63.8.221;
+Authentication-Results: mx.google.com; spf=softfail (google.com: domain of transitioning kurosawa@ajisso.com does not designate 74.63.8.221 as permitted sender) smtp.mail=kurosawa@ajisso.com
+Received: from mail12.hs.kddi.ne.jp ([211.134.183.9])
+	by nestorius.hostingrails.com with esmtp (Exim 4.69)
+	(envelope-from <kurosawa@ajisso.com>)
+	id 1LDV5g-000810-NF
+	for support@busynoise.com; Thu, 18 Dec 2008 21:27:49 -0500
+Received: from mkurosawa ([221.245.36.66]) by mail12.hs.kddi.ne.jp
+          with ESMTP
+          id <20081219022919821.PNFD.32591.mail12.hs.kddi.ne.jp@hs.kddi.ne.jp>
+          for <support@busynoise.com>; Fri, 19 Dec 2008 11:29:19 +0900
+From: "miho kurosawa" <kurosawa@ajisso.com>
+To: <support@busynoise.com>
+Subject: FW: EPSON Maintenance Report
+Date: Fri, 19 Dec 2008 11:29:14 +0900
+Message-ID: <009401c96181$95ac43e0$c104cba0$@com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0095_01C961CD.0593EBE0"
+X-Mailer: Microsoft Office Outlook 12.0
+Thread-Index: Aci2Ja6iWuLo4hFnQDyCIhmIQB/7tgAC5TowKtQRIoA=
+Content-Language: ja
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - nestorius.hostingrails.com
+X-AntiAbuse: Original Domain - busynoise.com
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - ajisso.com
+
+これは MIME 形式のマルチパート メッセージです。
+
+------=_NextPart_000_0095_01C961CD.0593EBE0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_001_0096_01C961CD.0593EBE0"
+
+
+------=_NextPart_001_0096_01C961CD.0593EBE0
+Content-Type: text/plain;
+	charset="ks_c_5601-1987"
+Content-Transfer-Encoding: quoted-printable
+
+=20
+
+=20
+
+From: Jason_Lee [mailto:jason@ajisso.com]=20
+Sent: Thursday, May 15, 2008 11:15 AM
+To: 'kurosawa'
+Subject: RE: EPSON Maintenance Report
+
+=20
+
+Hi Miho,
+
+I have Mr.Han will send the copy of receipt to you.
+
+However, please check the train fare from Shinjuku-Chino
+
+is different from your previous price.=20
+
+=20
+
+Jason
+
+=20
+
+  _____ =20
+
+From: kurosawa [mailto:kurosawa@ajisso.com]=20
+Sent: Thursday, May 15, 2008 9:51 AM
+To: Jason_Lee
+Subject: Re: EPSON Maintenance Report
+
+=20
+
+ <javascript:goWordLink(> different  <javascript:goWordLink(> order
+<javascript:goWordLink(> of  <javascript:goWordLink(> magnitude?
+
+=20
+
+too expensive.
+
+=20
+
+00,0000,?
+
+----- Original Message -----=20
+
+From: Jason_Lee <mailto:jason@ajisso.com> =20
+
+To: 'yoshida' <mailto:yoshida@ajisso.com>  ; 'miho kurosawa'
+<mailto:kurosawa@ajisso.com> =20
+
+Sent: Wednesday, May 14, 2008 12:32 PM
+
+Subject: FW: EPSON Maintenance Report
+
+=20
+
+Hello
+
+The attached file shows Mr.Han spent his cash in Japan and he ask me pay
+for him soon.
+
+Please review the previous Invoice and wire me the cash soon so that =
+I=A1=AFll
+pay for his cost.
+
+=20
+
+Thanks,
+
+Jason
+
+
+  _____ =20
+
+
+From: Sc Han [mailto:schan@adept.co.kr]=20
+Sent: Wednesday, May 14, 2008 11:13 AM
+To: Jason Lee
+Cc: Hj Chang
+Subject: RE: EPSON Maintenance Report
+
+=20
+
+=C3=E2=C0=E5=BA=F1 =B3=BB=BF=AA=BC=AD=B8=A6 =
+=BA=B8=B3=BB=B5=E5=B8=B3=B4=CF=B4=D9.
+
+=20
+
+=C7=D1 =BD=C2 =C3=B6
+
+=20
+
+From: Sc Han [mailto:schan@adept.co.kr]=20
+Sent: Tuesday, May 13, 2008 12:32 PM
+To: Jason Lee
+Cc: Hj Chang
+Subject: EPSON Maintenance Report
+
+=20
+
+1. Date: 2008. 5.8~9 (2 Days)
+
+=20
+
+2. Workplace: EPSON(Chino City, Nagano Ken, Japan)
+
+=20
+
+3. Engineer(4 Persons)
+
+    1) MES(Makoto Suenobu) =3D> P.M
+
+    2) RORZE(Kenji Kambara) =3D> Mechanical Maintenance
+
+    3) PROMA(Mitsuo Tokushima) =3D> Electrical Maintenance & Programming
+
+    4) ADEPT(Sc Han) =3D> Adept Robot Maintenance
+
+=20
+
+4. Contents
+
+    1) Controller Check
+
+        (1) Connector
+
+        (2) Cable
+
+        (3) Switch, Lamp, etc.
+
+        (4) Error Lamp Display on MI-3e Board
+
+            =3D> Normal Status(Not Use Axis)
+
+=20
+
+    2) Robot Check
+
+        (1) Connector
+
+        (2) Rotate Axis Timing Belt Tension Measuring
+
+        (3) I/O Check After Changing Sensor
+
+        (4) Robot Motion Check
+
+=20
+
+    3) Communication Between Controller & PC
+
+        (1) RS-232C Connection(AdeptWindows Version Problem)
+
+        (2) Program Download & Program Modify With Pruma Engineer
+
+=20
+
+    4) Check Maintenance Check Sheet & Discussion
+
+        (1) Check Item
+
+        (2) Require Spare Part List & Grease Check List (MES/Makoto =
+Suenobu)
+
+=20
+
+5. After Plan
+
+1) Send Spare Part List
+
+(a) E-mail: suenobu@mes.co.jp
+
+(b) Amount, Delivery,  Items Closed Production, Etc.
+
+=20
+
+2) Send Period, Method About Grease(Lubricate) Maintenance
+
+=20
+
+6. Attach File
+
+  * Adept_Robot_Checklist_080509.pdf
+
+=20
+
+_________________________________________________________________________=
+___
+___________
+
+Sc Han (=F9=DB=E3=AF=F4=CD)
+
+=20
+
+Adept Technology Korea.
+
+http://www.adept.com
+
+Tel : +82-32-329-3878
+
+Fax: +82-32-329-3820
+
+C.P: +82-16-395-5709
+
+E-Mail : schan@adept.co.kr
+
+
+  _____ =20
+
+
+
+No virus found in this incoming message.
+Checked by AVG.=20
+Version: 8.0.100 / Virus Database: 269.23.16/1431 - Release Date:
+2008/05/13 19:55
+
+
+------=_NextPart_001_0096_01C961CD.0593EBE0
+Content-Type: text/html;
+	charset="ks_c_5601-1987"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dks_c_5601-1987">
+<meta name=3DGenerator content=3D"Microsoft Word 12 (filtered medium)">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Gulim;
+	panose-1:2 11 6 0 0 1 1 1 1 1;}
+@font-face
+	{font-family:Gulim;
+	panose-1:2 11 6 0 0 1 1 1 1 1;}
+@font-face
+	{font-family:"MS UI Gothic";
+	panose-1:2 11 6 0 7 2 5 8 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:"\@MS UI Gothic";
+	panose-1:2 11 6 0 7 2 5 8 2 4;}
+@font-face
+	{font-family:Batang;}
+@font-face
+	{font-family:Gulim;}
+@font-face
+	{font-family:"Malgun Gothic";}
+@font-face
+	{font-family:"\@Gulim";
+	panose-1:2 11 6 0 0 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0mm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-autospace:none;
+	word-break:break-all;
+	font-size:10.0pt;
+	font-family:"Malgun Gothic";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+p
+	{mso-style-priority:99;
+	mso-margin-top-alt:auto;
+	margin-right:0mm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0mm;
+	font-size:12.0pt;
+	font-family:Gulim;}
+span.18
+	{mso-style-type:personal;
+	font-family:"Malgun Gothic";
+	color:windowtext;}
+span.19
+	{mso-style-type:personal;
+	font-family:"Malgun Gothic";
+	color:#1F497D;}
+span.20
+	{mso-style-type:personal;
+	font-family:"Malgun Gothic";
+	color:blue;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none none;}
+span.21
+	{mso-style-type:personal;
+	font-family:"Malgun Gothic";
+	color:blue;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none none;}
+span.wordlink
+	{mso-style-name:wordlink;}
+span.23
+	{mso-style-type:personal-reply;
+	color:#993366;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:30.0mm 72.0pt 72.0pt 72.0pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026">
+  <v:textbox inset=3D"5.85pt,.7pt,5.85pt,.7pt" />
+ </o:shapedefaults></xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=3Dwhite lang=3DJA link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:#993366'><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:#993366'><o:p>&nbsp;</o:p></span></p>
+
+<div>
+
+<div style=3D'border:none;border-top:solid #B5C4DF 1.0pt;padding:3.0pt =
+0mm 0mm 0mm'>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-numeric =
+ideograph-other;
+word-break:normal'><b><span lang=3DEN-US =
+style=3D'font-family:"Tahoma","sans-serif"'>From:</span></b><span
+lang=3DEN-US style=3D'font-family:"Tahoma","sans-serif"'> Jason_Lee
+[mailto:jason@ajisso.com] <br>
+<b>Sent:</b> Thursday, May 15, 2008 11:15 AM<br>
+<b>To:</b> 'kurosawa'<br>
+<b>Subject:</b> RE: EPSON Maintenance Report<o:p></o:p></span></p>
+
+</div>
+
+</div>
+
+<p class=3DMsoNormal align=3Dleft style=3D'text-align:left'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>Hi =
+Miho,<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>I have =
+Mr.Han will send
+the copy of receipt to you.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>However, =
+please check
+the train fare from Shinjuku&#8212;Chino<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>is =
+different from your
+previous price. <o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'>Jason<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'><o:p>&nbsp;</o:p></span></p>
+
+<div>
+
+<div class=3DMsoNormal align=3Dcenter =
+style=3D'text-align:center;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'>
+
+<hr size=3D2 width=3D"100%" align=3Dcenter>
+
+</span></div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><b><span lang=3DEN-US =
+style=3D'font-family:"Tahoma","sans-serif"'>From:</span></b><span
+lang=3DEN-US style=3D'font-family:"Tahoma","sans-serif"'> kurosawa
+[mailto:kurosawa@ajisso.com] <br>
+<b>Sent:</b> Thursday, May 15, 2008 9:51 AM<br>
+<b>To:</b> Jason_Lee<br>
+<b>Subject:</b> Re: EPSON Maintenance Report</span><span lang=3DEN-US
+style=3D'font-size:12.0pt;font-family:Gulim'><o:p></o:p></span></p>
+
+</div>
+
+<p class=3DMsoNormal align=3Dleft style=3D'text-align:left'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span class=3Dwordlink><span lang=3DEN-US =
+style=3D'font-family:
+"MS UI Gothic"'><a href=3D"javascript:goWordLink("><span =
+style=3D'color:#000088'>different</span></a></span></span><span
+lang=3DEN-US style=3D'font-family:"MS UI Gothic"'> <span =
+class=3Dwordlink><a
+href=3D"javascript:goWordLink("><span =
+style=3D'color:#000088'>order</span></a></span>
+<span class=3Dwordlink><a href=3D"javascript:goWordLink("><span =
+style=3D'color:#000088'>of</span></a></span>
+<span class=3Dwordlink><a href=3D"javascript:goWordLink("><span =
+style=3D'color:#000088'>magnitude</span></a>?</span></span><span
+lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'><o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'>&nbsp;<o:p></o:p></span></p>=
+
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span class=3Dwordlink><span lang=3DEN-US =
+style=3D'font-family:
+"MS UI Gothic"'>too expensive.</span></span><span lang=3DEN-US =
+style=3D'font-size:
+12.0pt;font-family:Gulim'><o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'>&nbsp;<o:p></o:p></span></p>=
+
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span class=3Dwordlink><span lang=3DEN-US =
+style=3D'font-family:
+"MS UI Gothic"'>00,0000,?</span></span><span lang=3DEN-US =
+style=3D'font-size:12.0pt;
+font-family:Gulim'><o:p></o:p></span></p>
+
+</div>
+
+<blockquote style=3D'border:none;border-left:solid black =
+1.5pt;padding:0mm 0mm 0mm 4.0pt;
+margin-left:3.75pt;margin-top:5.0pt;margin-right:0mm;margin-bottom:5.0pt'=
+>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US style=3D'font-family:"MS UI =
+Gothic"'>-----
+Original Message ----- <o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;background:#E4E4E4;
+text-autospace:ideograph-other;word-break:normal'><b><span lang=3DEN-US
+style=3D'font-family:"MS UI Gothic"'>From:</span></b><span lang=3DEN-US
+style=3D'font-family:"MS UI Gothic"'> <a =
+href=3D"mailto:jason@ajisso.com"
+title=3D"jason@ajisso.com">Jason_Lee</a> <o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><b><span lang=3DEN-US style=3D'font-family:"MS UI =
+Gothic"'>To:</span></b><span
+lang=3DEN-US style=3D'font-family:"MS UI Gothic"'> <a
+href=3D"mailto:yoshida@ajisso.com" =
+title=3D"yoshida@ajisso.com">'yoshida'</a> ; <a
+href=3D"mailto:kurosawa@ajisso.com" title=3D"kurosawa@ajisso.com">'miho =
+kurosawa'</a>
+<o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><b><span lang=3DEN-US style=3D'font-family:"MS UI =
+Gothic"'>Sent:</span></b><span
+lang=3DEN-US style=3D'font-family:"MS UI Gothic"'> Wednesday, May 14, =
+2008 12:32 PM<o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><b><span lang=3DEN-US style=3D'font-family:"MS UI =
+Gothic"'>Subject:</span></b><span
+lang=3DEN-US style=3D'font-family:"MS UI Gothic"'> FW: EPSON Maintenance =
+Report<o:p></o:p></span></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'><o:p>&nbsp;</o:p></span></p>=
+
+
+</div>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'>Hello<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>The =
+attached file shows
+Mr.Han spent his cash in Japan and he ask me pay for him =
+soon.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US style=3D'color:blue'>Please =
+review the
+previous Invoice and wire me the cash soon so that I=A1=AFll pay for his =
+cost.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'>Thanks,<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:blue'>Jason<o:p></o:p></span></p>
+
+<div>
+
+<div class=3DMsoNormal align=3Dcenter =
+style=3D'text-align:center;text-autospace:ideograph-numeric;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'>
+
+<hr size=3D2 width=3D"100%" align=3Dcenter>
+
+</span></div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-numeric;
+word-break:normal'><b><span lang=3DEN-US =
+style=3D'font-family:"Tahoma","sans-serif"'>From:</span></b><span
+lang=3DEN-US style=3D'font-family:"Tahoma","sans-serif"'> Sc Han
+[mailto:schan@adept.co.kr] <br>
+<b>Sent:</b> Wednesday, May 14, 2008 11:13 AM<br>
+<b>To:</b> Jason Lee<br>
+<b>Cc:</b> Hj Chang<br>
+<b>Subject:</b> RE: EPSON Maintenance Report</span><span lang=3DEN-US
+style=3D'font-size:12.0pt;font-family:Gulim'><o:p></o:p></span></p>
+
+</div>
+
+<p class=3DMsoNormal align=3Dleft style=3D'text-align:left'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";
+color:#1F497D'>=C3=E2=C0=E5=BA=F1</span><span lang=3DKO =
+style=3D'color:#1F497D'> </span><span
+lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";color:#1F497D'>=B3=BB=BF=AA=BC=AD=
+=B8=A6</span><span
+lang=3DKO style=3D'color:#1F497D'> </span><span lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";
+color:#1F497D'>=BA=B8=B3=BB=B5=E5=B8=B3=B4=CF=B4=D9</span><span =
+lang=3DEN-US style=3D'color:#1F497D'>.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:#1F497D'><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";
+color:#1F497D'>=C7=D1</span><span lang=3DKO style=3D'color:#1F497D'> =
+</span><span
+lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";color:#1F497D'>=BD=C2</span><sp=
+an
+lang=3DKO style=3D'color:#1F497D'> </span><span lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif";
+color:#1F497D'>=C3=B6</span><span lang=3DEN-US =
+style=3D'color:#1F497D'><o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'color:#1F497D'><o:p>&nbsp;</o:p></span></p>
+
+<div>
+
+<div style=3D'border:none;border-top:solid #B5C4DF 1.0pt;padding:3.0pt =
+0mm 0mm 0mm'>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;word-break:normal'><b><span
+lang=3DEN-US =
+style=3D'font-family:"Tahoma","sans-serif"'>From:</span></b><span
+lang=3DEN-US style=3D'font-family:"Tahoma","sans-serif"'> Sc Han =
+[mailto:schan@adept.co.kr]
+<br>
+<b>Sent:</b> Tuesday, May 13, 2008 12:32 PM<br>
+<b>To:</b> Jason Lee<br>
+<b>Cc:</b> Hj Chang<br>
+<b>Subject:</b> EPSON Maintenance Report<o:p></o:p></span></p>
+
+</div>
+
+</div>
+
+<p class=3DMsoNormal align=3Dleft style=3D'text-align:left'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>1. Date: 2008. 5.8~9 (2 =
+Days)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>2. Workplace: EPSON(Chino City, =
+Nagano Ken,
+Japan)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>3. Engineer(4 =
+Persons)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 1) MES(Makoto =
+Suenobu)
+=3D&gt; P.M<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 2) =
+RORZE(Kenji Kambara)
+=3D&gt; Mechanical Maintenance<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 3) =
+PROMA(Mitsuo
+Tokushima) =3D&gt; Electrical Maintenance &amp; =
+Programming<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 4) ADEPT(Sc =
+Han) =3D&gt;
+Adept Robot Maintenance<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>4. =
+Contents<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 1) Controller =
+Check<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(1) Connector<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (2)
+Cable<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;(3) Switch, Lamp, etc.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(4) Error Lamp Display on MI-3e Board<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;
+=3D&gt; Normal Status(Not Use Axis)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 2) Robot =
+Check<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(1) Connector<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(2) Rotate Axis Timing Belt Tension Measuring<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(3) I/O Check After Changing Sensor<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(4) Robot Motion Check<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 3) =
+Communication Between
+Controller &amp; PC<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(1) RS-232C Connection(AdeptWindows Version =
+Problem)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(2) Program Download &amp; Program Modify With Pruma =
+Engineer<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp;&nbsp;&nbsp; 4) Check =
+Maintenance
+Check Sheet &amp; Discussion<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(1) Check Item<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(2) Require Spare Part List &amp; Grease Check List (MES/Makoto =
+Suenobu)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>5. After =
+Plan<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>1) =
+Send Spare
+Part List<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:19.0pt'><span lang=3DEN-US>(a) =
+E-mail: <a
+href=3D"mailto:suenobu@mes.co.jp">suenobu@mes.co.jp</a><o:p></o:p></span>=
+</p>
+
+<p class=3DMsoNormal style=3D'text-indent:19.0pt'><span lang=3DEN-US>(b) =
+Amount,
+Delivery,&nbsp; Items Closed Production, Etc.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>2) =
+Send Period,
+Method About Grease(Lubricate) Maintenance<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>6. Attach =
+File<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>&nbsp; * =
+Adept_Robot_Checklist_080509.pdf<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span =
+lang=3DEN-US>____________________________________________________________=
+___________________________<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>Sc =
+Han (</span><span
+lang=3DKO =
+style=3D'font-family:"Gulim","sans-serif"'>=F9=DB=E3=AF=F4=CD</span><span=
+ lang=3DEN-US>)<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span =
+lang=3DEN-US>Adept Technology Korea.<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US><a
+href=3D"http://www.adept.com">http://www.adept.com</a><o:p></o:p></span><=
+/p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>Tel =
+:
++82-32-329-3878<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>Fax:
++82-32-329-3820<o:p></o:p></span></p>
+
+<p class=3DMsoNormal style=3D'text-indent:9.0pt'><span lang=3DEN-US>C.P:
++82-16-395-5709<o:p></o:p></span></p>
+
+<p class=3DMsoNormal><span lang=3DEN-US>E-Mail : <a =
+href=3D"mailto:schan@adept.co.kr">schan@adept.co.kr</a><o:p></o:p></span>=
+</p>
+
+<div class=3DMsoNormal align=3Dcenter =
+style=3D'text-align:center;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'>
+
+<hr size=3D2 width=3D"100%" align=3Dcenter>
+
+</span></div>
+
+<p class=3DMsoNormal align=3Dleft =
+style=3D'text-align:left;text-autospace:ideograph-other;
+word-break:normal'><span lang=3DEN-US =
+style=3D'font-size:12.0pt;font-family:Gulim'><br>
+No virus found in this incoming message.<br>
+Checked by AVG. <br>
+Version: 8.0.100 / Virus Database: 269.23.16/1431 - Release Date: =
+2008/05/13
+19:55<o:p></o:p></span></p>
+
+</blockquote>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_001_0096_01C961CD.0593EBE0--
+
+------=_NextPart_000_0095_01C961CD.0593EBE0
+Content-Type: text/plain;
+	name="_AVG certification_.txt"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="_AVG certification_.txt"
+
+
+No virus found in this incoming message.
+Checked by AVG.=20
+Version: 8.0.100 / Virus Database: 269.23.16/1433 - Release Date: =
+2008/05/14 16:44
+
+------=_NextPart_000_0095_01C961CD.0593EBE0--
+
+

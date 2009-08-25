@@ -34,6 +34,17 @@ class Bzr
       bzr_log.delete
     end
     
+    # Find all files with unusual characters in filename.
+    pattern = /[^a-z0-9\/\,\ \.\_\-]/i
+    files = capture("find %s -iname \"*.desktop\"" % LIFE_DIR).split("\n")
+    files.each { |f|
+      if f =~ pattern
+        new_file_path = File.join( File.dirname(f), File.basename( f ).gsub( pattern , '-') )
+        Blato.append_file( BLATO_LOG, "Changing file path: #{f}")
+        shout capture("mv %s %s" % [ f.inspect, new_file_path.inspect] ), :white
+      end
+    }
+    
     if commits_pending?
       shout( capture( 'bzr commit -m %s ', "Development checkpoint: #{Time.now.to_s}" ) , :white )
       return(shout('Backup dir. does not exist.')) if !BACKUP_DIR.exists?
