@@ -17,9 +17,42 @@ LIFE_DIR = Pow(File.expand_path('~/MyLife'))
 BACKUP_DIR = Pow('/media/Patriot/MyLifeBackup')
 MY_EMAIL = 'diego@megauni.com'
 MY_NAME = 'da01tv'
+MINIUNI_API_KEY =  'luv.4all.29bal--w0l3mg930--3'
 
+
+require Pow('~/', MEGA_APP_NAME, 'helpers/issue_client')
 
 module Blato
+
+  def self.log_error(title , msg=nil)
+
+      require 'rest_client'
+      begin
+        data = { :path_info => __FILE__,
+          :api_key    => MINIUNI_API_KEY,
+          :app_name   => self.to_s, 
+          :title      => title,
+          :body       => msg || title, 
+          :environment   => 'development',
+          :user_agent => __FILE__ ,
+          :ip_address => '127.0.0.1'
+        } 
+        RestClient.post( 'https://miniuni.heroku.com/error', data)
+      rescue 
+        
+        err_file = Pow(File.expand_path('~/Desktop/blato_errors.txt')) 
+        old_contents = err_file.file? ? err_file.read : ''
+        err_file.create {|f|
+          f.puts old_contents
+          f.puts "\n"
+          f.puts $!.backtrace.join("\n")
+        }
+        
+        raise
+      end  
+      
+  end
+  
   def self.app_name
     @app_name ||= Pow().to_s.split('/').last
   end

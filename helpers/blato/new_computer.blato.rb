@@ -1,6 +1,20 @@
 class NewComputer
   include Blato
   bla  :start, "Prints out info. and checks installed gems. Safe to run multiple times."  do
+    shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa", :white
+    shout "Install git: ", :white    
+    
+    shout "Install mercurial: https://launchpad.net/~mercurial-ppa/+archive/stable-snapshots", :white
+    
+    shout "Firefox: browser.history_expire_days.mirror && browser.history_expire_days to 3: http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/", :white
+    shout "Firefox: browser.history_expire_sites to '400'", :white
+    
+    Pow(File.expand_path('~/.hgrc')).create { |f| 
+      f.puts( %~
+[ui]
+username = %s <%s>      
+      ~.strip % [MY_NAME, MY_EMAIL] )
+    }
     shout capture('git config --global user.name %s' % MY_NAME.inspect)
     shout capture('git config --global user.email %s' % MY_EMAIL)
     shout capture('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])

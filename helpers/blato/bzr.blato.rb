@@ -19,6 +19,21 @@ class Bzr
   bla :my_life_dev_check, {}, "Commits, if any, changes as a dev. check., then copies to BACKUP_DIR" do
     status = "cd %s && " % LIFE_DIR.to_s
     Dir.chdir( LIFE_DIR.to_s )
+    
+    # Check if errors occurred last time.
+    bzr_log =  Pow(File.expand_path('~/.bzr.log')) 
+    if bzr_log.exists?
+      bzr_log_contents = bzr_log.read
+      if bzr_log_contents[/return code [1-9]/]
+        Pow(File.expand_path('~/Desktop/errors_in_my_life.txt')).create { |f|
+          f.puts bzr_log_contents
+        }
+        Blato.log_error("Bzr errors", "Check desktop for error list.")
+      end
+      
+      bzr_log.delete
+    end
+    
     if commits_pending?
       shout( capture( 'bzr commit -m %s ', "Development checkpoint: #{Time.now.to_s}" ) , :white )
       return(shout('Backup dir. does not exist.')) if !BACKUP_DIR.exists?

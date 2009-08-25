@@ -12,7 +12,7 @@ require 'sinatra'
 require 'pow'
 require 'sequel' 
 require 'sequel/extensions/inflector'
-
+require Pow('helpers/issue_client')
 
 def require_these( dir );
     Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
