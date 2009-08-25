@@ -47,8 +47,15 @@ class Git
       whisper output 
       shout "NO GO: You *can't* push, unless you commit."    
     else
+      
       shout 'Please wait as code is being pushed to Heroku...', :yellow
-      shout capture( 'git push heroku master')
+      
+      push_results =  capture( 'git push heroku master')
+      if push_results[ /deployed to Heroku/i ]
+        shout push_results, :white
+      else
+        shout push_results
+      end
       
       if migrate
         shout 'Migrating on Heroku...'

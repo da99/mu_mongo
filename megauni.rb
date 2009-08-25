@@ -183,5 +183,7 @@ get '/my-egg-timer' do
   Pow('public/my-egg-timer/main_index.html').read
 end
 
-
+get '/busy-noise' do
+  Pow('public/busy-noise/main_index.html').read
+end
 
