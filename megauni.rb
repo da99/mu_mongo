@@ -179,6 +179,9 @@ get('/*robots.txt') {
   redirect('/robots.txt')
 }
 
+get '/my-egg-timer' {
+  Pow('/public/my-egg-timer/main_index.html').read
+}
 
 
 
