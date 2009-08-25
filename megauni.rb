@@ -2,6 +2,8 @@ $KCODE = 'UTF8'
 
 # Ramaze::Global.content_type = 'text/html; charset=utf-8'
 # Ramaze::Global.accept_charset = 'utf-8'
+#header("Cache-Control: no-cache");
+#header("Pragma: no-cache");
 
 # ===============================================
 # Important Gems
