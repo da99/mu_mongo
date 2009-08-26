@@ -139,8 +139,20 @@ error {
 }
 
 not_found {
-  IssueClient.create(env, options.environment, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
-  "Page Not found. Check address for typos or contact author."
+
+  if production?
+    IssueClient.create(env, options.environment, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
+  end
+  
+  if request.xhr?
+    '<div class="error">Action not found.</div>'
+  else
+    file_404 = Pow('public/404.html')
+    content_404 = file_404.file? ? 
+                    file_404.read :
+                    "Not found"
+  end
+  
 }
 
 # ===============================================

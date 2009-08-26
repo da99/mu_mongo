@@ -29,8 +29,9 @@ helpers do # ===============================
     def render_error_msg( http_error_code, msg)
         describe_action :Main, :error_msg
         @error_msg = msg
-        halt( 200, render_mab)
+        halt( http_error_code || 200, render_mab)
     end
+    
 
     # === Miscellaneous helpers ========================
     def publicize_path(path)
