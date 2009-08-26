@@ -9,7 +9,14 @@ namespace :production do
     
 	  puts "Migrating..."
 	  cmd = "sequel #{ENV['DATABASE_URL']} -m migrations "
-	  puts `#{cmd} 2>&1`
+	  results =  `#{cmd} 2>&1`
+	  if results.to_s.strip.empty?
+  	  puts 'Done. No errors.'
+  	else
+  	  puts "Errors: "
+  	end
+  	
+  	puts results
 	  
   end
 

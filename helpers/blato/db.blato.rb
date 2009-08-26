@@ -21,7 +21,7 @@ class Db
     cmd += " -M #{Integer(ver)} " if ver
     
     shout cmd, :yellow
-	  results = capture( cmd )# Sequel::Migrator.apply( DB, Pow('migrations'), 0 )
+	  results = capture( cmd ) # Sequel::Migrator.apply( DB, Pow('migrations'), 0 )
 		if results.to_s.empty?
 		  shout "Done. #{db_version_as_string}", :white
 		else
