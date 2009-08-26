@@ -5,7 +5,12 @@ partial('__nav_bar')
 
 
 div.content! { 
-
+  div.notice! {
+    span "I'm moving content from my old site, "
+    a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
+    span ", over to this new site."
+  }
+  
   app_vars[:hearts].each do |heart|
     div.heart_link {
      h4 heart.title
