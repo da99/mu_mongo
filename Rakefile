@@ -9,7 +9,7 @@ namespace :production do
     
 	  puts "Migrating..."
 	  cmd = "sequel #{ENV['DATABASE_URL']} -m migrations "
-	  exec(cmd) 
+	  puts `#{cmd} 2>&1`
 	  
   end
 

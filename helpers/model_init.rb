@@ -182,10 +182,6 @@ class Sequel::Model
   def __save__(target_action, raw_vals, &meth)
   
     self.raw_data = raw_vals
-
-    if new? && self.errors.empty? && self.class != MetaId && self.class.columns.include?(:id)
-      self[:id]=MetaId.create[:id]
-    end
     
     send "__#{target_action}__"
         
