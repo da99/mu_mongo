@@ -38,24 +38,32 @@ class Markaby::Builder
     @template_roots << new_template_dir
   end # === add_template_root
 
-  def partial(raw_file_name)
+  def partial( raw_file_name )
+    
+    file_name = raw_file_name.to_s
+    file_name += '.mab' if !file_name['.mab']
+    
     # Find template file.
-    file_name = "#{raw_file_name}.mab"
-    partial_filepath = nil
-    @template_roots.each { |template_root|
-      temp_file_path = File.join( template_root, file_name )
-      if File.exists?( temp_file_path )
-        partial_filepath = temp_file_path
-        break
-      end
-    }
+    if File.exists?(file_name)
+      partial_filepath = file_name 
+    elsif File.exists?(file_name + '.mab')
+      partial_filepath = file_name + '.mab'
+    else
+      template_roots.each { |template_root|
+        temp_file_path = File.join( template_root, file_name )
+        if File.exists?( temp_file_path )
+          partial_filepath = temp_file_path
+          break
+        end
+      }
+    end
 
     if !partial_filepath
-      raise "Partial template file not found: #{file_name} in template roots: #{@template_roots.join( '  ,  ' )}"
+      raise "Partial template file not found: #{file_name} in template roots: #{template_roots.join( '  ,  ' )}"
     end
     
     # Get & Render the contents of template file.
-    dev_log_it "Rendering partial: #{partial_filepath}"
+    the_app.dev_log_it "Rendering partial: #{partial_filepath}"
     text( 
         capture { 
             eval File.read(partial_filepath), nil, partial_filepath, 1  
@@ -184,44 +192,60 @@ module Sinatra
                    m[key] = instance_variable_get(iv)
                    m
                 end
-
+                
                 # Setup Markaby Builder. =========================================
-                sin = SinatraMabWrapper.new
-                sin.app_scope= self                
-                mab  = Markaby::Builder.new( iv_hash, sin )
-                mab_orig_vars = mab.instance_variables
-
-                # Add dirs of templates to Markaby to help find partials. ========
-                mab.add_template_root( skins_dir )
+                sin_wrap = SinatraMabWrapper.new
+                sin_wrap.app_scope= self
+                ivs = { :content_file_path=>template_file_path, 
+                        :the_app=>sin_wrap,
+                        :template_roots => [skins_dir],
+                        :app_vars => iv_hash
+                      } 
 
                 # =================================================================
                 # Determine if a layout is required.
                 if !use_layout 
                     dev_log_it "Rendering Template w/o Layout: #{template_file_name}" 
-                    return mab.capture { eval( template_file_content ) }
+                    the_content = template_file_content
+                    the_file_path = template_file_path                   
+                    return Markaby::Builder.new(ivs).capture { 
+                      eval( the_content, nil, the_file_path, 1 ) 
+                    }
+                else
+                  #  =================================================================
+                  # Grab & Render the Markaby content for current action.
+                  dev_log_it "Rendering Markaby: #{template_file_name}"
+                  dev_log_it "... with layout: #{layout_file_name}"
+                  
+                  the_content = layout_file_content
+                  the_file_path = layout_file_path
+
+                  Markaby::Builder.new( ivs ) {
+                    eval( the_content ,  nil,  the_file_path , 1  )
+                  }.to_s                  
+                  
+                  # the_content = template_file_content
+                  # the_file_path = 
+                  
+                  # instance_eval the_content, the_file_path, 1 
+                 
+
+                  #  =================================================================
+                  # Update iv_hash for :the_content.
+                  # Grab & Render Markaby content for layout.
+
+                  #partial_vars_hash = mab.instance_variables.inject({}) { |m, iv|
+                  #                       key = iv.gsub('@', '').to_sym
+                   #                      unless mab_orig_vars.include?( "@#{iv}" )
+                  #                        m[key] = mab.instance_variable_get(iv) 
+                  #                       end
+                  #                       m
+                  #                    }                   
+                  
+
                 end
 
-                #  =================================================================
-                # Grab & Render the Markaby content for current action.
-                dev_log_it "Rendering Markaby: #{template_file_name}"            
-                
-            
-                mab.save_to('the_content' ) { instance_eval template_file_content, template_file_path, 1 } 
 
-                #  =================================================================
-                # Update iv_hash for :the_content.
-                # Grab & Render Markaby content for layout.
-                dev_log_it "Rendering Markaby layout: #{layout_file_name}" 
-                partial_vars_hash = mab.instance_variables.inject({}) { |m, iv|
-                                       key = iv.gsub('@', '').to_sym
-                                       unless mab_orig_vars.include?( "@#{iv}" )
-                                        m[key] = mab.instance_variable_get(iv) 
-                                       end
-                                       m
-                                    }                   
-                Markaby::Builder.new( partial_vars_hash , sin ) {
-                  instance_eval(  layout_file_content,  layout_file_path, 1  )
-                }.to_s
                 
             end # === render_mab   
             

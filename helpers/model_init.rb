@@ -1,7 +1,6 @@
 require 'sequel'
 require 'sequel/extensions/inflector'
 require 'sequel/extensions/blank'
-require Pow('helpers/db_conn')
 
 
 class Sequel::Model

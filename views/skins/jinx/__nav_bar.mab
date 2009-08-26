@@ -14,6 +14,7 @@ div( :id=>"nav_bar" ) {
   
     [ 
       ['/', 'Home', :main, :show], 
+      ['/hearts', 'Hearts', :heart, :show],
       # ['/egg', 'Timer + Alarm', :egg, :show],
       ['/salud', 'Salud (Health)', :main, :salud] ,
       ['/my-egg-timer', 'My Egg Timer', :egg, :my] ,
@@ -22,13 +23,13 @@ div( :id=>"nav_bar" ) {
       #['/sign-up', 'Sign-up', :member, :new],
       #['/log-in', 'Log-in', :session, :new]
     ].each { |path, text, c_name, a_name|
-      if current_action[:controller] == c_name && current_action[:action] == a_name
+      if the_app.current_action[:controller] == c_name && the_app.current_action[:action] == a_name
         li.selected { 
           span text
         }        
       else
         li { 
-          a text, :href=> urlize( path )
+          a text, :href=> the_app.urlize( path )
         }
       end
     } # === each

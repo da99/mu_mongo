@@ -1,0 +1,23 @@
+save_to('title') { 'Formerly: Surfer Hearts' }
+
+
+partial('__nav_bar')
+
+
+div.content! { 
+
+  app_vars[:hearts].each do |heart|
+    p heart.title
+  end
+  
+} # === div.content!
+
+
+
+
+
+
+
+
+
+

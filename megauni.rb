@@ -11,7 +11,7 @@ $KCODE = 'UTF8'
 
 require 'rubygems'
 require 'sinatra'
-require 'pow'
+require File.expand_path('./helpers/pow')
 require 'sequel' 
 require 'sequel/extensions/inflector'
 require Pow('helpers/issue_client')
@@ -70,8 +70,6 @@ configure do
   # Special sanitization library for both Models and Sinatra Helpers.
   require Pow!( 'helpers/wash' )
 
-  # === Include models.
-  # require Pow!('helpers/model_init')
 end # === configure 
 
 
@@ -79,21 +77,28 @@ configure :development do
   require Pow('~/.megauni') 
   require Pow('helpers/css')
   enable :clean_trace  
+
 end
 
 
 configure(:production) do
   # === Error handling.
   #require Pow('helpers/public_500')
-  enable :raise_errors
-  enable :show_exceptions  
+  #enable :raise_errors
+  #enable :show_exceptions  
   #use Rack::Public500
   DB = Sequel.connect ENV['DATABASE_URL']
+
 end
 
 
 configure :test do
   require Pow('~/.megauni') 
+end
+
+configure do
+  # === Include models.
+  require Pow!('helpers/model_init')    
 end
 
 # ===============================================

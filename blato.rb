@@ -2,7 +2,7 @@
 $KCODE = 'u' # Needed to handle non-ascii file paths.
 require 'rubygems'
 require 'sequel/extensions/inflector'
-require 'pow'
+require File.expand_path('~/megauni/helpers/pow')
 require 'highline'
 require 'stringio' 
 
@@ -21,8 +21,6 @@ MY_EMAIL = 'diego@megauni.com'
 MY_NAME = 'da01tv'
 MINIUNI_API_KEY =  'luv.4all.29bal--w0l3mg930--3'
 
-
-require Pow('~/', MEGA_APP_NAME, 'helpers/issue_client')
 
 module Blato
 
@@ -108,7 +106,7 @@ module Blato
       underscored, meth = task.split(':').map { |s| s.strip }
       oClass = eval underscored.camelize
       if !oClass.method_defined?("__#{meth}")
-        raise "#{oClass}:#{meth} does not exist." 
+        raise "#{oClass}:#{meth} needs to be defined. A description has been made, however." 
       end
     }
   end
@@ -123,7 +121,7 @@ module Blato
   def self.write_file( raw_file_path, raw_txt )
 
     file  = Pow( raw_file_path.to_s )
-    raise ArgumentError, "File path to check is empty." if file.empty?
+    raise ArgumentError, "File path to check is empty." if file.to_s.empty?
     raise ArgumentError, "#{file_path} already exists." if file.exists?
       
     txt = raw_txt.to_s.strip
@@ -138,7 +136,7 @@ module Blato
       }
     end
   
-    "Finished writing: #{file_path}"  
+    
   end
   
   def self.append_file( file_path, raw_txt )

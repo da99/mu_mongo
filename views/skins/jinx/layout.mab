@@ -1,6 +1,9 @@
-# instruct!
-# declare!(:DOCTYPE, :html, :PUBLIC, "-//W3C//DTD XHTML 1.0 Strict//EN", "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd")
+
+instruct!
+declare!(:DOCTYPE, :html, :PUBLIC, "-//W3C//DTD XHTML 1.0 Strict//EN", "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd")
 tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" ) {
+
+  @the_content = capture { partial(content_file_path)  }
 
   head {
     meta( :'http-equiv'=>"Content-Script-Type" , :content=>"text/javascript" )
@@ -26,8 +29,8 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 
     title( @title || ' ---- ' )
 
-    link( :rel=>"shortcut icon", :href=>"#{socket_and_host}/favicon.ico", :type=>"image/x-icon")
-    link( :rel=>"stylesheet",    :href=>"/skins/#{skin_name}/css/#{page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+    link( :rel=>"shortcut icon", :href=>"#{ the_app.socket_and_host}/favicon.ico", :type=>"image/x-icon")
+    link( :rel=>"stylesheet",    :href=>"/skins/#{the_app.skin_name}/css/#{the_app.page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
     
     if @head_content
       self << @head_content
@@ -37,7 +40,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
   body.the_body! {
     div.container! { 
     
-      div.timestamp! to_js_epoch_time(Time.now.utc.to_i).to_s
+      div.timestamp! the_app.to_js_epoch_time(Time.now.utc.to_i).to_s
 
       if @loading
         div.loading! 'Loading...'
@@ -48,7 +51,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 
       # ================= the_footer ================================
       div.footer! {
-        span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{options.site_domain}. Some rights reserved."
+        span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{the_app.options.site_domain}. Some rights reserved."
       } # the_footer
       
     

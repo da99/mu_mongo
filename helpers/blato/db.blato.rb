@@ -15,27 +15,28 @@ class Db
   end
   
   def migrate_it(ver = nil)
-    cmd = "sequel #{ENV['DATABASE_URL']} -m migrations "
-    cmd += " -M #{ver} " if ver
+    db_connect!
+    
+    cmd = "sequel #{DB.uri} -m migrations "
+    cmd += " -M #{Integer(ver)} " if ver
+    
+    shout cmd, :yellow
 	  results = capture( cmd )# Sequel::Migrator.apply( DB, Pow('migrations'), 0 )
 		if results.to_s.empty?
-		  shout "Done. Database version: #{Sequel::Migrator.get_current_migration_version(DB)}", :white
+		  shout "Done. #{db_version_as_string}", :white
 		else
 		  shout results
 		end	  
   end
   
 	bla :migrate_up,  "Migrate to latest version." do
-	  db_connect!
 		shout "Migrating Up...", :white
 		migrate_it
 	end # === 
   
 	bla :migrate_down,  "Migrate to version 0. (Erase the database.)" do
-	  db_connect!
     shout "Migrating down... (erasing everyting)...", :white
 		migrate_it(0)
-
 	end # === 
 	
 	

@@ -1,4 +1,4 @@
-class #{m}_#{i} < Sequel::Migration
+class #{a.camelize}#{m}_#{i} < Sequel::Migration
 
   def up  
     create_table( :#{m.underscore} ) {
@@ -22,4 +22,4 @@ class #{m}_#{i} < Sequel::Migration
     drop_table(:#{m.underscore}) if table_exists?(:#{m.underscore})
   end
 
-end # === end Create#{m}
+end # === end #{a.camelize}#{m}

@@ -7,16 +7,28 @@ class Migration
 
     # Require Sequel in order to use :camelize method
     require 'sequel/extensions/inflector'
-    m = (ENV['__new_migration__'] || ask('Name of migration:')).strip.camelize.pluralize
+    
+    a = HighLine.new.ask('Name of action: (e.g.: create, alter, drop, update)').strip.to_s.downcase
+    raise "Unknown action: #{a}" if !%w{ create alter drop update insert }.include?(a)
+    
+    m = HighLine.new.ask('Name of migration: (e.g.: folders)').strip.camelize.pluralize
+    
     i = Dir.entries('./migrations').select {|f| f=~ /^\d\d\d\_\w{1,}/}.sort.last.to_i + 1
     padding = '0' * (3 - i.to_s.length)
-    file_path = Pow!("migrations/#{padding}#{i}_#{m.underscore}.rb")
-    raise ArgumentError, "File: #{file_path} already exists." if File.exists?(file_path )
 
-    txt = eval( %~ "
-        #{Pow('~' + MEGA_APP_NAME + 'migrations/template.txt').read}
-    " ~ )
-    write_this_file(file_path, txt)
+    file_path = Pow("migrations/#{padding}#{i}_#{a}_#{m.underscore}.rb")
+    raise "Migration file already exists: #{file_path}" if file_path.exists?
+
+    template_file = Pow(File.expand_path('~/' + MEGA_APP_NAME + '/migrations/template.txt'))
+    raise "Template file does not exist: #{template_file}" if !template_file.file?
+
+    txt = eval( %~"#{template_file.read}"~ )
+    
+    file_path.create { |f|
+      f.puts txt
+    }
+    
+    shout "Done: #{file_path}", :white
 	end # === task :create_migration => "__setup__:env"
 
 end # === namespace :migration

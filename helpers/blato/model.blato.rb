@@ -17,24 +17,14 @@ class Model
 
   bla( :create, "Create a new model in the /model directory. Case and plurality are handled automatically." ) {
     require 'sequel/extensions/inflector' # for String#underscore, etc.
-    m         = ask('Name of new model:').strip.camelize.singularize
+    m         = HighLine.new.ask('Name of new model:').strip.camelize.singularize
 
-    file_path = Pow!("models/#{m.underscore}.rb")
+    file_path = Pow("models/#{m.underscore}.rb")
     
-    txt = eval( %~ "
-          #{Pow('~/' + MEGA_APP_NAME + '/models/template.txt').read}
-    " ~ )
-    write_this_file(file_path, txt)
-
-    if agree("Create a corresponding migration?", false)
-      ENV['__new_migration__'] = m
-      Rake::Task['migration:create'].invoke
-    end
-
-    if agree('Create a corresponding controller?', false)
-      ENV['__new_controller__'] = m
-      Rake::Task['controller:create'].invoke
-    end
+    txt = eval( %~"#{Pow(File.expand_path('~/' + MEGA_APP_NAME + '/models/template.txt')).read}"~ )
+    Blato.write_file(file_path, txt)
+    
+    shout "Finished writing: #{file_path}", :white
     
   }
 
