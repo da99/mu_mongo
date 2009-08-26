@@ -1,11 +1,11 @@
 save_to('title'){ "Coming Soon..." }
 
 save_to('meta_description') { 
-  options.site_tag_line
+  the_app.options.site_tag_line
 }
 
 save_to('meta_keywords') {
-  options.site_keywords
+  the_app.options.site_keywords
 }
 
 
