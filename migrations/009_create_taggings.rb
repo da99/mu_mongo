@@ -1,7 +1,7 @@
 class CreateTaggings_9 < Sequel::Migration
 
   def up  
-    create_table( :taggings ) {
+    create_table( :news_taggings ) {
       # === Associations
       primary_key :id
       
@@ -19,7 +19,7 @@ class CreateTaggings_9 < Sequel::Migration
   end
 
   def down
-    drop_table(:taggings) if table_exists?(:taggings)
+    drop_table(:news_taggings) if table_exists?(:news_taggings)
   end
 
 end # === end CreateTaggings

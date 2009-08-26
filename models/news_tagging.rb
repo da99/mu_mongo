@@ -1,4 +1,4 @@
-class Tag < Sequel::Model
+class NewsTagging < Sequel::Model
 
   # ==== CONSTANTS =====================================================
   
@@ -32,4 +32,4 @@ class Tag < Sequel::Model
   def validate_new_values
   end # === def validate_new_values
 
-end # === end Tag
+end # === end NewsTagging

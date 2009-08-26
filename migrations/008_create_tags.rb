@@ -1,7 +1,7 @@
 class CreateTags_8 < Sequel::Migration
 
   def up  
-    create_table( :tags ) {
+    create_table( :news_tags ) {
       # === Associations
       primary_key :id
       
@@ -18,7 +18,7 @@ class CreateTags_8 < Sequel::Migration
   end
 
   def down
-    drop_table(:tags) if table_exists?(:tags)
+    drop_table(:news_tags) if table_exists?(:news_tags)
   end
 
 end # === end CreateTags
