@@ -12,7 +12,7 @@ rescue
   require 'sinatra'
   require( my_app_root + '/helpers' + ['/maintain', '/sinatra/maintain'].detect { |f| File.exists?(my_app_root+'/helpers' + f + '.rb') })
   
-  require( my_app_root + '/helpers/sinatra/post_error' ) 
+  require( my_app_root + '/helpers/sinatra/helpers/issue_client' ) 
   faux_env = {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' }
   IssueClient.create( faux_env, Sinatra::Application.environment, $!) 
 
