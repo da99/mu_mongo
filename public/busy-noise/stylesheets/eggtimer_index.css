@@ -82,6 +82,7 @@ form {
     font-weight: bold;
     font-family: courier, serif;
     font-style: normal; }
+  form div.fieldset_block select,
   form div.fieldset_block select option {
     font-size: 28px;
     font-weight: bold;
