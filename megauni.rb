@@ -108,6 +108,11 @@ before {
     
     require_ssl! if request.cookies["logged_in"] || request.post?
     
+    # If .html file does not exist, try chopping off .html.
+    if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
+      redirect( request.path_info.sub( /\.html?$/, '') )
+    end
+    
     # Chop off trailing slash and use a  permanent redirect.
     if request.get? && 
         request.path_info != '/' &&
@@ -121,7 +126,7 @@ before {
     # I have no idea how that is even possible, so I put this:
     if production? && 
       ( env['REQUEST_URI'].to_s.strip.empty? || 
-          request.path_info.to_s.strip.empty?)
+          request.path_info.to_s.strip.empty? )
       raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
     end
     
@@ -134,7 +139,9 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  IssueClient.create(env, options.environment, env['sinatra.error'] )
+  if production?
+    IssueClient.create(env, options.environment, env['sinatra.error'] )
+  end
   "Programmer error found. I will look into it."
 }
 
