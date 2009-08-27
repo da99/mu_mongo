@@ -240,45 +240,42 @@ var Chicken = {
                               }, // end function
 
   calculate_ends_at : function(egg_hash) {
-                                                      var right_now = new Date();
-                                                      var right_now_without_milliseconds = new Date( Date.parse( right_now.toLocaleString() ) );
+      var right_now = new Date();
+      var right_now_without_milliseconds = new Date( Date.parse( right_now.toLocaleString() ) );
+      
+
+      if( egg_hash['category'] == 'countdown' ) {
+        var time_in_milli_seconds = ( (egg_hash['days'] * 24 * 60 * 60) + (egg_hash['hours'] * 60 * 60) + (egg_hash['minutes'] * 60) + egg_hash['seconds'] ) * 1000;
+        return(right_now.getTime() + time_in_milli_seconds);
+      }; // end countdown
+
+      
+      if( egg_hash['category'] == 'alarm' ) {
+      
+        var target = new Date();
+        target.setHours(egg_hash['hours']);
+        target.setMinutes(egg_hash['minutes']);
+        target.setSeconds(0);
+        
+          //debugger;
+        if( target.getTime() < right_now.getTime() ) {
+
+          // Alarm is for tomorrow
+          var tomorrow_time = target.getTime();
+          tomorrow_time += (24 * 60 * 60 * 1000) ;
+
+          return( tomorrow_time );
+
+        } else { // Alarm is for later today.
+          
+          return( target.getTime() ); 
+          
+        };
+
+      }; // end alarm
 
 
-                                                      if( egg_hash['category'] == 'countdown' ) {
-                                                        var time_in_milli_seconds = ( (egg_hash['days'] * 24 * 60 * 60) + (egg_hash['hours'] * 60 * 60) + (egg_hash['minutes'] * 60) + egg_hash['seconds'] ) * 1000;
-                                                        return(right_now.getTime() + time_in_milli_seconds);
-                                                      }; // end countdown
-
-
-                                                      if( egg_hash['category'] == 'alarm' ) {
-
-                                                        if( right_now.getHours() > egg_hash['hours'] || 
-                                                            ( right_now.getHours() == egg_hash['hours'] && right_now.getMinutes() >= egg_hash['minutes']) 
-                                                          ) {
-
-                                                          // Alarm is for tomorrow
-                                                          var tomorrow = new Date( (right_now.getTime()) + (24 * 60 * 60 * 1000 ) );
-                                                          tomorrow.setHours( egg_hash['hours'] );
-                                                          tomorrow.setMinutes( egg_hash['minutes'] );
-                                                          tomorrow.setSeconds(0);
-
-                                                          return( (new Date(Date.parse(tomorrow.toLocaleString()))).getTime() );
-
-                                                        } else { // Alarm is for later today.
-
-                                                          var near_future = new Date();
-                                                          near_future.setHours( egg_hash['hours'] );
-                                                          near_future.setMinutes( egg_hash['minutes'] );
-                                                          near_future.setSeconds( 0 );
-
-                                                          return( (new Date(Date.parse(near_future.toLocaleString()))).getTime() );
-
-                                                        };
-
-                                                      }; // end alarm
-
-
-                                                    }, // end calculate_ends_at
+  }, // end calculate_ends_at
 
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -565,7 +562,7 @@ var Chicken = {
                                                                           new_egg['hours'] + 12 :
                                                                           new_egg['hours'];
                                         // Set up start times and end times
-                                        new_egg['starts_at'] = (new Date()).getTime()
+                                        new_egg['starts_at'] = (new Date()).getTime();
                                         new_egg['ends_at'] = Chicken.calculate_ends_at(new_egg);
                                         
                                         // Check headline.

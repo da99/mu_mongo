@@ -15,7 +15,7 @@ div.content! {
     div.heart_link {
      
      div.info {
-      span.published_at heart[:published_at].strftime('%b  %d, %Y')
+      span.published_at heart[:published_at].strftime('%b  %d, %Y ')
       a('PermaLink', :href=>"/heart_link/#{heart[:id]}" )
      }
      h4 heart.title
