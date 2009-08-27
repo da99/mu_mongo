@@ -111,9 +111,12 @@ before {
     moving_date = Time.utc(2009, 8, 31, 0, 1, 1).to_i # Aug. 31, 2009
     right_now = Time.now.utc.to_i
     
+    if request.host =~ /busynoise/i && request.path_info == '/'
+      redirect('/egg')
+    end
+    
     [:busynoise, :myeggtimer].each { |name|
-      
-      if request.host =~ /#{name}/i && request.path_info == '/'
+      if request.host =~ /myeggtimer/i && ['/', '/egg', '/eggs'].include?(request.path_info)
         halt show_old_site( name, moving_date < right_now )
       end
     }
