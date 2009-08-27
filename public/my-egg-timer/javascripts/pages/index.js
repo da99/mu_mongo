@@ -758,46 +758,22 @@ var Chicken = {
 		
 
 		if( egg_hash['egg_type'] == 'alarm' ) {
-
-			if( right_now.getHours() > egg_hash['hours'] || ( right_now.getHours() == egg_hash['hours'] && right_now.getMinutes() > egg_hash['minutes']) ) {
-
-				// Alarm is for tomorrow
-
-				var tomorrow = new Date( (right_now.getTime()) + (24 * 60 * 60 * 1000 ) );
-
-				tomorrow.setHours( egg_hash['hours'] );
-
-				tomorrow.setMinutes( egg_hash['minutes'] );
-
-				tomorrow.setSeconds(0);
-
-				
-
-				return( (new Date(Date.parse(tomorrow.toLocaleString()))).getTime() );
-
-			} else { // Alarm is for later today.
-
-				var near_future = new Date();
-
-				near_future.setHours( egg_hash['hours'] );
-
-				near_future.setMinutes( egg_hash['minutes'] );
-
-				near_future.setSeconds( 0 );
-
-				 ;
-
-				return( (new Date(Date.parse(near_future.toLocaleString()))).getTime() );
-
-			};
-
-			
+      var target = new Date();
+      
+      target.setHours( egg_hash['hours'] );
+      target.setMinutes( egg_hash['minutes'] );
+      target.setSeconds(0);
+      
+      var target_time = target.getTime();
+      
+      if(target.getTime() < right_now.getTime() ){
+        target_time += (24 * 60 * 60 * 1000);
+      };
+      
+      return( target_time );
+      
 
 		}; // end alarm
-
-
-
-		
 
 		
 
