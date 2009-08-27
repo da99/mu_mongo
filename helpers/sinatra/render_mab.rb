@@ -82,6 +82,7 @@ module Sinatra
         def self.registered(app)
             app.helpers RenderMab::Helpers
             Markaby::Builder.set(:indent, 3)  if !app.production?
+            Markaby::Builder.set(:indent, 1)  if app.production?
         end
         
         module Helpers
