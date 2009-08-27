@@ -116,7 +116,7 @@ before {
     end
     
     [:busynoise, :myeggtimer].each { |name|
-      if request.host =~ /myeggtimer/i && ['/', '/egg', '/eggs'].include?(request.path_info)
+      if request.host =~ /#{name}/i && ['/', '/egg', '/eggs'].include?(request.path_info)
         halt show_old_site( name, moving_date < right_now )
       end
     }
