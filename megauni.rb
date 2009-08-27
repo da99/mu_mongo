@@ -108,9 +108,13 @@ before {
     
     require_ssl! if request.cookies["logged_in"] || request.post?
     
+    moving_date = Time.utc(2009, 8, 31, 0, 1, 1).to_i # Aug. 31, 2009
+    right_now = Time.now.utc.to_i
+    
     [:busynoise, :myeggtimer].each { |name|
+      
       if request.host =~ /#{name}/i && request.path_info == '/'
-        halt show_old_site( name )
+        halt show_old_site( name, moving_date < right_now )
       end
     }
 
@@ -171,16 +175,22 @@ not_found {
 
 helpers {
 
-  def show_old_site(name)
-    case name
+  def show_old_site(name, show_moving = false)
+  
+    page_name = show_moving ? 'moving' : 'index'
+  
+    site_name = case name
       when :busynoise, :busy_noise
-        Pow('public/busy-noise/index.html').read
+        'busy-noise'
       when :myeggtimer, :my_egg_timer
-        Pow('public/my-egg-timer/index.html').read
+        'my_egg_timer'
       else
         not_found
     end
-  end
+    
+    Pow("public/#{site_name}/#{page_name}.html").read
+    
+  end # === show_old_site
 }
 # ===============================================
 # Require the actions.

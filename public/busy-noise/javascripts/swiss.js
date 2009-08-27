@@ -72,7 +72,7 @@ var Swiss = {
         var current_link                     = $(raw_link);
         var all_links                           = $$(links_selector);
         var all_folders                        = $$(folders_selector);
-        var target_folder                   = $$( current_link.getElement('a').get('href') )[0];
+        var target_folder                   = $$( '#' + current_link.getElement('a').get('href').split('#')[1] )[0];
         var select = { l : 'selected_link', f : 'selected_folder'};
         
         // De-select all links except the current one.
