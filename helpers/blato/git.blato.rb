@@ -51,7 +51,7 @@ class Git
       shout 'Please wait as code is being pushed to Heroku...', :yellow
       
       push_results =  capture( 'git push heroku master')
-      if push_results[ /deployed to Heroku/i ]
+      if push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
         shout push_results, :white
       else
         shout push_results

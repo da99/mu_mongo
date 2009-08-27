@@ -63,7 +63,11 @@ soundManager.onload = function() {
     id: 'the_beeps',
     url: 'http://megauni.s3.amazonaws.com/beeping.mp3',
     volume: 90, 
-    onfinish: function() {  this.play();      }
+    onfinish: function() {  
+      this.play();      
+    },
+    autoLoad: true,       // enable automatic loading (otherwise .load() will call with .play())
+    autoPlay: false
   });  
 };
 
