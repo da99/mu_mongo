@@ -173,6 +173,21 @@ get( '/' ) {
   render_mab
 }
 
+
+get '/help' do
+  describe :main, :help
+  render_mab
+end
+
+get( '/blog' ) {
+  redirect('/hearts')
+}
+
+get( '/about' ) {
+  redirect('/help')
+}
+
+
 get '/salud' do
   describe :main, :salud
   render_mab :layout=>nil
@@ -210,4 +225,5 @@ end
 get '/busy-noise' do
   Pow('public/busy-noise/main_index.html').read
 end
+
 

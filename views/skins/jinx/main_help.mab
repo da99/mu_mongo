@@ -1,0 +1,62 @@
+save_to('title'){ "To Serve Man." }
+
+save_to('meta_description') { 
+  "Do you need help?"
+}
+
+save_to('meta_keywords') {
+  "cancer gold vitamins depression"
+}
+
+
+partial('__nav_bar')
+
+
+div.content!  { 
+  ul.faq {
+    li {
+      div.question "How do I kill my cancer tumor?"
+      div.answer {
+        span "Read: "
+        a('The Cancer Book.', :href=>'http://www.thecancerbook')
+        span 'That book has not failed anyone I know with cancer.'
+      }
+    }
+    li {
+      div.question "What do I do about the economy?"
+      div.answer {
+        span "Buy gold: "
+        a('BullionVault.com', :href=>'http://BullionVault.com')
+      }
+    }     
+    li {
+      div.question "Are there better alternatives to anti-depressants?"
+      div.answer {
+        span "First, stop seeing the idiot doctor who prescribed you useless, harmful anti-depressants."
+        span "Second, take "
+        a("Methyl-B12 and Folic acid.", :href=>'http://www.google.com/search?q=methyl-b12+folic+acid+depression')
+        span '(via KnowledgeOfHealth.com)'
+      }
+    }   
+
+    li {
+      div.question "What is MegaUNi.com?"
+      div.answer {
+        span "Presently: Gradual unification of my old ideas (BusyNoise.com, MyEggTimer.com, SurferHearts.com)."
+        br
+        span "Future: I'm not sure."
+      }
+    }    
+    
+    li {
+      div.question "Will Obama end all wars?"
+      div.answer {
+        span "No. Here is why:"
+        a('Pipelinestan', :href=>'http://www.atimes.com/c-asia/DA25Ag01.html')
+      }
+    }       
+    
+     
+  } # === ul
+} # == div.content!
+
