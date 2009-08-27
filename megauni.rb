@@ -246,4 +246,11 @@ get '/busy-noise' do
   show_old_site :busy_noise
 end
 
+get '/*beep*.*' do
+  exts = ['mp3', 'wav'].detect  { |e| e == params['splat'].last.downcase }
+  not_found if !exts
+  redirect "http://megauni.s3.amazonaws.com/beeping.#{exts}" 
+end
+
+
 
