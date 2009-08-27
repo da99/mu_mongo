@@ -11,12 +11,36 @@ div.content! {
     span ", over to this new site."
   }
   
+  div.heart_link.archives! {
+    h4 'Archives By Date and Tag'
+    div.body {
+    
+      ul {
+        app_vars[:news_tags].each do |tag|
+          li {
+            a(tag[:filename], :href=>"/heart_links/by_category/#{tag[:id]}")
+          }
+        end
+      } # === ul
+          
+      ul {
+        %w{ 8 4 3 2 1 }.each { |month|
+          li {
+            a( Time.local(2007, month).strftime('%B %Y'), :href=>"/blog/2007/#{month}/" )
+          }
+        }
+      } # === ul
+      
+    }
+  }
+  
+  
   app_vars[:hearts].each do |heart|
     div.heart_link {
      
      div.info {
       span.published_at heart[:published_at].strftime('%b  %d, %Y ')
-      a('PermaLink', :href=>"/heart_link/#{heart[:id]}" )
+      a.pernalink('PermaLink', :href=>"/heart_link/#{heart[:id]}" )
      }
      h4 heart.title
      div.body { heart.body }
