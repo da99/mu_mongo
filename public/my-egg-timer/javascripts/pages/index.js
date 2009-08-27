@@ -1343,15 +1343,15 @@ var egg_clock = {
 
 				if(window.ie) {
 
-					player_html = '* *<bgsound loop="25" SRC="' + url_prefix + '/media/beeping.wav" />';
+					player_html = '* *<bgsound loop="25" SRC="http://megauni.s3.amazonaws.com/beeping.wav" />';
 
 				} else {
 
 				  player_html += '    <p>*';
 
-				  player_html += '      <object  type="application/x-shockwave-flash" data="'+url_prefix+'/javascripts/button_player/button/musicplayer_f6.swf?&autoplay=true&repeat=true&song_url='+url_prefix+'/media/beeping.mp3&"  width="2"  height="2" >';
+				  player_html += '      <object  type="application/x-shockwave-flash" data="'+url_prefix+'/javascripts/button_player/button/musicplayer_f6.swf?&autoplay=true&repeat=true&song_url=http://megauni.s3.amazonaws.com/beeping.mp3&"  width="2"  height="2" >';
 
-				  player_html += '       <param name="movie"  value="'+url_prefix+'/javascripts/button_player/button/musicplayer_f6.swf?&autoplay=true&repeat=true&song_url='+url_prefix+'/media/beeping.mp3&" />';
+				  player_html += '       <param name="movie"  value="'+url_prefix+'/javascripts/button_player/button/musicplayer_f6.swf?&autoplay=true&repeat=true&song_url=http://megauni.s3.amazonaws.com/beeping.mp3&" />';
 
 				  player_html += '       <img src="'+url_prefix+'/images/loading.gif" width="43" height="1" alt="*" />';
 

@@ -61,7 +61,7 @@ soundManager.onload = function() {
   // SM2 is ready to go!
   var mySound = soundManager.createSound({
     id: 'the_beeps',
-    url: '/js/beeping.mp3',
+    url: 'http://megauni.s3.amazonaws.com/beeping.mp3',
     volume: 90, 
     onfinish: function() {  this.play();      }
   });  

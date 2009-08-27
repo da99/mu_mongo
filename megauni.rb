@@ -108,6 +108,12 @@ before {
     
     require_ssl! if request.cookies["logged_in"] || request.post?
     
+    [:busynoise, :myeggtimer].each { |name|
+      if request.host =~ /#{name}/i
+        halt show_old_site( name )
+      end
+    }
+
     # If .html file does not exist, try chopping off .html.
     if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
       redirect( request.path_info.sub( /\.html?$/, '') )
@@ -162,6 +168,20 @@ not_found {
   
 }
 
+
+helpers {
+
+  def show_old_site(name)
+    case name
+      when :busynoise, :busy_noise
+        Pow('public/busy-noise/index.html').read
+      when :myeggtimer, :my_egg_timer
+        Pow('public/my-egg-timer/index.html').read
+      else
+        not_found
+    end
+  end
+}
 # ===============================================
 # Require the actions.
 # ===============================================
@@ -219,11 +239,11 @@ get('/*robots.txt') {
 }
 
 get '/my-egg-timer' do
-  Pow('public/my-egg-timer/main_index.html').read
+  show_old_site :my_egg_timer
 end
 
 get '/busy-noise' do
-  Pow('public/busy-noise/main_index.html').read
+  show_old_site :busy_noise
 end
 
 
