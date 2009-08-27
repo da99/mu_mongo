@@ -183,7 +183,7 @@ helpers {
       when :busynoise, :busy_noise
         'busy-noise'
       when :myeggtimer, :my_egg_timer
-        'my_egg_timer'
+        'my-egg-timer'
       else
         not_found
     end
