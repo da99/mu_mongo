@@ -4,7 +4,7 @@ div( :id=>"nav_bar" ) {
     if @opening_msg
       self << @opening_msg
     else
-      p.nippon { "本当よ" } # "幸せな、脂肪の <br /> ウェブサイト"}
+      p.nippon { "空 スキッパー" } # "幸せな、脂肪の <br /> ウェブサイト"}
     end
     p.english { "MEGA UNI" }
   }
