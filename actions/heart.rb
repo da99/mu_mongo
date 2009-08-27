@@ -14,14 +14,18 @@ get '/hearts' do
 end
 
 get '/blog/:year' do |year|
-  redirect("/blog/#{year.to_i}/1" )
+  redirect("/hearts/by_date/#{year.to_i}/1" )
 end
 
 get '/blog/:year/0' do |year|
-  redirect("/blog/#{year.to_i}/1" )
+  redirect("/hearts/by_date/#{year.to_i}/1" )
 end
 
-get '/blog/:year/:month' do
+get '/blog/:year/:month' do |year, month|
+  redirect("/hearts/by_date/#{year.to_i}/#{month.to_i}" )
+end
+
+get '/hearts/by_date/:year/:month' do
   describe :heart, :by_date
   
   year = params[:year].to_i
@@ -46,10 +50,14 @@ get '/blog/:year/:month' do
 end
 
 get %r{/heart_links?/by_category/([0-9]+)\.html?} do |id|
-  redirect("/heart_links/by_category/#{id}")
+  redirect("/heart_links/by_tag/#{id}")
 end
 
 get %r{/heart_links/by_category/([0-9]+)} do |id|
+  redirect("/hearts/by_tag/#{id}")
+end
+
+get %r{/hearts/by_tag/([0-9]+)} do |id|
   describe :heart, :by_tag
   @news_tag = NewsTag[:id=>Integer(id)]
   @news = if !@news_tag
