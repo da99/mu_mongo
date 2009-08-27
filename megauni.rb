@@ -109,7 +109,7 @@ before {
     require_ssl! if request.cookies["logged_in"] || request.post?
     
     [:busynoise, :myeggtimer].each { |name|
-      if request.host =~ /#{name}/i
+      if request.host =~ /#{name}/i && request.path_info == '/'
         halt show_old_site( name )
       end
     }
@@ -220,15 +220,16 @@ get( '/reset' ) {
     redirect( env['HTTP_REFERER'] || '/' )
 }
 
-get('/timer/') {
-  redirect( '/timer' , 301 )
-}
 
 get('/timer') {
   Pow("public/eggs/index.html").read
 }
 
-get('/eggs?/?') {
+get('/eggs?') {
+  show_old_site :busy_noise
+}
+
+get('/eggs-new') {
   describe :egg, :show
   render_mab
 }
@@ -246,7 +247,7 @@ get '/busy-noise' do
   show_old_site :busy_noise
 end
 
-get '/*beep*.*' do
+get '/*beeping.*' do
   exts = ['mp3', 'wav'].detect  { |e| e == params['splat'].last.downcase }
   not_found if !exts
   redirect "http://megauni.s3.amazonaws.com/beeping.#{exts}" 
