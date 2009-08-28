@@ -206,13 +206,7 @@ get( '/reset' ) {
 
 
 get('/timer') {
-  Pow("public/eggs/index.html").read
-}
-
-
-
-get('/eggs-new') {
-  describe :egg, :show
+  describe :timer, :show
   render_mab
 }
 

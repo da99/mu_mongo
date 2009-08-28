@@ -3,13 +3,13 @@
 //  every 5 seconds.
 var main_loop_id  = 0;
 
-var mySound = null;
+var theBeeper = null;
 var beeps_a3 = null;
 var beeps_server = null;
 
 var beeps_a3_options = {
   id: 'the_beeps_a3',
-  url: 'http://megauni.s3.amazonaws.com/beeping.test.mp3',
+  url: 'http://megauni.s3.amazonaws.com/beeping.mp3',
   volume: 90, 
   onfinish: function() {  
     this.play();      
@@ -18,7 +18,7 @@ var beeps_a3_options = {
   stream: false,
   autoPlay: false,
   onload : function(stat) {
-    mySound = ( (this.bytesLoaded < 1000 ) ? beeps_server : beeps_a3 );
+    theBeeper = ( (this.bytesLoaded < 1000 ) ? beeps_server : beeps_a3 );
   }
 };
 var beeps_server_options = {
@@ -59,7 +59,6 @@ soundManager.onload = function() {
   //
   main_loop_id = setInterval( function(){
     BigClock.next_second();
-    // EggClock.next_second();
   }, 1000 );
   
   //
@@ -76,7 +75,7 @@ soundManager.onload = function() {
 
 
 var BigClock = {
-  
+
   month_names : ['Jan.', 'Feb.', 'Mar.', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
   day_names   : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   
@@ -137,11 +136,87 @@ var BigClock = {
       $('#big_clock p.date').html(    BigClock.format_date(right_now) );
             
         
-  } // === update
+  }, // === update
+  
+  play_buzzer : function( ) {
+    if(theBeeper)
+      theBeeper.play();
+  },
+  
+  stop_buzzer : function( ) {
+    if(theBeeper)
+      theBeeper.stop();
+  }
 
 }; // === BigClock
 
 
+var Instruct = {
+  start_test : function(){
+      BigClock.play_buzzer(); 
+      Swiss.swap_display(this, '#stop_test'); 
+      return false;
+  },
+  
+  stop_test : function(){
+      BigClock.stop_buzzer(); 
+      Swiss.swap_display(this, '#start_test'); 
+      return false;
+  }
+};
+
+var Post = {
+  // state
+  // playing = 1
+  // paused = 2
+  // stopped = 3
+  // checked = 4
+  // xmarked = 5
+  note : function(){
+    var form = $('#create_note form');
+    var new_egg = {};
+    
+    new_egg['headline'] = form.find('input[name=headline]').val();
+    new_egg['details'] = form.find('textarea[name=details]').val();
+
+    Swiss.log_it( new_egg );
+    return false;
+  },
+  
+  alarm : function(){
+    var form = $('#create_alarm form');
+    var new_egg = {};
+    
+    new_egg['hours']   = Swiss.parse_int( form.find('select[name=hours]').val()   );
+    new_egg['minutes'] = Swiss.parse_int( form.find('select[name=minutes]').val() );   
+    new_egg['am_pm']   = form.find('select[name=am_pm]').val() ;  
+    
+    new_egg['headline']   = form.find('input[name=headline]').val();
+    new_egg['details'] = form.find('textarea[name=details]').val();
+    
+    new_egg['type']    = 'alarm';
+    
+    Swiss.log_it( new_egg );
+    return false;
+  },
+  
+  countdown : function(){
+    var form = $('#create_countdown form');
+    var new_egg = {};
+    
+    $.each(['days', 'hours', 'minutes', 'seconds' ], function(){
+      new_egg[this] = Swiss.parse_int( form.find('input[name='+this+']').val() );
+    });
+    
+    new_egg['headline'] = form.find('input[name=headline]').val();
+    new_egg['details']  = form.find('textarea[name=details]').val();
+    new_egg['type']     = 'countdown';
+    
+    Swiss.log_it( new_egg );
+    
+    return false;
+  }
+};
 
 var EggClock = {
 
@@ -209,7 +284,7 @@ var EggClock = {
                           if(event_id != 'test')
                             EggClock.stop_buzzer('test');
                           
-                          soundManager.play(mySound.sID);
+                          soundManager.play(theBeeper.sID);
                           return $('alarm_holder');
                     },
   stop_buzzer : function(event_id){
@@ -228,7 +303,7 @@ var EggClock = {
 
                             
                             if(this.storage_bin.length < 1  )
-                              soundManager.stop(mySound.sID); // $('alarm_holder').set( 'html', '');
+                              soundManager.stop(theBeeper.sID); // $('alarm_holder').set( 'html', '');
                               
                             return true;
                           }

@@ -18,7 +18,7 @@ save_to('javascripts') {
   text the_app.script_tag('/js/vendor/jquery.1.3.2.min.js')
   text the_app.script_tag('/js/vendor/jquery.cookie.js')
   text the_app.script_tag('/js/swiss.js')
-  text the_app.script_tag('/js/pages/egg_show.js')
+  text the_app.script_tag('/js/pages/timer_show.js')
   
 }
 
@@ -275,8 +275,12 @@ div.job.alarm {
       li.two  { 
         div.title "Turn up speaker volumn." 
         div.body { 
-          a.start( :href=>'#test_sound', :onclick=>"EggClock.start_buzzer('test');  return false;" ) { "Click here to test your speakers." }
-          a.stop(  :href=>'#stop_test_sound', :onclick=>"EggClock.stop_buzzer('test');  return false;" ) { "Stop test." }
+          a.start_test!( :href=>'#start', :onclick=>"return Instruct.start_test();" ) { 
+            "Click here to test your speakers."
+          }
+          a.stop_test!(  :href=>'#stop', :onclick=>"return Instruct.stop_test();" ) { 
+            "Stop test." 
+          }
         }
       }
       
@@ -294,23 +298,19 @@ div.job.alarm {
   div.form.tab_unselected.create_note!  { 
 
     form( :action=>'/', :class=>'create_egg', :id=>'form_note' , :method=>'post'  ) { 
-    
 
-        fieldset { 
-          label { "Title:" }
-          input.text(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
-        }
+      fieldset { 
+        label { "Title:" }
+        input.text(  :maxlength=>'200', :name=>'headline' , :type=>'text',  :value=>'' ) 
+      }
 
-    
+      fieldset.textarea { 
+        label { "Details:" }
+        textarea(  '', :cols=>'10', :name=>'details' , :rows=>'5'  )  
+      }
 
-        fieldset.textarea { 
-          label { "Details:" }
-          textarea(  '', :cols=>'10', :name=>'details' , :rows=>'5'  )  
-        }
-
-    
       div.buttons { 
-        button.save  "Save & Post" 
+        button.save( "Save & Post" , :onclick=>"return Post.note();") 
       }
       
     } # === div.form
@@ -360,7 +360,7 @@ div.job.alarm {
         }
 
         div.buttons { 
-          button.save "Save & Run" 
+          button.save( "Save & Run", :onclick=>'return Post.countdown();' )
         }
         
       } # === form
@@ -417,7 +417,7 @@ div.job.alarm {
 
         
         div.buttons { 
-          button.save.set_date_countdown!  "Save & Run" 
+          button.save( "Save & Run", :onclick=>'return Post.alarm();' )
         }
         
       } # === form 

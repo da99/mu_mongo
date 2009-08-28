@@ -16,6 +16,10 @@ var Swiss = {
       };
       return false;
   },
+  
+  parse_int : function(obj) {
+    return( parseInt(obj, 10) || 0 );
+  },
 
   sanitize_cookie_name : function(str){
     return str.replace(/[^a-z0-9\-]/ig, '-');
@@ -70,7 +74,15 @@ var Swiss = {
   },
 
   start_busy_status : function() { Swiss['ajax_status'] = true; },
-  end_busy_status : function() { Swiss['ajax_status'] = false; }
+  end_busy_status : function() { Swiss['ajax_status'] = false; },
+  
+  swap_display : function(hide,show){
+    if(hide && show ) {
+      $(hide).hide();
+      $(show).show(); 
+    };
+    
+  }
 };
 
 
