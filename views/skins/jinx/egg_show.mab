@@ -14,11 +14,11 @@ save_to('description') {
 
 save_to('javascripts') {
 
-  script_tag('/js/vendor/soundmanager2/script/soundmanager2.js')
-  script_tag('/js/vendor/jquery.1.3.2.min.js')
-  script_tag('/js/vendor/jquery.cookie.js')
-  script_tag('/js/swiss.js')
-  script_tag('/js/pages/egg_show.js')
+  text the_app.script_tag('/js/vendor/soundmanager2/script/soundmanager2.js')
+  text the_app.script_tag('/js/vendor/jquery.1.3.2.min.js')
+  text the_app.script_tag('/js/vendor/jquery.cookie.js')
+  text the_app.script_tag('/js/swiss.js')
+  text the_app.script_tag('/js/pages/egg_show.js')
   
 }
 

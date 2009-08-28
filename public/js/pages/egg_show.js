@@ -1,34 +1,65 @@
+
 // Safari does not give you access to the datastore during unload events so save them
 //  every 5 seconds.
-
 var main_loop_id  = 0;
 
-$(document).ready(function() {
+var mySound = null;
+var beeps_a3 = null;
+var beeps_server = null;
+
+var beeps_a3_options = {
+  id: 'the_beeps_a3',
+  url: 'http://megauni.s3.amazonaws.com/beeping.test.mp3',
+  volume: 90, 
+  onfinish: function() {  
+    this.play();      
+  },
+  autoLoad: true,       // enable automatic loading (otherwise .load() will call with .play())
+  stream: false,
+  autoPlay: false,
+  onload : function(stat) {
+    mySound = ( (this.bytesLoaded < 1000 ) ? beeps_server : beeps_a3 );
+  }
+};
+var beeps_server_options = {
+  id: 'the_beeps_server',
+  url: '/media/beeping.mp3',
+  volume: 90, 
+  onfinish: function() {  
+    this.play();      
+  },
+  autoLoad: true,       // enable automatic loading (otherwise .load() will call with .play())
+  stream: false,
+  autoPlay: false
+};
+
+// =====================================================
+//              Set-up SoundManager 2
+// =====================================================
+soundManager.url = "/js/vendor/soundmanager2/swf/";
+soundManager.debugMode = window.location.hostname == 'localhost';
+soundManager.onerror = function() {
+  // SM2 could not start, no sound support, something broke etc. Handle gracefully.
+  alert('Something went wrong. Try reloading the page once or twice.'); // for example
+}
+
+soundManager.onload = function() {
+  // SM2 is ready to go!
+  beeps_a3 = soundManager.createSound(beeps_a3_options);
+  beeps_server = soundManager.createSound(beeps_server_options); 
   
   //
   // Show content and hide loading message.
   //
   $('#loading').hide();
   $('#content').show();
-  
-  
-  //
-  // Set up callbacks for EggClock
-  //
-//  var show_work_ele = function(){ $('work').set('styles', {display : 'block', visibility : 'visible' })};
-//  EggClock.before_start.push(  Chicken.lay_all_eggs,  show_work_ele );
-//  EggClock.after_end.push(   Chicken.window_unload     );
- // EggClock.after_next_second.push(   Chicken.see_if_any_hatched   );
-  
-//  EggClock.before_test_buzzer.push( function(){ $('instructions').addClass('testing_buzzer'); } );
-//  EggClock.after_test_buzzer.push( function(){  $('instructions').removeClass('testing_buzzer');  });
-  
+    
   //
   // Start the clock.
   //
   main_loop_id = setInterval( function(){
     BigClock.next_second();
-    EggClock.next_second();
+    // EggClock.next_second();
   }, 1000 );
   
   //
@@ -36,45 +67,11 @@ $(document).ready(function() {
   //
   $(document).unload( function() { 
       clearInterval( main_loop_id  ); 
-  } );
-  
-}); // === $(document).ready
+  } );  
+   
+}; // soundManager.onload
 
 
-
-
-
-
-// =====================================================
-//              Set-up SoundManager 2
-// =====================================================
-soundManager.url = "/js/vendor/soundmanager2/swf/";
-
-
-if( window.location.hostname == 'localhost' ) {
-  soundManager.debugMode = true;
-} else {
-  soundManager.debugMode = false;
-};
-
-soundManager.onload = function() {
-  // SM2 is ready to go!
-  var mySound = soundManager.createSound({
-    id: 'the_beeps',
-    url: 'http://megauni.s3.amazonaws.com/beeping.mp3',
-    volume: 90, 
-    onfinish: function() {  
-      this.play();      
-    },
-    autoLoad: true,       // enable automatic loading (otherwise .load() will call with .play())
-    autoPlay: false
-  });  
-};
-
-soundManager.onerror = function() {
-  // SM2 could not start, no sound support, something broke etc. Handle gracefully.
-  alert('Something went wrong. Try reloading the page once or twice.'); // for example
-}
 
 
 
@@ -212,7 +209,7 @@ var EggClock = {
                           if(event_id != 'test')
                             EggClock.stop_buzzer('test');
                           
-                          soundManager.play('the_beeps');
+                          soundManager.play(mySound.sID);
                           return $('alarm_holder');
                     },
   stop_buzzer : function(event_id){
@@ -231,7 +228,7 @@ var EggClock = {
 
                             
                             if(this.storage_bin.length < 1  )
-                              soundManager.stop('the_beeps'); // $('alarm_holder').set( 'html', '');
+                              soundManager.stop(mySound.sID); // $('alarm_holder').set( 'html', '');
                               
                             return true;
                           }
