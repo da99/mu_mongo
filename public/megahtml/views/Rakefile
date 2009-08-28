@@ -1,0 +1,42 @@
+
+
+if defined? print_this
+  raise "Method :print_this already defined."
+end
+
+def print_this(*args)
+  args.each {|new_line|
+    if new_line.empty?
+      print "\n"
+    else
+      print "===>  #{new_line}\n\n" 
+    end
+  }
+end
+
+
+# ======================================================================
+#                      START DEFINING TASKS
+# ======================================================================
+
+
+namespace :git do
+
+  desc "Execute: git add . && git add -u && git status"
+  task :update do
+    results = `git add . && git add -u && git status`
+    print_this results
+  end
+
+  desc "Gathers comment and commits it using: git commit -m '[your input]' "
+  task :commit do
+    new_comment = ask('Enter comment (type "commit" to end it):') { |q|
+      q.gather = 'commit'
+    }
+    results = `git commit -m '#{new_comment.join("\n").gsub("'", "\\\\'")}'`
+    print_this results
+  end
+
+end # ==== namespace :git
+
+
