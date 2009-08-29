@@ -150,7 +150,10 @@ error {
 not_found {
 
   if production?
-    IssueClient.create(env, options.environment, "404 - Not Found", 'Referer: '+ env['HTTP_REFERER'].to_s )
+    IssueClient.create(env, 
+				options.environment, 
+				"404 - Not Found", 
+				"Referer: #{env['HTTP_REFERER']}" )
   end
   
   if request.xhr?
