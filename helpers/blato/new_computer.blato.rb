@@ -30,6 +30,18 @@ username = %s <%s>
             http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
             Alt+F2 > gconf-editor > "desktop / gnome / file_views"
     ~, :white
+    
+    shout "Installing VIM settings.", :white
+    Pow(File.expand_path('~/.vimrc')).create do |f|
+      f.puts %~ colorscheme vividchalk
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set hlsearch
+
+~
+    end
+    shout( "Install vividchalk in ~/.vim/colors", :white ) if !Pow('~/.vim/colors/vividchalk.vim').exists?
     shout "Installing gems using task: gems:update", :yellow
     shout capture_task('gems:update'), :white
     

@@ -8,6 +8,7 @@ class CreateToDos_14 < Sequel::Migration
       foreign_key :project_id, :projects
       
       # === Attributes
+      smallint :category, :default => 0, :null => false
       varchar :title
       text :details
       smallint :days
