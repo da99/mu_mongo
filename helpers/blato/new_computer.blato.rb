@@ -4,22 +4,10 @@ class NewComputer
 
 
   bla  :start, "Prints out info. and checks installed gems. Safe to run multiple times."  do
-    shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa", :white
-    shout "Install git: ", :white    
-    
-    
+        
     shout "Firefox: browser.history_expire_days.mirror && browser.history_expire_days to 3: http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/", :white
     shout "Firefox: browser.history_expire_sites to '400'", :white
     
-    Pow(File.expand_path('~/.hgrc')).create { |f| 
-      f.puts( %~
-[ui]
-username = %s <%s>      
-      ~.strip % [MY_NAME, MY_EMAIL] )
-    }
-    shout capture('git config --global user.name %s' % MY_NAME.inspect) 
-    shout capture('git config --global user.email %s' % MY_EMAIL)
-    shout capture('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
     shout %~ 
              Make sure Postgresql is installed. 
              Then install: \nsudo apt-get install postgresql-server-dev-8.x. 
@@ -27,6 +15,7 @@ username = %s <%s>
              If it still does not work: try using the 'postgres' gem instead. 
              More info: http://rubyforge.org/projects/ruby-pg 
           ~ if !capture('psql --version')['psql (PostgreSQL) 8']
+
     shout %~ 
             Always show hidden files in  Nautilus: 
             http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
@@ -43,6 +32,10 @@ username = %s <%s>
       shout "18 * * * * #{capture('which blato')} bzr:quiet_my_life_dev_check", :white 
     end
     
+    install_bzr
+
+    install_git 
+
     install_vim
 
     install_irb
@@ -52,6 +45,26 @@ username = %s <%s>
     install_gemrc
 
   end # === bla :start
+
+  def install_git
+    do_install = !capture('git --version')[/git version \d/]
+    if do_install
+        shout "Install git with PPA "
+    else
+        shout capture('git config --global user.name %s' % MY_NAME.inspect) 
+        shout capture('git config --global user.email %s' % MY_EMAIL)
+    end
+  end
+
+  def install_bzr
+    do_install = !capture('bzr --version')[ /Bazaar \(bzr\) \d/ ]
+    if do_install
+        shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa", :white
+    else
+        shout capture('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
+    end
+  end
+
 
   def install_vim
     shout "Installing VIM settings.", :white
