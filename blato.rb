@@ -20,7 +20,7 @@ BACKUP_DIR = Pow('/media/Patriot/MyLifeBackup')
 MY_EMAIL = 'diego@megauni.com'
 MY_NAME = 'da01tv'
 MINIUNI_API_KEY =  'luv.4all.29bal--w0l3mg930--3'
-
+MY_PREFS = (LIFE_DIR / 'MyPrefs')
 
 module Blato
 
