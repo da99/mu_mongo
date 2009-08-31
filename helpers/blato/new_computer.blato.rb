@@ -3,26 +3,23 @@ class NewComputer
   include Blato
 
 
+
   bla  :start, "Prints out info. and checks installed gems. Safe to run multiple times."  do
-        
-    shout "Firefox: browser.history_expire_days.mirror && browser.history_expire_days to 3: http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/", :white
-    shout "Firefox: browser.history_expire_sites to '400'", :white
     
     shout %~ 
-             Make sure Postgresql is installed. 
-             Then install: \nsudo apt-get install postgresql-server-dev-8.x. 
-             Replace 'x' with the latest Postgresql version you are using. 
-             If it still does not work: try using the 'postgres' gem instead. 
-             More info: http://rubyforge.org/projects/ruby-pg 
-          ~ if !capture('psql --version')['psql (PostgreSQL) 8']
+        Make sure Postgresql is installed. 
+        Then install: \nsudo apt-get install postgresql-server-dev-8.x. 
+        Replace 'x' with the latest Postgresql version you are using. 
+        If it still does not work: try using the 'postgres' gem instead. 
+        More info: http://rubyforge.org/projects/ruby-pg 
+    ~ if !capture('psql --version')[/psql \(PostgreSQL\) \d/]
 
+    gconf = Pow(File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml'))
     shout %~ 
-            Always show hidden files in  Nautilus: 
-            http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
-            Alt+F2 > gconf-editor > "desktop / gnome / file_views"
-    ~, :white
-    
-
+        Always show hidden files in  Nautilus: 
+        http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
+        Alt+F2 > gconf-editor > "desktop / gnome / file_views"
+    ~ if !gconf.exists? || !gconf.read['show_hidden_files']
     
     if !capture('which blato')['bin/blato']
       shout "Symlink blato to a path dir."
@@ -32,6 +29,8 @@ class NewComputer
       shout "18 * * * * #{capture('which blato')} bzr:quiet_my_life_dev_check", :white 
     end
     
+    install_firefox
+
     install_bzr
 
     install_git 
@@ -65,9 +64,20 @@ class NewComputer
     end
   end
 
+  def install_firefox
+    vals = {}
+    # http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/
+    vals[:"browser.history_expire_days.mirror"] = 3
+    vals[:"browser.history_expire_days"] = 3
+    vals[:"browser.history_expire_sites"] = 400
+    grep_vals = capture("grep history -r ~/.mozilla/firefox --include=prefs.js")
+    
+    vals.each do |k,v|
+        shout "Change Firefox: #{k} ===>> #{v}" if !grep_vals[/#{k}...#{v}/]
+    end
+  end
 
   def install_vim
-    shout "Installing VIM settings.", :white
     vim_bk = Pow('~/.vim-tmp')
     if !vim_bk.exists?
         shout "Creating #{vim_bk}", :yellow
@@ -85,8 +95,16 @@ class NewComputer
         shout('Put alias gvim="gvim --remote-tab-silent" at the end of your ~/.bashrc file.')
     end
     
-    shout( "Install vividchalk in ~/.vim/colors", :white ) if !Pow('~/.vim/colors/vividchalk.vim').exists?
-
+    vivid = (MY_PREFS / 'vim' / 'vividchalk.vim')
+    home_vivid = Pow(File.expand_path('~/.vim/colors/vividchalk.vim'))
+    both_exists = vivid.exists? && home_vivid.exists?
+    both_match = both_exists && vivid.read == home_vivid.read && File.symlink?(home_vivid.to_s)
+    do_install = vivid.exists? && !both_exists
+    if both_exists && !both_match
+        shout( "Delete #{home_vivid}"  )
+    elsif do_install
+        shout(capture("ln -s %s %s" % [vivid.to_s.inspect, home_vivid.to_s.inspect]))
+    end
   end
 
   def install_irb
@@ -95,7 +113,9 @@ class NewComputer
     irb = (MY_PREFS / 'ruby' / 'irbrc.rb')
     
     both_exist = home_irb.exists? && irb.exists?
-    both_match = both_exist && (home_irb.read.strip == irb.read.strip) &&  File.symlink?(home_irb.to_s)
+    both_match = both_exist && 
+                    (home_irb.read.strip == irb.read.strip) && 
+                        File.symlink?(home_irb.to_s)
 
     
     install_irb = !both_exist && irb.exists?
@@ -114,7 +134,9 @@ class NewComputer
     gem_rc_yaml = (MY_PREFS / 'ruby' / 'gemrc.yaml')
     gem_rc = Pow('~/.gemrc')
     both_exists = gem_rc_yaml.exists? && gem_rc.exists?
-    both_match = both_exists && gem_rc_yaml.read.strip == gem_rc.read.strip && File.symlink?(gem_rc.to_s)
+    both_match = both_exists && 
+                  gem_rc_yaml.read.strip == gem_rc.read.strip && 
+                    File.symlink?(gem_rc.to_s)
     do_link = gem_rc_yaml.exists? && !both_exists 
 
     if do_link
