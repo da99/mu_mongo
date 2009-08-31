@@ -3,12 +3,12 @@ class NewComputer
   include Blato
 
 
-
   bla  :start, "Prints out info. and checks installed gems. Safe to run multiple times."  do
     
     shout %~ 
         Make sure Postgresql is installed. 
-        Then install: \nsudo apt-get install postgresql-server-dev-8.x. 
+        Then install: 
+          sudo apt-get install postgresql-server-dev-8.x. 
         Replace 'x' with the latest Postgresql version you are using. 
         If it still does not work: try using the 'postgres' gem instead. 
         More info: http://rubyforge.org/projects/ruby-pg 
@@ -75,6 +75,16 @@ class NewComputer
     vals.each do |k,v|
         shout "Change Firefox: #{k} ===>> #{v}" if !grep_vals[/#{k}...#{v}/]
     end
+
+    plugins = [ "Adblock Plus", 
+        "Firebug", "Fission", 
+        "Live HTTP headers",
+        'Chromifox Companion',
+        'Chromifox Extreme']
+    plugins.each do |plug|
+        results = capture("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
+        shout "Install #{plug} for Firefox" if !results[plug]
+    end
   end
 
   def install_vim
@@ -95,8 +105,8 @@ class NewComputer
         shout('Put alias gvim="gvim --remote-tab-silent" at the end of your ~/.bashrc file.')
     end
     
-    vivid = (MY_PREFS / 'vim' / 'vividchalk.vim')
-    home_vivid = Pow(File.expand_path('~/.vim/colors/vividchalk.vim'))
+    vivid = (MY_PREFS / 'vim' / 'dotvim')
+    home_vivid = Pow(File.expand_path('~/.vim'))
     both_exists = vivid.exists? && home_vivid.exists?
     both_match = both_exists && vivid.read == home_vivid.read && File.symlink?(home_vivid.to_s)
     do_install = vivid.exists? && !both_exists
