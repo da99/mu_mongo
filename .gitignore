@@ -12,6 +12,7 @@ test/coverage
 views/skins/jinx/sass/.sass-cache/*
 
 # Ignore these files too.
+tags
 tmp/*
 log
 tmp
