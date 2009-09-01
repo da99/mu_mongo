@@ -19,13 +19,13 @@ class View
     skin_name , skin_dir = get_skin_name_and_dir
     
     old_files = []
-    old_files << (skin_dir / "#{old_view_name}.mab")
-    old_files << (skin_dir / 'css' / "#{old_view_name}.mab")
+    old_files << (skin_dir / "#{old_view_name}.rb")
+    old_files << (skin_dir / 'css' / "#{old_view_name}.rb")
     old_files << Pow!("public/js/pages/#{old_view_name}.js")
     
     new_files = []
-    old_files << (skin_dir / "#{new_view_name}.mab")
-    old_files << (skin_dir / 'css' / "#{new_view_name}.mab")
+    old_files << (skin_dir / "#{new_view_name}.rb")
+    old_files << (skin_dir / 'css' / "#{new_view_name}.rb")
     old_files << Pow!("public/js/pages/#{new_view_name}.js")
     
     old_files.each_index { |i|
@@ -51,7 +51,7 @@ class View
       if void_actions.include?(action_name)
         shout "... Skipping: #{action_name} ..."
       else
-        file_path = Pow!("views/skins/#{skin_name}/#{controller_name}_#{action_name}.mab")
+        file_path = Pow!("views/skins/#{skin_name}/#{controller_name}_#{action_name}.rb")
         raise ArgumentError, "File: #{file_path} already exists." if File.exists?(file_path )
 
         txt = "p { 'Not implemented yet.'} "

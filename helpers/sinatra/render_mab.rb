@@ -41,13 +41,13 @@ class Markaby::Builder
   def partial( raw_file_name )
     
     file_name = raw_file_name.to_s
-    file_name += '.mab' if !file_name['.mab']
+    file_name += '.rb' if !file_name['.rb']
     
     # Find template file.
     if File.exists?(file_name)
       partial_filepath = file_name 
-    elsif File.exists?(file_name + '.mab')
-      partial_filepath = file_name + '.mab'
+    elsif File.exists?(file_name + '.rb')
+      partial_filepath = file_name + '.rb'
     else
       template_roots.each { |template_root|
         temp_file_path = File.join( template_root, file_name )
@@ -113,14 +113,14 @@ module Sinatra
             end
             
             def page_name
-                @page_file_name ||=  template_file_name.sub( '.mab', '')
+                @page_file_name ||=  template_file_name.sub( '.rb', '')
             end
             
             def template_file_name
                 if !current_action
                     raise "CURRENT ACTION PROPERTIES NOT DEFINED for: #{self.inspect}"
                 end
-                @template_file_name ||= current_action[:controller].to_s.underscore + "_" + current_action[:action].to_s.underscore + '.mab'
+                @template_file_name ||= current_action[:controller].to_s.underscore + "_" + current_action[:action].to_s.underscore + '.rb'
                 regular_file_path = File.join(skins_dir, @template_file_name) 
                 partial_file_path  = File.join(skins_dir, "__" + @template_file_name)
                 
@@ -151,7 +151,7 @@ module Sinatra
             end
             
             def layout_file_name
-                'layout.mab' 
+                'layout.rb' 
             end
             
             def layout_file_content
@@ -169,12 +169,12 @@ module Sinatra
             # Arguments:
             #   opts - Options: 
             #     :template - Relative to Ramaze::Global.view_root
-            #                Defaults to controller name underscored and action with '.mab'
-            #                at the end. Example: "jinx/newspaper_index.mab"
+            #                Defaults to controller name underscored and action with '.rb'
+            #                at the end. Example: "jinx/newspaper_index.rb"
             #     :layout  - Relative to Ramaze::Global.view_root + '/layouts'.
             #                Defaults to 'jinx'.
             #                Set to nil to prevent layout being used.
-            #                Leave out '.mab' since it is automatically added.
+            #                Leave out '.rb' since it is automatically added.
             #     :locals  - Hash with keys/values to be combined with the curreny local instance
             #                variables.
             def render_mab( opts = {} )

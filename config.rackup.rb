@@ -21,6 +21,7 @@ rescue
       halt "Error occurred. Come back later."
     }
   end
+
 end
 
 run Sinatra::Application

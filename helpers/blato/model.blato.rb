@@ -69,7 +69,7 @@ class Model
       if dir.directory?
         shout "In directory: #{dir}"
         [ 'new', 'show', 'edit' ].each { |view_name|
-          view_file = ( dir / "#{File.basename(model_file).sub('.rb', '')}_#{view_name}.mab")
+          view_file = ( dir / "#{File.basename(model_file).sub('.rb', '')}_#{view_name}.rb")
           if view_file.file?
             scrap_view_dir = ( scrap_dir / 'views' / File.basename(dir) )
             raise "View dir not found in scrap dir: #{scrap_view_dir}" if !scrap_view_dir.directory?

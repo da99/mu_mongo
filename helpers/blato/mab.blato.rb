@@ -8,7 +8,7 @@ class Mab
     file = Pow(file_name)
     shout "File not found: #{file.to_s}" if !file.file?
     
-    new_file = Pow(file.to_s.gsub(/\.html?$/, '.mab'))
+    new_file = Pow(file.to_s.gsub(/\.html?$/, '.rb'))
     shout "MAB file already exists: #{new_file}" if new_file.exists?
     
     new_file.create do |file|
