@@ -1,1 +1,1 @@
-/home/da01/megauni/config.rb
+/home/da01/megauni/config.rackup.rb

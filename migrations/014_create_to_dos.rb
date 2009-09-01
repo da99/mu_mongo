@@ -4,24 +4,24 @@ class CreateToDos_14 < Sequel::Migration
     create_table( :to_dos ) {
       # === Associations
       primary_key :id
-      foreign_key :owner_id, :members
+      foreign_key :owner_id,   :members
       foreign_key :project_id, :projects
-      
+
       # === Attributes
-      smallint :category, :default => 0, :null => false
-      varchar :title
-      text :details
+      smallint :category,   :default => 0,  :null => false
+      varchar  :title
+      text     :details
       smallint :days
       smallint :hours
       smallint :minutes
       smallint :seconds
       
       # === Date Times
-      timestamp   :starts_at, :null=>true
-      timestamp   :ends_at, :null=>true
-      timestamp   :created_at
-      timestamp   :modified_at, :null=>true
-      
+      timestamp :starts_at,   :null=>true
+      timestamp :ends_at,     :null=>true
+      timestamp :created_at
+      timestamp :modified_at, :null=>true
+
       # === Aggregate Statistics
       # None so far.    
     }
