@@ -25,6 +25,7 @@ db/data.yml
 
 # Ignore Gedit backup files.
 *.*~
+*.pyc
 
 # Ignore Emacs backup files.
 \#*

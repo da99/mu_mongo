@@ -14,6 +14,7 @@ class Git
   
   bla :update, "Executes: git add . && git add -u && git status" do
     invoke 'sass:compile'
+    invoke 'run:pyc_sweep'
     shout capture( 'git add . && git add -u && git status' ), :white
     invoke 'sass:delete'    
   end
