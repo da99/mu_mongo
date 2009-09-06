@@ -4,7 +4,7 @@ get '/media/heart_links/images/*' do
 end
 
 
-get '/hearts' do
+get '/hearts/' do
 
   describe :heart, :show
   @hearts = News.reverse_order(:created_at).limit(10).all
@@ -13,19 +13,19 @@ get '/hearts' do
 
 end
 
-get '/blog/:year' do |year|
+get '/blog/:year/' do |year|
   redirect("/hearts/by_date/#{year.to_i}/1" )
 end
 
-get '/blog/:year/0' do |year|
+get '/blog/:year/0/' do |year|
   redirect("/hearts/by_date/#{year.to_i}/1" )
 end
 
-get '/blog/:year/:month' do |year, month|
+get '/blog/:year/:month/' do |year, month|
   redirect("/hearts/by_date/#{year.to_i}/#{month.to_i}" )
 end
 
-get '/hearts/by_date/:year/:month' do
+get '/hearts/by_date/:year/:month/' do
   describe :heart, :by_date
   
   year = params[:year].to_i
@@ -53,11 +53,11 @@ get %r{/heart_links?/by_category/([0-9]+)\.html?} do |id|
   redirect("/heart_links/by_tag/#{id}")
 end
 
-get %r{/heart_links/by_category/([0-9]+)} do |id|
+get %r{/heart_links/by_category/([0-9]+)/} do |id|
   redirect("/hearts/by_tag/#{id}")
 end
 
-get %r{/hearts/by_tag/([0-9]+)} do |id|
+get %r{/hearts/by_tag/([0-9]+)/} do |id|
   describe :heart, :by_tag
   @news_tag = NewsTag[:id=>Integer(id)]
   @news = if !@news_tag
@@ -73,11 +73,11 @@ get %r{/hearts?_links?/([0-9]+)\.html?} do |id| # /hearts/20.html
   redirect( "/heart_link/#{ id  }"  )
 end
 
-get %r{/hearts?_links/([0-9]+)} do |id|  #  /hearts_links/29
+get %r{/hearts?_links/([0-9]+)/} do |id|  #  /hearts_links/29
   redirect( "/heart_link/#{ id }"  )
 end
 
-get %r{/heart_link/([0-9]+)} do |id| #  /heart_link/29
+get %r{/heart_link/([0-9]+)/} do |id| #  /heart_link/29
   describe :heart, :link
   @heart = News[:id=>Integer(id)]
   not_found if !@heart

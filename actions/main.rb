@@ -4,34 +4,34 @@ get( '/' ) {
 }
 
 
-get '/help' do
+get '/help/' do
   describe :main, :help
   render_mab
 end
 
-get( '/blog' ) {
+get( '/blog/' ) {
   redirect('/hearts')
 }
 
-get( '/about' ) {
+get( '/about/' ) {
   redirect('/help')
 }
 
 
-get '/salud' do
+get '/salud/' do
   describe :main, :salud
   render_mab :layout=>nil
 end
 
 
-get( '/reset' ) {
+get( '/reset/' ) {
     TemplateCache.reset
     CSSCache.reset
     redirect( env['HTTP_REFERER'] || '/' )
 }
 
 
-get('/timer') {
+get('/timer/') {
   describe :timer, :show
   render_mab
 }

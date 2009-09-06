@@ -1,13 +1,13 @@
 # ============================= STRANGERS =========================================
           
-get( "/sign\-?up" ) do
+get( "/sign\-?up/" ) do
   require_ssl!
   describe :member, :new
   render_mab
 end
 
           
-post( "/member" ) do
+post( "/member/" ) do
   
   session.clear 
   
@@ -33,7 +33,7 @@ end # == post :create
 # =========================== MEMBER ONLY ==========================================
 
 # Show account and HTML pages on same view.
-get( "/admin" ) do
+get( "/admin/" ) do
   protected_for( :MEMBER, :member, :show ) {
     @slice_locations = []
     render_mab
@@ -41,7 +41,7 @@ get( "/admin" ) do
 end # == get :show
 
       
-put( "/member" )  do
+put( "/member/" )  do
   protected_for( :MEMBER, :member, :update ) {
     current_member.changes_from_editor( clean_room, current_member )
     begin
@@ -54,7 +54,7 @@ put( "/member" )  do
 end # === put :update
 
 
-put( "/trash" )  do
+put( "/trash/" )  do
   protected_for( :MEMBER, :member, :trash ) {
     current_member.trash_it!
     flash( :success_msg,  "Your account has been trashed." )

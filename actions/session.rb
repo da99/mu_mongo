@@ -1,16 +1,16 @@
-get "/log\-?in" do
+get "/log\-?in/" do
   require_ssl!
   describe :session, :new
   render_mab
 end
 
-get "/log-out" do
+get "/log-out/" do
   session.clear
   flash(:success_msg,  "You have been logged out." )
   redirect('/')
 end
 
-post( "/log-in"  ) do
+post( "/log-i/n"  ) do
 
     # Before clearing session, get the most recent URL from the stack.
     target_url = session[:desired_uri] || '/admin' 
