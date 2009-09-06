@@ -3,7 +3,7 @@ xml.urlset "xmlns" => "http://www.google.com/schemas/sitemap/0.84" do
   xml.url do
     xml.loc         urlize('/')
     xml.lastmod     w3c_date(@news.first.last_modified)
-    xml.changefreq  "never"
+    xml.changefreq  "weekly"
   end
   
   xml.url do

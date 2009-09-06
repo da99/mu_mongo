@@ -60,7 +60,7 @@ class Git
       
       if migrate
         shout 'Migrating on Heroku...'
-        migrate_results = `heroku rake produciton:db:migrate_up`
+        migrate_results = `heroku rake production:db:migrate_up`
         raise "Problem on executing migrate:up on Heroku." if migrate_results[/aborted/i]
         shout migrate_results
         
@@ -74,7 +74,7 @@ class Git
     
   end # === task
   
-  bla :push_and_migrate, "Pushes code to Heroku. Migrates on the server side. Opens browser." do
+  bla :push_and_migrate_production, "Pushes code to Heroku. Migrates on the server side. Opens browser." do
     invoke(:push, :migrate=>true )
   end 
   
