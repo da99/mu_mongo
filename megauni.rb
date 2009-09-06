@@ -67,31 +67,6 @@ end # === configure
 
 
 # ===============================================
-# Filters
-# ===============================================
-before {
-    
-    require_ssl! if request.cookies["logged_in"] || request.post?
-    
-    # If .html file does not exist, try chopping off .html.
-    if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
-      redirect( request.path_info.sub( /\.html?$/, '') )
-    end
-    
-
-               
-    # url must not be blank. Sometimes I get error reports where the  URL is blank.
-    # I have no idea how that is even possible, so I put this:
-    if production? && 
-      ( env['REQUEST_URI'].to_s.strip.empty? || 
-          request.path_info.to_s.strip.empty? )
-      raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
-    end
-    
-} # === before  
-
-
-# ===============================================
 # Helpers
 # ===============================================
 require_these 'helpers/sinatra', %w{
@@ -103,10 +78,29 @@ require_these 'helpers/sinatra', %w{
   swiss_clock
 }
 
+
+# ===============================================
+# Filters
+# ===============================================
+before {
+    
+    require_ssl! if request.cookies["logged_in"] || request.post?
+    
+    # url must not be blank. Sometimes I get error reports where the  URL is blank.
+    # I have no idea how that is even possible, so I put this:
+    if production? && 
+      ( env['REQUEST_URI'].to_s.strip.empty? || 
+          request.path_info.to_s.strip.empty? )
+      raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
+    end
+    
+} # === before  
+
 error {
   IssueClient.create(env, options.environment, env['sinatra.error'] )
   read_if_file('public/500.html') || "Programmer error found. I will look into it."
-}
+} # === error
+
 
 not_found {
 
@@ -137,12 +131,12 @@ not_found {
 } # === not_found
 
 
-
 # ===============================================
 # Require the actions.
 # ===============================================
 require_these 'actions', %w{ 
   main 
+  old_app
   heart 
   member 
   session 

@@ -1,7 +1,4 @@
 before {
-
-    moving_date = Time.utc(2009, 8, 31, 0, 1, 1).to_i # Aug. 31, 2009
-    right_now = Time.now.utc.to_i
     
     if request.host =~ /busynoise/i && request.path_info == '/'
       redirect('/egg')
@@ -9,10 +6,15 @@ before {
     
     [:busynoise, :myeggtimer, :megahtml, :newsprint, :bigdeadline, :bigstopwatch].each { |name|
       if request.host =~ /#{name}/i && ['/', '/egg', '/eggs'].include?(request.path_info)
-        halt show_old_site( name, moving_date < right_now )
+        halt show_old_site( name, true )
       end
     }
 
+    # If .html file does not exist, try chopping off .html.
+    # This is mainly for backwards compatibility with surferhearts.com.
+    if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
+      redirect( request.path_info.sub( /\.html?$/, '') )
+    end
 }
 
 
@@ -62,14 +64,6 @@ helpers {
               </style>
             </head>
             <body>
-              <!--
-              <p>All books listed have 3 or more stars.</p>
-              <ul>
-                <li>Learn HTML ==&gt; <a href="http://www.amazon.com/gp/product/0321430840?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321430840">HTML, XHTML, and CSS, Sixth Edition (Visual Quickstart Guide) </a></li>
-                <li>Learn JS ==&gt; <a href="http://www.amazon.com/gp/product/0596101996?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596101996">JavaScript: The Definitive Guide</a></li>
-                <li>Learn CSS ==&gt; <a href="http://www.amazon.com/gp/product/0596527330?ie=UTF8&tag=busnoi-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596527330">CSS: The Definitive Guide</a></li>
-              </ul>
-              //-->
               <p>This domain for sale. Contact <span id="email">sales [at] #{dot_domain}</span>
               <script type="text/javascript">
               <!--
@@ -89,25 +83,4 @@ helpers {
 } # === 
 
 
-get '/eggs?' do
-  show_old_site :busy_noise
-end
-
-get '/busy-noise' do
-  show_old_site :busy_noise
-end
-
-get '/my-egg-timer' do
-  show_old_site :my_egg_timer
-end
-
-get '/javascripts/mootools.js' do
-  redirect('/my-egg-timer/javascripts/mootools.js', 301)
-end
-get '/javascripts/pages/index.js' do
-  redirect('/my-egg-timer/javascripts/pages/index.js', 301)
-end
-get '/javascripts/persist-js/persist-min.js' do
-  redirect('/my-egg-timer/javascripts/persist-js/persist-min.js', 301)
-end
 
