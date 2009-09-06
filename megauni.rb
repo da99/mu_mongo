@@ -11,41 +11,10 @@ $KCODE = 'UTF8'
 
 require 'rubygems'
 require 'sinatra'
-require File.expand_path('./helpers/pow')
+require File.expand_path('./helpers/kernel')
 require 'sequel' 
 require 'sequel/extensions/inflector'
 require Pow('helpers/issue_client')
-
-def require_these( dir );
-    Pow( dir.strip ).grep(/\.rb$/).each { |f| require f.to_s.sub(/.\rb$/, '') }
-end
-
-module Kernel
-    private
-       def __previous_method_name__
-         caller[1] =~ /`([^']*)'/ && $1.to_sym
-       end
-       
-       def __previous_line__
-        caller[1].sub(File.dirname(File.expand_path('.')), '')
-       end
-       
-       def at_least_something?( unknown )
-       
-        return false if !unknown
-       
-        if unknown.respond_to?(:strip)
-          stripped = unknown.strip
-          return stripped if !stripped.empty?
-        elsif unknown.is_a?(Numeric)
-          return unknown if unknown > 0 
-        else
-          unknown
-        end
-        
-        false
-       end
-end
 
 
 # ===============================================
@@ -99,7 +68,7 @@ end
 
 configure do
   # === Include models.
-  require Pow!('helpers/model_init')    
+  require Pow('helpers/model_init')    
 end
 
 
@@ -172,58 +141,16 @@ not_found {
 # ===============================================
 # Require the actions.
 # ===============================================
-require_these 'actions'
-
-
-get( '/' ) {
-  describe :main, :show
-  render_mab
-}
-
-
-get '/help' do
-  describe :main, :help
-  render_mab
-end
-
-get( '/blog' ) {
-  redirect('/hearts')
-}
-
-get( '/about' ) {
-  redirect('/help')
-}
-
-
-get '/salud' do
-  describe :main, :salud
-  render_mab :layout=>nil
-end
-
-
-get( '/reset' ) {
-    TemplateCache.reset
-    CSSCache.reset
-    redirect( env['HTTP_REFERER'] || '/' )
-}
-
-
-get('/timer') {
-  describe :timer, :show
-  render_mab
-}
-
-
-get('/*robots.txt') {
-  redirect('/robots.txt')
-}
-
-
-get '/*beeping.*' do
-  exts = ['mp3', 'wav'].detect  { |e| e == params['splat'].last.downcase }
-  not_found if !exts
-  redirect "http://megauni.s3.amazonaws.com/beeping.#{exts}" 
-end
+%w{ 
+  main 
+  heart 
+  member 
+  session 
+  username 
+  work 
+}.each { |m|
+  require Pow('actions', m)
+} 
 
 
 

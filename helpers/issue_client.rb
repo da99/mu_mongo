@@ -26,59 +26,34 @@ class IssueClient
         else
           title, body, e = args
       end
-      begin
-        data = data_template.merge( 
-         {:path_info => env['PATH_INFO'],
-          :api_key    => 'luv.4all.29bal--w0l3mg930--3',
-          :app_name   => 'Mega Uni', 
-          :title      => (title || e.message),
-          :body       => (body || e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
-          :environment   => environ.to_s ,
-          :user_agent => env['HTTP_USER_AGENT'],
-          :ip_address => env['REMOTE_ADDR'] || 'MISSING'
-        })
-        url =  environ.to_sym == :test ? 'https://localhost/error' : 'https://miniuni.heroku.com/error'
-        # url =  'https://miniuni.heroku.com/error'
-        RestClient.post( url, data)
-      rescue 
-        environ.to_sym == :development ?
-          raise  :
-          "error"
-      end  
+
+			data = data_template.merge( 
+			 {:path_info => env['PATH_INFO'],
+				:api_key    => 'luv.4all.29bal--w0l3mg930--3',
+				:app_name   => 'Mega Uni', 
+				:title      => (title || e.message),
+				:body       => (body || e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
+				:environment   => environ.to_s ,
+				:user_agent => env['HTTP_USER_AGENT'],
+				:ip_address => env['REMOTE_ADDR'] || 'MISSING'
+			})
+
+			case environ.to_sym
+				when :production
+					RestClient.post( 'https://miniuni.heroku.com/error', data)
+				when :development, :test
+					error_file   = Pow('~/Desktop/MEGAUNI_ERRORS_#{environ}.TXT')
+					orig_content = error_file.file? && environ.to_sym != :test ? 
+													error_file.read : 
+													''
+					error_file.create { |f|
+						f.puts( data.inspect + "\n\n" + orig_content )
+					}
+				else
+					raise ArgumentError, "Unknown environment: #{environ.inspect}"
+			end
+ 
     end    
 end
 
-
-__END__
-my_app_root = File.expand_path( File.dirname(__FILE__) )
-
-
-    
-    
-begin
-  raise "show maintainence page"  if File.exists?(my_app_root + '/helpers/sinatra/maintain.rb')
-  require( my_app_root + '/megauni.rb' )
-rescue
-  $KCODE = 'UTF8'
-  require 'rubygems'
-  require 'sinatra'
-  require( my_app_root + '/helpers' + ['/maintain', '/sinatra/maintain'].detect { |f| File.exists?(my_app_root+'/helpers' + f + '.rb') })
-  
-  require 'net/http'
-  require 'rack_hoptoad'
-  rh = Rack::HoptoadNotifier.new 'nil'
- 
-  rh.send(:send_to_hoptoad, :notice=>{
-    :api_key => '05d03bbc87077117598fd437ce0caaa1',
-    :error_class => $!.class.name,
-    :error_message => "#{$!.class.name}: #{$!.message}",
-    :backtrace => $!.backtrace.reject {|f| f !~ /#{File.expand_path('.')}/},
-    :request => {},
-    :session => {},
-    :environment => {'message'=>'App could not start.'}
-  })
-
-end
-
-run Sinatra::Application
 

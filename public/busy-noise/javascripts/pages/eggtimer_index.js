@@ -1,5 +1,23 @@
 $(window).addEvent('load', function(){
 
+  /*
+  var eggs1 = Cookie.read('eggs');
+  Cookie.dispose('eggs');
+  
+  var eggs2 = Cookie.read('eggs');
+  Cookie.dispose('eggs', { path :  '/' });
+  
+  var eggs3 = Cookie.read('eggs');
+  Cookie.dispose('eggs', { path : '/busy-noise' });
+ 
+  var eggs4 = Cookie.read('eggs');
+  Cookie.dispose('eggs', { path : '/busy-noise/' });
+  
+  
+  var last_eggs =  eggs4 || eggs3 || eggs2 || eggs1 || JSON.encode({}) ;
+  Cookie.write( 'eggs', last_eggs, {duration : 30 }) ;
+  */
+  
   //
   // Show 'Add Stuff'
   //

@@ -5,7 +5,7 @@ partial('__nav_bar')
 div.content! {
 
   # ================= div.flash_msg =============================
-  if flash_msg?
+  if the_app.flash_msg?
     partial '__flash_msg'
   end
 
