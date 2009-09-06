@@ -18,6 +18,10 @@ class News < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
+  def last_modified
+    modified_at || created_at
+  end
+
   def changes_from_editor( params, mem )
     if new?
         self[:owner_id] = mem[:id]

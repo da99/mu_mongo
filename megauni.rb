@@ -56,6 +56,7 @@ configure do
   set :site_url,          Proc.new { "http://www.#{options.site_domain}/" }
   set :site_support_email,  Proc.new { "helpme@#{options.site_domain}" }
   set :cache_the_templates, Proc.new { !development? }
+  set :views,               Pow('views/skins/jinx')
 
   # Special sanitization library for both Models and Sinatra Helpers.
   require Pow!( 'helpers/wash' )

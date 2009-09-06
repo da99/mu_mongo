@@ -1,3 +1,5 @@
+require 'builder'
+
 multi_get( '/' ) { 
   describe :main, :show
   render_mab
@@ -46,6 +48,12 @@ get '/*beeping.*' do
   exts = ['mp3', 'wav'].detect  { |e| e == params['splat'].last.downcase }
   not_found if !exts
   redirect "http://megauni.s3.amazonaws.com/beeping.#{exts}" 
+end
+
+get '/sitemap.xml' do
+  content_type 'application/xml', :charset => 'utf-8'
+  @news = News.reverse_order(:created_at).limit(5).all
+  builder Pow( options.views, 'sitemap.rb').read
 end
 
 
