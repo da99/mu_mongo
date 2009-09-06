@@ -105,7 +105,7 @@ module Sinatra
             end
             
             def skins_dir
-                File.join( options.views, 'skins' , skin_name )
+                File.join( options.views )
             end
             
             def template_file_path
