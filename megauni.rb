@@ -11,9 +11,9 @@ $KCODE = 'UTF8'
 
 require 'rubygems'
 require 'sinatra'
-require File.expand_path('./helpers/kernel')
 require 'sequel' 
 require 'sequel/extensions/inflector'
+require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
 
 
@@ -28,7 +28,6 @@ configure do
   set :session, true
 
   set :site_title     , 'Mega Uni'
-
   set :site_tag_line  , 'The website that predicts the future.'
   set :site_keywords  , 'predict, predictions, future'
   set :site_domain    , 'megaUni.com'
@@ -107,7 +106,14 @@ before {
 # ===============================================
 # Helpers
 # ===============================================
-require_these 'helpers/sinatra'
+require_these 'helpers/sinatra', %w{
+  old_apps
+  flash_it
+  club_manager
+  render_mab
+  html_props_for_models
+  swiss_clock
+}
 
 error {
   IssueClient.create(env, options.environment, env['sinatra.error'] )
@@ -134,16 +140,12 @@ not_found {
 # ===============================================
 # Require the actions.
 # ===============================================
-%w{ 
+require_these 'actions', %w{ 
   main 
   heart 
   member 
   session 
   username 
   work 
-}.each { |m|
-  require Pow('actions', m)
-} 
-
-
+}
 

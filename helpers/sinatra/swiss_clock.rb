@@ -16,27 +16,27 @@ module SwissClock
     dt.strftime('%B, %d %Y %H:%M:%S UTC')
   end  
 
-  
-  # method is modified code from: http://safari.oreilly.com/0768667208/ch07lev1sec23
-  def total_days
-    mdays = [nil,31,28,31,30,31,30,31,31,30,31,30,31]
-    mdays[2] = 29 if Date.leap?(@year)
-    mdays[@month]
-  end
-  
-  def start_wday
-    t = Time.gm(@year, @month)
-    t.wday
-  end
-  
-  def month=(month)
-    month = month.to_i
-    @month = ( month >0 && month <13 ) ? month : 1 
-  end
-  
-  def year=(year)
-    year = year.to_i
-    @year = (year >= 2006 && year <= (Time.now.year + 2) ) ?  year  : @year
+   
+  # method is modified code from: http://safari.oreilly.com/0768667208/ch07lev1sec23 
+  def total_days 
+    mdays = [nil,31,28,31,30,31,30,31,31,30,31,30,31] 
+    mdays[2] = 29 if Date.leap?(@year) 
+    mdays[@month] 
+  end 
+   
+  def start_wday 
+    t = Time.gm(@year, @month) 
+    t.wday 
+  end 
+   
+  def month=(month) 
+    month = month.to_i 
+    @month = ( month >0 && month <13 ) ? month : 1  
+  end 
+   
+  def year=(year) 
+    year = year.to_i 
+    @year = (year >= 2006 && year <= (Time.now.year + 2) ) ?  year  : @year 
   end
 
 

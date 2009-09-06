@@ -30,8 +30,13 @@ if !Pow('~').is_a?(Pow::Directory)
 end # == if
 
 
-def require_these( dir )
-  Dir[ File.join(dir, '*.rb') ].each { |f| require Pow(f).to_s.sub(/.\rb$/, '') }
+def require_these( dir, allow_only=nil )
+  Dir[ File.join(dir, '*.rb') ].each { |f| 
+    file_name = f.sub(/\.rb$/, '') 
+    if allow_only.nil? || allow_only.include?(File.basename(file_name))
+     require Pow(f).to_s  
+    end
+  }
 end
 
 def read_if_file(f)
