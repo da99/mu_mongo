@@ -34,6 +34,7 @@ get( '/reset/' ) {
 
 
 get('/timer/') {
+  halt "Not ready yet."
   describe :timer, :show
   render_mab
 }
