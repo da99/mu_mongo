@@ -134,6 +134,10 @@ helpers do # ===============================
     
     
     # === Action related helpers. ===========================
+      def mobile_request?
+        request.path_info =~ /\/m\/?$/
+      end
+
        def current_action
             @current_action_props
        end 

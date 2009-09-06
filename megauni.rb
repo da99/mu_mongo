@@ -104,28 +104,28 @@ error {
 
 not_found {
 
-  IssueClient.create(env, 
-      options.environment, 
-      "404 - Not Found", 
-      "Referer: #{env['HTTP_REFERER']}" )
+# Add trailing slash and use a  permanent redirect.
+  # Why a trailing slash? Many software programs 
+  # look for files by appending them to the url: /salud/robots.txt
+  # Without adding a slash, they will go to: /saludrobots.txt
+  if request.get? && !request.xhr? && request.query_string.to_s.strip.empty? 
+
+    if request.path_info != '/' && request.path_info[ request.path_info.size - 1 , 1] != '/' 
+      redirect( request.url + '/' , 301 )  
+    end
+
+    if %w{ mobi mobile iphone pda}.include?(request.path_info.split('/').last )
+      redirect( request.url + 'm', 301 )
+    end
+
+  end 
+
+  IssueClient.create(env,  options.environment, "404 - Not Found", "Referer: #{env['HTTP_REFERER']}" )
   
   if request.xhr?
     '<div class="error">Action not found.</div>'
   else
-    
-    # Add trailing slash and use a  permanent redirect.
-    # Why a trailing slash? Many software programs 
-    # look for files by appending them to the url: /salud/robots.txt
-    # Without adding a slash, they will go to: /saludrobots.txt
-    if request.get? && 
-        request.path_info != '/' &&
-          request.path_info[ request.path_info.size - 1 , 1] != '/' &&
-            request.query_string.to_s.strip.empty?
-      redirect( request.url + '/' , 301 )  
-    end 
-
     read_if_file('public/404.html') || "Page not found. Try checking for any typos in the address."
-
   end
   
 } # === not_found
@@ -134,6 +134,20 @@ not_found {
 # ===============================================
 # Require the actions.
 # ===============================================
+
+def multi_get( raw_path, *opts, &blok)
+  path = raw_path.is_a?(String) ? 
+            File.join(raw_path.strip, '/') : 
+            raw_path
+  
+  if path.is_a?(String)
+    m_path = File.join( path, 'm/' )
+    get m_path, *opts, &blok
+  end
+
+  get path, *opts, &blok
+end
+
 require_these 'actions', %w{ 
   main 
   old_app

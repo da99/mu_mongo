@@ -1,21 +1,22 @@
 before {
     
-    if request.host =~ /busynoise/i && request.path_info == '/'
-      redirect('/egg')
+  if request.host =~ /busynoise/i && request.path_info == '/'
+    redirect('/egg')
+  end
+  
+  [:busynoise, :myeggtimer, :megahtml, :newsprint, :bigdeadline, :bigstopwatch].each { |name|
+    if request.host =~ /#{name}/i && ['/', '/egg', '/eggs'].include?(request.path_info)
+      halt show_old_site( name, true )
     end
-    
-    [:busynoise, :myeggtimer, :megahtml, :newsprint, :bigdeadline, :bigstopwatch].each { |name|
-      if request.host =~ /#{name}/i && ['/', '/egg', '/eggs'].include?(request.path_info)
-        halt show_old_site( name, true )
-      end
-    }
+  }
 
-    # If .html file does not exist, try chopping off .html.
-    # This is mainly for backwards compatibility with surferhearts.com.
-    if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
-      redirect( request.path_info.sub( /\.html?$/, '') )
-    end
-}
+  # If .html file does not exist, try chopping off .html.
+  # This is mainly for backwards compatibility with surferhearts.com.
+  if request.path_info =~ /\.html?$/ && !Pow('public', request.path_info).file?
+    redirect( request.path_info.sub( /\.html?$/, '') )
+  end
+
+} # === before
 
 
 

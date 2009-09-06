@@ -30,7 +30,9 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     title( @title || ' ---- ' )
 
     link( :rel=>"shortcut icon", :href=>"#{ the_app.socket_and_host}/favicon.ico", :type=>"image/x-icon")
-    link( :rel=>"stylesheet",    :href=>"/skins/#{the_app.skin_name}/css/#{the_app.page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+    if !the_app.mobile_request?
+      link( :rel=>"stylesheet",    :href=>"/skins/#{the_app.skin_name}/css/#{the_app.page_name}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+    end
     
     if @head_content
       self << @head_content

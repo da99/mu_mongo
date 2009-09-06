@@ -1,24 +1,24 @@
-get( '/' ) {
+multi_get( '/' ) { 
   describe :main, :show
   render_mab
 }
 
 
-get '/help/' do
+multi_get '/help' do 
   describe :main, :help
   render_mab
 end
 
-get( '/blog/' ) {
+multi_get( '/blog' ) {
   redirect('/hearts')
 }
 
-get( '/about/' ) {
+multi_get( '/about' ) { 
   redirect('/help')
 }
 
 
-get '/salud/' do
+multi_get '/salud' do 
   describe :main, :salud
   render_mab :layout=>nil
 end
@@ -47,5 +47,9 @@ get '/*beeping.*' do
   not_found if !exts
   redirect "http://megauni.s3.amazonaws.com/beeping.#{exts}" 
 end
+
+
+
+
 
 
