@@ -57,8 +57,6 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       } # the_footer
       
     
-
-
       if @javascripts
         if @javascripts.eql?( 'default' )
           text [ the_app.script_tag('/js/vendor/jquery.1.3.2.min.js'),

@@ -65,10 +65,13 @@ helpers do # ===============================
     
     # === Member related helpers ========================
     
+    # Adds either http:// or https://, 
+    # along with request.host
+    # depending if logged in.
     def urlize(url)
       return url if !url[/^\//]
-      return "http://#{request.host}#{url}" if !logged_in?
-      "https://#{url}"
+      scheme = logged_in? ? 'https://' : 'http://'
+      "#{scheme}#{request.host}#{url}" 
     end
     
     def socket_and_host
@@ -134,8 +137,19 @@ helpers do # ===============================
     
     
     # === Action related helpers. ===========================
-      def mobile_request?
-        request.path_info =~ /\/m\/?$/
+      def mobile_request?(path = nil)
+        (path || request.path_info).strip =~ /\/m\/?$/
+      end
+
+      def mobile_path(raw_path)
+        return raw_path if !raw_path.is_a?(String)
+        return raw_path if mobile_request?(raw_path)
+        File.join( raw_path.strip, 'm/')
+      end
+
+      def mobile_path_if_requested(raw_path)
+        return raw_path if !mobile_request?
+        mobile_path raw_path
       end
 
        def current_action

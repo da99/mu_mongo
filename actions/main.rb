@@ -20,7 +20,7 @@ multi_get( '/about' ) {
 
 multi_get '/salud' do 
   describe :main, :salud
-  render_mab :layout=>nil
+  render_mab 
 end
 
 

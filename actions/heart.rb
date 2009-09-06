@@ -4,7 +4,7 @@ get '/media/heart_links/images/*' do
 end
 
 
-get '/hearts/' do
+multi_get '/hearts/' do
 
   describe :heart, :show
   @hearts = News.reverse_order(:created_at).limit(10).all

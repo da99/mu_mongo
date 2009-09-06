@@ -28,8 +28,12 @@ div( :id=>"nav_bar" ) {
           span text
         }        
       else
-        li { 
-          a text, :href=> the_app.urlize( path )
+        li {
+          if [:heart, :main].include?(c_name) && [:show, :salud, :help].include?(a_name)
+            a text, :href=> the_app.urlize( the_app.mobile_path_if_requested(path) )
+          else
+            a text, :href=> the_app.urlize( path )
+          end
         }
       end
     } # === each
