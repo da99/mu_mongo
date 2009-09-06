@@ -30,7 +30,7 @@ div.content!  {
     } 
   
     li {
-      div.question "I'm old. What should I do?"
+      div.question "I'm old and in pain. What should I do?"
       div.answer {
         span "Buy: "
         a('Longevinex Advantage.', :href=>'http://www.LongevinexAdvantage.com/')
@@ -46,12 +46,12 @@ div.content!  {
     li {
       div.question "Are there better alternatives to anti-depressants?"
       div.answer {
-        span "First, stop seeing the idiot doctor who prescribes useless, harmful anti-depressants."
+        span "First, stop seeing the idiot doctor who prescribes useless, harmful anti-depressants. "
         span "Second, take "
         a("Methyl-B12 and Folic acid.", :href=>'http://www.google.com/search?q=methyl-b12+folic+acid+depression')
-        span '(via '
+        span ' (I learned this from '
         a('The Natural Health Librarian.', :href=>'http://www.naturalhealthlibrarian.com/')
-        span ' Buy their e-books. Great stuff.)'
+        span ' Buy their e-books. Great stuff. All true.)'
       }
     }      
      

@@ -14,12 +14,12 @@ div( :id=>"nav_bar" ) {
   
     [ 
       ['/', 'Home', :main, :show], 
-      ['/hearts', 'Hearts', :heart, :show],
+      ['/hearts/', 'Hearts', :heart, :show],
       # ['/egg', 'Timer + Alarm', :egg, :show],
-      ['/salud', 'Salud (Health)', :main, :salud] ,
-      ['/my-egg-timer', 'My Egg Timer', :egg, :my] ,
-      ['/busy-noise', 'Busy Noise Timer', :egg, :busy],
-      ['/help', 'Help', :main, :help]
+      ['/salud/', 'Salud (Health)', :main, :salud] ,
+      ['/my-egg-timer/', 'My Egg Timer', :egg, :my] ,
+      ['/busy-noise/', 'Busy Noise Timer', :egg, :busy],
+      ['/help/', 'Help', :main, :help]
       #['/sign-up', 'Sign-up', :member, :new],
       #['/log-in', 'Log-in', :session, :new]
     ].each { |path, text, c_name, a_name|
