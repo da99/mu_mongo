@@ -34,6 +34,13 @@ def require_these( dir )
   Dir[ File.join(dir, '*.rb') ].each { |f| require Pow(f).to_s.sub(/.\rb$/, '') }
 end
 
+def read_if_file(f)
+  err_file = Pow(f)
+  err_file.file? ? 
+    err_file.read :
+    nil
+end
+
 module Kernel
 private
    def __previous_method_name__

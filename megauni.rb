@@ -110,28 +110,21 @@ before {
 require_these 'helpers/sinatra'
 
 error {
-  if production?
-    IssueClient.create(env, options.environment, env['sinatra.error'] )
-  end
-  "Programmer error found. I will look into it."
+  IssueClient.create(env, options.environment, env['sinatra.error'] )
+  read_if_file('public/500.html') || "Programmer error found. I will look into it."
 }
 
 not_found {
 
-  if production?
-    IssueClient.create(env, 
-				options.environment, 
-				"404 - Not Found", 
-				"Referer: #{env['HTTP_REFERER']}" )
-  end
+  IssueClient.create(env, 
+      options.environment, 
+      "404 - Not Found", 
+      "Referer: #{env['HTTP_REFERER']}" )
   
   if request.xhr?
     '<div class="error">Action not found.</div>'
   else
-    file_404 = Pow('public/404.html')
-    content_404 = file_404.file? ? 
-                    file_404.read :
-                    "Not found"
+    read_if_file('public/404.html') || "Page not found. Try checking for any typos in the address."
   end
   
 }
