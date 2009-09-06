@@ -114,8 +114,10 @@ not_found {
       redirect( request.url + '/' , 301 )  
     end
 
-    if %w{ mobi mobile iphone pda}.include?(request.path_info.split('/').last )
-      redirect( request.url + 'm', 301 )
+    %w{ mobi mobile iphone pda}.each do |ending|
+      if request.path_info.split('/').last.downcase == ending
+        redirect( request.url.sub(/#{ending}\/?$/, 'm/') , 301 )
+      end
     end
 
   end 
