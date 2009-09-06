@@ -29,17 +29,7 @@
     }    
 
     
-    li {
-      div.question "Are there better alternatives to anti-depressants?"
-      div.answer {
-        span "First, stop seeing the idiot doctor who prescribes useless, harmful anti-depressants."
-        span "Second, take "
-        a("Methyl-B12 and Folic acid.", :href=>'http://www.google.com/search?q=methyl-b12+folic+acid+depression')
-        span '(via '
-        a('The Natural Health Librarian.', :href=>'http://www.naturalhealthlibrarian.com/')
-        span ' Buy their e-books. Great stuff.)'
-      }
-    }   
+
 
     li {
       div.question "I disagree with what you said."
