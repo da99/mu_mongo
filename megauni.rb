@@ -110,11 +110,13 @@ not_found {
   # Without adding a slash, they will go to: /saludrobots.txt
   if request.get? && !request.xhr? && request.query_string.to_s.strip.empty? 
 
-    if request.path_info != '/' && request.path_info[ request.path_info.size - 1 , 1] != '/' 
+    if request.path_info != '/' &&  # Request is not for homepage.
+        request.path_info !~ /\.[a-z0-9]+$/ &&  # Request is not for a file.
+          request.path_info[ request.path_info.size - 1 , 1] != '/'  # Request does not end in /
       redirect( request.url + '/' , 301 )  
     end
 
-    %w{ mobi mobile iphone pda}.each do |ending|
+    %w{ mobi mobile iphone pda }.each do |ending|
       if request.path_info.split('/').last.downcase == ending
         redirect( request.url.sub(/#{ending}\/?$/, 'm/') , 301 )
       end

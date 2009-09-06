@@ -4,7 +4,7 @@
 # I made this instead of the using ActiveSupport 
 # for time-related methods.
 ##########################################################
-module SwissClock
+helpers do
 
 
   # From: http://www.codeism.com/archive/show/578
@@ -15,7 +15,6 @@ module SwissClock
   def js_date(dt)
     dt.strftime('%B, %d %Y %H:%M:%S UTC')
   end  
-
    
   # method is modified code from: http://safari.oreilly.com/0768667208/ch07lev1sec23 
   def total_days 
@@ -87,4 +86,4 @@ module SwissClock
     end
   end
   
-end # === SwissClock
+end # === helpers SwissClock

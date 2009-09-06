@@ -1,0 +1,40 @@
+xml.instruct!
+xml.urlset "xmlns" => "http://www.google.com/schemas/sitemap/0.84" do
+  xml.url do
+    xml.loc         'http://'+request.env['HTTP_HOST']+'/'
+    xml.lastmod     w3c_date(@heart_links.first.updated_on)
+    xml.changefreq  "never"
+  end
+  
+  xml.url do
+    xml.loc         'http://'+request.env['HTTP_HOST']+'/archives/'
+    xml.lastmod     w3c_date(@heart_links.first.updated_on)
+    xml.changefreq  "monthly"
+  end
+  
+  @heart_links.each do |post|
+    xml.url do
+      xml.loc         url_for(:only_path => false, :controller => 'public', :action => 'heart_link', :id => post.id)+'/'
+      xml.lastmod( post.updated_on > Time.utc(2007, 2, 20)  ? w3c_date(post.updated_on) : w3c_date( Time.utc(2007, 2, 20, 3, 1) ) )
+      xml.changefreq  "yearly"
+    end
+  end
+  
+  @photosets.each do |post|
+    xml.url do
+      xml.loc         url_for(:only_path => false, :controller => 'public', :action => 'photoset', :id => post.id)+'/'
+      xml.lastmod w3c_date(post.published_on)  
+      xml.changefreq  "yearly"
+    end
+  end
+  
+  @photosets.each do |set|
+    set.photos.each { |post|
+      xml.url do
+        xml.loc         url_for(:only_path => false, :controller => 'public', :action => 'photoset_slideshow', :id =>set.id, :position=> set.photos.index(post)+1 )+'/'
+        xml.lastmod w3c_date(set.published_on)  
+        xml.changefreq  "yearly"
+      end
+    }
+  end
+end
