@@ -28,9 +28,18 @@ class Spec
   end
   
   bla :run, {:with_color=>true}, "Run all specs for this app." do |*args|
+    
+    ENV['RACK_ENV'] = 'test'
+    invoke('db:reset!')
+
     with_color = args.empty? ? true : args.first
     please_wait
-    output = capture("bacon specs/* -r /home/da01/#{Blato.app_name}/helpers/specs/spec.rb")
+    
+    spec_helper = Pow('~', "#{MEGA_APP_NAME}/helpers/specs/spec.rb" )
+    cmd = "bacon specs/* -r #{spec_helper}"
+    whisper( cmd )
+    output = capture(cmd)
+    
     if Blato.mute? || !with_color
       whisper( output  )
     else

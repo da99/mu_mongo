@@ -1,4 +1,5 @@
 
+require 'launchy'
 
 class Git
 
@@ -41,7 +42,17 @@ class Git
        "Push code to Heroku. Options: open_browser = true, migrate = false" ) do |*args|
 
     migrate, open_browser = args
-    
+   
+    # Check if specs all pass.
+    spec_results = capture_task('spec:run').strip
+    last_msg = spec_results.split("\n").last
+    if !( last_msg['0 failures'] && last_msg['0 errors'] )
+      shout spec_results
+      exit
+    else
+      whisper 'All specifications passed.'
+    end
+
     output = capture_task(:update)
     
     if commit_pending?(output) 
@@ -66,11 +77,19 @@ class Git
         
         shout 'Restarting app servers.'
         shout `heroku restart`
-        `heroku open`
       end
       
-      `heroku open` if open_browser || open_browser.nil?
-    end
+      if open_browser || open_browser.nil?
+        app_name = File.basename(Pow().to_s)
+        case app_name
+          when 'miniuni'
+            Launchy.open("http://#{app_name}.heroku.com/")
+          else
+            Launchy.open("http://www.#{app_name}.com/")
+        end
+      end
+
+    end # === else
     
   end # === task
   

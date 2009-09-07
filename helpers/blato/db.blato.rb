@@ -26,6 +26,7 @@ class Db
 		  shout "Done. #{db_version_as_string}", :white
 		else
 		  shout results
+      exit
 		end	  
   end
   
