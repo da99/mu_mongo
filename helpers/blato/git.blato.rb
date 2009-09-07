@@ -55,7 +55,7 @@ class Git
     migrate, open_browser = args
    
     # Check if specs all pass.
-    whisper capture('gem update')
+    #whisper capture('gem update')
     spec_results = capture_task('spec:run').strip
     last_msg = spec_results.split("\n").last
     if !( last_msg['0 failures'] && last_msg['0 errors'] )

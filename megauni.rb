@@ -70,10 +70,21 @@ end # === configure
 # ===============================================
 # Helpers
 # ===============================================
+
+helpers {
+  # === Miscellaneous helpers ========================
+
+  def dev_log_it( msg )
+      puts(msg) if options.development?
+  end    
+}
+
 require_these 'helpers/sinatra', %w{
+  urls_and_ssl
   old_apps
   flash_it
-  club_manager
+  auth_and_auth
+  render_ajax_response
   render_mab
   html_props_for_models
   swiss_clock

@@ -42,7 +42,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
   body.the_body! {
     div.container! { 
     
-      div.timestamp! the_app.to_js_epoch_time(Time.now.utc.to_i).to_s
+      div.timestamp! the_app.js_epoch_time(Time.now.utc.to_i).to_s
 
       if @loading
         div.loading! 'Loading...'
