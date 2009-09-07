@@ -18,7 +18,7 @@ class News < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def last_modified
+  def last_modified_at
     updated_at || created_at
   end
 
