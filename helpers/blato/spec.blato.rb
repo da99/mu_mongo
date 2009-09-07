@@ -30,7 +30,7 @@ class Spec
   bla :run, {:with_color=>true}, "Run all specs for this app." do |*args|
     
     ENV['RACK_ENV'] = 'test'
-    invoke('db:reset!')
+    invoke('db:migrate_up')
 
     with_color = args.empty? ? true : args.first
     please_wait

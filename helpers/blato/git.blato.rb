@@ -1,5 +1,6 @@
 
 require 'launchy'
+require 'rest_client'
 
 class Git
 
@@ -12,6 +13,16 @@ class Git
       output  
   end
   
+  def check_this_url url, r_text
+    begin
+      results = RestClient.get( url ) 
+      if results !~ r_text
+        shout "Could not find #{r_text.inspect} @ #{url}"
+      end
+    rescue RestClient::ResourceNotFound, RestClient::RequestFailed, RestClient::RequestTimeout
+      shout "Homepage problem: #{url} - #{$!.message}"
+    end
+  end
   
   bla :update, "Executes: git add . && git add -u && git status" do
     invoke 'sass:compile'
@@ -79,14 +90,26 @@ class Git
         shout `heroku restart`
       end
       
-      if open_browser || open_browser.nil?
-        app_name = File.basename(Pow().to_s)
-        case app_name
-          when 'miniuni'
-            Launchy.open("http://#{app_name}.heroku.com/")
-          else
-            Launchy.open("http://www.#{app_name}.com/")
-        end
+
+      app_name = File.basename(Pow().to_s)
+      case app_name
+        when 'miniuni'
+          url = "http://#{app_name}.heroku.com/"
+          check_this_url url, /mega/
+        when 'megauni'
+          url = "http://www.#{app_name}.com/"
+          check_this_url url, /megauni/i
+          check_this_url "http://www.busynoise.com/", /has moved/
+          check_this_url "http://www.myeggtimer.com/", /new site/
+          check_this_url "#{url}busy-noise/", /egg-timer/
+          check_this_url "#{url}my-egg-timer/", /egg_template/
+        else
+          url = "http://www.#{app_name}.com/"
+          check_this_url url, /#{app_name}/
+      end
+      
+      if open_browser || open_browser.nil?      
+        Launchy.open( url )
       end
 
     end # === else
