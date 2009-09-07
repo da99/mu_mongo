@@ -14,7 +14,7 @@ class CreateNews_7 < Sequel::Migration
       
       # === Date Times
       timestamp   :created_at, :null=>false
-      timestamp   :modified_at
+      timestamp   :updated_at, :null=>true
       timestamp   :published_at, :null=>false
       
       # === Aggregate Statistics
