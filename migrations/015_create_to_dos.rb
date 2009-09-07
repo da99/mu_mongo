@@ -20,7 +20,7 @@ class CreateToDos_14 < Sequel::Migration
       timestamp :starts_at,   :null=>true
       timestamp :ends_at,     :null=>true
       timestamp :created_at
-      timestamp :modified_at, :null=>true
+      timestamp :update_at, :null=>true
 
       # === Aggregate Statistics
       # None so far.    

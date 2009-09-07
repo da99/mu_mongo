@@ -5,6 +5,7 @@ class Db
   include Blato
 
   def db_connect!
+    ENV['RACK_ENV'] ||= 'development'
     return nil if defined? DB
     require Pow('~/.' + APP_NAME)
     require 'sequel/extensions/migration' 

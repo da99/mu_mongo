@@ -1,6 +1,7 @@
 #!/home/da01/rubyee/bin/ruby
 $KCODE = 'u' # Needed to handle non-ascii file paths.
 require 'rubygems'
+require 'sequel'
 require 'sequel/extensions/inflector'
 require File.expand_path('~/megauni/helpers/kernel')
 require 'highline'

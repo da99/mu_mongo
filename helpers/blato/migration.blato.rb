@@ -29,6 +29,7 @@ class Migration
     }
     
     shout "Done: #{file_path}", :white
+    `gvim --remote-tab-silent #{file_path.inspect}`
 	end # === task :create_migration => "__setup__:env"
 
 end # === namespace :migration
@@ -65,7 +66,7 @@ class #{m}_#{i} < Sequel::Migration
       
       # === Date Times
       timestamp   :created_at
-      timestamp   :modified_at, :null=>true
+      timestamp   :updated_at, :null=>true
       
       # === Aggregate Statistics
       # None so far.    

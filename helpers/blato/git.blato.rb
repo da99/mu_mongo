@@ -55,6 +55,7 @@ class Git
     migrate, open_browser = args
    
     # Check if specs all pass.
+    whisper capture('gem update')
     spec_results = capture_task('spec:run').strip
     last_msg = spec_results.split("\n").last
     if !( last_msg['0 failures'] && last_msg['0 errors'] )
@@ -100,8 +101,8 @@ class Git
           url = "http://www.#{app_name}.com/"
           check_this_url url, /megauni/i
           check_this_url "http://www.busynoise.com/", /has moved/
-          check_this_url "http://www.myeggtimer.com/", /new site/
-          check_this_url "#{url}busy-noise/", /egg-timer/
+          check_this_url "http://www.myeggtimer.com/", /new address/
+          check_this_url "#{url}busy-noise/", /create_countdown/
           check_this_url "#{url}my-egg-timer/", /egg_template/
         else
           url = "http://www.#{app_name}.com/"

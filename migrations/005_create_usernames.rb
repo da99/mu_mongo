@@ -14,9 +14,8 @@ class CreateUsernames < Sequel::Migration
       varchar :category, :size=>65, :default=>'Personal'
       
       # === Date Times
-      column :created_at,  :"timestamp with time zone", :null => false
-      column :modified_at, :"timestamp with time zone", :null => true
-      
+      timestamp :created_at, :null => false
+           
       # === Aggregate Statistics
       # None so far.    
     }

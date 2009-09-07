@@ -27,10 +27,20 @@ class Spec
     HighLine.new.say [ pieces, output ].flatten.join("\n")
   end
   
+  bla :db_reset!, "Reset the :test database" do
+    ENV['RACK_ENV'] = 'test'
+    invoke('db:reset!')
+    DB[:news].insert( 
+      :title=>'Buy Longevinex', 
+      :teaser=>'teaser', 
+      :body=>'body', 
+      :created_at=>Time.now.utc, 
+      :published_at=>Time.now.utc)
+  end
+
   bla :run, {:with_color=>true}, "Run all specs for this app." do |*args|
     
     ENV['RACK_ENV'] = 'test'
-    invoke('db:migrate_up')
 
     with_color = args.empty? ? true : args.first
     please_wait
