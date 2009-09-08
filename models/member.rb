@@ -7,8 +7,8 @@ class Member < Sequel::Model
   #                     CONSTANTS
   # =========================================================  
 
-  class IncorrectPassword < RuntimeError; end
-  class InvalidPermissionLevel < RuntimeError; end
+  class IncorrectPassword < StandardError; end
+  class InvalidPermissionLevel < StandardError; end
   
   NO_ACCESS   = -1000
   ADMIN       = 1000
@@ -30,8 +30,6 @@ class Member < Sequel::Model
   #                      HOOKS
   # =========================================================
   
-
-                    
 
   # =========================================================
   #                     Class Methods.
@@ -61,31 +59,29 @@ class Member < Sequel::Model
   #                    Instance Methods
   # ========================================================= 
   
-  def_alter( :create ) do
-    allow_any_stranger
-    required_fields :password
-  end # === def self.create_it!  
+  def_create do
+    allow_only :STRANGER
+    require_column :password
+  end # === def_create
   
-  def_alter( :after_create ) do
-    un = Username.new
-    un.raw_data=( {:owner_id=>self[:id]}.merge(raw_data) )
-  end
+  def_after_create  do
+    Username.editor_create self, raw_data
+  end # === def_after_create
   
-  
-  def_alter( :update ) do
+  def_update do
   
     allow_only self, :ADMIN
     
-    if raw_data[:EDITOR] == self
-        optional_fields :password
-    elsif raw_data[:EDITOR].admin?
-        optional_fields :permission_level
+    if self.current_editor == self
+        optional_columns :password
+    elsif self.current_editor.admin?
+        optional_columns :permission_level
     end    
     
-  end # === def update_it!
+  end # === def_update
   
     
-  def_setter( :password, :force ) { |raw_params |
+  def_setter( :password, :not_a_column ) { |raw_params |
       fn = :password
       pass = raw_params[ fn ].to_s.strip
       confirm_pass = raw_params[:confirm_password].to_s.strip
@@ -162,18 +158,7 @@ class Member < Sequel::Model
       end
       
   end # === def security_clearance?
-
   
-  def has_permission?( action, editor )
-    case action
-      when :create
-        true
-      when :update
-        self == editor || ( editor && editor.admin? )
-      else 
-        false
-    end 
-  end
   
 end # Member
 ########################################################################################
@@ -191,7 +176,7 @@ __END__
   
   
   
-  class IncorrectPassword < RuntimeError
+  class IncorrectPassword < StandardError
   end
 
   

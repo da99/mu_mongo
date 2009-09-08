@@ -12,7 +12,7 @@ div.content! {
 
   h3 'Create a New Account'
   
-  form.single.signup_form!(:action=>"/member", :method=>"post") {
+  form.single.sign_up_form!(:action=>"/member", :method=>"post") {
     
     fieldset {
       label 'Username'
@@ -30,10 +30,10 @@ div.content! {
     }
 
     div.buttons {
-      button.create 'Create My New Account', :onclick=>"document.getElementById('signup_form').submit(); return false;" 
+      button.create 'Create My New Account', :onclick=>"document.getElementById('sign_up_form').submit(); return false;" 
     }
 
-  } # === form.signup_form!
+  } # === form.sign_up_form!
 
   
 } # === div.content!

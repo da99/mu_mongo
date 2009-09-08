@@ -6,7 +6,7 @@
 # ========================================
 module EditorGuard
 
-    class UnauthorizedEditor < RuntimeError; end
+    class UnauthorizedEditor < StandardError; end
     
     def self.included(target_class)
     end

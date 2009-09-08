@@ -1,5 +1,7 @@
 $KCODE = 'UTF8'
 
+require 'multibyte'
+
 # Ramaze::Global.content_type = 'text/html; charset=utf-8'
 # Ramaze::Global.accept_charset = 'utf-8'
 #header("Cache-Control: no-cache");
@@ -15,13 +17,13 @@ require 'sequel'
 require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
-
+require 'rack-flash'
 
 # ===============================================
 # Configurations
 # ===============================================
 use Rack::Session::Pool
-
+use Rack::Flash, :sweep => true
 
 configure :test do
   require Pow('~/.megauni') 
@@ -58,7 +60,7 @@ configure do
   set :cache_the_templates, Proc.new { !development? }
   set :views,               Pow('views/skins/jinx')
 
-  # Special sanitization library for both Models and Sinatra Helpers.
+  # Special sanitization code used throughout the app.
   require Pow!( 'helpers/wash' )
   
   # === Include models.
@@ -72,17 +74,17 @@ end # === configure
 # ===============================================
 
 helpers {
-  # === Miscellaneous helpers ========================
-
   def dev_log_it( msg )
       puts(msg) if options.development?
   end    
 }
 
+
 require_these 'helpers/sinatra', %w{
   urls_and_ssl
   old_apps
   flash_it
+  describe_action
   auth_and_auth
   render_ajax_response
   render_mab
@@ -91,22 +93,10 @@ require_these 'helpers/sinatra', %w{
 }
 
 
+ 
 # ===============================================
-# Filters
+# Error handling.
 # ===============================================
-before {
-    
-    require_ssl! if request.cookies["logged_in"] || request.post?
-    
-    # url must not be blank. Sometimes I get error reports where the  URL is blank.
-    # I have no idea how that is even possible, so I put this:
-    if production? && 
-      ( env['REQUEST_URI'].to_s.strip.empty? || 
-          request.path_info.to_s.strip.empty? )
-      raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
-    end
-    
-} # === before  
 
 error {
   IssueClient.create(env, options.environment, env['sinatra.error'] )
@@ -150,19 +140,6 @@ not_found {
 # ===============================================
 # Require the actions.
 # ===============================================
-
-def multi_get( raw_path, *opts, &blok)
-  path = raw_path.is_a?(String) ? 
-            File.join(raw_path.strip, '/') : 
-            raw_path
-  
-  if path.is_a?(String)
-    m_path = File.join( path, 'm/' )
-    get m_path, *opts, &blok
-  end
-
-  get path, *opts, &blok
-end
 
 require_these 'actions', %w{ 
   main 

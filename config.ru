@@ -21,7 +21,8 @@ rescue
     faux_env = {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' }
     IssueClient.create( faux_env, Sinatra::Application.environment, $!)
   rescue
-    msg = '' # ( File.expand_path('.') =~ /home\/da01\// ) ? $!.message  : ''
+    dev_env = File.expand_path('.')['home/da01'] 
+    msg = dev_env ? $!.message  : ''
 
     before {
       halt "Error occurred. Come back later. #{msg}"

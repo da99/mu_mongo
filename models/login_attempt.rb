@@ -1,7 +1,7 @@
 class LoginAttempt < Sequel::Model
 
   MAX = 4
-  class TooManyFailedAttempts < RuntimeError; end
+  class TooManyFailedAttempts < StandardError; end
     
   # =========================================================
   #                      CLASS METHODS

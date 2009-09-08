@@ -5,6 +5,21 @@ module Sinatra
     ##########################################################
     module TextToHTML 
 
+      def to_html_list(arr)
+        vals = case arr
+          when Array
+            arr
+          when Hash
+            arr.values
+          when String
+            [arr.to_s]
+          else
+            ['Unknown error.']
+        end
+        return '' if !vals
+        '* ' + vals.join("\n* ")
+      end
+
       # =========================================================
       # Take newlines (regardless of Windows or Unix), and
       # convert them to <br />

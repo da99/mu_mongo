@@ -1,3 +1,29 @@
+
+def multi_get( raw_path, *opts, &blok)
+  path = raw_path.is_a?(String) ? 
+            File.join(raw_path.strip, '/') : 
+            raw_path
+  
+  if path.is_a?(String)
+    m_path = File.join( path, 'm/' )
+    get m_path, *opts, &blok
+  end
+
+  get path, *opts, &blok
+end
+
+before {
+    
+  # url must not be blank. Sometimes I get error reports where the  URL is blank.
+  # I have no idea how that is even possible, so I put this:
+  if production? && 
+    ( env['REQUEST_URI'].to_s.strip.empty? || 
+        request.path_info.to_s.strip.empty? )
+    raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
+  end
+    
+} # === before  
+
 helpers {
  
     def mobile_request?(path = nil)
@@ -60,3 +86,5 @@ helpers {
 
 
 } # === helpers
+
+

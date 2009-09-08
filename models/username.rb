@@ -20,16 +20,16 @@ class Username < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def_alter( :create ) do
+  def_create  do
     allow_any_stranger
-    required_fields :owner_id, :username
-    optional_fields :nickname, :category
+    require_columns :owner_id, :username
+    optional_columns :nickname, :category
   end
   
-  def_alter( :update ) do
+  def_update do
   
     allow_only self, :ADMIN
-    optional_fields :username, :nickname, :category, :email 
+    optional_columns :username, :nickname, :category, :email 
     
     @history_msgs = []
     
@@ -44,7 +44,7 @@ class Username < Sequel::Model
     
   end # === def update_it!
   
-  def_alter( :after_update ) do
+  def_after_update do
     
     return true if !@history_msgs.empty?
     
@@ -114,16 +114,5 @@ class Username < Sequel::Model
     
   } # === def validate_new_values
   
-  
-  def has_permission?(action, editor)
-    case action
-      when :create
-        true
-      when :update
-        editor == self.owner
-      else
-        false
-    end
-  end # === def editor?  
   
 end # === end Username

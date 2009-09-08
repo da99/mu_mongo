@@ -1,9 +1,5 @@
-$KCODE = 'u' unless $KCODE.eql?( 'UTF8' )
-require 'multibyte'
-# require 'sanitize'
-# require 'dryopteris'
 require 'htmlentities'
-
+require 'loofah'
 
 # ===============================================
 # A collection of methods to sanitize text.
@@ -189,7 +185,7 @@ class Wash
     # return Dryopteris.sanitize(utf8_text)
     # Now encode it.
     coder = HTMLEntities.new
-    encoded_text = coder.encode( utf8_text, :named )
+    encoded_text = coder.encode( coder.decode(utf8_text), :named )
         
     # Encode a few other symbols.
     # This also normalizes certain quotation and apostrophe HTML entities.
@@ -197,12 +193,12 @@ class Wash
        m.gsub( kv.first, kv.last)
     end
     
-    # sanitized_text = Sanitize.clean(normalized_encoded_text) 
+    sanitized_text = Loofah.scrub_fragment( normalized_encoded_text, :prune ).to_s
   end # === def self.html
  
   
   # ===============================================
-  #   Returns: A string that is:
+  # Returns: A string that is:
   #        * normalized to :KC
   #        * "\r\n" changed to "\n"
   #        * all control characters stripped except for "\n"
@@ -226,7 +222,8 @@ class Wash
     
     # First: Normalize characters.
     # Second: Strip out control characters.
-    # Note: Must be normalize first, then strip. See: http://msdn.microsoft.com/en-us/library/ms776393(VS.85).aspx    
+    # Note: Must be normalized first, then strip. 
+    # See: http://msdn.microsoft.com/en-us/library/ms776393(VS.85).aspx    
     final_str = raw_str.split("\n").map { |line| 
                         line.chars.normalize.gsub( /[[:cntrl:]\x00-\x1f]*/, '' ) 
                         # Don't use "\x20" because that is the space character.

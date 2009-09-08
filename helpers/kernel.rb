@@ -51,7 +51,12 @@ private
    def __previous_method_name__
      caller[1] =~ /`([^']*)'/ && $1.to_sym
    end
-   
+
+   def __this_method_name__
+     caller[0] =~ /`([^']*)'/ and $1
+   end
+
+
    def __previous_line__
     caller[1].sub(File.dirname(File.expand_path('.')), '')
    end
@@ -71,5 +76,17 @@ private
     
     false
    end
+end
+
+class Object
+
+  private
+  def use_method_once
+    meth = __previous_method_name__ 
+    @methods_only_once ||= []
+    raise "#{meth} can only be used once." if @methods_only_once.include?(meth)
+    @methods_only_once << meth
+  end
+
 end
 

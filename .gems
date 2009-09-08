@@ -6,5 +6,6 @@ markaby --version '>= 0.5'
 mattetti-multibyte --source http://gems.github.com
 htmlentities
 rest-client
-sanitize
-html5 # For use with HTML5_sanitize lib
+loofah 
+nakajima-rack-flash --source http://gems.github.com
+

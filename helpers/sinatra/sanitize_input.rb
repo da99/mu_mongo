@@ -5,7 +5,7 @@ helpers {
       if val.to_s.strip.empty?
           m[k] = nil
       else
-          m[k] = Wash.plaintext(val)
+          m[k] = Wash.html(val)
       end
       m
     }
