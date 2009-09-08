@@ -23,7 +23,7 @@ post( "/member/" ) do
   rescue Sequel::ValidationFailed
 
     flash.error_msg = to_html_list( $!.message )
-    session[ :form_username  ] = clean_room['username'] 
+    session[ :form_username  ] = clean_room[:username] 
              
     redirect('/sign-up/', 307) # temporary redirect
   end

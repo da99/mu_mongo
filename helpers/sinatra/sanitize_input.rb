@@ -3,9 +3,9 @@ helpers {
   def clean_room
     @clean_room = params.inject({}) { |m, (k, val)|
       if val.to_s.strip.empty?
-          m[k] = nil
+          m[k.to_sym] = nil
       else
-          m[k] = Wash.html(val)
+          m[k.to_sym] = Wash.html(val)
       end
       m
     }

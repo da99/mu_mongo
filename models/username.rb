@@ -29,7 +29,7 @@ class Username < Sequel::Model
   def_update do
   
     allow_only self.owner, :ADMIN
-    optional_columns :username, :nickname, :category, :email 
+    required_columns_if_exist :username, :nickname, :category, :email 
     
     @history_msgs = []
     
@@ -49,21 +49,19 @@ class Username < Sequel::Model
     return true if !@history_msgs.empty?
     
     HistoryLog.create_it!( 
-     :owner_id=>self.owner[:id], 
-     :editor_id=>raw_data[:EDITOR][:id], 
-     :action=>'UPDATE', 
-     :body=>@history_msgs.join("\n")
+     :owner_id  => self.owner[:id], 
+     :editor_id => self.current_editor[:id], 
+     :action    => 'UPDATE', 
+     :body      => @history_msgs.join("\n")
     ) 
     
   end  
   
 
-  def_setter( :email ) { 
+  def_validator( :email ) { 
     raw_params = raw_data
     fn = :email
     v = raw_params[ fn ] 
-    return( self[ fn ] = nil  ) if v.nil? || v.strip.empty?
-      
 
     with_valid_chars = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
     
@@ -82,7 +80,7 @@ class Username < Sequel::Model
   } # === def set_email
   
   
-  def_setter( :username ) { 
+  def_validator username=()
     fn = :username
     raw_name = raw_data[fn].to_s.strip
     
@@ -106,11 +104,8 @@ class Username < Sequel::Model
                     'Username must have at least one letter or number.' 
                    ) if !sanitized[ /[a-z0-9]/i ] || self.errors.empty?
     
-    if !self.errors[fn].empty?
-      nil 
-    else
-      self[fn] = sanitized
-    end
+    return( self[fn] = sanitize  ) if self.errors[fn].empty?
+    nil 
     
   } # === def validate_new_values
   

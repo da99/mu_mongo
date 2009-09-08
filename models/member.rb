@@ -66,26 +66,22 @@ class Member < Sequel::Model
     allow_only self, :ADMIN
     
     if self.current_editor == self
-        optional_columns :password
+        required_columns_if_set :password
     elsif self.current_editor.admin?
-        optional_columns :permission_level
+        required_columns_if_set :permission_level
     end    
     
   end # === def_update
   
     
-  def_setter( :password, :not_a_column ) { 
+  def_validator( :password, :not_a_column ) { 
       fn = :password
-      pass = raw_data[ fn ].to_s.strip
+      pass = raw_data[ fn ]
       confirm_pass = raw_data[:confirm_password].to_s.strip
       
-      if pass.empty?
-        self.errors[fn] << "Password is required."
-      else
-        self.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
-        self.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
-        self.errors[fn] << "Password must have at least one number." if !pass[/[0-9]/]
-      end
+      self.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
+      self.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
+      self.errors[fn] << "Password must have at least one number." if !pass[/[0-9]/]
 
       return nil if !self.errors[fn].empty?
       
@@ -98,13 +94,13 @@ class Member < Sequel::Model
                       }
                     end
       
-      self[:hashed_password] = Digest::SHA1.hexdigest(pass+salt)
-      pass_confirm
+      self[:hashed_password] = Digest::SHA1.hexdigest( pass + self[:salt] )
+      confirm_pass
       
   } # === def set_password
   
   
-  def_setter( :permission_level ) { 
+  def_validator( :permission_level ) { 
     fn = :permission_level
     new_level = raw_data[fn]
     if !SECURITY_LEVELS.include?(new_level)
