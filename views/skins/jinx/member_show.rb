@@ -10,7 +10,7 @@ div.nav_bar! {
     li { a('Home', :href=>'/') }
     
     if logged_in?
-      li { a('Logout', :href=>'/logout') }
+      li { a('Logout', :href=>'/log-out/') }
     end
 
     li { a('Get Help', :href=>'#help') }

@@ -1,31 +1,27 @@
-get "/log\-?in/" do
+get "/log\-in/" do
   require_ssl!
   describe :session, :new
   render_mab
 end
 
 get "/log-out/" do
-  session.clear
-  flash(:success_msg,  "You have been logged out." )
+  log_out!
+  flash.success_msg =  "You have been logged out." 
   redirect('/')
 end
 
-post( "/log-i/n"  ) do
+post( "/log-in/"  ) do
 
-    # Before clearing session, get the most recent URL from the stack.
-    target_url = session[:desired_uri] || '/admin' 
-
-    # Clear everything else in the session.
-    session.clear
+    log_out!
            
     begin 
       mem = Member.authenticate(clean_room['username'], clean_room['password'], request.env['REMOTE_ADDR'])
       session[:member_username] = mem.username
-      redirect( target_url )
+      redirect( session[:return_page] || '/account/' )
     rescue Member::NoRecordFound, Member::IncorrectPassword
-      flash(:error_msg ,  "Incorrect info. Try again." )
+      flash.error_msg = "Incorrect info. Try again."
     rescue LoginAttempt::TooManyFailedAttempts
-      flash(:error_msg,  "Too many failed login attempts. Contact support."  )
+      flash.error_msg =   "Too many failed log-in attempts. Contact support." 
     end
     
     redirect '/log-in'   

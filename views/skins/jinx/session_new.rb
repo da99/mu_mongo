@@ -11,7 +11,7 @@ div.content! {
 
   h3 'Log-in'
   
-  form.single.login_form!( :action=>"/log-in", :method=>"post" ) {
+  form.single.log_in_form!( :action=>"/log-in", :method=>"post" ) {
   
     fieldset {
       label 'Username'
@@ -24,10 +24,10 @@ div.content! {
     }
     
     div.buttons {
-      button.create 'Log-in', :onclick=>"document.getElementById('login_form').submit(); return false;" 
+      button.create 'Log-in', :onclick=>"document.getElementById('log_in_form').submit(); return false;" 
     }
     
-  } # === form.login_form!
+  } # === form.log_in_form!
 
 
 } # === div.content!

@@ -4,7 +4,7 @@ helpers {
       @current_action_props
   end 
                 
-  def describe(c_name, a_name)
+  def describe(c_name, a_name, *args)
     @current_action_props = {  :action => a_name, 
                       :path=>request.path_info, 
                       :http_verb=>request.request_method, 

@@ -16,7 +16,7 @@ div.content! {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"username_name", :name=>"username[name]", :type=>"text", :value=>the_app.flash(:username) )
+      input.text( :id=>"username_name", :name=>"username[name]", :type=>"text", :value=>the_app.session[:form_username] )
     }
     
     fieldset {

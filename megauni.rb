@@ -23,7 +23,7 @@ require 'rack-flash'
 # Configurations
 # ===============================================
 use Rack::Session::Pool
-use Rack::Flash, :sweep => true
+use Rack::Flash, :sweep => true, :accessorize => [:notice, :success_msg, :error_msg]
 
 configure :test do
   require Pow('~/.megauni') 
@@ -77,13 +77,15 @@ helpers {
   def dev_log_it( msg )
       puts(msg) if options.development?
   end    
+  def flash_msg?
+    flash.success_msg || flash.error_msg || flash.notice
+  end
 }
 
 
 require_these 'helpers/sinatra', %w{
   urls_and_ssl
   old_apps
-  flash_it
   describe_action
   auth_and_auth
   render_ajax_response

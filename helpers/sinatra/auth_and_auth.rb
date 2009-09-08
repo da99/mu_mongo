@@ -10,6 +10,17 @@ helpers do # ===============================
 
   # === Member related helpers ========================
   
+  def require_log_in!
+    session[:return_page] = request.fullpath
+    redirect('/log-in/')
+  end
+
+  def log_out!
+    return_page = session[:return_page]
+    session.clear
+    session[:return_page] if return_page
+  end
+  
   def logged_in?
     session[:member_username] && !current_member.new?
   end # === def      
@@ -34,8 +45,8 @@ helpers do # ===============================
     return true if current_action[:perm_level].eql?( :STRANGER )
     
     if request.get?
-      session[:desired_uri] = request.env['REQUEST_URI']
-      redirect('/log-in')
+      session[:return_page] = request.fullpath
+      redirect('/log-in/')
     else
       render_error_msg( "Not logged in. Login first and try again.", 200  )
     end
