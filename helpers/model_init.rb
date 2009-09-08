@@ -75,6 +75,7 @@ class Sequel::Model
     class << self
       def editor_create editor, raw_vals
         n = new
+        n.created_at = Time.now.utc if n.respond_to?(:created_at)
         n.__save__(editor, raw_vals) 
       end
     end
@@ -89,6 +90,7 @@ class Sequel::Model
       def editor_update editor, raw_vals
         rec = self[:id=>raw_vals]
         raise NoRecordFound, "Try again." if !rec
+        rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
         rec.__save__(editor, raw_vals)
       end
     end
@@ -170,7 +172,7 @@ class Sequel::Model
     raise "Only a permission level or block allowed, but not both." if !levels.empty? && blok
     raise "Permission level or block are require." if levels.empty? && !blok
     
-    do_it = if !raw_data[:EDITOR]
+    do_it = if !current_editor
               nil 
             elsif levels.empty?
               instance_eval( &blok )
@@ -178,15 +180,18 @@ class Sequel::Model
               raise ":STRANGER not allowed in this method. Try :allow_any_stranger." 
             else
               levels.detect { |lev|
-                raw_data[:EDITOR] && raw_data[:EDITOR].has_power_of?(levels.first)
+                current_editor.has_power_of?(levels.first)
               }
             end
     
-    raise( UnauthorizedEditor, raw_data[:EDITOR].inspect ) if !do_it
-    @editor_permission_level = perm_level || blok
+    raise( UnauthorizedEditor, current_editor.inspect ) if !do_it
+    @editor_permission_level = do_it 
   end
   
-  
+  def raise_if_invalid
+    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
+  end
+
   def __save__( editor, raw_vals, &meth )
   
     self.raw_data = raw_vals
@@ -202,8 +207,23 @@ class Sequel::Model
       @editor_permission_level = nil
     end
     
-    raise ValidationFailed, errors.full_messages if !errors.empty?
-    save(:changed=>true)
+    raise_if_invalid
+
+    begin
+      save(:changed=>true)
+
+    rescue Sequel::DatabaseError
+      raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
+      seq = $1
+      col = seq.sub(self.class.table_name.to_s + '_', '').sub(/_key$/, '').to_sym
+      raise  if !self.class.db_schema[col.to_sym]
+      self.errors[col] <<  "#{human_field_name(col).capitalize} is not unique."
+      raise_if_invalid
+
+    rescue
+      raise
+
+    end
     
   end # === def validate
   
@@ -253,10 +273,10 @@ class Sequel::Model
     raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
-      next if raw_params.has_key?( k )
+      next if !raw_params.has_key?( k )
       
       begin
-        send setter_method_name(k), raw_params
+        send self.class.setter_method_name(k), raw_params
       catch NoMethodError
         if self.class.db_schema[k][:type] == :integer
           self[k] = if raw_params[k].nil?

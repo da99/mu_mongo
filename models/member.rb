@@ -1,3 +1,6 @@
+require 'bcrypt'
+
+
 # ==================================================
 #
 # ==================================================
@@ -42,7 +45,7 @@ class Member < Sequel::Model
       
       raise NoRecordFound, "#{username} was not found." if !mem
       
-      return mem if Digest::SHA1.hexdigest(pass + mem.salt).eql?( mem.hashed_password )
+      return mem if BCrypt::Password.new(mem.hashed_password).eql?(pass + mem.salt) 
 
       raise IncorrectPassword, "Try again."
   end # === self.authenticate
@@ -53,8 +56,8 @@ class Member < Sequel::Model
   # ========================================================= 
   
   def_create do
-    allow_only :STRANGER
-    require_column :password
+    allow_any_stranger
+    require_columns :password
   end # === def_create
   
   def_after_create  do
@@ -94,7 +97,7 @@ class Member < Sequel::Model
                       }
                     end
       
-      self[:hashed_password] = Digest::SHA1.hexdigest( pass + self[:salt] )
+      self[:hashed_password] = BCrypt::Password.create( pass + self[:salt] ).to_s
       confirm_pass
       
   } # === def set_password

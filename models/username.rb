@@ -22,7 +22,8 @@ class Username < Sequel::Model
 
   def_create  do
     allow_only :MEMBER
-    require_columns :owner_id, :username
+    self[:owner_id] = current_editor[:id]
+    require_columns :username
     optional_columns :nickname, :category
   end
   
@@ -80,14 +81,14 @@ class Username < Sequel::Model
   } # === def set_email
   
   
-  def_validator username=()
+  def_validator( :username ) {
     fn = :username
     raw_name = raw_data[fn].to_s.strip
     
     # Delete invalid characters and 
     # reduce any suspicious characters. 
     # '..*' becomes '.', '--' becomes '-'
-    sanitized = raw_name.gsub( /[^a-z0-9]{2,}/i  ) { |s| 
+    new_un = raw_name.gsub( /[^a-z0-9]{1,}/i  ) { |s| 
                                                       ['_', '.', '-'].include?( s[0,1] ) ?
                                                         s[0,1] :
                                                         '' ;
@@ -96,15 +97,15 @@ class Username < Sequel::Model
     # Check to see if there is at least one alphanumeric character          
     self.errors.add( fn,  
                     'Username is too short. (Must be 3 or more characters.)' 
-                   ) if sanitized.length < 2
+                   ) if new_un.length < 2
     self.errors.add( fn,  
                     'Username is too long. (Must be 20 characters or less.)' 
-                   ) if sanitized.length > 20
+                   ) if new_un.length > 20
     self.errors.add( fn,  
                     'Username must have at least one letter or number.' 
-                   ) if !sanitized[ /[a-z0-9]/i ] || self.errors.empty?
+                   ) if !new_un[ /[a-z0-9]/i ] && self.errors.empty?
     
-    return( self[fn] = sanitize  ) if self.errors[fn].empty?
+    return( self[fn] = new_un ) if self.errors[fn].empty?
     nil 
     
   } # === def validate_new_values

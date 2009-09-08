@@ -8,4 +8,6 @@ htmlentities
 rest-client
 loofah 
 nakajima-rack-flash --source http://gems.github.com
+bcrypt-ruby
+
 
