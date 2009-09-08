@@ -21,14 +21,14 @@ class Username < Sequel::Model
   # ==== INSTANCE METHODS ==============================================
 
   def_create  do
-    allow_any_stranger
+    allow_only :MEMBER
     require_columns :owner_id, :username
     optional_columns :nickname, :category
   end
   
   def_update do
   
-    allow_only self, :ADMIN
+    allow_only self.owner, :ADMIN
     optional_columns :username, :nickname, :category, :email 
     
     @history_msgs = []
@@ -82,9 +82,9 @@ class Username < Sequel::Model
   } # === def set_email
   
   
-  def_setter( :username ) { | raw_params |
+  def_setter( :username ) { 
     fn = :username
-    raw_name = raw_params[fn].to_s.strip
+    raw_name = raw_data[fn].to_s.strip
     
     # Delete invalid characters and 
     # reduce any suspicious characters. 
@@ -116,3 +116,5 @@ class Username < Sequel::Model
   
   
 end # === end Username
+
+

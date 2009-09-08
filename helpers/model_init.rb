@@ -39,6 +39,13 @@ class Sequel::Model
     "__set_and_validate_#{fn}__"
   end
 
+  # 
+  # This function is to create setters. You may be asking why
+  # not just do it directly with "def some_column=" ?
+  # Well, if you happen to use def with a misspelled column name,
+  # or you re-write an existing setter by mistake.
+  # This method extra guarantee to catch those mistakes.
+  #
   # Options:
   #   :not_a_column - Allow method to be used even though field does not exist.
   #            Example: :password used in Member even thought :password is not a field.

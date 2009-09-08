@@ -1,8 +1,12 @@
+
+# =============================== SESSION ACTIONS ==============================
+
 get "/log\-in/" do
   require_ssl!
   describe :session, :new
   render_mab
 end
+
 
 get "/log-out/" do
   log_out!
@@ -10,21 +14,25 @@ get "/log-out/" do
   redirect('/')
 end
 
+
 post( "/log-in/"  ) do
 
     log_out!
            
     begin 
-      mem = Member.authenticate(clean_room['username'], clean_room['password'], request.env['REMOTE_ADDR'])
+      mem = Member.validate_username_and_password(clean_room['username'], clean_room['password'], )
       session[:member_username] = mem.username
       redirect( session[:return_page] || '/account/' )
-    rescue Member::NoRecordFound, Member::IncorrectPassword
-      flash.error_msg = "Incorrect info. Try again."
-    rescue LoginAttempt::TooManyFailedAttempts
-      flash.error_msg =   "Too many failed log-in attempts. Contact support." 
+    rescue Sequel::NoRecordFound, Member::IncorrectPassword
+      begin
+        LoginAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
+        flash.error_msg = "Incorrect info. Try again."
+      rescue LoginAttempt::TooManyFailedAttempts
+        flash.error_msg = "Too many failed log-in attempts. Contact support." 
+      end
     end
     
-    redirect '/log-in'   
+    redirect '/log-in/'
        
 end # === post_it_for
 

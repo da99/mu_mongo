@@ -36,20 +36,13 @@ class Member < Sequel::Model
   # =========================================================
 
   # === See: Sinatra-authentication (on github)
-  # Raises: LoginAttempt::TooManyFailedAttempts based on ip_address.
   # Raises: Member::IncorrectPassword
-  def self.authenticate(username, pass, ip_address)
-      target_member = self[:username => username]
-
-      unless target_member
-        LoginAttempt.log_failed_attempt( ip_address )
-        raise NoRecordFound, "#{username} was not found." 
-      end
-
-      is_correct_password = Digest::SHA1.hexdigest(pass + target_member.salt).eql?( target_member.hashed_password )
-      return target_member if is_correct_password
-
-      LoginAttempt.log_failed_attempt( ip_address )
+  def self.validate_username_and_password( username, pass )
+      mem = self[:username => username]
+      
+      raise NoRecordFound, "#{username} was not found." if !mem
+      
+      return mem if Digest::SHA1.hexdigest(pass + mem.salt).eql?( mem.hashed_password )
 
       raise IncorrectPassword, "Try again."
   end # === self.authenticate
@@ -81,10 +74,10 @@ class Member < Sequel::Model
   end # === def_update
   
     
-  def_setter( :password, :not_a_column ) { |raw_params |
+  def_setter( :password, :not_a_column ) { 
       fn = :password
-      pass = raw_params[ fn ].to_s.strip
-      confirm_pass = raw_params[:confirm_password].to_s.strip
+      pass = raw_data[ fn ].to_s.strip
+      confirm_pass = raw_data[:confirm_password].to_s.strip
       
       if pass.empty?
         self.errors[fn] << "Password is required."
@@ -111,9 +104,9 @@ class Member < Sequel::Model
   } # === def set_password
   
   
-  def_setter( :permission_level ) { |raw_params |
+  def_setter( :permission_level ) { 
     fn = :permission_level
-    new_level = raw_params[fn]
+    new_level = raw_data[fn]
     if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end
