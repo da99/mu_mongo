@@ -29,6 +29,7 @@ describe 'Member creation' do
       :username => u_name
     })
     rescue Sequel::ValidationFailed
+      $!.message.to_s.should.be =~ /^Username is already taken/i
     end
     Username.order(:id).count.should.be == u_count
     Member.order(:id).count.should.be == m_count

@@ -17,7 +17,7 @@ module Sinatra
             ['Unknown error.']
         end
         return '' if !vals
-        '* ' + vals.join("\n* ")
+        '* ' + vals.map { |s| s.capitalize }.join("\n* ")
       end
 
       # =========================================================

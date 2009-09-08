@@ -217,7 +217,7 @@ class Sequel::Model
       seq = $1
       col = seq.sub(self.class.table_name.to_s + '_', '').sub(/_key$/, '').to_sym
       raise  if !self.class.db_schema[col.to_sym]
-      self.errors[col] <<  "#{human_field_name(col).capitalize} is not unique."
+      self.errors.add col, "is already taken. Please choose another one."
       raise_if_invalid
 
     rescue
@@ -241,7 +241,7 @@ class Sequel::Model
 
           when :integer
             if !raw_params.has_key?(k) || self[k].nil? || self[k].to_i < 1
-              self.errors[k] << "#{human_field_name(col).capitalize} is required."
+              self.errors.add k, "is required."
             else 
               self[k] = raw_params[k]
             end
@@ -249,7 +249,7 @@ class Sequel::Model
           else
             new_val = raw_params[k].to_s.strip.empty?
             if !raw_params.has_key?(k) || raw_params[k].nil? || new_val.empty? || new_val.to_s.strip.empty?
-              self.errors[k] << "#{human_field_name(k).capitalize} is required."
+              self.errors.add k, "is required."
             else
               self[k] = new_val
             end
