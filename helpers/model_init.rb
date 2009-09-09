@@ -49,7 +49,7 @@ class Sequel::Model
     raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
     @editor_perms ||= {:create=>{}, :update=>{} }  
     levels.each do |raw_lev|
-      lev = raw_lev.nil? ? :STRANGER : raw_lev
+      lev = ( raw_lev.nil? || raw_lev == 0 ? :STRANGER : raw_lev )
       raise "#{lev.inspect} already used for creator." if @editor_perms[action].has_key?(lev)
       @editor_perms[action][lev] = blok
     end
@@ -78,35 +78,7 @@ class Sequel::Model
     rec._save_
   end
 
-  def call_editor_validator(editor, raw_vals)
-    self.current_editor = editor
-    self.raw_data = raw_vals
-    action = new? ? :create : :update
-    action_perms = self.class.editor_permissions[action]
-    level_found = begin
-      levels = action_perms.keys
-      levels.detect { |lev|
-        if !current_editor
-          lev == :STRANGER
-        else
-          if current_editor.has_power_of?(lev)
-            lev
-          else respond_to?(lev) 
-            editor_list = [ send(lev) ].flatten 
-            editor_list.detect { |ed| 
-              ed.has_power_of?(current_editor)
-            }
-          end
-        end
-      }
-    end
-    raise( UnauthorizedEditor, current_editor.inspect ) if !level_found
-    self.valid_editor_found = true
-    instance_eval( &action_perms[level_found] )
-    raise_if_invalid
 
-    self.current_editor
-  end
 
   def self.trashable(*args, &cond_block)
       raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
@@ -149,7 +121,11 @@ class Sequel::Model
   # =========================================================  
    
   attr_accessor :current_editor, :raw_data, :valid_editor_found
-  
+ 
+  def raise_if_invalid
+    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
+  end 
+ 
   def raw_data 
     @raw_data ||= {}
   end
@@ -165,18 +141,35 @@ class Sequel::Model
     col.to_s.gsub('_', ' ')
   end
   
-  def allow_editor( level, &blok )
-    return if self.valid_editor_found
-    raise ArgumentError, "Block required." if !block_given?
-    level = :STRANGER if level.nil?
-    if (!current_editor && level === :STRANGER) || current_editor.has_power_of?(level)
-      self.valid_editor_found = true
-      yield
+  def call_editor_validator(editor, raw_vals)
+    self.current_editor = editor
+    self.raw_data = raw_vals
+    action = new? ? :create : :update
+    action_perms = self.class.editor_permissions[action]
+    level_found = begin
+      levels = action_perms.keys
+      levels.detect { |lev|
+        if !current_editor
+          lev == :STRANGER
+        else
+          if current_editor.has_power_of?(lev)
+            lev
+          else respond_to?(lev) 
+            editor_list = ( lev == :self ? self : send(lev) )
+            editor_list = [editor_list].flatten
+            editor_list.detect { |ed| 
+              ed.has_power_of?(current_editor)
+            }
+          end
+        end
+      }
     end
-  end
-  
-  def raise_if_invalid
-    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
+    raise( UnauthorizedEditor, current_editor.inspect ) if !level_found
+    self.valid_editor_found = true
+    instance_eval( &action_perms[level_found] )
+    raise_if_invalid
+
+    self.current_editor
   end
 
   def _save_
@@ -198,10 +191,6 @@ class Sequel::Model
     end
     
   end # === def validate
-
-  def require_column col
-    require_columns col
-  end
 
   def require_columns *raw_keys
     raw_params = raw_data
@@ -237,25 +226,15 @@ class Sequel::Model
     self
   end # === def
   
-  def require_columns_if_exist *raw_keys
-    keys = raw_keys.flatten
-    keys.each { |k|
-      if raw_data.has_key?(k)
-        require_column k
-      end
-    }
-  end
-
   def optional_columns *raw_keys
-    raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
-      next if !raw_params.has_key?( k )
-      require_column k
+      if raw_data.has_key?( k )
+        require_columns k
+      end
     }
     self
   end # === def
-
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
