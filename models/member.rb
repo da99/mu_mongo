@@ -55,36 +55,32 @@ class Member < Sequel::Model
   #                    Instance Methods
   # ========================================================= 
   
-  def_create do
-    allow_any_stranger
-    require_columns :password
-  end # === def_create
+
+  allow_creator nil do
+    require_column :password
+  end
   
-  def_after_create  do
-    Username.editor_create self, raw_data
-  end # === def_after_create
+  def after_create
+    Username.creator self, raw_data
+  end # === def after_create
   
-  def_update do
-  
-    allow_only self, :ADMIN
+  allow_updator self do
+    optional_columns :password
+  end
+
+  allow_updator :ADMIN do 
+    optional_columns :permission_level
+  end    
     
-    if self.current_editor == self
-        required_columns_if_set :password
-    elsif self.current_editor.admin?
-        required_columns_if_set :permission_level
-    end    
-    
-  end # === def_update
   
-    
-  def_validator( :password, :not_a_column ) { 
+  validator :password do
       fn = :password
       pass = raw_data[ fn ]
       confirm_pass = raw_data[:confirm_password].to_s.strip
       
-      self.errors[fn] << "Password and password confirmation do not match." if pass != confirm_pass 
-      self.errors[fn] << "Password must be longer than 5 characters." if pass.length < 5   
-      self.errors[fn] << "Password must have at least one number." if !pass[/[0-9]/]
+      self.errors.add( fn, "Password and password confirmation do not match.") if pass != confirm_pass 
+      self.errors.add( fn, "Password must be longer than 5 characters.") if pass.length < 5   
+      self.errors.add( fn, "Password must have at least one number.") if !pass[/[0-9]/]
 
       return nil if !self.errors[fn].empty?
       
@@ -100,10 +96,10 @@ class Member < Sequel::Model
       self[:hashed_password] = BCrypt::Password.create( pass + self[:salt] ).to_s
       confirm_pass
       
-  } # === def set_password
+  end # === def set_password
   
   
-  def_validator( :permission_level ) { 
+  validator :permission_level do
     fn = :permission_level
     new_level = raw_data[fn]
     if !SECURITY_LEVELS.include?(new_level)
@@ -112,7 +108,7 @@ class Member < Sequel::Model
     
     self[fn] = new_level
     
-  } # === def set_permission_level
+  end # === def set_permission_level
   
   
   def admin?
@@ -153,7 +149,6 @@ class Member < Sequel::Model
   
   
 end # Member
-########################################################################################
 
 
 __END__

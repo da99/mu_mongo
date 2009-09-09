@@ -43,6 +43,8 @@ class NewComputer
 
     install_gemrc
 
+    install_open_with_gvim_tabs
+
   end # === bla :start
 
   def install_git
@@ -88,11 +90,6 @@ class NewComputer
   end
 
   def install_vim
-    vim_bk = Pow('~/.vim-tmp')
-    if !vim_bk.exists?
-        shout "Creating #{vim_bk}", :yellow
-        shout capture("mkdir %s" % vim_bk.to_s), :white
-    end
 
     vimrc = (MY_PREFS / 'vim/vimrc.vim')
     new_vim_rc = Pow('~/.vimrc')
@@ -108,7 +105,7 @@ class NewComputer
     vivid = (MY_PREFS / 'vim' / 'dotvim')
     home_vivid = Pow(File.expand_path('~/.vim'))
     both_exists = vivid.exists? && home_vivid.exists?
-    both_match = both_exists && vivid.read == home_vivid.read && File.symlink?(home_vivid.to_s)
+    both_match = both_exists && File.symlink?(home_vivid.to_s)
     do_install = vivid.exists? && !both_exists
     if both_exists && !both_match
         shout( "Delete #{home_vivid}"  )
@@ -175,6 +172,29 @@ class NewComputer
         shout( "Sudo copy file to #{sudo_light_conf}" ) 
     end
     
+  end
+
+  def install_open_with_gvim_tabs
+    # http://stackoverflow.com/questions/1323790/have-nautilus-open-file-into-new-gvim-buffer
+    desktop_file = Pow('~/.local/share/applications/gvim-tab.desktop')
+    if !desktop_file.exists?
+      desktop_file.create { |f|
+        f.puts %~
+[Desktop Entry]
+Encoding=UTF-8
+Name=GVim Text Editor (Tabs)
+Comment=Edit text files in a new tab
+Exec=gvim --remote-tab %F
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/vim.svg
+Categories=Application;Utility;TextEditor;
+StartupNotify=true
+MimeType=text/plain;
+NoDisplay=true
+        ~.strip
+      }
+    end
   end
 
 

@@ -14,7 +14,7 @@ post( "/member/" ) do
   
   begin
 
-    m = Member.editor_create( current_member, clean_room )
+    m = Member.creator( current_member, clean_room )
     
     flash.success_msg = "Your account has been created."
     session[:member_username] = m.username
@@ -43,7 +43,7 @@ end # == get :show
       
 put( "/member/" )  do
   begin
-    m = Member.editor_update( current_member, clean_room )
+    m = Member.updator( current_member, clean_room )
     flash.success_msg = "Data has been updated and saved."
     redirect('/account/')
   rescue Sequel::ValidationFailed

@@ -20,17 +20,15 @@ class Username < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def_create  do
-    allow_only :MEMBER
-    self[:owner_id] = current_editor[:id]
-    require_columns :username
-    optional_columns :nickname, :category
+  allow_creator :MEMBER do
+      self[:owner_id] = current_editor[:id]
+      require_column :username
+      optional_columns :nickname, :category
   end
   
-  def_update do
+  allow_updator :owner, :ADMIN  do
   
-    allow_only self.owner, :ADMIN
-    required_columns_if_exist :username, :nickname, :category, :email 
+    optional_columns :username, :nickname, :category, :email 
     
     @history_msgs = []
     
@@ -45,7 +43,7 @@ class Username < Sequel::Model
     
   end # === def update_it!
   
-  def_after_update do
+  def after_update
     
     return true if !@history_msgs.empty?
     
@@ -59,7 +57,7 @@ class Username < Sequel::Model
   end  
   
 
-  def_validator( :email ) { 
+  validator :email do
     raw_params = raw_data
     fn = :email
     v = raw_params[ fn ] 
@@ -78,10 +76,10 @@ class Username < Sequel::Model
     
     nil
               
-  } # === def set_email
+  end # === def _email_
   
   
-  def_validator( :username ) {
+  validator :username do
     fn = :username
     raw_name = raw_data[fn].to_s.strip
     
@@ -108,7 +106,7 @@ class Username < Sequel::Model
     return( self[fn] = new_un ) if self.errors[fn].empty?
     nil 
     
-  } # === def validate_new_values
+  end # === def validate_new_values
   
   
 end # === end Username

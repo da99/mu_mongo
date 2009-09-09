@@ -35,76 +35,78 @@ class Sequel::Model
   #                  CLASS METHODS
   # =========================================================
   
-  def self.setter_method_name(fn)
-    "__set_and_validate_#{fn}__"
+  def self.allow_creator( *levels, &blok ) 
+    add_perm_for_editor(:create, levels, &blok)
   end
 
-  # 
-  #
-  # Options:
-  #   :not_a_column - Allow method to be used even though field does not exist.
-  #            Example: :password used in Member even thought :password is not a field.
-  #  
-  def self.def_validator( fn, *args, &meth )
-    meth_name= setter_method_name(fn)
-    
-    invalid_args = args - [:not_a_column]
-    if !invalid_args.empty?
-      raise ArgumentError, invalid_args.inspect 
-    end
-    
-    invalid_column = !columns.include?(fn) && !args.include?(:not_a_column)
-    if invalid_column
-      raise "Column, #{fn.inspect}, does not exist. (From #{__previous_line__})" 
-    end
-   
-    meth_exists = new.respond_to?(meth_name)
-    if meth_exists
-      raise "Set method for #{fn.inspect} already defined. (From #{__previous_line__})" 
-    end
+  def self.allow_updator( *levels, &blok )
+    add_perm_for_editor(:update, levels, &blok)
+  end 
 
-    define_method(meth_name, &meth)
+  def self.add_perm_for_editor( action, levels, &blok)
+    raise ArgumentError, "Block required for #{action.inspect}" if !block_given?
+    raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update].include?(action)
+    raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
+    @editor_perms ||= {:create=>{}, :update=>{} }  
+    levels.each do |raw_lev|
+      lev = raw_lev.nil? ? :STRANGER : raw_lev
+      raise "#{lev.inspect} already used for creator." if @editor_perms[action].has_key?(lev)
+      @editor_perms[action][lev] = blok
+    end
+  end
 
-  end # === def_validator
+  def self.validator col, &blok
+    define_method "validator_for_#{col}", &blok
+  end
+
+  def self.editor_permissions
+    @editor_perms
+  end
+
+  def self.creator editor, raw_vals
+    n = new
+    n.call_editor_validator(editor, raw_vals)
+    n.created_at = Time.now.utc if n.respond_to?(:created_at)
+    n._save_
+  end
   
-  def self.def_create( &meth )
-    use_method_once
-    
-    define_method( :__create__, &meth )
-   
-    class << self
-      def editor_create editor, raw_vals
-        n = new
-        n.created_at = Time.now.utc if n.respond_to?(:created_at)
-        n.__save__(editor, raw_vals) 
-      end
-    end
-   
-  end # === self.def_create
-
-  def self.def_update( &meth )
-    use_method_once 
-    
-    define_method( :__update__, &meth )
-    class << self
-      def editor_update editor, raw_vals
-        rec = self[:id=>raw_vals]
-        raise NoRecordFound, "Try again." if !rec
-        rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
-        rec.__save__(editor, raw_vals)
-      end
-    end
-  end # === self.def_update
-
-  [:create, :update, :save].each do |meth_name|
-    eval( %!
-      def self.def_after_#{meth_name} &meth
-        use_method_once
-        define_method( :after_#{meth_name}, &meth )
-      end
-    !)
+  def self.updator editor, raw_vals
+    rec = self[:id=>raw_vals]
+    raise NoRecordFound, "Try again." if !rec
+    n.call_editor_validator(editor, raw_vals)
+    rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
+    rec._save_
   end
- 
+
+  def call_editor_validator(editor, raw_vals)
+    self.current_editor = editor
+    self.raw_data = raw_vals
+    action = new? ? :create : :update
+    action_perms = self.class.editor_permissions[action]
+    level_found = begin
+      levels = action_perms.keys
+      levels.detect { |lev|
+        if !current_editor
+          lev == :STRANGER
+        else
+          if current_editor.has_power_of?(lev)
+            lev
+          else respond_to?(lev) 
+            editor_list = [ send(lev) ].flatten 
+            editor_list.detect { |ed| 
+              ed.has_power_of?(current_editor)
+            }
+          end
+        end
+      }
+    end
+    raise( UnauthorizedEditor, current_editor.inspect ) if !level_found
+    self.valid_editor_found = true
+    instance_eval( &action_perms[level_found] )
+    raise_if_invalid
+
+    self.current_editor
+  end
 
   def self.trashable(*args, &cond_block)
       raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
@@ -141,77 +143,47 @@ class Sequel::Model
   #                          HOOKS
   # =========================================================    
   
-  # =================== NO HOOKS ARE USED. SEE :define_alter.
   
   # =========================================================
   #                  PUBLIC INSTANCE METHODS
   # =========================================================  
    
-  
-  def human_field_name( col )
-    col.to_s.gsub('_', ' ')
-  end
-  
-  attr_accessor :current_editor, :raw_data
+  attr_accessor :current_editor, :raw_data, :valid_editor_found
   
   def raw_data 
     @raw_data ||= {}
   end
-  
-  def allow_any_stranger
-    @editor_permission_level = :STRANGER
+
+  def valid_editor_found=(new_val)
+    if @valid_editor_found
+      raise "Valid editor already used: #{valid_editor_found.inspect}" 
+    end
+    @valid_editor_found = new_val
+  end
+
+  def human_field_name( col )
+    col.to_s.gsub('_', ' ')
   end
   
-  def allow_only( *levels)
-    raise "Only permission levels allowed. No blocks." if block_given?
-    allow_at_least(*levels)
-  end
-  
-  def allow_at_least(*levels, &blok)
-    
-    raise "Only a permission level or block allowed, but not both." if !levels.empty? && blok
-    raise "Permission level or block are require." if levels.empty? && !blok
-    
-    do_it = if !current_editor
-              nil 
-            elsif levels.empty?
-              instance_eval( &blok )
-            elsif levels.include?(Member::STRANGER)
-              raise ":STRANGER not allowed in this method. Try :allow_any_stranger." 
-            else
-              levels.detect { |lev|
-                current_editor.has_power_of?(levels.first)
-              }
-            end
-    
-    raise( UnauthorizedEditor, current_editor.inspect ) if !do_it
-    @editor_permission_level = do_it 
+  def allow_editor( level, &blok )
+    return if self.valid_editor_found
+    raise ArgumentError, "Block required." if !block_given?
+    level = :STRANGER if level.nil?
+    if (!current_editor && level === :STRANGER) || current_editor.has_power_of?(level)
+      self.valid_editor_found = true
+      yield
+    end
   end
   
   def raise_if_invalid
     raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
   end
 
-  def __save__( editor, raw_vals, &meth )
-  
-    self.raw_data = raw_vals
-    self.current_editor = editor
-    
-    send "__#{ new? ? 'create' : 'update' }__"
-    
-    # Make sure a permission level was set to protect 
-    # against unauthorized editors.
-    if !@editor_permission_level
-      raise("Editor permission level not set for: #{self.class}.#{target_action}")  
-    else
-      @editor_permission_level = nil
-    end
-    
-    raise_if_invalid
-
+  def _save_
+     
     begin
       save(:changed=>true)
-
+    
     rescue Sequel::DatabaseError
       raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
       seq = $1
@@ -226,17 +198,22 @@ class Sequel::Model
     end
     
   end # === def validate
-  
+
+  def require_column col
+    require_columns col
+  end
+
   def require_columns *raw_keys
     raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
       begin
-        send( self.class.setter_method_name(k), raw_params )
+        send( "validator_for_#{k}"  )
       rescue NoMethodError
-      
-        raise "Invalid field name" if !self.class.db_schema[k]
-        
+     
+        is_column = !self.class.db_schema[k] 
+
+        raise "Invalid field name: #{k.inspect}" if is_column
         case self.class.db_schema[k][:type]
 
           when :integer
@@ -260,11 +237,11 @@ class Sequel::Model
     self
   end # === def
   
-  def required_columns_if_exist *raw_keys
+  def require_columns_if_exist *raw_keys
     keys = raw_keys.flatten
     keys.each { |k|
       if raw_data.has_key?(k)
-        require_columns k
+        require_column k
       end
     }
   end
@@ -274,25 +251,7 @@ class Sequel::Model
     keys = raw_keys.flatten
     keys.each { |k| 
       next if !raw_params.has_key?( k )
-      
-      begin
-        send self.class.setter_method_name(k), raw_params
-      catch NoMethodError
-        if self.class.db_schema[k][:type] == :integer
-          self[k] = if raw_params[k].nil?
-                       nil
-                    else
-                      raw_params[k].to_i
-                    end
-        else
-          self[k] = if raw_params[k].nil?
-                       nil
-                    else
-                      raw_params[k].to_s.strip
-                    end
-        end          
-      end
-
+      require_column k
     }
     self
   end # === def

@@ -6,7 +6,7 @@ describe 'Member creation' do
   it( 'creates a username after save.' ) {
     u_name = 'da01' + Time.now.utc.to_i.to_s
     begin
-    m = Member.editor_create(nil, { :password=>'test123test', 
+    m = Member.creator(nil, { :password=>'test123test', 
                 :confirm_password => 'test123test', 
                 :username=>u_name}
                 )
@@ -24,7 +24,7 @@ describe 'Member creation' do
     m_count = Member.order(:id).count
     u_name = Username.reverse_order(:id).first[:username] 
     begin
-    Member.editor_create(nil, { :password=>'test123test',
+    Member.creator(nil, { :password=>'test123test',
       :confirm_password => 'test123test',
       :username => u_name
     })
