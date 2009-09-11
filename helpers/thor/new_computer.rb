@@ -25,9 +25,9 @@ class NewComputer < Thor
     if !capture_all('which blato')['bin/blato']
       shout "Symlink blato to a path dir."
     elsif !capture_all('crontab -l')['bin/blato bzr:my_life_dev_check']
-      shout "Setup CRONT:", :white
-      shout "crontab -e", :white
-      shout "18 * * * * #{capture_all('which blato')} bzr:quiet_my_life_dev_check", :white
+      whisper "Setup CRONT:"
+      whisper "crontab -e"
+      whisper "18 * * * * cd /home/da01/megauni && #{capture_all('which thor')} bzr:quiet_my_life_dev_check"
     end
 
     install_firefox
@@ -63,7 +63,7 @@ class NewComputer < Thor
   def install_bzr
     do_install = !capture_all('bzr --version')[ /Bazaar \(bzr\) \d/ ]
     if do_install
-        shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa", :white
+        whisper "Install bzr: https://launchpad.net/~bzr/+archive/ppa"
     else
         shout capture_all('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
     end
@@ -142,7 +142,7 @@ class NewComputer < Thor
 
   def install_gemrc
     gem_rc_yaml = (MY_PREFS / 'ruby' / 'gemrc.yaml')
-    gem_rc = Pow('~/.gemrc')
+    gem_rc = Pow( '~/.gemrc' )
     both_exists = gem_rc_yaml.exists? && gem_rc.exists?
     both_match = both_exists &&
                   gem_rc_yaml.read.strip == gem_rc.read.strip &&
@@ -155,8 +155,10 @@ class NewComputer < Thor
         shout "#{gem_rc_yaml} not found." if !gem_rc_yaml.exists?
         shout "#{gem_rc} must be deleted." if both_exists && !both_match
     end
-    shout "Installing gems using task: gems:update", :yellow
-    shout capture_task('gems:update'), :white
+
+    please_wait "Installing gems using task: gems:update"
+    whisper invoke('gems:update')
+
   end
 
   def install_light_conf

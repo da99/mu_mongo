@@ -53,7 +53,7 @@ class Bacon < Thor
   private # =========================================================
 
   def run_specs(print_wait=true)
-    spec_helper = Pow('~', "#{primary_app}/helpers/specs/spec.rb" )
+    spec_helper = Pow('~', "#{PRIMARY_APP}/helpers/specs/spec.rb" )
     cmd = "bacon specs/*.rb -r #{spec_helper}"
     please_wait(cmd) if print_wait
     shell_capture(cmd)

@@ -11,7 +11,7 @@ class Model < Thor
     Pow("models").each { |ele|
       file_basename = File.basename(ele.to_s)
       if ele.file? && file_basename !~ /init.rb$/ && file_basename[/\.rb$/]
-        shout( file_basename.sub('.rb', '').camelize, :white )
+        whisper( file_basename.sub('.rb', '').camelize  )
       end
     }
   end
@@ -23,7 +23,7 @@ class Model < Thor
 
     file_path = Pow("models/#{m.underscore}.rb")
     
-    txt = eval( %~"#{Pow(File.expand_path('~/' + primary_app + '/models/template.txt')).read}"~ )
+    txt = eval( %~"#{Pow(File.expand_path('~/' + PRIMARY_APP + '/models/template.txt')).read}"~ )
     write_file_or_raise(file_path, txt)
     
     whisper "Finished writing: #{file_path}"

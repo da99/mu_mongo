@@ -78,7 +78,7 @@ class Git < Thor
       shout migrate_results
 
       shout 'Restarting app servers.'
-      shout capture_all('heroku restart'), :white
+      whisper capture_all('heroku restart')
     end
 
 
@@ -113,8 +113,8 @@ class Git < Thor
 
   private # ===================================================
 
-def commit_pending?(raw_out)
-    output = (raw_out || capture_task(:update) )
+	def commit_pending?(raw_out)
+    output = (raw_out || invoke(:update) )
     output['nothing to commit'] ?
       false :
       output

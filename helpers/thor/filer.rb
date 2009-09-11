@@ -28,7 +28,7 @@ class Filer < Thor
                 whisper "Skipping non-#{ext}: #{file}" if file.to_s !~ ext_reg
             end
         }
-        shout "Done.", :white
+        whisper "Done." 
     end
 
 

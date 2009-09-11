@@ -20,7 +20,7 @@ class Migration < Thor
     file_path = Pow("migrations/#{padding}#{i}_#{a}_#{m.underscore}.rb")
     raise "Migration file already exists: #{file_path}" if file_path.exists?
 
-    template_file = Pow(File.expand_path('~/' + primary_app + '/migrations/template.txt'))
+    template_file = Pow(File.expand_path('~/' + PRIMARY_APP + '/migrations/template.txt'))
     raise "Template file does not exist: #{template_file}" if !template_file.file?
 
     txt = eval( %~"#{template_file.read}"~ )

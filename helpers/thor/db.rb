@@ -49,7 +49,7 @@ class Db < Thor
     cmd = "sequel #{DB.uri} -m migrations "
     cmd += " -M #{Integer(ver)} " if ver
     
-    shout cmd, :yellow
+    please_wait cmd
 	  results = capture_all( cmd )
 		if results.to_s.empty?
 		  whisper "Done. #{db_version_as_string}"

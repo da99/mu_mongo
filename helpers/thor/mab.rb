@@ -29,7 +29,7 @@ class Mab < Thor
               gsub( /([^\.])\ {0,}\(\ {0,}\:id\=\>[\'\"]([a-z0-9\_]{2,})[\'\"]\ {0,}\)/, '\1.\2! ')
     end
     
-    shout "Created MAB file: #{new_file}.", :white
+    whisper "Created MAB file: #{new_file}."
     
   end
 

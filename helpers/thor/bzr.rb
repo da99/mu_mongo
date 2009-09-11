@@ -55,12 +55,12 @@ class Bzr < Thor
       copy_status = capture_all("cp -Ru %s %s" % [BZR_DIR().to_s, (BACKUP_DIR).to_s])
 
       if copy_status.to_s.strip.empty?
-        shout "Backed up to #{(BACKUP_DIR)}", :white
+        whisper "Backed up to #{(BACKUP_DIR)}"
       else
         shout "ERROR: #{copy_status}"
       end
     else
-      shout( 'Nothing to commit.', :white)
+      whisper 'Nothing to commit.' 
     end
   end
 

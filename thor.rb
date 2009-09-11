@@ -1,13 +1,17 @@
 #!/home/da01/rubyee/bin/ruby
 $KCODE = 'u' # Needed to handle non-ascii file paths.
 
-require 'pow'
+require File.expand_path('~/megauni/helpers/kernel')
 require 'open3'
 # require File.expand_path('~/megauni/helpers/thor/__core_funcs')
 
 
 module CoreFuncs
+
+  PRIMARY_APP     = 'megauni'
+  APP_NAME        = File.basename(File.expand_path('.'))
   LIFE_DIR        = Pow(File.expand_path('~/MyLife'))
+  MY_PREFS        = (LIFE_DIR / "MyPrefs")
   DESKTOP_DIR     = Pow(File.expand_path('~/Desktop'))
   BLATO_LOG       = (DESKTOP_DIR / 'blato_log.txt')
   BACKUP_DIR      = Pow('/media/Patriot/MyLifeBackup')
@@ -34,9 +38,6 @@ module CoreFuncs
     say msg, :yellow
   end
 
-  def primary_app
-    'megauni'
-  end
 
   def app_name
     File.basename( File.expand_path('.') )
