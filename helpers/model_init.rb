@@ -35,6 +35,10 @@ class Sequel::Model
   #                  CLASS METHODS
   # =========================================================
   
+  def self.editor_permissions
+    @editor_perms
+  end 
+  
   def self.allow_creator( *levels, &blok ) 
     add_perm_for_editor(:create, levels, &blok)
   end
@@ -49,7 +53,8 @@ class Sequel::Model
     raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
     @editor_perms ||= {:create=>{}, :update=>{} }  
     levels.each do |raw_lev|
-      lev = ( raw_lev.nil? || raw_lev == 0 ? :STRANGER : raw_lev )
+      stranger_level = ( raw_lev.nil? || raw_lev == 0 )
+      lev = ( stranger_level ? :STRANGER : raw_lev )
       raise "#{lev.inspect} already used for creator." if @editor_perms[action].has_key?(lev)
       @editor_perms[action][lev] = blok
     end
@@ -57,10 +62,6 @@ class Sequel::Model
 
   def self.validator col, &blok
     define_method "validator_for_#{col}", &blok
-  end
-
-  def self.editor_permissions
-    @editor_perms
   end
 
   def self.creator editor, raw_vals
@@ -78,22 +79,20 @@ class Sequel::Model
     rec._save_
   end
 
-
-
   def self.trashable(*args, &cond_block)
-      raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
-      
-      name_of_assoc, opts = args
+    raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
+    
+    name_of_assoc, opts = args
 
-      if opts.is_a?(Hash) && opts[:class]
-          opts[:class]
-      else
-          opts ||= {}
-          opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
-      end
-      
-      self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
-      self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
+    if opts.is_a?(Hash) && opts[:class]
+        opts[:class]
+    else
+        opts ||= {}
+        opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
+    end
+    
+    self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
+    self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
   end
     
   # =========================================================
@@ -120,7 +119,7 @@ class Sequel::Model
   #                  PUBLIC INSTANCE METHODS
   # =========================================================  
    
-  attr_accessor :current_editor, :raw_data, :valid_editor_found
+  attr_accessor :current_editor, :raw_data
  
   def raise_if_invalid
     raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
@@ -128,13 +127,6 @@ class Sequel::Model
  
   def raw_data 
     @raw_data ||= {}
-  end
-
-  def valid_editor_found=(new_val)
-    if @valid_editor_found
-      raise "Valid editor already used: #{valid_editor_found.inspect}" 
-    end
-    @valid_editor_found = new_val
   end
 
   def human_field_name( col )
@@ -164,12 +156,13 @@ class Sequel::Model
         end
       }
     end
+    
     raise( UnauthorizedEditor, current_editor.inspect ) if !level_found
-    self.valid_editor_found = true
+    
     instance_eval( &action_perms[level_found] )
+    
     raise_if_invalid
 
-    self.current_editor
   end
 
   def _save_
@@ -193,37 +186,10 @@ class Sequel::Model
   end # === def validate
 
   def require_columns *raw_keys
-    raw_params = raw_data
     keys = raw_keys.flatten
     keys.each { |k| 
-      begin
         send( "validator_for_#{k}"  )
-      rescue NoMethodError
-     
-        is_column = !self.class.db_schema[k] 
-
-        raise "Invalid field name: #{k.inspect}" if is_column
-        case self.class.db_schema[k][:type]
-
-          when :integer
-            if !raw_params.has_key?(k) || self[k].nil? || self[k].to_i < 1
-              self.errors.add k, "is required."
-            else 
-              self[k] = raw_params[k]
-            end
-
-          else
-            new_val = raw_params[k].to_s.strip.empty?
-            if !raw_params.has_key?(k) || raw_params[k].nil? || new_val.empty? || new_val.to_s.strip.empty?
-              self.errors.add k, "is required."
-            else
-              self[k] = new_val
-            end
-        end # === case
-        
-      end # === if/else 
     }
-    self
   end # === def
   
   def optional_columns *raw_keys
@@ -233,7 +199,6 @@ class Sequel::Model
         require_columns k
       end
     }
-    self
   end # === def
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
@@ -276,6 +241,30 @@ class Sequel::Model
     self.errors.add( field_names.first, default_error_msg ) if all_are_empty
     
   end 
+
+  def require_same_owner assoc_name
+    
+    return if self[:owner_id].to_i < 1
+    assoc_reflect = self.association_reflections[assoc_name]
+    m_class = Object.const_get( assoc_reflect[:class_name] )
+    m_id_int = raw_data[m_id].to_i
+    return if m_id_int < 1
+
+    m_obj = m_class[:id=>m_id_int ]
+
+    if !m_obj
+      self[assoc_reflect[:key]] = nil
+    else
+      if m_obj[:owner_id] != self[:owner_id]
+        raise %~
+        Potential security threat: #{self.class} owner, #{self[:owner_id]} 
+        not owner of #{m_class} #{m_obj[:owner_id]}
+        ~.strip.gsub("\n", ' ')
+      end
+      self[assoc_reflect[:key]] = m_id_int
+    end
+   
+  end
  
  
 end # === model: Sequel::Model -------------------------------------------------

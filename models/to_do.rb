@@ -7,7 +7,8 @@ class ToDo < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  
+  many_to_one :owner, :class_name=>'Member', :key=>:owner_id
+  many_to_one :project
   
   # ==== HOOKS =========================================================
 
@@ -17,18 +18,33 @@ class ToDo < Sequel::Model
 
   # ==== INSTANCE METHODS ==============================================
 
-  def changes_from_editor( params, mem )
-    if new?
-        self[:owner_id] = mem[:id]
-    end
-    if [self.owner].include?(mem)
-        @current_editor = mem
-        @editable_by_editor = []       
-    end
-    super
-  end # === def changes_from_editor
+  allow_creator :MEMBER do 
+    require_columns :title, :details
+    optional_columns :days, :hours, :minutes, :seconds,
+                     :starts_at, :ends_at
+    self[:owner_id] = self.current_editor[:id]
+  end
 
-  def validate_new_values
-  end # === def validate_new_values
+  allow_updator :owner do
+    optional_columns :title, :details,
+                     :days, :hours, :minutes, :seconds,
+                     :starts_at, :ends_at
+  end
+
+  [:days, :hours, :minutes, :seconds].each do |col|
+    validator col do 
+      self[col] = self.raw_data[col].to_i
+    end
+  end
+
+  [:starts_at, :ends_at].each do |col|
+    validator col do
+      self[col] = self.raw_data[col].to_i
+    end
+  end
+
+  validator :project_id do
+    require_same_owner :project 
+  end
 
 end # === end ToDo

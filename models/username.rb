@@ -26,9 +26,9 @@ class Username < Sequel::Model
   # ==== INSTANCE METHODS ==============================================
 
   allow_creator :MEMBER do
-      self[:owner_id] = current_editor[:id]
-      require_columns :username
-      optional_columns :nickname, :category
+    self[:owner_id] = current_editor[:id]
+    require_columns :username
+    optional_columns :nickname, :category
   end
   
   allow_updator :owner, :ADMIN  do
