@@ -33,9 +33,10 @@ class Git < Thor
 
   end
   
-  desc :dev_check, "Used to update and commit development checkpoint. Includes the commit comment for you." 
+  desc :dev_check, "Used to update and commit development checkpoint. Includes the commit comment for you."
+  method_options :msg => 'Development checkpoint.'
   def dev_check
-    invoke 'git:commit', [], :msg=>'Development checkpoint.'
+    invoke :commit
   end # === task    
   
   desc :push, "Push code to Heroku. Options: open_browser = true, migrate = false" 
@@ -106,7 +107,7 @@ class Git < Thor
   
   desc :push_and_migrate_production, "Pushes code to Heroku. Migrates on the server side. Opens browser."
   def push_and_migrate_production
-    invoke(:push, :migrate=>true )
+    invoke('git:push', [], :migrate=>true )
   end 
   
   private # ===================================================
