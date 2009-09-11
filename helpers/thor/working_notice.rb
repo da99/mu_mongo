@@ -2,7 +2,7 @@
 # ====================================================================================
 class WorkingNotice < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
   
   desc :start, 'Puts up a maintenence page for all actions. Takes into account AJAX and POST requests.'
   def start

@@ -1,5 +1,5 @@
 class Bzr < Thor
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
   BZR_LOG =  Pow(File.expand_path('~/.bzr.log'))
   desc :quiet_my_life_dev_check, "Just like :my_life_dev_check, but stores all output in ~/.bzr.log"
@@ -15,8 +15,8 @@ class Bzr < Thor
 
   desc :my_life_dev_check, "Commits, if any, changes as a dev. check., then copies to BACKUP_DIR"
   def my_life_dev_check
-    status = "cd %s && " % my_config(:LIFE_DIR).to_s
-    Dir.chdir( my_config(:LIFE_DIR).to_s )
+    status = "cd %s && " % (LIFE_DIR).to_s
+    Dir.chdir( (LIFE_DIR).to_s )
 
     # Check if errors occurred last time.
     bzr_log =  BZR_LOG
@@ -34,7 +34,7 @@ class Bzr < Thor
 
     # Find all files with unusual characters in filename.
     pattern = /[^a-z0-9\/\,\ \.\_\-]/i
-    files = capture_all("find %s -iname \"*.desktop\"" % my_config(:LIFE_DIR) ).split("\n")
+    files = capture_all("find %s -iname \"*.desktop\"" % (LIFE_DIR) ).split("\n")
     files.each { |f|
       if f =~ pattern
         new_file_path = File.join( File.dirname(f), File.basename( f ).gsub( pattern , '-') )
@@ -44,7 +44,7 @@ class Bzr < Thor
 
     if commits_pending?
       whisper capture_all( 'bzr commit -m %s ', "Development checkpoint: #{Time.now.to_s}" )
-      return(shout('Backup dir. does not exist.')) if !my_config(:BACKUP_DIR).exists?
+      return(shout('Backup dir. does not exist.')) if !(BACKUP_DIR).exists?
 
       # Delete old backups.
 
@@ -52,10 +52,10 @@ class Bzr < Thor
 
       # Copy recursive: -R
       # changed files only: -u
-      copy_status = capture_all("cp -Ru %s %s" % [BZR_DIR().to_s, my_config(:BACKUP_DIR).to_s])
+      copy_status = capture_all("cp -Ru %s %s" % [BZR_DIR().to_s, (BACKUP_DIR).to_s])
 
       if copy_status.to_s.strip.empty?
-        shout "Backed up to #{my_config(:BACKUP_DIR)}", :white
+        shout "Backed up to #{(BACKUP_DIR)}", :white
       else
         shout "ERROR: #{copy_status}"
       end
@@ -72,7 +72,7 @@ class Bzr < Thor
   end
 
   def BZR_DIR()
-    ( my_config(:MY_PREFS) / '.bzr' )
+    ( (MY_PREFS) / '.bzr' )
   end
 
 end

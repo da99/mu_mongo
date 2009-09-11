@@ -1,7 +1,7 @@
 
 class Migration < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
 	desc  :create, "Create a migration file. Tip: You can use model:create to automatically create migration." 
   def create

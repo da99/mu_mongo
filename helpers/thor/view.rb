@@ -6,7 +6,7 @@
 
 class View < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
   desc  :update, "Change view name." 
   def update

@@ -1,6 +1,6 @@
 
 class Mab < Thor
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
 
   desc :to_html, "Turn HTML files into MAB files." 

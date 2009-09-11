@@ -1,6 +1,6 @@
 class NewComputer < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
 
   desc  :start, "Prints out info. and checks installed gems. Safe to run multiple times."

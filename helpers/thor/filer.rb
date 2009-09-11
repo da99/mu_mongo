@@ -1,5 +1,5 @@
 class Filer < Thor
-    include CoreFuncs
+    include Thor::Sandbox::CoreFuncs
 
     desc :rename_ext, "Rename file extension of files in a directory." 
     def rename_ext

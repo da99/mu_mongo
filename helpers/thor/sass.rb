@@ -1,7 +1,7 @@
 
 
 class Sass < Thor
-  include CoreFuncs  
+  include Thor::Sandbox::CoreFuncs  
   desc :compile, "Turn all SASS files to CSS."
   def compile
     return nil if  !Pow('views/skins/jinx/sass').exists?

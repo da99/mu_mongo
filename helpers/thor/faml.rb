@@ -1,5 +1,5 @@
 class Faml < Thor
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
   TAB_SPACES = 2
 
 

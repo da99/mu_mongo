@@ -3,7 +3,7 @@
 
 class Model < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
   
   desc  :list, 'Display a list of all models.'
   def list

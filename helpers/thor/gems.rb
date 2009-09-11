@@ -1,6 +1,6 @@
 class Gems < Thor
     
-    include CoreFuncs 
+    include Thor::Sandbox::CoreFuncs 
     
     desc :update,  "Installs and updates all gems from manifest (.gems)" 
     def update

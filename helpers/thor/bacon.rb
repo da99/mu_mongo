@@ -4,7 +4,7 @@
 # ====================================================================================
 class Bacon < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
   
   desc :db_reset!, "Reset the :test database" 
   def db_reset!

@@ -4,7 +4,7 @@ require 'rest_client'
 
 class Git < Thor
 
-  include CoreFuncs
+  include Thor::Sandbox::CoreFuncs
 
   desc :update, "Executes: git add . && git add -u && git status"
   def update
