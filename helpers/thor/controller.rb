@@ -1,11 +1,13 @@
 
 # ====================================================================================
 # ====================================================================================
-class Controller
+class Controller < Thor
 
-  include Blato
+  include CoreFuncs
 
-	bla  :create , "Create a controller file. Tip: You can use model:create to automatically create controller." do
+	desc  :create , "Create a controller file. Tip: You can use model:create to automatically create controller."
+
+  def create
 
     # Require Sequel in order to use :camelize method
     require 'sequel/extensions/inflector'
@@ -26,7 +28,7 @@ set :#{m}_actions, [ :show,
                      :update ]
     
 EOF
-    write_this_file(file_path, txt)
+    return Pow(file_path) { |f| f.puts txt }
 	end # === task :create 
 
 end # === namespace :controller

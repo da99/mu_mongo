@@ -1,9 +1,10 @@
 
-class Mab
-  include Blato
+class Mab < Thor
+  include CoreFuncs
 
 
-  bla :to_html, {}, "Turn HTML files into MAB files." do
+  desc :to_html, "Turn HTML files into MAB files." 
+  def to_html
     file_name = ask('Type relative path to file:')
     file = Pow(file_name)
     shout "File not found: #{file.to_s}" if !file.file?

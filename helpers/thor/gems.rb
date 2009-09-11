@@ -1,33 +1,35 @@
-class Gems
+class Gems < Thor
     
-    include Blato 
+    include CoreFuncs 
     
-    bla :update,  "Installs and updates all gems from manifest (.gems)" do
-      gem_manifest = Pow('~/', MEGA_APP_NAME, '.gems')
+    desc :update,  "Installs and updates all gems from manifest (.gems)" 
+    def update
+      gem_manifest = Pow('~/', primary_app, '.gems')
       raise "Gems manifest does not exists: .gems" if !gem_manifest.exists?
       
       gems_to_install = File.read(gem_manifest).strip.split("\n")
       
-      if Blato.development?
-        dev_gems = Pow('~/', MEGA_APP_NAME, '.development_gems' )
+      if development?
+        dev_gems = Pow('~/', primary_app, '.development_gems' )
         gems_to_install = gems_to_install + File.read(dev_gems).strip.split("\n")
       end
       
-      installed =  capture('gem list')
+      installed =  capture_all('gem list')
       if gems_to_install.empty?
-        shout  "No gems to install.", :white
+        whisper  "No gems to install."
       else
         gems_to_install.each { |g|
           gem_name = g.split.first
           if installed["#{gem_name} ("]
-            shout "Already installed: #{gem_name}", :white
+            whisper "Already installed: #{gem_name}"
           else
-            shout  capture( "gem install #{g}"), :white
+            whisper capture_all( "gem install #{g}")
           end
         }
       end    
       whisper 'Please wait as gems are updated...'
-      shout  capture('gem update'), :white
+      whisper( output = capture_all('gem update') )
+      output
     end   
      
 end # === namespace :gems

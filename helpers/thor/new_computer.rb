@@ -1,39 +1,40 @@
-class NewComputer
-  
-  include Blato
+class NewComputer < Thor
+
+  include CoreFuncs
 
 
-  bla  :start, "Prints out info. and checks installed gems. Safe to run multiple times."  do
-    
-    shout %~ 
-        Make sure Postgresql is installed. 
-        Then install: 
-          sudo apt-get install postgresql-server-dev-8.x. 
-        Replace 'x' with the latest Postgresql version you are using. 
-        If it still does not work: try using the 'postgres' gem instead. 
-        More info: http://rubyforge.org/projects/ruby-pg 
-    ~ if !capture('psql --version')[/psql \(PostgreSQL\) \d/]
+  desc  :start, "Prints out info. and checks installed gems. Safe to run multiple times."
+  def start
+    shout "Install: http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem"
+    shout %~
+        Make sure Postgresql is installed.
+        Then install:
+          sudo apt-get install postgresql-server-dev-8.x.
+        Replace 'x' with the latest Postgresql version you are using.
+        If it still does not work: try using the 'postgres' gem instead.
+        More info: http://rubyforge.org/projects/ruby-pg
+    ~ if !capture_all('psql --version')[/psql \(PostgreSQL\) \d/]
 
     gconf = Pow(File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml'))
-    shout %~ 
-        Always show hidden files in  Nautilus: 
+    shout %~
+        Always show hidden files in  Nautilus:
         http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
         Alt+F2 > gconf-editor > "desktop / gnome / file_views"
     ~ if !gconf.exists? || !gconf.read['show_hidden_files']
-    
-    if !capture('which blato')['bin/blato']
+
+    if !capture_all('which blato')['bin/blato']
       shout "Symlink blato to a path dir."
-    elsif !capture('crontab -l')['bin/blato bzr:my_life_dev_check']
+    elsif !capture_all('crontab -l')['bin/blato bzr:my_life_dev_check']
       shout "Setup CRONT:", :white
       shout "crontab -e", :white
-      shout "18 * * * * #{capture('which blato')} bzr:quiet_my_life_dev_check", :white 
+      shout "18 * * * * #{capture_all('which blato')} bzr:quiet_my_life_dev_check", :white
     end
-    
+
     install_firefox
 
     install_bzr
 
-    install_git 
+    install_git
 
     install_vim
 
@@ -45,24 +46,26 @@ class NewComputer
 
     install_open_with_gvim_tabs
 
-  end # === bla :start
+  end # === desc :start
+
+  private # ==================================================================
 
   def install_git
-    do_install = !capture('git --version')[/git version \d/]
+    do_install = !capture_all('git --version')[/git version \d/]
     if do_install
         shout "Install git with PPA "
     else
-        shout capture('git config --global user.name %s' % MY_NAME.inspect) 
-        shout capture('git config --global user.email %s' % MY_EMAIL)
+        shout capture_all('git config --global user.name %s' % MY_NAME.inspect)
+        shout capture_all('git config --global user.email %s' % MY_EMAIL)
     end
   end
 
   def install_bzr
-    do_install = !capture('bzr --version')[ /Bazaar \(bzr\) \d/ ]
+    do_install = !capture_all('bzr --version')[ /Bazaar \(bzr\) \d/ ]
     if do_install
         shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa", :white
     else
-        shout capture('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
+        shout capture_all('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
     end
   end
 
@@ -72,19 +75,19 @@ class NewComputer
     vals[:"browser.history_expire_days.mirror"] = 3
     vals[:"browser.history_expire_days"] = 3
     vals[:"browser.history_expire_sites"] = 400
-    grep_vals = capture("grep history -r ~/.mozilla/firefox --include=prefs.js")
-    
+    grep_vals = capture_all("grep history -r ~/.mozilla/firefox --include=prefs.js")
+
     vals.each do |k,v|
         shout "Change Firefox: #{k} ===>> #{v}" if !grep_vals[/#{k}...#{v}/]
     end
 
-    plugins = [ "Adblock Plus", 
-        "Firebug", "Fission", 
+    plugins = [ "Adblock Plus",
+        "Firebug", "Fission",
         "Live HTTP headers",
         'Chromifox Companion',
         'Chromifox Extreme']
     plugins.each do |plug|
-        results = capture("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
+        results = capture_all("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
         shout "Install #{plug} for Firefox" if !results[plug]
     end
   end
@@ -94,14 +97,14 @@ class NewComputer
     vimrc = (MY_PREFS / 'vim/vimrc.vim')
     new_vim_rc = Pow('~/.vimrc')
     if !new_vim_rc.exists?
-        shout(capture('ln -s %s %s' % [vimrc.to_s.inspect, new_vim_rc.to_s.inspect] ))
+        shout(capture_all('ln -s %s %s' % [vimrc.to_s.inspect, new_vim_rc.to_s.inspect] ))
     end
 
     bash_file = Pow(File.expand_path('~/.bashrc')).read
     if !bash_file['gvim --remote-tab-silent']
         shout('Put alias gvim="gvim --remote-tab-silent" at the end of your ~/.bashrc file.')
     end
-    
+
     vivid = (MY_PREFS / 'vim' / 'dotvim')
     home_vivid = Pow(File.expand_path('~/.vim'))
     both_exists = vivid.exists? && home_vivid.exists?
@@ -110,30 +113,30 @@ class NewComputer
     if both_exists && !both_match
         shout( "Delete #{home_vivid}"  )
     elsif do_install
-        shout(capture("ln -s %s %s" % [vivid.to_s.inspect, home_vivid.to_s.inspect]))
+        shout(capture_all("ln -s %s %s" % [vivid.to_s.inspect, home_vivid.to_s.inspect]))
     end
   end
 
   def install_irb
-    
+
     home_irb = Pow(File.expand_path("~/.irbrc"))
     irb = (MY_PREFS / 'ruby' / 'irbrc.rb')
-    
+
     both_exist = home_irb.exists? && irb.exists?
-    both_match = both_exist && 
-                    (home_irb.read.strip == irb.read.strip) && 
+    both_match = both_exist &&
+                    (home_irb.read.strip == irb.read.strip) &&
                         File.symlink?(home_irb.to_s)
 
-    
+
     install_irb = !both_exist && irb.exists?
 
-    if both_exist && !both_match 
+    if both_exist && !both_match
         shout "DELETE file: #{home_irb}"
     end
-    
+
     if install_irb
-        shout `gem install wirble` if !capture('gem list')['wirble']
-        shout(capture("ln -s %s %s" % [irb.to_s.inspect, home_irb.to_s.inspect]))
+        shout `gem install wirble` if !capture_all('gem list')['wirble']
+        shout(capture_all("ln -s %s %s" % [irb.to_s.inspect, home_irb.to_s.inspect]))
     end
   end
 
@@ -141,16 +144,16 @@ class NewComputer
     gem_rc_yaml = (MY_PREFS / 'ruby' / 'gemrc.yaml')
     gem_rc = Pow('~/.gemrc')
     both_exists = gem_rc_yaml.exists? && gem_rc.exists?
-    both_match = both_exists && 
-                  gem_rc_yaml.read.strip == gem_rc.read.strip && 
+    both_match = both_exists &&
+                  gem_rc_yaml.read.strip == gem_rc.read.strip &&
                     File.symlink?(gem_rc.to_s)
-    do_link = gem_rc_yaml.exists? && !both_exists 
+    do_link = gem_rc_yaml.exists? && !both_exists
 
     if do_link
-        shout capture('ln -s %s %s' % [gem_rc_yaml.to_s.inspect,  gem_rc.to_s.inspect] )
+        shout capture_all('ln -s %s %s' % [gem_rc_yaml.to_s.inspect,  gem_rc.to_s.inspect] )
     else
         shout "#{gem_rc_yaml} not found." if !gem_rc_yaml.exists?
-        shout "#{gem_rc} must be deleted." if both_exists && !both_match 
+        shout "#{gem_rc} must be deleted." if both_exists && !both_match
     end
     shout "Installing gems using task: gems:update", :yellow
     shout capture_task('gems:update'), :white
@@ -162,16 +165,16 @@ class NewComputer
     sudo_light_conf = Pow("/etc/lighttpd/lighttpd.conf")
 
     if !light_conf.exists?
-        shout "File not found: #{light_conf}"      
+        shout "File not found: #{light_conf}"
     end
-    
+
     both_exist = light_conf.exists? && sudo_light_conf.exists?
     both_match = both_exist && ( light_conf.read.strip != sudo_light_conf.read.strip )
 
     if both_exist && !both_match
-        shout( "Sudo copy file to #{sudo_light_conf}" ) 
+        shout( "Sudo copy file to #{sudo_light_conf}" )
     end
-    
+
   end
 
   def install_open_with_gvim_tabs
@@ -200,3 +203,4 @@ NoDisplay=true
 
 
 end # === class NewComputer
+

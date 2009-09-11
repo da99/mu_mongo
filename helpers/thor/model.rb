@@ -1,11 +1,12 @@
 # ====================================================================================
 # ====================================================================================
 
-class Model 
+class Model < Thor
 
-  include Blato
+  include CoreFuncs
   
-  bla( :list, 'Display a list of all models.' ) {
+  desc  :list, 'Display a list of all models.'
+  def list
     require 'sequel/extensions/inflector'
     Pow("models").each { |ele|
       file_basename = File.basename(ele.to_s)
@@ -13,22 +14,24 @@ class Model
         shout( file_basename.sub('.rb', '').camelize, :white )
       end
     }
-  }
+  end
 
-  bla( :create, "Create a new model in the /model directory. Case and plurality are handled automatically." ) {
+  desc  :create, "Create a new model in the /model directory. Case and plurality are handled automatically."
+  def create
     require 'sequel/extensions/inflector' # for String#underscore, etc.
-    m         = HighLine.new.ask('Name of new model:').strip.camelize.singularize
+    m         = ask('Name of new model:').strip.camelize.singularize
 
     file_path = Pow("models/#{m.underscore}.rb")
     
-    txt = eval( %~"#{Pow(File.expand_path('~/' + MEGA_APP_NAME + '/models/template.txt')).read}"~ )
-    Blato.write_file(file_path, txt)
+    txt = eval( %~"#{Pow(File.expand_path('~/' + primary_app + '/models/template.txt')).read}"~ )
+    write_file_or_raise(file_path, txt)
     
-    shout "Finished writing: #{file_path}", :white
+    whisper "Finished writing: #{file_path}"
     
-  }
+  end
 
-  bla( :destroy, "Move a model to a scrap area relative to working directory. (Moves controller and views too.)"  ) do
+  desc  :destroy, "Move a model to a scrap area relative to working directory. (Moves controller and views too.)" 
+  def destroy
     require 'sequel/extensions/inflector'
     m = ask('Name of model:').strip.camelize
     scrap_dir = Pow!( ask('Name of scrap directory (default ../nptv_scraps)') { |q| q.default =  '../nptv_scraps' } )
@@ -43,7 +46,7 @@ class Model
     end
 
     exec_and_check = lambda { |comm|
-      results = system_capture(comm)
+      results = capture_all(comm)
       raise "Something went wrong when executing: #{comm}" if !results
       results
     }

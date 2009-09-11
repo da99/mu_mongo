@@ -1,18 +1,19 @@
-class Faml 
-  include Blato
+class Faml < Thor
+  include CoreFuncs
   TAB_SPACES = 2
 
-  attr_accessor :compiled_layout_content 
 
-  bla :compile, "Turn all files in /../compiled into HTML web.py templates." do
+
+  desc :compile, "Turn all files in /../compiled into HTML web.py templates."
+  def compile
     Dir['**/compiled'].each do |compiled_dir|
-      
+
       dir   = Pow( File.dirname( compiled_dir )  )
       c_dir = Pow( compiled_dir )
 
       # raise "#{dir} does not exist." if !dir.directory?
-      # shout(capture('mkdir %s' % c_dir.to_s.inspect)) if !c_dir.directory?
-      
+      # shout(capture_all('mkdir %s' % c_dir.to_s.inspect)) if !c_dir.directory?
+
       dir.each { |f|
         if f.file? && f.to_s =~ /\.faml\.rb$/
           content  = compile_file(f)
@@ -26,6 +27,10 @@ class Faml
     end
   end
 
+  private # ================================================================
+
+  attr_accessor :compiled_layout_content
+
   def compile_file(raw_file_name)
     divider = '__START__'
 
@@ -38,7 +43,7 @@ class Faml
     faml = if starts.size == 1
       starts.pop
     else
-      python = starts.shift 
+      python = starts.shift
       starts.join('__START__')
     end
 
@@ -53,13 +58,13 @@ class Faml
       # SPACES, TAG, ATTRIBUTES, CONTENT
       if l =~ new_tag
         spaces = (l =~ /^(\ {0,})/ && $1.size)
-        tags << { :spaces => spaces , 
-        :tag => pieces.shift.strip, 
+        tags << { :spaces => spaces ,
+        :tag => pieces.shift.strip,
         :attrs => pieces.join(':'),
         :content => "" }
         if spaces < last_max
 
-        else  
+        else
 
         end
         last_max = spaces
@@ -89,9 +94,9 @@ class Faml
     raise ArgumentError, "Invalid tags: #{tags.inspect}" if !tags
     return "" if tags.empty?
     open_tags = []
-    
+
     t = tags.shift
-    
+
     indent =  " " * t[:spaces]
     attrs = (" " + t[:attrs].to_s )
     attrs = '' if attrs.strip.empty?
@@ -103,22 +108,21 @@ class Faml
     return indent + "<#{t[:tag]} #{attrs} />\n#{t[:content]}\n#{indent}#{compile_tags(tags)}" if self_closing
     if tags.empty?
       content = "<#{t[:tag]}#{attrs}>\n#{t[:content]}\n#{indent}#{end_tag}"
-    
+
     elsif tags.first[:spaces] == t[:spaces]
       content = "<#{t[:tag]}#{attrs}>\n#{t[:content]}\n#{indent}#{end_tag}\n#{compile_tags(tags)}"
-    
+
     elsif tags.first[:spaces] > t[:spaces]
       content = "<#{t[:tag]}#{attrs}>\n#{t[:content]}\n#{compile_tags(tags)}\n#{indent}#{end_tag}\n#{compile_tags(tags)}"
-    
+
     elsif tags.first[:spaces] < t[:spaces]
-      content = "<#{t[:tag]}#{attrs}>\n#{t[:content]}\n#{indent}#{end_tag}" 
-    
+      content = "<#{t[:tag]}#{attrs}>\n#{t[:content]}\n#{indent}#{end_tag}"
+
     end
-    
+
     indent + content
   end
 
 
 end # === Faml
-
 

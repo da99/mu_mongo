@@ -1,7 +1,6 @@
-class Doc
-  include Blato
-  
-  bla :generate , "Generate documentation." do
+class Doc < Thor  
+  desc :generate , "Generate documentation."
+  def generate
       ignore_files = File.read(".gitignore").map { |l| 
                         new_l = l.strip
                         ( new_l = new_l.sub('*','') + '$' ) if new_l =~ /\*/

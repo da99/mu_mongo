@@ -1,27 +1,12 @@
-#!/home/da01/rubyee/bin/ruby
-$KCODE = 'u' # Needed to handle non-ascii file paths.
+
 require 'rubygems'
 require 'sequel'
 require 'sequel/extensions/inflector'
 require File.expand_path('~/megauni/helpers/kernel')
-require 'highline'
-require 'stringio' 
 
 
 
 
-APP_NAME        = File.basename(File.expand_path('.'))
-MEGA_APP_NAME   = 'megauni'
-RAKE_HELPERS    = 'helpers/rake'
-BLATO_HELPERS   = File.expand_path( '~/' + MEGA_APP_NAME + '/helpers/blato' )
-LIFE_DIR        = Pow(File.expand_path('~/MyLife'))
-DESKTOP_DIR     = Pow(File.expand_path('~/Desktop'))
-BLATO_LOG       = (DESKTOP_DIR / 'blato_log.txt')
-BACKUP_DIR      = Pow('/media/Patriot/MyLifeBackup')
-MY_EMAIL        = 'diego@megauni.com'
-MY_NAME         = 'da01tv'
-MINIUNI_API_KEY = 'luv.4all.29bal--w0l3mg930--3'
-MY_PREFS        = (LIFE_DIR / 'MyPrefs')
 
 module Blato
 

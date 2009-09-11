@@ -2,18 +2,14 @@
 # ====================================================================================
 # ====================================================================================
 
-def get_skin_name_and_dir
-  skin_name = ask('Skin name. (Default is "jinx"):' ) { |q| q.default =  'jinx' }
-  skin_dir = Pow!("views/skins/#{skin_name}")
-  raise "Skin dir does not exist: views/skins/#{skin_name}" unless skin_dir.exists?  
-  [skin_name, skin_dir]
-end
 
-class View 
 
-  include Blato
+class View < Thor
 
-  bla( :update, "Change view name." ) do
+  include CoreFuncs
+
+  desc  :update, "Change view name." 
+  def update
     old_view_name = ask("Old view name:").strip
     new_view_name = ask("New view name:").strip
     skin_name , skin_dir = get_skin_name_and_dir
@@ -38,8 +34,8 @@ class View
     shout "Done. Don't forget search for all SASS files and change\n#{old_view_name}  ==>  #{new_view_name}"
   end
   
-	bla( :create , "Create a view file with SASS file (unless it is a partial)." ) do
-
+	desc  :create , "Create a view file with SASS file (unless it is a partial)." 
+  def create
     # Require Sequel in order to use :camelize method
     require 'sequel/extensions/inflector'
     void_actions = ['create', 'update', 'delete', 'destroy']
@@ -68,8 +64,15 @@ class View
       end # === if void_actions.include?(action_name)
     }
 
-
-
 	end # === task :create 
+
+  private # =========================================================
+
+  def get_skin_name_and_dir
+    skin_name = ask('Skin name. (Default is "jinx"):' ) { |q| q.default =  'jinx' }
+    skin_dir = Pow!("views/skins/#{skin_name}")
+    raise "Skin dir does not exist: views/skins/#{skin_name}" unless skin_dir.exists?  
+    [skin_name, skin_dir]
+  end
 
 end # === namespace :view
