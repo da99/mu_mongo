@@ -18,22 +18,24 @@ class Git < Thor
   desc :commit, {:msg=>[String, nil]}, 'Gathers comment and commits it. Example: git:commit message="My commit." '
   method_options :msg => :string
   def commit
-    msg = ask("Commit message:")
+    
     output = invoke :update
+
     if commit_pending?(output)
-      raw_comment = (msg.to_s.empty? ? 
+      raw_comment = ( options[:msg].to_s.empty? ? 
                         ask('===> Enter one line comment:', :white)  :
-                        msg)
+                        options[:msg])
       say capture_all( 'git commit -m %s ', raw_comment), :white 
       say "COMMITTED: #{raw_comment}", :white
     else
       say "NO GO: Nothing to commit.", :red
     end
+
   end
   
   desc :dev_check, "Used to update and commit development checkpoint. Includes the commit comment for you." 
   def dev_check
-    invoke :commit, :msg=>'Development checkpoint.'
+    invoke 'git:commit', [], :msg=>'Development checkpoint.'
   end # === task    
   
   desc :push, "Push code to Heroku. Options: open_browser = true, migrate = false" 
