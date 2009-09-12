@@ -63,11 +63,15 @@ p
     +grid-width(10)
   #nav_bar
     padding: 0 0 200px
-    
   #content
     +grid-width(5)
-
-
+  form
+    padding: 0
+    fieldset
+      input.text
+        width: 240px
+      textarea
+        width: 240px
 
   
 a:link, a:visited
@@ -224,11 +228,7 @@ form
     button
       text-transform: uppercase
 
-form.single
-  padding: 0
-  fieldset
-    input.text
-      width: 220px
+
       
 #footer
   +grid-unit-base
