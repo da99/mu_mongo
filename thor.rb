@@ -14,7 +14,8 @@ module CoreFuncs
   MY_PREFS        = (LIFE_DIR / "MyPrefs")
   DESKTOP_DIR     = Pow(File.expand_path('~/Desktop'))
   BLATO_LOG       = (DESKTOP_DIR / 'blato_log.txt')
-  BACKUP_DIR      = Pow('/media/Patriot/MyLifeBackup')
+  BACKUP_DIR      = Pow('~/Dropbox')
+  MY_ERROR_LOG       = Pow('~/Desktop/errors_from_thor.txt')
   MY_EMAIL        = 'diego@megauni.com'
   MY_NAME         = 'da01tv'
   MINIUNI_API_KEY = 'luv.4all.29bal--w0l3mg930--3'
@@ -24,6 +25,22 @@ module CoreFuncs
 
   def development?
     File.exists?('/home/da01')
+  end
+
+  def append_to_my_error_log(content)
+    orig_content = ''
+    error_log = MY_ERROR_LOG
+    if MY_ERROR_LOG.exists?
+      if MY_ERROR_LOG.file?
+        orig_content = MY_ERROR_LOG.read
+      else
+        orig_content = 'ERROR LOG NEEDS TO BE A FILE: ' + MY_ERROR_LOG.to_s
+        error_log = Pow("~/Desktop/new_error_log.#{Time.now.utc.to_i}.txt")
+      end
+    end
+    error_log.create {|f| 
+      f.puts content + orig_content
+    }
   end
 
   def shout msg, color=:red

@@ -26,7 +26,7 @@ class Git < Thor
       if raw_comment.empty?
         return shout('Comment must not be empty.')
       else
-        say capture_all( 'git commit -m %s ', raw_comment), :white
+        say capture_all( 'git commit -m %s ', raw_comment)
         say "COMMITTED: #{raw_comment}", :white
       end
     else
