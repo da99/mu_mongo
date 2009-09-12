@@ -95,7 +95,6 @@ a:hover, a:active, a:focus
   padding-top: 20px
   
 #flash_msg
-  background= !highlight
   padding: 5px
   h4 
     text-transform: uppercase
@@ -106,6 +105,12 @@ a:hover, a:active, a:focus
     font-weight: bold
     background= !red
     color: #fff
+  &.success_msg
+    background= !highlight
+    h4
+      color= !dark_blue
+    div.msg
+      color= !dark_green
 #nav_bar
   +grid(4)
   margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 

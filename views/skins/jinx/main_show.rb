@@ -12,5 +12,11 @@ save_to('meta_keywords') {
 partial('__nav_bar')
 
 
-div.content!  "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold;"
+div.content! {
+  if the_app.flash_msg?
+    partial '__flash_msg'
+  end
+  div "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold;"
+
+}
 

@@ -1,7 +1,7 @@
 
 # =============================== SESSION ACTIONS ==============================
 
-get "/log\-in/" do
+get "/log-in/" do
   require_ssl!
   describe :session, :new
   render_mab
@@ -21,9 +21,9 @@ post( "/log-in/"  ) do
            
     begin 
       mem = Member.validate_username_and_password(clean_room[:username], clean_room[:password] )
-      self.current_member = mem.username
+      self.current_member = mem
       redirect( session[:return_page] || '/account/' )
-    rescue Sequel::NoRecordFound, Member::IncorrectPassword
+    rescue Member::NoRecordFound, Member::IncorrectPassword
       begin
         LoginAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
         flash.error_msg = "Incorrect info. Try again."

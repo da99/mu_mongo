@@ -41,11 +41,11 @@ class Member < Sequel::Model
   # === See: Sinatra-authentication (on github)
   # Raises: Member::IncorrectPassword
   def self.validate_username_and_password( username, pass )
-      mem = self[:username => username]
+      un = Username[:username => username]
       
-      raise NoRecordFound, "#{username} was not found." if !mem
+      raise NoRecordFound, "#{username} was not found." if !un
       
-      return mem if BCrypt::Password.new(mem.hashed_password).eql?(pass + mem.salt) 
+      return un.owner if BCrypt::Password.new(un.owner.hashed_password) === (pass + un.owner.salt) 
 
       raise IncorrectPassword, "Try again."
   end # === self.authenticate
@@ -117,7 +117,7 @@ class Member < Sequel::Model
 
   validator :password do
     fn = :password
-    pass = raw_data[ fn ]
+    pass = raw_data[ fn ].to_s
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
     self.errors.add( fn, "and password confirmation do not match.") if pass != confirm_pass 

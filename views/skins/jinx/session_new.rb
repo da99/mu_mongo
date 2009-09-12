@@ -11,7 +11,7 @@ div.content! {
 
   h3 'Log-in'
   
-  form.single.log_in_form!( :action=>"/log-in", :method=>"post" ) {
+  form.single.log_in_form!( :action=>"/log-in/", :method=>"post" ) {
   
     fieldset {
       label 'Username'

@@ -19,10 +19,15 @@ div( :id=>"nav_bar" ) {
       ['/salud/', 'Salud (Health)', :main, :salud] ,
       ['/my-egg-timer/', 'My Egg Timer', :egg, :my] ,
       ['/busy-noise/', 'Busy Noise Timer', :egg, :busy],
-      ['/help/', 'Help', :main, :help]
+      ['/help/', 'Help', :main, :help],
+      ['/log-out/', 'Logout', :session, :destroy],
       #['/sign-up', 'Sign-up', :member, :new],
-      #['/log-in', 'Log-in', :session, :new]
+      ['/log-in/', 'Log-in', :session, :new]
     ].each { |path, text, c_name, a_name|
+
+      next if path == '/log-out/' && !the_app.logged_in?
+      next if path == '/log-in/' && the_app.logged_in?
+
       if the_app.current_action[:controller] == c_name && the_app.current_action[:action] == a_name
         li.selected { 
           span text

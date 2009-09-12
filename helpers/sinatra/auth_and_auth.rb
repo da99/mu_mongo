@@ -11,8 +11,10 @@ helpers do # ===============================
   # === Member related helpers ========================
   
   def require_log_in!
-    session[:return_page] = request.fullpath
-    redirect('/log-in/')
+    if !logged_in?
+      session[:return_page] = request.fullpath
+      redirect('/log-in/')
+    end
   end
 
   def log_out!
@@ -34,12 +36,12 @@ helpers do # ===============================
 
   def current_member=(mem)
       raise "CURRENT MEMBER ALREADY SET" if mem && session[:member_username]
-      session[:member_username] = mem.username
+      session[:member_username] = mem.id
   end    
 
   def current_member
     return nil if !session[:member_username]
-    @current_member ||= Member[:username => session[:member_username] ]
+    @current_member ||= Member[:id => session[:member_username] ]
     return nil unless @current_member
     @current_member
   end # === def

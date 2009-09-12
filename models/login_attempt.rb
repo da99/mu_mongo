@@ -9,9 +9,9 @@ class LoginAttempt < Sequel::Model
   
   def self.log_failed_attempt( ip_address )
     params = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
-    old_la = LoginAttempt.filter params 
+    old_la = LoginAttempt.filter(params).first
     
-    return LoginAttempt.create( new_values ).total if !old_la
+    return LoginAttempt.create( params ).total if !old_la
     
     old_la.update :total => 'total + 1'.lit
     new_total = old_la.total + 1

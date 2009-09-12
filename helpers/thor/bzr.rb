@@ -45,7 +45,7 @@ class Bzr < Thor
     local_box = Rush::Box.new
     db_proc = local_box.processes.select { |pr| pr.command.match /dropbox/i }.first
     if !db_proc
-      shout local_box.bash( "dropbox start -i" )
+      shout local_box.bash( "/usr/bin/dropbox start -i" )
     end
     
     if !commits_pending?
