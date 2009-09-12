@@ -33,7 +33,7 @@ class Bzr < Thor
 
     # Find all files with unusual characters in filename.
     pattern = /[^a-z0-9\/\,\ \.\_\-]/i
-    files = capture_all("find %s -iname \"*.desktop\"", LIFE_DIR ).split("\n")
+    files = capture_all('find %s -iname "*.desktop"', LIFE_DIR ).split("\n")
     files.each { |f|
       if f =~ pattern
         new_file_path = File.join( File.dirname(f), File.basename( f ).gsub( pattern , '-') )

@@ -76,38 +76,19 @@ module CoreFuncs
   end
 
   def capture_all(*args)
-    args << :single
-    shell_capture *args
+    shell_capture( *args ).join("\n").strip
   end
 
-  def shell_capture(cmd = 'ls', *opts)
-
-    strs = opts.select { |s| s.respond_to?(:strip) }
-    args = opts - strs
-
-    if !strs.empty?
-      cmd = cmd % strs.map { |s| s.inspect }
-    end
-
-    valid_args = [:single]
-    invalid_args = args - valid_args
-    raise "Invalid args: #{invalid_args.inspect}" if !invalid_args.empty?
-    results = Open3.popen3(cmd) do |stdin, stdout, stderr|
-      [ stdout.read, stderr.read ]
-    end
-
-    return results.join("\n").strip if args.include?(:single)
-
-    output, errors = results
-    if !output.nil?
-      output = output.strip
-    end
-
-    if !errors.nil?
-      errors = errors.strip
-    end
-
-    [ output, errors ]
+  def shell_capture(*args)
+    stem    = args.shift
+    cmd     = stem % ( args.map { |s| s.to_s.inspect } )
+    results = Open3.popen3( cmd ) { |stdin, stdout, stderr|
+      [ stdout.read, stderr.read ].map { |s|
+        s.respond_to?(:strip) ?
+          s.strip :
+          s
+      }
+    }
   end
 
 end # === module CoreFuncs
