@@ -4,6 +4,10 @@
     ##########################################################
 helpers {
 
+      #
+      # Returns a UL-based string. All other text has been
+      # sanitized.
+      #
       def to_html_list(arr)
         vals = case arr
           when Array
@@ -15,7 +19,8 @@ helpers {
           else
             ['Unknown error.']
         end
-        '* ' + vals.map { |s| s.capitalize }.join("\n* ")
+        '<ul><li>' + vals.map { |s| Wash.html(s).capitalize }.join("\n</li><li>") + "</li></ul>"
+        # '* ' + vals.map {|s| Wash.html(s).capitalize }.join("\n")
       end
 
       # =========================================================

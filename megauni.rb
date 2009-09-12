@@ -26,7 +26,8 @@ use Rack::Session::Pool
 
 # Don't use ":sweep => true" because it 
 # will only allow you to use flash values once
-# per call, not per request.
+# per call, not per request. Or it could
+# prevent it's use after a redirect.
 use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg] 
 
 configure :test do
