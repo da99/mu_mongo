@@ -27,9 +27,13 @@ class Gems < Thor
           end
         }
       end    
-      whisper 'Please wait as gems are updated...'
-      whisper( output = capture_all('gem update') )
+      
+			please_wait 'Gems are being updated. This could take a while...'
+
+      output = capture_all('gem update') 
+			whisper output
       output
+
     end   
      
 end # === namespace :gems

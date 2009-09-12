@@ -1,7 +1,6 @@
 class Bzr < Thor
   include Thor::Sandbox::CoreFuncs
 
-  BZR_DIR= ( LIFE_DIR / '.bzr' )
   BZR_LOG =  Pow(File.expand_path('~/.bzr.log'))
   
   desc :quiet_my_life_dev_check, "Just like :my_life_dev_check, but stores all output in ~/.bzr.log"
@@ -15,7 +14,6 @@ class Bzr < Thor
 
   desc :my_life_dev_check, "Commits, if any, changes as a dev. check., then copies to BACKUP_DIR"
   def my_life_dev_check
-    status = "cd %s && " % (LIFE_DIR).to_s
     Dir.chdir( LIFE_DIR.to_s )
 
     # Check if errors occurred last time.
@@ -41,30 +39,34 @@ class Bzr < Thor
       end
     }
 
-    return( whisper 'Nothing to commit.' ) if commits_pending?
+    if !commits_pending?
+      whisper 'Nothing to commit.'
+      return false
+    end
     
     whisper capture_all( 'bzr commit -m %s ', "Development checkpoint: #{Time.now.to_s}" )
     
     if !(BACKUP_DIR).exists?
       msg = 'Backup dir. does not exist: ' + BACKUP_DIR.to_s
       append_to_my_error_log msg
-      return( shout( msg ) ) 
+      shout( msg ) 
+      return nil
     end
 
-    whisper "Copying changes into backup dir: #{BACKUP_DIR}..."
+    # whisper "Copying changes into backup dir: #{BACKUP_DIR}..."
 
     # Copy recursive: -R
     # changed files only: -u
-    copy_status = capture_all("cp -Ru %s %s" , BZR_DIR, BACKUP_DIR )
+    # copy_status = capture_all("cp -Ru %s %s" , BZR_DIR, BACKUP_DIR )
 
-    if copy_status.empty?
+    # if copy_status.empty?
       whisper "Done"
-    else
-      append_to_my_error_log copy_status
-      shout "ERROR: #{copy_status}"
-    end
-
-    copy_status
+    # else
+    #  append_to_my_error_log copy_status
+    #  shout "ERROR: #{copy_status}"
+    # end
+    true
+    # copy_status
   end
 
   private # ==============================================================

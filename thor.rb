@@ -14,8 +14,9 @@ module CoreFuncs
   MY_PREFS        = (LIFE_DIR / "MyPrefs")
   DESKTOP_DIR     = Pow(File.expand_path('~/Desktop'))
   BLATO_LOG       = (DESKTOP_DIR / 'blato_log.txt')
-  BACKUP_DIR      = Pow('~/Dropbox')
-  MY_ERROR_LOG       = Pow('~/Desktop/errors_from_thor.txt')
+  BACKUP_DIR      = Pow('~/Dropbox/BZR_DIR')
+  BZR_DIR         = ( LIFE_DIR / '.bzr' )
+  MY_ERROR_LOG    = Pow('~/Desktop/errors_from_thor.txt')
   MY_EMAIL        = 'diego@megauni.com'
   MY_NAME         = 'da01tv'
   MINIUNI_API_KEY = 'luv.4all.29bal--w0l3mg930--3'
@@ -25,6 +26,15 @@ module CoreFuncs
 
   def development?
     File.exists?('/home/da01')
+  end
+
+  def make_symlink_or_raise(target, new_path)
+    raise ArgumentError, "Target already exists: #{target}" if File.exists?(target.to_s)
+    raise ArgumentError, "New path already exists: #{new_path}" if File.exists(new_path.to_s)
+
+    results = capture_all( "ln -s %s %s" , target, new_path)
+    raise ArgumentError, results if !results.empty?
+    true
   end
 
   def append_to_my_error_log(content)

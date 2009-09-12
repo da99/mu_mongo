@@ -5,6 +5,7 @@ class NewComputer < Thor
 
   desc  :start, "Prints out info. and checks installed gems. Safe to run multiple times."
   def start
+    
     shout "Install: http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem"
     shout %~
         Make sure Postgresql is installed.
@@ -30,6 +31,8 @@ class NewComputer < Thor
       whisper "18 * * * * cd /home/da01/megauni && #{capture_all('which thor')} bzr:quiet_my_life_dev_check"
     end
 
+    install_dropbox 
+
     install_firefox
 
     install_bzr
@@ -49,6 +52,41 @@ class NewComputer < Thor
   end # === desc :start
 
   private # ==================================================================
+
+  def install_dropbox
+    dropbox_path = capture_all('which dropbox')
+    if dropbox_path.empty?
+      shout "Install DropBox"
+    end
+
+    dropbox_dir = Pow('~/Dropbox')
+    if !dropbox_dir.exists?
+      results = capture_all('mkdir %s', dropbox_dir)
+      shout "Error in creating #{dropbox_dir}: #{results}"
+      return nil
+    end
+
+    if !dropbox_dir.directory?
+      shout "This needs to be a directory: #{dropbox_dir}"
+      return nil
+    end
+
+    dir_objs = capture_all('cd %s && ls', dropbox_dir).split("\n")
+    if dir_objs.size > 1
+      shout "Too many things in #{dropbox_dir}. Only one must exist."
+      return nil
+    end
+
+    if dir_objs.size == 0
+      make_symlink_or_raise(BZR_DIR, BACKUP_DIR)
+    end
+
+    if dir_objs.first != File.basename(BACKUP_DIR)
+      shout "Unknown object in backup directory: #{dir_objs.first}"
+      return nil
+    end
+
+  end
 
   def install_git
     do_install = !capture_all('git --version')[/git version \d/]
@@ -156,8 +194,7 @@ class NewComputer < Thor
         shout "#{gem_rc} must be deleted." if both_exists && !both_match
     end
 
-    please_wait "Installing gems using task: gems:update"
-    whisper invoke('gems:update')
+    invoke('gems:update')
 
   end
 
@@ -168,6 +205,7 @@ class NewComputer < Thor
 
     if !light_conf.exists?
         shout "File not found: #{light_conf}"
+        return nil
     end
 
     both_exist = light_conf.exists? && sudo_light_conf.exists?
@@ -175,7 +213,10 @@ class NewComputer < Thor
 
     if both_exist && !both_match
         shout( "Sudo copy file to #{sudo_light_conf}" )
+        return false
     end
+
+    true
 
   end
 
