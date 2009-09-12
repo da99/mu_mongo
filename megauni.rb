@@ -169,6 +169,7 @@ require_these 'actions', %w{
   old_app
   heart 
   member 
-  session 
+  session
+  news
 }
 

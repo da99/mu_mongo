@@ -22,7 +22,8 @@ post( "/log-in/"  ) do
     begin 
       mem = Member.validate_username_and_password(clean_room[:username], clean_room[:password] )
       self.current_member = mem
-      redirect( session[:return_page] || '/account/' )
+      return_page = session.delete :return_page
+      redirect( return_page || '/account/' )
     rescue Member::NoRecordFound, Member::IncorrectPassword
       begin
         LoginAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])

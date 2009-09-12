@@ -10,10 +10,14 @@ helpers do # ===============================
 
   # === Member related helpers ========================
   
-  def require_log_in!
-    if !logged_in?
+  def require_log_in!(level = :STRANGER)
+    if !logged_in? 
       session[:return_page] = request.fullpath
       redirect('/log-in/')
+    end
+
+    if current_member && !current_member.has_power_of?(level)
+      error(404, "Not found.")
     end
   end
 
@@ -26,7 +30,7 @@ helpers do # ===============================
     flash_session = session[:__FLASH__]
     
     session.clear
-    session[:return_page] if return_page
+    session[:return_page] = return_page
     session[:__FLASH__] = flash_session 
   end
   

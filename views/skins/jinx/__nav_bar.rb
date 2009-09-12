@@ -20,13 +20,22 @@ div( :id=>"nav_bar" ) {
       ['/my-egg-timer/', 'My Egg Timer', :egg, :my] ,
       ['/busy-noise/', 'Busy Noise Timer', :egg, :busy],
       ['/help/', 'Help', :main, :help],
-      ['/log-out/', 'Logout', :session, :destroy],
-      #['/sign-up', 'Sign-up', :member, :new],
-      ['/log-in/', 'Log-in', :session, :new]
-    ].each { |path, text, c_name, a_name|
+      ['/account/', 'My Account', :account, :show, :if_member],
+      ['/log-out/', 'Logout', :session, :destroy, :if_member],
+      ['/sign-up', 'Create Account', :member, :new, :if_not_member],
+      ['/log-in/', 'Log-in', :session, :new, :if_not_member]
+    ].each { |path, text, c_name, a_name, show|
 
-      next if path == '/log-out/' && !the_app.logged_in?
-      next if path == '/log-in/' && the_app.logged_in?
+      show_it = case show
+        when :if_member
+          the_app.logged_in?
+        when :if_not_member
+          !the_app.logged_in?
+        else
+          true
+      end
+
+      next if !show_it 
 
       if the_app.current_action[:controller] == c_name && the_app.current_action[:action] == a_name
         li.selected { 
