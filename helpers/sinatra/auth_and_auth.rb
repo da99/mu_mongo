@@ -17,12 +17,19 @@ helpers do # ===============================
 
   def log_out!
     return_page = session[:return_page]
+    
+    # I hate this because it requires specific implementation knowledge
+    # about Rack::Flash. However, until I figure out a better solution,
+    # here goes:
+    flash_session = session[:__FLASH__]
+    
     session.clear
     session[:return_page] if return_page
+    session[:__FLASH__] = flash_session 
   end
   
   def logged_in?
-    session[:member_username] && !current_member.new?
+    session[:member_username] && current_member && !current_member.new?
   end # === def      
 
   def current_member=(mem)

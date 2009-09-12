@@ -1,13 +1,11 @@
 #!/home/da01/rubyee/bin/ruby
-$KCODE = 'u' # Needed to handle non-ascii file paths.
+$KCODE = 'u' 
 
 require File.expand_path('~/megauni/helpers/kernel')
 require 'open3'
-# require File.expand_path('~/megauni/helpers/thor/__core_funcs')
-
+require 'rush'
 
 module CoreFuncs
-
   PRIMARY_APP     = 'megauni'
   APP_NAME        = File.basename(File.expand_path('.'))
   LIFE_DIR        = Pow(File.expand_path('~/MyLife'))
@@ -92,6 +90,7 @@ module CoreFuncs
   def shell_capture(*args)
     stem    = args.shift
     cmd     = stem % ( args.map { |s| s.to_s.inspect } )
+    
     results = Open3.popen3( cmd ) { |stdin, stdout, stderr|
       [ stdout.read, stderr.read ].map { |s|
         s.respond_to?(:strip) ?

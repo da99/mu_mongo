@@ -2,7 +2,6 @@ class NewComputer < Thor
 
   include Thor::Sandbox::CoreFuncs
 
-
   desc  :start, "Prints out info. and checks installed gems. Safe to run multiple times."
   def start
     
@@ -23,12 +22,13 @@ class NewComputer < Thor
         Alt+F2 > gconf-editor > "desktop / gnome / file_views"
     ~ if !gconf.exists? || !gconf.read['show_hidden_files']
 
+    cron_task ="cd /home/da01/megauni && #{capture_all('which thor')} bzr:quiet_my_life_dev_check"
     if !capture_all('which blato')['bin/blato']
       shout "Symlink blato to a path dir."
-    elsif !capture_all('crontab -l')['bin/blato bzr:my_life_dev_check']
+    elsif !capture_all('crontab -l')[cron_task]
       whisper "Setup CRONT:"
       whisper "crontab -e"
-      whisper "18 * * * * cd /home/da01/megauni && #{capture_all('which thor')} bzr:quiet_my_life_dev_check"
+      whisper "59 */3 * * * #{cron_task}"
     end
 
     install_dropbox 

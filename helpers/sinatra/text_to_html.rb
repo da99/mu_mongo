@@ -1,9 +1,8 @@
-module Sinatra
     ##########################################################
     # A collection of methods to take regular text and print
     # it as HTML.
     ##########################################################
-    module TextToHTML 
+helpers {
 
       def to_html_list(arr)
         vals = case arr
@@ -12,11 +11,10 @@ module Sinatra
           when Hash
             arr.values
           when String
-            [arr.to_s]
+            [arr]
           else
             ['Unknown error.']
         end
-        return '' if !vals
         '* ' + vals.map { |s| s.capitalize }.join("\n* ")
       end
 
@@ -80,10 +78,7 @@ module Sinatra
       end
 
       
-    end # === module ToHTML
-
-    helpers TextToHTML
-end # === module Sinatra
+}
 
 __END__
 

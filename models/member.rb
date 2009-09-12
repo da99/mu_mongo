@@ -120,9 +120,9 @@ class Member < Sequel::Model
     pass = raw_data[ fn ]
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
-    self.errors.add( fn, "Password and password confirmation do not match.") if pass != confirm_pass 
-    self.errors.add( fn, "Password must be longer than 5 characters.") if pass.length < 5   
-    self.errors.add( fn, "Password must have at least one number.") if !pass[/[0-9]/]
+    self.errors.add( fn, "and password confirmation do not match.") if pass != confirm_pass 
+    self.errors.add( fn, "must be longer than 5 characters.") if pass.length < 5   
+    self.errors.add( fn, "must have at least one number.") if !pass[/[0-9]/]
 
     return nil if !self.errors[fn].empty?
     

@@ -2,10 +2,18 @@ helpers {
 
   def clean_room
     @clean_room = params.inject({}) { |m, (k, val)|
-      if val.to_s.strip.empty?
-          m[k.to_sym] = nil
-      else
-          m[k.to_sym] = Wash.html(val)
+      m[k.to_sym] = case val
+        when Array
+          val.map { |s| Wash.html(s.to_s) }
+        when Hash
+          val.inject({}) { |m2, (k2, v2)|
+            m2[k2.to_sym] = Wash.html(v2.to_s)
+          }
+        else
+          s = val.to_s.strip
+          s.empty? ?
+              nil :
+              Wash.html(s)
       end
       m
     }

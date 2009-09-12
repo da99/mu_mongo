@@ -12,11 +12,11 @@ div.content! {
 
   h3 'Create a New Account'
   
-  form.single.sign_up_form!(:action=>"/member", :method=>"post") {
+  form.single.sign_up_form!(:action=>"/member/", :method=>"post") {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"username_name", :name=>"username[name]", :type=>"text", :value=>the_app.session[:form_username] )
+      input.text( :id=>"username_name", :name=>"username", :type=>"text", :value=>the_app.session[:form_username] )
     }
     
     fieldset {

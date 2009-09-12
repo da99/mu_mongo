@@ -21,7 +21,7 @@ post( "/log-in/"  ) do
            
     begin 
       mem = Member.validate_username_and_password(clean_room[:username], clean_room[:password] )
-      session[:member_username] = mem.username
+      self.current_member = mem.username
       redirect( session[:return_page] || '/account/' )
     rescue Sequel::NoRecordFound, Member::IncorrectPassword
       begin

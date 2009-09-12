@@ -9,15 +9,13 @@ end
 
           
 post( "/member/" ) do
-  
   log_out! 
   
   begin
 
     m = Member.creator( current_member, clean_room )
-    
+    self.current_member = m
     flash.success_msg = "Your account has been created."
-    session[:member_username] = m.username
     redirect('/account/')
     
   rescue Sequel::ValidationFailed
@@ -25,7 +23,7 @@ post( "/member/" ) do
     flash.error_msg = to_html_list( $!.message )
     session[ :form_username  ] = clean_room[:username] 
              
-    redirect('/sign-up/', 307) # temporary redirect
+    redirect('/sign-up/')
   end
     
 end # == post :create
@@ -47,7 +45,7 @@ put( "/member/" )  do
     flash.success_msg = "Data has been updated and saved."
     redirect('/account/')
   rescue Sequel::ValidationFailed
-    flash.error_msg = to_html_list(m.errors.full_messages)
+    flash.error_msg = to_html_list($!.message)
     redirect('/account/')
   end
 end # === put :update

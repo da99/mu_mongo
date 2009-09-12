@@ -23,7 +23,11 @@ require 'rack-flash'
 # Configurations
 # ===============================================
 use Rack::Session::Pool
-use Rack::Flash, :sweep => true, :accessorize => [:notice, :success_msg, :error_msg]
+
+# Don't use ":sweep => true" because it 
+# will only allow you to use flash values once
+# per call, not per request.
+use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg] 
 
 configure :test do
   require Pow('~/.megauni') 
@@ -80,10 +84,25 @@ helpers {
   def flash_msg?
     flash.success_msg || flash.error_msg || flash.notice
   end
+  def redirect(uri, *args)
+    if !request.get? && args.detect { |s| s.to_i > 200 && s.to_i < 500 }
+      raise ArgumentError, 
+            "No status code allowed for non-GET requests: #{args.inspect}"
+    end
+    if request.get?  || request.head?
+      status 302
+    else
+      status 303
+    end
+    response['Location'] = uri
+    halt(*args)
+  end  
 }
 
 
 require_these 'helpers/sinatra', %w{
+  sanitize_input
+  describe_action
   urls_and_ssl
   old_apps
   describe_action
@@ -92,6 +111,7 @@ require_these 'helpers/sinatra', %w{
   render_mab
   html_props_for_models
   swiss_clock
+  text_to_html
 }
 
 

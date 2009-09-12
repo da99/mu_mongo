@@ -1,3 +1,5 @@
+
+
 class Bzr < Thor
   include Thor::Sandbox::CoreFuncs
 
@@ -51,6 +53,13 @@ class Bzr < Thor
       append_to_my_error_log msg
       shout( msg ) 
       return nil
+    end
+
+    # Check if Dropbox is running.
+    local_box = Rush::Box.new
+    db_proc = local_box.process.select { |pr| pr.command.match /dropbox/i }.first
+    if !db_proc
+      shout local_box.bash( "dropbox start -i" )
     end
 
     # whisper "Copying changes into backup dir: #{BACKUP_DIR}..."

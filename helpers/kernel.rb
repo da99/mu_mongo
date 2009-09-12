@@ -33,7 +33,7 @@ end # == if
 def require_these( dir, allow_only=nil )
   Dir[ File.join(dir, '*.rb') ].each { |f| 
     file_name = f.sub(/\.rb$/, '') 
-    if allow_only.nil? || allow_only.include?(File.basename(file_name))
+    if allow_only.nil? || allow_only.empty? || allow_only.include?(File.basename(file_name))
      require Pow(f).to_s  
     end
   }
