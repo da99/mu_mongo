@@ -356,7 +356,7 @@ div.job.alarm {
 
         fieldset { 
           label { "Details:" }
-          textarea.text.name( ' ', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
+          textarea.text.name( '', :cols=>'10', :name=>'details' , :rows=>'5'  ) 
         }
 
         div.buttons { 

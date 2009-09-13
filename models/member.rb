@@ -13,14 +13,17 @@ class Member < Sequel::Model
   class IncorrectPassword < StandardError; end
   class InvalidPermissionLevel < StandardError; end
   
-  NO_ACCESS   = -1000
-  ADMIN       = 1000
-  EDITOR      = 10
-  MEMBER      = 1
-  STRANGER    = 0 # Used mainly by other classes/objects to identity
-                  # someone who is unknown or not logged in.
-                  
-  SECURITY_LEVELS   = [ NO_ACCESS, ADMIN , MEMBER , EDITOR, STRANGER ]
+  SECURITY_LEVELS_HASH = { :NO_ACCESS   => -1000,
+                           :ADMIN       => 1000,
+                           :EDITOR      => 10,
+                           :MEMBER      => 1,
+                           :STRANGER    => 0 }
+
+  SECURITY_LEVELS      = SECURITY_LEVELS_HASH.values
+  SECURITY_LEVEL_NAMES = SECURITY_LEVELS_HASH.keys
+  SECURITY_LEVELS_HASH.each do |k,v|
+    const_set k, v
+  end
   
   # =========================================================
   #                   ASSOCIATIONS
@@ -72,17 +75,19 @@ class Member < Sequel::Model
       # :ADMIN => 1000
       target_perm_level = raw_level.instance_of?(Symbol) ? 
                             self.class.const_get(raw_level) : 
-                            Integer(raw_level) ;
+                            raw_level ;
                                   
       case target_perm_level
         when self
           true
+        when NO_ACCESS
+          false
         when STRANGER
           true
         when MEMBER
           new? ? false : true
         when ADMIN
-          self[:id] === 1
+          self == Member.first && self[:permission_level] == ADMIN
         when EDITOR
           self[:permission_level] === EDITOR
         else

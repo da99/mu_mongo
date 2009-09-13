@@ -72,6 +72,7 @@ p
         width: 240px
       textarea
         width: 240px
+        height: 300px
 
   
 a:link, a:visited
@@ -208,18 +209,19 @@ div.form
   
 
 form  
-  padding: 20px
   label, div.title
     text-transform: uppercase
     font-weight: bold
     color: #003860
     display: block
   fieldset
+    padding: 0 0 15px 0
     input.text, select, option, textarea
       +input_text
     input.text, textarea
       width: 600px
-    padding: 0 0 15px 0
+    textarea
+      height: 200px
   div.group
     +clearfix
     fieldset

@@ -16,12 +16,12 @@ div.content!  {
 
     fieldset {
       label 'Teaser'
-      textarea(:id=>"news_teaser", :name=>"teaser")
+      textarea('', :id=>"news_teaser", :name=>"teaser")
     }
 
     fieldset {
       label 'body'
-      textarea(:id=>"news_body", :name=>"body")      
+      textarea('', :id=>"news_body", :name=>"body")      
     }
 
     fieldset {

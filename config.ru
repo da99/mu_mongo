@@ -22,10 +22,9 @@ rescue
     IssueClient.create( faux_env, Sinatra::Application.environment, $!)
   rescue
     dev_env = File.expand_path('.')['home/da01'] 
-    msg = dev_env ? $!.message  : ''
-
+		raise if dev_env
     before {
-      halt "Error occurred. Come back later. #{msg}"
+      halt "Error occurred. Come back later."
     }
   end
 

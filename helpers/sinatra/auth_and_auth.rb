@@ -4,12 +4,77 @@
 # require Pow!( '../lib/wash' )
 # require Pow!( '../lib/to_html' )
 
-set :valid_resource_actions, [:view, :index, :show, :create, :list, :edit, :update, :trash, :untrash]
+set :valid_resource_actions, [:view, :index, :show, :create, :list, :edit, :update]
 
 helpers do # ===============================   
 
   # === Member related helpers ========================
   
+  def restafarize!(model_name= nil)
+    
+    model_name = if !model_name
+      clean_room[:model]
+    else
+      model_name.to_s
+    end
+
+    model_name = model_name.pluralize if model_name
+    
+    model_class = if model_name
+      model_name_camel = model_name.camelize
+      Object.const_defined?( model_name_camel ) && Object.const_get(model_name_camel)
+    end
+
+    raise ArgumentError, "No model class found: #{model_name.inspect}" if !model_class
+
+    action = if request.get? 
+      case request.fullpath 
+        when /\/edit\/?$/
+          :edit
+        when /\/new\/?$/
+          :new
+        when /\/[0-9]+\/?$/
+          :show
+        else
+          :list
+      end
+    elsif request.post?
+      :create
+    elsif request.put?
+      :update
+    elsif request.delete?
+      :delete
+    else
+      nil
+    end
+
+    if !action
+      pass
+      return nil
+    end
+    
+    level = Member::SECURITY_LEVEL_NAMES.detect { |l|
+      pre  = l.to_s.downcase
+      list_name = "#{pre}_#{model_name}"
+      list = options.target.respond_to?(list_name) &&  options.send(list_name) 
+      
+      if list && !list.is_a?(Array)
+        raise ArgumentError, "#{list_name.inspect} needs to be Array."
+      end
+      
+      list && list.include?(action)
+    }
+
+    if level
+      require_log_in! level
+      describe model_name.to_sym, action 
+      return [level, model_class]
+    end
+
+    pass
+    nil
+  end
+
   def require_log_in!(level = :STRANGER)
     if !logged_in? 
       session[:return_page] = request.fullpath

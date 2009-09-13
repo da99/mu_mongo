@@ -4,6 +4,7 @@
 class Server < Thor
   include Thor::Actions
 
+	map '-d' => :dev
   desc 'dev', "Runs Thin server in :development mode. (Uses :exec.)"
   def dev
     invoke 'sass:delete'
