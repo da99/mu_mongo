@@ -42,11 +42,11 @@ class Bzr < Thor
     }
 
     # Check if Dropbox is running.
-    local_box = Rush::Box.new
-    db_proc = local_box.processes.select { |pr| pr.command.match /dropbox/i }.first
-    if !db_proc
-      shout local_box.bash( "/usr/bin/dropbox start -i" )
-    end
+    #local_box = Rush::Box.new
+    #db_proc = local_box.processes.select { |pr| pr.command.match /dropbox/i }.first
+    #if !db_proc
+    #  shout local_box.bash( "/usr/bin/dropbox start -i" )
+    #end
     
     if !commits_pending?
       whisper 'Nothing to commit.'

@@ -171,5 +171,6 @@ require_these 'actions', %w{
   member 
   session
   news
+	rest
 }
 
