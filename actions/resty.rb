@@ -1,3 +1,10 @@
+
+get '/:model/:id/' do
+  n, props = validate_as_resty!
+  eval("@#{clean_room[:model]} = n")
+  render_mab
+end
+
 get '/:model/new/' do
   validate_as_resty!
   render_mab
@@ -5,7 +12,7 @@ end
 
 post '/:model/' do 
   
-  n = validate_as_resty! 
+  n, props = validate_as_resty! 
     
   begin
     flash.success_msg = ( " %s was saved." % english_name( n ).capitalize )

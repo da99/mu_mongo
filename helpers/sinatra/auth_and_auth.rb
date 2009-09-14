@@ -5,17 +5,7 @@ helpers do # ===============================
 
   # === Member related helpers ========================
 
-  def validate_editor_for_resty_instance(model_class, resty_roles )
-    require_log_in!
-    instance = model_class[:id=>clean_room[:id]]
-    msg_404 = "#{moden_name.to_s.capitalize} not found."
-    error 404, msg_404 if !instance
-    member_levels = resty_roles.select { |l| !instance.respond_to?(l) }
-    i_meths = resty_roles - member_levels
-    in_assoc = i_meths.detect { |i| instance.send(i).include?(current_member) }
-    return instance if in_assoc || member_levels.detect {|l| current_member.has_power_of?(l) }
-    error 404, msg_404 
-  end
+
 
   def require_log_in!(*raw_levels)
     levels = raw_levels.flatten.uniq

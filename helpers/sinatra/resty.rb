@@ -35,7 +35,7 @@ helpers {
         when /\/[0-9]+\/?$/
           :show
         else
-          :list
+          :index
       end
     elsif request.post?
       :create
@@ -53,31 +53,53 @@ helpers {
     end
     
     resty = Resty.find(action, model_class)
-    # dev_log_it resty.inspect
+    dev_log_it [action, model_class].inspect # resty.inspect
     
     if resty
-      instance = case action
+      instance, attrs = case action
         when :create, :new
-          require_log_in! resty.creators.keys
-
+          l = require_log_in! resty.creators.keys
+          [nil, l && resty.creators[l]]
         when :update, :edit
-          validate_editor_for_resty_instance model_class, resty.updators.keys
-
+          i, l = validate_editor_for_resty_instance model_class, resty.updators.keys
+          i ? [i, resty.updators[l]] : [nil, nil]
         when :delete
-          validate_editor_for_resty_instance model_class, resty.deletors
-          
-        else
-          unless resty.viewers.keys.include?(:STRANGER)
-            validate_editor_for_resty_instance model_class, resty.viewers.keys
+          i, l = validate_editor_for_resty_instance model_class, resty.deletors
+          i ? [i, resty.deletors[l] ] : [nil, nil]
+        when :show
+          if resty.viewers.keys.include?(:STRANGER)
+            [ validate_instance_for_resty(model_class), resty.viewers[ :STRANGER ] ]
+          else
+            i, l = validate_editor_for_resty_instance model_class, resty.viewers.keys
+            [ i, resty.viewers[l] ]
           end
       end # === case action
 
       describe model_name.to_sym, action 
-      return instance
+      return [instance, attrs]
     end # === if level
 
     pass
     nil
+  end # === def
+
+  def validate_editor_for_resty_instance(model_class, resty_roles )
+    require_log_in!
+    instance = validate_instance_for_resty(model_class)
+    member_levels = resty_roles.select { |l| !instance.respond_to?(l) }
+    i_meths = resty_roles - member_levels
+    in_assoc = i_meths.detect { |i| instance.send(i).include?(current_member) }
+    level = member_levels.detect {|l| current_member.has_power_of?(l) }
+    return [instance, in_assoc || level ]  if in_assoc || level
+    not_found 
+  end # === def
+
+  def validate_instance_for_resty(model_class)
+    instance = model_class[:id=>clean_room[:id]]
+    not_found if !instance
+    instance
   end
+
+
 
 } # === helpers

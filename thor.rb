@@ -4,6 +4,8 @@ $KCODE = 'u'
 require File.expand_path('~/megauni/helpers/kernel')
 require 'open3'
 require 'rush'
+require 'sequel'
+require 'sequel/extensions/inflector'
 
 module CoreFuncs
   PRIMARY_APP     = 'megauni'
@@ -60,7 +62,7 @@ module CoreFuncs
   end
 
   def please_wait(msg)
-    say msg, :yellow
+    say msg + "\n", :yellow
   end
 
 

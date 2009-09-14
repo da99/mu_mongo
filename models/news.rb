@@ -8,7 +8,7 @@ class News < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  
+  one_to_many :taggings, :class_name=>'NewsTagging', :key=>:news_id
   
   # ==== HOOKS =========================================================
 

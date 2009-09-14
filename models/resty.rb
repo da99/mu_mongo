@@ -7,7 +7,7 @@ class Resty
   attr_accessor :updators
   attr_accessor :deletors
   
-  VALID_VIEW_ACTIONS = [:list, :show]
+  VALID_VIEW_ACTIONS = [:index, :show]
 
   class << self
     def validate_new_model_name(model_name)
@@ -52,7 +52,7 @@ class Resty
     arr.flatten.uniq.compact
   end
   
-  def viewer(level, *raw_actions)
+  def viewer(level, raw_actions = [:show])
     actions = __normalize_list__(raw_actions)
     invalid_actions = actions - VALID_VIEW_ACTIONS
     if !invalid_actions.empty?

@@ -21,19 +21,24 @@ before {
         request.path_info.to_s.strip.empty? )
     raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
   end
+
+  if request.get? && request.path_info =~ /\/m\/?$/
+    @mobile_request = true
+    request.path_info = File.join(request.path_info, "m/")
+  end
     
 } # === before  
 
 helpers {
  
     def mobile_request?(path = nil)
-      (path || request.path_info).strip =~ /\/m\/?$/
+      @mobile_request || (path || request.path_info).strip =~ /\/m\/?$/
     end
 
     def mobile_path(raw_path)
-      return raw_path if !raw_path.is_a?(String)
-      return raw_path if mobile_request?(raw_path)
-      File.join( raw_path.strip, 'm/')
+      return raw_path if !raw_path.respond_to?(:to_s)
+      return raw_path.to_s if mobile_request?(raw_path.to_s)
+      File.join( raw_path.to_s.strip, 'm/')
     end
 
     def mobile_path_if_requested(raw_path)

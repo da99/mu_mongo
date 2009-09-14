@@ -7,8 +7,7 @@ class Migration < Thor
   def create
 
     # Require Sequel in order to use :camelize method
-    require 'sequel/extensions/inflector'
-    
+        
     a = ask('Name of action: (e.g.: create, alter, drop, update)').strip.to_s.downcase
     raise "Unknown action: #{a}" if !%w{ create alter drop update insert }.include?(a)
     
@@ -30,7 +29,7 @@ class Migration < Thor
     }
     
     whisper "Done: #{file_path}"
-    `gvim --remote-tab-silent #{file_path.inspect}`
+    `gvim --remote-tab-silent #{file_path}`
 	end # === task :create_migration => "__setup__:env"
 
 end # === namespace :migration

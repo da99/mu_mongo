@@ -63,7 +63,7 @@ get %r{/hearts/by_tag/([0-9]+)/} do |id|
   @news = if !@news_tag
     []
   else
-    @news_taggings_dt = NewsTagging.select(:model_id).where(:tag_id=>Integer(id))
+    @news_taggings_dt = NewsTagging.select(:news_id).where(:tag_id=>Integer(id))
     News.where(:id=>@news_taggings_dt).reverse_order(:published_at).all
   end
   render_mab

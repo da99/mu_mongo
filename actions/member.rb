@@ -57,7 +57,7 @@ configure do
   restafarize :member do
     creator :STRANGER, :password
     updator :self,    :password
-    updator :ADMIN,    :permission_level  
+    updator :ADMIN,  :permission_level , :redirect => '/account/'
   end
 end
 

@@ -1,7 +1,7 @@
 
 
 class Db < Thor
-
+  include Thor::Sandbox::CoreFuncs
 	desc :migrate_up,  "Migrate to latest version." 
   def migrate_up
 		whisper "Migrating Up..."
