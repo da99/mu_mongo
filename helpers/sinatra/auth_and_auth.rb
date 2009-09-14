@@ -1,89 +1,37 @@
 
 
-# ============= Include lib files.
-# require Pow!( '../lib/wash' )
-# require Pow!( '../lib/to_html' )
-
-set :valid_resource_actions, [:view, :index, :show, :create, :list, :edit, :update]
 
 helpers do # ===============================   
 
   # === Member related helpers ========================
-  
-  def restafarize!(model_name= nil)
-    
-    model_name = if !model_name
-      clean_room[:model]
-    else
-      model_name.to_s
-    end
 
-    model_name = model_name.pluralize if model_name
-    
-    model_class = if model_name
-      model_name_camel = model_name.camelize
-      Object.const_defined?( model_name_camel ) && Object.const_get(model_name_camel)
-    end
-
-    raise ArgumentError, "No model class found: #{model_name.inspect}" if !model_class
-
-    action = if request.get? 
-      case request.fullpath 
-        when /\/edit\/?$/
-          :edit
-        when /\/new\/?$/
-          :new
-        when /\/[0-9]+\/?$/
-          :show
-        else
-          :list
-      end
-    elsif request.post?
-      :create
-    elsif request.put?
-      :update
-    elsif request.delete?
-      :delete
-    else
-      nil
-    end
-
-    if !action
-      pass
-      return nil
-    end
-    
-    level = Member::SECURITY_LEVEL_NAMES.detect { |l|
-      pre  = l.to_s.downcase
-      list_name = "#{pre}_#{model_name}"
-      list = options.target.respond_to?(list_name) &&  options.send(list_name) 
-      
-      if list && !list.is_a?(Array)
-        raise ArgumentError, "#{list_name.inspect} needs to be Array."
-      end
-      
-      list && list.include?(action)
-    }
-
-    if level
-      require_log_in! level
-      describe model_name.to_sym, action 
-      return [level, model_class]
-    end
-
-    pass
-    nil
+  def validate_editor_for_resty_instance(model_class, resty_roles )
+    require_log_in!
+    instance = model_class[:id=>clean_room[:id]]
+    msg_404 = "#{moden_name.to_s.capitalize} not found."
+    error 404, msg_404 if !instance
+    member_levels = resty_roles.select { |l| !instance.respond_to?(l) }
+    i_meths = resty_roles - member_levels
+    in_assoc = i_meths.detect { |i| instance.send(i).include?(current_member) }
+    return instance if in_assoc || member_levels.detect {|l| current_member.has_power_of?(l) }
+    error 404, msg_404 
   end
 
-  def require_log_in!(level = :STRANGER)
+  def require_log_in!(*raw_levels)
+    levels = raw_levels.flatten.uniq
+    invalid_levels = levels - Member::SECURITY_LEVEL_NAMES
+    raise ArgumentError, "Invalid levels: #{invalid_levels.inspect}" if !invalid_levels.empty?
     if !logged_in? 
       session[:return_page] = request.fullpath
       redirect('/log-in/')
     end
 
-    if current_member && !current_member.has_power_of?(level)
+    level = levels.detect {|l| current_member.has_power_of?(l) }
+    if current_member && !level
       error(404, "Not found.")
     end
+
+    level
   end
 
   def log_out!
@@ -137,7 +85,7 @@ end # === helpers
         
 before {
     
-    require_ssl! if request.cookies["logged_in"] || request.post?
+    require_ssl! if logged_in? || request.cookies["logged_in"] || request.post?
     
 } # === before  
 

@@ -22,18 +22,14 @@ class News < Sequel::Model
     updated_at || created_at
   end
 
-  def changes_from_editor( params, mem )
-    if new?
-        self[:owner_id] = mem[:id]
-    end
-    if [self.owner].include?(mem)
-        @current_editor = mem
-        @editable_by_editor = []       
-    end
-    super
-  end # === def changes_from_editor
+  allow_creator :ADMIN do
+    require_columns :title, :body
+    optional_columns :teaser, :published_at, :tags
+  end
 
-  def validate_new_values
-  end # === def validate_new_values
+  allow_updator :ADMIN do
+    optional_columns :title, :body, :teaser, :published_at, :tags
+  end
+
 
 end # === end News

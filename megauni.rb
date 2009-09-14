@@ -108,6 +108,7 @@ require_these 'helpers/sinatra', %w{
   old_apps
   describe_action
   auth_and_auth
+  resty
   render_ajax_response
   render_mab
   html_props_for_models
@@ -171,6 +172,6 @@ require_these 'actions', %w{
   member 
   session
   news
-	rest
+	resty
 }
 

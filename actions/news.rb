@@ -1,6 +1,8 @@
-configure do
-  set :stranger_news, [:list]
-  set :admin_news, [:new, :edit, :create, :update, :delete]
-end
 
+configure do
+  resty :news do 
+    viewer :STRANGER, [ :list, :show ]
+    c_u_d :ADMIN, [:title, :body, :teaser, :published_at, :tags]
+  end
+end
 

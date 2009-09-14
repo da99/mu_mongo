@@ -51,6 +51,15 @@ put( "/member/" )  do
 end # === put :update
 
 
+__END__
+
+configure do
+  restafarize :member do
+    creator :STRANGER, :password
+    updator :self,    :password
+    updator :ADMIN,    :permission_level  
+  end
+end
 
 
 
