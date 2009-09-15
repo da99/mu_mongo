@@ -11,6 +11,12 @@ div.content! {
     span ", over to this new site."
   }
   
+	if the_app.is_creator?
+		div {
+			a('Create', :href=>'/news/new/')
+		}
+	end
+
   div.heart_link.archives! {
     h4 'Archives By Date and Tag'
     div.body {

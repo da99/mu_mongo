@@ -5,8 +5,6 @@ helpers do # ===============================
 
   # === Member related helpers ========================
 
-
-
   def require_log_in!(*raw_levels)
     levels = raw_levels.flatten.uniq
     invalid_levels = levels - Member::SECURITY_LEVEL_NAMES
@@ -15,6 +13,8 @@ helpers do # ===============================
       session[:return_page] = request.fullpath
       redirect('/log-in/')
     end
+
+		return :STRANGER if logged_in? && levels.empty?
 
     level = levels.detect {|l| current_member.has_power_of?(l) }
     if current_member && !level
