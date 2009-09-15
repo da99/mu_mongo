@@ -59,24 +59,38 @@ helpers {
       instance, attrs = case action
         when :create, :new
           l = require_log_in! resty.creators.keys
-          [nil, l && resty.creators[l]]
+          return nil if !l
+          describe_resty  :security_level=>l, 
+                          :columns=> resty.creators[l],
+                          :model_class=>model_class
         when :update, :edit
           i, l = validate_editor_for_resty_instance model_class, resty.updators.keys
-          i ? [i, resty.updators[l]] : [nil, nil]
+          return nil if !i
+          describe_resty  :instance=>i,
+                          :security_level=>l,
+                          :columns=>resty.updators[l]
         when :delete
           i, l = validate_editor_for_resty_instance model_class, resty.deletors
-          i ? [i, resty.deletors[l] ] : [nil, nil]
+          return nil if !i 
+          describe_resty :instance=>i,
+                         :security_level=>l
         when :show
           if resty.viewers.keys.include?(:STRANGER)
-            [ validate_instance_for_resty(model_class), resty.viewers[ :STRANGER ] ]
+            i = validate_instance_for_resty(model_class)
+            return nil if !i
+            describe_resty :instance=>i,
+                            :security_level=>:STRANGER
           else
             i, l = validate_editor_for_resty_instance model_class, resty.viewers.keys
-            [ i, resty.viewers[l] ]
+            return nil if !i
+            describe_resty :model_class=>model_class,
+                           :instance=>i,
+                           :security_level=>l
           end
       end # === case action
 
       describe model_name.to_sym, action 
-      return [instance, attrs]
+      return true
     end # === if level
 
     pass
@@ -86,11 +100,8 @@ helpers {
   def validate_editor_for_resty_instance(model_class, resty_roles )
     require_log_in!
     instance = validate_instance_for_resty(model_class)
-    member_levels = resty_roles.select { |l| !instance.respond_to?(l) }
-    i_meths = resty_roles - member_levels
-    in_assoc = i_meths.detect { |i| instance.send(i).include?(current_member) }
-    level = member_levels.detect {|l| current_member.has_power_of?(l) }
-    return [instance, in_assoc || level ]  if in_assoc || level
+    level    = current_member_allowed_to?(instance, resty_roles)
+    return [instance, level ]  if level
     not_found 
   end # === def
 
@@ -100,6 +111,53 @@ helpers {
     instance
   end
 
+  def describe_resty(props)
+    @resty_props = props.freeze
+  end
+
+  def current_resty
+    @resty_props ||= {}
+  end
+
+  def current_member_allowed_to?(instance, resty_roles)
+    member_levels = resty_roles.select { |l| !instance.respond_to?(l) }
+    i_meths       = resty_roles - member_levels
+    in_assoc      = i_meths.detect { |i| instance.send(i).include?(current_member) }
+    level         = member_levels.detect { |l| current_member.has_power_of?(l) }
+    return(in_assoc || level)  if in_assoc || level    
+    false
+  end
+
+  def is_creator?(model_name= nil)
+    model_class = if model_name
+      Object.const_get(model_name.to_s.underscore.camelize
+    else
+      @resty_props && @resty_props[:model_class]
+    end
+    
+    return false if !model_class
+
+    resty = Resty.find(:create, model_class)
+    return false if !resty    
+
+    required_log_in! resty.creators.keys
+  end
+
+  def is_updator?(instance = nil)
+    instance ||= @resty_props && @resty_props[:instance]
+    return false if !instance
+    resty = Resty.find(:update, instance.class)
+    return false if !resty
+    current_member_allowed_to?(instance, resty.updators.keys)
+  end
+
+  def is_deletor?(instance = nil)
+    instance ||= @resty_props && @resty_props[:instance]
+    return false if !instance
+    resty = Resty.find :delete, instance.class
+    return false if !resty
+    current_member_allowed_to?(instance, resty.deletors)
+  end
 
 
 } # === helpers

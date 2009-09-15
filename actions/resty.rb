@@ -1,7 +1,7 @@
 
 get '/:model/:id/' do
-  n, props = validate_as_resty!
-  eval("@#{clean_room[:model]} = n")
+  validate_as_resty!
+  eval("@#{clean_room[:model]} = current_resty[:instance]")
   render_mab
 end
 
@@ -12,8 +12,8 @@ end
 
 post '/:model/' do 
   
-  n, props = validate_as_resty! 
-    
+  validate_as_resty! 
+  n = current_resty[:instance]  
   begin
     flash.success_msg = ( " %s was saved." % english_name( n ).capitalize )
     redirect( "/#{n.class.to_s.underscore}/#{n[:id]}/")
@@ -26,8 +26,8 @@ end # === post
 
 put '/:model/:id/' do
 
-  n = validate_as_resty!
-
+  validate_as_resty!
+  n = current_resty[:instance]
   begin
     flash.success_msg = ( " %s was save. " % english_name(n).capitalize )
     redirect( "/#{n.class.to_s.underscore}/#{clean_room[:id]}" )
@@ -38,7 +38,7 @@ put '/:model/:id/' do
 end
 
 delete '/:model/:id/' do
-  i = validate_as_resty!
-  i.delete
+  validate_as_resty!
+  current_resty[:instance].destroy
   flash.success_msg = "Deletion was successful."
 end

@@ -8,7 +8,7 @@ helpers {
     @current_action_props = {  :action => a_name, 
                       :path=>request.path_info, 
                       :http_verb=>request.request_method, 
-                      :controller =>c_name }                           
+                      :controller =>c_name }.freeze
   end
 
   def protected_for( *args )
