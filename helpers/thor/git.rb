@@ -73,12 +73,12 @@ class Git < Thor
 
     if options[:migrate]
       shout 'Migrating on Heroku...'
-      migrate_results = capture_all( "heroku rake production:db:migrate_up" )
+      migrate_results = capture_all( "heroku rake production:migrate_up" )
       raise "Problem on executing migrate:up on Heroku." if migrate_results[/aborted/i]
       shout migrate_results
 
-      shout 'Restarting app servers.'
-      whisper capture_all('heroku restart')
+      #shout 'Restarting app servers.'
+      #whisper capture_all('heroku restart')
     end
 
 

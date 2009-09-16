@@ -51,8 +51,8 @@ div.content!  {
         a("Methyl-B12 and Folic acid.", :href=>'http://www.google.com/search?q=methyl-b12+folic+acid+depression')
         span ' (I learned this from '
         a('The Natural Health Librarian.', :href=>'http://www.naturalhealthlibrarian.com/')
-        span ' Buy their e-books. Great stuff. All true.)'
-        span "Here is another article on the subject: "
+        span ' Buy their e-books. Great stuff. All true.) '
+        span " Here is another article on the subject: "
         a('Vitamin B12 Deficiency Is Easily Diagnosed and Corrected', :href=>'http://www.lewrockwell.com/spl/b12-deficiency.html')
       }
     }      

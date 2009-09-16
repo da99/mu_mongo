@@ -21,9 +21,9 @@ div( :id=>"nav_bar" ) {
       ['/busy-noise/', 'Busy Noise Timer', :egg, :busy],
       ['/help/', 'Help', :main, :help],
       ['/account/', 'My Account', :account, :show, :if_member],
-      ['/log-out/', 'Logout', :session, :destroy, :if_member],
+      ['/log-out/', 'Logout', :session, :destroy, :if_member]
       # ['/sign-up/', 'Create Account', :member, :new, :if_not_member],
-      ['/log-in/', 'Log-in', :session, :new, :if_not_member]
+      # ['/log-in/', 'Log-in', :session, :new, :if_not_member]
     ].each { |path, text, c_name, a_name, show|
 
       show_it = case show
