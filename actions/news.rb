@@ -1,9 +1,6 @@
 
 configure do
-  resty :news do 
-    viewer :STRANGER
-    c_u_d :ADMIN, [:title, :body, :teaser, :published_at, :tags]
-  end
+  set :news_actions, [:show, :new, :create, :edit, :update, :delete] 
 end
 
 get '/news/' do

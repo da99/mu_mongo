@@ -7,6 +7,12 @@ helpers {
   # === The following actions are used only by Resty actions. ============================
   # === They are not meant to be used by regular actions. ================================
 
+  def pass_if_not_rest(action)
+    opt_name = "#{clean_room[:model].to_s.underscore}_actions" 
+    pass if !options.target.respond_to?(opt_name)
+    pass if !options.send(opt_name).include?(action)
+  end
+
   def model_class_required
     pass if !clean_room[:model]
     begin
@@ -36,6 +42,7 @@ helpers {
 } # === helpers
 
 get '/:model/new/' do
+  pass_if_not_rest :new
   model_class_required
   require_log_in! if !model_class.creator?(:STRANGER)
   pass if !model_class.creator?(current_member)
@@ -45,6 +52,7 @@ get '/:model/new/' do
 end
 
 post '/:model/' do 
+  pass_if_not_rest :create
   model_class_required
 
   begin
@@ -62,6 +70,7 @@ end # === post
 
 
 get '/:model/:id/' do
+  pass_if_not_rest :show
   model_instance_required
   require_log_in! if !model_instance.viewer? :STRANGER
   pass if !model_instance.viewer?(current_member)
@@ -71,6 +80,7 @@ get '/:model/:id/' do
 end
 
 get '/:model/:id/:edit/' do
+  pass_if_not_rest :edit
   require_log_in!
   model_instance_required
   pass if !model_instance.updator?(current_member)
@@ -80,6 +90,7 @@ get '/:model/:id/:edit/' do
 end
 
 put '/:model/:id/' do
+  pass_if_not_rest :update
   require_log_in!
   model_instance_required
 
@@ -97,6 +108,7 @@ put '/:model/:id/' do
 end # === put
 
 delete '/:model/:id/' do
+  pass_if_not_rest :delete
   require_log_in!
   model_instance_required
   
