@@ -1,7 +1,5 @@
 describe 'The Main App' do
 
-
-
   it "shows homepage: / " do
     get '/'
     last_response.should.be.ok
@@ -36,6 +34,11 @@ describe 'The Main App' do
     get '/sitemap.xml' 
     last_response.should.be.ok
     last_response.content_type.should.be == 'application/xml;charset=utf-8'
+  end
+
+  it "renders /help/" do
+    get '/help/'
+    last_response.should.be.ok
   end
 
 end # === The Main App

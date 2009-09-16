@@ -11,7 +11,7 @@ div.content! {
     span ", over to this new site."
   }
   
-	if the_app.model_class.creator?(current_member)
+	if News.creator?(the_app.current_member)
 		div {
 			a('Create', :href=>'/news/new/')
 		}

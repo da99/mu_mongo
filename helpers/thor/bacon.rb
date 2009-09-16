@@ -8,7 +8,6 @@ class Bacon < Thor
   
   desc :db_reset!, "Reset the :test database" 
   def db_reset!
-    raise "not ready"
     ENV['RACK_ENV'] = 'test'
     invoke('db:reset!')
     DB[:news].insert( 
