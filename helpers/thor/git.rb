@@ -40,7 +40,7 @@ class Git < Thor
     invoke :commit, ['Development checkpoint.']
   end # === task
 
-  desc :push, "Push code to Heroku. Options: open_browser = true, migrate = false"
+  desc :push, "Push code to Heroku. Options: migrate = false"
   method_options :migrate=>:boolean
   def push
 
@@ -99,10 +99,7 @@ class Git < Thor
         check_this_url url, /#{app_name}/
     end
 
-    if open_browser || open_browser.nil?
-      Launchy.open( url )
-    end
-
+    Launchy.open( url )
 
   end # === task
 
