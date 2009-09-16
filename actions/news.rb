@@ -59,6 +59,10 @@ get '/hearts/' do
   redirect('/news/')
 end
 
+get '/hearts/m/' do
+  redirect('/news/m/')
+end
+
 get '/blog/:year/' do |year|
   redirect("/news/by_date/#{year.to_i}/1" )
 end

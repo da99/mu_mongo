@@ -22,7 +22,9 @@ describe 'Hearts App Compatibility' do
 
   it 'renders mobile version of :index' do
     get '/hearts/m/'
+    follow_redirect!
     last_response.should.be.ok
+    last_request.fullpath.should.be == '/news/'
   end
 
 end # === 

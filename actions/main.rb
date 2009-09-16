@@ -6,21 +6,21 @@ get( '/' ) {
 }
 
 
-get '/help' do 
+get '/help/' do 
   describe :main, :help
   render_mab
 end
 
-get( '/blog' ) {
-  redirect('/hearts')
+get( '/blog/' ) {
+  redirect('/news/')
 }
 
-get( '/about' ) { 
-  redirect('/help')
+get( '/about/' ) { 
+  redirect('/help/')
 }
 
 
-get '/salud' do 
+get '/salud/' do 
   describe :main, :salud
   render_mab 
 end

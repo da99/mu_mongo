@@ -7,14 +7,14 @@ xml.urlset "xmlns" => "http://www.google.com/schemas/sitemap/0.84" do
   end
   
   xml.url do
-    xml.loc         urlize('/hearts/')
+    xml.loc         urlize('/news/')
     xml.lastmod     w3c_date( @news.first.last_modified_at ) 
     xml.changefreq  "monthly"
   end
   
   @news.each do |post|
     xml.url do
-      xml.loc     urlize("/heart_link/#{post[:id]}/")
+      xml.loc     urlize("/news/#{post[:id]}/")
       xml.lastmod w3c_date(post.last_modified_at) 
       xml.changefreq  "yearly"
     end

@@ -41,6 +41,10 @@ describe 'The Main App' do
     last_response.should.be.ok
   end
 
+  it "renders /salud/" do
+    get '/salud/'
+    last_response.should.be.ok
+  end
 end # === The Main App
 
 

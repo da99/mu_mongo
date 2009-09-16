@@ -18,7 +18,7 @@ div.content! {
       ul {
         app_vars[:news_tags].each do |tag|
           li {
-            a(tag[:filename], :href=>"/hearts/by_tag/#{tag[:id]}")
+            a(tag[:filename], :href=>"/news/by_tag/#{tag[:id]}")
           }
         end
       } # === ul
@@ -26,7 +26,7 @@ div.content! {
       ul {
         %w{ 8 4 3 2 1 }.each { |month|
           li {
-            a( Time.local(2007, month).strftime('%B %Y'), :href=>"/hearts/by_date/2007/#{month}/" )
+            a( Time.local(2007, month).strftime('%B %Y'), :href=>"/news/by_date/2007/#{month}/" )
           }
         }
       } # === ul
@@ -40,7 +40,7 @@ div.content! {
      
      div.info {
       span.published_at heart[:published_at].strftime('%b  %d, %Y ')
-      a.pernalink('PermaLink', :href=>"/heart_link/#{heart[:id]}" )
+      a.pernalink('PermaLink', :href=>"/news/#{heart[:id]}/" )
      }
      h4 heart.title
      div.body { heart.body }
