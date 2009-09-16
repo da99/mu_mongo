@@ -9,5 +9,6 @@ describe 'Heart Link App' do
     get "/hearts/"
     last_response.should.be.ok
   end
+
 end
 

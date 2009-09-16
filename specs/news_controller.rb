@@ -11,4 +11,18 @@ describe 'News App' do
     last_response.should.be.ok
   end
 
+  it 'renders mobile version of :index' do
+    get '/news/m/'
+    last_response.should.be.ok
+  end
+
 end # ===
+
+describe 'Hearts App Compatibility' do
+
+  it 'renders mobile version of :index' do
+    get '/hearts/m/'
+    last_response.should.be.ok
+  end
+
+end # === 

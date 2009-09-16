@@ -28,7 +28,7 @@ before {
 
   if request.get? && request.path_info =~ /\/m\/?$/
     @mobile_request = true
-    request.path_info = File.join(request.path_info, "m/")
+    request.path_info = request.path_info.sub(/\/m\/?$/, '/') # File.join(request.path_info, "m/")
   end
     
 } # === before  
