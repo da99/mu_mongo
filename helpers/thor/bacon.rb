@@ -42,7 +42,7 @@ class Bacon < Thor
     results, errors = run_specs(false)
     return false if !errors.empty?
 
-    pieces =  results.split("\n")
+    pieces =  results.strip.last.split(",")
     return false if pieces.size != 3
     
     return true if pieces[1].to_i.zero? && pieces[2].to_i.zero?
