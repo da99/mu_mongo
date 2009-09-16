@@ -1,26 +1,26 @@
 require 'builder'
 
-multi_get( '/' ) { 
+get( '/' ) { 
   describe :main, :show
   render_mab
 }
 
 
-multi_get '/help' do 
+get '/help' do 
   describe :main, :help
   render_mab
 end
 
-multi_get( '/blog' ) {
+get( '/blog' ) {
   redirect('/hearts')
 }
 
-multi_get( '/about' ) { 
+get( '/about' ) { 
   redirect('/help')
 }
 
 
-multi_get '/salud' do 
+get '/salud' do 
   describe :main, :salud
   render_mab 
 end

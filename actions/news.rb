@@ -10,38 +10,8 @@ get '/news/' do
   render_mab
 end
 
-
-# =========================== HEART LINKS COMPATIBILITY =================================
-
-
-get '/media/heart_links/images/*' do
-  redirect( 'http://surferhearts.s3.amazonaws.com/heart_links' + File.join('/', params['splat'] ))
-end
-
-
-multi_get '/hearts/' do
-
-  describe :heart, :show
-  @hearts = News.reverse_order(:created_at).limit(10).all
-  @news_tags = NewsTag.all
-  render_mab
-
-end
-
-get '/blog/:year/' do |year|
-  redirect("/hearts/by_date/#{year.to_i}/1" )
-end
-
-get '/blog/:year/0/' do |year|
-  redirect("/hearts/by_date/#{year.to_i}/1" )
-end
-
-get '/blog/:year/:month/' do |year, month|
-  redirect("/hearts/by_date/#{year.to_i}/#{month.to_i}" )
-end
-
-get '/hearts/by_date/:year/:month/' do
-  describe :heart, :by_date
+get '/news/by_date/:year/:month/' do
+  describe :news, :by_date
   
   year = params[:year].to_i
   month = params[:month].to_i
@@ -62,18 +32,10 @@ get '/hearts/by_date/:year/:month/' do
   @news = News.reverse_order(:published_at).
           where( 'published_at > ? AND published_at <  ?',  @prev_month, @next_month )
   render_mab
-end
+end # ===
 
-get %r{/heart_links?/by_category/([0-9]+)\.html?} do |id|
-  redirect("/heart_links/by_tag/#{id}")
-end
-
-get %r{/heart_links/by_category/([0-9]+)/} do |id|
-  redirect("/hearts/by_tag/#{id}")
-end
-
-get %r{/hearts/by_tag/([0-9]+)/} do |id|
-  describe :heart, :by_tag
+get %r{/news/by_tag/([0-9]+)/} do |id|
+  describe :news, :by_tag
   @news_tag = NewsTag[:id=>Integer(id)]
   @news = if !@news_tag
     []
@@ -84,17 +46,55 @@ get %r{/hearts/by_tag/([0-9]+)/} do |id|
   render_mab
 end
 
+
+# =========================== HEART LINKS COMPATIBILITY =================================
+
+
+get '/media/heart_links/images/*' do
+  redirect( 'http://surferhearts.s3.amazonaws.com/heart_links' + File.join('/', params['splat'] ))
+end
+
+
+get '/hearts/' do
+  redirect('/news/')
+end
+
+get '/blog/:year/' do |year|
+  redirect("/news/by_date/#{year.to_i}/1" )
+end
+
+get '/blog/:year/0/' do |year|
+  redirect("/news/by_date/#{year.to_i}/1" )
+end
+
+get '/blog/:year/:month/' do |year, month|
+  redirect("/news/by_date/#{year.to_i}/#{month.to_i}" )
+end
+
+get '/hearts/by_date/:year/:month/' do |year,month|
+  redirect("/news/by_date/#{year.to_i}/#{month.to_i}/")
+end # ===
+
+get %r{/heart_links?/by_category/([0-9]+)\.html?} do |id|
+  redirect("/news/by_tag/#{id}/")
+end
+
+get %r{/heart_links/by_category/([0-9]+)/} do |id|
+  redirect("/news/by_tag/#{id}/")
+end
+
+get %r{/hearts/by_tag/([0-9]+)/} do |id| 
+  redirect("/news/by_tag/#{id}/")
+end
+
 get %r{/hearts?_links?/([0-9]+)\.html?} do |id| # /hearts/20.html
-  redirect( "/heart_link/#{ id  }"  )
+  redirect( "/news/#{ id  }/"  )
 end
 
 get %r{/hearts?_links/([0-9]+)/} do |id|  #  /hearts_links/29
-  redirect( "/heart_link/#{ id }"  )
+  redirect( "/news/#{ id }/"  )
 end
 
 get %r{/heart_link/([0-9]+)/} do |id| #  /heart_link/29
-  describe :heart, :link
-  @heart = News[:id=>Integer(id)]
-  not_found if !@heart
-  render_mab
+  redirect("/news/#{id}/")
 end
