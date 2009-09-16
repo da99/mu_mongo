@@ -8,7 +8,12 @@ div(:id=>"about_me") {
 }
     
 div.revols(:id=>"health") {
+
   h2 "Salud (Health)"
+  p { 
+    span 'No tome Aspirina.'
+    a('Mas detailes.', :href=>"http://www.lewrockwell.com/spl/prevent-heart-attack-or-stroke.html")
+  }
   p 'Longevinex - (866) 405-4000'
   ul {			  
     li {

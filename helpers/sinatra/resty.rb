@@ -107,28 +107,7 @@ helpers {
 
   end # === def
 
-  def default_resty_action
-    if request.get? 
-      case request.fullpath 
-        when /\/edit\/?$/
-          :edit
-        when /\/new\/?$/
-          :new
-        when /\/[0-9]+\/?$/
-          :show
-        else
-          :index
-      end
-    elsif request.post?
-      :create
-    elsif request.put?
-      :update
-    elsif request.delete?
-      :delete
-    else
-      nil
-    end
-  end # === def default_resty_action
+
 
   def get_model_instance_and_validate_editor( model_class, resty_roles)
     i = get_model_instance_or_raise model_class

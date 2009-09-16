@@ -7,7 +7,7 @@ div.content!  {
   
   h3 'Create News'
 
-  form.single.form_new_news!(:action=>'/news/', :method=>'post') {
+  form.form_new_news!(:action=>'/news/', :method=>'post') {
   
     fieldset {
       label 'Title'

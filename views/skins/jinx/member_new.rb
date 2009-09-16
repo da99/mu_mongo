@@ -12,7 +12,7 @@ div.content! {
 
   h3 'Create a New Account'
   
-  form.single.sign_up_form!(:action=>"/member/", :method=>"post") {
+  form.sign_up_form!(:action=>"/member/", :method=>"post") {
     
     fieldset {
       label 'Username'

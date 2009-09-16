@@ -13,7 +13,11 @@ def multi_get( raw_path, *opts, &blok)
 end
 
 before {
-    
+  
+  if request.env['HTTP_USER_AGENT'] == 'MSIE 7.0'
+    halt 404, "404 - Not Found"
+  end
+
   # url must not be blank. Sometimes I get error reports where the  URL is blank.
   # I have no idea how that is even possible, so I put this:
   if production? && 

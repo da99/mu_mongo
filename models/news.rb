@@ -22,6 +22,8 @@ class News < Sequel::Model
     updated_at || created_at
   end
 
+  allow_viewer :STRANGER
+
   allow_creator :ADMIN do
     require_columns :title, :body
     optional_columns :teaser, :published_at, :tags

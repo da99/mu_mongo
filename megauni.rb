@@ -123,7 +123,9 @@ require_these 'helpers/sinatra', %w{
 # ===============================================
 
 error {
-  IssueClient.create(env, options.environment, env['sinatra.error'] )
+  if !request.fullpath["(null)"]
+    IssueClient.create(env, options.environment, env['sinatra.error'] )
+  end
   read_if_file('public/500.html') || "Programmer error found. I will look into it."
 } # === error
 

@@ -38,6 +38,10 @@ class Sequel::Model
   def self.editor_permissions
     @editor_perms
   end 
+
+  def self.allow_viewer *levels 
+    add_perm_for_editor :show, levels
+  end
   
   def self.allow_creator( *levels, &blok ) 
     add_perm_for_editor(:create, levels, &blok)
@@ -48,14 +52,14 @@ class Sequel::Model
   end 
 
   def self.add_perm_for_editor( action, levels, &blok)
-    raise ArgumentError, "Block required for #{action.inspect}" if !block_given?
-    raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update].include?(action)
+    raise ArgumentError, "Block required for #{action.inspect}" if !block_given? && action != :show
+    raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update, :show].include?(action)
     raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
-    @editor_perms ||= {:create=>{}, :update=>{} }  
+    @editor_perms ||= {:create=>{}, :update=>{}, :show=>{}}  
     levels.each do |raw_lev|
       stranger_level = ( raw_lev.nil? || raw_lev == 0 )
       lev = ( stranger_level ? :STRANGER : raw_lev )
-      raise "#{lev.inspect} already used for creator." if @editor_perms[action].has_key?(lev)
+      raise "#{lev.inspect} already used for #{action.inspect}." if @editor_perms[action].has_key?(lev)
       @editor_perms[action][lev] = blok
     end
   end
@@ -66,15 +70,39 @@ class Sequel::Model
 
   def self.creator editor, raw_vals
     n = new
-    n.call_editor_validator(editor, raw_vals)
+    level = creator? editor
+    raise UnauthorizedEditor, editor.inspect if !level
+    n.current_editor = editor
+    n.raw_data = raw_vals
+    n.instance_eval &(editor_permissions[:create][level])
+    n.raise_if_invalid
     n.created_at = Time.now.utc if n.respond_to?(:created_at)
     n._save_
   end
+
+  def self.creator? editor
+    
+    levels = editor_permissions[:create].keys
+    levels.detect { |lev|
+      if !editor || editor == :STRANGER
+        lev == :STRANGER
+      else
+        editor.has_power_of?(lev)
+      end
+    }
+
+  end
+
   
   def self.updator editor, raw_vals
     rec = self[:id=>raw_vals]
     raise NoRecordFound, "Try again." if !rec
-    n.call_editor_validator(editor, raw_vals)
+    level = n.update?( editor )
+    raise UnauthorizedEditor, editor.inspect if !level
+    rec.current_editor = editor
+    rec.raw_data = raw_vals
+    rec.instance_eval &(editor_permission[:update][level])
+    rec.raise_if_invalid
     rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
     rec._save_
   end
@@ -132,36 +160,30 @@ class Sequel::Model
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
   end
-  
-  def call_editor_validator(editor, raw_vals)
-    self.current_editor = editor
-    self.raw_data = raw_vals
-    action = new? ? :create : :update
-    action_perms = self.class.editor_permissions[action]
-    level_found = begin
-      levels = action_perms.keys
-      levels.detect { |lev|
-        if !current_editor
-          lev == :STRANGER
-        else
-          if current_editor.has_power_of?(lev)
-            lev
-          else respond_to?(lev) 
-            editor_list = ( lev == :self ? self : send(lev) )
-            editor_list = [editor_list].flatten
-            editor_list.detect { |ed| 
-              ed.has_power_of?(current_editor)
-            }
-          end
+
+  def viewer? editor
+    levels = self.class.editor_permissions[:show].keys
+    return true if levels.include?(:STRANGER)
+    updator?(editor) || self.class.creator?(editor)
+  end
+
+  def updator? editor
+    levels = self.class.editor_permissions[:update].keys
+    levels.detect { |lev|
+      if !editor
+        lev == :STRANGER
+      else
+        if editor.has_power_of?(lev)
+          lev
+        else respond_to?(lev) 
+          editor_list = ( lev == :self ? self : send(lev) )
+          editor_list = [editor_list].flatten
+          editor_list.detect { |ed| 
+            ed.has_power_of?(editor)
+          }
         end
-      }
-    end
-    
-    raise( UnauthorizedEditor, current_editor.inspect ) if !level_found
-    
-    instance_eval( &action_perms[level_found] )
-    
-    raise_if_invalid
+      end
+    }
 
   end
 
@@ -169,7 +191,6 @@ class Sequel::Model
      
     begin
       save(:changed=>true)
-    
     rescue Sequel::DatabaseError
       raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
       seq = $1
@@ -177,10 +198,8 @@ class Sequel::Model
       raise  if !self.class.db_schema[col.to_sym]
       self.errors.add col, "is already taken. Please choose another one."
       raise_if_invalid
-
     rescue
       raise
-
     end
     
   end # === def validate
