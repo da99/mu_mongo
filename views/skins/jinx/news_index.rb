@@ -24,7 +24,7 @@ div.content! {
       ul {
         app_vars[:news_tags].each do |tag|
           li {
-            a(tag[:filename], :href=>"/news/by_tag/#{tag[:id]}")
+            a(tag[:filename], :href=>"/news/by_tag/#{tag[:id]}/")
           }
         end
       } # === ul

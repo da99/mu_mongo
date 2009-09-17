@@ -90,11 +90,16 @@ helpers {
       raise ArgumentError, 
             "No status code allowed for non-GET requests: #{args.inspect}"
     end
-    if request.get?  || request.head?
+    if request.get? || request.head?
       status 302
     else
       status 303
     end
+
+    #if request.get? && mobile_request?
+    #  uri = File.join(uri, 'm/')
+    #end
+
     response['Location'] = uri
     halt(*args)
   end  

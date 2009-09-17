@@ -48,6 +48,23 @@ describe 'The Main App' do
 end # === The Main App
 
 
+describe 'Main App (Mobile)' do
+
+  it 'renders a mobile version of the homepage' do
+    get '/m/'
+    last_response.should.be.ok
+  end
+
+  it 'add a slash to the mobile homepage path: /m' do
+    get '/m'
+    follow_redirect!
+    last_request.fullpath.should.be == '/m/'
+    last_response.should.be.ok
+  end
+
+end # ====
+
+
 
 
 

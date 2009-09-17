@@ -1,7 +1,7 @@
 
 # =============================== SESSION ACTIONS ==============================
 
-get "/log-in/" do
+get "/log-in/", :mobile=>true do
   require_ssl!
   describe :session, :new
   render_mab

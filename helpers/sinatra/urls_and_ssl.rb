@@ -1,16 +1,17 @@
 
-def multi_get( raw_path, *opts, &blok)
-  path = raw_path.is_a?(String) ? 
+def get( raw_path, opts={}, &blok)
+  path = raw_path.is_a?(String) && !raw_path['.'] ? 
             File.join(raw_path.strip, '/') : 
             raw_path
   
-  if path.is_a?(String)
+  if path.is_a?(String) && opts.delete(:mobile)
     m_path = File.join( path, 'm/' )
-    get m_path, *opts, &blok
+    Sinatra::Application.get m_path, opts, &blok
   end
 
-  get path, *opts, &blok
+  Sinatra::Application.get path, opts, &blok
 end
+
 
 before {
   
@@ -28,7 +29,7 @@ before {
 
   if request.get? && request.path_info =~ /\/m\/?$/
     @mobile_request = true
-    request.path_info = request.path_info.sub(/\/m\/?$/, '/') # File.join(request.path_info, "m/")
+    #request.path_info = request.path_info.sub(/\/m\/?$/, '/') # File.join(request.path_info, "m/")
   end
     
 } # === before  

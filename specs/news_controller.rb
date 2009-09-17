@@ -24,7 +24,7 @@ describe 'Hearts App Compatibility' do
     get '/hearts/m/'
     follow_redirect!
     last_response.should.be.ok
-    last_request.fullpath.should.be == '/news/'
+    last_request.fullpath.should.be == '/news/m/'
   end
 
 end # === 

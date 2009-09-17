@@ -1,12 +1,12 @@
 require 'builder'
 
-get( '/' ) { 
+get( '/', :mobile=>true ) { 
   describe :main, :show
   render_mab
 }
 
 
-get '/help/' do 
+get '/help/', :mobile=>true do 
   describe :main, :help
   render_mab
 end

@@ -3,7 +3,7 @@ configure do
   set :news_actions, [:show, :new, :create, :edit, :update, :delete] 
 end
 
-get '/news/' do
+get '/news/', :mobile=>true do
   @news = News.reverse_order(:created_at).limit(10).all
   @news_tags = NewsTag.all
   describe :news, :index 
@@ -55,12 +55,8 @@ get '/media/heart_links/images/*' do
 end
 
 
-get '/hearts/' do
-  redirect('/news/')
-end
-
-get '/hearts/m/' do
-  redirect('/news/m/')
+get '/hearts/', :mobile=>true do
+  redirect( request.fullpath.sub('hearts', 'news') )
 end
 
 get '/blog/:year/' do |year|
