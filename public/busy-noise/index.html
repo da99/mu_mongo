@@ -8,7 +8,7 @@
     <meta content='My egg timer. online egg timer countdown alarm mini to-do list.' name='KEYWORDS' />
     <meta content='Formerly myEggTimer.com - New and improved for Dec. 2008. egg timer + alarm + sound buzzer. Keep track of multiple tasks at the same time using countdowns. Stop watch coming soon.' name='DESCRIPTION' />
     <link href='http://www.busynoise.com/favicon.ico' rel='shortcut icon' type='image/x-icon' />
-    <link href='/busy-noise/stylesheets/eggtimer_index.css?v12f98052' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/busy-noise/stylesheets/eggtimer_index.css?v12f9052' media='screen' rel='stylesheet' type='text/css' />
     <script src='/busy-noise/javascripts/vendor/mootools-1.2.js?v12273805' type='text/javascript'>    </script>
     <script src='/busy-noise/javascripts/swiss.js?v12287805' type='text/javascript'>    </script>
     <script src='/busy-noise/javascripts/egg_clock.js?v122f8705' type='text/javascript'>    </script>
@@ -29,6 +29,13 @@
       </div>
       <h1>Online Egg Timer by busynoise.com</h1>
       <h2>Track multiple events on one web page.</h2>
+      <!--[if lt IE 7]>
+        <div id="bad_msie">
+          This page *may* not work with your old browser. 
+          <br />
+          Try this other egg timer if you continue to have problems: <a href="/my-egg-timer/">http://www.megauni.com/my-egg-timer/</a>
+        </div>
+      <![endif]-->
       <div class='column' id='work'></div>
       <div class='column' id='add_stuff'>
         <ul class='binder'>
@@ -85,7 +92,7 @@
           
           <div class='island' id='create_note'>
             <div class='land'>
-              <form action='/busy-noise' class='create_egg' id='form_note' method='post'>
+              <form action='/busy-noise/' class='create_egg' id='form_note' method='post'>
                 <div class='fieldset_block headline'>
                   <fieldset>
                     <label>Title:</label>

@@ -24,7 +24,13 @@ html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, 
   background-image: url("/busy-noise/images/spotlights.gif");
   background-repeat: no-repeat;
   background-position: 0 51px; }
-
+#bad_msie {
+  background: #ff9;
+  text-align: center;
+  padding: 10px;
+  font-family: helvetica, arial, sans-serif;
+  margin-bottom: 20px;
+}
 #current_time {
   overflow: hidden;
   width: 263px;

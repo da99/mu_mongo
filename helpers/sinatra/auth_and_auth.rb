@@ -75,7 +75,7 @@ end # === helpers
         
 before {
     
-    require_ssl! if logged_in? || request.cookies["logged_in"] || request.post?
+  require_ssl! if logged_in? || request.cookies["logged_in"] || request.post?
     
 } # === before  
 
