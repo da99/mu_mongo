@@ -65,12 +65,14 @@ class Git < Thor
     please_wait 'Please wait as code is being pushed to Heroku...'
 
     push_results = capture_all( 'git push heroku master')
-    if push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
-      whisper push_results
-    else
+    push_went_ok = push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
+    if !push_went_ok
       shout push_results
+      return false
     end
-
+    
+    whisper push_results
+    
     if options[:migrate]
       shout 'Migrating on Heroku...'
       migrate_results = capture_all( "heroku rake production:migrate_up" )
@@ -100,6 +102,8 @@ class Git < Thor
     end
 
     Launchy.open( url )
+
+    true
 
   end # === task
 
