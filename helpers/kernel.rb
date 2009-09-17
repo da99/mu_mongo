@@ -27,6 +27,11 @@ if !Pow('~').is_a?(Pow::Directory)
       end
     end
   end
+
+  def Pow!(*args, &blok)
+    file_path = ::File.dirname caller[0].split(':in ').first
+    Pow(file_path, *args, &block)
+  end
 end # == if
 
 
