@@ -72,6 +72,8 @@ end # === post
 get '/:model/:id/' do
   pass_if_not_rest :show
   model_instance_required
+  dev_log_it "Resty :show action."
+
   require_log_in! if !model_instance.viewer? :STRANGER
   pass if !model_instance.viewer?(current_member)
 

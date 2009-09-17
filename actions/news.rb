@@ -1,6 +1,15 @@
 
 configure do
-  set :news_actions, [:show, :new, :create, :edit, :update, :delete] 
+  set :news_actions, [:new, :create, :edit, :update, :delete] 
+end
+
+get "/news/:id/" do
+  pass if clean_room[:id].to_i < 1
+  @news = News[:id=>clean_room[:id]]
+  pass if !@news
+  @news_tags = @news.taggings_dataset.eager(:tag).all
+  describe :news, :show
+  render_mab
 end
 
 get '/news/', :mobile=>true do

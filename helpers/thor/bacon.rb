@@ -10,12 +10,14 @@ class Bacon < Thor
   def db_reset!
     ENV['RACK_ENV'] = 'test'
     invoke('db:reset!')
-    DB[:news].insert( 
-      :title=>'Buy Longevinex', 
-      :teaser=>'teaser', 
-      :body=>'body', 
-      :created_at=>Time.now.utc, 
-      :published_at=>Time.now.utc)
+    news_id = DB[:news].insert( 
+      :title        => 'Buy Longevinex',
+      :teaser       => 'teaser',
+      :body         => 'body',
+      :created_at   => Time.now.utc,
+      :published_at => Time.now.utc)
+    news_tag_id  = DB[:news_tags].insert(:filename=>'surfer_hearts')
+    news_tagging = DB[:news_taggings].insert(:news_id=>news_id, :tag_id=>news_tag_id)
   end
 
   desc :all, "Run all specs for this app."
