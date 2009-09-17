@@ -45,7 +45,7 @@ div.content! {
     div.heart_link {
      
      div.info {
-      span.published_at heart[:published_at].strftime('%b  %d, %Y ')
+      span.published_at heart[:published_at].strftime(' %b  %d, %Y ')
       a.pernalink('PermaLink', :href=>"/news/#{heart[:id]}/" )
      }
      h4 heart.title

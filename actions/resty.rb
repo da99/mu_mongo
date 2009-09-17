@@ -81,7 +81,7 @@ get '/:model/:id/' do
   render_mab
 end
 
-get '/:model/:id/:edit/' do
+get '/:model/:id/edit/' do
   pass_if_not_rest :edit
   require_log_in!
   model_instance_required
