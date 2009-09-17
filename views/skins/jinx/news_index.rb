@@ -17,7 +17,7 @@ div.content! {
 		}
 	end
 
-  div.heart_link.archives! {
+  div.news_post.archives! {
     h4 'Archives By Date and Tag'
     div.body {
     
@@ -42,7 +42,7 @@ div.content! {
   
   
   app_vars[:news].each do |heart|
-    div.heart_link {
+    div.news_post {
      
      div.info {
       span.published_at heart[:published_at].strftime(' %b  %d, %Y ')

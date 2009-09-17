@@ -14,7 +14,7 @@ div( :id=>"nav_bar" ) {
   
     [ 
       ['/', 'Home', :main, :show], 
-      ['/news/', 'Hearts', :heart, :show],
+      ['/news/', 'Hearts', :news, :index],
       # ['/egg', 'Timer + Alarm', :egg, :show],
       ['/salud/', 'Salud (Health)', :main, :salud] ,
       ['/my-egg-timer/', 'My Egg Timer', :egg, :my] ,
