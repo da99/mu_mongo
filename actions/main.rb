@@ -20,7 +20,7 @@ get( '/about/' ) {
 }
 
 
-get '/salud/' do 
+get '/salud/', :mobile=>true do 
   describe :main, :salud
   render_mab 
 end

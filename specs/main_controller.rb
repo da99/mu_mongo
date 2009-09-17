@@ -62,6 +62,16 @@ describe 'Main App (Mobile)' do
     last_response.should.be.ok
   end
 
+  it 'renders /salud/m/' do
+    get '/salud/m/'
+    last_response.should.be.ok
+  end
+
+  it 'renders /help/m/' do
+    get '/help/m/' 
+    last_response.should.be.ok
+  end
+
 end # ====
 
 

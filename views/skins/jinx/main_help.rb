@@ -15,7 +15,7 @@ partial('__nav_bar')
 div.content!  { 
   ul.faq {
   
-     li {
+    li {
       div.question "What is MegaUNi.com?"
       div.answer {
         span "A unification of past ideas/websites I've worked on."
@@ -23,9 +23,19 @@ div.content!  {
     }
 
     li {
+      div.question "I can't view this website properly on my phone."
+      div.answer {
+        span "It's going to be like that for a while. I'm still working on the 
+        regular HTML version, so a proper mobile version is at least a year away."
+      }
+    }
+
+    li {
       div.question "I'm worried about the economy."
       div.answer {
         span "You should be. It's a Depression, not a Recession."
+        span " If you believe inflationary prices are coming, try researching this company: "
+        a('BullionVault.com', :href=>'http://www.bullionvault.com/')
       }
     } 
   
