@@ -5,7 +5,7 @@ save_to('meta_description') {
 }
 
 save_to('meta_keywords') {
-  "cancer gold vitamins depression"
+  "cancer vitamins "
 }
 
 
@@ -24,7 +24,7 @@ div.content!  {
     }
 
     li {
-      div.question "I would to contact you personally... and threaten legal action."
+      div.question "I want to contact you personally... and threaten legal action."
       div.answer {
         span "Until I can get the comments section working, contact this email:"
         br

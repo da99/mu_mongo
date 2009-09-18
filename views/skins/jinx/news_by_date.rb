@@ -32,7 +32,9 @@ div.content! {
         a.permalink('PermaLink', :href=>"/news/#{post[:id]}/")
        }
        h4 post[:title]
-       div.body { post.body_html }
+       div.body { 
+         the_app.news_to_html( post, :body ) 
+       }
       }
     end
   end

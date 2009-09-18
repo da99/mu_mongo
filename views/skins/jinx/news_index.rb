@@ -48,7 +48,7 @@ div.content! {
       a.pernalink('PermaLink', :href=>"/news/#{heart[:id]}/" )
      }
      h4 heart.title
-     div.body { heart.body_html }
+     div.body { the_app.news_to_html( heart, :body ) }
     }
   end
   

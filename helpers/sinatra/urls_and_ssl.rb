@@ -84,9 +84,7 @@ helpers {
     def using_ssl?
       (env['HTTPS'] == 'on' || 
           env['HTTP_X_FORWARDED_PROTO'] =='https' || 
-            env['rack.url_scheme'] == 'https' || 
-              env['SERVER_PORT'].to_i == 443 ||
-                request.port == 443)
+            env['rack.url_scheme'] == 'https' )
       # This: request.url =~ /\Ahttps\:/ 
       # does not work if being used in a proxy setup.
     end

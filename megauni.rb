@@ -18,7 +18,6 @@ require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
 require 'rack-flash'
-require 'RedCloth'
 
 # ===============================================
 # Configurations
@@ -39,6 +38,7 @@ end
 configure :development do
   require Pow('~/.megauni')
   require Pow('helpers/css')
+  require Pow('actions/try_textile')
   enable :clean_trace
 end
 

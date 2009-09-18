@@ -22,21 +22,7 @@ class News < Sequel::Model
     updated_at || created_at
   end
 
-  def textile?
-    last_modified_at < Time.utc(2009, 9, 17)
-  end
 
-  def attr_html(col)
-    textile? ? RedCloth.new(self[col]).to_html : self[col]
-  end
-
-  def teaser_html
-    attr_html :teaser
-  end
-
-  def body_html
-    attr_html :body
-  end
 
   allow_viewer :STRANGER
 

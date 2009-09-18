@@ -54,9 +54,9 @@ p
     border-top: 1px solid red
     
 =input_text
-  font-size: 22px
+  font-size: 20px
   font-weight: bold
-  font-family: courier, monospace
+  font-family: helvetica, arial, sans-serif
 
 =single_form
   #container
@@ -85,6 +85,13 @@ a:link, a:visited
 a:hover, a:active, a:focus
   color: #fff
   background: #E40051
+
+img.left
+  float: left
+  margin: 0 10px 0 0
+img.right
+  float: right
+  margin: 0 0 10px 0
 
 #timestamp
   display: none
@@ -117,6 +124,15 @@ a:hover, a:active, a:focus
     div.msg
       color= !dark_green
 
+=bottom_nav_bar
+  #nav_bar
+    +grid(16)
+    ul
+      text-align: left
+      li
+        span, a
+          padding: 5px 5px 5px 15px
+
 =left_nav_bar
   #nav_bar
     margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
@@ -131,9 +147,9 @@ a:hover, a:active, a:focus
           border= !nav_bar_border  "dashed" #000
             right-width: 0  
           background: #fff url("/skins/jinx/images/selected_nav_bar_bg_left.jpg") repeat-y
-        a:link, a:visited
+        a:link, a:visited, a:hover, a:active, a:focus
           padding: 5px 15px 5px 5px
-        a:hover, a:active, a:focus
+        
     #logo
       text-align: right
       p.nippon
@@ -155,9 +171,9 @@ a:hover, a:active, a:focus
           border= !nav_bar_border  "dashed" #000
             left-width: 0  
           background: #fff url("/skins/jinx/images/selected_nav_bar_bg_right.jpg") repeat-y
-        a:link, a:visited
+        a:link, a:visited, a:hover, a:active, a:focus
           padding: 5px 5px 5px 15px
-        a:hover, a:active, a:focus
+        
     #logo
       text-align: left 
       p.nippon
@@ -250,11 +266,13 @@ form
     display: block
   fieldset
     padding: 0 0 15px 0
-    input.text, select, option, textarea
+    input.text, select, option
       +input_text
     input.text, textarea
       width: 600px
     textarea
+      font-size: 18px
+      font-family: serif
       height: 200px
   div.group
     +clearfix

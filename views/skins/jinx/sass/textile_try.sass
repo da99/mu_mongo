@@ -1,0 +1,26 @@
+@import layout.sass
+
++bottom_nav_bar
+
+form fieldset textarea
+  +grid-width(7)
+
+#content
+  +grid(16)
+  #writer
+    +grid(8)
+    +alpha
+  #printer
+    +grid(8)
+    +omega
+    div.html, div.browser
+      +grid-width(7)
+      padding: 5px
+      border: 1px dashed #000
+      min-height: 300px
+      background: #ff9
+      margin-bottom: 20px
+      font-size: 14px
+    div.browser
+      background: #f7f7f7
+
