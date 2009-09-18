@@ -1,12 +1,23 @@
 
+# If path is a String, adds a slash at the end if one does 
+# not exist.
+#
+# Options:
+#   :mobile => Default is true, unless path has a period.
+#              E.g.: /sitemap.xml. 
+#              Set to true to force using a path, even with
+#              period in the path.
 def get( raw_path, opts={}, &blok)
   path = raw_path.is_a?(String) && !raw_path['.'] ? 
             File.join(raw_path.strip, '/') : 
             raw_path
   
-  if path.is_a?(String) && opts.delete(:mobile)
-    m_path = File.join( path, 'm/' )
-    Sinatra::Application.get m_path, opts, &blok
+  if path.is_a?(String) 
+    use_mobile = opts.delete(:mobile) 
+    if (use_mobile.nil? && !path['.']) || use_mobile
+      m_path = File.join( path, 'm/' )
+      Sinatra::Application.get m_path, opts, &blok
+    end
   end
 
   Sinatra::Application.get path, opts, &blok

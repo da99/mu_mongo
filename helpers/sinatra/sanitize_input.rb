@@ -1,7 +1,7 @@
 helpers {
 
   def clean_room
-    @clean_room = params.inject({}) { |m, (k, val)|
+    @clean_room ||= params.inject({}) { |m, (k, val)|
       m[k.to_sym] = case val
         when Array
           val.map { |s| Wash.html(s.to_s) }
@@ -15,6 +15,11 @@ helpers {
               nil :
               Wash.html(s)
       end
+
+      if k.to_sym == :id
+        m[:id] = m[:id].to_s.to_i
+      end
+
       m
     }
   end

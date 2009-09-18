@@ -12,7 +12,7 @@ get "/news/:id/" do
   render_mab
 end
 
-get '/news/', :mobile=>true do
+get '/news/' do
   @news = News.reverse_order(:created_at).limit(10).all
   @news_tags = NewsTag.all
   describe :news, :index 
@@ -64,7 +64,7 @@ get '/media/heart_links/images/*' do
 end
 
 
-get '/hearts/', :mobile=>true do
+get '/hearts/' do
   redirect( request.fullpath.sub('hearts', 'news') )
 end
 

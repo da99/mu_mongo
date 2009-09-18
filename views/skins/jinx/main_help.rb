@@ -9,7 +9,6 @@ save_to('meta_keywords') {
 }
 
 
-partial('__nav_bar')
 
 
 div.content!  { 
@@ -41,14 +40,7 @@ div.content!  {
       }
     }
 
-    li {
-      div.question "I'm worried about the economy."
-      div.answer {
-        span "You should be. It's a Depression, not a Recession."
-        span " If you believe inflationary prices are coming, try researching this company: "
-        a('BullionVault.com', :href=>'http://www.bullionvault.com/')
-      }
-    } 
+
   
     li {
       div.question "I'm old and in pain. What should I do?"
@@ -81,3 +73,17 @@ div.content!  {
   } # === ul
 } # == div.content!
 
+
+
+partial('__nav_bar')
+
+
+__END__
+    li {
+      div.question "I'm worried about the economy."
+      div.answer {
+        span "You should be. It's a Depression, not a Recession."
+        span " If you believe inflationary prices are coming, try researching this company: "
+        a('BullionVault.com', :href=>'http://www.bullionvault.com/')
+      }
+    } 
