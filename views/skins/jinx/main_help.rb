@@ -18,14 +18,18 @@ div.content!  {
     li {
       div.question "What is MegaUNi.com?"
       div.answer {
-        span "A unification of past ideas/websites I've worked on."
+        span "A unification of past ideas/websites I've worked on.  Right now it is personal, ad-hoc, and 
+        loosly taped together. It's non-commercial, for now. No affiliate links. No ads. Just stuff I
+        find useful. One day, it might become useful for other people."
       }
     }
 
     li {
-      div.question "I would like to threaten legal action"
+      div.question "I would to contact you personally... and threaten legal action."
       div.answer {
-        span "Until I can get the comments section working, contact this email: help [at] megauni [dot] com"
+        span "Until I can get the comments section working, contact this email:"
+        br
+        span "help [at] megauni [dot] com"
       }
     }
 
