@@ -1,7 +1,6 @@
 save_to('title') { app_vars[:news][:title] }
 
 
-partial('__nav_bar')
 
 
 div.content! { 
@@ -41,4 +40,5 @@ div.content! {
 } # === div.content!
 
 
+partial('__nav_bar')
 

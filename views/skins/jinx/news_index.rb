@@ -1,7 +1,6 @@
 save_to('title') { 'Formerly: Surfer Hearts' }
 
 
-partial('__nav_bar')
 
 
 div.content! { 
@@ -56,11 +55,6 @@ div.content! {
 } # === div.content!
 
 
-
-
-
-
-
-
+partial('__nav_bar')
 
 

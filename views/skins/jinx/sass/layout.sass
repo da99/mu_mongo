@@ -116,40 +116,79 @@ a:hover, a:active, a:focus
       color= !dark_blue
     div.msg
       color= !dark_green
+
+=left_nav_bar
+  #nav_bar
+    margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
+    border-right= !nav_bar_border  "dashed" #000
+    ul
+      margin-left: 50px
+      text-align: right
+      li
+        margin: 0 -2px 0 0
+        span
+          padding: 5px 15px 5px 5px
+          border= !nav_bar_border  "dashed" #000
+            right-width: 0  
+          background: #fff url("/skins/jinx/images/selected_nav_bar_bg_left.jpg") repeat-y
+        a:link, a:visited
+          padding: 5px 15px 5px 5px
+        a:hover, a:active, a:focus
+    #logo
+      text-align: right
+      p.nippon
+        padding: 0 15px 5px 0
+        text-shadow: #bbb 0px 2px 2px
+      p.english
+        margin: 0 15px 0 0        
+=right_nav_bar
+  #nav_bar
+    margin-right: 0
+    margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
+    border-left= !nav_bar_border  "dashed" #000
+    ul
+      margin-lef: 50px
+      text-align: left
+      li
+        margin: 0 0 0 -2px
+        span
+          padding: 5px 5px 5px 15px
+          border= !nav_bar_border  "dashed" #000
+            left-width: 0  
+          background: #fff url("/skins/jinx/images/selected_nav_bar_bg_right.jpg") repeat-y
+        a:link, a:visited
+          padding: 5px 5px 5px 15px
+        a:hover, a:active, a:focus
+    #logo
+      text-align: left 
+      p.nippon
+        padding: 0 0 5px 15px
+        text-shadow: #bbb 2px 2px 2px
+      p.english
+        margin: 0 0 0 15px
+
 #nav_bar
   +grid(4)
-  margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
-  border-right= !nav_bar_border  "dashed" #000
   padding-bottom: 200px
   ul
     +no-bullets
-    margin-left: 50px
     text-align: right
     li
-      margin: 0 -2px 0 0
       span
         display: block
-        padding: 5px 15px 5px 5px
         margin: 3px 0 
         border= !nav_bar_border  "dashed" #000
-          right-width: 0  
-        background: #fff url("/skins/jinx/images/selected_nav_bar_bg.jpg") repeat-y
         font-weight: bold
         text-transform: uppercase      
       a:link, a:visited
         display: block
-        padding: 5px 15px 5px 5px
         text-transform: uppercase
         font-weight: bold
         color: #f00919
       a:hover, a:active, a:focus
         color: #fff
         background: #E40051
-      
-        
-        
   #logo
-    text-align: right
     color: #000
     padding-bottom: 5px
     p.nippon
@@ -157,17 +196,13 @@ a:hover, a:active, a:focus
       font-weight: bold
       font-size: 25px 
       line-height: 1.3em
-      padding: 0 15px 5px 0
       margin: 0 
-      text-shadow: #bbb 0px 2px 2px
-      
     p.english
       font-family: courier, monospace
       font-size: 20px 
       font-weight: bold
       border-top: 2px dotted #f00919
       padding: 2px 0 0 0
-      margin: 0 15px 0 0
 
 #loading
   +input_text
