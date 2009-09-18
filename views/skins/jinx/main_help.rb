@@ -23,6 +23,13 @@ div.content!  {
     }
 
     li {
+      div.question "I would like to threaten legal action"
+      div.answer {
+        span "Until I can get the comments section working, contact this email: help [at] megauni [dot] com"
+      }
+    }
+
+    li {
       div.question "I can't view this website properly on my phone."
       div.answer {
         span "It's going to be like that for a while. I'm still working on the 

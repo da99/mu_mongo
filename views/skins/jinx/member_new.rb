@@ -21,12 +21,12 @@ div.content! {
     
     fieldset {
       label 'Password'
-      input.text( :id=>"password", :name=>"password", :type=>"password" )
+      input.text( :id=>"password", :name=>"password", :type=>"password", :value=>'' )
     }
     
     fieldset {
       label { span 'Confirm Password'  }
-      input.text( :id=>"confirm_password", :name=>"confirm_password", :type=>"password" )
+      input.text( :id=>"confirm_password", :name=>"confirm_password", :type=>"password", :value=>'' )
     }
 
     div.buttons {

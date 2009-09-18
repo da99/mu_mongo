@@ -33,7 +33,11 @@ helpers {
 
   def model_instance 
     @model_instance ||= begin
-      clean_room[:id] && model_class[:id=>Integer(clean_room[:id])]
+      i = clean_room[:id] && model_class[:id=>Integer(clean_room[:id])]
+      if i
+        instance_variable_set "@#{clean_room[:model]}".to_sym, i
+      end
+      i
     rescue ArgumentError
       nil
     end

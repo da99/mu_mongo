@@ -15,12 +15,12 @@ div.content! {
   
     fieldset {
       label 'Username'
-      input.text( :id=>"member_username", :name=>"username", :type=>"text" )
+      input.text( :id=>"member_username", :name=>"username", :type=>"text", :value=>'' )
     }
     
     fieldset {
       label 'Password'
-      input.text( :id=>"member_password", :name=>"password", :type=>"password" )
+      input.text( :id=>"member_password", :name=>"password", :type=>"password", :value=>'' )
     }
     
     div.buttons {

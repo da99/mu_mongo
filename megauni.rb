@@ -18,6 +18,7 @@ require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
 require 'rack-flash'
+require 'RedCloth'
 
 # ===============================================
 # Configurations
@@ -128,6 +129,7 @@ require_these 'helpers/sinatra', %w{
 # ===============================================
 
 error {
+
   if !request.fullpath["(null)"]
     IssueClient.create(env, options.environment, env['sinatra.error'] )
   end
@@ -147,6 +149,12 @@ not_found {
         request.path_info !~ /\.[a-z0-9]+$/ &&  # Request is not for a file.
           request.path_info[ request.path_info.size - 1 , 1] != '/'  # Request does not end in /
       redirect( request.url + '/' , 301 )  
+    end
+
+    uri_downcase = request.fullpath.downcase
+
+    if uri_downcase != request.fullpath
+      redirect uri_downcase
     end
 
     %w{ mobi mobile iphone pda }.each do |ending|

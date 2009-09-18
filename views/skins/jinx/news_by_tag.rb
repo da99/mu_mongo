@@ -35,7 +35,7 @@ div.content! {
         a.permalink('PermaLink', :href=>"/news/#{post[:id]}/")
        }
        h4 post[:title]
-       div.body { post[:body] }
+       div.body { post.body_html }
       }
     end
   end

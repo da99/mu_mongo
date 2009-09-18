@@ -49,7 +49,7 @@ div.content! {
       a.pernalink('PermaLink', :href=>"/news/#{heart[:id]}/" )
      }
      h4 heart.title
-     div.body { heart.body }
+     div.body { heart.body_html }
     }
   end
   

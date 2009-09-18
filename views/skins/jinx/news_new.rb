@@ -11,7 +11,7 @@ div.content!  {
   
     fieldset {
       label 'Title'
-      input.text( :id=>"news_title", :name=>"title", :type=>"text" )
+      input.text( :id=>"news_title", :name=>"title", :type=>"text", :value=>'' )
     }
 
     fieldset {

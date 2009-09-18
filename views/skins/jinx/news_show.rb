@@ -18,7 +18,7 @@ div.content! {
     span.published_at app_vars[:news][:published_at].strftime('%b  %d, %Y')
    }
    h4 app_vars[:news][:title]
-   div.body { app_vars[:news][:body] }
+   div.body { app_vars[:news].body_html }
 
    if !app_vars[:news_tags].empty?
 		 div.tags {
