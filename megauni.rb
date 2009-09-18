@@ -13,7 +13,7 @@ require 'multibyte'
 
 require 'rubygems'
 require 'sinatra'
-require 'sequel' 
+require 'sequel'
 require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
@@ -25,21 +25,21 @@ require 'RedCloth'
 # ===============================================
 use Rack::Session::Pool
 
-# Don't use ":sweep => true" because it 
+# Don't use ":sweep => true" because it
 # will only allow you to use flash values once
 # per call, not per request. Or it could
 # prevent it's use after a redirect.
-use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg] 
+use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg]
 
 configure :test do
-  require Pow('~/.megauni') 
+  require Pow('~/.megauni')
 end
 
 
 configure :development do
-  require Pow('~/.megauni') 
+  require Pow('~/.megauni')
   require Pow('helpers/css')
-  enable :clean_trace  
+  enable :clean_trace
 end
 
 
@@ -47,7 +47,7 @@ configure(:production) do
   # === Error handling.
   #require Pow('helpers/public_500')
   #enable :raise_errors
-  #enable :show_exceptions  
+  #enable :show_exceptions
   #use Rack::Public500
   DB = Sequel.connect ENV['DATABASE_URL']
 end
@@ -68,11 +68,11 @@ configure do
 
   # Special sanitization code used throughout the app.
   require Pow!( 'helpers/wash' )
-  
-  # === Include models.
-  require Pow('helpers/model_init')   
 
-end # === configure 
+  # === Include models.
+  require Pow('helpers/model_init')
+
+end # === configure
 
 
 # ===============================================
@@ -82,13 +82,13 @@ end # === configure
 helpers {
   def dev_log_it( msg )
       puts(msg) if options.development?
-  end    
+  end
   def flash_msg?
     flash.success_msg || flash.error_msg || flash.notice
   end
   def redirect(uri, *args)
     if !request.get? && args.detect { |s| s.to_i > 200 && s.to_i < 500 }
-      raise ArgumentError, 
+      raise ArgumentError,
             "No status code allowed for non-GET requests: #{args.inspect}"
     end
     if request.get? || request.head?
@@ -103,7 +103,7 @@ helpers {
 
     response['Location'] = uri
     halt(*args)
-  end  
+  end
 }
 
 
@@ -120,10 +120,11 @@ require_these 'helpers/sinatra', %w{
   html_props_for_models
   swiss_clock
   text_to_html
+  red_cloth
 }
 
 
- 
+
 # ===============================================
 # Error handling.
 # ===============================================
@@ -140,15 +141,15 @@ error {
 not_found {
 
 # Add trailing slash and use a  permanent redirect.
-  # Why a trailing slash? Many software programs 
+  # Why a trailing slash? Many software programs
   # look for files by appending them to the url: /salud/robots.txt
   # Without adding a slash, they will go to: /saludrobots.txt
-  if request.get? && !request.xhr? && request.query_string.to_s.strip.empty? 
+  if request.get? && !request.xhr? && request.query_string.to_s.strip.empty?
 
     if request.path_info != '/' &&  # Request is not for homepage.
         request.path_info !~ /\.[a-z0-9]+$/ &&  # Request is not for a file.
           request.path_info[ request.path_info.size - 1 , 1] != '/'  # Request does not end in /
-      redirect( request.url + '/' , 301 )  
+      redirect( request.url + '/' , 301 )
     end
 
     uri_downcase = request.fullpath.downcase
@@ -163,16 +164,16 @@ not_found {
       end
     end
 
-  end 
+  end
 
   IssueClient.create(env,  options.environment, "404 - Not Found", "Referer: #{env['HTTP_REFERER']}" )
-  
+
   if request.xhr?
     '<div class="error">Action not found.</div>'
   else
     read_if_file('public/404.html') || "Page not found. Try checking for any typos in the address."
   end
-  
+
 } # === not_found
 
 
@@ -180,11 +181,11 @@ not_found {
 # Require the actions.
 # ===============================================
 
-require_these 'actions', %w{ 
-  main 
+require_these 'actions', %w{
+  main
   old_app
-  heart 
-  member 
+  heart
+  member
   session
   news
 	resty

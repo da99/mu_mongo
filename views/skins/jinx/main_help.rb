@@ -17,8 +17,8 @@ div.content!  {
     li {
       div.question "What is MegaUNi.com?"
       div.answer {
-        span "A unification of past ideas/websites I've worked on.  Right now it is personal, ad-hoc, and 
-        loosly taped together. It's non-commercial, for now. No affiliate links. No ads. Just stuff I
+        span "A unification of past ideas/websites I've worked on.  Right now it is personal, ad-hoc, 
+        loosly put together, and non-commercial. No affiliate links. No ads. Just stuff I
         find useful. One day, it might become useful for other people."
       }
     }

@@ -4,6 +4,13 @@
 class Server < Thor
   include Thor::Actions
 
+  map '-s' => :shotgun
+  desc 'shotgun', "Runs Shotgun with Thin in development mode."
+  def shotgun
+    invoke 'sass:delete'
+    exec 'shotgun --server=thin --port=4567 config.ru'
+  end
+
 	map '-d' => :dev
   desc 'dev', "Runs Thin server in :development mode. (Uses :exec.)"
   def dev
