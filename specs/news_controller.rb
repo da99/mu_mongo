@@ -1,4 +1,4 @@
-describe 'News App' do
+describe 'News App (public)' do
 
   it 'renders :index' do
     get '/news/'
@@ -57,6 +57,28 @@ describe 'News :new' do
 
 
 end # ===
+
+describe 'News :edit' do
+  before do
+    @news = News.first
+    @edit_path = "/news/#{@news[:id]}/edit/"
+  end
+  it 'requires log-in' do
+    get @edit_path, {}, ssl_hash
+    follow_redirect!
+    last_request.fullpath.should.be =~ /^\/log\-in/
+  end
+  it 'is not viewable by members' do
+    log_in_member
+    get @edit_path, {}, ssl_hash
+    last_response.status.should.be == 404
+  end
+  it 'is viewable by admins' do
+    log_in_admin
+    get @edit_path, {}, ssl_hash
+    last_response.should.be.ok
+  end
+end # === 
 
 describe 'Hearts App Compatibility' do
 

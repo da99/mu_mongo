@@ -173,8 +173,8 @@ class Sequel::Model
       if !editor
         lev == :STRANGER
       else
-        if editor.has_power_of?(lev)
-          lev
+        if Member::SECURITY_LEVEL_NAMES.include?(lev)
+          editor.has_power_of?(lev) && lev
         else respond_to?(lev) 
           editor_list = ( lev == :self ? self : send(lev) )
           editor_list = [editor_list].flatten
