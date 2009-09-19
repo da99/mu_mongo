@@ -30,11 +30,13 @@ helpers do # ===============================
     # I hate this because it requires specific implementation knowledge
     # about Rack::Flash. However, until I figure out a better solution,
     # here goes:
-    flash_session = session[:__FLASH__]
+    #flash_session = session[:__FLASH__]
     
     session.clear
     session[:return_page] = return_page
-    session[:__FLASH__] = flash_session 
+    keep_flash
+
+    # session[:__FLASH__] = flash_session 
   end
   
   def logged_in?

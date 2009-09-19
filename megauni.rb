@@ -28,7 +28,7 @@ use Rack::Session::Pool
 # will only allow you to use flash values once
 # per call, not per request. Or it could
 # prevent it's use after a redirect.
-use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg]
+# use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg]
 
 configure :test do
   require Pow('~/.megauni')
@@ -83,9 +83,7 @@ helpers {
   def dev_log_it( msg )
       puts(msg) if options.development?
   end
-  def flash_msg?
-    flash.success_msg || flash.error_msg || flash.notice
-  end
+
   def redirect(uri, *args)
     if !request.get? && args.detect { |s| s.to_i > 200 && s.to_i < 500 }
       raise ArgumentError,
@@ -100,6 +98,8 @@ helpers {
     #if request.get? && mobile_request?
     #  uri = File.join(uri, 'm/')
     #end
+    
+    keep_flash
 
     response['Location'] = uri
     halt(*args)
@@ -111,6 +111,7 @@ require_these 'helpers/sinatra', %w{
   sanitize_input
   describe_action
   urls_and_ssl
+  flasher
   old_apps
   describe_action
   auth_and_auth
