@@ -58,6 +58,23 @@ class Member < Sequel::Model
   #                    Instance Methods
   # ========================================================= 
 
+  # Future versions of Sequel may alter implementation of :inspect.
+  # By using a custom implementation, we cane make sure
+  # the customized version of :inspect_values is always used.
+  def inspect
+    "#<#{model.name} @values=#{inspect_values.inspect}>"
+  end
+  
+  # Default :inspect_values is 
+  # over-ridden to prevent :hashed_password and :salt 
+  # from being displayed.
+  def inspect_values
+    safe_values = values.clone
+    safe_values.delete :hashed_password
+    safe_values.delete :salt
+    safe_values
+  end
+
   def admin?
     has_power_of?(:ADMIN)
   end

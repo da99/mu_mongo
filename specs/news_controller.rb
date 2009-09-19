@@ -1,4 +1,4 @@
-describe 'News App (public)' do
+describe 'News App (public actions)' do
 
   it 'renders :index' do
     get '/news/'
@@ -35,7 +35,7 @@ describe 'News App (public)' do
 
 end # ===
 
-describe 'News :new' do
+describe 'News :new (action)' do
 
   it 'requires log-in' do
     get '/news/new/', {}, ssl_hash
@@ -58,7 +58,7 @@ describe 'News :new' do
 
 end # ===
 
-describe 'News :edit' do
+describe 'News :edit (action)' do
   before do
     @news = News.first
     @edit_path = "/news/#{@news[:id]}/edit/"
@@ -79,6 +79,29 @@ describe 'News :edit' do
     last_response.should.be.ok
   end
 end # === 
+
+describe 'News :update (action)' do
+  before do
+    @news = News.first
+    @update_path = "/news/#{@news[:id]}/"
+  end
+
+  it 'does not allow members to update' do
+    log_in_member
+    should.raise(Member::UnauthorizedEditor) {
+      put @update_path, {:title=>'New Title'}, ssl_hash
+    }
+  end 
+
+  it 'allows admins to update' do
+    log_in_admin
+    new_title = "Longevinex Rocks (updated) #{Time.now.utc.to_i}"
+    put @update_path, {:title=>new_title}, ssl_hash
+    follow_redirect!
+    follow_redirect! # The same path but with SSL
+    last_response.body.should.be =~ /#{Regexp.escape(new_title)}/
+  end
+end # ===
 
 describe 'Hearts App Compatibility' do
 
