@@ -9,9 +9,9 @@ class LogInAttempt < Sequel::Model
   
   def self.log_failed_attempt( ip_address )
     params = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
-    old_la = LoginAttempt.filter(params).first
+    old_la = LogInAttempt.filter(params).first
     
-    return LoginAttempt.create( params ).total if !old_la
+    return LogInAttempt.create( params ).total if !old_la
    
     # Why use ".this.update"? Answer: http://www.mail-archive.com/sequel-talk@googlegroups.com/msg02150.html
     old_la.this.update :total => 'total + 1'.lit
@@ -30,4 +30,4 @@ class LogInAttempt < Sequel::Model
   # =========================================================
   
 
-end # ===== LoginAttempt
+end # ===== LogInAttempt
