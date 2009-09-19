@@ -26,6 +26,12 @@ div.content!  {
 
     fieldset {
       label 'Tags'
+      app_vars[:news_tags].each do |t|
+        div.box { 
+          checkbox false, :name=>'tags[]', :value=>t[:id]
+          span t[:filename]
+        }
+      end
     }
 
     div.buttons {

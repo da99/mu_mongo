@@ -71,6 +71,14 @@ class Markaby::Builder
     )
     ''
   end # === partial
+
+  def checkbox selected, attrs
+    defaults = { :type=>'checkbox' }
+    if selected
+      defaults[:checked] = 'checked'
+    end
+    input attrs.update(defaults)     
+  end
   
 end # === class Markaby::Builder
         

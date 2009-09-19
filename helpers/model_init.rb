@@ -204,6 +204,11 @@ class Sequel::Model
     
   end # === def validate
 
+  def has_tag_id?(tag_id)
+    @tag_ids ||= taggings_dataset.naked.map(:tag_id)
+    @tag_ids.include?(tag_id.to_i)
+  end
+
   def require_columns *raw_keys
     keys = raw_keys.flatten
     keys.each { |k| 

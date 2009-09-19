@@ -29,6 +29,21 @@ div.content!  {
 
     fieldset {
       label 'Tags'
+      div.checkboxes {
+        app_vars[:news_tags].each { |t|
+          if app_vars[:news].has_tag_id?(t[:id])
+            div.box.selected {
+              checkbox true, :name=>"tags[]", :value=>t[:id]
+              span t[:filename]
+            }
+          else
+            div.box {
+              checkbox false, :name=>"tags[]", :value=>t[:id]
+              span t[:filename]
+            }
+          end
+        } 
+      }
     }
 
     div.buttons {

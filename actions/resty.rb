@@ -43,6 +43,21 @@ helpers {
     end
   end
 
+  def rest_new! klass
+    @model_class = klass
+    require_log_in! if !model_class.creator?(:STRANGER)
+    pass if !model_class.creator?(current_member)
+    describe klass.to_s.underscore.to_sym, :new
+  end
+
+  def rest_edit!(klass)
+    @model_class = klass
+    require_log_in!
+    require_model_instance!
+    pass if !model_instance.updator?(current_member)
+    describe klass.to_s.underscore.to_sym, :edit
+  end
+
 } # === helpers
 
 get '/:model/new/' do
