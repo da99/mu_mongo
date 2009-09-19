@@ -1,4 +1,4 @@
-save_to('title') { 'Login' }
+save_to('title') { 'LogIn' }
 
 partial('__nav_bar')
 

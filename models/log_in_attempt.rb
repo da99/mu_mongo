@@ -1,4 +1,4 @@
-class LoginAttempt < Sequel::Model
+class LogInAttempt < Sequel::Model
 
   MAX = 4
   class TooManyFailedAttempts < StandardError; end
@@ -18,7 +18,7 @@ class LoginAttempt < Sequel::Model
     new_total = old_la[:total] + 1  
 
     if new_total >= MAX
-        raise TooManyFailedAttempts,  "#{new_total} login attemps for #{old_la.ip_address}"
+        raise TooManyFailedAttempts,  "#{new_total} log-in attemps for #{old_la.ip_address}"
     end
     
     new_total

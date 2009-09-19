@@ -26,9 +26,9 @@ post( "/log-in/"  ) do
       redirect( return_page || '/account/' )
     rescue Member::NoRecordFound, Member::IncorrectPassword
       begin
-        LoginAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
+        LogInAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
         flash.error_msg = "Incorrect info. Try again."
-      rescue LoginAttempt::TooManyFailedAttempts
+      rescue LogInAttempt::TooManyFailedAttempts
         flash.error_msg = "Too many failed log-in attempts. Contact support." 
       end
     end

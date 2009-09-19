@@ -66,7 +66,7 @@ helpers do # ===============================
       session[:return_page] = request.fullpath
       redirect('/log-in/')
     else
-      render_error_msg( "Not logged in. Login first and try again.", 200  )
+      render_error_msg( "Not logged in. Log-in first and try again.", 200  )
     end
     
   end # === def check_creditials!            
