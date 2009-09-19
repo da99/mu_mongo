@@ -25,6 +25,7 @@ class News < Sequel::Model
   allow_viewer :STRANGER
 
   allow_creator :ADMIN do
+    raw_data[:published_at] ||= Time.now.utc
     require_columns :title, :body
     optional_columns :teaser, :published_at, :tags
   end

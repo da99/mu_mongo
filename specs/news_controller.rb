@@ -58,6 +58,41 @@ describe 'News :new (action)' do
 
 end # ===
 
+describe 'News :create (action)' do
+  
+  before do
+    @path = '/news/'
+    @new_values = { :title=>'Vitamin D3 Shop', 
+                  :teaser=>'The Teaser',
+                  :body=>'New Openining' }
+    @path_args = [ @path, @new_values, ssl_hash ]
+  end
+
+  it 'does not allow strangers' do
+    should.raise(Member::UnauthorizedEditor) {
+      post *@path_args
+    }
+  end
+
+  it 'does not allow members' do
+    log_in_member
+    should.raise(Member::UnauthorizedEditor) {
+      post *@path_args
+    }
+  end
+
+  it 'allows admins' do
+    log_in_admin
+    post *@path_args
+    news = News.order(:id).last
+    follow_redirect!
+    follow_redirect!
+    last_response.should.be.ok
+    last_response.body.should.be =~ /#{Regexp.escape(@new_values[:title])}/
+  end
+
+end # ===
+
 describe 'News :edit (action)' do
   before do
     @news = News.first
