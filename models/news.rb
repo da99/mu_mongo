@@ -22,8 +22,6 @@ class News < Sequel::Model
     updated_at || created_at
   end
 
-
-
   allow_viewer :STRANGER
 
   allow_creator :ADMIN do
@@ -35,5 +33,29 @@ class News < Sequel::Model
     optional_columns :title, :body, :teaser, :published_at, :tags
   end
 
+  validator :title do
+    fn = :title
+    require_string! fn
+  end # === 
+
+  validator :teaser do
+    fn = :teaser
+    optional_string :teaser
+  end # ===
+
+  validator :body do
+    fn = :body
+    require_string! fn
+  end # ===
+
+  validator :published_at do
+    fn = :published_at
+    self[ fn ]  = raw_data[fn] || Time.now.utc
+  end
+
+  validator :tags do
+    fn = :tags
+    raise "Not implemented."
+  end
 
 end # === end News

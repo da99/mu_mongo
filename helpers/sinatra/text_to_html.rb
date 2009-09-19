@@ -15,11 +15,17 @@ helpers {
           when Hash
             arr.values
           when String
-            [arr]
+            arr
           else
             ['Unknown error.']
         end
-        '<ul><li>' + vals.map { |s| Wash.html(s).capitalize }.join("\n</li><li>") + "</li></ul>"
+        
+        case vals
+          when String
+            textile_to_html(vals)
+          when Enumerable
+            '<ul><li>' + vals.map { |s| Wash.html(s).capitalize }.join("\n</li><li>") + "</li></ul>"
+        end
         # '* ' + vals.map {|s| Wash.html(s).capitalize }.join("\n")
       end
 

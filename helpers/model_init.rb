@@ -95,13 +95,13 @@ class Sequel::Model
 
   
   def self.updator editor, raw_vals
-    rec = self[:id=>raw_vals]
+    rec = self[:id=>raw_vals[:id]]
     raise NoRecordFound, "Try again." if !rec
-    level = n.update?( editor )
+    level = rec.updator?( editor )
     raise UnauthorizedEditor, editor.inspect if !level
     rec.current_editor = editor
-    rec.raw_data = raw_vals
-    rec.instance_eval &(editor_permission[:update][level])
+    rec.raw_data       = raw_vals
+    rec.instance_eval &(editor_permissions[:update][level])
     rec.raise_if_invalid
     rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
     rec._save_
@@ -238,10 +238,24 @@ class Sequel::Model
   # Sets field to new value using :to_s and :strip
   # Then, adds to :errors if new string is empty.
   def require_string! field_name, raw_error_msg  = nil
-    self[field_name] = self[field_name].to_s.strip
-    error_msg  = ( raw_error_msg || "A #{field_name} is required." ).strip
+    clean = raw_data[field_name].to_s.strip
     
-    self.errors.add( field_name, error_msg ) if self[field_name].empty?
+    if clean.empty?
+      error_msg  = ( raw_error_msg || "is required." ).strip
+      self.errors.add( field_name, error_msg )
+      return nil
+    else
+      self[field_name] = clean
+    end
+  end
+
+  def optional_string field_name
+    clean = raw_data[field_name].to_s.strip
+    if clean.empty?
+      self[field_name] = nil
+    else
+      self[field_name] = clean
+    end
   end
 
 

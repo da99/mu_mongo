@@ -6,7 +6,9 @@ div.content!  {
 
   partial '__flash_msg' if the_app.flash_msg?
 
-  h3 @title # "Editing: #{app_vars[:news][:title]}"
+  a("View", :href=>"/news/#{app_vars[:news][:id]}/")
+  
+  h3 @title # "Editing: #{app_vars[:news][:title]}" 
 
   form.form_news_edit!(:action=>"/news/#{app_vars[:news][:id]}/", :method=>'post') {
 

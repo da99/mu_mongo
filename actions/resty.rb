@@ -7,13 +7,13 @@ helpers {
   # === The following actions are used only by Resty actions. ============================
   # === They are not meant to be used by regular actions. ================================
 
-  def pass_if_not_rest(action)
+  def rest_must_be_allowed!(action)
     opt_name = "#{clean_room[:model].to_s.underscore}_actions" 
     pass if !options.target.respond_to?(opt_name)
     pass if !options.send(opt_name).include?(action)
   end
 
-  def model_class_required
+  def require_model_class!
     pass if !clean_room[:model]
     begin
       model_class
@@ -22,8 +22,8 @@ helpers {
     end
   end
 
-  def model_instance_required
-    model_class_required
+  def require_model_instance!
+    require_model_class!
     pass if !model_instance
   end
 
@@ -46,8 +46,8 @@ helpers {
 } # === helpers
 
 get '/:model/new/' do
-  pass_if_not_rest :new
-  model_class_required
+  rest_must_be_allowed! :new
+  require_model_class!
   require_log_in! if !model_class.creator?(:STRANGER)
   pass if !model_class.creator?(current_member)
 
@@ -56,15 +56,13 @@ get '/:model/new/' do
 end
 
 post '/:model/' do 
-  pass_if_not_rest :create
-  model_class_required
+  rest_must_be_allowed! :create
+  require_model_class!
 
   begin
     n = model_class.creator current_member, clean_room
     flash.success_msg = ( " %s was saved." % english_name( n ).capitalize )
     redirect( "/#{clean_room[:model]}/#{n[:id]}/" )
-  rescue model_class::UnauthorizedEditor
-    pass
   rescue Sequel::ValidationFailed => e
     flash.error_msg = to_html_list(e.message)
     redirect("/#{clean_room[:model]}/new/")
@@ -74,8 +72,8 @@ end # === post
 
 
 get '/:model/:id/' do
-  pass_if_not_rest :show
-  model_instance_required
+  rest_must_be_allowed! :show
+  require_model_instance!
   dev_log_it "Resty :show action."
 
   require_log_in! if !model_instance.viewer? :STRANGER
@@ -86,9 +84,9 @@ get '/:model/:id/' do
 end
 
 get '/:model/:id/edit/' do
-  pass_if_not_rest :edit
+  rest_must_be_allowed! :edit
   require_log_in!
-  model_instance_required
+  require_model_instance!
   pass if !model_instance.updator?(current_member)
 
   describe clean_room[:model], :edit
@@ -96,34 +94,30 @@ get '/:model/:id/edit/' do
 end
 
 put '/:model/:id/' do
-  pass_if_not_rest :update
+  rest_must_be_allowed! :update
   require_log_in!
-  model_instance_required
+  require_model_instance!
 
   begin
-    n = model_instance.updator current_member, clean_room
-    flash.success_msg = ( "%s was save. " % english_name(n).capitalize )
+    n = model_class.updator current_member, clean_room
+    flash.success_msg = ( "%s was saved. " % english_name(n).capitalize )
     redirect( request.path_info )
-  rescue model_class::UnauthorizedEditor
-    pass
   rescue Sequel::ValidationFailed => e
     flash.error_msg = to_html_list(e.message)
-    redirect( request.path_info + "edit/" )
+    redirect( File.join( request.path_info , "edit/" ) )
   end
 
 end # === put
 
 delete '/:model/:id/' do
-  pass_if_not_rest :delete
+  rest_must_be_allowed! :delete
   require_log_in!
-  model_instance_required
+  require_model_instance!
   
   begin
     n = model_instance.deletor current_member, clean_room 
     flash.success_msg = "Deletion was successful."
     redirect( "/" )
-  rescue model_class::UnauthorizedEditor
-    pass
   end
 
 end # === delete
