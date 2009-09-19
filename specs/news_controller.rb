@@ -35,6 +35,29 @@ describe 'News App' do
 
 end # ===
 
+describe 'News :new' do
+
+  it 'requires log-in' do
+    get '/news/new/', {}, ssl_hash
+    follow_redirect!
+    last_request.fullpath.should.be == '/log-in/'
+  end
+
+  it 'does not allow regular members to view it.' do
+    log_in_member
+    get '/news/new/', {}, ssl_hash
+    last_response.status.should.be == 404
+  end
+
+  it 'requires log-in by an admin only.' do
+    log_in_admin
+    get '/news/new/', {}, ssl_hash
+    last_response.should.be.ok
+  end
+
+
+end # ===
+
 describe 'Hearts App Compatibility' do
 
   it 'renders mobile version of :index' do

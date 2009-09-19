@@ -18,6 +18,17 @@ class Bacon < Thor
       :published_at => Time.now.utc)
     news_tag_id  = DB[:news_tags].insert(:filename=>'surfer_hearts')
     news_tagging = DB[:news_taggings].insert(:news_id=>news_id, :tag_id=>news_tag_id)
+    admin_id = DB[:members].insert(:hashed_password=>'$2a$10$q4bnQIrv7FO.SoATM3XKPOVDEp74iey2qMJ8VWxm5x1o0vd6rfjmi', 
+                        :salt=>'0N3OjeVmlw', 
+                        :permission_level=>1000, 
+                        :created_at=>Time.now.utc)
+    DB[:usernames].insert(:owner_id=>admin_id, :username=>'da01tv', :category=>'Personal', :created_at=>Time.now.utc)
+
+    member_id = DB[:members].insert(:hashed_password=>'$2a$10$q4bnQIrv7FO.SoATM3XKPOVDEp74iey2qMJ8VWxm5x1o0vd6rfjmi',
+                        :salt=>'0N3OjeVmlw',
+                        :permission_level=>1,
+                        :created_at=>Time.now.utc)
+    DB[:usernames].insert(:owner_id=>member_id, :username=>'da01', :category=>'Business', :created_at=>Time.now.utc)
   end
 
   desc :all, "Run all specs for this app."

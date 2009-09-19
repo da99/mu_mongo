@@ -30,7 +30,7 @@ div.content!  {
     fieldset {
       label 'Tags'
       div.checkboxes {
-        app_vars[:news_tags].each { |t|
+        the_app.news_tags.each { |t|
           if app_vars[:news].has_tag_id?(t[:id])
             div.box.selected {
               checkbox true, :name=>"tags[]", :value=>t[:id]

@@ -1,13 +1,18 @@
 
 configure do
-  set :news_actions, [:create, :update, :delete] 
+  set :news_actions, [:new, :create, :edit, :update, :delete] 
 end
 
-get '/news/new/' do
-  rest_new! News
-  @news_tags = NewsTag.naked.order(:filename).all
-  render_mab
-end 
+helpers {
+  def news_tags
+    @all_news_tags ||= NewsTag.naked.order(:filename).all
+  end
+}
+#get '/news/new/' do
+#  rest_new! News
+#  @news_tags = NewsTag.naked.order(:filename).all
+#  render_mab
+#end 
 
 get "/news/:id/" do
   pass if clean_room[:id].to_i < 1
@@ -25,11 +30,11 @@ get '/news/' do
   render_mab
 end
 
-get '/news/:id/edit/' do
-  rest_edit! News
-  @news_tags = NewsTag.naked.order(:filename).all
-  render_mab
-end
+#get '/news/:id/edit/' do
+#  rest_edit! News
+#  @news_tags = NewsTag.naked.order(:filename).all
+#  render_mab
+#end
 
 get '/news/by_date/:year/:month/' do
   describe :news, :by_date
