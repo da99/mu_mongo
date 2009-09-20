@@ -39,7 +39,7 @@ describe 'News :new (action)' do
 
   it 'requires log-in' do
     get '/news/new/', {}, ssl_hash
-    follow_redirect!
+    follow_ssl_redirect!
     last_request.fullpath.should.be == '/log-in/'
   end
 
@@ -83,8 +83,7 @@ describe 'News :create (action)' do
   it 'allows admins' do
     log_in_admin
     post *@path_args
-    follow_redirect!
-    follow_redirect!
+    follow_ssl_redirect!
     last_request.fullpath.should.be =~ /^\/news\/[0-9]+\//
     last_response.should.be.ok
     last_response.body.should.be =~ /#{Regexp.escape(@new_values[:title])}/
@@ -94,8 +93,7 @@ describe 'News :create (action)' do
   it 'redirects to :new and shows error messages' do
     log_in_admin
     post @path, {}, ssl_hash
-    follow_redirect!
-    follow_redirect!
+    follow_ssl_redirect!
     last_response.body.should.be =~ /Title is required/
     last_response.body.should.be =~ /Body is required/
   end
@@ -109,7 +107,7 @@ describe 'News :edit (action)' do
   end
   it 'requires log-in' do
     get @edit_path, {}, ssl_hash
-    follow_redirect!
+    follow_ssl_redirect!
     last_request.fullpath.should.be =~ /^\/log\-in/
   end
   it 'is not viewable by members' do
@@ -141,16 +139,14 @@ describe 'News :update (action)' do
     log_in_admin
     new_title = "Longevinex Rocks (updated) #{Time.now.utc.to_i}"
     put @update_path, {:title=>new_title}, ssl_hash
-    follow_redirect!
-    follow_redirect! # The same path but with SSL
+    follow_ssl_redirect! 
     last_response.body.should.be =~ /#{Regexp.escape(new_title)}/
   end
 
   it 'redirects to :edit and shows error messages.' do
     log_in_admin
     put @update_path, {:title=>'', :body=>''}, ssl_hash
-    follow_redirect!
-    follow_redirect!
+    follow_ssl_redirect!
     last_response.body.should.be =~ /Title is required/
     last_response.body.should.be =~ /Body is required/
   end
