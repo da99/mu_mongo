@@ -31,6 +31,20 @@ class Bacon < Thor
     DB[:usernames].insert(:owner_id=>member_id, :username=>'da01', :category=>'Business', :created_at=>Time.now.utc)
   end
 
+  desc :file, "Run a single file"
+  method_options :file=> :string
+  def file
+    output, errors = run_specs(true, options[:file] )
+    
+    if !errors.empty?
+      say( errors, :red )
+      return errors
+    end
+
+    say( colorize(output) + "\n\n" )
+    output
+  end
+
   desc :all, "Run all specs for this app."
   method_options :summary => :boolean
   def all
@@ -45,8 +59,7 @@ class Bacon < Thor
       output = output.split("\n").last.strip
     end
     
-    output = colorize(output) 
-    say( output + "\n\n" )
+    say( colorize(output) + "\n\n" )
     output
   end
 
@@ -64,9 +77,9 @@ class Bacon < Thor
 
   private # =========================================================
 
-  def run_specs(print_wait=true)
+  def run_specs(print_wait=true, filename = '*')
     spec_helper = Pow('~', "#{PRIMARY_APP}/helpers/specs/spec.rb" )
-    cmd = "bacon specs/*.rb -r #{spec_helper}"
+    cmd = "bacon specs/#{filename.sub('.rb', '')}.rb -r #{spec_helper}"
     please_wait(cmd) if print_wait
     shell_capture(cmd)
   end

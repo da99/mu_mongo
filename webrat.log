@@ -1,0 +1,13 @@
+# Logfile created on Sat Sep 19 23:01:46 -0400 2009 by /
+D, [2009-09-19T23:01:46.531216 #10876] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:01:46.583238 #10876] DEBUG -- : REQUESTING PAGE: GET https://www.example.com/log-in/ with {} and HTTP headers {"HTTP_REFERER"=>"/log-in/"}
+D, [2009-09-19T23:02:29.092450 #10912] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:03:20.786438 #10943] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:04:01.301359 #10949] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:04:18.676384 #10978] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:04:42.662227 #10984] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:05:01.896476 #10989] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:06:33.572737 #11046] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:06:33.632635 #11046] DEBUG -- : REQUESTING PAGE: POST /log-in/ with {"username"=>"", "password"=>""} and HTTP headers {"HTTP_REFERER"=>"/log-in/"}
+D, [2009-09-19T23:07:41.387840 #11082] DEBUG -- : REQUESTING PAGE: GET /log-in/ with {} and HTTP headers {}
+D, [2009-09-19T23:07:41.479571 #11082] DEBUG -- : REQUESTING PAGE: POST /log-in/ with {"username"=>"", "password"=>""} and HTTP headers {"HTTP_REFERER"=>"/log-in/"}

@@ -8,7 +8,7 @@ class LogInAttempt < Sequel::Model
   # =========================================================
   
   def self.log_failed_attempt( ip_address )
-    params = { :ip_address=>ip_address, :created_at=>Time.now.utc.strftime("%Y-%m-%d") }
+    params = { :ip_address=>ip_address, :created_at=>utc_today }
     old_la = LogInAttempt.filter(params).first
     
     return LogInAttempt.create( params ).total if !old_la
@@ -24,6 +24,16 @@ class LogInAttempt < Sequel::Model
     new_total
 
   end # === def self.log_failed_attempt
+
+  def self.too_many?(ip_address)
+    old_la = LogInAttempt.where(:ip_address=>ip_address, :created_at=>utc_today).first
+    return false if !old_la
+    old_la[:total] >= MAX
+  end
+
+  def self.utc_today
+    Time.now.utc.strftime("%Y-%m-%d")
+  end
   
   # =========================================================
   #                   INSTANCE METHODS
