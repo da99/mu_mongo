@@ -22,6 +22,41 @@ class Username < Sequel::Model
   
   # ==== CLASS METHODS =================================================
 
+  def self.validate_username(u)
+    err, new_u = get_username_errors(u)
+    raise(Sequel::ValidationFailed, "Username #{err}") if err
+    return new_u
+  end
+
+  # Returns either a string representing the error 
+  # or an Array when first value is nil (no errors) and
+  # second value is sanitized username.
+  def self.get_username_errors(u)
+    fn = :username
+    raw_name = u.to_s.strip
+    
+    # Delete invalid characters and 
+    # reduce any suspicious characters. 
+    # '..*' becomes '.', '--' becomes '-'
+    new_un = raw_name.gsub( /[^a-z0-9]{1,}/i  ) { |s| 
+                                                      ['_', '.', '-'].include?( s[0,1] ) ?
+                                                        s[0,1] :
+                                                        '' ;
+                                                    }          
+    
+    # Check to see if there is at least one alphanumeric character
+    if new_un.empty?
+      return 'is required.'
+    elsif new_un.length < 2
+      return 'is too short. (Must be 3 or more characters.)' 
+    elsif new_un.length > 20
+      return 'is too long. (Must be 20 characters or less.)' 
+    elsif !new_un[ /[a-z0-9]/i ] && self.errors.empty?
+      return 'must have at least one letter or number.' 
+    end
+    
+    [nil, new_un] 
+  end
 
   # ==== INSTANCE METHODS ==============================================
 
@@ -86,31 +121,12 @@ class Username < Sequel::Model
   
   validator :username do
     fn = :username
-    raw_name = raw_data[fn].to_s.strip
-    
-    # Delete invalid characters and 
-    # reduce any suspicious characters. 
-    # '..*' becomes '.', '--' becomes '-'
-    new_un = raw_name.gsub( /[^a-z0-9]{1,}/i  ) { |s| 
-                                                      ['_', '.', '-'].include?( s[0,1] ) ?
-                                                        s[0,1] :
-                                                        '' ;
-                                                    }          
-    
-    # Check to see if there is at least one alphanumeric character          
-    self.errors.add( fn,  
-                    'Username is too short. (Must be 3 or more characters.)' 
-                   ) if new_un.length < 2
-    self.errors.add( fn,  
-                    'Username is too long. (Must be 20 characters or less.)' 
-                   ) if new_un.length > 20
-    self.errors.add( fn,  
-                    'Username must have at least one letter or number.' 
-                   ) if !new_un[ /[a-z0-9]/i ] && self.errors.empty?
-    
-    return( self[fn] = new_un ) if self.errors[fn].empty?
-    nil 
-    
+    err, new_u = self.class.get_username_errors(raw_data[fn])
+    if err
+      self.errors.add( fn, err )
+    else
+      self[fn] = new_u
+    end
   end # === def validate_new_values
   
   

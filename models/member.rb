@@ -118,7 +118,7 @@ class Member < Sequel::Model
 
 
   allow_creator STRANGER do
-    require_columns :password
+    require_columns :password, :username
   end
   
   def after_create
@@ -136,15 +136,33 @@ class Member < Sequel::Model
 
   # =============== VALIDATORS =============================
 
+  validator :username do
+
+    fn = :username
+    err, new_u = Username.get_username_errors(raw_data[fn])
+    if err
+      self.errors.add( fn, err )
+    else
+      raw_data[fn] = new_u
+    end
+
+  end
 
   validator :password do
     fn = :password
     pass = raw_data[ fn ].to_s
+
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
     self.errors.add( fn, "and password confirmation do not match.") if pass != confirm_pass 
-    self.errors.add( fn, "must be longer than 5 characters.") if pass.length < 5   
-    self.errors.add( fn, "must have at least one number.") if !pass[/[0-9]/]
+
+    if pass.empty?
+      self.errors.add( fn, "is required.")
+    elsif pass.length < 5
+      self.errors.add( fn, "must be longer than 5 characters.")    
+    elsif !pass[/[0-9]/]
+      self.errors.add( fn, "must have at least one number.")
+    end
 
     return nil if !self.errors[fn].empty?
     

@@ -24,9 +24,21 @@ helpers {
           when String
             textile_to_html(vals)
           when Enumerable
-            '<ul><li>' + vals.map { |s| Wash.html(s).capitalize }.join("\n</li><li>") + "</li></ul>"
+            '<ul><li>' + 
+              vals.map { |s| 
+                          titleize(Wash.html(s))
+              }.join("\n</li><li>") + 
+            "</li></ul>"
         end
         # '* ' + vals.map {|s| Wash.html(s).capitalize }.join("\n")
+      end
+
+      # Returns String, but with first non-whitespace 
+      # character upcased. Original whitespace on
+      # both sides of string are left intact.
+      def titleize(s)
+        first_char = s.lstrip[0,1]
+        s.sub( first_char, first_char.upcase )
       end
 
       # =========================================================

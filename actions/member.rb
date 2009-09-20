@@ -10,7 +10,7 @@ end
           
 post( "/member/" ) do
   log_out! 
-  
+
   begin
 
     m = Member.creator( current_member, clean_room )
