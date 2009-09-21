@@ -58,11 +58,12 @@ configure do
   set :session,           true
 
   set :site_title,        'Mega Uni'
-  set :site_tag_line,     'The website that predicts the future.'
+  set :site_tag_line,     'i have no idea what i\'m doing.'
   set :site_keywords,     'predict, predictions, future'
   set :site_domain,       'megaUni.com'
-  set :site_url,          Proc.new { "http://www.#{options.site_domain}/" }
-  set :site_support_email,  Proc.new { "helpme@#{options.site_domain}" }
+  set :site_help_email,   'help@megaUni.com'
+  set :site_url,          "http://www.megaUni.com/"
+  set :site_support_email,  "helpme@megaUni.com" 
   set :cache_the_templates, Proc.new { !development? }
   set :views,               Pow('views/skins/jinx')
 

@@ -32,9 +32,10 @@ class Bacon < Thor
   end
 
   desc :file, "Run a single file"
-  method_options :file=> :string
+  method_options :file=> :string, :testcase => :string
   def file
-    output, errors = run_specs(true, options[:file] )
+    append = options[:testcase] ? " -t #{options[:testcase]} " : nil
+    output, errors = run_specs(true, options[:file], append )
     
     if !errors.empty?
       say( errors, :red )
@@ -77,9 +78,9 @@ class Bacon < Thor
 
   private # =========================================================
 
-  def run_specs(print_wait=true, filename = '*')
+  def run_specs(print_wait=true, filename = '*', append='')
     spec_helper = Pow('~', "#{PRIMARY_APP}/helpers/specs/spec.rb" )
-    cmd = "bacon specs/#{filename.sub('.rb', '')}.rb -r #{spec_helper}"
+    cmd = "bacon -r #{spec_helper} #{append} specs/#{filename.sub('.rb', '')}.rb "
     please_wait(cmd) if print_wait
     shell_capture(cmd)
   end

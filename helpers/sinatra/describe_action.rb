@@ -23,4 +23,12 @@ helpers {
       raw_proc.to_ruby.gsub( /^proc \{|\}$/, '' )
   end 
 
+  def content_xml_utf8
+    content_type :xml, :charset => 'utf-8'
+  end
+
+  def robot_agent?
+    env['HTTP_USER_AGENT'] && env['HTTP_USER_AGENT']['Googlebot']
+  end
+
 } # === helpers

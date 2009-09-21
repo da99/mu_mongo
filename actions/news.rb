@@ -83,7 +83,7 @@ get '/blog/:year/0/' do |year|
 end
 
 get '/blog/:year/:month/' do |year, month|
-  redirect("/news/by_date/#{year.to_i}/#{month.to_i}" )
+  redirect("/news/by_date/#{year.to_i}/#{month.to_i}/" )
 end
 
 get '/hearts/by_date/:year/:month/' do |year,month|
@@ -106,10 +106,14 @@ get %r{/hearts?_links?/([0-9]+)\.html?} do |id| # /hearts/20.html
   redirect( "/news/#{ id  }/"  )
 end
 
-get %r{/hearts?_links/([0-9]+)/} do |id|  #  /hearts_links/29
+get %r{/hearts?_links/([0-9]+)/} do |id|  #  /hearts_links/29/
   redirect( "/news/#{ id }/"  )
 end
 
-get %r{/heart_link/([0-9]+)/} do |id| #  /heart_link/29
+get %r{/heart_link/([0-9]+)/} do |id| #  /heart_link/29/
   redirect("/news/#{id}/")
+end
+
+get '/rss/?' do
+  redirect('/rss.xml')
 end

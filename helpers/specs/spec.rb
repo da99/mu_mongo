@@ -16,6 +16,10 @@ class Bacon::Context
     {'HTTP_X_FORWARDED_PROTO' => 'https'}
   end
 
+  def last_response_should_be_xml
+    last_response.headers['Content-Type'].should.be == 'application/xml;charset=utf-8'
+  end
+
   def follow_ssl_redirect!
     follow_redirect!
     follow_redirect!

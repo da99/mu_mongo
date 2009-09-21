@@ -30,3 +30,27 @@ describe 'Member :new/:create action' do
 end # ===
 
 
+describe 'Member :account action' do
+
+  it "redirects to /log-in/ for non-members" do
+    get '/account/', {}, ssl_hash
+    follow_ssl_redirect!
+    last_request.fullpath.should.be == '/log-in/'
+    last_response.should.be.ok
+  end
+
+  it "renders ok for members" do
+    log_in_member
+    get '/account/', {}, ssl_hash
+    last_response.should.be.ok
+  end
+
+  it "renders ok for admins" do
+    log_in_admin
+    get '/account/', {}, ssl_hash
+    last_response.should.be.ok
+  end
+
+end # === 
+
+

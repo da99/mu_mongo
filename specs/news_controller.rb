@@ -162,4 +162,56 @@ describe 'Hearts App Compatibility' do
     last_request.fullpath.should.be == '/news/m/'
   end
 
+  it 'redirects /blog/ to /news/' do 
+    get '/blog/'
+    follow_redirect!
+    last_request.fullpath.should.be == '/news/'
+    last_response.should.be.ok
+  end
+
+  it 'redirects /about/ to /help/' do
+    get '/about/'
+    follow_redirect!
+    last_request.fullpath.should.be == '/help/'
+    last_response.should.be.ok
+  end
+
+  it 'redirects blog archives to news archives. ' +
+     '(E.g.: /blog/2007/8/)' do
+    get '/blog/2007/8/'
+    follow_redirect!
+    last_request.fullpath.should.be == '/news/by_date/2007/8/'
+    last_response.should.be.ok
+  end
+
+  it 'redirects archives by_category to news archives by_tag. ' +
+     '(E.g.: /heart_links/by_category/16/)' do
+      get '/heart_links/by_category/16/'
+      follow_redirect!
+      last_request.fullpath.should.be == '/news/by_tag/16/'
+      last_response.should.be.ok
+  end
+
+  it 'redirects a "/heart_link/10/" to "/news/10/".' do
+    get '/heart_link/10/'
+    follow_redirect!
+    last_request.fullpath.should.be == '/news/10/'
+    last_response.should.be.ok
+  end
+
+  it 'responds with 404 for a heart link that does not exist.' do
+    post_id  = News.order(:id).last[:id] + 1
+    get "/heart_link/#{post_id}/"
+    follow_redirect!
+    last_response.status.should.be == 404
+  end
+
+  it 'redirects "/rss/" to "/rss.xml".' do
+    get '/rss/'
+    follow_redirect!
+    last_request.fullpath.should.be == '/rss.xml'
+    last_response.should.be.ok
+    last_response_should_be_xml
+  end
+
 end # === 

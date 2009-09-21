@@ -52,13 +52,20 @@ get '/*beeping.*' do
 end
 
 get '/sitemap.xml' do
-  content_type 'application/xml', :charset => 'utf-8'
+  content_xml_utf8
   @news = News.reverse_order(:created_at).limit(5).all
-  builder Pow( options.views, 'sitemap.rb').read
+  builder do |xml|
+    eval Pow( options.views, 'sitemap.rb' ).read
+  end
 end
 
-
-
+get '/rss.xml' do
+  content_xml_utf8
+  @posts = News.reverse_order(:created_at).limit(5).all
+  builder do |xml|
+    eval Pow( options.views, 'main_rss.rb' ).read
+  end
+end
 
 
 
