@@ -46,7 +46,11 @@ before {
 } # === before  
 
 helpers {
- 
+
+    def robot_agent?
+      env['HTTP_USER_AGENT'] && env['HTTP_USER_AGENT']['Googlebot']
+    end
+
     def mobile_request?(path = nil)
       @mobile_request || (path || request.path_info).strip =~ /\/m\/?$/
     end

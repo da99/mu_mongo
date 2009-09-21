@@ -141,7 +141,7 @@ error {
 
 not_found {
 
-# Add trailing slash and use a  permanent redirect.
+  # Add trailing slash and use a  permanent redirect.
   # Why a trailing slash? Many software programs
   # look for files by appending them to the url: /salud/robots.txt
   # Without adding a slash, they will go to: /saludrobots.txt
@@ -167,7 +167,9 @@ not_found {
 
   end
 
-  IssueClient.create(env,  options.environment, "404 - Not Found", "Referer: #{env['HTTP_REFERER']}" )
+  if !robot_agent?
+    IssueClient.create(env,  options.environment, "404 - Not Found", "Referer: #{env['HTTP_REFERER']}" )
+  end
 
   if request.xhr?
     '<div class="error">Action not found.</div>'
