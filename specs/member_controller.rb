@@ -15,7 +15,7 @@ describe 'Member :new/:create action' do
   end
 
   it 'redirects and shows username errors' do
-    post '/member/', {}, ssl_hash
+    post '/member/', {:password=>'myuni4vr', :confirm_password=>'myuni4vr'}, ssl_hash
     follow_ssl_redirect!
     last_response.body.should.be =~ /Username is required/
   end

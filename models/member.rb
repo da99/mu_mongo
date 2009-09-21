@@ -118,7 +118,7 @@ class Member < Sequel::Model
 
 
   allow_creator STRANGER do
-    require_columns :password, :username
+    require_columns :password 
   end
   
   def after_create
@@ -135,18 +135,6 @@ class Member < Sequel::Model
   
 
   # =============== VALIDATORS =============================
-
-  validator :username do
-
-    fn = :username
-    err, new_u = Username.get_username_errors(raw_data[fn])
-    if err
-      self.errors.add( fn, err )
-    else
-      raw_data[fn] = new_u
-    end
-
-  end
 
   validator :password do
     fn = :password
