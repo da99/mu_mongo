@@ -58,8 +58,8 @@ configure do
   set :session,           true
 
   set :site_title,        'Mega Uni'
-  set :site_tag_line,     'i have no idea what i\'m doing.'
-  set :site_keywords,     'predict, predictions, future'
+  set :site_tag_line,     'Games & gossip & secrets.'
+  set :site_keywords,     'games gossip (predictions) secrets'
   set :site_domain,       'megaUni.com'
   set :site_help_email,   'help@megaUni.com'
   set :site_url,          "http://www.megaUni.com/"
