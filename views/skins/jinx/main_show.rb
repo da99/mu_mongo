@@ -16,7 +16,11 @@ div.content! {
   if the_app.flash_msg?
     partial '__flash_msg'
   end
-  div "Coming Soon..." , :style=>"font-family: courier; font-size: 25px; font-weight: bold;"
+  div :style=>"font-family: courier; font-size: 25px; font-weight: bold;" do
+    span "Coming Soon..." 
+  end
+
+  div 'Quick! Give me an idea for a website. I\'ve run out. Maybe a website to trade in your husband for a better listener?'
 
 }
 
