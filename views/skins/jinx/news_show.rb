@@ -21,16 +21,16 @@ div.content! {
      the_app.news_to_html app_vars[:news], :body
    }
 
-   if !app_vars[:news_tags].empty?
+   if !app_vars[:news].tags.empty?
 		 div.tags {
 			if app_vars[:news].updator?(the_app.current_member)
 				a('Edit', :href=>"#{the_app.request.path_info}edit/")
 			end
 				p.title 'Tags:'
 				ul {
-					app_vars[:news_tags].each do |tagging|
+					app_vars[:news].tags.each do |tag|
 						li {
-							a(tagging.tag.filename, :href=>"/news/by_tag/#{tagging.tag[:id]}/")
+							a(tag.filename, :href=>"/news/by_tag/#{tag[:id]}/")
 						}
 					end
 				}

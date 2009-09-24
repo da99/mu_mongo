@@ -24,6 +24,13 @@ div( :id=>"nav_bar" ) {
       ['/log-out/', 'Logout', :session, :destroy, :if_member]
       # ['/sign-up/', 'Create Account', :member, :new, :if_not_member],
       # ['/log-in/', 'Log-in', :session, :new, :if_not_member]
+      #
+      # ['/predictions/', 'Predictions', :predictions, :index],
+      # ['/apartments/', 'Houses & Apartments', :housing, :index],
+      # ['/lingua/', 'Translate', :lingua, :index],
+      # ['/dating/', 'Lunch Date', :dating, :index],
+      # ['/pets/', 'Pets & Mascots', :pets, :index],
+      # ['/secrets/', 'Secrets', :health, :index],
     ].each { |path, text, c_name, a_name, show|
 
       show_it = case show

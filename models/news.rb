@@ -9,7 +9,10 @@ class News < Sequel::Model
 
   # ==== ASSOCIATIONS ==================================================
   one_to_many :taggings, :class_name=>'NewsTagging', :key=>:news_id
-  
+  one_to_many :tags, :class_name=>'NewsTag', :dataset=> proc { 
+    NewsTag.filter(:id=>taggings_dataset.select(:id))
+  }
+
   # ==== HOOKS =========================================================
 
 

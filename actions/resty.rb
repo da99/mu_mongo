@@ -60,7 +60,7 @@ helpers {
 
 } # === helpers
 
-get '/:model/new/' do
+get '/:model/new/' do  # :new
   rest_must_be_allowed! :new
   require_model_class!
   require_log_in! if !model_class.creator?(:STRANGER)
@@ -70,7 +70,7 @@ get '/:model/new/' do
   render_mab
 end
 
-post '/:model/' do 
+post '/:model/' do  # :create
   rest_must_be_allowed! :create
   require_model_class!
 
@@ -86,7 +86,7 @@ post '/:model/' do
 end # === post
 
 
-get '/:model/:id/' do
+get '/:model/:id/' do # :show
   rest_must_be_allowed! :show
   require_model_instance!
   dev_log_it "Resty :show action."
@@ -94,11 +94,16 @@ get '/:model/:id/' do
   require_log_in! if !model_instance.viewer? :STRANGER
   pass if !model_instance.viewer?(current_member)
 
+  do_before_meth = "before_render_#{clean_room[:model]}_show"
+  if options.target.respond_to?(do_before_meth) 
+    options.send(do_before_meth, self)
+  end
+
   describe clean_room[:model], :show
   render_mab
 end
 
-get '/:model/:id/edit/' do
+get '/:model/:id/edit/' do # :edit
   rest_must_be_allowed! :edit
   require_log_in!
   require_model_instance!
@@ -108,7 +113,7 @@ get '/:model/:id/edit/' do
   render_mab
 end
 
-put '/:model/:id/' do
+put '/:model/:id/' do # :update
   rest_must_be_allowed! :update
   require_log_in!
   require_model_instance!
@@ -124,7 +129,7 @@ put '/:model/:id/' do
 
 end # === put
 
-delete '/:model/:id/' do
+delete '/:model/:id/' do # delete
   rest_must_be_allowed! :delete
   require_log_in!
   require_model_instance!
