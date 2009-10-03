@@ -94,11 +94,6 @@ get '/:model/:id/' do # :show
   require_log_in! if !model_instance.viewer? :STRANGER
   pass if !model_instance.viewer?(current_member)
 
-  do_before_meth = "before_render_#{clean_room[:model]}_show"
-  if options.target.respond_to?(do_before_meth) 
-    options.send(do_before_meth, self)
-  end
-
   describe clean_room[:model], :show
   render_mab
 end

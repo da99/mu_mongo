@@ -69,7 +69,8 @@ helpers {
     # Adds either http:// or https://, 
     # along with request.host
     # depending if logged in.
-    def urlize(url)
+    def urlize(raw_url)
+      url = mobile_path_if_requested(raw_url)
       return url if !url[/^\//]
       full_path = "#{socket_and_host}#{url}"
       logged_in? || using_ssl?  ?

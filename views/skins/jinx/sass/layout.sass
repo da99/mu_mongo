@@ -2,14 +2,6 @@
 @import blueprint/_reset.sass
 @import 960/grid.sass
 
-h3 
-  font-size: 20px
-  font-weight: bold
-  padding-bottom: 10px
-  
-p
-  padding-bottom: 10px
-  margin-bottom: 0
 
 !red = #F00919
 !blue = #33CCFF
@@ -137,6 +129,8 @@ img.right
   #nav_bar
     margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
     border-right= !nav_bar_border  "dashed" #000
+    h4
+      text-align: right
     ul
       margin-left: 50px
       text-align: right
@@ -161,6 +155,8 @@ img.right
   #nav_bar
     margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
     border-left= !nav_bar_border  "dashed" #000
+    h4
+      text-align: left    
     ul
       margin-right: 50px
       text-align: left
@@ -185,8 +181,11 @@ img.right
 #nav_bar
   +grid(4)
   padding-bottom: 200px
+  h4
+    padding: 0 10px
   ul
     +no-bullets
+    padding-bottom: 20px
     text-align: right
     li
       span
@@ -230,11 +229,30 @@ img.right
   padding-bottom: 50px
   +grid(12)
 
+h3 
+  font-size: 20px
+  font-weight: bold
+  padding-bottom: 10px
+
+h4 
+  text-transform: uppercase
+  font-weight: bold
+  color: #003860
+  display: block
+  font-size: 14px
+
+p
+  padding-bottom: 10px
+  margin-bottom: 0
+
+
+
 div.tab_selected
   display: block
+
 div.tab_unselected
   display: none
-  
+
 ul.tabs
   +horizontal-list
   margin-bottom: -1px
@@ -256,7 +274,6 @@ ul.tabs
 div.form
   background= !light_grey   
   border= 1px "solid" #717171
-  
 
 form  
   label, div.title

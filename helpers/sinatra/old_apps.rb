@@ -18,7 +18,9 @@ before {
 
 } # === before
 
-
+get '/bigstopwatch/?' do
+  show_old_site(:bigstopwatch, true)
+end
 
 helpers {
 

@@ -32,4 +32,15 @@ describe 'Old Apps' do
     last_response.body.should =~ /This website has moved/
   end
 
+  it 'renders /bigstopwatch' do
+    get '/bigstopwatch'
+    follow_redirect!
+    last_response.should.be.ok
+  end
+
+  it 'renders /bigstopwatch/' do
+    get '/bigstopwatch/'
+    last_response.should.be.ok
+  end
+
 end

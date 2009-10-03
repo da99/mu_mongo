@@ -58,8 +58,8 @@ configure do
   set :session,           true
 
   set :site_title,        'Mega Uni'
-  set :site_tag_line,     'Games & gossip & secrets.'
-  set :site_keywords,     'games gossip (predictions) secrets'
+  set :site_tag_line,     'To-do lists. Just to-do lists.'
+  set :site_keywords,     'to-do lists'
   set :site_domain,       'megaUni.com'
   set :site_help_email,   'help@megaUni.com'
   set :site_url,          "http://www.megaUni.com/"
@@ -194,4 +194,47 @@ require_these 'actions', %w{
   news
 	resty
 }
+
+__END__
+
+TODOS
+  |
+Predictions
+  |
+Project Management
+  |
+Pets
+  |
+Questions 
+  |
+Translation
+  - to English
+  - to Japanese
+  |
+Lunch Dating
+  Find Breeder
+  Find Partner
+  Complain
+  Advice/Tips/Warnings
+  |
+Housing
+  Rent Out
+  Find
+  Mice
+  Cleaning
+  |
+University
+  Rate Professors
+  Post Warnings/News
+  Find/Create A College
+  |
+Blogs + Newspaper
+  |
+Travel & Dining
+  Find a city
+  Post a city
+  |
+News
+  |
+Corporal Captitalists (bonds in working individuals)
 
