@@ -5,7 +5,7 @@ before {
   end
   
   [:busynoise, :myeggtimer, :megahtml, :newsprint, :bigdeadline, :bigstopwatch].each { |name|
-    if request.host =~ /#{name}/i && ['/', '/egg', '/eggs'].include?(request.path_info)
+    if request.host =~ /#{name}/i && ['/', '/egg', '/eggs', '/egg/', '/eggs/'].include?(request.path_info)
       halt show_old_site( name, true )
     end
   }

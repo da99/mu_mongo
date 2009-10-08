@@ -36,6 +36,11 @@ get '/preggers/' do
   render_mab
 end 
 
+get '/hair/' do
+  describe :topic, :hair
+  render_mab
+end
+
 get '/child-care/' do
   describe :topic, :child_care
   render_mab
