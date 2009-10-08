@@ -29,9 +29,9 @@ div.content!  {
     }
 
     li {
-      div.question "Tumors, Cancer, Eyes, Energy, Brain/Memory, Bones, Sleep, Diabetes, Rheumatoid Arthritis"
+      div.question "Longevinex - (Benefits of red wine with no sugar/alcohol.)"
       div.answer {
-        p "... almost everything. Combine this with '30 Minutes of Sunshine' (see 'Cold/Flu' section) for the best anti-aging combo. "
+        p "For tumors, cancer, eyes, energy, brain/memory, bones, sleep, diabetes, rheumatoid arthritis... almost everything. Combine this with '30 Minutes of Sunshine' (see 'Cold/Flu' section) for the best anti-aging combo. "
         p "For adult men and non-menstruating/post-menopausal women." 
         p "Don't take at the same time with medications, drugs, aspirin, Advil, Tylenol, Arimidex, etc."
         p "Don't take if you are anemia. Safety booklet comes inside each box. "

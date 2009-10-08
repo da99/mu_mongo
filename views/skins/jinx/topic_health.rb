@@ -16,7 +16,7 @@ div.content!  {
     li {
       div.question "Not ready."
       div.answer {
-        '----'
+        'More info. coming soon about back pain.'
       }
     }
 
