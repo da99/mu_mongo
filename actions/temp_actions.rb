@@ -56,6 +56,11 @@ get '/flu/' do
   render_mab
 end
 
+get '/heart/' do
+  describe :topic, :heart
+  render_mab
+end
+
 get '/cancer/' do
   describe :topic, :cancer
   render_mab

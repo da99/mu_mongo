@@ -125,6 +125,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
       nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
       nav_bar_li.call '/health/',     'Other Health',        :topic, :health
+      nav_bar_li.call '/heart/',     'Hearth & Diabetes',        :topic, :heart
       nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
       nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
       nav_bar_li.call '/preggers/',   'Pregnancy',           :topic, :preggers
