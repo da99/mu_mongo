@@ -105,6 +105,15 @@ div( :id=>"nav_bar" ) {
     
     end # if development?
 
+    h4 'Main Topics'
+    ul.news {
+      nav_bar_li.call '/bubblegum/', 'Bubblegum Pop', :topic, :bubblegum
+      nav_bar_li.call '/economy/', 'Economy + War',   :topic, :economy
+      nav_bar_li.call '/music/',   'Music',           :topic, :music
+      nav_bar_li.call '/sports/',  'Sports',          :topic, :sports
+      nav_bar_li.call '/computer/', 'Computer Use',   :topic, :computer
+      nav_bar_li.call '/news/',     'General News',   :topic, :news
+    }
 
     h4 'Pain & Disease'
     ul.human_body { 
@@ -121,15 +130,6 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/health/',     'Other Health',        :topic, :health
     }
 
-    h4 'Main Topics'
-    ul.news {
-      nav_bar_li.call '/bubblegum/', 'Bubblegum Pop', :topic, :bubblegum
-      nav_bar_li.call '/economy/', 'Economy + War',   :topic, :economy
-      nav_bar_li.call '/music/',   'Music',           :topic, :music
-      nav_bar_li.call '/sports/',  'Sports',          :topic, :sports
-      nav_bar_li.call '/computer/', 'Computer Use',   :topic, :computer
-      nav_bar_li.call '/news/',     'General News',   :topic, :news
-    }
 
 
       # ['/apartments/', 'Houses & Apartments', :housing, :index],
