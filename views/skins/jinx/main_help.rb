@@ -14,23 +14,22 @@ save_to('meta_keywords') {
 div.content!  { 
   ul.faq {
   
-    li {
-      div.question "How much does MegaUni.com cost?"
-      div.answer {
-        ul {
-          li "$0   - Young & Poor: friends, family features"
-          li "$36  - Single & Working: friends, family, work, romance features."
-          li "$48  - Circle of Friends: All features + 4 accounts for your family/friends."
-          li "$120 - Small Business: All features + 24 accounts for your hard working co-workers."
-        }
-      }
-    }
+    # li {
+    #   div.question "How much does MegaUni.com cost?"
+    #   div.answer {
+    #     ul {
+    #       li "$0   - Young & Poor: friends, family features"
+    #       li "$36  - Single & Working: friends, family, work, romance features."
+    #       li "$48  - Circle of Friends: All features + 4 accounts for your family/friends."
+    #       li "$120 - Small Business: All features + 24 accounts for your hard working co-workers."
+    #     }
+    #   }
+    # }
 
     li {
       div.question "What is MegaUNi.com?"
       div.answer {
-        span "Mega Uni tries to fulfill your dreams of ultimate productivity without sacrificing your
-        personal life."
+        span "A personal list of all my favorite products."
       }
     }
 
