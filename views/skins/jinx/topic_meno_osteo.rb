@@ -1,23 +1,39 @@
-save_to('title'){ "To Serve Man." }
+save_to('title'){ "Prevent Osteoporosis and Menopause symptoms." }
 
 save_to('meta_description') { 
-  "Do you need help?"
+  "Osteo-porosis and Menopause vitamins."
 }
 
 save_to('meta_keywords') {
-  "cancer vitamins "
+  "Ostero-porosis, Heart (corazon), Menopause, Cancer, Flu, Fibromyalgia, Sleep (sueno), PMS, Hormonal Imbalances"
 }
 
 
 
-div.content!  { 
+div.content!  {
+  p "The following products can be used also for: Ostero-porosis, Heart (corazon), Menopause, Cancer, Flu, Fibromyalgia, Sleep (sueno), PMS, Hormonal Imbalances"
   ul.faq {
   
     li {
-      div.question "Not ready."
+      div.question "Vitamin D3 + Magnesium Citrate"
       div.answer {
-        '----'
+        p 'LifeSpanNutrition.com – (800) 247-5731 (correo postal)'
+        p '$15 - "30 Minutes of Sunshine"'
       }
+    }
+
+    li {
+      div.question "Barlean's Forti-Flax (Flaxseed meal)"
+      div.answer {
+        p "LuckyVitamin.com - 888-635-0474"
+        p "$6 – Barlean's Forti-Flax (linaza/flaxseed meal in powder form.) or Brevail ($14, pills)" 
+        p "Also sold at: Vitamin Shoppe, Lifespan Nutrition"
+      }
+    }
+
+    li {
+      div.question "Purity Products Bone Density Formula"
+      div.answer "$18 at LifeSpanNutrition.com"
     }
 
   } # === ul

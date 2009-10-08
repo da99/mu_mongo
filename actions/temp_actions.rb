@@ -62,7 +62,7 @@ get '/hiv/' do
 end
 
 get '/depression/' do
-  describe :topics, :depression
+  describe :topic, :depression
   render_mab
 end
 

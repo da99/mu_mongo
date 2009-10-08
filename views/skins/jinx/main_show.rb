@@ -20,9 +20,11 @@ div.content! {
     span "Coming Soon..." 
   end
 
-  div %~
-    
-  ~
+  div {
+    p "I am still adding new features/content, so check each Monday for new stuff."
+    p "This is a personal/non-commercial site. It has products that have helped me and others."
+    p "There are no advertisements or affililate links here."
+  }
 
 }
 
