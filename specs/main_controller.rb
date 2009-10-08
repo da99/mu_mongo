@@ -72,6 +72,14 @@ describe 'Main App (Mobile)' do
     last_response.should.be.ok
   end
 
+  it 'redirects the following to /salud/m/: /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/' do
+    %w{ /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/ }.each { |url|
+      get url
+      follow_redirect!
+      last_request.fullpath.should.be == '/salud/m/'
+    }
+  end
+
 end # ====
 
 

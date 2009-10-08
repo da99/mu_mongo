@@ -25,6 +25,11 @@ get '/salud/' do
   render_mab 
 end
 
+%w{ /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/ }.each do |url|
+  get( url, :mobile=>false ) {
+    redirect('/salud/m/')
+  }
+end
 
 get( '/reset/' ) {
     TemplateCache.reset

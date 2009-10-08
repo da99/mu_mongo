@@ -93,6 +93,7 @@ class Git < Thor
         url = "http://www.#{app_name}.com/"
         check_this_url url, /megauni/i
         check_this_url "http://www.busynoise.com/", /has moved/
+        check_this_url "http://www.busynoise.com/egg/", /has moved/
         check_this_url "http://www.myeggtimer.com/", /new address/
         check_this_url "#{url}busy-noise/", /create_countdown/
         check_this_url "#{url}my-egg-timer/", /egg_template/
