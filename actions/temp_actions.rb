@@ -71,8 +71,8 @@ get '/dementia/' do
   render_mab
 end
 
-get '/menopause/' do
-  describe :topic, :menopause
+get '/meno-osteo/' do
+  describe :topic, :meno_osteo
   render_mab
 end
 

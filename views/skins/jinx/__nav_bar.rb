@@ -117,7 +117,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
       nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
       nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
-      nav_bar_li.call '/menopause/',  'Menopause/Hair',      :topic, :menopause
+      nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
       nav_bar_li.call '/health/',     'Other Health',        :topic, :health
     }
 
