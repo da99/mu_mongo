@@ -58,12 +58,12 @@ configure do
   set :session,           true
 
   set :site_title,        'Mega Uni'
-  set :site_tag_line,     'To-do lists. Just to-do lists.'
-  set :site_keywords,     'to-do lists'
+  set :site_tag_line,     "For all your different lives: friends, family, work & romance."
+  set :site_keywords,     'to-do lists predictions'
   set :site_domain,       'megaUni.com'
-  set :site_help_email,   'help@megaUni.com'
-  set :site_url,          "http://www.megaUni.com/"
-  set :site_support_email,  "helpme@megaUni.com" 
+  set :site_help_email,     Proc.new { "helpme@#{site_domain}"  }
+  set :site_url,            Proc.new { "http://www.#{site_domain}/" }
+  set :site_support_email,  Proc.new { "helpme@#{site_domain}"  }
   set :cache_the_templates, Proc.new { !development? }
   set :views,               Pow('views/skins/jinx')
 
@@ -193,6 +193,8 @@ require_these 'actions', %w{
   session
   news
 	resty
+  health
+  temp_actions
 }
 
 __END__

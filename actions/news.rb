@@ -10,12 +10,7 @@ helpers {
 }
 
 
-get '/news/' do # :index
-  @news = News.reverse_order(:created_at).limit(10).all
-  @news_tags = NewsTag.all
-  describe :news, :index 
-  render_mab
-end
+
 
 get '/news/by_date/:year/:month/' do
   describe :news, :by_date

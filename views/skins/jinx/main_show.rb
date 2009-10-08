@@ -21,13 +21,7 @@ div.content! {
   end
 
   div %~
-    Ok, so I have a general idea of what this site will be.
-    It will only be open if you have an invitation code.  
-    (Egg timers will be always open to the public.)
-    You will have a limit of 10 friends. If 3 or more of your friends
-    get banned, you will also be banned.  From the beginning, 
-    it will be about the economy, pets, and anti-aging.
-    Live long and survive the double-dip recession coming in 2011.
+    
   ~
 
 }

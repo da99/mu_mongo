@@ -10,7 +10,13 @@ div( :id=>"nav_bar" ) {
         # "幸せな、脂肪の <br /> ウェブサイト"
       } 
     end
-    p.english { "MEGA UNI" }
+    p.english { 
+      #if the_app.current_action[:controller] == :main && the_app.current_action[:action] == :show
+        the_app.options.site_title.upcase 
+      #else
+      #  a the_app.options.site_title.upcase, :href=>'/'
+      #end
+    }
   }
 
 
@@ -47,11 +53,19 @@ div( :id=>"nav_bar" ) {
       end     
     }
 
-    ul.main {
+    ul.help {
       nav_bar_li.call '/', 'Home', :main, :show
       nav_bar_li.call '/help/', 'Help', :main, :help
     }
-    
+   
+    h4 'Egg Timers'
+    ul.to_dos {
+      nav_bar_li.call '/my-egg-timer/', 'Old', :egg, :my
+      nav_bar_li.call '/busy-noise/', 'New', :egg, :busy
+    }
+
+    if the_app.options.development?
+
     if !the_app.logged_in?
       h4 'Non-Members'
       ul.non_members {
@@ -61,40 +75,60 @@ div( :id=>"nav_bar" ) {
 
     h4 'Members'
     ul.members {
-      if the_app.logged_in?
-        nav_bar_li.call '/log-out/', 'Logout', :session, :destroy   
-        nav_bar_li.call '/switch_username/', 'Switch Username', :member, :switch_username
+      if the_app.logged_in? 
+        # nav_bar_li.call '/switch_username/', 'Switch Username', :member, :switch_username
         nav_bar_li.call '/account/', 'My Account', :account, :show
+        nav_bar_li.call '/log-out/', 'Logout', :session, :destroy
       else
         nav_bar_li.call '/log-in/', 'Log-in', :session, :new
       end
     }
 
-    h4 'Egg Timers'
-    ul.egg_timers { 
-      nav_bar_li.call '/my-egg-timer/', 'Old', :egg, :my
-      nav_bar_li.call '/busy-noise/', 'New', :egg, :busy
+    h4 'Stuff To Do'
+    ul.to_dos {
+      nav_bar_li.call '/add-to-do/', '+ Add Stuff', :to_dos, :add
+      nav_bar_li.call '/today/', 'Today', :to_dos, :today
+      nav_bar_li.call '/this-week/', 'This Week', :to_dos, :this_week
+      nav_bar_li.call '/my-egg-timer/', 'Old Egg Timer', :egg, :my
+      nav_bar_li.call '/busy-noise/', 'New Egg Timer', :egg, :busy
+    }
+
+    h4 'Lives'
+    ul.lives {
+      nav_bar_li.call '/friend/',    '(9) Friend',    :lives, :friend
+      nav_bar_li.call '/family/',    'Family',    :lives, :family
+      nav_bar_li.call '/work/',    'Work',    :lives, :worker
+      nav_bar_li.call '/romance/',  '(100) Romance',   :lives, :romance
+      nav_bar_li.call '/pet-owner/', 'Pet Owner', :lives, :pet_owner
+      nav_bar_li.call '/celebrity/', 'Celebrity', :lives, :celebrity
+    }
+    
+    end # if development?
+
+
+    h4 'Pain & Disease'
+    ul.human_body { 
+      nav_bar_li.call '/salud/',      'Salud (Español)',     :main,   :salud
+      nav_bar_li.call '/preggers/',   'Pregnancy',           :topic, :preggers
+      nav_bar_li.call '/child-care/', 'Child Vitamins',      :topic, :child_care
+      nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
+      nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
+      nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
+      nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
+      nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
+      nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
+      nav_bar_li.call '/menopause/',  'Menopause/Hair',      :topic, :menopause
+      nav_bar_li.call '/health/',     'Other Health',        :topic, :health
     }
 
     h4 'Main Topics'
     ul.news {
-      nav_bar_li.call '/economy/', 'Economy + War',   :news, :economy
-      nav_bar_li.call '/music/',   'Music',           :news, :music
-      nav_bar_li.call '/sports/',  'Sports',          :news, :sports
-      nav_bar_li.call '/hearts/',  'Hearts',          :news, :index
-    }
-
-    h4 'Anti-Aging'
-    ul.human_body { 
-      nav_bar_li.call '/salud/',      'Salud (Espanol)',     :main,   :salud
-      nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :health, :arthritis
-      nav_bar_li.call '/flu/',        'Flu/Cold',            :health, :flu
-      nav_bar_li.call '/cancer/',     'Cancer',              :health, :cancer
-      nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :health, :hiv
-      nav_bar_li.call '/depression/', 'Depression',          :health, :depresssion
-      nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :health, :dementia
-      nav_bar_li.call '/menopause/',  'Menopause/Hair',      :health, :menopause
-      nav_bar_li.call '/health/',     'Other Health',        :health, :other
+      nav_bar_li.call '/bubblegum/', 'Bubblegum Pop', :topic, :bubblegum
+      nav_bar_li.call '/economy/', 'Economy + War',   :topic, :economy
+      nav_bar_li.call '/music/',   'Music',           :topic, :music
+      nav_bar_li.call '/sports/',  'Sports',          :topic, :sports
+      nav_bar_li.call '/computer/', 'Computer Use',   :topic, :computer
+      nav_bar_li.call '/news/',     'General News',   :topic, :news
     }
 
 

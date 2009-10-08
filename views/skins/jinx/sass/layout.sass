@@ -130,7 +130,7 @@ img.right
     margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
     border-right= !nav_bar_border  "dashed" #000
     h4
-      text-align: right
+      text-align: left
     ul
       margin-left: 50px
       text-align: right
@@ -156,7 +156,7 @@ img.right
     margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
     border-left= !nav_bar_border  "dashed" #000
     h4
-      text-align: left    
+      text-align: right    
     ul
       margin-right: 50px
       text-align: left
@@ -182,7 +182,11 @@ img.right
   +grid(4)
   padding-bottom: 200px
   h4
-    padding: 0 10px
+    padding: 2px 5px
+    margin: 0 13px
+    font-size: 12px
+    background-color: #003860
+    color: #fff
   ul
     +no-bullets
     padding-bottom: 20px
@@ -211,12 +215,17 @@ img.right
       font-size: 25px 
       line-height: 1.3em
       margin: 0 
-    p.english
+    p.english 
       font-family: courier, monospace
       font-size: 20px 
       font-weight: bold
       border-top: 2px dotted #f00919
       padding: 2px 0 0 0
+      a
+        font-family: courier, monospace
+        font-size: 20px
+        display: block
+      
 
 #loading
   +input_text
