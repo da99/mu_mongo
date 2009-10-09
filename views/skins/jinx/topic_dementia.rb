@@ -22,9 +22,16 @@ div.content!  {
         p {
           a("Longevinex.com", :href=>"http://www.longevinex.com/")
           span " - (866) – 405-4000 – $37 (1 box),  $120 (4 boxes) "
-        }
+          br 
+          span "For: Sleep, memory loss, rheumatoid arthritis, osteo-arthritis, cancer, energy, diabetes.
+          Yes. I'm serious. Everyone I know who has tried it has shown improvement in those conditions 
+          and 90%-100% pain loss."
+            
+          }
       }
     }
+
+
 
   } # === ul
 } # == div.content!

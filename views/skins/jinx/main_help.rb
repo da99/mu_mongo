@@ -52,33 +52,10 @@ div.content!  {
 
 
   
-    li {
-      div.question "I'm old and in pain. What should I do?"
-      div.answer {
-        span "Buy: "
-        a('Longevinex Advantage.', :href=>'http://www.LongevinexAdvantage.com/')
-        br 
-        span "For: Sleep, memory loss, rheumatoid arthritis, osteo-arthritis, cancer, energy, diabetes.
-        Yes. I'm serious. Everyone I know who has tried it has shown improvement in those conditions 
-        and 90%-100% pain loss."
-        
-      }
-    } 
 
 
-    li {
-      div.question "Are there better alternatives to anti-depressants?"
-      div.answer {
-        span "First, stop seeing the idiot doctor who prescribes useless, harmful anti-depressants. "
-        span "Second, take "
-        a("Methyl-B12 and Folic acid.", :href=>'http://www.google.com/search?q=methyl-b12+folic+acid+depression')
-        span ' (I learned this from '
-        a('The Natural Health Librarian.', :href=>'http://www.naturalhealthlibrarian.com/')
-        span ' Buy their e-books. Great stuff. All true.) '
-        span " Here is another article on the subject: "
-        a('Vitamin B12 Deficiency Is Easily Diagnosed and Corrected', :href=>'http://www.lewrockwell.com/spl/b12-deficiency.html')
-      }
-    } 
+
+
 
      
   } # === ul
