@@ -29,6 +29,20 @@ div.content!  {
     }
 
     li {
+      div.question 'E-books:'
+      div.answer {
+        ul.products {
+          li {
+            a('Iron & IP-6', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=Iron%20Overload')
+          }
+          li {
+            a('Resveratrol (Red Wine Molecule)', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=Resveratrol%20Wine%20Pill')
+          }
+        }
+      }
+    }
+
+    li {
       div.question "Longevinex - (Benefits of red wine with no sugar/alcohol.)"
       div.answer {
         p "For tumors, cancer, eyes, energy, brain/memory, bones, sleep, diabetes, rheumatoid arthritis... almost everything. Combine this with '30 Minutes of Sunshine' (see 'Cold/Flu' section) for the best anti-aging combo. "

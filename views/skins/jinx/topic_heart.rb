@@ -13,6 +13,13 @@ save_to('meta_keywords') {
 div.content!  { 
   ul.faq {
   
+    li {
+      div.question 'Cholesterol'
+      div.answer {
+        span 'Buy: '
+        a('How to Lower Your Cholesterol Phobia', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=Cholesterol')
+      }
+    }
 
     li {
       div.question "Vitamin D3 + Magnesium Citrate"
@@ -44,6 +51,16 @@ div.content!  {
         p "Buy the pharmacy brand."
         p "They are all the same. Buy it either as 500 mg or 1000 mg." 
         p "The important thing is to take it 3 times a day and develop the habit of taking it each day."
+      }
+    }
+
+    li {
+      div.question "Longevinex"
+      div.answer {
+        p 'Improves arteries and prevents calcifications (which clog arteries).'
+        p {
+          a('Longevinex.com', :href=>'http://www.longevinex.com/')
+        }
       }
     }
 

@@ -44,6 +44,10 @@ div.content!  {
     li {
       div.question 'OSTERO-ARTHRITIS (dolor de rodilla)'
       div.answer {
+        p {
+          span 'For full info., buy this e-book: '
+          a('Hyaluronic Acid by Bill Sardi.', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=Hyaluronic%20Acid')
+        }
         p %~ 50 mg – 100 mg hyaluronic acid.~
         p %~ Much more effective than glucosamine and chondroitin. ~
         p %~ For best results, drink water 3 or more times a day. Also helps for skin and eyes. ~ 

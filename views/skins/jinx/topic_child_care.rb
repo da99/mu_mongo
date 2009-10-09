@@ -25,6 +25,14 @@ div.content!  {
       }
     }
 
+    li {
+      div.question 'SIDS (Sudden Infant Death Syndrome)'
+      div.answer {
+        span 'Buy: '
+        a('E-book by Bill Sardi.', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=SIDS')
+      }
+    }
+
   } # === ul
 } # == div.content!
 
