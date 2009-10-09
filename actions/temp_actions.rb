@@ -13,6 +13,11 @@ get '/sports/' do
   render_mab
 end
 
+get '/housing/' do
+  describe :topic, :housing
+  render_mab
+end
+
 get '/news/' do
   describe :topic, :news
   render_mab

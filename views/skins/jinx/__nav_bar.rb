@@ -111,6 +111,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/computer/', 'Computer Use',   :topic, :computer
       nav_bar_li.call '/economy/', 'Economy + War',   :topic, :economy
       nav_bar_li.call '/hair/',     'Skin & Hair',    :topic, :skin
+      nav_bar_li.call '/housing/',  'Housing & Apartments', :topic, :housing
       nav_bar_li.call '/music/',   'Music',           :topic, :music
       nav_bar_li.call '/news/',     'Other News',     :topic, :news
       nav_bar_li.call '/sports/',  'Sports',          :topic, :sports
