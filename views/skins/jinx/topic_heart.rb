@@ -14,9 +14,9 @@ div.content!  {
   ul.faq {
   
     li {
-      div.question 'Cholesterol'
+      div.question 'Cholesterol Fear'
       div.answer {
-        span 'Buy: '
+        span 'Buy e-book: '
         a('How to Lower Your Cholesterol Phobia', :href=>'http://www.naturalhealthlibrarian.com/ebook.asp?page=Cholesterol')
       }
     }
