@@ -1,20 +1,46 @@
-save_to('title'){ "To Serve Man." }
+save_to('title'){ "Join-Pain from Arthritis" }
 
 save_to('meta_description') { 
-  "Do you need help?"
+  "Vitamins and supplements for rhumatoid and osteo-arthritis."
 }
 
 save_to('meta_keywords') {
-  "cancer vitamins "
+  "vitamins supplements arthritis rhumatoid osteoarthritis"
 }
 
 
 
 div.content!  { 
+
+  p {
+    span 'If you are looking for back pain supplements, check the '
+    a('"Back Pain" section.', :href=>'/back-pain/')
+  }
+
   ul.faq {
   
-
-
+    li {
+      div.question %~ Rhumatoid Arthritis (dolor de articulaciones en las manos), 
+        Cancer, Heart (corazon), energy
+      ~
+      div.answer {
+        p 'Omega-3 fish oil (aceite de pescado) 1000 mg 3-4 times a day. '
+        p 'Take it with food or else you might get very nauseous. '
+        p "Don't take ASPIRIN, ibuprofen, Tylanol, Advil, etc., or your blood will become too watery."
+        ul.products {
+          li {
+            p.title "Super Omega-3 Carlson Laboratories – 130 (capsules/pastillas) – (2 bottles)"
+            p {
+              span "$13 - "
+              a( "LuckyVitamin.com", :href=>'http://www.luckyvitamin.com/')
+              span "– 888-635-0474 – UPS or USPS (correo postal)"
+            }
+            p "(or buy the store brand in your local big-chain pharmacy like Eckerd's, Rite Aid, CVS, etc.)"
+          }
+        }
+      }
+    }
+    
     li {
       div.question 'OSTERO-ARTHRITIS (dolor de rodilla)'
       div.answer {
@@ -42,27 +68,7 @@ div.content!  {
       }
     }
 
-    li {
-      div.question %~ Rhumatoid Arthritis (dolor de articulaciones en las manos), 
-        Cancer, Heart (corazon), energy
-      ~
-      div.answer {
-        p 'Omega-3 fish oil (aceite de pescado) 1000 mg 3-4 times a day. '
-        p 'Take it with food or else you might get very nauseous. '
-        p "Don't take ASPIRIN, ibuprofen, Tylanol, Advil, etc., or your blood will become too watery."
-        ul.products {
-          li {
-            p.title "Super Omega-3 Carlson Laboratories – 130 (capsules/pastillas) – (2 bottles)"
-            p {
-              span "$13 - "
-              a( "LuckyVitamin.com", :href=>'http://www.luckyvitamin.com/')
-              span "– 888-635-0474 – UPS or USPS (correo postal)"
-            }
-            p "(or buy the store brand in your local big-chain pharmacy like Eckerd's, Rite Aid, CVS, etc.)"
-          }
-        }
-      }
-    }
+
 
   } # === ul
 } # == div.content!

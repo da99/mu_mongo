@@ -19,9 +19,6 @@ div( :id=>"nav_bar" ) {
     }
   }
 
-
-  
-
     selected = Proc.new { |t| 
       li.selected {
         span t
@@ -120,6 +117,7 @@ div( :id=>"nav_bar" ) {
     h4 'Pain & Disease'
     ul.human_body { 
       nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
+      nav_bar_li.call '/back-pain/',  'Back Pain',           :topic, :back_pain
       nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
       nav_bar_li.call '/child-care/', 'Child Vitamins',      :topic, :child_care
       nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia

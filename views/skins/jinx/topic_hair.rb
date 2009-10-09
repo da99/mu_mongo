@@ -12,7 +12,14 @@ save_to('meta_keywords') {
 
 div.content!  { 
 
-  p 'More info. coming on SLS.'
+  p 'Most shampoos and soaps in pharmacies and super-markets containt SLS (sodium lauryl sulfate).'
+  p 'SLS is bad for skin and hair. Get all your soap/shampoo at vitamin stores and health shops.'
+  p {
+    span 'Read more on why you should'
+    a('avoid major-brand shampoos and soaps.', :href=>'http://www.google.com/search?q=hair+loss+%22sodium+lauryl+sulfate%22')
+  }
+
+  p 'Below is a list of safe and natural soaps and shampoos available at Amazon.com and health stores.'
   
   ul.faq {
   

@@ -46,6 +46,11 @@ get '/hair/' do
   render_mab
 end
 
+get '/back-pain/' do
+  describe :topic, :back_pain
+  render_mab
+end
+
 get '/child-care/' do
   describe :topic, :child_care
   render_mab
