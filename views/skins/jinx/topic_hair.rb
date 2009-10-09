@@ -11,14 +11,32 @@ save_to('meta_keywords') {
 
 
 div.content!  { 
+
+  p 'More info. coming on SLS.'
+  
   ul.faq {
   
     li {
-      div.question "Not ready."
+      div.question "Body/Hands/Face"
       div.answer {
-        'More info. coming on castile soap and shampoo.'
+        a('Dr. Woods Black Soap', :href=>"http://www.luckyvitamin.com/item/keyword/black+soap/itemKey/61865")
       }
     }
+
+    li {
+      div.question 'Shampoo'
+      div.answer { 
+        a('Kirk\'s Natural - Original Coco Castile', :href=>"http://www.luckyvitamin.com/item/itemKey/75203")
+      }
+    }
+
+    li {
+      div.question 'Bar Soap'
+      div.answer {
+        a('Kirk\'s Natural - Bar', :href=>"http://www.luckyvitamin.com/item/itemKey/75211")
+      }
+    }
+
 
   } # === ul
 } # == div.content!
