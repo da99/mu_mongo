@@ -113,8 +113,8 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/hair/',     'Skin & Hair',    :topic, :skin
       nav_bar_li.call '/housing/',  'Housing & Apartments', :topic, :housing
       nav_bar_li.call '/music/',   'Music',           :topic, :music
-      nav_bar_li.call '/news/',     'Other News',     :topic, :news
       nav_bar_li.call '/sports/',  'Sports',          :topic, :sports
+      nav_bar_li.call '/news/',     'Other News',     :topic, :news
     }
 
     h4 'Pain & Disease'
@@ -125,12 +125,12 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
       nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
       nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
-      nav_bar_li.call '/health/',     'Other Health',        :topic, :health
       nav_bar_li.call '/heart/',     'Hearth & Diabetes',        :topic, :heart
       nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
       nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
       nav_bar_li.call '/preggers/',   'Pregnancy',           :topic, :preggers
       nav_bar_li.call '/salud/',      'Salud (Español)',     :main,   :salud
+      nav_bar_li.call '/health/',     'Other Health',        :topic, :health
     }
 
 

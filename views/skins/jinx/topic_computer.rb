@@ -1,11 +1,11 @@
-save_to('title'){ "To Serve Man." }
+save_to('title'){ "Buying and Using a Computer" }
 
 save_to('meta_description') { 
-  "Do you need help?"
+  "computer buying"
 }
 
 save_to('meta_keywords') {
-  "cancer vitamins "
+  "computers"
 }
 
 
@@ -14,9 +14,25 @@ div.content!  {
   ul.faq {
   
     li {
-      div.question "Not ready."
+      div.question "Printer: Brother DCP-585CW"
       div.answer {
-        '----'
+        p 'Includes scanner.'
+        p {
+          span 'Read reviews: '
+          a('http://www.newegg.com/Product/Product.aspx?Item=N82E16828113342&Tpk=Brother%20DCP-585CW', :href=>"http://www.newegg.com/Product/Product.aspx?Item=N82E16828113342&Tpk=Brother%20DCP-585CW")
+        }
+      }
+    }
+
+    li {
+      div.question "Inspiron 15 or Inspiron 17"
+      div.answer {
+        p {
+          a('http://www.dell.com/home/laptops', :href=>'http://www.dell.com/home/laptops')
+        }
+        p 'Upgrade memory to: 4 GB'
+        p 'Upgrade battery to: 9-cell lithium battery'
+        p 'For Inspiron 15, upgrade HD display to: 15.6" High Definition+ (1600x900) LED Display with TrueLife' 
       }
     }
 
