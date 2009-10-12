@@ -240,3 +240,20 @@ News
   |
 Corporal Captitalists (bonds in working individuals)
 
+
+
+
+
+# ------- TABLES ---------------------
+NewsComments
+  - news_id
+  - status = PENDING || ACCEPTED || REJECTED
+  - category = PRAISE || DENOUNCE || FACT CHECK || QUESTION || RANDOM
+  - parent_id # for answering questions posted in the comments.
+NewsCommentSections
+
+News
+  - parent_id # for news branching (predictions or responses).
+  - language_id
+  - category = DOINGS || NEWS || PREDICTIONS || OPINIONS || QUESTIONS
+NewsEdits  

@@ -102,7 +102,7 @@ div( :id=>"nav_bar" ) {
     
     end # if development?
 
-    h4 'Main Topics'
+    h4 'Clubs'
     ul.news {
       nav_bar_li.call '/bubblegum/', 'Bubblegum Pop', :topic, :bubblegum
       nav_bar_li.call '/child-care/', 'Child Care',   :topic, :child_care
@@ -111,25 +111,26 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/hair/',     'Skin & Hair',    :topic, :skin
       nav_bar_li.call '/housing/',  'Housing & Apartments', :topic, :housing
       nav_bar_li.call '/music/',    'Music',          :topic, :music
+      nav_bar_li.call '/health/',   'Pain & Disease',         :topic, :health
       nav_bar_li.call '/preggers/', 'Pregnancy',      :topic, :preggers
+      nav_bar_li.call '/salud/',    'Salud (Español)', :main, :salud
       nav_bar_li.call '/sports/',   'Sports',         :topic, :sports
-      nav_bar_li.call '/news/',     'Other News',     :topic, :news
+      nav_bar_li.call '/news/',     'Global News',    :topic, :news
     }
 
-    h4 'Pain & Disease'
-    ul.human_body { 
-      nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
-      nav_bar_li.call '/back-pain/',  'Back Pain',           :topic, :back_pain
-      nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
-      nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
-      nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
-      nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
-      nav_bar_li.call '/heart/',      'Hearth & Diabetes',   :topic, :heart
-      nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
-      nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
-      nav_bar_li.call '/salud/',      'Salud (Español)',     :main,   :salud
-      nav_bar_li.call '/health/',     'Other Health',        :topic, :health
-    }
+    # h4 'Pain & Disease'
+    # ul.human_body { 
+    #   nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
+    #   nav_bar_li.call '/back-pain/',  'Back Pain',           :topic, :back_pain
+    #   nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
+    #   nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
+    #   nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
+    #   nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
+    #   nav_bar_li.call '/heart/',      'Heart & Diabetes',   :topic, :heart
+    #   nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
+    #   nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
+    #   nav_bar_li.call '/health/',     'Other Health',        :topic, :health
+    # }
 
 
 
