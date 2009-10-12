@@ -83,11 +83,12 @@ div( :id=>"nav_bar" ) {
 
     h4 'Stuff To Do'
     ul.to_dos {
-      nav_bar_li.call '/add-to-do/', '+ Add Stuff', :to_dos, :add
+      #nav_bar_li.call '/add-to-do/', '+ Add Stuff', :to_dos, :add
       nav_bar_li.call '/today/', 'Today', :to_dos, :today
-      nav_bar_li.call '/this-week/', 'This Week', :to_dos, :this_week
-      nav_bar_li.call '/my-egg-timer/', 'Old Egg Timer', :egg, :my
-      nav_bar_li.call '/busy-noise/', 'New Egg Timer', :egg, :busy
+      nav_bar_li.call '/tomorrow/', 'Tomorrow', :to_dos, :tomorrow
+      nav_bar_li.call '/this-month/', 'This Month', :to_dos, :this_month
+      #nav_bar_li.call '/my-egg-timer/', 'Old Egg Timer', :egg, :my
+      #nav_bar_li.call '/busy-noise/', 'New Egg Timer', :egg, :busy
     }
 
     h4 'Lives'
@@ -115,7 +116,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/preggers/', 'Pregnancy',      :topic, :preggers
       nav_bar_li.call '/salud/',    'Salud (Español)', :main, :salud
       nav_bar_li.call '/sports/',   'Sports',         :topic, :sports
-      nav_bar_li.call '/news/',     'Global News',    :topic, :news
+      nav_bar_li.call '/news/',     'Other Topics',    :topic, :news
     }
 
     # h4 'Pain & Disease'
