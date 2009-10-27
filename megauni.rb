@@ -1,7 +1,6 @@
 $KCODE = 'UTF8'
 
 
-
 # Ramaze::Global.content_type = 'text/html; charset=utf-8'
 # Ramaze::Global.accept_charset = 'utf-8'
 #header("Cache-Control: no-cache");
@@ -14,8 +13,6 @@ $KCODE = 'UTF8'
 require 'rubygems'
 require 'multibyte'
 require 'sinatra'
-require 'sequel'
-require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
 #require 'rack-flash'
@@ -282,3 +279,108 @@ News
   - language_id
   - category = DOINGS || NEWS || PREDICTIONS || OPINIONS || QUESTIONS
 NewsEdits  
+
+
+
+
+- version 1
+  - site permission levels
+    - admin
+    - editor/moderator
+    - unlimited invitations
+  - multiple identities
+  - pet profiles
+    - med condition
+  - baby profiles
+    - med condition
+  - pre-born profiles
+    - names
+  - fictional profiles
+  - photo management
+  - youtube linking
+  - photo linking
+  - guides/pamphlets
+  - people mananagement
+    - birthdays, anniversaries, important dates, repeating dates
+
+  - Q&A
+    - translations
+    - vote best answer
+    - competance weights
+    
+    
+  - daily and onetime checklists
+    - vitamins, etc.
+    - countdowns, but no sound  
+    - sharable
+    - rules-based  
+  - project management
+    - due dates
+      - status
+    - milestones
+    - files
+  - office management
+    - tweets
+      - labels   
+    - news
+    - calendar
+    - vote for best answer
+      - translation
+      - gardening
+      - engineering
+      - etc. 
+      
+  - invitations
+    - gender
+    - group
+    
+  - following
+    - friends
+    - fans
+    - family
+    - co-workers
+    - frienemies
+    - enemies
+    - ex-lovers
+    
+  - tweets with labels   
+    - No SMS for now.
+   
+    
+    
+- Future version   
+  - bug tracking
+  - visualize data stream (help handle data overload)
+    - inspiration: plurk
+  - email broadcasting
+    - newsletters paid for 250 or above
+  - video management
+  - community management 
+  - YouTube account connection  
+  - Market 
+    - local services
+      - cleaning
+      - food delivery  
+
+  - reputation
+    - import/export  
+   
+  - footprints
+    - request to see profile
+    - freind only profiles
+  
+  - universal language
+
+- Create stories for learning alphabet and kanji characters
+  - Video.
+  - Slides.
+- Vote on translations.
+- Vote on pronounciation. (MP3/OggVorbis)
+
+
+Future 
+- Job board.
+- Advice/Help section
+- News section
+- Video news w/translation.
+- Postcard to Bill Sardi.     

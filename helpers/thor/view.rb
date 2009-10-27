@@ -37,7 +37,6 @@ class View < Thor
 	desc  :create , "Create a view file with SASS file (unless it is a partial)." 
   def create
     # Require Sequel in order to use :camelize method
-    require 'sequel/extensions/inflector'
     void_actions = ['create', 'update', 'delete', 'destroy']
     skin_name , skin_dir = get_skin_name_and_dir
     

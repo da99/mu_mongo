@@ -10,7 +10,6 @@ class Controller < Thor
   def create
 
     # Require Sequel in order to use :camelize method
-    require 'sequel/extensions/inflector'
     m =  if ENV['__new_controller__'] 
       'Create' + ENV['__new_controller__'].strip.camelize
     else

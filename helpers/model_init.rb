@@ -1,5 +1,3 @@
-require 'sequel'
-require 'sequel/extensions/inflector'
 require 'sequel/extensions/blank'
 
 

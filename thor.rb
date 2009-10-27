@@ -4,8 +4,7 @@ $KCODE = 'u'
 require File.expand_path('~/megauni/helpers/kernel')
 require 'open3'
 require 'rush'
-require 'sequel'
-require 'sequel/extensions/inflector'
+require File.expand_path('~/megauni/helpers/string_inflections')
 
 module CoreFuncs
   PRIMARY_APP     = 'megauni'

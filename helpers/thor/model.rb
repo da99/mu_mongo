@@ -7,7 +7,6 @@ class Model < Thor
   
   desc  :list, 'Display a list of all models.'
   def list
-    require 'sequel/extensions/inflector'
     Pow("models").each { |ele|
       file_basename = File.basename(ele.to_s)
       if ele.file? && file_basename !~ /init.rb$/ && file_basename[/\.rb$/]
@@ -18,7 +17,6 @@ class Model < Thor
 
   desc  :create, "Create a new model in the /model directory. Case and plurality are handled automatically."
   def create
-    require 'sequel/extensions/inflector' # for String#underscore, etc.
     m         = ask('Name of new model:').strip.camelize.singularize
 
     file_path = Pow("models/#{m.underscore}.rb")
@@ -32,7 +30,6 @@ class Model < Thor
 
   desc  :destroy, "Move a model to a scrap area relative to working directory. (Moves controller and views too.)" 
   def destroy
-    require 'sequel/extensions/inflector'
     m = ask('Name of model:').strip.camelize
     scrap_dir = Pow!( ask('Name of scrap directory (default ../nptv_scraps)') { |q| q.default =  '../nptv_scraps' } )
     model_file = Pow!("models/#{m.underscore}.rb")
