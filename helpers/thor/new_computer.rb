@@ -6,14 +6,22 @@ class NewComputer < Thor
   def start
     
     shout "Install: http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem"
-    shout %~
-        Make sure Postgresql is installed.
-        Then install:
-          sudo apt-get install postgresql-server-dev-8.x.
-        Replace 'x' with the latest Postgresql version you are using.
-        If it still does not work: try using the 'postgres' gem instead.
-        More info: http://rubyforge.org/projects/ruby-pg
-    ~ if !capture_all('psql --version')[/psql \(PostgreSQL\) \d/]
+    
+    if !Pow('/etc/passwd').read['nginx_www']
+      shout "Execute the following: "
+      shout 'sudo adduser --system --home /home/da01/Documents/nginx_data --no-create-home  --shell /bin/bash --group --gecos "Nginx WWW Admin" nginx_www'
+      shout 'chown -R nginx_www:nginx_www /home/da01/Documents/nginx_data'
+      shout 'chmod -R 0770 /home/da01/Documents/nginx_data'
+    end
+    
+    #shout %~
+    #    Make sure Postgresql is installed.
+    #    Then install:
+    #      sudo apt-get install postgresql-server-dev-8.x.
+    #    Replace 'x' with the latest Postgresql version you are using.
+    #    If it still does not work: try using the 'postgres' gem instead.
+    #    More info: http://rubyforge.org/projects/ruby-pg
+    #~ if !capture_all('psql --version')[/psql \(PostgreSQL\) \d/]
 
     gconf = Pow(File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml'))
     shout %~
@@ -60,7 +68,7 @@ class NewComputer < Thor
     dropbox_dir = Pow('~/Dropbox')
     if !dropbox_dir.exists?
       results = capture_all('mkdir %s', dropbox_dir)
-      shout "Error in creating #{dropbox_dir}: #{results}"
+      shout "Error in creating #{dropbox_dir}: #{results}" if results
       return nil
     end
 
@@ -110,7 +118,7 @@ class NewComputer < Thor
     # http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/
     vals[:"browser.history_expire_days.mirror"] = 3
     vals[:"browser.history_expire_days"] = 3
-    vals[:"browser.history_expire_sites"] = 400
+    vals[:"browser.history_expire_sites"] = 1000
     grep_vals = capture_all("grep history -r ~/.mozilla/firefox --include=prefs.js")
 
     vals.each do |k,v|
@@ -120,11 +128,12 @@ class NewComputer < Thor
     plugins = [ "Adblock Plus",
         "Firebug", "Fission",
         "Live HTTP headers",
-        'Chromifox Companion',
-        'Chromifox Extreme']
+        #'Chromifox Companion',
+        #'Chromifox Extreme'
+    ]
     plugins.each do |plug|
         results = capture_all("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
-        shout "Install #{plug} for Firefox" if !results[plug]
+        whisper( "Install #{plug} for Firefox" ) if !results[plug]
     end
   end
 
@@ -137,9 +146,9 @@ class NewComputer < Thor
     end
 
     bash_file = Pow(File.expand_path('~/.bashrc')).read
-    if !bash_file['gvim --remote-tab-silent']
-        shout('Put alias gvim="gvim --remote-tab-silent" at the end of your ~/.bashrc file.')
-    end
+    #if !bash_file['gvim --remote-tab-silent']
+    #    shout('Put alias gvim="gvim --remote-tab-silent" at the end of your ~/.bashrc file.')
+    #end
 
     vivid = (MY_PREFS / 'vim' / 'dotvim')
     home_vivid = Pow(File.expand_path('~/.vim'))
@@ -196,8 +205,29 @@ class NewComputer < Thor
 
   end
 
-  def install_light_conf
+  def install_bash_profile
+    bash_profile = Pow('~/.bash_profile')
+    orig = (MY_PREFS / '_bash_profile' )
+    if !bash_profile.exists?
+      shout capture_all('ln -s %s %s ' % [ orig.to_s.inspect, bash_profile.to_s.inspect] )
+    else
+      if !File.symlink?(bash_profile.to_s)
+        shout "Bash profile not a symlink. Delete it: #{bash_profile}"
+      end
+    end
+    
+    if !Pow('~/.profile').read['. "$HOME/.bash_profile"']
+      shout %~
+Add the following to your .profile:
+  if [ -f "$HOME/.bash_profile" ]; then
+. "$HOME/.bash_profile"
+  fi      
+      ~
+    end
+  end
 
+  def install_light_conf
+    return true
     light_conf = (MY_PREFS / 'light.conf')
     sudo_light_conf = Pow("/etc/lighttpd/lighttpd.conf")
 
@@ -219,6 +249,7 @@ class NewComputer < Thor
   end
 
   def install_open_with_gvim_tabs
+return true
     # http://stackoverflow.com/questions/1323790/have-nautilus-open-file-into-new-gvim-buffer
     desktop_file = Pow('~/.local/share/applications/gvim-tab.desktop')
     if !desktop_file.exists?

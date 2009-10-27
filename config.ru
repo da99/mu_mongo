@@ -1,8 +1,5 @@
-my_app_root = File.expand_path( File.dirname(__FILE__) )
 
-if defined? Unicorn
-  ENV['RACK_ENV'] = 'development'
-end
+my_app_root = File.expand_path( File.dirname(__FILE__) )
 
 begin
   raise "show maintainence page"  if File.exists?(my_app_root + '/helpers/sinatra/maintain.rb')
@@ -31,4 +28,3 @@ rescue
 end
 
 run Sinatra::Application
-

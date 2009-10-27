@@ -1,6 +1,6 @@
 $KCODE = 'UTF8'
 
-require 'multibyte'
+
 
 # Ramaze::Global.content_type = 'text/html; charset=utf-8'
 # Ramaze::Global.accept_charset = 'utf-8'
@@ -12,12 +12,13 @@ require 'multibyte'
 # ===============================================
 
 require 'rubygems'
+require 'multibyte'
 require 'sinatra'
 require 'sequel'
 require 'sequel/extensions/inflector'
 require File.expand_path('./helpers/kernel')
 require Pow('helpers/issue_client')
-require 'rack-flash'
+#require 'rack-flash'
 
 # ===============================================
 # Configurations
@@ -31,12 +32,12 @@ use Rack::Session::Pool
 # use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg]
 
 configure :test do
-  require Pow('~/.megauni')
+  #require Pow('~/.megauni')
 end
 
 
 configure :development do
-  require Pow('~/.megauni')
+  #require Pow('~/.megauni')
   require Pow('helpers/css')
   require Pow('actions/try_textile')
   enable :clean_trace
@@ -49,13 +50,13 @@ configure(:production) do
   #enable :raise_errors
   #enable :show_exceptions
   #use Rack::Public500
-  DB = Sequel.connect ENV['DATABASE_URL']
+  #DB = Sequel.connect ENV['DATABASE_URL']
 end
 
 
 configure do
 
-  set :session,           true
+# set :session, true # Don't use this because: http://www.gittr.com/index.php/archive/using-alternate-session-stores-with-sinatra/
 
   set :site_title,        'Mega Uni'
   set :site_tag_line,     "For all your different lives: friends, family, work & romance."
@@ -71,7 +72,7 @@ configure do
   require Pow!( 'helpers/wash' )
 
   # === Include models.
-  require Pow('helpers/model_init')
+  #require Pow('helpers/model_init')
 
 end # === configure
 
@@ -199,11 +200,32 @@ require_these 'actions', %w{
 
 __END__
 
+
+
+Mini-Newspaper (for each life, each gets a custom debate page.)
+  - Posts
+    - view_id 
+      1 - Public
+      2 - Friends
+      3 - Friends & Fans
+      4 - Let me select audience:
+  - PostComments [ "Important News", "A Random Thought"]
+  - PostQuestions [ "Important Question", "A Silly Question" ]
+  - PostViewers
+  - club_id
+  |
+Network
+  - TightPersons
+  - LoosePersons
+  - TightPersonInvite
+  |
+Clubs
+  - TodoLists
+  - Predictions
+  - Questions
+  - News (Debates)
+  |
 TODOS
-  |
-Predictions
-  |
-Project Management
   |
 Pets
   |
@@ -237,6 +259,9 @@ Travel & Dining
   Post a city
   |
 News
+  |
+Layman Encyclopedia/Search (=Brain)
+(Unify Wikipedia-Clone with Google-clone + Bing clone)
   |
 Corporal Captitalists (bonds in working individuals)
 

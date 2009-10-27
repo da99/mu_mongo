@@ -19,11 +19,13 @@ class Gems < Thor
         whisper  "No gems to install."
       else
         gems_to_install.each { |g|
-          gem_name = g.split.first
-          if installed["#{gem_name} ("]
-            whisper "Already installed: #{gem_name}"
-          else
-            whisper capture_all( "gem install #{g}")
+          gem_name = g.split.first.strip
+          if gem_name[/^[a-z0-9]/i] # Starts w/ alpha-numeric character ???
+            if installed["#{gem_name} ("]
+              whisper "Already installed: #{gem_name}"
+            else
+              whisper capture_all( "gem install #{gem_name}")
+            end
           end
         }
       end    

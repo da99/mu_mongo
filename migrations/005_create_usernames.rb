@@ -11,7 +11,7 @@ class CreateUsernames < Sequel::Migration
       varchar :nickname, :size=>100
       varchar :email, :size=>65
       boolean :email_verified, :null=>false, :default=>false
-      varchar :category, :size=>65, :default=>'Personal'
+      smallint :category_id, :default=>1, :null=>false
       
       # === Date Times
       timestamp :created_at, :null => false

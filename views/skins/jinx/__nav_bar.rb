@@ -111,11 +111,11 @@ div( :id=>"nav_bar" ) {
       nav_bar_li.call '/economy/',  'Economy + War',  :topic, :economy
       nav_bar_li.call '/hair/',     'Skin & Hair',    :topic, :skin
       nav_bar_li.call '/housing/',  'Housing & Apartments', :topic, :housing
-      nav_bar_li.call '/music/',    'Music',          :topic, :music
+      #nav_bar_li.call '/music/',    'Music',          :topic, :music
       nav_bar_li.call '/health/',   'Pain & Disease',         :topic, :health
       nav_bar_li.call '/preggers/', 'Pregnancy',      :topic, :preggers
       nav_bar_li.call '/salud/',    'Salud (Español)', :main, :salud
-      nav_bar_li.call '/sports/',   'Sports',         :topic, :sports
+      #nav_bar_li.call '/sports/',   'Sports',         :topic, :sports
       nav_bar_li.call '/news/',     'Other Topics',    :topic, :news
     }
 

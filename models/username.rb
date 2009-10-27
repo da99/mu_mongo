@@ -3,7 +3,18 @@ class Username < Sequel::Model
   # ==== CONSTANTS =====================================================
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
- 
+  CATEGORIES = {
+    1 => 'Friend',
+    2 => 'Family',
+    3 => 'Work',
+    4 => 'Romance',
+    5 => 'Pet Owner',
+    6 => 'Celebrity',
+    7 => 'Role Playing'
+  }
+
+  CATEGORY_IDS = CATEGORIES.keys.sort
+
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
   #VALID_EMAIL_CHARS   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
