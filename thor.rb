@@ -36,20 +36,24 @@ module CoreFuncs
     true
   end
 
-  def append_to_my_error_log(content)
-    orig_content = ''
-    error_log = MY_ERROR_LOG
-    if MY_ERROR_LOG.exists?
-      if MY_ERROR_LOG.file?
-        orig_content = MY_ERROR_LOG.read
-      else
-        orig_content = 'ERROR LOG NEEDS TO BE A FILE: ' + MY_ERROR_LOG.to_s
-        error_log = Pow("~/Desktop/new_error_log.#{Time.now.utc.to_i}.txt")
-      end
+
+  def append_file( file_path, raw_txt )
+    file = Pow( file_path.to_s )
+    contents = ''
+    if file.exists? && !file.file?
+      raise "#{file} already exists and is not a file."
     end
-    error_log.create {|f| 
-      f.puts content + orig_content
+    if file.exists?
+      contents = file.read
+    end
+    
+    file.create { |f| 
+      f.puts( contents.to_s + raw_txt.to_s )
     }
+  end
+
+  def append_to_my_error_log(content)
+    append_file MY_ERROR_LOG, content
   end
 
   def shout msg, color=:red

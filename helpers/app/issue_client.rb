@@ -5,7 +5,8 @@ require 'rest_client'
 class IssueClient
 
     def self.required_cols
-      @required_cols ||= [ :app_name, :title,
+      @required_cols ||= [ :app_name, 
+                      :title,
                       :body, 
                       :environment, 
                       :path_info,
