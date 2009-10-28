@@ -4,6 +4,7 @@ secret*
 
 # A few more files used only for development
 # and not important.
+webrat.log
 doc/*
 coverage/*
 spec/coverage
