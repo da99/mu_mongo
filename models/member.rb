@@ -4,7 +4,7 @@ require 'bcrypt'
 # ==================================================
 #
 # ==================================================
-class Member < Sequel::Model
+class Member < CouchPlastic
   
   # =========================================================
   #                     CONSTANTS
@@ -29,7 +29,7 @@ class Member < Sequel::Model
   #                   ASSOCIATIONS
   # ========================================================= 
    
-  one_to_many :usernames, :key=>:owner_id
+  #one_to_many :usernames, :key=>:owner_id
   
     
   # =========================================================

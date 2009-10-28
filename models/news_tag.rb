@@ -1,4 +1,4 @@
-class NewsTag < Sequel::Model
+class NewsTag < CouchPlastic
 
   # ==== CONSTANTS =====================================================
   

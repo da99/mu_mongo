@@ -1,4 +1,4 @@
-class Username < Sequel::Model
+class Username < CouchPlastic
 
   # ==== CONSTANTS =====================================================
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
@@ -25,7 +25,7 @@ class Username < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  many_to_one :owner, :class_name=>'Member', :key=>:owner_id
+  #many_to_one :owner, :class_name=>'Member', :key=>:owner_id
   
   # ==== HOOKS =========================================================
   

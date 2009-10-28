@@ -1,4 +1,4 @@
-class LogInAttempt < Sequel::Model
+class LogInAttempt < CouchPlastic
 
   MAX = 4
   class TooManyFailedAttempts < StandardError; end

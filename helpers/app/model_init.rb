@@ -1,14 +1,8 @@
-require 'sequel/extensions/blank'
 
 
-class Sequel::Model
+class CouchPlastic
 
 
-  # =========================================================
-  #                     Plugins
-  # =========================================================  
-   
-    
   # =========================================================
   #                     Error Constants
   # =========================================================    
@@ -19,19 +13,12 @@ class Sequel::Model
   # =========================================================
   #                      Attributes
   # =========================================================  
-  self.raise_on_save_failure = true
-  self.raise_on_typecast_failure  = false
 
-
-  # =========================================================
-  #                        OPTIONS
-  # =========================================================  
- 
-  
 
   # =========================================================
   #                  CLASS METHODS
   # =========================================================
+  
   
   def self.editor_permissions
     @editor_perms
@@ -75,7 +62,7 @@ class Sequel::Model
     n.instance_eval &(editor_permissions[:create][level])
     n.raise_if_invalid
     n.created_at = Time.now.utc if n.respond_to?(:created_at)
-    n._save_
+    n.save
   end
 
   def self.creator? editor
@@ -91,7 +78,6 @@ class Sequel::Model
 
   end
 
-  
   def self.updator editor, raw_vals
     rec = self[:id=>raw_vals[:id]]
     raise NoRecordFound, "Try again." if !rec
@@ -102,7 +88,7 @@ class Sequel::Model
     rec.instance_eval &(editor_permissions[:update][level])
     rec.raise_if_invalid
     rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
-    rec._save_
+    rec.save
   end
 
   def self.trashable(*args, &cond_block)
@@ -185,7 +171,7 @@ class Sequel::Model
 
   end
 
-  def _save_
+  def save
      
     begin
       save(:changed=>true)
@@ -306,6 +292,15 @@ class Sequel::Model
 end # === model: Sequel::Model -------------------------------------------------
 
 
-require_these '../models'
+require_these '../models', %w{
+  resty
+  member
+  username
+  log_in_attempt
+  history_log
+  news
+  news_tags
+  news_taggings
+}
 
 

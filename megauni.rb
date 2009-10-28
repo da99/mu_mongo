@@ -1,5 +1,6 @@
 $KCODE = 'UTF8'
 require( File.expand_path './helpers/app/chars_compat'  )
+require( File.expand_path './helpers/app/string_blank'  )
 require( File.expand_path './helpers/app/kernel'  )
 require( File.expand_path './helpers/app/string_inflections' )
 
@@ -59,8 +60,10 @@ require_these 'actions', %w{
 
 
 
-
-
+# ===============================================
+# Require Models.
+# ===============================================
+require File.expand_path('./helpers/app/model_init')
 
 
 

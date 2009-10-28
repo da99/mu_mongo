@@ -1,4 +1,4 @@
-class HistoryLog < Sequel::Model
+class HistoryLog < CouchPlastic
 
   # ==== CONSTANTS =====================================================
   

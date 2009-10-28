@@ -1,4 +1,4 @@
-class NewsTagging < Sequel::Model
+class NewsTagging < CouchPlastic
 
   # ==== CONSTANTS =====================================================
   
@@ -8,7 +8,7 @@ class NewsTagging < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  many_to_one :tag, :class_name=>'NewsTag', :key=>:tag_id
+  #many_to_one :tag, :class_name=>'NewsTag', :key=>:tag_id
   
   # ==== HOOKS =========================================================
 
