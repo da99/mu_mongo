@@ -187,8 +187,10 @@ module Sinatra
             #                variables.
             def render_mab( opts = {} )
           
-                response['Content-Type'] = 'text/html; charset=utf-8'
-                response['Accept-Charset'] = 'utf-8'   
+                response['Content-Type']   = 'text/html; charset = utf-8'
+                response['Accept-Charset'] = 'utf-8'
+                response['Cache-Control']  = 'no-cache'
+                response['Pragma']         = 'no-cache'
                 
                 # Find template. ==================================================
                 

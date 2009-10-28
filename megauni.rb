@@ -4,79 +4,23 @@ require( File.expand_path './helpers/kernel'  )
 require( File.expand_path './helpers/string_inflections' )
 
 
-# Ramaze::Global.content_type = 'text/html; charset=utf-8'
-# Ramaze::Global.accept_charset = 'utf-8'
-# header("Cache-Control: no-cache");
-# header("Pragma: no-cache");
-
 # ===============================================
 # Important Gems
 # ===============================================
 require 'rubygems'
 require 'multibyte'
 require 'sinatra'
-#require 'rack-flash'
+
 
 # ===============================================
 # Configurations
 # ===============================================
-use Rack::Session::Pool
-
-# Don't use ":sweep => true" because it
-# will only allow you to use flash values once
-# per call, not per request. Or it could
-# prevent it's use after a redirect.
-# use Rack::Flash, :accessorize => [:notice, :success_msg, :error_msg]
-
-configure :test do
-end
-
-
-configure :development do
-  require Pow('helpers/css')
-  require Pow('actions/try_textile')
-  enable :clean_trace
-end
-
-
-configure(:production) do
-  # === Error handling.
-  #require Pow('helpers/public_500')
-  #enable :raise_errors
-  #enable :show_exceptions
-  #use Rack::Public500
-end
-
-
-configure do
-
-# set :session, true # Don't use this because: http://www.gittr.com/index.php/archive/using-alternate-session-stores-with-sinatra/
-
-  set :site_title,        'Mega Uni'
-  set :site_tag_line,     "For all your different lives: friends, family, work & romance."
-  set :site_keywords,     'to-do lists predictions'
-  set :site_domain,       'megaUni.com'
-  set :site_help_email,     Proc.new { "helpme@#{site_domain}"  }
-  set :site_url,            Proc.new { "http://www.#{site_domain}/" }
-  set :site_support_email,  Proc.new { "helpme@#{site_domain}"  }
-  set :cache_the_templates, Proc.new { !development? }
-  set :views,               Pow('views/skins/jinx')
-
-  require( File.expand_path './helpers/issue_client' )
-
-  # Special sanitization code used throughout the app.
-  require( File.expand_path './helpers/wash' )
-  
-  # === Include models.
-  #require Pow('helpers/model_init')
-
-end # === configure
+require( File.expand_path './helpers/sinatra/config.rb' )
 
 
 # ===============================================
 # Helpers
 # ===============================================
-
 require_these 'helpers/sinatra', %w{
   sanitize_input
   describe_action
@@ -91,9 +35,8 @@ require_these 'helpers/sinatra', %w{
   html_props_for_models
   swiss_clock
   text_to_html
-  red_cloth
+  red_cloth  
 }
-
 
 
 # ===============================================
@@ -111,7 +54,15 @@ require_these 'actions', %w{
 	resty
   health
   temp_actions
+  try_textile
 }
+
+
+
+
+
+
+
 
 __END__
 
