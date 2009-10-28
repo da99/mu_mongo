@@ -2,7 +2,7 @@
 
 my_app_root = File.expand_path( File.dirname(__FILE__) )
 
-require( my_app_root + "/helpers/string_inflections" )
+
 
 begin
   raise "show maintainence page"  if File.exists?(my_app_root + '/helpers/sinatra/maintain.rb')

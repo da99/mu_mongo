@@ -1,5 +1,10 @@
 helpers {
 
+  def dev_log_it( msg )
+      puts(msg) if options.development?
+  end
+
+
   def current_action
       @current_action_props
   end 

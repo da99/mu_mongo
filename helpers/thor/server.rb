@@ -3,6 +3,21 @@
 
 class Server < Thor
   include Thor::Actions
+  include Thor::Sandbox::CoreFuncs
+  
+  map '-n' => :nginx
+  desc 'nginx', 'Starts up Nginx, after invoking nginx_stop.'
+  def nginx
+    if capture_all('ps aux | grep nginx')['nginx:']
+      return(whisper('Shutdown nginx first with: thor server:nginx_stop'))
+    end
+    exec 'sudo /etc/init.d/nginx start'
+  end
+
+  desc 'nginx_stop', 'Stops Nginx.'
+  def nginx_stop
+    exec 'sudo /etc/init.d/nginx stop'
+  end
 
   map '-s' => :shotgun
   desc 'shotgun', "Runs Shotgun with Thin in development mode."
@@ -12,10 +27,11 @@ class Server < Thor
   end
 
 	map '-d' => :dev
-  desc 'dev', "Runs Thin server in :development mode. (Uses :exec.)"
+  desc 'dev', "Runs Unicorn in :development mode. (Uses :exec.)"
   def dev
     invoke 'sass:delete'
-    exec  "thin start --rackup config.ru -p 4567"
+    # exec  "thin start --rackup config.ru -p 4567"
+    exec "unicorn -p 4567"
   end
 
   # These use 'exec', which replaces the current process (i.e. Rake)

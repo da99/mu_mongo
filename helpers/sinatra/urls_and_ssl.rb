@@ -47,6 +47,27 @@ before {
 
 helpers {
 
+    def redirect(uri, *args)
+      if !request.get? && args.detect { |s| s.to_i > 200 && s.to_i < 500 }
+        raise ArgumentError,
+              "No status code allowed for non-GET requests: #{args.inspect}"
+      end
+      if request.get? || request.head?
+        status 302
+      else
+        status 303
+      end
+
+      #if request.get? && mobile_request?
+      #  uri = File.join(uri, 'm/')
+      #end
+      
+      keep_flash
+
+      response['Location'] = uri
+      halt(*args)
+    end
+
     def mobile_request?(path = nil)
       @mobile_request || (path || request.path_info).strip =~ /\/m\/?$/
     end
