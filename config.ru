@@ -15,11 +15,19 @@ rescue
     $KCODE = 'UTF8'
     require 'rubygems'
     require 'sinatra'
-    require( my_app_root + '/helpers' + ['/maintain', '/sinatra/maintain'].detect { |f| File.exists?(my_app_root+'/helpers' + f + '.rb') })
 
-    require( my_app_root + '/helpers/issue_client' )
+    # Show maintenance message.
+    begin
+      require( my_app_root + '/helpers' + '/sinatra/down.maintain' )
+    rescue LoadError
+      require( my_app_root + '/helpers' + '/sinatra/maintain' )
+    end
+
+    # Log error.
+    require( my_app_root + '/helpers/app/issue_client' )
     faux_env = {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' }
     IssueClient.create( faux_env, Sinatra::Application.environment, $!)
+
   rescue
     dev_env = File.expand_path('.')['home/da01'] 
 		raise if dev_env

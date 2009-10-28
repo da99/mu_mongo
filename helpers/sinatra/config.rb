@@ -5,7 +5,7 @@ end
 
 
 configure :development do
-  require Pow('helpers/css')
+  require Pow('helpers/sinatra/css')
 end
 
 
@@ -13,6 +13,9 @@ configure(:production) do
 end
 
 
+# =====================================================================================
+#                              All Environments
+# =====================================================================================
 configure do
 
   use Rack::Session::Pool  
@@ -29,9 +32,9 @@ configure do
   set :cache_the_templates, Proc.new { !development? }
   set :views,               Pow('views/skins/jinx')
 
-  require( File.expand_path './helpers/issue_client' )
-  require( File.expand_path './helpers/wash' )
-  #require Pow('helpers/model_init')
+  require( File.expand_path './helpers/app/issue_client' )
+  require( File.expand_path './helpers/app/wash' )
+  #require Pow('helpers/app/model_init')
 
 end # === configure
 

@@ -1,10 +1,10 @@
 #!/home/da01/rubyee/bin/ruby
 $KCODE = 'u' 
 
-require File.expand_path('~/megauni/helpers/kernel')
+require File.expand_path('~/megauni/helpers/app/kernel')
 require 'open3'
 require 'rush'
-require File.expand_path('~/megauni/helpers/string_inflections')
+require File.expand_path('~/megauni/helpers/app/string_inflections')
 
 module CoreFuncs
   PRIMARY_APP     = 'megauni'

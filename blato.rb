@@ -1,7 +1,7 @@
 
 require 'rubygems'
 require File.expand_path('~/megauni/helpers/string_inflections')
-require File.expand_path('~/megauni/helpers/kernel')
+require File.expand_path('~/megauni/helpers/app/kernel')
 
 
 

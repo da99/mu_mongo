@@ -1,7 +1,7 @@
 $KCODE = 'UTF8'
-require( File.expand_path './helpers/chars_compat'  )
-require( File.expand_path './helpers/kernel'  )
-require( File.expand_path './helpers/string_inflections' )
+require( File.expand_path './helpers/app/chars_compat'  )
+require( File.expand_path './helpers/app/kernel'  )
+require( File.expand_path './helpers/app/string_inflections' )
 
 
 # ===============================================
