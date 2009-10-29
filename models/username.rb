@@ -36,29 +36,33 @@ class Username
   
   # ==== CLASS METHODS =================================================
 
-  def find_by_username_or_raise un
+  def self.find_by_username_or_raise un
     raise NoRecordFound, "#{un} was not found." 
   end
 
-  # ==== INSTANCE METHODS ==============================================
-
-  def owner
-    raise "Not Implemented"
+  def self.create editor, raw_vals
+    valid_editor_or_raise editor, MEMBER
+    new_doc = new
+    new_doc.owner_id=  editor
+    new_doc.set_required_columns raw_vals, :username
+    new_doc.set_optional_columns raw_vals, :nickname, :category
   end
 
-  allow_creator :MEMBER do
-    self[:owner_id] = current_editor[:id]
-    require_columns :username
-    optional_columns :nickname, :category
+  def self.edit editor, raw_vals
+    doc = find_by_id_or_raise(raw_vals[:id]) 
+    valid_editor_or_raise editor, doc.owner, :ADMIN 
+    doc
   end
-  
-  allow_updator :owner, :ADMIN  do
-  
-    optional_columns :username, :nickname, :category, :email 
+
+  def self.update editor, raw_vals
+    doc = edit(editor, raw_vals)
+    doc.set_optional_columns raw_vals, :username, :nickname, :category, :email 
     
     @history_msgs = []
     
-    raw_data.each { |k,v|
+    raise "Fix this code below."
+
+    raw_vals.each { |k,v|
       case k.to_sym
         when :username
           history_msgs << "Changed username from: #{self[:username]}"
@@ -66,11 +70,6 @@ class Username
           history_msgs << "Changed email from: #{self[:email]}"
       end
     }
-    
-  end # === def update_it!
-  
-  def after_update
-    
     return true if !@history_msgs.empty?
     
     HistoryLog.create_it!( 
@@ -78,12 +77,22 @@ class Username
      :editor_id => self.current_editor[:id], 
      :action    => 'UPDATE', 
      :body      => @history_msgs.join("\n")
-    ) 
-    
-  end  
-  
+    )  
+  end # === def update_it!
 
-  validator :email do
+
+  # ==== INSTANCE METHODS ==============================================
+
+  def owner_id= editor
+    raise "Not implemented."
+  end
+
+  def owner
+    raise "Not Implemented"
+  end
+
+  
+  def email= raw_data
     raw_params = raw_data
     fn = :email
     v = raw_params[ fn ] 
@@ -105,7 +114,7 @@ class Username
   end # === def _email_
   
   
-  validator :username do
+  def username= raw_data
     fn = :username
     raw_name = raw_data[fn].to_s.strip
     

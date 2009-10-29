@@ -1,4 +1,6 @@
-class HistoryLog < CouchPlastic
+class HistoryLog 
+
+  include CouchPlastic
 
   # ==== CONSTANTS =====================================================
   

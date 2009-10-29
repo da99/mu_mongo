@@ -1,4 +1,5 @@
-class NewsTag < CouchPlastic
+class NewsTag 
+  include CouchPlastic
 
   # ==== CONSTANTS =====================================================
   

@@ -1,4 +1,6 @@
-class News < Sequel::Model
+class News 
+
+  include CouchPlastic
 
   # ==== CONSTANTS =====================================================
   
@@ -25,39 +27,43 @@ class News < Sequel::Model
     updated_at || created_at
   end
 
-  allow_viewer :STRANGER
+  def self.show editor, raw_data
+    :STRANGER
+  end
 
-  allow_creator :ADMIN do
+  def self.create editor, raw_data
+    valid_editor_or_raise editor, :ADMIN
     raw_data[:published_at] ||= Time.now.utc
     require_columns :title, :body
     optional_columns :teaser, :published_at, :tags
   end
 
-  allow_updator :ADMIN do
+  def self.update editor, raw_data
+    valid_editor_or_raise editor, :ADMIN 
     optional_columns :title, :body, :teaser, :published_at, :tags
   end
 
-  validator :title do
+  def title= raw_data
     fn = :title
     require_string! fn
   end # === 
 
-  validator :teaser do
+  def teaser= raw_data
     fn = :teaser
     optional_string :teaser
   end # ===
 
-  validator :body do
+  def body= raw_data
     fn = :body
     require_string! fn
   end # ===
 
-  validator :published_at do
+  def published_at= raw_data
     fn = :published_at
     self[ fn ]  = raw_data[fn] || Time.now.utc
   end
 
-  validator :tags do
+  def tags= raw_data
     fn = :tags
     raise "Not implemented."
   end

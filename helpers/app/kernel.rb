@@ -34,14 +34,22 @@ if !Pow('~').is_a?(Pow::Directory)
   end
 end # == if
 
-
+# Parameters: 
+#   dir - Relative to the current working directory of the app.
+#   allow_only  - Optional. It is an array of ruby file names without 
+# an extension.
 def require_these( dir, allow_only=nil )
-  Dir[ File.join(dir, '*.rb') ].each { |f| 
-    file_name = f.sub(/\.rb$/, '') 
-    if allow_only.nil? || allow_only.empty? || allow_only.include?(File.basename(file_name))
-     require Pow(f).to_s  
-    end
-  }
+  if allow_only
+    allow_only.each { |file_name| 
+      require Pow( dir, file_name ).to_s
+    }
+  else
+    Dir[ File.join(dir, '*.rb') ].each { |f| 
+      # Replace 'models/resty.rb' to 'models/resty'
+      file_name = f.sub(/\.rb$/, '')  
+      require Pow(file_name).to_s  
+    }
+  end
 end
 
 def read_if_file(f)

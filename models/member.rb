@@ -152,7 +152,7 @@ class Member
     pass         = raw_data[ :password ].to_s.strip
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
-    self.errors << "Password and password confirmation do not match.") if pass != confirm_pass 
+    self.errors << "Password and password confirmation do not match." if pass != confirm_pass 
 
     if pass.empty?
       self.errors <<  "Password is required."
