@@ -1,6 +1,8 @@
-class Username < CouchPlastic
+class Username 
+  include CouchPlastic
 
   # ==== CONSTANTS =====================================================
+
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
   CATEGORIES = {
@@ -23,6 +25,7 @@ class Username < CouchPlastic
 
   # ==== ERRORS ========================================================
   
+  class NotUnique < StandardError; end;
 
   # ==== ASSOCIATIONS ==================================================
   #many_to_one :owner, :class_name=>'Member', :key=>:owner_id
@@ -33,8 +36,15 @@ class Username < CouchPlastic
   
   # ==== CLASS METHODS =================================================
 
+  def find_by_username_or_raise un
+    raise NoRecordFound, "#{un} was not found." 
+  end
 
   # ==== INSTANCE METHODS ==============================================
+
+  def owner
+    raise "Not Implemented"
+  end
 
   allow_creator :MEMBER do
     self[:owner_id] = current_editor[:id]

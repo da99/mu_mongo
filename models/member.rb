@@ -4,7 +4,8 @@ require 'bcrypt'
 # ==================================================
 #
 # ==================================================
-class Member < CouchPlastic
+class Member 
+  include CouchPlastic
   
   # =========================================================
   #                     CONSTANTS
@@ -41,19 +42,55 @@ class Member < CouchPlastic
   #                     Class Methods.
   # =========================================================
 
-  # === See: Sinatra-authentication (on github)
+  # Based on Sinatra-authentication (on github).
   # Raises: Member::IncorrectPassword
   def self.validate_username_and_password( username, pass )
-      un = Username[:username => username]
-      
-      raise NoRecordFound, "#{username} was not found." if !un
-      
+      un = Username.find_by_username_or_raise( username )
       return un.owner if BCrypt::Password.new(un.owner.hashed_password) === (pass + un.owner.salt) 
-
       raise IncorrectPassword, "Try again."
   end # === self.authenticate
 
+
+  # =========================================================
+  #                    Data Class Methods
+  # =========================================================
+
+  def self.create( editor, raw_vals )
+    raise "No logged in members are allowed to created Members." if !editor
+    new_doc = new
+    new_doc.set_required_values( raw_vals, :password, :username )
+    new_doc.set_optional_values( raw_vals, :avatar_link )
+    new_doc.save
+
+    begin
+      Username.create( editor, raw_vals )
+    rescue Username::NotUnique
+      new_doc.delete!
+      new_doc.errors << 'Username already taken.'
+      new_doc.validate_or_raise
+    end
+
+  end
+
+  def self.edit( editor, raw_vals )
+    doc = find_by_id_or_raise(raw_vals[:id])
+    doc.valid_editor_or_raise( editor, doc.owner, ADMIN )
+    doc
+  end
+
+  def self.update( editor, raw_vals )
+    doc = edit(editor, raw_vals)
+    if doc.owner?(editor)
+        doc.set_optional_values( raw_vals, :password )
+    else
+      if editor.admin?
+        doc.set_optional_values( raw_vals, :permission_level ) 
+      end
+    end
+    doc.save
+  end
   
+
   # =========================================================
   #                    Instance Methods
   # ========================================================= 
@@ -62,18 +99,9 @@ class Member < CouchPlastic
   # By using a custom implementation, we cane make sure
   # the customized version of :inspect_values is always used.
   def inspect
-    "#<#{model.name} @values=#{inspect_values.inspect}>"
+    @inspect_this ||= "#<#{self.class} id=#{self.original[:id]}>"
   end
   
-  # Default :inspect_values is 
-  # over-ridden to prevent :hashed_password and :salt 
-  # from being displayed.
-  def inspect_values
-    safe_values = values.clone
-    safe_values.delete :hashed_password
-    safe_values.delete :salt
-    safe_values
-  end
 
   def admin?
     has_power_of?(:ADMIN)
@@ -104,9 +132,9 @@ class Member < CouchPlastic
         when MEMBER
           new? ? false : true
         when ADMIN
-          self == Member.first && self[:permission_level] == ADMIN
+          self == Member.first && self.permission_level == ADMIN
         when EDITOR
-          self[:permission_level] === EDITOR
+          self.permission_level === EDITOR
         else
           raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
       end
@@ -117,45 +145,27 @@ class Member < CouchPlastic
   # ================= AUTHORIZATIONS ========================
 
 
-  allow_creator STRANGER do
-    require_columns :password 
-  end
   
-  def after_create
-    Username.creator self, raw_data
-  end # === def after_create
-  
-  allow_updator :self do
-    optional_columns :password
-  end
-
-  allow_updator ADMIN do 
-    optional_columns :permission_level
-  end    
-  
-
   # =============== VALIDATORS =============================
 
-  validator :password do
-    fn = :password
-    pass = raw_data[ fn ].to_s
-
+  def password=(raw_data)
+    pass         = raw_data[ :password ].to_s.strip
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
-    self.errors.add( fn, "and password confirmation do not match.") if pass != confirm_pass 
+    self.errors << "Password and password confirmation do not match.") if pass != confirm_pass 
 
     if pass.empty?
-      self.errors.add( fn, "is required.")
+      self.errors <<  "Password is required."
     elsif pass.length < 5
-      self.errors.add( fn, "must be longer than 5 characters.")    
+      self.errors << "Password must be longer than 5 characters."    
     elsif !pass[/[0-9]/]
-      self.errors.add( fn, "must have at least one number.")
+      self.errors << "Password must have at least one number."
     end
 
-    return nil if !self.errors[fn].empty?
+    return nil if !self.errors.empty?
     
     # Salt and encrypt values.
-    self[:salt] = begin
+    self.new_values[:salt] = begin
                     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
                     (1..10).inject('') { |new_pass, i|  
                       new_pass += chars[rand(chars.size-1)] 
@@ -163,20 +173,20 @@ class Member < CouchPlastic
                     }
                   end
     
-    self[:hashed_password] = BCrypt::Password.create( pass + self[:salt] ).to_s
+    self.new_values[:hashed_password] = BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
     confirm_pass
       
   end # === def set_password
   
   
-  validator :permission_level do
+  def permission_level= raw_data
     fn = :permission_level
     new_level = raw_data[fn]
     if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end
     
-    self[fn] = new_level
+    self.new_values[fn] = new_level
     
   end # === def set_permission_level
   

@@ -1,4 +1,37 @@
+module CouchPlastic
 
+  module InstanceMethods
+    def set_required_values
+    end
+    def set_optional_values
+    end
+    def valid_editor_or_raise editor, *levels
+    end
+    def original
+    end
+    def new_values
+    end
+    def delete!
+    end
+    def errors
+      @errors ||= []
+    end
+    def save
+      validate_or_raise
+    end
+    def validate_or_raise
+      raise Invalid, "Document has validation errors." if !errors.empty?
+    end
+  end
+
+  module ClassMethods
+    def find_by_id(id)
+    end
+    def find_by_id_or_raise(id)
+    end
+  end
+
+end
 
 class CouchPlastic
 
@@ -8,7 +41,7 @@ class CouchPlastic
   # =========================================================    
   class NoRecordFound < StandardError; end
   class UnauthorizedEditor < StandardError; end
-  
+  class Invalid < StandardError; end
 
   # =========================================================
   #                      Attributes
@@ -132,7 +165,15 @@ class CouchPlastic
   # =========================================================  
    
   attr_accessor :current_editor, :raw_data
- 
+  
+  def method_method *args
+    meth_name = args.first.to_sym
+    if args.size == 1 && original.has_key?(meth_name)
+      return original[meth_name]
+    end
+    super
+  end
+
   def raise_if_invalid
     raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
   end 
