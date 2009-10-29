@@ -26,18 +26,7 @@ class Member
     const_set k, v
   end
   
-  # =========================================================
-  #                   ASSOCIATIONS
-  # ========================================================= 
-   
-  #one_to_many :usernames, :key=>:owner_id
-  
     
-  # =========================================================
-  #                      HOOKS
-  # =========================================================
-  
-
   # =========================================================
   #                     Class Methods.
   # =========================================================
@@ -60,7 +49,7 @@ class Member
     new_doc = new
     new_doc.set_required_values( raw_vals, :password, :username )
     new_doc.set_optional_values( raw_vals, :avatar_link )
-    new_doc.save
+    new_doc.save_create
 
     begin
       Username.create( editor, raw_vals )
@@ -87,7 +76,7 @@ class Member
         doc.set_optional_values( raw_vals, :permission_level ) 
       end
     end
-    doc.save
+    doc.save_update
   end
   
 
@@ -95,9 +84,12 @@ class Member
   #                    Instance Methods
   # ========================================================= 
 
-  # Future versions of Sequel may alter implementation of :inspect.
+  def usernames
+    raise "Not implemented."
+  end
+
   # By using a custom implementation, we cane make sure
-  # the customized version of :inspect_values is always used.
+  # sensitive information is not shown.
   def inspect
     @inspect_this ||= "#<#{self.class} id=#{self.original[:id]}>"
   end
@@ -141,8 +133,6 @@ class Member
       
   end # === def security_clearance?
 
-
-  # ================= AUTHORIZATIONS ========================
 
 
   
@@ -190,10 +180,8 @@ class Member
     
   end # === def set_permission_level
   
-
   
-  
-end # Member
+end # === model Member
 
 
 __END__

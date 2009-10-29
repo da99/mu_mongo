@@ -6,38 +6,120 @@ module CouchPlastic
 
   def set_required_values
   end
+
   def set_optional_values
   end
+
   def valid_editor_or_raise editor, *levels
   end
+
   def original
+    @original ||= {}
   end
+
   def new_values
+    @new_values ||= {}
   end
+
   def delete!
+    begin
+      url = File.join(DB_CONN, original[:_id])
+      results = JSON.parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
+      results['ok']
+    rescue RestClient::ResourceNotFound
+      true
+    end
   end
+
   def errors
     @errors ||= []
   end
-  def save
-    validate_or_raise
+
+  def new?
+    original.empty?
   end
+  
+
+  # Accepts an optional block that is given, if any, a RestClient::RequestFailed
+  # exception.  Use ".response.body" on the exception for JSON data.
+  def save_create
+    validate_or_raise
+    new_values[:data_model] = self.class.name
+    new_id  = new_values.delete(:_id) || JSON.parse(RestClient.get 'http://127.0.0.1:5984/_uuids')['uuids']
+    begin
+      results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), new_values.to_json))
+      original[:_rev] = results['rev']
+      original[:_id] = results['id']
+    rescue RestClient::RequestFailed
+      if block_given?
+        yield $!
+      else
+        raise
+      end
+    end
+  end
+
+  # Accepts an optional block that is given, if any, a RestClient::RequestFailed
+  # exception.  Use ".response.body" on the exception for JSON data.
+  def save_update
+    validate_or_raise
+    data = new_values.clone.update({ :_rev => original[:_rev] })
+    begin
+      results = JSON.parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
+      original[:_rev] = results['rev']
+    rescue RestClient::RequestFailed
+      if block_given?
+        yield $!
+      else
+        raise
+      end
+    end
+  end
+
   def validate_or_raise
-    raise Invalid, "Document has validation errors." if !errors.empty?
+    if !errors.empty? 
+      raise Invalid, "Document has validation errors." 
+    end
+
+    if new_values.empty?
+      raise NoNewValues, "No new data to save."
+    end
+
+    true
   end
 
   module ClassMethods
 
     # =========================================================
     #                     Error Constants
-    # =========================================================    
+    # ========================================================= 
+    #
     class NoRecordFound < StandardError; end
     class UnauthorizedEditor < StandardError; end
     class Invalid < StandardError; end
+    class NoNewValues < StandardError; end
 
     def find_by_id(id)
+      begin
+        find_by_id_or_raise(id)
+      rescue NoRecordFound
+      end
+
+      nil
     end
+
     def find_by_id_or_raise(id)
+      begin
+        data = JSON.parse(RestClient.get(File.join(DB_CONN, id)))
+        doc = new
+        data.keys.each { |k|
+          doc.original[k.to_sym] = data[k]
+        }
+      rescue RestClient::ResourceNotFound 
+        raise NoRecordFound, "Document with id, #{id}, not found."
+      end
+
+      doc
     end
 
     def self.editor_permissions

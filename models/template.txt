@@ -1,4 +1,5 @@
-class #{m} < Sequel::Model
+class #{m} 
+  include CouchPlastic
 
   # ==== CONSTANTS =====================================================
   
@@ -11,10 +12,13 @@ class #{m} < Sequel::Model
 
   # ==== CLASS METHODS =================================================
 
-  allow_creator :MEMBER do
+  def self.create editor, raw_vals
   end
 
-  allow_updator :self do
+  def self.edit editor, raw_vals
+  end
+
+  def self.update editor, raw_vals
   end
 
   # ==== INSTANCE METHODS ==============================================

@@ -27,7 +27,7 @@ div( :id=>"nav_bar" ) {
 
     unselected = Proc.new { |t,u|
       li {
-        a t, :href=> the_app.urlize( u )
+        a t, :href=> u 
       }
     }
 
