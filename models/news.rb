@@ -1,3 +1,6 @@
+
+require 'time' # To use Time.parse.
+
 class News 
 
   include CouchPlastic
@@ -20,6 +23,30 @@ class News
 
   # ==== CLASS METHODS =================================================
 
+  def self.create editor, raw_data
+    doc = new
+    doc.validate_editor editor, :ADMIN
+    doc.title= raw_data
+    doc.body= raw_data 
+    doc.published_at = raw_data
+    doc.set_optional_values raw_data, :teaser, :published_at, :tags
+    doc.save_create :set_created_at
+    doc
+  end
+
+  def self.edit editor, raw_data
+    doc = find_by_id_or_raise(raw_data[:id])
+    doc.validate_editor(editor, :ADMIN)
+    doc
+  end
+
+  def self.update editor, raw_data
+    doc = edit(editor, raw_data)
+    doc.set_optional_values raw_data, :title, :body, :teaser, :published_at, :tags
+    doc.save_update :set_updated_at
+    doc
+  end
+
 
   # ==== INSTANCE METHODS ==============================================
 
@@ -27,43 +54,46 @@ class News
     updated_at || created_at
   end
 
-
-
-  def self.create editor, raw_data
-    validate_editor editor, :ADMIN
-    raw_data[:published_at] ||= Time.now.utc
-    require_columns :title, :body
-    optional_columns :teaser, :published_at, :tags
-  end
-
-  def self.update editor, raw_data
-    validate_editor editor, :ADMIN 
-    optional_columns :title, :body, :teaser, :published_at, :tags
-  end
-
   def title= raw_data
     fn = :title
-    require_string! fn
+    new_title = raw_data[:title].to_s.strip
+    if new_title.empty?
+      self.errors << "Title must not be empty."
+      return nil
+    end
+    self.new_values[:title] = new_title
   end # === 
 
   def teaser= raw_data
-    fn = :teaser
-    optional_string :teaser
+    new_teaser = raw_data[:teaser].to_s.strip
+    if new_teaser.empty?
+      new_values[:teaser] = nil
+    else
+      new_values[:teaser] = new_teaser 
+    end
   end # ===
 
   def body= raw_data
-    fn = :body
-    require_string! fn
+    new_body = raw_data[:body].to_s.strip
+    if new_body.empty?
+      self.errors << "Body must not be empty."
+    elsif new_body.length < 10
+      self.errors << "Body is too short. Write more."
+    end
+
+    return nil if !self.errors.empty?
+
+    new_values[:body] = new_body
   end # ===
 
   def published_at= raw_data
-    fn = :published_at
-    self[ fn ]  = raw_data[fn] || Time.now.utc
+    self.new_values[:published_at] = Time.parse(raw_data[:published_at]) || Time.now.utc
   end
 
   def tags= raw_data
-    fn = :tags
-    raise "Not implemented."
+    new_tags = raw_data[:tags].to_s.split
+    return nil if new_tags.empty?
+    self.new_values[:tags] = new_tags
   end
 
 end # === end News

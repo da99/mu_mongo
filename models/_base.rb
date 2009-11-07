@@ -58,6 +58,8 @@ module CouchPlastic
     true
   end 
 
+
+
   def _before_save_
     clear_assoc_cache
     validate
@@ -65,15 +67,21 @@ module CouchPlastic
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
-  def save_create
+  # Parameters:
+  #   opts - Valid options: :set_created_at
+  def save_create *opts
     
     _before_save_
 
-    new_values[:data_model] = self.class.name
-    new_id  = new_values.delete(:_id) || JSON.parse(RestClient.get 'http://127.0.0.1:5984/_uuids')['uuids']
+    data = new_values.clone
+    data[:data_model] = self.class.name
+    data[:created_at] = Time.now.utc if opts.include?(:set_created_at)
+    new_id  = data.delete(:_id) || JSON.parse(RestClient.get 'http://127.0.0.1:5984/_uuids')['uuids']
+
     begin
-      results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), new_values.to_json))
-      self.class.find_by_id( results['id'] )
+      results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
+      original[:_id] = new_id
+      original[:_rev] = results['rev']
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -81,15 +89,19 @@ module CouchPlastic
         raise
       end
     end
+
   end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
-  def save_update
+  # Parameters:
+  #   opts - Valid options: :set_updated_at
+  def save_update *opts
 
     _before_save_
 
     data = new_values.clone.update({ :_rev => original[:_rev] })
+    data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
     
     begin
       results = JSON.parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
