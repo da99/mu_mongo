@@ -31,12 +31,30 @@ class Member
   #                     Class Methods.
   # =========================================================
 
+  def self.first
+    raise "Not implemented."
+  end
+
   # Based on Sinatra-authentication (on github).
-  # Raises: Member::IncorrectPassword
-  def self.validate_username_and_password( username, pass )
-      un = Username.find_by_username_or_raise( username )
-      return un.owner if BCrypt::Password.new(un.owner.hashed_password) === (pass + un.owner.salt) 
-      raise IncorrectPassword, "Try again."
+  # 
+  # Parameters:
+  #   raw_vals - Hash with at least 2 keys: :username, :password
+  # 
+  # Raises: 
+  #   Member::IncorrectPassword
+  #
+  def self.authenticate( raw_vals )
+      
+      un = Username.find_by_username_or_raise( raw_vals[:username] )
+
+      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
+      
+      if correct_password
+        return un.owner
+      end
+
+      raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
+
   end # === self.authenticate
 
 
@@ -45,25 +63,30 @@ class Member
   # =========================================================
 
   def self.create( editor, raw_vals )
-    raise "No logged in members are allowed to created Members." if !editor
-    new_doc = new
-    new_doc.set_required_values( raw_vals, :password, :username )
-    new_doc.set_optional_values( raw_vals, :avatar_link )
-    new_doc.save_create
+    
+    raise "No logged in members are allowed to created Members." if editor
+
+    doc = new
+    doc.password= raw_vals
+    doc.set_optional_values( raw_vals, :avatar_link )
+    
+    doc.save_create
 
     begin
-      Username.create( editor, raw_vals )
+      Username.create( doc, raw_vals )
     rescue Username::NotUnique
-      new_doc.delete!
-      new_doc.errors << 'Username already taken.'
-      new_doc.validate_or_raise
+      doc.delete!
+      doc.errors << 'Username already taken.'
+      doc.validate
     end
+    
+    doc
 
   end
 
   def self.edit( editor, raw_vals )
     doc = find_by_id_or_raise(raw_vals[:id])
-    doc.valid_editor_or_raise( editor, doc.owner, ADMIN )
+    doc.validate_editor( editor, doc.owner, ADMIN )
     doc
   end
 
@@ -72,7 +95,7 @@ class Member
     if doc.owner?(editor)
         doc.set_optional_values( raw_vals, :password )
     else
-      if editor.admin?
+      if editor.has_power_of?(:ADMIN)
         doc.set_optional_values( raw_vals, :permission_level ) 
       end
     end
@@ -85,23 +108,14 @@ class Member
   # ========================================================= 
 
   def usernames
-    raise "Not implemented."
+    assoc_cache[:usernames] ||= Username.find_by_owner_id( self.original[:_id] )
   end
+
 
   # By using a custom implementation, we cane make sure
   # sensitive information is not shown.
   def inspect
-    @inspect_this ||= "#<#{self.class} id=#{self.original[:id]}>"
-  end
-  
-
-  def admin?
-    has_power_of?(:ADMIN)
-  end
-  
-  
-  def editor?
-    has_power_of?(:EDITOR)
+    assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original[:_id]}>"
   end
   
   
@@ -139,15 +153,18 @@ class Member
   # =============== VALIDATORS =============================
 
   def password=(raw_data)
-    pass         = raw_data[ :password ].to_s.strip
+    pass         = raw_data[:password ].to_s.strip
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
-    self.errors << "Password and password confirmation do not match." if pass != confirm_pass 
-
-    if pass.empty?
+    if pass != confirm_pass 
+      self.errors << "Password and password confirmation do not match." 
+    
+    elsif pass.empty?
       self.errors <<  "Password is required."
+    
     elsif pass.length < 5
       self.errors << "Password must be longer than 5 characters."    
+    
     elsif !pass[/[0-9]/]
       self.errors << "Password must have at least one number."
     end
@@ -155,13 +172,13 @@ class Member
     return nil if !self.errors.empty?
     
     # Salt and encrypt values.
-    self.new_values[:salt] = begin
-                    chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                    (1..10).inject('') { |new_pass, i|  
-                      new_pass += chars[rand(chars.size-1)] 
-                      new_pass
-                    }
-                  end
+    self.new_values[:salt] =  begin
+                                chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                                (1..10).inject('') { |new_pass, i|  
+                                  new_pass += chars[rand(chars.size-1)] 
+                                  new_pass
+                                }
+                              end
     
     self.new_values[:hashed_password] = BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
     confirm_pass
@@ -170,8 +187,11 @@ class Member
   
   
   def permission_level= raw_data
+
     fn = :permission_level
+  
     new_level = raw_data[fn]
+    
     if !SECURITY_LEVELS.include?(new_level)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end

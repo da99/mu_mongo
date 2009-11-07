@@ -27,19 +27,17 @@ class News
     updated_at || created_at
   end
 
-  def self.show editor, raw_data
-    :STRANGER
-  end
+
 
   def self.create editor, raw_data
-    valid_editor_or_raise editor, :ADMIN
+    validate_editor editor, :ADMIN
     raw_data[:published_at] ||= Time.now.utc
     require_columns :title, :body
     optional_columns :teaser, :published_at, :tags
   end
 
   def self.update editor, raw_data
-    valid_editor_or_raise editor, :ADMIN 
+    validate_editor editor, :ADMIN 
     optional_columns :title, :body, :teaser, :published_at, :tags
   end
 

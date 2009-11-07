@@ -1,4 +1,6 @@
+
 class Username 
+
   include CouchPlastic
 
   # ==== CONSTANTS =====================================================
@@ -27,9 +29,7 @@ class Username
   
   class NotUnique < StandardError; end;
 
-  # ==== ASSOCIATIONS ==================================================
-  #many_to_one :owner, :class_name=>'Member', :key=>:owner_id
-  
+
   # ==== HOOKS =========================================================
   
 
@@ -37,27 +37,33 @@ class Username
   # ==== CLASS METHODS =================================================
 
   def self.find_by_username_or_raise un
+    raise "Not implemented."
     raise NoRecordFound, "#{un} was not found." 
   end
 
+  def self.find_by_owner_id( owner_id )
+    raise "Not implemented."
+  end
+
   def self.create editor, raw_vals
-    valid_editor_or_raise editor, MEMBER
     new_doc = new
-    new_doc.owner_id=  editor
-    new_doc.set_required_columns raw_vals, :username
-    new_doc.set_optional_columns raw_vals, :nickname, :category
+    new_doc.validate_editor( editor, MEMBER )
+    new_doc.owner_id= raw_vals
+    new_doc.username= raw_vals
+    new_doc.set_optional_values raw_vals, :nickname, :category
+    new_doc.save_create
   end
 
   def self.edit editor, raw_vals
     doc = find_by_id_or_raise(raw_vals[:id]) 
-    valid_editor_or_raise editor, doc.owner, :ADMIN 
+    doc.validate_editor( editor, doc.owner, :ADMIN  )
     doc
   end
 
   def self.update editor, raw_vals
     doc = edit(editor, raw_vals)
-    doc.set_optional_columns raw_vals, :username, :nickname, :category, :email 
-    
+    doc.set_optional_values raw_vals, :username, :nickname, :category, :email 
+
     @history_msgs = []
     
     raise "Fix this code below."
@@ -78,40 +84,53 @@ class Username
      :action    => 'UPDATE', 
      :body      => @history_msgs.join("\n")
     )  
+
+    doc.save_update
   end # === def update_it!
 
 
   # ==== INSTANCE METHODS ==============================================
 
-  def owner_id= editor
-    raise "Not implemented."
+
+  # Association to Member, through :owner_id
+  def owner
+    Member.find_by_id( self.original[:owner_id] )
   end
 
-  def owner
-    raise "Not Implemented"
+
+  def owner_id= raw_params
+    fn = :owner_id
+    nv = raw_params[fn]
+    if !nv
+      self.errors << "Owner not specified."
+      return nil
+    end
+
+    self.new_values[fn] = Integer(nv)
   end
 
   
-  def email= raw_data
-    raw_params = raw_data
+  def email= raw_params
     fn = :email
     v = raw_params[ fn ] 
 
     with_valid_chars = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
-    
-    self.errors.add( fn, 
-                    "Email contains invalid characters." 
-                    ) if with_valid_chars != raw_email || with_valid_chars !~ VALID_EMAIL_FORMAT 
-    
-    self.errors.add( fn,  
-                     "Email is too short." 
-                    ) if with_valid_chars.length < 6
+
+    if with_valid_chars != raw_params[fn] || with_valid_chars !~ VALID_EMAIL_FORMAT 
+      self.errors << "Email contains invalid characters." 
+    end
+
+    if with_valid_chars.length < 6
+      self.errors << "Email is too short." 
+    end
   
-    return( self[fn] = with_valid_chars ) if self.errors[fn].empty?
-    
+    if self.errors.empty?
+      self.new_values[fn] = with_valid_chars ) 
+      return self.new_values[fn]
+    end
+
     nil
-              
-  end # === def _email_
+  end # === def email=
   
   
   def username= raw_data
@@ -131,18 +150,21 @@ class Username
     
     # Check to see if there is at least one alphanumeric character
     if new_un.empty?
-      self.errors.add fn, 'is required.'
+      self.errors << 'Username is required.'
     elsif new_un.length < 2
-      self.errors.add fn, 'is too short. (Must be 3 or more characters.)' 
+      self.errors << 'Username is too short. (Must be 3 or more characters.)' 
     elsif new_un.length > 20
-      self.errors.add fn, 'is too long. (Must be 20 characters or less.)' 
+      self.errors << 'Username is too long. (Must be 20 characters or less.)' 
     elsif !new_un[ /[a-z0-9]/i ] && self.errors.empty?
-      self.errors.add fn, 'must have at least one letter or number.' 
+      self.errors << 'Username must have at least one letter or number.' 
     end
     
-    if self.errors[fn].empty?
-      self[fn] = new_un
+    if self.errors.empty?
+      self.new_values[fn] = new_un
+      return new_un
     end
+
+    nil
   end # === def validate_new_values
   
   

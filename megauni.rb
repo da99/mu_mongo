@@ -18,6 +18,22 @@ require 'sinatra'
 # ===============================================
 require( File.expand_path './helpers/sinatra/config.rb' )
 
+configure do 
+  # ===============================================
+  # Require Models.
+  # ===============================================
+  require_these 'models', %w{
+    _base
+    resty
+    member
+    username
+    log_in_attempt
+    history_log
+    news
+    news_tag
+    news_tagging
+  }
+end
 
 # ===============================================
 # Helpers
@@ -60,20 +76,7 @@ require_these 'actions', %w{
 
 
 
-# ===============================================
-# Require Models.
-# ===============================================
-require_these 'models', %w{
-  _base
-  resty
-  member
-  username
-  log_in_attempt
-  history_log
-  news
-  news_tag
-  news_tagging
-}
+
 
 
 __END__

@@ -1,16 +1,33 @@
 module CouchPlastic
+  
+  # =========================================================
+  #                     Error Constants
+  # ========================================================= 
 
+  class NoRecordFound < StandardError; end
+  class UnauthorizedEditor < StandardError; end
+  class Invalid < StandardError; end
+  class NoNewValues < StandardError; end
+  
   def self.included(target)
     target.extend ClassMethods
   end
 
-  def set_required_values
+  def set_optional_values raw_vals, *cols
+    cols.flatten.each { |k|
+      if raw_vals.has_key?(k)
+        send("#{k}=", raw_vals[k])
+      end
+    }
   end
 
-  def set_optional_values
-  end
 
-  def valid_editor_or_raise editor, *levels
+  def validate_editor editor, *levels
+    l = levels.detect { |lev| 
+      editor.has_power_of?(lev) 
+    }
+
+    l || raise( UnauthorizedEditor, "#{editor.inspect} not allowed: #{levels.inspect}" )
   end
 
   def original
@@ -21,16 +38,6 @@ module CouchPlastic
     @new_values ||= {}
   end
 
-  def delete!
-    begin
-      url = File.join(DB_CONN, original[:_id])
-      results = JSON.parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
-      results['ok']
-    rescue RestClient::ResourceNotFound
-      true
-    end
-  end
-
   def errors
     @errors ||= []
   end
@@ -38,18 +45,35 @@ module CouchPlastic
   def new?
     original.empty?
   end
-  
+ 
+  def validate
+    if !errors.empty? 
+      raise Invalid, "Document has validation errors." 
+    end
+
+    if new_values.empty?
+      raise NoNewValues, "No new data to save."
+    end
+
+    true
+  end 
+
+  def _before_save_
+    clear_assoc_cache
+    validate
+  end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   def save_create
-    validate_or_raise
+    
+    _before_save_
+
     new_values[:data_model] = self.class.name
     new_id  = new_values.delete(:_id) || JSON.parse(RestClient.get 'http://127.0.0.1:5984/_uuids')['uuids']
     begin
       results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), new_values.to_json))
-      original[:_rev] = results['rev']
-      original[:_id] = results['id']
+      self.class.find_by_id( results['id'] )
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -62,8 +86,11 @@ module CouchPlastic
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   def save_update
-    validate_or_raise
+
+    _before_save_
+
     data = new_values.clone.update({ :_rev => original[:_rev] })
+    
     begin
       results = JSON.parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
       original[:_rev] = results['rev']
@@ -76,176 +103,22 @@ module CouchPlastic
     end
   end
 
-  def validate_or_raise
-    if !errors.empty? 
-      raise Invalid, "Document has validation errors." 
-    end
-
-    if new_values.empty?
-      raise NoNewValues, "No new data to save."
-    end
-
-    true
-  end
-
-  module ClassMethods
-
-    # =========================================================
-    #                     Error Constants
-    # ========================================================= 
-    #
-    class NoRecordFound < StandardError; end
-    class UnauthorizedEditor < StandardError; end
-    class Invalid < StandardError; end
-    class NoNewValues < StandardError; end
-
-    def find_by_id(id)
-      begin
-        find_by_id_or_raise(id)
-      rescue NoRecordFound
-      end
-
-      nil
-    end
-
-    def find_by_id_or_raise(id)
-      begin
-        data = JSON.parse(RestClient.get(File.join(DB_CONN, id)))
-        doc = new
-        data.keys.each { |k|
-          doc.original[k.to_sym] = data[k]
-        }
-      rescue RestClient::ResourceNotFound 
-        raise NoRecordFound, "Document with id, #{id}, not found."
-      end
-
-      doc
-    end
-
-    def self.editor_permissions
-      @editor_perms
-    end 
-
-    def self.allow_viewer *levels 
-      add_perm_for_editor :show, levels
-    end
+  def delete!
     
-    def self.allow_creator( *levels, &blok ) 
-      add_perm_for_editor(:create, levels, &blok)
+    clear_assoc_cache
+
+    begin
+      url = File.join(DB_CONN, original[:_id])
+      results = JSON.parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
+      results['ok']
+      original.clear # Mark document as new.
+    rescue RestClient::ResourceNotFound
+      true
     end
 
-    def self.allow_updator( *levels, &blok )
-      add_perm_for_editor(:update, levels, &blok)
-    end 
-
-    def self.add_perm_for_editor( action, levels, &blok)
-      raise ArgumentError, "Block required for #{action.inspect}" if !block_given? && action != :show
-      raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update, :show].include?(action)
-      raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
-      @editor_perms ||= {:create=>{}, :update=>{}, :show=>{}}  
-      levels.each do |raw_lev|
-        stranger_level = ( raw_lev.nil? || raw_lev == 0 )
-        lev = ( stranger_level ? :STRANGER : raw_lev )
-        raise "#{lev.inspect} already used for #{action.inspect}." if @editor_perms[action].has_key?(lev)
-        @editor_perms[action][lev] = blok
-      end
-    end
-
-    def self.validator col, &blok
-      define_method "validator_for_#{col}", &blok
-    end
-
-    def self.creator editor, raw_vals
-      n = new
-      level = creator? editor
-      raise UnauthorizedEditor, editor.inspect if !level
-      n.current_editor = editor
-      n.raw_data = raw_vals
-      n.instance_eval &(editor_permissions[:create][level])
-      n.raise_if_invalid
-      n.created_at = Time.now.utc if n.respond_to?(:created_at)
-      n.save
-    end
-
-    def self.creator? editor
-      
-      levels = editor_permissions[:create].keys
-      levels.detect { |lev|
-        if !editor || editor == :STRANGER
-          lev == :STRANGER
-        else
-          editor.has_power_of?(lev)
-        end
-      }
-
-    end
-
-    def self.updator editor, raw_vals
-      rec = self[:id=>raw_vals[:id]]
-      raise NoRecordFound, "Try again." if !rec
-      level = rec.updator?( editor )
-      raise UnauthorizedEditor, editor.inspect if !level
-      rec.current_editor = editor
-      rec.raw_data       = raw_vals
-      rec.instance_eval &(editor_permissions[:update][level])
-      rec.raise_if_invalid
-      rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
-      rec.save
-    end
-
-    def self.trashable(*args, &cond_block)
-      raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
-      
-      name_of_assoc, opts = args
-
-      if opts.is_a?(Hash) && opts[:class]
-          opts[:class]
-      else
-          opts ||= {}
-          opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
-      end
-      
-      self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
-      self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
-    end
-      
-    # =========================================================
-    # From: http://snippets.dzone.com/posts/show/2992
-    # Note: Don't cache subclasses because new classes may be
-    # defined after the first call to this method is executed.
-    # =========================================================
-    def self.all_subclasses
-      all_subclasses = []
-      ObjectSpace.each_object(Class) { |c|
-                next unless c.ancestors.include?(self) and (c != self)
-                all_subclasses << c
-      }
-      all_subclasses 
-    end # ---- self.all_subclasses --------------------
-
-  end # === ClassMethods
-
-
-
-
-
-
-  # =========================================================
-  #                      Attributes
-  # =========================================================  
-
-
-  # =========================================================
-  #                  CLASS METHODS
-  # =========================================================
+  end
   
-  
-  
-  # =========================================================
-  #                          HOOKS
-  # =========================================================    
-  
-  
+
   # =========================================================
   #                  PUBLIC INSTANCE METHODS
   # =========================================================  
@@ -260,81 +133,18 @@ module CouchPlastic
     super
   end
 
-  def raise_if_invalid
-    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
-  end 
- 
-  def raw_data 
-    @raw_data ||= {}
+  def assoc_cache
+    @assoc_cache ||= {}
+  end
+
+  def clear_assoc_cache
+    @assoc_cache = {}
   end
 
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
   end
 
-  def viewer? editor
-    levels = self.class.editor_permissions[:show].keys
-    return true if levels.include?(:STRANGER)
-    updator?(editor) || self.class.creator?(editor)
-  end
-
-  def updator? editor
-    levels = self.class.editor_permissions[:update].keys
-    levels.detect { |lev|
-      if !editor
-        lev == :STRANGER
-      else
-        if Member::SECURITY_LEVEL_NAMES.include?(lev)
-          editor.has_power_of?(lev) && lev
-        else respond_to?(lev) 
-          editor_list = ( lev == :self ? self : send(lev) )
-          editor_list = [editor_list].flatten
-          editor_list.detect { |ed| 
-            ed.has_power_of?(editor)
-          }
-        end
-      end
-    }
-
-  end
-
-  def save
-     
-    begin
-      save(:changed=>true)
-    rescue Sequel::DatabaseError
-      raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
-      seq = $1
-      col = seq.sub(self.class.table_name.to_s + '_', '').sub(/_key$/, '').to_sym
-      raise  if !self.class.db_schema[col.to_sym]
-      self.errors.add col, "is already taken. Please choose another one."
-      raise_if_invalid
-    rescue
-      raise
-    end
-    
-  end # === def validate
-
-  def has_tag_id?(tag_id)
-    @tag_ids ||= taggings_dataset.naked.map(:tag_id)
-    @tag_ids.include?(tag_id.to_i)
-  end
-
-  def require_columns *raw_keys
-    keys = raw_keys.flatten
-    keys.each { |k| 
-        send( "validator_for_#{k}"  )
-    }
-  end # === def
-  
-  def optional_columns *raw_keys
-    keys = raw_keys.flatten
-    keys.each { |k| 
-      if raw_data.has_key?( k )
-        require_columns k
-      end
-    }
-  end # === def
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
@@ -415,8 +225,213 @@ module CouchPlastic
    
   end
  
- 
+
+  module ClassMethods # =======================================
+
+    
+
+    def find_by_id(id)
+      begin
+        return find_by_id_or_raise(id)
+      rescue NoRecordFound
+      end
+
+      nil
+    end
+
+    def find_by_id_or_raise(id)
+      begin
+        data = JSON.parse(RestClient.get(File.join(DB_CONN, id)))
+        doc = new
+        data.keys.each { |k|
+          doc.original[k.to_sym] = data[k]
+        }
+      rescue RestClient::ResourceNotFound 
+        raise NoRecordFound, "Document with id, #{id}, not found."
+      end
+
+      doc
+    end
+
+    def trashable(*args, &cond_block)
+      raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
+      
+      name_of_assoc, opts = args
+
+      if opts.is_a?(Hash) && opts[:class]
+          opts[:class]
+      else
+          opts ||= {}
+          opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
+      end
+      
+      self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
+      self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
+    end
+      
+  end # === ClassMethods
+
+
 end # === model: Sequel::Model -------------------------------------------------
+
+
+__END__
+
+    # =========================================================
+    # From: http://snippets.dzone.com/posts/show/2992
+    # Note: Don't cache subclasses because new classes may be
+    # defined after the first call to this method is executed.
+    # =========================================================
+    def all_subclasses
+      all_subclasses = []
+      ObjectSpace.each_object(Class) { |c|
+                next unless c.ancestors.include?(self) and (c != self)
+                all_subclasses << c
+      }
+      all_subclasses 
+    end # ---- self.all_subclasses --------------------
+
+
+    def editor_permissions
+      @editor_perms
+    end 
+
+    def allow_viewer *levels 
+      add_perm_for_editor :show, levels
+    end
+    
+    def allow_creator( *levels, &blok ) 
+      add_perm_for_editor(:create, levels, &blok)
+    end
+
+    def allow_updator( *levels, &blok )
+      add_perm_for_editor(:update, levels, &blok)
+    end 
+
+    def add_perm_for_editor( action, levels, &blok)
+      raise ArgumentError, "Block required for #{action.inspect}" if !block_given? && action != :show
+      raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update, :show].include?(action)
+      raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
+      @editor_perms ||= {:create=>{}, :update=>{}, :show=>{}}  
+      levels.each do |raw_lev|
+        stranger_level = ( raw_lev.nil? || raw_lev == 0 )
+        lev = ( stranger_level ? :STRANGER : raw_lev )
+        raise "#{lev.inspect} already used for #{action.inspect}." if @editor_perms[action].has_key?(lev)
+        @editor_perms[action][lev] = blok
+      end
+    end
+
+
+    def validator col, &blok
+      define_method "validator_for_#{col}", &blok
+    end
+
+    def creator editor, raw_vals
+      n = new
+      level = creator? editor
+      raise UnauthorizedEditor, editor.inspect if !level
+      n.current_editor = editor
+      n.raw_data = raw_vals
+      n.instance_eval &(editor_permissions[:create][level])
+      n.raise_if_invalid
+      n.created_at = Time.now.utc if n.respond_to?(:created_at)
+      n.save
+    end
+
+    def creator? editor
+      
+      levels = editor_permissions[:create].keys
+      levels.detect { |lev|
+        if !editor || editor == :STRANGER
+          lev == :STRANGER
+        else
+          editor.has_power_of?(lev)
+        end
+      }
+
+    end
+
+    def updator editor, raw_vals
+      rec = self[:id=>raw_vals[:id]]
+      raise NoRecordFound, "Try again." if !rec
+      level = rec.updator?( editor )
+      raise UnauthorizedEditor, editor.inspect if !level
+      rec.current_editor = editor
+      rec.raw_data       = raw_vals
+      rec.instance_eval &(editor_permissions[:update][level])
+      rec.raise_if_invalid
+      rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
+      rec.save
+    end
+
+
+
+  def raise_if_invalid
+    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
+  end 
+ 
+  def raw_data 
+    @raw_data ||= {}
+  end
+
+
+  def viewer? editor
+    levels = self.class.editor_permissions[:show].keys
+    return true if levels.include?(:STRANGER)
+    updator?(editor) || self.class.creator?(editor)
+  end
+
+  def updator? editor
+    levels = self.class.editor_permissions[:update].keys
+    levels.detect { |lev|
+      if !editor
+        lev == :STRANGER
+      else
+        if Member::SECURITY_LEVEL_NAMES.include?(lev)
+          editor.has_power_of?(lev) && lev
+        else respond_to?(lev) 
+          editor_list = ( lev == :self ? self : send(lev) )
+          editor_list = [editor_list].flatten
+          editor_list.detect { |ed| 
+            ed.has_power_of?(editor)
+          }
+        end
+      end
+    }
+
+  end
+
+  def save
+     
+    begin
+      save(:changed=>true)
+    rescue Sequel::DatabaseError
+      raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
+      seq = $1
+      col = seq.sub(self.class.table_name.to_s + '_', '').sub(/_key$/, '').to_sym
+      raise  if !self.class.db_schema[col.to_sym]
+      self.errors.add col, "is already taken. Please choose another one."
+      raise_if_invalid
+    rescue
+      raise
+    end
+    
+  end # === def validate
+
+  def has_tag_id?(tag_id)
+    @tag_ids ||= taggings_dataset.naked.map(:tag_id)
+    @tag_ids.include?(tag_id.to_i)
+  end
+
+
+
+
+
+
+
+
+
+
 
 
 

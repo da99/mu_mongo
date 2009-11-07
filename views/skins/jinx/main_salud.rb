@@ -153,6 +153,21 @@ div.revols(:id=>"soap") {
   
   }
   
+  h2 "Dietes (Teeth)"
+
+  ul {
+    li {
+      span 'Non-Flouride Toothpaste'
+      a( :href="http://www.luckyvitamin.com/item/itemKey/53785" ) {'Now XyliWhite Toothpaste Gel'}
+    }
+
+    li {
+      span 'Vitamin D3'
+      a( :href=>"http://www.lifespannutrition.com/products.asp?itemnumber=660" ) { "30 Minutes of Sunshine" }
+    }
+
+  }
+
   h2 "Inflation (Economia)"
   
   ul {
