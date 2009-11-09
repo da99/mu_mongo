@@ -21,11 +21,22 @@ class News
   # ==== HOOKS =========================================================
 
 
+  # ==== CLASS FINDER METHODS ==========================================
+
+  def self.find_by_tag tag
+    raise "Not implemented: find, reverse by published_date"
+  end
+
   # ==== CLASS METHODS =================================================
 
+  def self.creator? editor
+    return false if !editor
+    editor.has_power_of? :ADMIN
+  end
+
   def self.create editor, raw_data
+    creator? editor
     doc = new
-    doc.validate_editor editor, :ADMIN
     doc.title= raw_data
     doc.body= raw_data 
     doc.published_at = raw_data
@@ -36,7 +47,7 @@ class News
 
   def self.edit editor, raw_data
     doc = find_by_id_or_raise(raw_data[:id])
-    doc.validate_editor(editor, :ADMIN)
+    doc.updator? editor
     doc
   end
 
@@ -50,8 +61,29 @@ class News
 
   # ==== INSTANCE METHODS ==============================================
 
+  def viewer? editor
+    true
+  end
+
+  def updator? editor
+    News.creator? editor
+  end
+
   def last_modified_at
     updated_at || created_at
+  end
+
+  def created_at
+    Time.parse( original[:created_at] )
+  end
+
+  def updated_at
+    return nil if !original[:updated_at] || original[:updated_at].empty?
+    Time.parse( original[:updated_at] )
+  end
+
+  def published_at
+    Time.parse(original[:published_at])
   end
 
   def title= raw_data

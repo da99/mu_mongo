@@ -125,7 +125,7 @@ class Username
     end
   
     if self.errors.empty?
-      self.new_values[fn] = with_valid_chars ) 
+      self.new_values[fn] = with_valid_chars  
       return self.new_values[fn]
     end
 

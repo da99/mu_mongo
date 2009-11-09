@@ -1,3 +1,5 @@
+
+
 module CouchPlastic
   
   # =========================================================
@@ -80,8 +82,13 @@ module CouchPlastic
 
     begin
       results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
+      new_values.each do |k,v|
+        original[k]=v
+      end
       original[:_id] = new_id
       original[:_rev] = results['rev']
+      original[:created_at] = data[:created_at] if data.has_key?(:created_at)
+      original[:data_model] = data[:data_model]
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -100,12 +107,17 @@ module CouchPlastic
 
     _before_save_
 
-    data = new_values.clone.update({ :_rev => original[:_rev] })
+    data = new_values.clone
+    data[:_rev] = original[:_rev]
     data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
     
     begin
       results = JSON.parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
       original[:_rev] = results['rev']
+      original[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
+      new_values.each do |k,v|
+        original[k] = v
+      end
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -137,7 +149,7 @@ module CouchPlastic
    
   attr_accessor :current_editor, :raw_data
   
-  def method_method *args
+  def method_missing *args
     meth_name = args.first.to_sym
     if args.size == 1 && original.has_key?(meth_name)
       return original[meth_name]
@@ -253,7 +265,7 @@ module CouchPlastic
 
     def find_by_id_or_raise(id)
       begin
-        data = JSON.parse(RestClient.get(File.join(DB_CONN, id)))
+        data = JSON.parse(RestClient.get(File.join(DB_CONN, id.to_s)))
         doc = new
         data.keys.each { |k|
           doc.original[k.to_sym] = data[k]

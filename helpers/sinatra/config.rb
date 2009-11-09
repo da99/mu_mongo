@@ -1,13 +1,14 @@
 
 
 configure :test do
-  DB_CONN = "http://da01tv:isleparadise4vr@127.0.0.1:5984/megauni-test"
+  DB_CONN = "https://localhost/megauni-test"
 end
 
 
 configure :development do
   require Pow('helpers/sinatra/css')
-  DB_CONN = "http://da01tv:isleparadise4vr@127.0.0.1:5984/megauni-dev"
+  # DB_CONN = "http://da01tv:isleparadise4vr@127.0.0.1:5984/megauni-dev"
+  DB_CONN = "https://localhost/megauni-dev"
 end
 
 

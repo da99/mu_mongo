@@ -1,4 +1,4 @@
-save_to('title') { app_vars[:news][:title] }
+save_to('title') { app_vars[:news].title }
 
 
 
@@ -14,9 +14,9 @@ div.content! {
   div.news_post {
    
    div.info {
-    span.published_at app_vars[:news][:published_at].strftime('%b  %d, %Y')
+    span.published_at app_vars[:news].published_at.strftime('%b  %d, %Y')
    }
-   h4 app_vars[:news][:title]
+   h4 app_vars[:news].title
    div.body { 
      the_app.news_to_html app_vars[:news], :body
    }
@@ -30,7 +30,7 @@ div.content! {
 				ul {
 					app_vars[:news].tags.each do |tag|
 						li {
-							a(tag.filename, :href=>"/news/by_tag/#{tag[:id]}/")
+							a(tag, :href=>"/news/by_tag/#{tag}/")
 						}
 					end
 				}

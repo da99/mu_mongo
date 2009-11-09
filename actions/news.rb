@@ -37,14 +37,30 @@ get '/news/by_date/:year/:month/' do
 end # ===
 
 get %r{/news/by_tag/([0-9]+)/} do |id|
-  describe :news, :by_tag
-  @news_tag = NewsTag[:id=>Integer(id)]
+  tags = { 167 => stuff_for_dudes, 
+            168 => stuff_for_dudettes, 
+            169 => stuff_for_pets, 
+            170 => stuff_for_mommies_and_dads, 
+            171 => edible_delicious, 
+            172 => books_articles, 
+            173 => techie_wonders, 
+            174 => miscellaneous, 
+            175 => art_design, 
+            176 => surfer_hearts 
+  }
+  tag_id = Integer(id) 
+  @news_tag = tags[ tag_id ]
   @news = if !@news_tag
-    []
+    redirect("/news/by_tag/unknown-tag/")
   else
-    @news_taggings_dt = NewsTagging.select(:news_id).where(:tag_id=>Integer(id))
-    News.where(:id=>@news_taggings_dt).reverse_order(:published_at).all
+    redirect("/news/by_tag/#{@news_tag}/")
   end
+end
+
+get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
+  describe :news, :by_tag
+  @news_tag = tag_name
+  @news = News.find_by_tag(@news_tag)
   render_mab
 end
 

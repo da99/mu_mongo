@@ -11,7 +11,7 @@ require( File.expand_path './helpers/app/string_inflections' )
 require 'rubygems'
 require 'multibyte'
 require 'sinatra'
-
+require 'json' # Mainly used by CouchDB.
 
 # ===============================================
 # Configurations
@@ -30,8 +30,6 @@ configure do
     log_in_attempt
     history_log
     news
-    news_tag
-    news_tagging
   }
 end
 
