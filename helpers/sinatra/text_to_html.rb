@@ -61,10 +61,10 @@ helpers {
       # returned contains a subject and body.
       # Uses the format of:
       #   mailto:?subject=new%20subject&body=new%20body.
-      # Uses Wash.uri_escape.
+      # Uses URI.escape.
       # =========================================================
       def href_mailto(subject, body)
-        "mailto:?subject=#{Wash.uri_escape(subject)}&body=#{SWISS.uri_escape(body)}"
+        "mailto:?subject=#{URI.escape(subject)}&body=#{URI.escape(body)}"
       end  
       
       # =========================================================

@@ -36,6 +36,11 @@ module CouchPlastic
     @original ||= {}
   end
 
+  def _set_original_(new_hash)
+    raise ArgumentError, "Only a Hash is allowed." if !new_hash.is_a?(Hash)
+    @original = new_hash
+  end
+
   def new_values
     @new_values ||= {}
   end
@@ -61,7 +66,6 @@ module CouchPlastic
   end 
 
 
-
   def _before_save_
     clear_assoc_cache
     validate
@@ -78,15 +82,15 @@ module CouchPlastic
     data = new_values.clone
     data[:data_model] = self.class.name
     data[:created_at] = Time.now.utc if opts.include?(:set_created_at)
-    new_id  = data.delete(:_id) || JSON.parse(RestClient.get 'http://127.0.0.1:5984/_uuids')['uuids']
+
+    db_url = File.join(DB_CONN, '_uuids')
+    new_id = data.delete(:_id) || self.class.json_parse(RestClient.get db_url)[:uuids]
 
     begin
-      results = JSON.parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
-      new_values.each do |k,v|
-        original[k]=v
-      end
-      original[:_id] = new_id
-      original[:_rev] = results['rev']
+      results = self.class.json_parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
+      _set_original(original.update(new_values))
+      original[:_id]        = new_id
+      original[:_rev]       = results[:rev]
       original[:created_at] = data[:created_at] if data.has_key?(:created_at)
       original[:data_model] = data[:data_model]
     rescue RestClient::RequestFailed
@@ -112,12 +116,10 @@ module CouchPlastic
     data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
     
     begin
-      results = JSON.parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
-      original[:_rev] = results['rev']
+      results = self.class.json_parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
+      original[:_rev] = results[:rev]
       original[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
-      new_values.each do |k,v|
-        original[k] = v
-      end
+      _set_original_(original.update(new_values))
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -133,8 +135,7 @@ module CouchPlastic
 
     begin
       url = File.join(DB_CONN, original[:_id])
-      results = JSON.parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
-      results['ok']
+      results = self.class.json_parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
       original.clear # Mark document as new.
     rescue RestClient::ResourceNotFound
       true
@@ -252,7 +253,26 @@ module CouchPlastic
 
   module ClassMethods # =======================================
 
-    
+    def json_parse(str)
+      results = JSON.parse(str)
+      begin
+        results.symbolize_hash_keys
+      rescue NoMethodError
+        begin
+          results.symbolize_keys
+        rescue NoMethodError
+          results
+        end
+      end
+    end
+
+    def find(view_name, params = {})
+      db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name)
+      params_str = params.to_a.map { |kv|
+        "#{kv.first}=#{CGI.escape(kv.last.to_s)}"
+      }.join('&')
+      json_parse(RestClient.get(db_url + '?' + params_str))
+    end
 
     def find_by_id(id)
       begin
@@ -264,12 +284,11 @@ module CouchPlastic
     end
 
     def find_by_id_or_raise(id)
+      doc = new
+
       begin
-        data = JSON.parse(RestClient.get(File.join(DB_CONN, id.to_s)))
-        doc = new
-        data.keys.each { |k|
-          doc.original[k.to_sym] = data[k]
-        }
+        data = json_parse(RestClient.get(File.join(DB_CONN, id.to_s)))
+        doc._set_original_(data)
       rescue RestClient::ResourceNotFound 
         raise NoRecordFound, "Document with id, #{id}, not found."
       end

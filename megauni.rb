@@ -3,6 +3,7 @@ require( File.expand_path './helpers/app/chars_compat'  )
 require( File.expand_path './helpers/app/string_blank'  )
 require( File.expand_path './helpers/app/kernel'  )
 require( File.expand_path './helpers/app/string_inflections' )
+require( File.expand_path './helpers/app/symbolize_keys' )
 
 
 # ===============================================
@@ -12,6 +13,7 @@ require 'rubygems'
 require 'multibyte'
 require 'sinatra'
 require 'json' # Mainly used by CouchDB.
+require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
 
 # ===============================================
 # Configurations
@@ -24,6 +26,7 @@ configure do
   # ===============================================
   require_these 'models', %w{
     _base
+    design_doc
     resty
     member
     username

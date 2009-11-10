@@ -53,6 +53,12 @@ class Server < Thor
     exec 'DATABASE_URL=postgres://da01:xd19yzxkrp10@localhost/newsprint-db-test'
   end
 
+  desc :reload, "Kill Unicorn worker, which will then be re-started."
+  def reload
+    require 'rush'
+    Rush.processes.filter(:cmdline=>/unicorn worker/).kill
+  end
+
 
 end # === class Server
 

@@ -129,16 +129,10 @@ class Wash
   end
 
   # ===============================================
-  def self.uri_escape(raw_str)
-    require 'URI'
-    raw_unsafe_chars         = '\`?!@\#$%^&*()-+=:"|\''
-    unsafe_uri_chars         = Regexp.union( URI::UNSAFE, Regexp.new("[#{Regexp.quote(raw_unsafe_chars)}]", false, 'N') )  
-    URI::escape(raw_str, unsafe_uri_chars)
-  end
   
   # ===============================================
   # This method is not meant to be called directly. Instead, call
-  # <SWISS.parse_tags>.
+  # <Wash.parse_tags>.
   # Returns: String with 
   #      * all spaces and underscores turned into dashes.
   #      * all non-alphanumeric characters, underscores, dashes, and periods
