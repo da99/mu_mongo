@@ -4,6 +4,7 @@ $KCODE = 'u'
 require File.expand_path('~/megauni/helpers/app/kernel')
 require 'open3'
 require 'rush'
+require 'pow'
 require File.expand_path('~/megauni/helpers/app/string_inflections')
 
 module CoreFuncs

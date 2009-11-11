@@ -7,7 +7,7 @@ class DesignDoc
 
   def self.doc
     begin
-      JSON.parse(RestClient.get(URL)).symbolize_keys
+      json_parse(RestClient.get(URL))
     rescue RestClient::ResourceNotFound 
       nil
     end
@@ -18,13 +18,13 @@ class DesignDoc
   end
 
   def self.create
-    JSON.parse(RestClient.put( URL, as_json)).symbolize_keys
+    json_parse(RestClient.put( URL, as_hash.to_json))
   end
 
   def self.update
     new_doc = doc.update(as_hash)
 
-    JSON.parse(RestClient.put( URL, new_doc.to_json)).symbolize_keys
+    json_parse(RestClient.put( URL, new_doc.to_json))
   end
 
   def self.as_hash
@@ -32,21 +32,22 @@ class DesignDoc
 
     
     doc[:views][:by_tag] = {
-      "map" => "
-        function(doc) { 
-          if (doc.data_model == 'News')  
-            for(var t in doc.tags)
-              emit([doc.tags[t], doc.published_at], null);
-        }
-      "
+
+      "map" => view_file('by_tag-map')
     }
           
         
     doc
   end
 
-  def self.as_json
-    as_hash.to_json
+  # Parameters:
+  #   view_name - Name of file w/o extension. E.g.: map-by_tag
+  def self.view_file view_name
+    File.read( 
+      File.expand_path( 
+        File.join( 'helpers/couchdb_views', view_name + '.js' )  
+      )
+    ) 
   end
 
 end # === class DesignDoc

@@ -2,6 +2,22 @@
 
 module CouchPlastic
   
+  ValidQueryKeys = %w{ 
+      key
+      startkey
+      startkey_docid
+      endkey
+      endkey_docid
+      limit
+      stale
+      descending
+      skip
+      group
+      group_level
+      reduce
+      include_docs 
+  }.map(&:to_sym)
+
   # =========================================================
   #                     Error Constants
   # ========================================================= 
@@ -84,10 +100,10 @@ module CouchPlastic
     data[:created_at] = Time.now.utc if opts.include?(:set_created_at)
 
     db_url = File.join(DB_CONN, '_uuids')
-    new_id = data.delete(:_id) || self.class.json_parse(RestClient.get db_url)[:uuids]
+    new_id = data.delete(:_id) || json_parse(RestClient.get db_url)[:uuids]
 
     begin
-      results = self.class.json_parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
+      results = json_parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
       _set_original(original.update(new_values))
       original[:_id]        = new_id
       original[:_rev]       = results[:rev]
@@ -116,7 +132,7 @@ module CouchPlastic
     data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
     
     begin
-      results = self.class.json_parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
+      results = json_parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
       original[:_rev] = results[:rev]
       original[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
       _set_original_(original.update(new_values))
@@ -135,7 +151,7 @@ module CouchPlastic
 
     begin
       url = File.join(DB_CONN, original[:_id])
-      results = self.class.json_parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
+      results = json_parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
       original.clear # Mark document as new.
     rescue RestClient::ResourceNotFound
       true
@@ -253,23 +269,16 @@ module CouchPlastic
 
   module ClassMethods # =======================================
 
-    def json_parse(str)
-      results = JSON.parse(str)
-      begin
-        results.symbolize_hash_keys
-      rescue NoMethodError
-        begin
-          results.symbolize_keys
-        rescue NoMethodError
-          results
-        end
-      end
-    end
 
     def find(view_name, params = {})
-      db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name)
+      invalid_options = params.keys - ValidQueryKeys
+      if !invalid_options.empty?
+        raise ArgumentError, "Invalid options: #{invalid_options.inspect}" 
+      end
+
+      db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name.to_s)
       params_str = params.to_a.map { |kv|
-        "#{kv.first}=#{CGI.escape(kv.last.to_s)}"
+        "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
       }.join('&')
       json_parse(RestClient.get(db_url + '?' + params_str))
     end

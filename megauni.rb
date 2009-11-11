@@ -1,10 +1,15 @@
 $KCODE = 'UTF8'
-require( File.expand_path './helpers/app/chars_compat'  )
-require( File.expand_path './helpers/app/string_blank'  )
-require( File.expand_path './helpers/app/kernel'  )
-require( File.expand_path './helpers/app/string_inflections' )
-require( File.expand_path './helpers/app/symbolize_keys' )
 
+require( File.expand_path './helpers/app/require'  )
+require_these 'helpers/app', %w{
+  chars_compat
+  string_blank
+  string_inflections
+  read_if_file
+  pow
+  symbolize_keys
+  json
+}
 
 # ===============================================
 # Important Gems
@@ -12,20 +17,19 @@ require( File.expand_path './helpers/app/symbolize_keys' )
 require 'rubygems'
 require 'multibyte'
 require 'sinatra'
-require 'json' # Mainly used by CouchDB.
 require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
 
 # ===============================================
 # Configurations
 # ===============================================
-require( File.expand_path './helpers/sinatra/config.rb' )
+require_file( 'helpers/sinatra/config' )
 
 configure do 
   # ===============================================
   # Require Models.
   # ===============================================
   require_these 'models', %w{
-    _base
+    _couch_plastic
     design_doc
     resty
     member
