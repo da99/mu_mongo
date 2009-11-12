@@ -3,11 +3,10 @@
 class DesignDoc
 
   ID = '_design/megauni'
-  URL = File.join(DB_CONN, ID)
 
   def self.doc
     begin
-      json_parse(RestClient.get(URL))
+      CouchDoc.GET_by_id ID
     rescue RestClient::ResourceNotFound 
       nil
     end
@@ -18,13 +17,12 @@ class DesignDoc
   end
 
   def self.create
-    json_parse(RestClient.put( URL, as_hash.to_json))
+    CouchDoc.PUT ID, as_hash
   end
 
   def self.update
     new_doc = doc.update(as_hash)
-
-    json_parse(RestClient.put( URL, new_doc.to_json))
+    CouchDoc.PUT ID, new_doc
   end
 
   def self.as_hash
@@ -33,6 +31,11 @@ class DesignDoc
     CouchDoc::Views.each { |v|
       doc[:views][v] ||= {}
       doc[:views][v][:map] = read_view_file(v)
+
+      begin
+        doc[:views][v][:reduce] = read_view_file("#{v}-reduce")
+      rescue Errno::ENOENT
+      end
     }
         
     doc

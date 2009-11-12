@@ -6,8 +6,8 @@ describe 'News App (public actions)' do
   end
 
   it 'renders :show with an :id' do
-    n = News.order(:id).first
-    get "/news/#{n[:id]}/"
+    n = CouchDoc.GET_news_by_tag( :hearts, :limit=>1 )
+    get "/news/#{n._id}/"
     last_response.should.be.ok
   end
 
@@ -22,13 +22,13 @@ describe 'News App (public actions)' do
   end
 
   it 'renders a group by tags' do
-    tag = NewsTag.order(:id).first
-    get '/news/by_tag/' + tag[:id].to_s + '/'
+    tags = CouchDoc.GET_news_tags
+		get "/news/by_tag/#{tags.first}/"
     last_response.should.be.ok
   end
 
   it 'renders a group by date' do
-    news = News.order(:id).first
+    news = CouchDoc.GET_news_by_published_at(:limit=>1)
     get "/news/by_date/#{news.published_at.year}/#{news.published_at.month}/"
     last_response.should.be.ok
   end

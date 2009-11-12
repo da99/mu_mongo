@@ -1,98 +1,15 @@
 
 class CouchDoc
   
+  class HTTP_Error < StandardError; end
+
   Views = %w{
     news_by_tag
     news_by_published_at
+    news_tags
     usernames_by_owner
   }
 
-  def self.GET_news_by_tag tag, raw_params={}
-    params = {:startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
-    GET(:news_by_tag, params)
-  end
-
-  def self.GET_news_by_published_at raw_dt, raw_params={}
-    time_format = '%Y-%m-%d %H:%M:%S'
-    dt = Time.parse(raw_dt.to_s).utc
-    start_dt = dt.strftime(time_format)
-    end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
-    params = {:startkey=>start_dt, :endkey=>end_dt}.update(raw_params)
-    GET(:news_by_published_at, params)
-  end
-
-  def self.GET_usernames_by_owner owner_id
-    results = GET_naked(:usernames_by_owner, :key=> owner_id.to_s)
-    results[:rows].map { |r| r[:value] }
-  end
-
-  def self.rest_call 
-    results = begin
-      yield
-    rescue RestClient::RequestFailed
-      raise "#{$!.http_code} - #{$!.http_body}"
-    end
-
-    json_parse results
-  end
-
-  def self.GET_by_id(id)
-
-    begin
-      data = rest_call { RestClient.get(File.join(DB_CONN, id.to_s)) }
-      doc = Object.const_get(data[:data_model]).new
-      doc._set_original_(data)
-    rescue RestClient::ResourceNotFound 
-      raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
-    end
-
-    doc
-
-  end
-
-  def self.GET_naked(view_name, params = {})
-    invalid_options = params.keys - CouchPlastic::ValidQueryOptions
-    if !invalid_options.empty?
-      raise ArgumentError, "Invalid options: #{invalid_options.inspect}" 
-    end
-
-    db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name.to_s)
-    params_str = params.to_a.map { |kv|
-      "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
-    }.join('&')
-
-    rest_call {
-      RestClient.get(db_url + '?' + params_str)
-    }
-
-  end
-
-  def self.GET(view_name, params={})
-    if !Views.include?(view_name.to_s)
-      raise ArgumentError, "Non-existent view name: #{view_name}"
-    end
-
-    params[:include_docs] = true unless params.has_key?(:include_docs)
-    results = GET_naked(view_name, params)
-    results[:rows].inject([]) {|m,r|
-      doc = Object.const_get(r[:doc][:data_model]).new
-      doc._set_original_(r[:doc])
-      m << doc
-      m
-    }
-  end
-
-  def self.PUT()
-
-  end
-
-
-end # class CouchDoc
-
-
-
-module CouchPlastic
-  
   ValidQueryOptions = %w{ 
       key
       startkey
@@ -109,6 +26,146 @@ module CouchPlastic
       include_docs 
   }.map(&:to_sym)
 
+
+  def self.rest_call 
+    results = begin
+      yield
+    rescue RestClient::RequestFailed
+      raise HTTP_Error, "#{$!.http_code} - #{$!.http_body}"
+    end
+
+    json_parse results
+  end
+
+  def self.GET_uuid
+    url_pieces = DB_CONN.split('/')
+    url_pieces.pop
+    url_pieces.push '_uuids'
+    results = rest_call {
+      RestClient.get( url_pieces.join('/') )
+    }
+    results[:uuids].first
+  end
+
+  def self.GET_naked(path, params = {})
+
+    db_url = File.join(DB_CONN, path.to_s) 
+    
+    if params.empty?
+      return( 
+        rest_call { 
+          RestClient.get( db_url ) 
+        } 
+      )
+    end
+
+    invalid_options = params.keys - ValidQueryOptions
+    if !invalid_options.empty?
+      raise ArgumentError, "Invalid options: #{invalid_options.inspect}" 
+    end
+    
+    params_str = params.to_a.map { |kv|
+      "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
+    }.join('&')
+    
+    rest_call {
+      RestClient.get(db_url + '?' + params_str)
+    }
+
+  end
+
+  def self.GET_by_id(id)
+
+    begin
+      data = GET_naked( id )
+      return(data) if !data[:data_model]
+      doc = Object.const_get(data[:data_model]).new
+      doc._set_original_(data)
+    rescue RestClient::ResourceNotFound 
+      raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
+    end
+
+    doc
+
+  end
+
+  def self.GET(view_name, params={})
+    if !Views.include?(view_name.to_s)
+      raise ArgumentError, "Non-existent view name: #{view_name}"
+    end
+
+    path                  = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)
+    results               = GET_naked(path, params)
+
+    return results if !params[:include_docs]
+
+    objs = results[:rows].inject([]) { |m,r|
+      doc = Object.const_get(r[:doc][:data_model]).new
+      doc._set_original_(r[:doc])
+      m << doc
+      m
+    }
+    if params[:limit] == 1
+      objs.first
+    else
+      objs
+    end
+  end
+
+  # Used for both creation and updating.
+  def self.PUT( doc_id, obj)
+    url = File.join(DB_CONN, doc_id)
+    rest_call { 
+      RestClient.put( url, obj.to_json ) 
+    }
+  end
+
+  def self.DELETE doc_id, rev
+    rest_call {
+      RestClient.delete(
+        File.join(DB_CONN, doc_id.to_s), 
+        'If-Match' => rev 
+      )
+    }
+  end
+
+  # =========================================================
+  #                   View-related GET-ters
+  # ========================================================= 
+
+
+  def self.GET_news_tags
+    GET(:news_tags, :reduce=>true, :group=>true)[:rows].map { |r| 
+      r[:key]
+    }
+  end
+
+  def self.GET_news_by_tag tag, raw_params={}
+    params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
+    GET(:news_by_tag, params)
+  end
+
+  def self.GET_news_by_published_at raw_dt, raw_params={}
+    time_format = '%Y-%m-%d %H:%M:%S'
+    dt = Time.now.utc
+    start_dt = dt.strftime(time_format)
+    end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
+    params = {:include_docs =>true, :startkey=>start_dt, :endkey=>end_dt}.update(raw_params)
+    GET(:news_by_published_at, params)
+  end
+
+  def self.GET_usernames_by_owner owner_id
+    results = GET(:usernames_by_owner, :key=> owner_id.to_s, :include_docs=>false)
+    results[:rows].map { |r| r[:value] }
+  end
+
+end #  == class CouchDoc =====================================
+
+
+
+module CouchPlastic
+  
+
   # =========================================================
   #                     Error Constants
   # ========================================================= 
@@ -119,26 +176,43 @@ module CouchPlastic
   class NoNewValues < StandardError; end
   class HTTPError < StandardError; end
   
+  
+  # =========================================================
+  #                  Module: ClassMethods
+  # ========================================================= 
+  
+  module ClassMethods # =======================================
+  end # === ClassMethods
+
+ 
   def self.included(target)
     target.extend ClassMethods
   end
 
-  def set_optional_values raw_vals, *cols
-    cols.flatten.each { |k|
-      if raw_vals.has_key?(k)
-        send("#{k}=", raw_vals[k])
-      end
-    }
+
+  attr_accessor :current_editor, :raw_data
+  
+  def method_missing *args
+    meth_name = args.first.to_sym
+    if args.size == 1 && original.has_key?(meth_name)
+      return original[meth_name]
+    end
+    super
   end
 
-
-  def validate_editor editor, *levels
-    l = levels.detect { |lev| 
-      editor.has_power_of?(lev) 
-    }
-
-    l || raise( UnauthorizedEditor, "#{editor.inspect} not allowed: #{levels.inspect}" )
+ 
+  def human_field_name( col )
+    col.to_s.gsub('_', ' ')
+  end 
+  
+  def assoc_cache
+    @assoc_cache ||= {}
   end
+
+  def clear_assoc_cache
+    @assoc_cache = {}
+  end
+
 
   def original
     @original ||= {}
@@ -153,26 +227,10 @@ module CouchPlastic
     @new_values ||= {}
   end
 
-  def errors
-    @errors ||= []
-  end
-
   def new?
     original.empty?
   end
  
-  def validate
-    if !errors.empty? 
-      raise Invalid, "Document has validation errors." 
-    end
-
-    if new_values.empty?
-      raise NoNewValues, "No new data to save."
-    end
-
-    true
-  end 
-
 
   def _before_save_
     clear_assoc_cache
@@ -191,11 +249,10 @@ module CouchPlastic
     data[:data_model] = self.class.name
     data[:created_at] = Time.now.utc if opts.include?(:set_created_at)
 
-    db_url = File.join(DB_CONN, '_uuids')
-    new_id = data.delete(:_id) || json_parse(RestClient.get db_url)[:uuids]
+    new_id = data.delete(:_id) || CouchDoc.GET_uuid
 
     begin
-      results = json_parse(RestClient.put( File.join(DB_CONN, new_id), data.to_json))
+      results = CouchDoc.PUT( new_id, data)
       _set_original(original.update(new_values))
       original[:_id]        = new_id
       original[:_rev]       = results[:rev]
@@ -224,7 +281,7 @@ module CouchPlastic
     data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
     
     begin
-      results = json_parse(RestClient.put( File.join(DB_CONN, original[:_id]), data.to_json))
+      results = CouchDoc.PUT( original[:_id], data.to_json )
       original[:_rev] = results[:rev]
       original[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
       _set_original_(original.update(new_values))
@@ -242,8 +299,7 @@ module CouchPlastic
     clear_assoc_cache
 
     begin
-      url = File.join(DB_CONN, original[:_id])
-      results = json_parse( RestClient.delete( url, 'If-Match' => original[:_rev] ) )
+      results = CouchDoc.delete( original[:id], original[:_rev] )
       original.clear # Mark document as new.
     rescue RestClient::ResourceNotFound
       true
@@ -252,33 +308,46 @@ module CouchPlastic
   end
   
 
+
+
   # =========================================================
-  #                  PUBLIC INSTANCE METHODS
-  # =========================================================  
-   
-  attr_accessor :current_editor, :raw_data
-  
-  def method_missing *args
-    meth_name = args.first.to_sym
-    if args.size == 1 && original.has_key?(meth_name)
-      return original[meth_name]
+  #               Validation-related Methods
+  # ========================================================= 
+
+  def set_optional_values raw_vals, *cols
+    cols.flatten.each { |k|
+      if raw_vals.has_key?(k)
+        send("#{k}=", raw_vals[k])
+      end
+    }
+  end
+
+  def errors
+    @errors ||= []
+  end
+
+  def validate
+    if !errors.empty? 
+      raise Invalid, "Document has validation errors." 
     end
-    super
-  end
 
-  def assoc_cache
-    @assoc_cache ||= {}
-  end
+    if new_values.empty?
+      raise NoNewValues, "No new data to save."
+    end
 
-  def clear_assoc_cache
-    @assoc_cache = {}
-  end
-
-  def human_field_name( col )
-    col.to_s.gsub('_', ' ')
-  end
+    true
+  end 
 
 
+  def validate_editor editor, *levels
+    l = levels.detect { |lev| 
+      editor.has_power_of?(lev) 
+    }
+
+    l || raise( UnauthorizedEditor, "#{editor.inspect} not allowed: #{levels.inspect}" )
+  end  
+  
+  
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
     menu      = ( raw_menu || self.class.const_get("VALID_#{field_name.to_s.pluralize.upcase}") )
@@ -316,7 +385,6 @@ module CouchPlastic
       self[field_name] = clean
     end
   end
-
 
   # Accepts an unlimited number of field names as symbols.
   # If the last item is a STRING, it will be used as the error msg.
@@ -358,27 +426,6 @@ module CouchPlastic
    
   end
  
-
-  module ClassMethods # =======================================
-
-
-    def trashable(*args, &cond_block)
-      raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
-      
-      name_of_assoc, opts = args
-
-      if opts.is_a?(Hash) && opts[:class]
-          opts[:class]
-      else
-          opts ||= {}
-          opts[:class] = name_of_assoc.to_s.singularize.camelize.to_sym
-      end
-      
-      self.one_to_many(*args) { |ds| ds.where(:trashed=>false) }
-      self.one_to_many( "all_#{name_of_assoc}".to_sym, opts )
-    end
-      
-  end # === ClassMethods
 
 
 end # === model: Sequel::Model -------------------------------------------------
