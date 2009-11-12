@@ -60,7 +60,7 @@ end
 get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
   describe :news, :by_tag
   @news_tag = tag_name
-  @news = News.find_by_tag(@news_tag)
+  @news = CouchDoc.GET_news_by_tag @news_tag
   render_mab
 end
 

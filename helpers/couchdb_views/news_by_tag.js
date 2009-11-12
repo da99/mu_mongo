@@ -1,14 +1,14 @@
 //
 // Creates these indexes:
-// [ ['pets',        '2007-04-03 11:11:02'], null ]
-// [ ['hearts-pets', '2007-04-03 11:11:02'], null ]
-// [ ['home-pets',   '2007-04-03 11:11:02'], null ]
-// [ ['health-pets', '2007-04-03 11:11:02'], null ]
+// [ ['pets',           '2007-04-03 11:11:02'], null ]
+// [ ['hearts', 'pets', '2007-04-03 11:11:02'], null ]
+// [ ['home',   'pets', '2007-04-03 11:11:02'], null ]
+// [ ['health', 'pets', '2007-04-03 11:11:02'], null ]
 //        
 
 function(doc) { 
   var cats = ['health', 'hearts', 'home'];
-  if (doc.tags)  {
+  if (doc.data_model == 'News' && doc.tags)  {
     
     for(var t in doc.tags) {
 
@@ -24,4 +24,4 @@ function(doc) {
 
   }; // if
 
-}
+};

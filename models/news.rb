@@ -23,9 +23,7 @@ class News
 
   # ==== CLASS FINDER METHODS ==========================================
 
-  def self.find_by_tag tag
-    raise "Not implemented: find, reverse by published_date"
-  end
+
 
   # ==== CLASS METHODS =================================================
 
@@ -46,7 +44,7 @@ class News
   end
 
   def self.edit editor, raw_data
-    doc = find_by_id_or_raise(raw_data[:id])
+    doc = CouchDoc.GET_by_id(raw_data[:id])
     doc.updator? editor
     doc
   end

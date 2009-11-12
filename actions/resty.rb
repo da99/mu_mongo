@@ -33,7 +33,7 @@ helpers {
 
   def model_instance 
     @model_instance ||= begin
-      i = clean_room[:id] && model_class.find_by_id_or_raise(Integer(clean_room[:id]))
+      i = clean_room[:id] && CouchDoc.GET_by_id(Integer(clean_room[:id]))
       if i
         instance_variable_set "@#{clean_room[:model]}".to_sym, i
       end

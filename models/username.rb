@@ -36,14 +36,8 @@ class Username
   
   # ==== CLASS METHODS =================================================
 
-  def self.find_by_username_or_raise un
-    raise "Not implemented."
-    raise NoRecordFound, "#{un} was not found." 
-  end
 
-  def self.find_by_owner_id( owner_id )
-    raise "Not implemented."
-  end
+
 
   def self.create editor, raw_vals
     new_doc = new
@@ -55,7 +49,7 @@ class Username
   end
 
   def self.edit editor, raw_vals
-    doc = find_by_id_or_raise(raw_vals[:id]) 
+    doc = CouchDoc.GET_by_id(raw_vals[:id]) 
     doc.validate_editor( editor, doc.owner, :ADMIN  )
     doc
   end
@@ -94,7 +88,7 @@ class Username
 
   # Association to Member, through :owner_id
   def owner
-    Member.find_by_id( self.original[:owner_id] )
+    CouchDoc.GET_by_id( self.original[:owner_id] )
   end
 
 
@@ -161,6 +155,7 @@ class Username
     
     if self.errors.empty?
       self.new_values[fn] = new_un
+      self.new_values[:_id] = "username-#{new_un}"
       return new_un
     end
 

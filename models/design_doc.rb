@@ -30,22 +30,20 @@ class DesignDoc
   def self.as_hash
     doc = {:views=>{}}
 
-    
-    doc[:views][:by_tag] = {
-
-      "map" => view_file('by_tag-map')
+    CouchDoc::Views.each { |v|
+      doc[:views][v] ||= {}
+      doc[:views][v][:map] = read_view_file(v)
     }
-          
         
     doc
   end
 
   # Parameters:
   #   view_name - Name of file w/o extension. E.g.: map-by_tag
-  def self.view_file view_name
+  def self.read_view_file view_name
     File.read( 
       File.expand_path( 
-        File.join( 'helpers/couchdb_views', view_name + '.js' )  
+        "helpers/couchdb_views/#{view_name}.js" 
       )
     ) 
   end

@@ -45,7 +45,7 @@ class Member
   #
   def self.authenticate( raw_vals )
       
-      un = Username.find_by_username_or_raise( raw_vals[:username] )
+      un = CouchDoc.GET_by_id( raw_vals[:username] )
 
       correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
       
@@ -85,7 +85,7 @@ class Member
   end
 
   def self.edit( editor, raw_vals )
-    doc = find_by_id_or_raise(raw_vals[:id])
+    doc = CouchDoc.GET_by_id(raw_vals[:id])
     doc.validate_editor( editor, doc.owner, ADMIN )
     doc
   end
@@ -108,7 +108,7 @@ class Member
   # ========================================================= 
 
   def usernames
-    assoc_cache[:usernames] ||= Username.find_by_owner_id( self.original[:_id] )
+    assoc_cache[:usernames] ||= CouchDoc.GET_usernames_by_owner( self.original[:_id] )
   end
 
 

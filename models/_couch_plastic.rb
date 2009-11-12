@@ -1,8 +1,99 @@
 
+class CouchDoc
+  
+  Views = %w{
+    news_by_tag
+    news_by_published_at
+    usernames_by_owner
+  }
+
+  def self.GET_news_by_tag tag, raw_params={}
+    params = {:startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
+    GET(:news_by_tag, params)
+  end
+
+  def self.GET_news_by_published_at raw_dt, raw_params={}
+    time_format = '%Y-%m-%d %H:%M:%S'
+    dt = Time.parse(raw_dt.to_s).utc
+    start_dt = dt.strftime(time_format)
+    end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
+    params = {:startkey=>start_dt, :endkey=>end_dt}.update(raw_params)
+    GET(:news_by_published_at, params)
+  end
+
+  def self.GET_usernames_by_owner owner_id
+    results = GET_naked(:usernames_by_owner, :key=> owner_id.to_s)
+    results[:rows].map { |r| r[:value] }
+  end
+
+  def self.rest_call 
+    results = begin
+      yield
+    rescue RestClient::RequestFailed
+      raise "#{$!.http_code} - #{$!.http_body}"
+    end
+
+    json_parse results
+  end
+
+  def self.GET_by_id(id)
+
+    begin
+      data = rest_call { RestClient.get(File.join(DB_CONN, id.to_s)) }
+      doc = Object.const_get(data[:data_model]).new
+      doc._set_original_(data)
+    rescue RestClient::ResourceNotFound 
+      raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
+    end
+
+    doc
+
+  end
+
+  def self.GET_naked(view_name, params = {})
+    invalid_options = params.keys - CouchPlastic::ValidQueryOptions
+    if !invalid_options.empty?
+      raise ArgumentError, "Invalid options: #{invalid_options.inspect}" 
+    end
+
+    db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name.to_s)
+    params_str = params.to_a.map { |kv|
+      "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
+    }.join('&')
+
+    rest_call {
+      RestClient.get(db_url + '?' + params_str)
+    }
+
+  end
+
+  def self.GET(view_name, params={})
+    if !Views.include?(view_name.to_s)
+      raise ArgumentError, "Non-existent view name: #{view_name}"
+    end
+
+    params[:include_docs] = true unless params.has_key?(:include_docs)
+    results = GET_naked(view_name, params)
+    results[:rows].inject([]) {|m,r|
+      doc = Object.const_get(r[:doc][:data_model]).new
+      doc._set_original_(r[:doc])
+      m << doc
+      m
+    }
+  end
+
+  def self.PUT()
+
+  end
+
+
+end # class CouchDoc
+
+
 
 module CouchPlastic
   
-  ValidQueryKeys = %w{ 
+  ValidQueryOptions = %w{ 
       key
       startkey
       startkey_docid
@@ -26,6 +117,7 @@ module CouchPlastic
   class UnauthorizedEditor < StandardError; end
   class Invalid < StandardError; end
   class NoNewValues < StandardError; end
+  class HTTPError < StandardError; end
   
   def self.included(target)
     target.extend ClassMethods
@@ -269,41 +361,6 @@ module CouchPlastic
 
   module ClassMethods # =======================================
 
-
-    def find(view_name, params = {})
-      invalid_options = params.keys - ValidQueryKeys
-      if !invalid_options.empty?
-        raise ArgumentError, "Invalid options: #{invalid_options.inspect}" 
-      end
-
-      db_url = File.join(DB_CONN, DESIGN_DOC_ID, '_view', view_name.to_s)
-      params_str = params.to_a.map { |kv|
-        "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
-      }.join('&')
-      json_parse(RestClient.get(db_url + '?' + params_str))
-    end
-
-    def find_by_id(id)
-      begin
-        return find_by_id_or_raise(id)
-      rescue NoRecordFound
-      end
-
-      nil
-    end
-
-    def find_by_id_or_raise(id)
-      doc = new
-
-      begin
-        data = json_parse(RestClient.get(File.join(DB_CONN, id.to_s)))
-        doc._set_original_(data)
-      rescue RestClient::ResourceNotFound 
-        raise NoRecordFound, "Document with id, #{id}, not found."
-      end
-
-      doc
-    end
 
     def trashable(*args, &cond_block)
       raise "TRASHABLE IS NOT YET ABLE to deal with custom datasets." if cond_block
