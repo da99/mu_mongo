@@ -40,15 +40,8 @@ class Username
   end 
 
   def self.get_by_username username
-    id = "username-#{username}"
-    d = new
-    case username
-      when 'regular-member-1'
-        d._set_original_({:owner_id=>username, :_id=>username})
-      when 'admin-member-1'
-        d._set_original_({:owner_id=>username, :_id=>username})
-    end
-    d
+    raise ArgumentError, "Invalid username: #{username.inspect}" if !username
+    CouchDoc.GET_by_id('username-' + username)
   end
 
   # ==== CLASS METHODS =================================================
@@ -57,12 +50,14 @@ class Username
 
 
   def self.create editor, raw_vals
+    raise ArgumentError, "Invalid member: #{editor.inspect}" if !editor
+    raise ArgumentError, "Invalid member: #{editor.inspect}" if !editor.has_power_of?(:MEMBER)
     new_doc = new
-    new_doc.validate_editor( editor, MEMBER )
-    new_doc.owner_id= raw_vals
+    new_doc.owner_id= editor._id
     new_doc.username= raw_vals
-    new_doc.set_optional_values raw_vals, :nickname, :category
+    new_doc.set_optional raw_vals, :nickname, :category
     new_doc.save_create
+    new_doc
   end
 
   def self.edit editor, raw_vals
@@ -109,15 +104,17 @@ class Username
   end
 
 
-  def owner_id= raw_params
+  def owner_id= nv
     fn = :owner_id
-    nv = raw_params[fn]
+    if !nv.is_a?(String)
+      raise ArgumentError, "Owner id must be a string: #{nv.inspect}"
+    end
     if !nv
       self.errors << "Owner not specified."
       return nil
     end
 
-    self.new_values[fn] = Integer(nv)
+    self.new_values[fn] = nv
   end
 
   

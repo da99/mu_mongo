@@ -15,7 +15,7 @@ module CouchPlastic
     attr_accessor :doc
     def initialize doc, msg=nil
       @doc = doc
-      super(msg)
+      super(msg + ": #{doc.errors.join(' * ')}")
     end
   end
 
@@ -76,6 +76,10 @@ module CouchPlastic
       @use_options
     end
 
+    def enabled? opt
+      @use_options ||=[]
+      @use_options.include? opt
+    end
 
 
     # ===== CRUD Methods ====================================
@@ -156,8 +160,14 @@ module CouchPlastic
     }
   end
 
-  def set_optional raw_data
-    OPTIONAL_FOR_UPDATE.each { |c|
+  def set_optional raw_data, *raw_cols
+    cols = if self.class.constants.include?('OPTIONAL_FOR_UPDATE')
+      OPTIONAL_FOR_UPDATE    
+    else
+      raw_cols
+    end
+
+    cols.each { |c|
       if raw_data.has_key?(c)
         d.send("#{c}=", raw_data)
       end
@@ -215,13 +225,13 @@ module CouchPlastic
 
     data = new_values.clone
     data[:data_model] = self.class.name
-    data[:created_at] = Time.now.utc if opts.include?(:set_created_at)
+    data[:created_at] = Time.now.utc if self.class.enabled?(:created_at)
 
     new_id = data.delete(:_id) || CouchDoc.GET_uuid
 
     begin
       results = CouchDoc.PUT( new_id, data)
-      _set_original(original.update(new_values))
+      _set_original_(original.update(new_values))
       original[:_id]        = new_id
       original[:_rev]       = results[:rev]
       original[:created_at] = data[:created_at] if data.has_key?(:created_at)
@@ -255,7 +265,7 @@ module CouchPlastic
 
     data = new_values.clone
     data[:_rev] = original[:_rev]
-    data[:updated_at] = Time.now.utc if opts.include?(:set_updated_at)
+    data[:updated_at] = Time.now.utc if self.class.enabled?(:updated_at)
     
     begin
       results = CouchDoc.PUT( original[:_id], data.to_json )

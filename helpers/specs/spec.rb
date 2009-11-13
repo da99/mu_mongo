@@ -1,9 +1,8 @@
-require File.expand_path('.').split('/').last  # <-- your sinatra app
 require 'rack/test'
 ENV['RACK_ENV'] = 'test'
+
+require File.expand_path('.').split('/').last  # <-- your sinatra app
 set :environment, :test
-
-
 
 class Bacon::Context
   include Rack::Test::Methods

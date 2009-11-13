@@ -7,7 +7,7 @@ class DesignDoc
   def self.doc
     begin
       CouchDoc.GET_by_id ID
-    rescue RestClient::ResourceNotFound 
+    rescue CouchPlastic::NoRecordFound 
       nil
     end
   end

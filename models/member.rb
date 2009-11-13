@@ -31,15 +31,8 @@ class Member
   #                     GET Methods (Class)
   # =========================================================    
   
-  def self.get_by_id(*args)
-    doc = new
-    case args.first
-      when 'regular-member-1'
-        doc._set_original_({:_id=>1, :permission_level=>MEMBER})
-      when 'admin-member-1'
-        doc._set_original_({:_id=>1, :permission_level=>ADMIN})
-    end
-    doc
+  def self.get_by_id( id )
+    CouchDoc.GET_by_id id
   end
 
 

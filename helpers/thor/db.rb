@@ -1,7 +1,7 @@
 
-
 class Db < Thor
   include Thor::Sandbox::CoreFuncs
+  
 	desc :migrate_up,  "Migrate to latest version." 
   def migrate_up
 		whisper "Migrating Up..."
@@ -17,8 +17,16 @@ class Db < Thor
 	
 	desc :reset!, "Migrate to version 0, then migrate up to latest version."
   def reset!
-	  invoke :migrate_down
-	  invoke :migrate_up
+    require 'json'
+    require 'rest_client'
+    conn = 'https://da01tv:isleparadise4vr@localhost/'
+    db_name = 'megauni-test'
+    db_conn = "#{conn}#{db_name}/"
+    all_dbs = JSON.parse(RestClient.get "#{conn}_all_dbs/")
+    
+    RestClient.delete db_conn if all_dbs.include?(db_name)
+    RestClient.put db_conn , {}
+    whisper "Created: #{db_name}"
 	end # ===
 	
 	

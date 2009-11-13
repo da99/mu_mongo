@@ -8,27 +8,40 @@ class Bacon < Thor
   
   desc :db_reset!, "Reset the :test database" 
   def db_reset!
-    ENV['RACK_ENV'] = 'test'
     invoke('db:reset!')
-    news_id = DB[:news].insert( 
-      :title        => 'Buy Longevinex',
-      :teaser       => 'teaser',
-      :body         => 'body',
-      :created_at   => Time.now.utc,
-      :published_at => Time.now.utc)
-    news_tag_id  = DB[:news_tags].insert(:filename=>'surfer_hearts')
-    news_tagging = DB[:news_taggings].insert(:news_id=>news_id, :tag_id=>news_tag_id)
-    admin_id = DB[:members].insert(:hashed_password=>'$2a$10$q4bnQIrv7FO.SoATM3XKPOVDEp74iey2qMJ8VWxm5x1o0vd6rfjmi', 
-                        :salt=>'0N3OjeVmlw', 
-                        :permission_level=>1000, 
-                        :created_at=>Time.now.utc)
-    DB[:usernames].insert(:owner_id=>admin_id, :username=>'da01tv', :category=>'Personal', :created_at=>Time.now.utc)
 
-    member_id = DB[:members].insert(:hashed_password=>'$2a$10$q4bnQIrv7FO.SoATM3XKPOVDEp74iey2qMJ8VWxm5x1o0vd6rfjmi',
-                        :salt=>'0N3OjeVmlw',
-                        :permission_level=>1,
-                        :created_at=>Time.now.utc)
-    DB[:usernames].insert(:owner_id=>member_id, :username=>'da01', :category=>'Business', :created_at=>Time.now.utc)
+    ENV['RACK_ENV'] = 'test'
+    require File.expand_path('megauni')
+    DesignDoc.create_or_update
+    n = News.new
+    new_values = {:title=>'Longevinex', 
+      :teaser=>'teaser', 
+      :body=>'Test body.', 
+      :tags=>['surfer_hearts', 'hearts', 'pets']
+    }
+    n.title  = new_values
+    n.teaser = new_values
+    n.body   = new_values
+    n.tags   = new_values
+    n.save_create
+
+    new_values = {
+      :password=>'regular-password-1',
+      :confirm_password=>'regular-password-1',
+      :permission_level=>Member::MEMBER,
+      :username=>'regular-member-1'
+    }
+    m = Member.create nil, new_values
+
+    new_values = {
+      :password=>'admin-password-1',
+      :confirm_password=>'admin-password-1',
+      :permission_level=>Member::MEMBER,
+      :username=>'admin-member-1'
+    }
+    m = Member.create nil, new_values
+    
+
   end
 
   desc :file, "Run a single file"
