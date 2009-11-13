@@ -1,16 +1,97 @@
 
-configure do
-  set :news_actions, [:show, :new, :create, :edit, :update, :delete] 
-end
+# configure do
+#   set :news_actions, [ :show, 
+#   :new, :create, :edit, :update, :delete] 
+# end
 
 helpers {
   def news_tags
-    @all_news_tags ||= NewsTag.naked.order(:filename).all
+    @all_news_tags ||= News.get_tags
   end
 }
 
 
+get '/news/new/' do # NEW
+  require_log_in!
+  doc = begin
+    News.get_for_creator(current_member)
+  rescue News::UnauthorizedCreator
+    pass
+  end
+  describe News, :new
+  render_mab
+end
 
+post '/news/' do # CREATE
+  require_log_in!
+  n = begin
+    News.get_for_creator(current_member)
+  rescue News::UnauthorizedCreator
+    pass
+  end
+
+  begin
+    n.create current_member, clean_room
+    flash.success_msg = "Saved: #{n.title}"
+    redirect "/news/#{n._id}/"
+  rescue News::Invalid
+    flash.error_msg = to_html_list(n.errors)
+    redirect "/news/new/"
+  end
+
+end
+
+get '/news/:id/' do # SHOW
+  doc = begin
+    News.get_for_viewer(current_member, clean_room[:id])
+  rescue News::NoRecordFound, News::UnauthorizedViewer
+    pass
+  end
+
+  describe News, :show
+  render_mab
+end 
+
+get '/news/:id/edit/' do # EDIT
+  require_log_in!
+  d = begin
+    News.get_for_editor(current_member, clean_room[:id])
+  rescue News::NoRecordFound, News::UnauthorizedEditor
+    pass
+  end
+
+  describe News, :edit
+  render_mab
+end
+
+put '/news/:id/' do # UPDATE
+  require_log_in!
+  d = begin
+    News.get_for_updator(current_member, clean_room[:id])
+  rescue News::NoRecordFound, News::UnauthorizedUpdator
+    pass
+  end
+
+  begin
+    d.update clean_room
+    flash.success_msg = "Updated: #{n.title}"
+    redirect request.path_info
+  rescue News::Invalid
+    flash.error_msg = to_html_list(d.errors)
+    redirect("/news/#{n._id}/edit/")
+  end
+end
+
+delete '/news/:id/' do # DELETE
+  require_log_in!
+  d = begin
+    News.get_for_deletor current_member, clean_room[:id]
+  rescue News::NoRecordFound, News::UnauthorizedDeletor
+  end
+
+  flash.success_msg = "Deleted: #{d.title}"
+  redirect '/'
+end
 
 get '/news/by_date/:year/:month/' do
   describe :news, :by_date
@@ -60,7 +141,7 @@ end
 get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
   describe :news, :by_tag
   @news_tag = tag_name
-  @news = CouchDoc.GET_news_by_tag @news_tag
+  @news = News.get_by_tag @news_tag
   render_mab
 end
 

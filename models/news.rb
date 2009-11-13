@@ -21,11 +21,31 @@ class News
   # ==== HOOKS =========================================================
 
 
-  # ==== CLASS FINDER METHODS ==========================================
+  # ==== GET Methods (CLASS) =================================================
 
+  def self.get_tags
+    rows = CouchDoc.GET(:news_tags, 
+        :reduce=>true, 
+       :group=>true)[:rows]
+    rows.map { |r| 
+      r[:key]
+    }
+  end
 
+  def self.get_by_tag tag, raw_params={}
+    params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
+    CouchDoc.GET(:news_by_tag, params)
+  end
 
-  # ==== CLASS METHODS =================================================
+  def self.get_by_published_at raw_params={}
+    # time_format = '%Y-%m-%d %H:%M:%S'
+    # dt = Time.now.utc
+    # start_dt = dt.strftime(time_format)
+    # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
+    params = {:include_docs =>true}.update(raw_params)
+    CouchDoc.GET(:news_by_published_at, params)
+  end
+
 
   def self.creator? editor
     return false if !editor

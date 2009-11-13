@@ -1,19 +1,25 @@
 
 
 configure :test do
-  DB_CONN = "https://da01tv:isleparadise4vr@localhost/megauni-test"
+  CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
+  DB_NAME = 'megauni-dev'
+  DB_CONN = File.join(CouchDB_URI, DB_NAME)
 end
 
 
 configure :development do
   require Pow('helpers/sinatra/css')
-  DB_CONN = "https://da01tv:isleparadise4vr@localhost/megauni-dev"
-  # DB_CONN = "https://localhost/megauni-dev"
+  
+  CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
+  DB_NAME = "megauni-dev"
+  DB_CONN = File.join( CouchDB_URI, DB_NAME )
 end
 
 
 configure(:production) do
-  DB_CONN = "http://un**:pswd**@127.0.0.1:5984/megauni-production"
+  CouchDB_URI = "http://un**:pswd**@127.0.0.1:5984/" 
+  DB_NAME = 'megauni-production'
+  DB_CONN = File.join(CouchDB_URI, DB_NAME)
 end
 
 

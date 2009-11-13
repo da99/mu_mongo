@@ -30,6 +30,7 @@ configure do
   # ===============================================
   require_these 'models', %w{
     _couch_plastic
+    couch_doc
     design_doc
     resty
     member

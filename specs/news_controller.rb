@@ -6,7 +6,7 @@ describe 'News App (public actions)' do
   end
 
   it 'renders :show with an :id' do
-    n = CouchDoc.GET_news_by_tag( :hearts, :limit=>1 )
+    n = News.get_by_tag( :hearts, :limit=>1 )
     get "/news/#{n._id}/"
     last_response.should.be.ok
   end
@@ -22,13 +22,13 @@ describe 'News App (public actions)' do
   end
 
   it 'renders a group by tags' do
-    tags = CouchDoc.GET_news_tags
+    tags = News.get_tags
 		get "/news/by_tag/#{tags.first}/"
     last_response.should.be.ok
   end
 
   it 'renders a group by date' do
-    news = CouchDoc.GET_news_by_published_at(:limit=>1)
+    news = News.get_by_published_at(:limit=>1, :startkey=>Time.parse('2000'))
     get "/news/by_date/#{news.published_at.year}/#{news.published_at.month}/"
     last_response.should.be.ok
   end
@@ -200,7 +200,7 @@ describe 'Hearts App Compatibility' do
   end
 
   it 'responds with 404 for a heart link that does not exist.' do
-    post_id  = News.order(:id).last[:id] + 1
+    post_id  = News.get_by_published_at(:limit=>1)._id.to_i + 1
     get "/heart_link/#{post_id}/"
     follow_redirect!
     last_response.status.should.be == 404

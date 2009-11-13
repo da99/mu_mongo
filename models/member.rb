@@ -108,7 +108,7 @@ class Member
   # ========================================================= 
 
   def usernames
-    assoc_cache[:usernames] ||= CouchDoc.GET_usernames_by_owner( self.original[:_id] )
+    assoc_cache[:usernames] ||= Username.get_by_owner( self.original[:_id] )
   end
 
 

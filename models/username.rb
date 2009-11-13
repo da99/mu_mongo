@@ -33,7 +33,12 @@ class Username
   # ==== HOOKS =========================================================
   
 
-  
+  # ==== GET Methods =================================================
+  def self.get_by_owner owner_id
+    results = CouchDoc.GET(:usernames_by_owner, :key=> owner_id.to_s, :include_docs=>false)
+    results[:rows].map { |r| r[:value] }
+  end 
+
   # ==== CLASS METHODS =================================================
 
 

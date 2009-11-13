@@ -1,3 +1,17 @@
+helpers {
+  def doc_create model_class, vals = nil
+    vals ||= clean_room
+    begin
+      d = model_class.create current_member, vals
+      flash.success_msg = ( " %s was saved." % english_name( d ).capitalize )
+      redirect( "/#{model_class.to_s.underscore}/#{n[:id]}/" )
+    rescue model_class::Invalid
+      flash.error_msg = to_html_list(e.message)
+      redirect("/#{model_class.to_s.underscore}/new/")
+    end
+  end
+
+}
 
 helpers {
 
@@ -33,7 +47,14 @@ helpers {
 
   def model_instance 
     @model_instance ||= begin
-      i = clean_room[:id] && CouchDoc.GET_by_id(Integer(clean_room[:id]))
+      i = if clean_room[:id] 
+        begin
+          CouchDoc.GET_by_id(Integer(clean_room[:id]))
+        rescue model_class::NoRecordFound
+          nil
+        end
+      end
+
       if i
         instance_variable_set "@#{clean_room[:model]}".to_sym, i
       end
