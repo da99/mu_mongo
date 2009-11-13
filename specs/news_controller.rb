@@ -28,7 +28,7 @@ describe 'News App (public actions)' do
   end
 
   it 'renders a group by date' do
-    news = News.get_by_published_at(:limit=>1, :startkey=>Time.parse('2000'))
+    news = News.get_by_published_at(:limit=>1, :startkey=>'2000-01-01')
     get "/news/by_date/#{news.published_at.year}/#{news.published_at.month}/"
     last_response.should.be.ok
   end
@@ -68,14 +68,14 @@ describe 'News :create (action)' do
   end
 
   it 'does not allow strangers' do
-    should.raise(Member::UnauthorizedEditor) {
+    should.raise(Member::UnauthorizedCreator) {
       post *@path_args
     }
   end
 
   it 'does not allow members' do
     log_in_member
-    should.raise(Member::UnauthorizedEditor) {
+    should.raise(Member::UnauthorizedCreator) {
       post *@path_args
     }
   end
@@ -102,7 +102,7 @@ end # ===
 
 describe 'News :edit (action)' do
   before do
-    @news = News.first
+    @news = News.get_by_published_at(:limit=>1)
     @edit_path = "/news/#{@news[:id]}/edit/"
   end
   it 'requires log-in' do
@@ -124,7 +124,7 @@ end # ===
 
 describe 'News :update (action)' do
   before do
-    @news = News.first
+    @news = News.get_by_published_at(:limit=>1)
     @update_path = "/news/#{@news[:id]}/"
   end
 

@@ -39,6 +39,18 @@ class Username
     results[:rows].map { |r| r[:value] }
   end 
 
+  def self.get_by_username username
+    id = "username-#{username}"
+    d = new
+    case username
+      when 'regular-member-1'
+        d._set_original_({:owner_id=>username, :_id=>username})
+      when 'admin-member-1'
+        d._set_original_({:owner_id=>username, :_id=>username})
+    end
+    d
+  end
+
   # ==== CLASS METHODS =================================================
 
 
@@ -93,7 +105,7 @@ class Username
 
   # Association to Member, through :owner_id
   def owner
-    CouchDoc.GET_by_id( self.original[:owner_id] )
+    Member.get_by_id( self.original[:owner_id] )
   end
 
 

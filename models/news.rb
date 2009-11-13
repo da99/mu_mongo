@@ -5,23 +5,8 @@ class News
 
   include CouchPlastic
 
-  # ==== CONSTANTS =====================================================
-  
-  
 
-  # ==== ERRORS ========================================================
-  
-
-  # ==== ASSOCIATIONS ==================================================
-  # one_to_many :taggings, :class_name=>'NewsTagging', :key=>:news_id
-  # one_to_many :tags, :class_name=>'NewsTag', :dataset=> proc { 
-  #   NewsTag.filter(:id=>taggings_dataset.select(:id))
-  # }
-
-  # ==== HOOKS =========================================================
-
-
-  # ==== GET Methods (CLASS) =================================================
+  # ==== GET Methods (Class) =================================================
 
   def self.get_tags
     rows = CouchDoc.GET(:news_tags, 
@@ -46,46 +31,36 @@ class News
     CouchDoc.GET(:news_by_published_at, params)
   end
 
+  # ==== CRUD Methods ============================================================
 
-  def self.creator? editor
+  enable :created_at, :updated_at
+
+  required_for_create  :title, :body, :published_at 
+  optional_for_create  :teaser, :tags 
+
+  optional_for_update :title, :body, :teaser, :published_at, :tags
+
+  # ==== Authorization Methods (Class + Instance) =================================================
+  
+  def creator? editor # NEW, CREATE
     return false if !editor
     editor.has_power_of? :ADMIN
   end
 
-  def self.create editor, raw_data
-    creator? editor
-    doc = new
-    doc.title= raw_data
-    doc.body= raw_data 
-    doc.published_at = raw_data
-    doc.set_optional_values raw_data, :teaser, :published_at, :tags
-    doc.save_create :set_created_at
-    doc
-  end
-
-  def self.edit editor, raw_data
-    doc = CouchDoc.GET_by_id(raw_data[:id])
-    doc.updator? editor
-    doc
-  end
-
-  def self.update editor, raw_data
-    doc = edit(editor, raw_data)
-    doc.set_optional_values raw_data, :title, :body, :teaser, :published_at, :tags
-    doc.save_update :set_updated_at
-    doc
-  end
-
-
-  # ==== INSTANCE METHODS ==============================================
-
-  def viewer? editor
+  def viewer? editor # SHOW
     true
   end
 
-  def updator? editor
-    News.creator? editor
+  def updator? editor # EDIT, UPDATE
+    creator? editor
   end
+
+  def deletor? editor # DELETE
+    creator? editor
+  end
+
+
+  # ==== SETTERS/ACCESSORS (Instance) ==============================================
 
   def last_modified_at
     updated_at || created_at

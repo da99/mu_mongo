@@ -8,18 +8,118 @@ module CouchPlastic
   # ========================================================= 
 
   class NoRecordFound < StandardError; end
-  class UnauthorizedEditor < StandardError; end
-  class Invalid < StandardError; end
   class NoNewValues < StandardError; end
   class HTTPError < StandardError; end
   
-  
+  class Invalid < StandardError
+    attr_accessor :doc
+    def initialize doc, msg=nil
+      @doc = doc
+      super(msg)
+    end
+  end
+
+  class Unauthorized < StandardError
+    def initialize doc, mem=nil
+      if doc.is_a?(String)
+        return super(doc)
+      end
+      title = self.class.to_s.gsub('Unauthorized', '')
+      msg = "#{doc.inspect}, #{title}: #{mem.inspect}"
+      super(msg)
+    end
+  end
+
+  class UnauthorizedNew < Unauthorized; end
+  class UnauthorizedViewer < Unauthorized; end
+  class UnauthorizedCreator < Unauthorized; end
+  class UnauthorizedEditor < Unauthorized; end
+  class UnauthorizedUpdator < Unauthorized; end
+  class UnauthorizedDeletor < Unauthorized; end
+
   # =========================================================
   #                  Module: ClassMethods
   # ========================================================= 
   
-  module ClassMethods # =======================================
-  end # === ClassMethods
+  module ClassMethods # =====================================
+
+    # ===== DSL-icious ======================================
+
+    def required_for_create *cols 
+      raise "Method can only be used once." if constants.include?('REQUIRED_FOR_CREATE')
+      const_set('REQUIRED_FOR_CREATE', cols)
+    end
+
+    def optional_for_create *cols 
+      raise "Method can only be used once." if constants.include?('OPTIONAL_FOR_CREATE')
+      const_set('OPTIONAL_FOR_CREATE', cols)
+    end
+
+    def required_for_update *cols
+      raise "Method can only be used once." if constants.include?('REQUIRED_FOR_UPDATE')
+      const_set('REQUIRED_FOR_UPDATE', cols)
+    end
+
+    def optional_for_update *cols
+      raise "Method can only be used once." if constants.include?('OPTIONAL_FOR_UPDATE')
+      const_set('OPTIONAL_FOR_UPDATE', cols)
+    end
+
+    def enable *opts
+      valid_opts = [:created_at, :updated_at]
+      invalid_opts = opts - valid_opts
+      if !invalid_opts.empty?
+        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
+      end
+      @use_options ||= []
+      @use_options = @use_options + opts
+      @use_options
+    end
+
+
+
+    # ===== CRUD Methods ====================================
+
+    def show mem, id
+      d = CouchDoc.GET_by_id(id)
+      if !d.viewer?(mem)
+        raise UnauthorizedViewer.new( self, mem )
+      end
+      d
+    end
+
+    def edit mem, id
+      d = CouchDoc.GET_by_id(id)
+      if !d.updator?(mem)
+        raise UnauthorizedEditor.new( self, mem )
+      end
+      d
+    end
+
+    def create editor, raw_data
+      d = new(editor)
+      d.set_required raw_data
+      d.set_optional raw_data
+      d.save_with_creator editor
+      d
+    end
+
+    def update editor, raw_data
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      d.set_required raw_data
+      d.set_optional raw_data
+      d.save_with_updator editor
+      d
+    end
+
+    def delete! editor, raw_data
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      d.delete_with_deletor! editor
+      d
+    end
+
+
+  end # === module ClassMethods ==============================================
 
  
   def self.included(target)
@@ -37,7 +137,34 @@ module CouchPlastic
     super
   end
 
+  def initialize(*opts)
+    if !opts.empty?
+      mem = opts.shift
+      if !opts.empty?
+        raise ArgumentError, "Unknown options: #{opts.inspect}"
+      end
+      if !self.creator?(mem)
+        raise UnauthorizedNew.new(self, opts)
+      end
+    end
+    super()
+  end
  
+  def set_required raw_data
+    REQUIRED_FOR_CREATE.each { |c|
+      d.send("#{c}=", raw_data)
+    }
+  end
+
+  def set_optional raw_data
+    OPTIONAL_FOR_UPDATE.each { |c|
+      if raw_data.has_key?(c)
+        d.send("#{c}=", raw_data)
+      end
+    }
+  end
+
+
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
   end 
@@ -67,11 +194,12 @@ module CouchPlastic
   def new?
     original.empty?
   end
- 
-
-  def _before_save_
-    clear_assoc_cache
-    validate
+  
+  def save_with_creator mem, *opts, &blok
+    if !creator?(editor)
+      raise UnauthorizedCreator.new( self, mem )
+    end
+    save_create *opts, &blok
   end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
@@ -79,8 +207,11 @@ module CouchPlastic
   # Parameters:
   #   opts - Valid options: :set_created_at
   def save_create *opts
-    
-    _before_save_
+
+    raise "This is not a new document." if !new?
+
+    clear_assoc_cache
+    validate
 
     data = new_values.clone
     data[:data_model] = self.class.name
@@ -105,13 +236,22 @@ module CouchPlastic
 
   end
 
+  def save_with_updator mem, *opts, &blok
+    if !updator?(mem)
+      raise UnauthorizedUpdator.new( self, mem )
+    end
+    save_update *opts, &blok
+  end
+
+
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
   #   opts - Valid options: :set_updated_at
   def save_update *opts
 
-    _before_save_
+    clear_assoc_cache
+    validate
 
     data = new_values.clone
     data[:_rev] = original[:_rev]
@@ -131,20 +271,65 @@ module CouchPlastic
     end
   end
 
+  def delete_with_deletor! mem
+    if !deletor?(mem)
+      raise UnauthorizedDeletor.new( self, mem )
+    end
+  end
+
   def delete!
     
     clear_assoc_cache
 
-    begin
-      results = CouchDoc.delete( original[:id], original[:_rev] )
-      original.clear # Mark document as new.
-    rescue RestClient::ResourceNotFound
-      true
-    end
+    results = CouchDoc.delete( original[:id], original[:_rev] )
+    original.clear # Mark document as new.
 
   end
   
 
+  # =========================================================
+  #               Authorization Methods
+  # ========================================================= 
+
+  # def self.get_for_creator mem # CREATE
+  #   if creator?
+  #     raise UnauthorizedCreator, "#{mem.inspect}" 
+  #   end
+  #   new
+  # end
+
+  # def self.get_for_viewer mem, id # SHOW
+  #   d = CouchDB.GET_by_id(id)
+  #   if d.viewer? mem
+  #     raise UnauthorizedViewer, "Doc: #{id.inspect}, Viewer: #{mem.inspect}"
+  #   end
+  #   d
+  # end
+
+  # def self.get_for_editor mem, id # EDIT
+  #   d = CouchDB.GET_by_id(id)
+  #   if d.editor?(mem)
+  #     raise UnauthorizedEditor, "Doc: #{id.inspect}, Editor: #{mem.inspect}"
+  #   end
+  #   d
+  # end
+
+  # def self.get_for_updator mem, id # UPDATE
+  #   d = CouchDB.GET_by_id id
+  #   if d.updator?(mem)
+  #     raise UnauthorizedUpdator, "Doc: #{id.inspect}, Updator: #{mem.inspect}"
+  #   end
+  #   d
+  # end
+
+  # def self.get_for_deletor mem, id # DELETE
+  #   d = CouchDB.GET_by_id id
+  #   if d.deletor? mem
+  #     raise UnauthorizedDeletor, "Doc: #{id.inspect}, Deletor: #{mem.inspect}"
+  #   end
+  #   d
+  # end
+  
 
 
   # =========================================================
@@ -165,7 +350,7 @@ module CouchPlastic
 
   def validate
     if !errors.empty? 
-      raise Invalid, "Document has validation errors." 
+      raise Invalid.new( self, "Document has validation errors." )
     end
 
     if new_values.empty?

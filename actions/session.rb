@@ -21,7 +21,7 @@ post( "/log-in/"  ) do
     
     begin 
       raise( LogInAttempt::TooManyFailedAttempts ) if LogInAttempt.too_many?(request.env['REMOTE_ADDR'])
-      mem = Member.validate_username_and_password(clean_room[:username], clean_room[:password] )
+      mem = Member.authenticate(clean_room)
       self.current_member = mem
       return_page = session.delete :return_page
       redirect( return_page || '/account/' )

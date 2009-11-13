@@ -16,10 +16,6 @@ helpers {
               Wash.html(s)
       end
 
-      if k.to_sym == :id
-        m[:id] = m[:id].to_s.to_i
-      end
-
       m
     }
   end

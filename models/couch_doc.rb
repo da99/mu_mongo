@@ -72,7 +72,7 @@ class CouchDoc
   end
 
   def self.GET_by_id(id)
-
+    raise ArgumentError, "Invalid id: #{id.inspect}" if !id
     begin
       data = GET_naked( id )
       return(data) if !data[:data_model]

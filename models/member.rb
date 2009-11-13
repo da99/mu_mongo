@@ -28,12 +28,26 @@ class Member
   
     
   # =========================================================
+  #                     GET Methods (Class)
+  # =========================================================    
+  
+  def self.get_by_id(*args)
+    doc = new
+    case args.first
+      when 'regular-member-1'
+        doc._set_original_({:_id=>1, :permission_level=>MEMBER})
+      when 'admin-member-1'
+        doc._set_original_({:_id=>1, :permission_level=>ADMIN})
+    end
+    doc
+  end
+
+
+  # =========================================================
   #                     Class Methods.
   # =========================================================
 
-  def self.first
-    raise "Not implemented."
-  end
+
 
   # Based on Sinatra-authentication (on github).
   # 
@@ -45,7 +59,7 @@ class Member
   #
   def self.authenticate( raw_vals )
       
-      un = CouchDoc.GET_by_id( raw_vals[:username] )
+      un = Username.get_by_username( raw_vals[:username] )
 
       correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
       
@@ -138,7 +152,7 @@ class Member
         when MEMBER
           new? ? false : true
         when ADMIN
-          self == Member.first && self.permission_level == ADMIN
+          self.permission_level == ADMIN
         when EDITOR
           self.permission_level === EDITOR
         else

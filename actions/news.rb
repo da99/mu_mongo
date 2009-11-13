@@ -13,9 +13,9 @@ helpers {
 
 get '/news/new/' do # NEW
   require_log_in!
-  doc = begin
-    News.get_for_creator(current_member)
-  rescue News::UnauthorizedCreator
+  begin
+    News.new(current_member)
+  rescue News::UnauthorizedNew
     pass
   end
   describe News, :new
@@ -24,28 +24,24 @@ end
 
 post '/news/' do # CREATE
   require_log_in!
-  n = begin
-    News.get_for_creator(current_member)
-  rescue News::UnauthorizedCreator
-    pass
-  end
-
   begin
-    n.create current_member, clean_room
+    n = New.create current_member, clean_room
     flash.success_msg = "Saved: #{n.title}"
     redirect "/news/#{n._id}/"
+  rescue News::UnauthorizedCreator
+    pass
   rescue News::Invalid
-    flash.error_msg = to_html_list(n.errors)
+    flash.error_msg = to_html_list($!.doc.errors)
     redirect "/news/new/"
   end
 
 end
 
 get '/news/:id/' do # SHOW
-  doc = begin
-    News.get_for_viewer(current_member, clean_room[:id])
+  begin
+    @news = News.show(current_member, clean_room[:id])
   rescue News::NoRecordFound, News::UnauthorizedViewer
-    pass
+    pass 
   end
 
   describe News, :show
@@ -54,8 +50,8 @@ end
 
 get '/news/:id/edit/' do # EDIT
   require_log_in!
-  d = begin
-    News.get_for_editor(current_member, clean_room[:id])
+  begin
+    @news = News.edit(current_member, clean_room[:id])
   rescue News::NoRecordFound, News::UnauthorizedEditor
     pass
   end
@@ -66,31 +62,28 @@ end
 
 put '/news/:id/' do # UPDATE
   require_log_in!
-  d = begin
-    News.get_for_updator(current_member, clean_room[:id])
+  begin
+    doc = News.update(current_member, clean_room)
+    flash.success_msg = "Updated: #{doc.title}"
+    redirect request.path_info
   rescue News::NoRecordFound, News::UnauthorizedUpdator
     pass
-  end
-
-  begin
-    d.update clean_room
-    flash.success_msg = "Updated: #{n.title}"
-    redirect request.path_info
   rescue News::Invalid
-    flash.error_msg = to_html_list(d.errors)
-    redirect("/news/#{n._id}/edit/")
+    flash.error_msg = to_html_list($!.doc.errors)
+    redirect("/news/#{$!.doc._id}/edit/")
   end
 end
 
 delete '/news/:id/' do # DELETE
   require_log_in!
-  d = begin
-    News.get_for_deletor current_member, clean_room[:id]
+  begin
+    doc = News.delete!( current_member, clean_room[:id])
+    flash.success_msg = "Deleted: #{doc.title}"
   rescue News::NoRecordFound, News::UnauthorizedDeletor
+    flash.success_msg = "Deleted."
   end
 
-  flash.success_msg = "Deleted: #{d.title}"
-  redirect '/'
+  redirect '/my/'
 end
 
 get '/news/by_date/:year/:month/' do
@@ -112,22 +105,21 @@ get '/news/by_date/:year/:month/' do
       @next_month = Time.utc(year, month+1)    
   end
   @date = Time.utc(year, month)
-  @news = News.reverse_order(:published_at).
-          where( 'published_at > ? AND published_at <  ?',  @prev_month, @next_month )
+  @news = News.get_by_published_at(:descending=>true, :startkey=>@next_month, :endkey=>@prev_month)
   render_mab
 end # ===
 
 get %r{/news/by_tag/([0-9]+)/} do |id|
-  tags = { 167 => stuff_for_dudes, 
-            168 => stuff_for_dudettes, 
-            169 => stuff_for_pets, 
-            170 => stuff_for_mommies_and_dads, 
-            171 => edible_delicious, 
-            172 => books_articles, 
-            173 => techie_wonders, 
-            174 => miscellaneous, 
-            175 => art_design, 
-            176 => surfer_hearts 
+  tags = { 167 => 'stuff_for_dudes', 
+            168 => 'stuff_for_dudettes', 
+            169 => 'stuff_for_pets', 
+            170 => 'stuff_for_mommies_and_dads', 
+            171 => 'edible_delicious', 
+            172 => 'books_articles', 
+            173 => 'techie_wonders', 
+            174 => 'miscellaneous', 
+            175 => 'art_design', 
+            176 => 'surfer_hearts' 
   }
   tag_id = Integer(id) 
   @news_tag = tags[ tag_id ]

@@ -45,7 +45,7 @@ helpers do # ===============================
 
   def current_member=(mem)
       raise "CURRENT MEMBER ALREADY SET" if mem && session[:member_username]
-      session[:member_username] = mem.id
+      session[:member_username] = mem._id
   end    
 
   def current_member

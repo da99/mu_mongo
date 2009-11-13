@@ -26,19 +26,19 @@ class Bacon::Context
   end
 
   def log_in_member
-    mem = Member.order(:id).limit(1,1).first
+    mem = Member.get_by_id('regular-member-1')
     mem.should.not.has_power_of :ADMIN
-    post '/log-in/', {:username=>mem.usernames.first[:username], :password=>'myuni4vr'}, ssl_hash
+    post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password'}, ssl_hash
     follow_ssl_redirect!
-    last_request.fullpath.should.not =~ /log\-in/
+    last_request.fullpath.should =~ /my/
   end
 
   def log_in_admin
-    mem = Member.order(:id).first
+    mem = Member.get_by_id('admin-member-1')
     mem.should.has_power_of :ADMIN
-    post '/log-in/', {:username=>mem.usernames.first[:username], :password=>'myuni4vr'}, 'HTTP_X_FORWARDED_PROTO' => 'https'
+    post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password'}, ssl_hash
     follow_ssl_redirect!
-    last_request.fullpath.should.not =~ /log\-in/
+    last_request.fullpath.should =~ /my/
   end
 
 end
