@@ -1,10 +1,8 @@
 require 'bcrypt'
 
 
-# ==================================================
-#
-# ==================================================
 class Member 
+
   include CouchPlastic
   
   # =========================================================
@@ -37,37 +35,10 @@ class Member
 
 
   # =========================================================
-  #                     Class Methods.
+  #                     CRUD Methods.
   # =========================================================
 
-
-
-  # Based on Sinatra-authentication (on github).
-  # 
-  # Parameters:
-  #   raw_vals - Hash with at least 2 keys: :username, :password
-  # 
-  # Raises: 
-  #   Member::IncorrectPassword
-  #
-  def self.authenticate( raw_vals )
-      
-      un = Username.get_by_username( raw_vals[:username] )
-
-      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
-      
-      if correct_password
-        return un.owner
-      end
-
-      raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
-
-  end # === self.authenticate
-
-
-  # =========================================================
-  #                    Data Class Methods
-  # =========================================================
+  enable :created_at, :updated_at
 
   def self.create( editor, raw_vals )
     
@@ -111,8 +82,55 @@ class Member
   
 
   # =========================================================
-  #                    Instance Methods
-  # ========================================================= 
+  #           Authorization Methods (Class + Instance)
+  # =========================================================
+
+  def creator? editor # NEW, CREATE
+    return true if !editor
+    false
+  end
+
+  def viewer? editor # SHOW
+    true
+  end
+
+  def updator? editor # EDIT, UPDATE
+    return false if !editor
+    return true if self._id == editor._id
+    return true if editor.has_power_of?(:ADMIN)
+    false
+  end
+
+  def deletor? editor # DELETE
+    updator? editor
+  end
+
+
+  # Based on Sinatra-authentication (on github).
+  # 
+  # Parameters:
+  #   raw_vals - Hash with at least 2 keys: :username, :password
+  # 
+  # Raises: 
+  #   Member::IncorrectPassword
+  #
+  def self.authenticate( raw_vals )
+      
+      un = Username.get_by_username( raw_vals[:username] )
+
+      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
+      
+      if correct_password
+        return un.owner
+      end
+
+      raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
+
+  end # === self.authenticate
+
+  # =========================================================
+  #                     SETTERS/ACCESSORS (Instance)
+  # =========================================================
 
   def usernames
     assoc_cache[:usernames] ||= Username.get_by_owner( self.original[:_id] )
@@ -154,11 +172,7 @@ class Member
       
   end # === def security_clearance?
 
-
-
   
-  # =============== VALIDATORS =============================
-
   def password=(raw_data)
     pass         = raw_data[:password ].to_s.strip
     confirm_pass = raw_data[:confirm_password].to_s.strip
@@ -207,11 +221,7 @@ class Member
     
   end # === def set_permission_level
   
-  
-end # === model Member
-
-
-__END__
+ 
 
   # =========================================================
   # Returns the time passed to it to the Member's local time
@@ -222,6 +232,10 @@ __END__
     utc ||= Time.now.utc
     @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
     @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
-  end # ===  
+  end # ===   
+
+
+end # === model Member
+
   
   
