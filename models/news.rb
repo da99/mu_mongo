@@ -6,8 +6,10 @@ class News
   include CouchPlastic
 
 
-  # ==== GET Methods (Class) =================================================
-
+  # =========================================================
+  #                     GET Methods (Class)
+  # =========================================================    
+  
   def self.get_tags
     rows = CouchDoc.GET(:news_tags, 
         :reduce=>true, 
@@ -31,7 +33,9 @@ class News
     CouchDoc.GET(:news_by_published_at, params)
   end
 
-  # ==== CRUD Methods ============================================================
+  # =========================================================
+  #                     CRUD Methods.
+  # =========================================================
 
   enable :created_at, :updated_at
 
@@ -40,8 +44,10 @@ class News
 
   optional_for_update :title, :body, :teaser, :published_at, :tags
 
-  # ==== Authorization Methods (Class + Instance) =================================================
-  
+  # =========================================================
+  #           Authorization Methods (Class + Instance)
+  # =========================================================
+ 
   def creator? editor # NEW, CREATE
     return false if !editor
     editor.has_power_of? :ADMIN
@@ -60,7 +66,10 @@ class News
   end
 
 
-  # ==== SETTERS/ACCESSORS (Instance) ==============================================
+
+  # =========================================================
+  #                     SETTERS/ACCESSORS (Instance)
+  # =========================================================
 
   def last_modified_at
     updated_at || created_at

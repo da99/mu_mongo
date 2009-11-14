@@ -3,7 +3,16 @@ class Username
 
   include CouchPlastic
 
-  # ==== CONSTANTS =====================================================
+
+  # =========================================================
+  #                    Errors 
+  # ========================================================= 
+  
+  class NotUnique < StandardError; end; 
+  
+  # =========================================================
+  #                    Constants 
+  # =========================================================    
 
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
@@ -25,15 +34,12 @@ class Username
   #EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   #VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
 
-  # ==== ERRORS ========================================================
+
+
+  # =========================================================
+  #                     GET Methods (Class)
+  # =========================================================    
   
-  class NotUnique < StandardError; end;
-
-
-  # ==== HOOKS =========================================================
-  
-
-  # ==== GET Methods =================================================
   def self.get_by_owner owner_id
     results = CouchDoc.GET(:usernames_by_owner, :key=> owner_id.to_s, :include_docs=>false)
     results[:rows].map { |r| r[:value] }
@@ -44,10 +50,10 @@ class Username
     CouchDoc.GET_by_id('username-' + username)
   end
 
-  # ==== CLASS METHODS =================================================
 
-
-
+  # =========================================================
+  #                     CRUD Methods.
+  # =========================================================
 
   def self.create editor, raw_vals
     raise ArgumentError, "Invalid member: #{editor.inspect}" if !editor
@@ -94,9 +100,33 @@ class Username
     doc.save_update
   end # === def update_it!
 
+  # =========================================================
+  #           Authorization Methods (Class + Instance)
+  # =========================================================
+ 
+  def creator? editor # NEW, CREATE
+    return false if !editor
+    return true if editor.has_power_of?(:MEMBER)
+    false
+  end
 
-  # ==== INSTANCE METHODS ==============================================
+  def viewer? editor # SHOW
+    true
+  end
 
+  def updator? editor # EDIT, UPDATE
+    return false if !creator?(editor)
+    self.owner._id == editor._id
+  end
+
+  def deletor? editor # DELETE
+    updator?(editor)
+  end
+
+
+  # =========================================================
+  #                     SETTERS/ACCESSORS (Instance)
+  # =========================================================
 
   # Association to Member, through :owner_id
   def owner
@@ -177,6 +207,6 @@ class Username
   end # === def validate_new_values
   
   
-end # === end Username
+end # === class Username
 
 
