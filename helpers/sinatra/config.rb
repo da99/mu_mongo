@@ -26,7 +26,27 @@ end
 #                              All Environments
 # =====================================================================================
 configure do
-  
+
+  # 
+  # Raise this when it's possible this situation occurred:
+  #   * Client requests HTML page.
+  #   * New code is pushed by developer to server.
+  #   * Client uses outdate HTML form to send data.
+  #
+  module ApiChange
+    class ApiChangeError < StandardError
+      attr_accessor :class_name, :keys
+      def initialize(class_obj, *keys)
+        @class_name = class_obj.to_s
+        @keys = keys
+        msg = "#{self.class}: #{keys.inspect}"
+        super(msg)
+      end
+    end
+    class KeyMissing < ApiChangeError; end
+    class KeyObsolete < ApiChangeError; end
+  end
+
   DESIGN_DOC_ID = '_design/megauni'
 
   use Rack::Session::Pool  

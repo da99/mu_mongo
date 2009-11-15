@@ -3,13 +3,6 @@ class CouchDoc
   
   class HTTP_Error < StandardError; end
 
-  Views = %w{
-    news_by_tag
-    news_by_published_at
-    news_tags
-    usernames_by_owner
-  }
-
   ValidQueryOptions = %w{ 
       key
       startkey
@@ -87,8 +80,19 @@ class CouchDoc
   end
 
   def self.GET(view_name, params={})
-    if !Views.include?(view_name.to_s)
+
+    if !DesignDoc.view_exists?(view_name)
       raise ArgumentError, "Non-existent view name: #{view_name}"
+    end
+
+    # Check to see if :reduce option is needed.
+    # :reduce parameter needs to be set by default 
+    # since View may change in the future from 
+    # 'map' to 'map/reduce'.
+    if !params.has_key?(:reduce)
+      if DesignDoc.view_has_reduce?(view_name)
+        params[:reduce] = false
+      end
     end
 
     path                  = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)

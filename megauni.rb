@@ -34,9 +34,7 @@ configure do
     design_doc
     resty
     member
-    username
     log_in_attempt
-    history_log
     news
   }
 end

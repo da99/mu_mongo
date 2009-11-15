@@ -1,6 +1,5 @@
 require 'bcrypt'
 
-
 class Member 
 
   include CouchPlastic
@@ -11,26 +10,37 @@ class Member
 
   class IncorrectPassword < StandardError; end
   class InvalidPermissionLevel < StandardError; end
-  
-  SECURITY_LEVELS_HASH = { :NO_ACCESS   => -1000,
-                           :ADMIN       => 1000,
-                           :EDITOR      => 10,
-                           :MEMBER      => 1,
-                           :STRANGER    => 0 }
-
-  SECURITY_LEVELS      = SECURITY_LEVELS_HASH.values
-  SECURITY_LEVEL_NAMES = SECURITY_LEVELS_HASH.keys
-  SECURITY_LEVELS_HASH.each do |k,v|
-    const_set k, v
+ 
+  SECURITY_LEVELS = [ :NO_ACCESS, :STRANGER, :MEMBER, :EDITOR, :ADMIN ]
+  SECURITY_LEVELS.each do |k|
+    const_set k, k
   end
   
-    
+  EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
+  VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
+  LIFE_CATEGORIES = {
+    1 => 'Friend',
+    2 => 'Family',
+    3 => 'Work',
+    4 => 'Romance',
+    5 => 'Pet Owner',
+    6 => 'Celebrity',
+    7 => 'Role Playing'
+  }   
+
+  LIFE_CATEGORY_IDS = LIFE_CATEGORIES.keys.sort
+
+  #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
+  #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
+
+
   # =========================================================
   #                     GET Methods (Class)
   # =========================================================    
   
-  def self.get_by_id( id )
-    CouchDoc.GET_by_id id
+  def self.by_username username
+    raise ArgumentError, "Invalid username: #{username.inspect}" if !username
+    CouchDoc.GET(:member_usernames, :key=>username, :limit=>1, :include_docs=>true)
   end
 
 
@@ -38,48 +48,18 @@ class Member
   #                     CRUD Methods.
   # =========================================================
 
-  enable :created_at, :updated_at
+  enable_timestamps
 
-  def self.create( editor, raw_vals )
-    
-    raise "No logged in members are allowed to created Members." if editor
+  during(:create) {
+    demand :new_life, :password
+    ask_for :avatar_link, :email
+  }
 
-    doc = new
-    doc.password= raw_vals
-    doc.set_optional_values( raw_vals, :avatar_link )
-    
-    doc.save_create
+  during(:update) { 
+    from(:self).ask_for(:password) 
+    from(ADMIN).ask_for(:permission_level)
+  }
 
-    begin
-      Username.create( doc, raw_vals )
-    rescue Username::NotUnique
-      doc.delete!
-      doc.errors << 'Username already taken.'
-      doc.validate
-    end
-    
-    doc
-
-  end
-
-  def self.edit( editor, raw_vals )
-    doc = CouchDoc.GET_by_id(raw_vals[:id])
-    doc.validate_editor( editor, doc.owner, ADMIN )
-    doc
-  end
-
-  def self.update( editor, raw_vals )
-    doc = edit(editor, raw_vals)
-    if doc.owner?(editor)
-        doc.set_optional_values( raw_vals, :password )
-    else
-      if editor.has_power_of?(:ADMIN)
-        doc.set_optional_values( raw_vals, :permission_level ) 
-      end
-    end
-    doc.save_update
-  end
-  
 
   # =========================================================
   #           Authorization Methods (Class + Instance)
@@ -116,7 +96,7 @@ class Member
   #
   def self.authenticate( raw_vals )
       
-      un = Username.get_by_username( raw_vals[:username] )
+      un = Member.by_username( raw_vals[:username] )
 
       correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
       
@@ -145,31 +125,23 @@ class Member
   
   
   def has_power_of?(raw_level)
-      
-      # Let's turn raw value into a proper instance:
-      # 1000 => 1000
-      # :ADMIN => 1000
-      target_perm_level = raw_level.instance_of?(Symbol) ? 
-                            self.class.const_get(raw_level) : 
-                            raw_level ;
-                                  
-      case target_perm_level
-        when self
-          true
-        when NO_ACCESS
-          false
-        when STRANGER
-          true
-        when MEMBER
-          new? ? false : true
-        when ADMIN
-          self.permission_level == ADMIN
-        when EDITOR
-          self.permission_level === EDITOR
-        else
-          raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level." 
-      end
-      
+
+    return true if raw_level == self
+    
+    target_level = raw_level.is_a?(String) ? raw_level.to_sym : raw_level
+
+    if !SECURITY_LEVELS.include?(target_level)
+      raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level."
+    end
+    
+    return false if target_level == NO_ACCESS
+    return true if target_level == STRANGER
+    return false if new? 
+
+    member_index = SECURITY_LEVELS.index(self.permission_level)
+    target_index = SECURITY_LEVELS.index(target_level)
+    return member_level_index >= target_index
+
   end # === def security_clearance?
 
   
@@ -213,7 +185,7 @@ class Member
   
     new_level = raw_data[fn]
     
-    if !SECURITY_LEVELS.include?(new_level)
+    if !SECURITY_LEVELS.include?(new_level.to_sym)
       raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
     end
     
@@ -233,6 +205,93 @@ class Member
     @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
     @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
   end # ===   
+
+  def email= raw_params
+    valid_email_chars   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
+    email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
+    valid_email_format  = /\A#{email_finder}\z/
+
+    o = raw_params[ :email ] 
+    v = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
+
+    if v != o || v !~ valid_email_format 
+      self.errors << "Email contains invalid characters." 
+    elsif v.length < 6
+      self.errors << "Email is too short." 
+    end
+  
+    if self.errors.empty?
+      self.new_values[:email] = v  
+      return self.new_values[:email]
+    end
+
+    v
+  end # === def email=
+  
+  
+  def new_life= raw_data
+    fn = :username
+    raw_name = raw_data[fn].to_s.strip
+    
+    # Delete invalid characters and 
+    # reduce any suspicious characters. 
+    # '..*' becomes '.', '--' becomes '-'
+    new_un = raw_name.gsub( /[^a-z0-9]{1,}/i  ) { |s| 
+      if ['_', '.', '-'].include?( s[0,1] )
+        s[0,1]
+      else
+        ''
+      end
+    }          
+    
+    # Check to see if there is at least one alphanumeric character
+    if new_un.empty?
+      self.errors << 'Username is required.'
+    elsif new_un.length < 2
+      self.errors << 'Username is too short. (Must be 3 or more characters.)' 
+    elsif new_un.length > 20
+      self.errors << 'Username is too long. (Must be 20 characters or less.)' 
+    elsif !new_un[ /[a-z0-9]/i ] && self.errors.empty?
+      self.errors << 'Username must have at least one letter or number.' 
+    end
+    
+    if self.errors.empty?
+      self.new_values[fn] = new_un
+      self.new_values[:_id] = "username-#{new_un}"
+      return new_un
+    end
+
+    nil
+  end # === def validate_new_values
+  
+  
+  def history= raw_data
+    @history_msgs = []
+    
+    raise "Fix this code below."
+
+    raw_vals.each { |k,v|
+      case k.to_sym
+        when :username
+          history_msgs << "Changed username from: #{self[:username]}"
+        when :email
+          history_msgs << "Changed email from: #{self[:email]}"
+      end
+    }
+    return true if !@history_msgs.empty?
+    
+    HistoryLog.create_it!( 
+     :owner_id  => self.owner[:id], 
+     :editor_id => self.current_editor[:id], 
+     :action    => 'UPDATE', 
+     :body      => @history_msgs.join("\n")
+    )  
+
+    doc.save_update
+  end # === def history=
+
+
+
 
 
 end # === model Member

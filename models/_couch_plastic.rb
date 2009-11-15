@@ -1,3 +1,41 @@
+  class ManOfAction
+    def initialize(instance, editor, raw_data)
+      @editor = editor
+      @raw_data = raw_data
+      @instance = instance
+    end
+    def demand *cols
+      cols.flatten.each { |k|
+        @instance.send("#{k}=", @raw_data)
+      }
+    end
+    def ask_for *cols
+      cols.flatten.each { |k|
+        if @raw_data.has_key?(k)
+          @instance.send("#{k}=", @raw_data)
+        end
+      }
+    end
+    def from member_level
+      if !@editor && member_level == Member::STRANGER
+        self
+      elsif @editor && @editor.has_power_of?(member_level)
+        self
+      else 
+        NoActionMan
+      end
+    end
+    
+  end
+
+  class NoActionMan
+    class << self
+      def demand *cols
+      end
+      def ask_for *cols
+      end
+    end
+  end
 
 
 module CouchPlastic
@@ -45,24 +83,74 @@ module CouchPlastic
 
     # ===== DSL-icious ======================================
 
-    def required_for_create *cols 
-      raise "Method can only be used once." if constants.include?('REQUIRED_FOR_CREATE')
-      const_set('REQUIRED_FOR_CREATE', cols)
+    def actions
+      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
     end
 
-    def optional_for_create *cols 
-      raise "Method can only be used once." if constants.include?('OPTIONAL_FOR_CREATE')
-      const_set('OPTIONAL_FOR_CREATE', cols)
+    def during action, &blok
+      if actions[action]
+        raise ArgumentError, "Already used: #{action.inspect}" 
+      end
+      actions[action] = blok
     end
 
-    def required_for_update *cols
-      raise "Method can only be used once." if constants.include?('REQUIRED_FOR_UPDATE')
-      const_set('REQUIRED_FOR_UPDATE', cols)
+    def required_for action, *cols, &blok
+      valid_actions = [:create, :update]
+      if !valid_actions.include?(action)
+        raise ArgumentError, "Invalid action: #{action.inspect}"
+      end
+
+      const_name = "REQUIRED_FOR_#{action.to_s.upcase}"
+
+      raise "Method can only be used once." if constants.include?(const_name)
+
+      if cols.empty? && !block_given?
+        raise ArgumentError, "No cols or block given."
+      end
+
+      logic = if cols.empty?
+        blok
+      else
+        lambda { |doc, editor, raw_vals| 
+          cols.each do |k|
+            send("#{k}=", raw_vals)
+          end
+        }
+      end
+
+      const_set(const_name, logic)
     end
 
-    def optional_for_update *cols
-      raise "Method can only be used once." if constants.include?('OPTIONAL_FOR_UPDATE')
-      const_set('OPTIONAL_FOR_UPDATE', cols)
+    alias_method :require_for, :required_for
+
+    def optional_for action,  *cols 
+      
+      valid_actions = [:create, :update]
+
+      if !valid_actions.include?(action)
+        raise ArgumentError, "Invalid action: #{action.inspect}"
+      end
+
+      valid_actions = [:create, :update]
+
+      if !valid_actions.include?(action)
+        raise ArgumentError, "Invalid action: #{action.inspect}"
+      end
+
+      const_name = "OPTIONAL_FOR_#{action.to_s.upcase}"
+      raise "Method can only be used once." if constants.include?(const_name)
+
+      logic = lambda { |doc, editor, raw_vals|
+        cols.each do |k|
+          send("#{k}=", raw_vals)
+        end
+      }
+      const_set(const_name, logic)
+
+    end
+
+    def enable_timestamps
+      enable :created_at, :updated_at
     end
 
     def enable *opts
@@ -78,11 +166,15 @@ module CouchPlastic
 
     def enabled? opt
       @use_options ||=[]
-      @use_options.include? opt
+      @use_options.include? opt.to_sym
     end
 
 
     # ===== CRUD Methods ====================================
+
+    def by_id( id )
+      CouchDoc.GET_by_id id
+    end
 
     def show mem, id
       d = CouchDoc.GET_by_id(id)
@@ -102,16 +194,14 @@ module CouchPlastic
 
     def create editor, raw_data
       d = new(editor)
-      d.set_required raw_data
-      d.set_optional raw_data
+      ManOfAction.new( d, editor, raw_data).instance_eval &self.actions[:create]
       d.save_with_creator editor
       d
     end
 
     def update editor, raw_data
       d = CouchDoc.GET_by_id(raw_data[:id])
-      d.set_required raw_data
-      d.set_optional raw_data
+      ManOfAction.new( d, editor, raw_data).instance_eval &self.actions[:update]
       d.save_with_updator editor
       d
     end
@@ -154,24 +244,59 @@ module CouchPlastic
     super()
   end
  
-  def set_required raw_data
-    REQUIRED_FOR_CREATE.each { |c|
-      d.send("#{c}=", raw_data)
-    }
-  end
+  def set_required *args
+
+    required = new? ? REQUIRED_FOR_CREATE : REQUIRED_FOR_UPDATE
+
+    if required.is_a?(Array)
+      
+      if args.size != 1
+        raise ArgumentError, "Only raw values required: #{args.inspect}"
+      end
+
+      raw_data = args.first
+
+      # Check for API change.
+      missing_keys = required.select { |c| !raw_data.has_key?(c) } 
+      if !missing_keys.empty?
+        raise ApiChange::KeyMissing.new( self.class, *missing_keys) 
+      end
+
+      # Set the values.
+      required.each { |c|
+        d.send("#{c}=", raw_data)
+      }
+
+    else  # We're dealing with a Proc.
+
+      if args.size != 2
+        raise ArgumentError, "editor and raw values required: #{args.inspect}"
+      end
+      required.call( self, args.first, args.last)
+    end
+    
+  end # def set_required
+
+  def set_if_keys_exists(raw_vals, *cols)
+    cols.flatten.each do |k|
+      if raw_vals.has_key?(k)
+        send("#{k}=", raw_vals)
+      end
+    end
+  end 
 
   def set_optional raw_data, *raw_cols
-    cols = if self.class.constants.include?('OPTIONAL_FOR_UPDATE')
-      OPTIONAL_FOR_UPDATE    
+
+    action = new? ? 'CREATE' : 'UPDATE'
+    const = "OPTIONAL_FOR_#{action}"
+
+    cols = if self.class.constants.include?(const)
+      self.class.const_get const
     else
       raw_cols
     end
 
-    cols.each { |c|
-      if raw_data.has_key?(c)
-        d.send("#{c}=", raw_data)
-      end
-    }
+    set_if_keys_exists( raw_data, cols )
   end
 
 
@@ -206,7 +331,7 @@ module CouchPlastic
   end
   
   def save_with_creator mem, *opts, &blok
-    if !creator?(editor)
+    if !creator?(mem)
       raise UnauthorizedCreator.new( self, mem )
     end
     save_create *opts, &blok

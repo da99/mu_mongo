@@ -1,27 +1,46 @@
-class #{m} 
+
+
+class #{model_class}
+
   include CouchPlastic
 
-  # ==== CONSTANTS =====================================================
+
+  # =========================================================
+  #                     GET Methods (Class)
+  # =========================================================    
   
+  # =========================================================
+  #                     CRUD Methods.
+  # =========================================================
 
-  # ==== ERRORS ========================================================
-  
+  enable :created_at, :updated_at
 
-  # ==== ASSOCIATIONS ==================================================
-  
+  required_for_create  :title
+  optional_for_create  :tags 
 
-  # ==== CLASS METHODS =================================================
+  optional_for_update :title
 
-  def self.create editor, raw_vals
+  # =========================================================
+  #           Authorization Methods (Class + Instance)
+  # =========================================================
+ 
+  def creator? editor # NEW, CREATE
   end
 
-  def self.edit editor, raw_vals
+  def viewer? editor # SHOW
   end
 
-  def self.update editor, raw_vals
+  def updator? editor # EDIT, UPDATE
   end
 
-  # ==== INSTANCE METHODS ==============================================
+  def deletor? editor # DELETE
+  end
 
 
-end # === end #{m}
+
+  # =========================================================
+  #                     SETTERS/ACCESSORS (Instance)
+  # =========================================================
+
+
+end # === end #{model_class}

@@ -2,6 +2,13 @@
 
 class DesignDoc
 
+  Views = %w{
+    news_by_tag
+    news_by_published_at
+    news_tags
+    member_usernames
+  }.map(&:to_sym)
+
   ID = '_design/megauni'
 
   def self.doc
@@ -17,18 +24,33 @@ class DesignDoc
   end
 
   def self.create
-    CouchDoc.PUT ID, as_hash
+    CouchDoc.PUT ID, fresh_hash
   end
 
   def self.update
-    new_doc = doc.update(as_hash)
+    new_doc = doc.update(fresh_hash)
     CouchDoc.PUT ID, new_doc
   end
 
+  def self.view_exists? view_name
+    as_hash.has_key? view_name
+  end
+
+  def self.view_has_reduce?(view_name)
+    if view_exists?(view_name)
+      raise ArgumentError, "View not found: #{view_name.inspect}"
+    end
+    as_hash[view_name][:reduce].has_key?(:reduce)
+  end
+
   def self.as_hash
+    @as_hash ||= fresh_hash
+  end
+
+  def self.fresh_hash
     doc = {:views=>{}}
 
-    CouchDoc::Views.each { |v|
+    Views.each { |v|
       doc[:views][v] ||= {}
       doc[:views][v][:map] = read_view_file(v)
 

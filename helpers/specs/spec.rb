@@ -25,7 +25,7 @@ class Bacon::Context
   end
 
   def log_in_member
-    mem = Member.get_by_id('regular-member-1')
+    mem = Member.by_id('regular-member-1')
     mem.should.not.has_power_of :ADMIN
     post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password'}, ssl_hash
     follow_ssl_redirect!
@@ -33,7 +33,7 @@ class Bacon::Context
   end
 
   def log_in_admin
-    mem = Member.get_by_id('admin-member-1')
+    mem = Member.by_id('admin-member-1')
     mem.should.has_power_of :ADMIN
     post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password'}, ssl_hash
     follow_ssl_redirect!

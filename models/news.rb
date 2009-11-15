@@ -37,12 +37,16 @@ class News
   #                     CRUD Methods.
   # =========================================================
 
-  enable :created_at, :updated_at
+  enable_timestamps
 
-  required_for_create  :title, :body, :published_at 
-  optional_for_create  :teaser, :tags 
+  during( :create ) {
+    demand :title, :body, :published_at 
+    ask_for :teaser, :tags 
+  }
 
-  optional_for_update :title, :body, :teaser, :published_at, :tags
+  during( :update ) {
+    ask_for :title, :body, :teaser, :published_at, :tags
+  }
 
   # =========================================================
   #           Authorization Methods (Class + Instance)
