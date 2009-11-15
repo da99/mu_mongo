@@ -56,8 +56,15 @@ class Member
   }
 
   during(:update) { 
-    from(:self).ask_for(:password) 
-    from(ADMIN).ask_for(:permission_level)
+
+    from(:self) {
+      ask_for(:password) 
+    }
+
+    from(ADMIN) {
+      ask_for(:permission_level)
+    }
+
   }
 
 

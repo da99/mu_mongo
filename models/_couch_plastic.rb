@@ -1,45 +1,55 @@
-  class ManOfAction
-    def initialize(instance, editor, raw_data)
-      @editor = editor
-      @raw_data = raw_data
-      @instance = instance
-    end
-    def demand *cols
-      cols.flatten.each { |k|
+class ManOfAction
+  
+  def initialize(instance, editor, raw_data)
+    @editor = editor
+    @raw_data = raw_data
+    @instance = instance
+  end
+  
+  def demand *cols
+    cols.flatten.each { |k|
+      @instance.send("#{k}=", @raw_data)
+    }
+  end
+  
+  def ask_for *cols
+    cols.flatten.each { |k|
+      if @raw_data.has_key?(k)
         @instance.send("#{k}=", @raw_data)
-      }
-    end
-    def ask_for *cols
-      cols.flatten.each { |k|
-        if @raw_data.has_key?(k)
-          @instance.send("#{k}=", @raw_data)
-        end
-      }
-    end
-    def from member_level
-      if !@editor && member_level == Member::STRANGER
-        self
-      elsif @editor && @editor.has_power_of?(member_level)
-        self
-      else 
-        NoActionMan
       end
-    end
-    
+    }
   end
 
-  class NoActionMan
-    class << self
-      def demand *cols
-      end
-      def ask_for *cols
-      end
+  def from raw_member_level, &blok
+    member_level = case raw_member_level
+      when :self
+        @instance
+      else
+        raw_member_level
+    end
+
+    if !@editor && member_level == Member::STRANGER
+      instance_eval &blok 
+    elsif @editor && @editor.has_power_of?(member_level)
+      instance_eval &blok
+    else 
     end
   end
+  
+end
+
+
 
 
 module CouchPlastic
   
+  # =========================================================
+  #                     self.included
+  # ========================================================= 
+
+  def self.included(target)
+    target.extend ClassMethods
+  end
 
   # =========================================================
   #                     Error Constants
@@ -75,152 +85,6 @@ module CouchPlastic
   class UnauthorizedUpdator < Unauthorized; end
   class UnauthorizedDeletor < Unauthorized; end
 
-  # =========================================================
-  #                  Module: ClassMethods
-  # ========================================================= 
-  
-  module ClassMethods # =====================================
-
-    # ===== DSL-icious ======================================
-
-    def actions
-      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
-    end
-
-    def during action, &blok
-      if actions[action]
-        raise ArgumentError, "Already used: #{action.inspect}" 
-      end
-      actions[action] = blok
-    end
-
-    def required_for action, *cols, &blok
-      valid_actions = [:create, :update]
-      if !valid_actions.include?(action)
-        raise ArgumentError, "Invalid action: #{action.inspect}"
-      end
-
-      const_name = "REQUIRED_FOR_#{action.to_s.upcase}"
-
-      raise "Method can only be used once." if constants.include?(const_name)
-
-      if cols.empty? && !block_given?
-        raise ArgumentError, "No cols or block given."
-      end
-
-      logic = if cols.empty?
-        blok
-      else
-        lambda { |doc, editor, raw_vals| 
-          cols.each do |k|
-            send("#{k}=", raw_vals)
-          end
-        }
-      end
-
-      const_set(const_name, logic)
-    end
-
-    alias_method :require_for, :required_for
-
-    def optional_for action,  *cols 
-      
-      valid_actions = [:create, :update]
-
-      if !valid_actions.include?(action)
-        raise ArgumentError, "Invalid action: #{action.inspect}"
-      end
-
-      valid_actions = [:create, :update]
-
-      if !valid_actions.include?(action)
-        raise ArgumentError, "Invalid action: #{action.inspect}"
-      end
-
-      const_name = "OPTIONAL_FOR_#{action.to_s.upcase}"
-      raise "Method can only be used once." if constants.include?(const_name)
-
-      logic = lambda { |doc, editor, raw_vals|
-        cols.each do |k|
-          send("#{k}=", raw_vals)
-        end
-      }
-      const_set(const_name, logic)
-
-    end
-
-    def enable_timestamps
-      enable :created_at, :updated_at
-    end
-
-    def enable *opts
-      valid_opts = [:created_at, :updated_at]
-      invalid_opts = opts - valid_opts
-      if !invalid_opts.empty?
-        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
-      end
-      @use_options ||= []
-      @use_options = @use_options + opts
-      @use_options
-    end
-
-    def enabled? opt
-      @use_options ||=[]
-      @use_options.include? opt.to_sym
-    end
-
-
-    # ===== CRUD Methods ====================================
-
-    def by_id( id )
-      CouchDoc.GET_by_id id
-    end
-
-    def show mem, id
-      d = CouchDoc.GET_by_id(id)
-      if !d.viewer?(mem)
-        raise UnauthorizedViewer.new( self, mem )
-      end
-      d
-    end
-
-    def edit mem, id
-      d = CouchDoc.GET_by_id(id)
-      if !d.updator?(mem)
-        raise UnauthorizedEditor.new( self, mem )
-      end
-      d
-    end
-
-    def create editor, raw_data
-      d = new(editor)
-      ManOfAction.new( d, editor, raw_data).instance_eval &self.actions[:create]
-      d.save_with_creator editor
-      d
-    end
-
-    def update editor, raw_data
-      d = CouchDoc.GET_by_id(raw_data[:id])
-      ManOfAction.new( d, editor, raw_data).instance_eval &self.actions[:update]
-      d.save_with_updator editor
-      d
-    end
-
-    def delete! editor, raw_data
-      d = CouchDoc.GET_by_id(raw_data[:id])
-      d.delete_with_deletor! editor
-      d
-    end
-
-
-  end # === module ClassMethods ==============================================
-
- 
-  def self.included(target)
-    target.extend ClassMethods
-  end
-
-
   attr_accessor :current_editor, :raw_data
   
   def method_missing *args
@@ -231,74 +95,53 @@ module CouchPlastic
     super
   end
 
-  def initialize(*opts)
-    if !opts.empty?
-      mem = opts.shift
-      if !opts.empty?
-        raise ArgumentError, "Unknown options: #{opts.inspect}"
-      end
-      if !self.creator?(mem)
-        raise UnauthorizedNew.new(self, opts)
-      end
-    end
-    super()
-  end
- 
-  def set_required *args
+  def apply_new_data action, editor, raw_data
 
-    required = new? ? REQUIRED_FOR_CREATE : REQUIRED_FOR_UPDATE
-
-    if required.is_a?(Array)
-      
-      if args.size != 1
-        raise ArgumentError, "Only raw values required: #{args.inspect}"
-      end
-
-      raw_data = args.first
-
-      # Check for API change.
-      missing_keys = required.select { |c| !raw_data.has_key?(c) } 
-      if !missing_keys.empty?
-        raise ApiChange::KeyMissing.new( self.class, *missing_keys) 
-      end
-
-      # Set the values.
-      required.each { |c|
-        d.send("#{c}=", raw_data)
-      }
-
-    else  # We're dealing with a Proc.
-
-      if args.size != 2
-        raise ArgumentError, "editor and raw values required: #{args.inspect}"
-      end
-      required.call( self, args.first, args.last)
-    end
-    
-  end # def set_required
-
-  def set_if_keys_exists(raw_vals, *cols)
-    cols.flatten.each do |k|
-      if raw_vals.has_key?(k)
-        send("#{k}=", raw_vals)
-      end
-    end
-  end 
-
-  def set_optional raw_data, *raw_cols
-
-    action = new? ? 'CREATE' : 'UPDATE'
-    const = "OPTIONAL_FOR_#{action}"
-
-    cols = if self.class.constants.include?(const)
-      self.class.const_get const
-    else
-      raw_cols
+    if action != :create && new?
+      raise ArgumentError, "Invalid action for new record: #{action.inspect}" 
     end
 
-    set_if_keys_exists( raw_data, cols )
+    if action == :create && !new?
+      raise ArgumentError, "Invalid action for existing record: #{action.inspect}" 
+    end
+
+    blok = self.class.actions[action]
+    self.current_editor = editor
+    self.raw_data = raw_data
+    instance_eval &blok
+
   end
 
+
+  def demand *cols
+    cols.flatten.each { |k|
+      send("#{k}=", raw_data)
+    }
+  end
+  
+  def ask_for *cols
+    cols.flatten.each { |k|
+      if raw_data.has_key?(k)
+        send("#{k}=", raw_data)
+      end
+    }
+  end
+
+  def from raw_member_level, &blok
+    member_level = case raw_member_level
+      when :self
+        self
+      else
+        raw_member_level
+    end
+
+    if !current_editor && member_level == Member::STRANGER
+      instance_eval &blok 
+    elsif current_editor && current_editor.has_power_of?(member_level)
+      instance_eval &blok
+    else 
+    end
+  end
 
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
@@ -311,7 +154,6 @@ module CouchPlastic
   def clear_assoc_cache
     @assoc_cache = {}
   end
-
 
   def original
     @original ||= {}
@@ -471,13 +313,6 @@ module CouchPlastic
   #               Validation-related Methods
   # ========================================================= 
 
-  def set_optional_values raw_vals, *cols
-    cols.flatten.each { |k|
-      if raw_vals.has_key?(k)
-        send("#{k}=", raw_vals[k])
-      end
-    }
-  end
 
   def errors
     @errors ||= []
@@ -583,6 +418,97 @@ module CouchPlastic
    
   end
  
+
+  # =========================================================
+  #                  Module: ClassMethods
+  # ========================================================= 
+  
+  module ClassMethods # =====================================
+
+    def new_from_db(data)
+      d = new
+      d._set_original_(data)
+      d
+    end
+
+
+    # ===== DSL-icious ======================================
+
+    def actions
+      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
+    end
+
+    def during action, &blok
+      if actions[action]
+        raise ArgumentError, "Already used: #{action.inspect}" 
+      end
+      actions[action] = blok
+    end
+
+    def enable_timestamps
+      enable :created_at, :updated_at
+    end
+
+    def enable *opts
+      valid_opts = [:created_at, :updated_at]
+      invalid_opts = opts - valid_opts
+      if !invalid_opts.empty?
+        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
+      end
+      @use_options ||= []
+      @use_options = @use_options + opts
+      @use_options
+    end
+
+    def enabled? opt
+      @use_options ||=[]
+      @use_options.include? opt.to_sym
+    end
+
+    # ===== CRUD Methods ====================================
+
+    def by_id( id ) # READ
+      CouchDoc.GET_by_id id
+    end
+
+    def show mem, id # READ
+      d = CouchDoc.GET_by_id(id)
+      if !d.viewer?(mem)
+        raise UnauthorizedViewer.new( self, mem )
+      end
+      d
+    end
+
+    def edit mem, id
+      d = CouchDoc.GET_by_id(id)
+      if !d.updator?(mem)
+        raise UnauthorizedEditor.new( self, mem )
+      end
+      d
+    end
+
+    def create editor, raw_data # CREATE
+      d = new(editor)
+      d.apply_new_date :create, editor, raw_data
+      d.save_with_creator editor
+      d
+    end
+
+    def update editor, raw_data # UPDATE
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      d.apply_new_data :update, editor, raw_data
+      d.save_with_updator editor
+      d
+    end
+
+    def delete! editor, raw_data # DELETE
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      d.delete_with_deletor! editor
+      d
+    end
+
+
+  end # === module ClassMethods ==============================================
 
 
 end # === model: Sequel::Model -------------------------------------------------

@@ -69,8 +69,7 @@ class CouchDoc
     begin
       data = GET_naked( id )
       return(data) if !data[:data_model]
-      doc = Object.const_get(data[:data_model]).new
-      doc._set_original_(data)
+      Object.const_get(data[:data_model]).new_from_db(data)
     rescue RestClient::ResourceNotFound 
       raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
     end
@@ -95,22 +94,22 @@ class CouchDoc
       end
     end
 
-    path                  = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)
-    results               = GET_naked(path, params)
+    path    = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)
+    results = GET_naked(path, params)
 
     return results if !params[:include_docs]
 
     objs = results[:rows].inject([]) { |m,r|
-      doc = Object.const_get(r[:doc][:data_model]).new
-      doc._set_original_(r[:doc])
-      m << doc
+      m << Object.const_get(r[:doc][:data_model]).new_from_db(r[:doc])
       m
     }
+
     if params[:limit] == 1
       objs.first
     else
       objs
     end
+
   end
 
   # Used for both creation and updating.
