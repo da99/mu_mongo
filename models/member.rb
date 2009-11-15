@@ -18,17 +18,14 @@ class Member
   
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
-  LIFE_CATEGORIES = {
-    1 => 'Friend',
-    2 => 'Family',
-    3 => 'Work',
-    4 => 'Romance',
-    5 => 'Pet Owner',
-    6 => 'Celebrity',
-    7 => 'Role Playing'
-  }   
-
-  LIFE_CATEGORY_IDS = LIFE_CATEGORIES.keys.sort
+  LIVES = [
+      :friend,
+      :family,
+      :work,
+      :romance,
+      :pet_owner,
+      :celebrity
+  ]
 
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
@@ -116,7 +113,7 @@ class Member
   end # === self.authenticate
 
   # =========================================================
-  #                     SETTERS/ACCESSORS (Instance)
+  #                     ACCESSORS (Instance)
   # =========================================================
 
   def usernames
@@ -129,7 +126,6 @@ class Member
   def inspect
     assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original[:_id]}>"
   end
-  
   
   def has_power_of?(raw_level)
 
@@ -151,8 +147,22 @@ class Member
 
   end # === def security_clearance?
 
+  # =========================================================
+  # Returns the time passed to it to the Member's local time
+  # as a String, formatted i18n to their Country preference.
+  # Default value of :utc is Time.now.utc
+  # =========================================================
+  def local_time_as_string( utc = nil )
+    utc ||= Time.now.utc
+    @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
+    @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
+  end # ===   
   
-  def password=(raw_data)
+  # =========================================================
+  #                 SETTERS (Instance)
+  # =========================================================
+
+  setter :password do
     pass         = raw_data[:password ].to_s.strip
     confirm_pass = raw_data[:confirm_password].to_s.strip
     
@@ -186,7 +196,7 @@ class Member
   end # === def set_password
   
   
-  def permission_level= raw_data
+  setter :permission_level do
 
     fn = :permission_level
   
@@ -202,18 +212,8 @@ class Member
   
  
 
-  # =========================================================
-  # Returns the time passed to it to the Member's local time
-  # as a String, formatted i18n to their Country preference.
-  # Default value of :utc is Time.now.utc
-  # =========================================================
-  def local_time_as_string( utc = nil )
-    utc ||= Time.now.utc
-    @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
-    @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
-  end # ===   
-
-  def email= raw_params
+  setter :email do
+    raw_params = raw_data
     valid_email_chars   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
     email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
     valid_email_format  = /\A#{email_finder}\z/
@@ -235,8 +235,8 @@ class Member
     v
   end # === def email=
   
-  
-  def new_life= raw_data
+
+  setter :new_life do
     fn = :username
     raw_name = raw_data[fn].to_s.strip
     
@@ -272,7 +272,7 @@ class Member
   end # === def validate_new_values
   
   
-  def history= raw_data
+  setter :history do
     @history_msgs = []
     
     raise "Fix this code below."

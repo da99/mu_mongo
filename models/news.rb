@@ -71,7 +71,7 @@ class News
 
 
   # =========================================================
-  #                     SETTERS/ACCESSORS (Instance)
+  #                     ACCESSORS (Instance)
   # =========================================================
 
   def last_modified_at
@@ -91,7 +91,12 @@ class News
     Time.parse(original[:published_at])
   end
 
-  def title= raw_data
+
+  # =========================================================
+  #                     SETTERS (Instance)
+  # =========================================================
+
+  setter :title do
     fn = :title
     new_title = raw_data[:title].to_s.strip
     if new_title.empty?
@@ -101,7 +106,7 @@ class News
     self.new_values[:title] = new_title
   end # === 
 
-  def teaser= raw_data
+  setter :teaser do 
     new_teaser = raw_data[:teaser].to_s.strip
     if new_teaser.empty?
       new_values[:teaser] = nil
@@ -110,7 +115,7 @@ class News
     end
   end # ===
 
-  def body= raw_data
+  setter :body do
     new_body = raw_data[:body].to_s.strip
     if new_body.empty?
       self.errors << "Body must not be empty."
@@ -123,11 +128,11 @@ class News
     new_values[:body] = new_body
   end # ===
 
-  def published_at= raw_data
+  setter :published_at do
     self.new_values[:published_at] = Time.parse(raw_data[:published_at]) || Time.now.utc
   end
 
-  def tags= raw_data
+  setter :tags do
     new_tags = raw_data[:tags].to_s.split
     return nil if new_tags.empty?
     self.new_values[:tags] = new_tags

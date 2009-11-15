@@ -103,14 +103,14 @@ module CouchPlastic
 
   def demand *cols
     cols.flatten.each { |k|
-      send("#{k}=", raw_data)
+      send("#{k}_setter")
     }
   end
   
   def ask_for *cols
     cols.flatten.each { |k|
       if raw_data.has_key?(k)
-        send("#{k}=", raw_data)
+        send("#{k}_setter")
       end
     }
   end
@@ -269,6 +269,14 @@ module CouchPlastic
     def enabled? opt
       @use_options ||=[]
       @use_options.include? opt.to_sym
+    end
+
+    def setter col, &blok
+      meth_name = "#{col}_setter"
+      if method_defined?(meth_name)
+        raise ArgumentError, "Method already defined for: #{col.inspect}"
+      end
+      define_method meth_name, &blok
     end
 
     # ===== CRUD Methods ====================================

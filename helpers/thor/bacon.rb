@@ -13,22 +13,10 @@ class Bacon < Thor
     ENV['RACK_ENV'] = 'test'
     require File.expand_path('megauni')
     DesignDoc.create_or_update
-    n = News.new
-    new_values = {:title=>'Longevinex', 
-      :teaser=>'teaser', 
-      :body=>'Test body.', 
-      :tags=>['surfer_hearts', 'hearts', 'pets']
-    }
-    n.title  = new_values
-    n.teaser = new_values
-    n.body   = new_values
-    n.tags   = new_values
-    n.save_create
 
     new_values = {
       :password=>'regular-password-1',
       :confirm_password=>'regular-password-1',
-      :permission_level=>Member::MEMBER,
       :username=>'regular-member-1'
     }
     m = Member.create nil, new_values
@@ -40,6 +28,15 @@ class Bacon < Thor
       :username=>'admin-member-1'
     }
     m = Member.create nil, new_values
+
+    n = News.new
+    new_values = {:title=>'Longevinex', 
+      :teaser=>'teaser', 
+      :body=>'Test body.', 
+      :tags=>['surfer_hearts', 'hearts', 'pets']
+    }
+    n.save_create
+
     
 
   end
