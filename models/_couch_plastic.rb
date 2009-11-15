@@ -38,7 +38,7 @@ module CouchPlastic
   end
 
   class UnauthorizedNew < Unauthorized; end
-  class UnauthorizedViewer < Unauthorized; end
+  class UnauthorizedReader < Unauthorized; end
   class UnauthorizedCreator < Unauthorized; end
   class UnauthorizedEditor < Unauthorized; end
   class UnauthorizedUpdator < Unauthorized; end
@@ -95,50 +95,10 @@ module CouchPlastic
 
   attr_reader :current_editor, :raw_data
 
-  def set_editor action, new_editor
-
-    if @current_editor
-      raise( ArgumentError, "This method can only be used once: " +
-        " #{@current_editor.inspect}, #{new_editor.inspect}")
-    end
-
-    case action
-      when :create
-        raise UnauthorizedCreator, new_editor.inspect if !creator?(new_editor)
-      when :read
-        raise UnauthorizedViewer, new_editor.inspect if !reader?(new_editor)
-      when :update
-        raise UnauthorizedUpdator, new_editor.inspect if !updator?(new_editor)
-      when :delete
-        raise UnauthorizedDeletor, new_editor.inspect if !deletor?(new_editor)
-    end
-
-    @current_editor = new_editor
-
-  end
-
-  def raw_data= new_data
-    if @raw_data
-      raise( ArgumentError, "This method can only be used once." )
-    end
+  def set_manipulator mem, new_data
+    raise ArgumentError, "Method can only be used once." if @manipulator
+    @manipulator = mem
     @raw_data = new_data
-  end
-
-  def apply_new_data action, editor, raw_data
-
-    if action != :create && new?
-      raise ArgumentError, "Invalid action for new record: #{action.inspect}" 
-    end
-
-    if action == :create && !new?
-      raise ArgumentError, "Invalid action for existing record: #{action.inspect}" 
-    end
-
-    blok = self.class.actions[action]
-    self.set_editor( action, editor )
-    self.raw_data = raw_data
-    instance_eval &blok
-
   end
 
   def demand *cols
@@ -317,10 +277,10 @@ module CouchPlastic
       CouchDoc.GET_by_id id
     end
 
-    def show mem, id # READ
+    def read mem, id # READ
       d = CouchDoc.GET_by_id(id)
       if !d.reader?(mem)
-        raise UnauthorizedViewer.new( self, mem )
+        raise UnauthorizedReader.new(d,mem)
       end
       d
     end
@@ -328,30 +288,38 @@ module CouchPlastic
     def edit mem, id
       d = CouchDoc.GET_by_id(id)
       if !d.updator?(mem)
-        raise UnauthorizedEditor.new( self, mem )
+        raise UnauthorizedEditor.new(d,mem)
       end
       d
     end
 
     def create editor, raw_data # CREATE
-      d = new(editor)
-      d.apply_new_data :create, editor, raw_data
-      raise UnauthorizedCreator.new( self, editor ) if !d.creator?( editor )
+      d = new
+      if !d.creator?(editor)
+        raise UnauthorizedCreator.new(d,editor)
+      end
+      d.set_manipulator editor, raw_data
+      d.instance_eval &actions[:create]
       d.save_create 
       d
     end
 
     def update editor, raw_data # UPDATE
       d = CouchDoc.GET_by_id(raw_data[:id])
-      d.apply_new_data :update, editor, raw_data
-      raise UnauthorizedUpdator.new( self, editor ) if !d.updator?(editor)
+      if !d.updator?(editor)
+        raise UnauthorizedUpdator.new(d,editor)
+      end
+      d.set_manipulator editor, raw_data
+      d.instance_eval &actions[:update]
       d.save_update 
       d
     end
 
     def delete! editor, raw_data # DELETE
       d = CouchDoc.GET_by_id(raw_data[:id])
-      raise UnauthorizedDeletor.new( self, editor ) if !deletor?(editor)
+      if !d.deletor?(editor)
+        raise UnauthorizedDeletor.new(d, editor)
+      end
       d.delete!
       d
     end

@@ -39,8 +39,8 @@ end
 
 get '/news/:id/' do # SHOW
   begin
-    @news = News.show(current_member, clean_room[:id])
-  rescue News::NoRecordFound, News::UnauthorizedViewer
+    @news = News.read(current_member, clean_room[:id])
+  rescue News::NoRecordFound, News::UnauthorizedReader
     pass 
   end
 

@@ -222,7 +222,7 @@ class Member
     v = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
 
     if v != o || v !~ valid_email_format 
-      self.errors << "Email contains invalid characters." 
+      self.errors << "Email is invalid." 
     elsif v.length < 6
       self.errors << "Email is too short." 
     end
