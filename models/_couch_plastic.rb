@@ -90,10 +90,39 @@ module CouchPlastic
   end
 
   # =========================================================
-  #                     DSL-icious
+  #            Methods Related to DSL for Editors
   # ========================================================= 
 
-  attr_accessor :current_editor, :raw_data
+  attr_reader :current_editor, :raw_data
+
+  def set_editor action, new_editor
+
+    if @current_editor
+      raise( ArgumentError, "This method can only be used once: " +
+        " #{@current_editor.inspect}, #{new_editor.inspect}")
+    end
+
+    case action
+      when :create
+        raise UnauthorizedCreator, new_editor.inspect if !creator?(new_editor)
+      when :read
+        raise UnauthorizedViewer, new_editor.inspect if !reader?(new_editor)
+      when :update
+        raise UnauthorizedUpdator, new_editor.inspect if !updator?(new_editor)
+      when :delete
+        raise UnauthorizedDeletor, new_editor.inspect if !deletor?(new_editor)
+    end
+
+    @current_editor = new_editor
+
+  end
+
+  def raw_data= new_data
+    if @raw_data
+      raise( ArgumentError, "This method can only be used once." )
+    end
+    @raw_data = new_data
+  end
 
   def apply_new_data action, editor, raw_data
 
@@ -106,7 +135,7 @@ module CouchPlastic
     end
 
     blok = self.class.actions[action]
-    self.current_editor = editor
+    self.set_editor( action, editor )
     self.raw_data = raw_data
     instance_eval &blok
 
@@ -236,6 +265,109 @@ module CouchPlastic
     true
   end 
 
+
+  # =========================================================
+  #                  Module: ClassMethods
+  # ========================================================= 
+  
+  module ClassMethods # =====================================
+
+    def new_from_db(data)
+      d = new
+      d._set_original_(data)
+      d
+    end
+
+    # ===== DSL-icious ======================================
+
+    def actions
+      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
+    end
+
+    def during action, &blok
+      if actions[action]
+        raise ArgumentError, "Already used: #{action.inspect}" 
+      end
+      actions[action] = blok
+    end
+
+    def enable_timestamps
+      enable :created_at, :updated_at
+    end
+
+    def enable *opts
+      valid_opts = [:created_at, :updated_at]
+      invalid_opts = opts - valid_opts
+      if !invalid_opts.empty?
+        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
+      end
+      @use_options ||= []
+      @use_options = @use_options + opts
+      @use_options
+    end
+
+    def enabled? opt
+      @use_options ||=[]
+      @use_options.include? opt.to_sym
+    end
+
+    # ===== CRUD Methods ====================================
+
+    def by_id( id ) # READ
+      CouchDoc.GET_by_id id
+    end
+
+    def show mem, id # READ
+      d = CouchDoc.GET_by_id(id)
+      if !d.reader?(mem)
+        raise UnauthorizedViewer.new( self, mem )
+      end
+      d
+    end
+
+    def edit mem, id
+      d = CouchDoc.GET_by_id(id)
+      if !d.updator?(mem)
+        raise UnauthorizedEditor.new( self, mem )
+      end
+      d
+    end
+
+    def create editor, raw_data # CREATE
+      d = new(editor)
+      d.apply_new_data :create, editor, raw_data
+      raise UnauthorizedCreator.new( self, editor ) if !d.creator?( editor )
+      d.save_create 
+      d
+    end
+
+    def update editor, raw_data # UPDATE
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      d.apply_new_data :update, editor, raw_data
+      raise UnauthorizedUpdator.new( self, editor ) if !d.updator?(editor)
+      d.save_update 
+      d
+    end
+
+    def delete! editor, raw_data # DELETE
+      d = CouchDoc.GET_by_id(raw_data[:id])
+      raise UnauthorizedDeletor.new( self, editor ) if !deletor?(editor)
+      d.delete!
+      d
+    end
+
+
+  end # === module ClassMethods ==============================================
+
+
+end # === module CouchPlastic ================================================
+
+
+
+
+__END__
+
+
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
     menu      = ( raw_menu || self.class.const_get("VALID_#{field_name.to_s.pluralize.upcase}") )
@@ -313,101 +445,4 @@ module CouchPlastic
    
   end
  
-
-  # =========================================================
-  #                  Module: ClassMethods
-  # ========================================================= 
-  
-  module ClassMethods # =====================================
-
-    def new_from_db(data)
-      d = new
-      d._set_original_(data)
-      d
-    end
-
-    # ===== DSL-icious ======================================
-
-    def actions
-      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
-    end
-
-    def during action, &blok
-      if actions[action]
-        raise ArgumentError, "Already used: #{action.inspect}" 
-      end
-      actions[action] = blok
-    end
-
-    def enable_timestamps
-      enable :created_at, :updated_at
-    end
-
-    def enable *opts
-      valid_opts = [:created_at, :updated_at]
-      invalid_opts = opts - valid_opts
-      if !invalid_opts.empty?
-        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
-      end
-      @use_options ||= []
-      @use_options = @use_options + opts
-      @use_options
-    end
-
-    def enabled? opt
-      @use_options ||=[]
-      @use_options.include? opt.to_sym
-    end
-
-    # ===== CRUD Methods ====================================
-
-    def by_id( id ) # READ
-      CouchDoc.GET_by_id id
-    end
-
-    def show mem, id # READ
-      d = CouchDoc.GET_by_id(id)
-      if !d.viewer?(mem)
-        raise UnauthorizedViewer.new( self, mem )
-      end
-      d
-    end
-
-    def edit mem, id
-      d = CouchDoc.GET_by_id(id)
-      if !d.updator?(mem)
-        raise UnauthorizedEditor.new( self, mem )
-      end
-      d
-    end
-
-    def create editor, raw_data # CREATE
-      d = new(editor)
-      d.apply_new_data :create, editor, raw_data
-      raise UnauthorizedCreator.new( self, editor ) if !d.creator?( editor )
-      d.save_create 
-      d
-    end
-
-    def update editor, raw_data # UPDATE
-      d = CouchDoc.GET_by_id(raw_data[:id])
-      d.apply_new_data :update, editor, raw_data
-      raise UnauthorizedUpdator.new( self, editor ) if !d.updator?(editor)
-      d.save_update 
-      d
-    end
-
-    def delete! editor, raw_data # DELETE
-      d = CouchDoc.GET_by_id(raw_data[:id])
-      raise UnauthorizedDeletor.new( self, editor ) if !deletor?(editor)
-      d.delete!
-      d
-    end
-
-
-  end # === module ClassMethods ==============================================
-
-
-end # === model: Sequel::Model -------------------------------------------------
-
 

@@ -77,7 +77,7 @@ class Member
     false
   end
 
-  def viewer? editor # SHOW
+  def reader? editor # SHOW
     true
   end
 

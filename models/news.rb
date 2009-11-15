@@ -57,7 +57,7 @@ class News
     editor.has_power_of? :ADMIN
   end
 
-  def viewer? editor # SHOW
+  def reader? editor # SHOW
     true
   end
 
@@ -68,7 +68,6 @@ class News
   def deletor? editor # DELETE
     creator? editor
   end
-
 
 
   # =========================================================

@@ -112,8 +112,8 @@ get '/:model/:id/' do # :show
   require_model_instance!
   dev_log_it "Resty :show action."
 
-  require_log_in! if !model_instance.viewer? :STRANGER
-  pass if !model_instance.viewer?(current_member)
+  require_log_in! if !model_instance.reader? :STRANGER
+  pass if !model_instance.reader?(current_member)
 
   describe clean_room[:model], :show
   render_mab
