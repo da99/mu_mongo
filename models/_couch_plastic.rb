@@ -1,50 +1,9 @@
-class ManOfAction
-  
-  def initialize(instance, editor, raw_data)
-    @editor = editor
-    @raw_data = raw_data
-    @instance = instance
-  end
-  
-  def demand *cols
-    cols.flatten.each { |k|
-      @instance.send("#{k}=", @raw_data)
-    }
-  end
-  
-  def ask_for *cols
-    cols.flatten.each { |k|
-      if @raw_data.has_key?(k)
-        @instance.send("#{k}=", @raw_data)
-      end
-    }
-  end
-
-  def from raw_member_level, &blok
-    member_level = case raw_member_level
-      when :self
-        @instance
-      else
-        raw_member_level
-    end
-
-    if !@editor && member_level == Member::STRANGER
-      instance_eval &blok 
-    elsif @editor && @editor.has_power_of?(member_level)
-      instance_eval &blok
-    else 
-    end
-  end
-  
-end
-
-
 
 
 module CouchPlastic
   
   # =========================================================
-  #                     self.included
+  #                  self.included
   # ========================================================= 
 
   def self.included(target)
@@ -52,7 +11,7 @@ module CouchPlastic
   end
 
   # =========================================================
-  #                     Error Constants
+  #                  Error Constants
   # ========================================================= 
 
   class NoRecordFound < StandardError; end
@@ -85,7 +44,9 @@ module CouchPlastic
   class UnauthorizedUpdator < Unauthorized; end
   class UnauthorizedDeletor < Unauthorized; end
 
-  attr_accessor :current_editor, :raw_data
+  # =========================================================
+  #           Miscellaneous Methods
+  # ========================================================= 
   
   def method_missing *args
     meth_name = args.first.to_sym
@@ -94,6 +55,45 @@ module CouchPlastic
     end
     super
   end
+
+  def new?
+    original.empty?
+  end
+ 
+  def human_field_name( col )
+    col.to_s.gsub('_', ' ')
+  end 
+
+  # =========================================================
+  #      Methods for handling Old/New Data
+  # ========================================================= 
+
+  def original
+    @original ||= {}
+  end
+
+  def _set_original_(new_hash)
+    raise ArgumentError, "Only a Hash is allowed." if !new_hash.is_a?(Hash)
+    @original = new_hash
+  end
+
+  def new_values
+    @new_values ||= {}
+  end
+ 
+  def assoc_cache
+    @assoc_cache ||= {}
+  end
+
+  def clear_assoc_cache
+    @assoc_cache = {}
+  end
+
+  # =========================================================
+  #                     DSL-icious
+  # ========================================================= 
+
+  attr_accessor :current_editor, :raw_data
 
   def apply_new_data action, editor, raw_data
 
@@ -111,7 +111,6 @@ module CouchPlastic
     instance_eval &blok
 
   end
-
 
   def demand *cols
     cols.flatten.each { |k|
@@ -143,41 +142,9 @@ module CouchPlastic
     end
   end
 
-  def human_field_name( col )
-    col.to_s.gsub('_', ' ')
-  end 
-  
-  def assoc_cache
-    @assoc_cache ||= {}
-  end
-
-  def clear_assoc_cache
-    @assoc_cache = {}
-  end
-
-  def original
-    @original ||= {}
-  end
-
-  def _set_original_(new_hash)
-    raise ArgumentError, "Only a Hash is allowed." if !new_hash.is_a?(Hash)
-    @original = new_hash
-  end
-
-  def new_values
-    @new_values ||= {}
-  end
-
-  def new?
-    original.empty?
-  end
-  
-  def save_with_creator mem, *opts, &blok
-    if !creator?(mem)
-      raise UnauthorizedCreator.new( self, mem )
-    end
-    save_create *opts, &blok
-  end
+  # =========================================================
+  #               Save & Delete Methods
+  # ========================================================= 
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
@@ -213,14 +180,6 @@ module CouchPlastic
 
   end
 
-  def save_with_updator mem, *opts, &blok
-    if !updator?(mem)
-      raise UnauthorizedUpdator.new( self, mem )
-    end
-    save_update *opts, &blok
-  end
-
-
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
@@ -248,12 +207,6 @@ module CouchPlastic
     end
   end
 
-  def delete_with_deletor! mem
-    if !deletor?(mem)
-      raise UnauthorizedDeletor.new( self, mem )
-    end
-  end
-
   def delete!
     
     clear_assoc_cache
@@ -262,57 +215,10 @@ module CouchPlastic
     original.clear # Mark document as new.
 
   end
-  
-
-  # =========================================================
-  #               Authorization Methods
-  # ========================================================= 
-
-  # def self.get_for_creator mem # CREATE
-  #   if creator?
-  #     raise UnauthorizedCreator, "#{mem.inspect}" 
-  #   end
-  #   new
-  # end
-
-  # def self.get_for_viewer mem, id # SHOW
-  #   d = CouchDB.GET_by_id(id)
-  #   if d.viewer? mem
-  #     raise UnauthorizedViewer, "Doc: #{id.inspect}, Viewer: #{mem.inspect}"
-  #   end
-  #   d
-  # end
-
-  # def self.get_for_editor mem, id # EDIT
-  #   d = CouchDB.GET_by_id(id)
-  #   if d.editor?(mem)
-  #     raise UnauthorizedEditor, "Doc: #{id.inspect}, Editor: #{mem.inspect}"
-  #   end
-  #   d
-  # end
-
-  # def self.get_for_updator mem, id # UPDATE
-  #   d = CouchDB.GET_by_id id
-  #   if d.updator?(mem)
-  #     raise UnauthorizedUpdator, "Doc: #{id.inspect}, Updator: #{mem.inspect}"
-  #   end
-  #   d
-  # end
-
-  # def self.get_for_deletor mem, id # DELETE
-  #   d = CouchDB.GET_by_id id
-  #   if d.deletor? mem
-  #     raise UnauthorizedDeletor, "Doc: #{id.inspect}, Deletor: #{mem.inspect}"
-  #   end
-  #   d
-  # end
-  
-
 
   # =========================================================
   #               Validation-related Methods
   # ========================================================= 
-
 
   def errors
     @errors ||= []
@@ -330,22 +236,11 @@ module CouchPlastic
     true
   end 
 
-
-  def validate_editor editor, *levels
-    l = levels.detect { |lev| 
-      editor.has_power_of?(lev) 
-    }
-
-    l || raise( UnauthorizedEditor, "#{editor.inspect} not allowed: #{levels.inspect}" )
-  end  
-  
-  
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
     menu      = ( raw_menu || self.class.const_get("VALID_#{field_name.to_s.pluralize.upcase}") )
     self.errors.add( field_name, error_msg ) unless menu.include?( self[field_name] )
   end
-
 
   def require_assoc! assoc_name, raw_error_msg  = nil
     field_name = "#{assoc_name}_id".to_sym
@@ -431,7 +326,6 @@ module CouchPlastic
       d
     end
 
-
     # ===== DSL-icious ======================================
 
     def actions
@@ -489,21 +383,24 @@ module CouchPlastic
 
     def create editor, raw_data # CREATE
       d = new(editor)
-      d.apply_new_date :create, editor, raw_data
-      d.save_with_creator editor
+      d.apply_new_data :create, editor, raw_data
+      raise UnauthorizedCreator.new( self, editor ) if !d.creator?( editor )
+      d.save_create 
       d
     end
 
     def update editor, raw_data # UPDATE
       d = CouchDoc.GET_by_id(raw_data[:id])
       d.apply_new_data :update, editor, raw_data
-      d.save_with_updator editor
+      raise UnauthorizedUpdator.new( self, editor ) if !d.updator?(editor)
+      d.save_update 
       d
     end
 
     def delete! editor, raw_data # DELETE
       d = CouchDoc.GET_by_id(raw_data[:id])
-      d.delete_with_deletor! editor
+      raise UnauthorizedDeletor.new( self, editor ) if !deletor?(editor)
+      d.delete!
       d
     end
 
@@ -512,165 +409,5 @@ module CouchPlastic
 
 
 end # === model: Sequel::Model -------------------------------------------------
-
-
-__END__
-
-    # =========================================================
-    # From: http://snippets.dzone.com/posts/show/2992
-    # Note: Don't cache subclasses because new classes may be
-    # defined after the first call to this method is executed.
-    # =========================================================
-    def all_subclasses
-      all_subclasses = []
-      ObjectSpace.each_object(Class) { |c|
-                next unless c.ancestors.include?(self) and (c != self)
-                all_subclasses << c
-      }
-      all_subclasses 
-    end # ---- self.all_subclasses --------------------
-
-
-    def editor_permissions
-      @editor_perms
-    end 
-
-    def allow_viewer *levels 
-      add_perm_for_editor :show, levels
-    end
-    
-    def allow_creator( *levels, &blok ) 
-      add_perm_for_editor(:create, levels, &blok)
-    end
-
-    def allow_updator( *levels, &blok )
-      add_perm_for_editor(:update, levels, &blok)
-    end 
-
-    def add_perm_for_editor( action, levels, &blok)
-      raise ArgumentError, "Block required for #{action.inspect}" if !block_given? && action != :show
-      raise ArgumentError, "Invalid action type: #{action.inspect}" if ![:create, :update, :show].include?(action)
-      raise ArgumentError, "nil not allowed among other levels" if levels.length > 1 && levels.include?(nil)
-      @editor_perms ||= {:create=>{}, :update=>{}, :show=>{}}  
-      levels.each do |raw_lev|
-        stranger_level = ( raw_lev.nil? || raw_lev == 0 )
-        lev = ( stranger_level ? :STRANGER : raw_lev )
-        raise "#{lev.inspect} already used for #{action.inspect}." if @editor_perms[action].has_key?(lev)
-        @editor_perms[action][lev] = blok
-      end
-    end
-
-
-    def validator col, &blok
-      define_method "validator_for_#{col}", &blok
-    end
-
-    def creator editor, raw_vals
-      n = new
-      level = creator? editor
-      raise UnauthorizedEditor, editor.inspect if !level
-      n.current_editor = editor
-      n.raw_data = raw_vals
-      n.instance_eval &(editor_permissions[:create][level])
-      n.raise_if_invalid
-      n.created_at = Time.now.utc if n.respond_to?(:created_at)
-      n.save
-    end
-
-    def creator? editor
-      
-      levels = editor_permissions[:create].keys
-      levels.detect { |lev|
-        if !editor || editor == :STRANGER
-          lev == :STRANGER
-        else
-          editor.has_power_of?(lev)
-        end
-      }
-
-    end
-
-    def updator editor, raw_vals
-      rec = self[:id=>raw_vals[:id]]
-      raise NoRecordFound, "Try again." if !rec
-      level = rec.updator?( editor )
-      raise UnauthorizedEditor, editor.inspect if !level
-      rec.current_editor = editor
-      rec.raw_data       = raw_vals
-      rec.instance_eval &(editor_permissions[:update][level])
-      rec.raise_if_invalid
-      rec.updated_at = Time.now.utc if rec.respond_to?(:updated_at)
-      rec.save
-    end
-
-
-
-  def raise_if_invalid
-    raise Sequel::ValidationFailed, errors.full_messages if !errors.full_messages.empty?
-  end 
- 
-  def raw_data 
-    @raw_data ||= {}
-  end
-
-
-  def viewer? editor
-    levels = self.class.editor_permissions[:show].keys
-    return true if levels.include?(:STRANGER)
-    updator?(editor) || self.class.creator?(editor)
-  end
-
-  def updator? editor
-    levels = self.class.editor_permissions[:update].keys
-    levels.detect { |lev|
-      if !editor
-        lev == :STRANGER
-      else
-        if Member::SECURITY_LEVEL_NAMES.include?(lev)
-          editor.has_power_of?(lev) && lev
-        else respond_to?(lev) 
-          editor_list = ( lev == :self ? self : send(lev) )
-          editor_list = [editor_list].flatten
-          editor_list.detect { |ed| 
-            ed.has_power_of?(editor)
-          }
-        end
-      end
-    }
-
-  end
-
-  def save
-     
-    begin
-      save(:changed=>true)
-    rescue Sequel::DatabaseError
-      raise if $!.message !~ /duplicate key value violates unique constraint \"([a-z0-9\_\-]+)\"/i
-      seq = $1
-      col = seq.sub(self.class.table_name.to_s + '_', '').sub(/_key$/, '').to_sym
-      raise  if !self.class.db_schema[col.to_sym]
-      self.errors.add col, "is already taken. Please choose another one."
-      raise_if_invalid
-    rescue
-      raise
-    end
-    
-  end # === def validate
-
-  def has_tag_id?(tag_id)
-    @tag_ids ||= taggings_dataset.naked.map(:tag_id)
-    @tag_ids.include?(tag_id.to_i)
-  end
-
-
-
-
-
-
-
-
-
-
-
 
 
