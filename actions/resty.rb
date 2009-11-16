@@ -1,19 +1,4 @@
 helpers {
-  def doc_create model_class, vals = nil
-    vals ||= clean_room
-    begin
-      d = model_class.create current_member, vals
-      flash.success_msg = ( " %s was saved." % english_name( d ).capitalize )
-      redirect( "/#{model_class.to_s.underscore}/#{n[:id]}/" )
-    rescue model_class::Invalid
-      flash.error_msg = to_html_list(e.message)
-      redirect("/#{model_class.to_s.underscore}/new/")
-    end
-  end
-
-}
-
-helpers {
 
   # === Use the following actions in your views. ===============================
 

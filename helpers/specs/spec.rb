@@ -29,7 +29,7 @@ class Bacon::Context
     mem.should.not.has_power_of :ADMIN
     post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password'}, ssl_hash
     follow_ssl_redirect!
-    last_request.fullpath.should =~ /my/
+    last_request.fullpath.should =~ /my-work/
   end
 
   def log_in_admin
@@ -37,7 +37,7 @@ class Bacon::Context
     mem.should.has_power_of :ADMIN
     post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password'}, ssl_hash
     follow_ssl_redirect!
-    last_request.fullpath.should =~ /my/
+    last_request.fullpath.should =~ /my-work/
   end
 
 end
