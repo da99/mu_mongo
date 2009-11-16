@@ -271,6 +271,13 @@ module CouchPlastic
       @use_options.include? opt.to_sym
     end
 
+    # The alternative would be to define a method with a name
+    # of the column and '_setter' added to it. For example, the
+    # following 2 lines are equivalent:
+    #
+    #   setter( :title ) {}; 
+    #   def title_setter; end
+    #
     def setter col, &blok
       meth_name = "#{col}_setter"
       if method_defined?(meth_name)
@@ -293,7 +300,7 @@ module CouchPlastic
       d
     end
 
-    def edit mem, id
+    def edit mem, id # EDIT
       d = CouchDoc.GET_by_id(id)
       if !d.updator?(mem)
         raise UnauthorizedEditor.new(d,mem)

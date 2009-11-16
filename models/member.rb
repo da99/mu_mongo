@@ -9,7 +9,11 @@ class Member
   # =========================================================  
 
   class IncorrectPassword < StandardError; end
-  class InvalidPermissionLevel < StandardError; end
+  class InvalidPermissionLevel < StandardError
+    def initialize(obj)
+      super( obj.inspect )
+    end
+  end
  
   SECURITY_LEVELS = [ :NO_ACCESS, :STRANGER, :MEMBER, :EDITOR, :ADMIN ]
   SECURITY_LEVELS.each do |k|
@@ -48,18 +52,18 @@ class Member
   enable_timestamps
 
   during(:create) {
-    demand :new_life, :password
+    demand :add_life, :password
     ask_for :avatar_link, :email
   }
 
   during(:update) { 
 
     from(:self) {
-      ask_for(:password) 
+      ask_for(:password, :old_life, :add_life) 
     }
 
     from(ADMIN) {
-      ask_for(:permission_level)
+      ask_for(:permission_level, :old_life, :add_life)
     }
 
   }
@@ -117,12 +121,13 @@ class Member
   # =========================================================
 
   def usernames
-    assoc_cache[:usernames] ||= Username.get_by_owner( self.original[:_id] )
+    assoc_cache[:usernames] ||= lives.map { |l| l[:username]}
   end
 
-
+  # 
   # By using a custom implementation, we cane make sure
   # sensitive information is not shown.
+  #
   def inspect
     assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original[:_id]}>"
   end
@@ -134,7 +139,7 @@ class Member
     target_level = raw_level.is_a?(String) ? raw_level.to_sym : raw_level
 
     if !SECURITY_LEVELS.include?(target_level)
-      raise InvalidPermissionLevel, "#{raw_level.inspect} is not a valid permission level."
+      raise InvalidPermissionLevel.new(raw_level)
     end
     
     return false if target_level == NO_ACCESS
@@ -147,11 +152,11 @@ class Member
 
   end # === def security_clearance?
 
-  # =========================================================
+  # 
   # Returns the time passed to it to the Member's local time
   # as a String, formatted i18n to their Country preference.
   # Default value of :utc is Time.now.utc
-  # =========================================================
+  # 
   def local_time_as_string( utc = nil )
     utc ||= Time.now.utc
     @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
@@ -162,113 +167,107 @@ class Member
   #                 SETTERS (Instance)
   # =========================================================
 
-  setter :password do
-    pass         = raw_data[:password ].to_s.strip
-    confirm_pass = raw_data[:confirm_password].to_s.strip
+  setter :password, :confirm_password do |pass, confirm_pass|
+   
+    stringify_and_strip
     
-    if pass != confirm_pass 
-      self.errors << "Password and password confirmation do not match." 
-    
-    elsif pass.empty?
-      self.errors <<  "Password is required."
-    
-    elsif pass.length < 5
-      self.errors << "Password must be longer than 5 characters."    
-    
-    elsif !pass[/[0-9]/]
-      self.errors << "Password must have at least one number."
-    end
+    select_error {
 
-    return nil if !self.errors.empty?
-    
-    # Salt and encrypt values.
-    self.new_values[:salt] =  begin
-                                chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                                (1..10).inject('') { |new_pass, i|  
-                                  new_pass += chars[rand(chars.size-1)] 
-                                  new_pass
-                                }
-                              end
-    
-    self.new_values[:hashed_password] = BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
-    confirm_pass
+      must_match_string(confirm_pass) {
+        "Password and password confirmation do not match."
+      }
       
+      check_size( 5 )
+
+      must_match(/[0-9]/) {
+        "Password must have at least one number."
+      }
+
+    }
+
+    custom_set {
+
+      set(:salt) {
+        # Salt and encrypt values.
+        chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+        (1..10).inject('') { |new_pass, i|  
+          new_pass += chars[rand(chars.size-1)] 
+          new_pass
+        }
+      }
+
+      set(:hashed_password) {
+        BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
+      }
+
+    }
+
   end # === def set_password
   
   
-  setter :permission_level do
-
-    fn = :permission_level
-  
-    new_level = raw_data[fn]
-    
-    if !SECURITY_LEVELS.include?(new_level.to_sym)
-      raise InvalidPermissionLevel, "#{new_level} is not a valid permission level."  
-    end
-    
-    self.new_values[fn] = new_level
-    
+  setter :permission_level do |val|
+    must_be_in(SECURITY_LEVELS) { |val|
+      raise InvalidPermissionLevel.new(val)
+    }
   end # === def set_permission_level
   
  
+  setter :email do |val|
 
-  setter :email do
-    raw_params = raw_data
     valid_email_chars   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
     email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
     valid_email_format  = /\A#{email_finder}\z/
 
-    o = raw_params[ :email ] 
-    v = v.to_s.gsub( /[^a-z0-9\.\-\_\+\@]/i , '')
+    default_error_msg = 'Email is invalid.'
 
-    if v != o || v !~ valid_email_format 
-      self.errors << "Email is invalid." 
-    elsif v.length < 6
-      self.errors << "Email is too short." 
-    end
+    select_error {
+      must_be_string
+      check_size(6)
+      must_match_original_after_cleaning(/[^a-z0-9\.\-\_\+\@]/i) 
+
+    }
   
-    if self.errors.empty?
-      self.new_values[:email] = v  
-      return self.new_values[:email]
-    end
-
-    v
   end # === def email=
   
+  def check *col 
+    val = raw_data[col]
+    val = val.strip if val.is_a?(String)
+    if_no_errors {
+      set_value
+    }
+  end
 
-  setter :new_life do
-    fn = :username
-    raw_name = raw_data[fn].to_s.strip
+  setter :add_life do
     
-    # Delete invalid characters and 
-    # reduce any suspicious characters. 
-    # '..*' becomes '.', '--' becomes '-'
-    new_un = raw_name.gsub( /[^a-z0-9]{1,}/i  ) { |s| 
-      if ['_', '.', '-'].include?( s[0,1] )
-        s[0,1]
-      else
-        ''
-      end
-    }          
+    check(:add_life) { |val|
+      must_be_in(LIVES) 
+    }
     
-    # Check to see if there is at least one alphanumeric character
-    if new_un.empty?
-      self.errors << 'Username is required.'
-    elsif new_un.length < 2
-      self.errors << 'Username is too short. (Must be 3 or more characters.)' 
-    elsif new_un.length > 20
-      self.errors << 'Username is too long. (Must be 20 characters or less.)' 
-    elsif !new_un[ /[a-z0-9]/i ] && self.errors.empty?
-      self.errors << 'Username must have at least one letter or number.' 
-    end
-    
-    if self.errors.empty?
-      self.new_values[fn] = new_un
-      self.new_values[:_id] = "username-#{new_un}"
-      return new_un
-    end
+    check(:add_life_username) {
+      # Delete invalid characters and 
+      # reduce any suspicious characters. 
+      # '..*' becomes '.', '--' becomes '-'
+      clean_with(/[^a-z0-9]{1,}/i) { |s|
+        if ['_', '.', '-'].include?( s[0,1] )
+          s[0,1]
+        else
+          ''
+        end
+      }
 
-    nil
+      check_size( 2, 20 )
+
+      # Check to see if there is at least one alphanumeric character
+      if_no_errors {
+        must_have( /[a-z0-9]/i , 'Username must have at least one letter or number.' ) 
+      }
+
+      custom_setter {
+        new_data[:lives]
+      }
+    }
+
+
   end # === def validate_new_values
   
   
