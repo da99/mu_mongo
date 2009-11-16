@@ -12,79 +12,123 @@ helpers {
 
 
 get '/news/new/' do # NEW
-  require_log_in!
-  begin
-    News.new(current_member)
-  rescue News::UnauthorizedNew
-    pass
-  end
   describe News, :new
-  render_mab
 end
+
+# get '/news/new/' do # NEW
+#   require_log_in!
+#   begin
+#     News.new(current_member)
+#   rescue News::UnauthorizedNew
+#     pass
+#   end
+#   describe News, :new
+#   render_mab
+# end
 
 post '/news/' do # CREATE
-  require_log_in!
-  begin
-    n = New.create current_member, clean_room
-    flash.success_msg = "Saved: #{n.title}"
-    redirect "/news/#{n._id}/"
-  rescue News::UnauthorizedCreator
-    pass
-  rescue News::Invalid
-    flash.error_msg = to_html_list($!.doc.errors)
-    redirect "/news/new/"
-  end
-
+  describe( News, :create ) { |doc|
+    success {
+      flash.success_msg = "Save: #{doc.title}"
+    }
+  }
 end
 
-get '/news/:id/' do # SHOW
-  begin
-    @news = News.read(current_member, clean_room[:id])
-  rescue News::NoRecordFound, News::UnauthorizedReader
-    pass 
-  end
+# post '/news/' do # CREATE
+#   require_log_in!
+#   begin
+#     n = New.create current_member, clean_room
+#     flash.success_msg = "Saved: #{n.title}"
+#     redirect "/news/#{n._id}/"
+#   rescue News::UnauthorizedCreator
+#     pass
+#   rescue News::Invalid
+#     flash.error_msg = to_html_list($!.doc.errors)
+#     redirect "/news/new/"
+#   end
+# 
+# end
 
-  describe News, :show
-  render_mab
-end 
+get '/news/:id' do # SHOW
+  describe News, :show  
+end
+
+# get '/news/:id/' do # SHOW
+#   begin
+#     @news = News.read(current_member, clean_room[:id])
+#   rescue News::NoRecordFound, News::UnauthorizedReader
+#     pass 
+#   end
+# 
+#   describe News, :show
+#   render_mab
+# end 
 
 get '/news/:id/edit/' do # EDIT
-  require_log_in!
-  begin
-    @news = News.edit(current_member, clean_room[:id])
-  rescue News::NoRecordFound, News::UnauthorizedEditor
-    pass
-  end
-
   describe News, :edit
-  render_mab
 end
+
+# get '/news/:id/edit/' do # EDIT
+#   require_log_in!
+#   begin
+#     @news = News.edit(current_member, clean_room[:id])
+#   rescue News::NoRecordFound, News::UnauthorizedEditor
+#     pass
+#   end
+# 
+#   describe News, :edit
+#   render_mab
+# end
 
 put '/news/:id/' do # UPDATE
-  require_log_in!
-  begin
-    doc = News.update(current_member, clean_room)
-    flash.success_msg = "Updated: #{doc.title}"
-    redirect request.path_info
-  rescue News::NoRecordFound, News::UnauthorizedUpdator
-    pass
-  rescue News::Invalid
-    flash.error_msg = to_html_list($!.doc.errors)
-    redirect("/news/#{$!.doc._id}/edit/")
-  end
+  describe News, :update { |doc|
+    success {
+      flash.success_msg = "Update: #{doc.title}"
+    }
+  }
 end
+
+# put '/news/:id/' do # UPDATE
+#   require_log_in!
+#   begin
+#     doc = News.update(current_member, clean_room)
+#     flash.success_msg = "Updated: #{doc.title}"
+#     redirect request.path_info
+#   rescue News::NoRecordFound, News::UnauthorizedUpdator
+#     pass
+#   rescue News::Invalid
+#     flash.error_msg = to_html_list($!.doc.errors)
+#     redirect("/news/#{$!.doc._id}/edit/")
+#   end
+# end
 
 delete '/news/:id/' do # DELETE
-  require_log_in!
-  begin
-    doc = News.delete!( current_member, clean_room[:id])
-    flash.success_msg = "Deleted: #{doc.title}"
-  rescue News::NoRecordFound, News::UnauthorizedDeletor
-    flash.success_msg = "Deleted."
-  end
+  describe News, :delete { |doc|
 
-  redirect '/my/'
+    success { 
+      flash.success_msg = "Delete: #{doc.title}"
+    }
+
+    error(News::NoRecordFound, News::UnauthorizedDeletor) {
+      flash.success_msg = 'Deleted.'
+    }
+
+    redirect '/my/'
+
+  }
 end
+
+# delete '/news/:id/' do # DELETE
+#   require_log_in!
+#   begin
+#     doc = News.delete!( current_member, clean_room[:id])
+#     flash.success_msg = "Deleted: #{doc.title}"
+#   rescue News::NoRecordFound, News::UnauthorizedDeletor
+#     flash.success_msg = "Deleted."
+#   end
+# 
+#   redirect '/my/'
+# end
 
 get '/news/by_date/:year/:month/' do
   describe :news, :by_date
