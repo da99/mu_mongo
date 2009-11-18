@@ -8,17 +8,20 @@ class Project < Sequel::Model
   
 
   # ==== ASSOCIATIONS ==================================================
-  one_to_many :to_dos
+  
+  def todos
+  end
   
   # ==== HOOKS =========================================================
 
 
   # ==== CLASS METHODS =================================================
 
-  allow_creator :MEMBER do
+  def creator? editor
   end
 
-  allow_updator :self do
+  def updator? editor
+    editor && (editor._id == self._id)
   end
 
   # ==== INSTANCE METHODS ==============================================

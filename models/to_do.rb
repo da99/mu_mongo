@@ -1,50 +1,51 @@
 class ToDo < Sequel::Model
 
-  # ==== CONSTANTS =====================================================
-  
-
-  # ==== ERRORS ========================================================
-  
-
   # ==== ASSOCIATIONS ==================================================
-  many_to_one :owner, :class_name=>'Member', :key=>:owner_id
-  many_to_one :project
   
-  # ==== HOOKS =========================================================
+  belongs_to :owner
+  
+  belongs_to :project
 
+  # ==== Authorizations ==============================================
 
-  # ==== CLASS METHODS =================================================
+  def creator? editor
+    editor && (self.owner_id = editor._id)
+  end
+  
+  def updator? editor
+    creator? editor
+  end
+  
+  # ==== CRUD ====================================================
 
-
-  # ==== INSTANCE METHODS ==============================================
-
-  allow_creator :MEMBER do 
-    require_columns :title, :details
-    optional_columns :days, :hours, :minutes, :seconds,
-                     :starts_at, :ends_at
-    self[:owner_id] = self.current_editor[:id]
+  during :create do 
+    demand :title, :details
+    ask_for :days, :hours, :minutes, :seconds,
+            :starts_at, :ends_at
+    
   end
 
-  allow_updator :owner do
-    optional_columns :title, :details,
-                     :days, :hours, :minutes, :seconds,
-                     :starts_at, :ends_at
+  during :update do
+    from( :owner ) {
+      ask_for :title, :details,
+              :days, :hours, :minutes, :seconds,
+              :starts_at, :ends_at
+    }
   end
 
-  [:days, :hours, :minutes, :seconds].each do |col|
-    validator col do 
-      self[col] = self.raw_data[col].to_i
-    end
+  # ==== Validators ====================================================
+
+  validator :time do
+    [:days, :hours, :minutes, :seconds, :starts_at, :ends_at].each do |col|
+      set_other(col, raw_data[col].to_i )
+    end    
   end
 
-  [:starts_at, :ends_at].each do |col|
-    validator col do
-      self[col] = self.raw_data[col].to_i
-    end
-  end
 
-  validator :project_id do
-    require_same_owner :project 
+  validator :project_id do 
+    must_match( doc.owner, doc.project.owner ) {
+      raise "Wrong owner for project: #{doc.owner.inspect}, #{doc.project.owner}"
+    }
   end
 
 end # === end ToDo

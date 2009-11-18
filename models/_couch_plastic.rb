@@ -271,19 +271,13 @@ module CouchPlastic
       @use_options.include? opt.to_sym
     end
 
-    # The alternative would be to define a method with a name
-    # of the column and '_setter' added to it. For example, the
-    # following 2 lines are equivalent:
-    #
-    #   setter( :title ) {}; 
-    #   def title_setter; end
-    #
-    def setter col, &blok
-      meth_name = "#{col}_setter"
-      if method_defined?(meth_name)
-        raise ArgumentError, "Method already defined for: #{col.inspect}"
+    def validator *cols, &blok
+      col = cols.first
+      @validators || {}
+      if @validators[col]
+        raise ArgumentError, "Validator already exists for: #{col.inspect}"
       end
-      define_method meth_name, &blok
+      @validators[col] = [cols, blok]
     end
 
     # ===== CRUD Methods ====================================

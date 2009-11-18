@@ -35,43 +35,59 @@ class Member
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
 
 
-  # =========================================================
-  #                     GET Methods (Class)
-  # =========================================================    
+  # ==== Getters =====================================================    
   
   def self.by_username username
     raise ArgumentError, "Invalid username: #{username.inspect}" if !username
     CouchDoc.GET(:member_usernames, :key=>username, :limit=>1, :include_docs=>true)
   end
 
+  # Based on Sinatra-authentication (on github).
+  # 
+  # Parameters:
+  #   raw_vals - Hash with at least 2 keys: :username, :password
+  # 
+  # Raises: 
+  #   Member::IncorrectPassword
+  #
+  def self.authenticate( raw_vals )
+      
+      un = Member.by_username( raw_vals[:username] )
 
-  # =========================================================
-  #                     CRUD Methods.
-  # =========================================================
+      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
+      
+      if correct_password
+        return un.owner
+      end
+
+      raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
+
+  end 
+
+  # ==== CRUD/CRUD-related =====================================================
 
   enable_timestamps
 
-  during(:create) {
+  during(:create) { 
     demand :add_life, :password
     ask_for :avatar_link, :email
   }
 
   during(:update) { 
 
+    ask_for :old_life, :add_life 
+
     from(:self) {
-      ask_for(:password, :old_life, :add_life) 
+      ask_for :password  
     }
 
     from(ADMIN) {
-      ask_for(:permission_level, :old_life, :add_life)
+      ask_for :permission_level
     }
 
   }
 
-
-  # =========================================================
-  #           Authorization Methods (Class + Instance)
-  # =========================================================
+  # ==== Authorizations =====================================================
 
   def creator? editor # NEW, CREATE
     return true if !editor
@@ -94,35 +110,7 @@ class Member
   end
 
 
-  # Based on Sinatra-authentication (on github).
-  # 
-  # Parameters:
-  #   raw_vals - Hash with at least 2 keys: :username, :password
-  # 
-  # Raises: 
-  #   Member::IncorrectPassword
-  #
-  def self.authenticate( raw_vals )
-      
-      un = Member.by_username( raw_vals[:username] )
-
-      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
-      
-      if correct_password
-        return un.owner
-      end
-
-      raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
-
-  end # === self.authenticate
-
-  # =========================================================
-  #                     ACCESSORS (Instance)
-  # =========================================================
-
-  def usernames
-    assoc_cache[:usernames] ||= lives.map { |l| l[:username]}
-  end
+  # ==== ACCESSORS =====================================================
 
   # 
   # By using a custom implementation, we cane make sure
@@ -132,6 +120,10 @@ class Member
     assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original[:_id]}>"
   end
   
+  def usernames
+    assoc_cache[:usernames] ||= lives.map { |l| l[:username]}
+  end
+
   def has_power_of?(raw_level)
 
     return true if raw_level == self
@@ -161,33 +153,31 @@ class Member
     utc ||= Time.now.utc
     @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
     @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
-  end # ===   
+  end 
   
-  # =========================================================
-  #                 SETTERS (Instance)
-  # =========================================================
+  # ==== Validators =====================================================
 
-  setter :password, :confirm_password do |pass, confirm_pass|
+  validator :password, :confirm_password do 
    
-    stringify_and_strip
+    strip
     
-    select_error {
+    detect {
 
-      must_match_string(confirm_pass) {
+      match(confirm_password) {
         "Password and password confirmation do not match."
       }
       
-      check_size( 5 )
+      min_size( 5 )
 
-      must_match(/[0-9]/) {
+      match(/[0-9]/) {
         "Password must have at least one number."
       }
 
     }
 
-    custom_set {
+    override {
 
-      set(:salt) {
+      set_other(:salt) {
         # Salt and encrypt values.
         chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
         (1..10).inject('') { |new_pass, i|  
@@ -196,7 +186,7 @@ class Member
         }
       }
 
-      set(:hashed_password) {
+      set_other(:hashed_password) {
         BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
       }
 
@@ -205,45 +195,53 @@ class Member
   end # === def set_password
   
   
-  setter :permission_level do |val|
-    must_be_in(SECURITY_LEVELS) { |val|
-      raise InvalidPermissionLevel.new(val)
+  validator :permission_level do 
+    if_not_in(SECURITY_LEVELS) { 
+      raise InvalidPermissionLevel.new(permission_level)
     }
   end # === def set_permission_level
   
  
-  setter :email do |val|
+  validator :email do 
 
     valid_email_chars   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
     email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
     valid_email_format  = /\A#{email_finder}\z/
 
-    default_error_msg = 'Email is invalid.'
+    default_error_msg 'Email is invalid.'
 
     select_error {
       must_be_string
-      check_size(6)
-      must_match_original_after_cleaning(/[^a-z0-9\.\-\_\+\@]/i) 
-
+      min_size(6)
+      match_original_after_cleaning(/[^a-z0-9\.\-\_\+\@]/i) 
     }
   
   end # === def email=
   
-  def check *col 
-    val = raw_data[col]
-    val = val.strip if val.is_a?(String)
-    if_no_errors {
-      set_value
-    }
-  end
+  validator :add_life do 
 
-  setter :add_life do
+    symbolize
     
-    check(:add_life) { |val|
-      must_be_in(LIVES) 
+    if_in(doc.lives.keys) {
+      raise %~
+        Either programmer error or 
+        security attempt: 
+        No existing life allowed in 
+        :add_life from user data.
+      ~.split.join(' ')
+    }
+
+    if_not_in(LIVES) { 
+      raise %~
+        Error or Security Attempt: 
+        Invalid Life category: 
+        #{add_life.inspect}
+      ~.split.join(' ')
     }
     
-    check(:add_life_username) {
+    
+    validator(:add_life_username) {
+
       # Delete invalid characters and 
       # reduce any suspicious characters. 
       # '..*' becomes '.', '--' becomes '-'
@@ -255,52 +253,32 @@ class Member
         end
       }
 
-      check_size( 2, 20 )
+      between_size( 2, 20 )
 
-      # Check to see if there is at least one alphanumeric character
-      if_no_errors {
-        must_have( /[a-z0-9]/i , 'Username must have at least one letter or number.' ) 
+      select_error {
+        match( /[a-z0-9]/i ) {
+          'Username must have at least one letter or number.' 
+        }
       }
 
-      custom_setter {
-        new_data[:lives]
+      override {
+        doc.new_data[:lives][add_life][:username] = add_life_username
       }
-    }
 
+    } # validator :add_life_username
 
-  end # === def validate_new_values
+  end # validator :add_life
   
-  
-  setter :history do
-    @history_msgs = []
-    
-    raise "Fix this code below."
+  def _add_to_history_(hash)
+    if !hash.is_a?(Hash)
+      raise ArgumentError, "Only Hash object is allowed."
+    end
 
-    raw_vals.each { |k,v|
-      case k.to_sym
-        when :username
-          history_msgs << "Changed username from: #{self[:username]}"
-        when :email
-          history_msgs << "Changed email from: #{self[:email]}"
-      end
-    }
-    return true if !@history_msgs.empty?
-    
-    HistoryLog.create_it!( 
-     :owner_id  => self.owner[:id], 
-     :editor_id => self.current_editor[:id], 
-     :action    => 'UPDATE', 
-     :body      => @history_msgs.join("\n")
-    )  
+    hash[:timestamp] = self.class.utc_now 
 
-    doc.save_update
-  end # === def history=
-
-
-
-
+    self.new_data[:history] ||= self.history
+    self.history << hash
+  end
 
 end # === model Member
 
-  
-  

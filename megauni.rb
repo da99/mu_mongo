@@ -56,7 +56,8 @@ require_these 'helpers/sinatra', %w{
   html_props_for_models
   swiss_clock
   text_to_html
-  red_cloth  
+  red_cloth
+  action_dsl
 }
 
 
@@ -68,13 +69,10 @@ require_these 'actions', %w{
   errors 
   main
   old_app
-  heart
   member
   session
   news
 	resty
-  health
-  temp_actions
   try_textile
 }
 

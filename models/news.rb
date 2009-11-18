@@ -5,10 +5,7 @@ class News
 
   include CouchPlastic
 
-
-  # =========================================================
-  #                     GET Methods (Class)
-  # =========================================================    
+  # ==== Getters =====================================================    
   
   def self.get_tags
     rows = CouchDoc.GET(:news_tags, 
@@ -33,9 +30,7 @@ class News
     CouchDoc.GET(:news_by_published_at, params)
   end
 
-  # =========================================================
-  #                     CRUD Methods.
-  # =========================================================
+  # ==== CRUD =====================================================
 
   enable_timestamps
 
@@ -48,9 +43,7 @@ class News
     ask_for :title, :body, :teaser, :published_at, :tags
   }
 
-  # =========================================================
-  #           Authorization Methods (Class + Instance)
-  # =========================================================
+  # ==== Authorizations =====================================================
  
   def creator? editor # NEW, CREATE
     return false if !editor
@@ -70,9 +63,7 @@ class News
   end
 
 
-  # =========================================================
-  #                     ACCESSORS (Instance)
-  # =========================================================
+  # ==== Accessors =====================================================
 
   def last_modified_at
     updated_at || created_at
@@ -92,50 +83,32 @@ class News
   end
 
 
-  # =========================================================
-  #                     SETTERS (Instance)
-  # =========================================================
+  # ==== Validators =====================================================
 
-  setter :title do
-    fn = :title
-    new_title = raw_data[:title].to_s.strip
-    if new_title.empty?
-      self.errors << "Title must not be empty."
-      return nil
-    end
-    self.new_values[:title] = new_title
+  validator :title do 
+    strip 
+    must_not_be_empty
   end # === 
 
-  setter :teaser do 
-    new_teaser = raw_data[:teaser].to_s.strip
-    if new_teaser.empty?
-      new_values[:teaser] = nil
-    else
-      new_values[:teaser] = new_teaser 
-    end
+  validator :teaser do 
+    strip
+    dont_set_if {
+      teaser.empty?
+    }
   end # ===
 
-  setter :body do
-    new_body = raw_data[:body].to_s.strip
-    if new_body.empty?
-      self.errors << "Body must not be empty."
-    elsif new_body.length < 10
-      self.errors << "Body is too short. Write more."
-    end
-
-    return nil if !self.errors.empty?
-
-    new_values[:body] = new_body
+  validator :body do
+    strip
+    between_size(1,10)
   end # ===
 
-  setter :published_at do
-    self.new_values[:published_at] = Time.parse(raw_data[:published_at]) || Time.now.utc
+  validator :published_at do
+    to_datetime_or_now
   end
 
-  setter :tags do
-    new_tags = raw_data[:tags].to_s.split
-    return nil if new_tags.empty?
-    self.new_values[:tags] = new_tags
+  validator :tags do
+    split
+    dont_set_if { tags.empty? }
   end
 
 end # === end News

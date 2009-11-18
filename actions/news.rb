@@ -17,16 +17,16 @@ allow(News) {
   edit 
 
   create do # CREATE
-    success_msg "Save: #{doc.title}"
+    success_msg { "Save: #{doc.title}" }
   end
 
   update do |doc|
-    success_msg "Update: #{doc.title}"
+    success_msg { "Update: #{doc.title}" }
   end
 
-  delete do |doc| # DELETE
+  delete do  # DELETE
 
-    success_msg "Delete: #{doc.title}"
+    success_msg { "Delete: #{doc.title}" }
 
     error(:no_record, :unauthorized) {
       success_msg 'Deleted.'

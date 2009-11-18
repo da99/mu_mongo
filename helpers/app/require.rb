@@ -5,7 +5,7 @@
 # an extension.
 def require_these( dir, allow_only=nil )
   if allow_only
-    allow_only.each { |file_name| 
+    allow_only.uniq.each { |file_name| 
       require File.expand_path( File.join(dir, file_name) )
     }
   else
