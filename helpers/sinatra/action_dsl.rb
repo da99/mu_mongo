@@ -1,91 +1,65 @@
 
 def allow(class_obj, &blok) 
 
-  ActionDSL.new(self, class_obj, blok)
+  ActionDSL.new(self, class_obj, &blok)
 
 end
 
-get '/options/' do
+get '/action_dsl/' do
   ActionDSL::ACTIONS.inject('') { |m,a|
     m += a.inspect + '<br /><pre>' + options.send("news_#{a}").inspect + '</pre>'
     m
   }
+  
+  
 end
 
 configure do 
-  class ActionDSL
 
-    ACTIONS = [:new, :show, :edit, :create, :update, :delete].uniq
+  class ActionDSL_Options
 
-    def initialize scope, class_obj, blok
-      @class_obj = class_obj
-      @app_scope = scope
-      instance_eval &blok
-    end
+    private
+    attr_accessor :options
 
-    def reset
-      @options = { :require_log_in => true,
-        :class=>@class_obj
+    public 
+
+    def initialize action_dsl_instance, action, *args, &blok
+
+      path_or_regex = args.first
+      
+      self.options = { :require_log_in => true,
+        :model_class      => action_dsl_instance.model_class,
+        :model_underscore => action_dsl_instance.model_underscore,
+        :action           => action
       }
-    end
 
-    ACTIONS.each { |a|
-      eval("
-        def #{a} &blok
-          reset
-          set_action #{a.inspect}
-          if block_given? 
-            instance_eval &blok
-          end
-          configure {
-            set @class_obj.to_s.underscore + '_' + action.to_s, @options
-          }
-        end
-      ")
-    } 
-
-    def success_msg msg=nil, &blok
-      @options[:success_msg] = msg || blok
-    end
-
-    def error(*errs, &blok)
-      @options[:rescue] = {}
-      errs.each { |e|
-        case e
-          when Symbol
-            e_class = case e
-              when :no_record
-                @class_obj.const_get((e.to_s + '_found').camelize)
-              when :unauthorized
-                @class_obj.const_get((e.to_s + '_' + manipulator_name.to_s).camelize)
-              else
-                @class_obj.const_get(e.to_s.camelize)
-            end
-            e_class = 
-            @options[:rescue][e_class] = blok
-          when String
-            raise ArgumentError, "Strings are not allowed here: #{e.inspect}"
-          else
-            @options[:rescue][e] = blok
-        end
-      }
-    end
-
-    def redirect path=nil, &blok
-      @options[:redirect] = path || blok
-    end
-
-    attr_reader :action
-
-    def set_action  action_name
-      if !ACTIONS.include?(action_name)
-        raise ArgumentError, action_name.inspect
+      method_path = case options[:action]
+        when :new
+          [ :get, "/#{options[:model_underscore]}/new/" ]
+        when :show
+          [ :get, "/#{options[:model_underscore]}/:id/" ]
+        when :edit
+          [ :get, "/#{options[:model_underscore]}/:id/edit/" ]
+        when :create
+          [ :post, "/#{options[:model_underscore]}/" ]
+        when :update
+          [ :put, "/#{options[:model_underscore]}/:id/" ]
+        when :delete 
+          [ :delete, "/#{options[:model_underscore]}/:id/" ]
+        else
+          raise ArgumentError, "Invalid action: #{options[:action].inspect}"
       end
-      @action = action_name
-    end
 
+      options[:http_method] = method_path.first
+      options[:path]  = method_path.last
+      options[:path] = path_or_regex.inspect if path_or_regex
+
+      instance_eval &blok if block_given?
+      options 
+    end
+    
     def manipulator_name
-      case action
+      case o(:action)
         when :new
           :new
         when :create
@@ -101,104 +75,106 @@ configure do
       end
     end
 
-  end # === class ActionDSL 
-end # === configure
+    def path s=nil
+      self.options[:path] = s
+    end
 
-configure {
+    def error_msg msg = nil, &blok
+      options[__method_name__] = msg || blok
+    end
 
-  class RogerRoger
-    attr_accessor :config
-    def initialize &blok
-      self.config = {}
+    def success_msg msg=nil, &blok
+      options[__method_name__] = msg || blok
+    end
+
+    def error(*errs, &blok)
+      options[:rescue] = {}
+      errs.each { |e|
+        case e
+          when Symbol
+            e_class = case e
+              when :no_record
+                o(:model_class).const_get((e.to_s + '_found').camelize)
+              when :unauthorized
+                o(:model_class).const_get((e.to_s + '_' + manipulator_name.to_s).camelize)
+              else
+                o(:model_class).const_get(e.to_s.camelize)
+            end
+            e_class = 
+            options[:rescue][e_class] = blok
+          when String
+            raise ArgumentError, "Strings are not allowed here: #{e.inspect}"
+          else
+            options[:rescue][e] = blok
+        end
+      }
+    end
+
+    def redirect path=nil, &blok
+      options[:redirect] = path || blok
+    end
+
+    def o raw_key
+      key = raw_key.to_sym
+      if !options.has_key?(key)
+        raise ArgumentError, ":key not found: #{raw_key.inspect}" 
+      end
+      options[key]
+    end
+
+    def as_hash
+      options
+    end
+
+  end # === ActionOptionsDSL
+
+  class ActionDSL
+
+    ACTIONS = [:new, :show, :edit, :create, :update, :delete].uniq
+
+    [:model_class, :model_underscore].each { |a|
+      private
+      attr_writer a
+
+      public
+      attr_reader a
+    }
+
+    public
+
+    def initialize app_scope, model_class, &blok
+      @app_scope = app_scope
+      self.model_class = model_class
+      self.model_underscore = model_class.to_s.underscore
+
       instance_eval &blok
     end
-    def method_missing *args, &blok
-      self.config[args.shift] = [args, blok ]
-    end
-    def to_hash
-      self.config
-    end
-  end
 
-  
-
-} # configure
-
-class Validator
-  def initialize(obj, col, &blok)
-    @obj = obj
-    @val = obj.send(col)
-    instance_eval &blok 
-  end
-  def success_msg(msg=nil, &blok)
-    @obj.success << "#{@val}: #{msg}" if !block_given?
-    @obj.success << (instance_eval &blok) if block_given?
-  end
-  def failure(msg=nil, &blok)
-    @obj.errors << "#{@val}: #{msg}" if !block_given?
-    @obj.errors << (instance_eval &blok) if block_given?
-  end
-  def select_error(*args, &blok)
-    instance_eval &blok
-  end
-end
-
-class Tester
-
-  class << self
-
-    def validators
-      @validators ||= {}
-    end
-
-    def setter col, &blok
-      validators[col] = blok
-    end
-
-  end
-
-  setter(:name) {
-    success_msg "Ok"
-    select_error {
-      success_msg "Not ok"
+    ACTIONS.each { |a|
+      eval %~
+        def #{a} *args, &blok
+          create_action #{a.inspect}, *args, &blok
+        end
+      ~
     }
-    failure {
-      "failed"
-    }
-  }
 
-  setter(:family_name) {
-    success_msg "Ok"
-  }
+    def create_action action_name, *path_and_more, &blok
 
-  def errors
-    @errors ||= []
-  end
+      o                    = ActionDSL_Options.new(self, action_name, *path_and_more, &blok )
+      model_action_options = [self.model_underscore, action_name].join('_')
 
-  def success
-    @success ||= []
-  end
+      configure {
+        set model_action_options, o.as_hash
+      }
+      
+      @app_scope.send( o.o(:http_method) ,  o.o(:path) ) do
+        describe o.o(:model_class), o.o(:action)
+        [o.o(:model_class), o.o(:action)].inspect
+      end
+      
+    end
 
-  def name
-    "Ted"
-  end
 
-  def family_name
-    "Danson"
-  end
-
-  def validate
-    self.class.validators.each { |k,v| 
-      Validator.new(self, k, &v)
-    }
-  end
-
-end
-
-def test_roger
-  a = Tester.new
-  a.validate
-  [a.success, a.errors]
-end
-
+  end # === class ActionDSL 
+end # === configure
 

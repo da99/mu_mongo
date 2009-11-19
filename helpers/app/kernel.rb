@@ -6,8 +6,8 @@ private
      caller[1] =~ /`([^']*)'/ && $1.to_sym
    end
 
-   def __this_method_name__
-     caller[0] =~ /`([^']*)'/ and $1
+   def __method_name__
+     caller[0] =~ /`([^']*)'/ && $1.to_sym
    end
 
 

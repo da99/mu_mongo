@@ -6,7 +6,7 @@
 def require_these( dir, allow_only=nil )
   if allow_only
     allow_only.uniq.each { |file_name| 
-      require File.expand_path( File.join(dir, file_name) )
+      require File.expand_path( File.join(dir, file_name.to_s) )
     }
   else
     Dir[ File.join(dir, '*.rb') ].each { |f| 

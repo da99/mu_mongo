@@ -1,5 +1,5 @@
 
-require '_couch_plastic_validator'
+require_these 'models', [ :_couch_plastic_validator, :_couch_plastic_helper ]
 
 module CouchPlastic
   
@@ -274,7 +274,7 @@ module CouchPlastic
 
     def validator *cols, &blok
       col = cols.first
-      @validators || {}
+      @validators ||= {}
       if @validators[col]
         raise ArgumentError, "Validator already exists for: #{col.inspect}"
       end

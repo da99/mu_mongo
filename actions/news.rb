@@ -1,8 +1,4 @@
 
-# configure do
-#   set :news_actions, [ :show, 
-#   :new, :create, :edit, :update, :delete] 
-# end
 
 helpers {
   def news_tags
@@ -12,19 +8,19 @@ helpers {
 
 allow(News) {
 
-  new # NEW
+  new 
   show 
   edit 
 
-  create do # CREATE
+  create do 
     success_msg { "Save: #{doc.title}" }
   end
 
-  update do |doc|
+  update do 
     success_msg { "Update: #{doc.title}" }
   end
 
-  delete do  # DELETE
+  delete do
 
     success_msg { "Delete: #{doc.title}" }
 

@@ -274,6 +274,10 @@ class Member
 
   } # validator :add_life_username
 
+
+  private # ==================================================
+
+
   def _add_to_history_(hash)
     if !hash.is_a?(Hash)
       raise ArgumentError, "Only Hash object is allowed."

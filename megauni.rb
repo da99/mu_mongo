@@ -2,6 +2,7 @@ $KCODE = 'UTF8'
 
 require( File.expand_path './helpers/app/require'  )
 require_these 'helpers/app', %w{
+  kernel
   chars_compat
   string_blank
   string_inflections
