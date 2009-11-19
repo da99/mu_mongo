@@ -1,4 +1,5 @@
 
+require '_couch_plastic_validator'
 
 module CouchPlastic
   

@@ -197,7 +197,7 @@ class Member
   
   validator :permission_level do 
     if_not_in(SECURITY_LEVELS) { 
-      raise InvalidPermissionLevel.new(permission_level)
+      raise Member::InvalidPermissionLevel.new(permission_level)
     }
   end # === def set_permission_level
   
@@ -210,10 +210,11 @@ class Member
 
     default_error_msg 'Email is invalid.'
 
-    select_error {
+    detect {
       must_be_string
-      min_size(6)
-      match_original_after_cleaning(/[^a-z0-9\.\-\_\+\@]/i) 
+      min_size 6
+      clean_with(  /[^a-z0-9\.\-\_\+\@]/i  )
+      match_with original_val
     }
   
   end # === def email=
@@ -239,36 +240,40 @@ class Member
       ~.split.join(' ')
     }
     
-    
-    validator(:add_life_username) {
+    after {
+      validate :add_life_username
+    }
 
-      # Delete invalid characters and 
-      # reduce any suspicious characters. 
-      # '..*' becomes '.', '--' becomes '-'
-      clean_with(/[^a-z0-9]{1,}/i) { |s|
-        if ['_', '.', '-'].include?( s[0,1] )
-          s[0,1]
-        else
-          ''
-        end
-      }
-
-      between_size( 2, 20 )
-
-      select_error {
-        match( /[a-z0-9]/i ) {
-          'Username must have at least one letter or number.' 
-        }
-      }
-
-      override {
-        doc.new_data[:lives][add_life][:username] = add_life_username
-      }
-
-    } # validator :add_life_username
 
   end # validator :add_life
   
+  validator(:add_life_username) {
+
+    # Delete invalid characters and 
+    # reduce any suspicious characters. 
+    # '..*' becomes '.', '--' becomes '-'
+    clean_with(/[^a-z0-9]{1,}/i) { |s|
+      if ['_', '.', '-'].include?( s[0,1] )
+        s[0,1]
+      else
+        ''
+      end
+    }
+
+    between_size( 2, 20 )
+
+    detect {
+      match( /[a-z0-9]/i ) {
+        'Username must have at least one letter or number.' 
+      }
+    }
+
+    override {
+      doc.new_data[:lives][add_life][:username] = add_life_username
+    }
+
+  } # validator :add_life_username
+
   def _add_to_history_(hash)
     if !hash.is_a?(Hash)
       raise ArgumentError, "Only Hash object is allowed."
