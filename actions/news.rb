@@ -6,7 +6,7 @@ helpers {
   end
 }
 
-allow(News) {
+CRUD_for(News) {
 
   new 
   show 
@@ -23,10 +23,6 @@ allow(News) {
   delete do
 
     success_msg { "Delete: #{doc.title}" }
-
-    error(:no_record, :unauthorized) {
-      success_msg 'Deleted.'
-    }
 
     redirect '/my-work/'
 

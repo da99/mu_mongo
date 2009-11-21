@@ -69,6 +69,18 @@ module CouchPlastic
   #      Methods for handling Old/New Data
   # ========================================================= 
 
+  # :d is short for data. Uses :original.
+  def d(key)
+    if !has?(key)
+      raise ArgumentError, "Unknown key: #{key.inspect}"
+    end
+    original[key]
+  end
+
+  def has?(key)
+    original.has_key? key
+  end
+
   def original
     @original ||= {}
   end

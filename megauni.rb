@@ -1,4 +1,5 @@
 $KCODE = 'UTF8'
+require 'jcode'
 
 require( File.expand_path './helpers/app/require'  )
 require_these 'helpers/app', %w{
@@ -58,7 +59,7 @@ require_these 'helpers/sinatra', %w{
   swiss_clock
   text_to_html
   red_cloth
-  action_dsl
+  crud_for_models
 }
 
 

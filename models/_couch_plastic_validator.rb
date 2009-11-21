@@ -198,8 +198,8 @@ module CouchPlastic
     # Turns :val into a stripped string if it does not
     # respond to :size.
     def min_size( size, &blok )
-      strip if !@val.respond_to?(:size)
-      return true if @val.size >= size 
+      strip if !@val.respond_to?(:jsize)
+      return true if @val.jsize >= size 
 
       msg = "#{_cap_col_name_} needs to be at least #{size} characters in length."
       _choose_and_add_error_msg_(msg, &blok)
@@ -209,8 +209,8 @@ module CouchPlastic
     # Turns :val into a stripped string if it does not
     # respond to :size.
     def between_size( min, max, &blok ) 
-      strip if !@val.respond_to?(:size)
-      return true if @val.size.between?(min, max)
+      strip if !@val.respond_to?(:jsize)
+      return true if @val.jsize.between?(min, max)
 
       msg = "#{_cap_col_name_} needs to be between #{min} and #{max} characters in length."
       _choose_and_add_error_msg_(msg, &blok)
