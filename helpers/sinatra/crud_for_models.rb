@@ -2,14 +2,27 @@
 
 helpers {
 
+  def choose *args
+    args.detect { |a|
+      case a
+        when Proc
+          instance_eval &a
+        else
+          a
+      end
+    }
+  end
+
   def do_crud action_name, raw_options
     o_keys = raw_options.keys
     o_vals = o_keys.map { |k| raw_options[k] }
-    o = Struct.new(*o_keys).new(*o_vals)
+    o      = Struct.new(*o_keys).new(*o_vals)
 
-    describe options.model_class, action_name
+    describe o.model_class, action_name
 
-    require_log_in! if options.require_log_in!
+
+    #return [action_name, raw_options].inspect
+    require_log_in! if o.require_log_in!
 
     case action_name
 
@@ -113,23 +126,23 @@ configure do
 
     ACTIONS = [:new, :show, :edit, :create, :update, :delete].uniq
 
-    attr_reader :options, :model, :model_underscore
+    attr_reader :options, :model_class, :model_underscore
 
-    def initialize model_class, &blok
+    def initialize new_model_class, &blok
       @options          = {}
-      @model            = model_class
+      @model_class      = new_model_class
       @model_underscore = model_class.to_s.underscore
+      @allow_action_create = true
       instance_eval &blok
     end
 
-    def method_method method, *args, &blok
-      case method
-        when @action
-          new_action method, *args, &blok
-        else
-          super(method, *args, &blok)
-      end
-    end
+    ACTIONS.each { |a| 
+      eval %~
+        def #{a} *args, &blok
+          new_action #{a.inspect}, *args, &blok
+        end
+      ~
+    }
 
     def validate_action action
       if !ACTIONS.include?(action)
@@ -142,25 +155,26 @@ configure do
 
     attr_reader :action
 
-    def new_action action_name, path=nil, *path_options, &blok
+    def new_action action_name, new_path=nil, *path_options, &blok
 
       validate_action action_name
       @action = action_name
 
       new_option :http_method,    default_http_method
-      new_option :path,           path || self.path
+      new_option :path,           new_path || path
       new_option :path_options,   path_options
       new_option :require_log_in, true
       new_option :model_class,    model_class
       new_option :model_underscore, model_underscore
 
-      instance_eval &blok
-      
-      @action = nil # See :method_missing to see why this is important.
+      instance_eval &blok if block_given?
+
+      this_options = options[action_name]
+      this_action  = action_name
 
       self.class.instance_eval {
-        self.send options[action][:http_method], options[action][:path], *options[action][:path_options] do
-          self.do_crud action, options
+        self.send this_options[:http_method], this_options[:path], *this_options[:path_options] do
+          self.do_crud this_action, this_options
         end
       }
       
