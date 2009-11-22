@@ -11,7 +11,7 @@ div( :id=>"nav_bar" ) {
       } 
     end
     p.english { 
-      #if the_app.current_action[:controller] == :main && the_app.current_action[:action] == :show
+      #if the_app.controller == :main && the_app.action == :show
         the_app.options.site_title.upcase 
       #else
       #  a the_app.options.site_title.upcase, :href=>'/'

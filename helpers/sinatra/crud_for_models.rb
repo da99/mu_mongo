@@ -13,23 +13,32 @@ helpers {
     }
   end
 
-  def do_crud action_name, raw_options
-    o_keys = raw_options.keys
-    o_vals = o_keys.map { |k| raw_options[k] }
-    o      = Struct.new(*o_keys).new(*o_vals)
+  def crud_model_options
+    return ArgumentError, "No model specified." if !model
+    options.send("crud_#{model_underscore}")
+  end
 
-    describe o.model_class, action_name
+  def crud_action_options
+    return ArgumentError, "No action specified." if !action
+    crud_model_options[action]
+  end
 
+  def do_crud model_class, action_name
+    
+    model  model_class
+    action action_name
+    o      = crud_action_options
 
-    #return [action_name, raw_options].inspect
+    #return o.inspect
+    
     require_log_in! if o.require_log_in!
 
-    case action_name
+    case action
 
       when :new
         begin
-          model_class.new(current_member)
-        rescue model_class::UnauthorizedNew
+          model.new(current_member)
+        rescue model::UnauthorizedNew
           pass
         end
 
@@ -37,8 +46,8 @@ helpers {
 
       when :show
         begin
-          @doc = model_class.read current_member, clean_room[:id]
-        rescue model_class::NoRecordFound, model_class::UnauthorizedReader
+          @doc = model.read current_member, clean_room[:id]
+        rescue model::NoRecordFound, model::UnauthorizedReader
           pass
         end
         
@@ -46,45 +55,45 @@ helpers {
 
       when :edit
         begin
-          @doc = model_class.edit current_member, clean_room[:id]
-        rescue model_class::NoRecordFound, model_class::UnauthorizedEditor
+          @doc = model.edit current_member, clean_room[:id]
+        rescue model::NoRecordFound, model::UnauthorizedEditor
           pass
         end
 
       when :create
         begin
-          @doc              = model_class.create current_member, clean_room
+          @doc              = model.create current_member, clean_room
           flash.success_msg = choose( o.success_msg, 'Successfully saved data.')
           redirect          choose(o.redirect_success, "/#{model_underscore}/#{@doc._id}/" )
 
-        rescue model_class::UnauthorizedCreator
+        rescue model::UnauthorizedCreator
           pass
 
-        rescue model_class::Invalid
+        rescue model::Invalid
           flash.error_msg  choose( o.error_msg,      to_html_lists($!.doc.errors) )
           redirect         choose( o.redirect_error, "/#{model_underscore}/new/"  )
         end
 
       when :update
         begin
-          @doc              = model_class.update(current_member, clean_room)
+          @doc              = model.update(current_member, clean_room)
           flash.success_msg = choose( o.success_msg,    "Updated data." )
           redirect          choose( o.redirect_success, request.path_info )
 
-        rescue model_class::NoRecordFound, model_class::UnauthorizedUpdator
+        rescue model::NoRecordFound, model::UnauthorizedUpdator
           pass
 
-        rescue model_class::Invalid
+        rescue model::Invalid
           flash.error_msg = choose( o.error_msg, to_html_list($!.doc.errors) )
           redirect        choose( o.redirect_error, "/#{model_underscore}/#{$!.doc._id}/edit/" )
         end
 
       when :delete
         begin
-          @doc              = model_class.delete!( current_member, clean_room[:id])
+          @doc              = model.delete!( current_member, clean_room[:id])
           flash.success_msg = choose( o.success_msg, "Deleted." )
 
-        rescue model_class::NoRecordFound, model_class::UnauthorizedDeletor
+        rescue model::NoRecordFound, model::UnauthorizedDeletor
           flash.success_msg = "Deleted."
         end
 
@@ -132,8 +141,18 @@ configure do
       @options          = {}
       @model_class      = new_model_class
       @model_underscore = model_class.to_s.underscore
-      @allow_action_create = true
+
       instance_eval &blok
+
+      options_to_struct
+
+      this_options = @options
+      this_model   = @model_underscore
+      self.class.instance_eval {
+        configure {
+          set "crud_#{this_model}", this_options
+        }
+      }
     end
 
     ACTIONS.each { |a| 
@@ -169,14 +188,27 @@ configure do
 
       instance_eval &blok if block_given?
 
-      this_options = options[action_name]
-      this_action  = action_name
+      this_http_method  = options[action_name][:http_method]
+      this_path         = options[action_name][:path].inspect
+      this_path_options = options[action_name][:path_options].inspect
+      this_action       = action_name.inspect
+      this_model        = options[action_name][:model_class]
 
-      self.class.instance_eval {
-        self.send this_options[:http_method], this_options[:path], *this_options[:path_options] do
-          self.do_crud this_action, this_options
+      # This gets tricky. We are implementing a Ruby DSL after all.
+      # Anyway, here is an example of what the code below evaluates to:
+      #
+      # put "/news/1/", *([]) do
+      #  do_crud News, :update
+      # end
+      #
+      #
+      self.class.instance_eval %~
+        
+        #{this_http_method} #{this_path}, *(#{this_path_options}) do
+          do_crud #{this_model}, #{this_action}  
         end
-      }
+
+      ~
       
     end
 
@@ -189,6 +221,17 @@ configure do
 
       options[action] ||= {}
       options[action][k] = v
+    end
+
+    def options_to_struct
+      new_options = {}
+      options.keys.each do |action|
+        action_opts = options[action]
+        o_keys = action_opts.keys
+        o_vals = o_keys.map {|k| action_opts[k] }
+        new_options[action] = Struct.new(*o_keys).new(*o_vals)
+      end
+      @options = new_options
     end
 
     def default_http_method 

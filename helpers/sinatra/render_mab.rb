@@ -125,10 +125,10 @@ module Sinatra
             end
             
             def template_file_name
-                if !current_action
+                if !action && !controller
                     raise "CURRENT ACTION PROPERTIES NOT DEFINED for: #{self.inspect}"
                 end
-                @template_file_name ||= current_action[:controller].to_s.underscore + "_" + current_action[:action].to_s.underscore + '.rb'
+                @template_file_name ||= controller.to_s.underscore + "_" + action.to_s.underscore + '.rb'
                 regular_file_path = File.join(skins_dir, @template_file_name) 
                 partial_file_path  = File.join(skins_dir, "__" + @template_file_name)
                 

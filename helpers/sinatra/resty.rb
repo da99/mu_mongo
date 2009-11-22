@@ -20,7 +20,7 @@ helpers {
       Object.const_get(model_name.to_s.underscore.camelize)
     else
       current_resty[:model_class] || 
-        Object.const_get(current_action[:controller].to_s.camelize)
+        Object.const_get(controller.to_s.camelize)
     end
     
     return false if !model_class

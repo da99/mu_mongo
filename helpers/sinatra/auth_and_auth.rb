@@ -20,7 +20,7 @@ helpers do # ===============================
     if current_member && !level
       error(404, "Not found.")
     end
-
+ 
     level
   end
 
@@ -57,10 +57,10 @@ helpers do # ===============================
   
   def check_creditials!
     
-    dev_log_it("CREDITIAL CHECK >>> #{current_action[:controller].inspect} #{current_action[:action].inspect}")
+    dev_log_it("CREDITIAL CHECK >>> #{controller.inspect} #{action.inspect}")
     
-    return true if logged_in? && current_member.has_power_of?( current_action[:perm_level] )
-    return true if current_action[:perm_level].eql?( :STRANGER )
+    return true if logged_in? && current_member.has_power_of?( required_permission_level )
+    return true if required_permission_level.eql?( :STRANGER )
     
     if request.get?
       session[:return_page] = request.fullpath
