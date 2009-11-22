@@ -60,6 +60,8 @@ require_these 'helpers/sinatra', %w{
   text_to_html
   red_cloth
   crud_for_models
+  controller_dsl
+  redirect_dsl
 }
 
 
