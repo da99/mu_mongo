@@ -5,23 +5,24 @@ helpers do # ===============================
 
   # === Member related helpers ========================
 
-  def require_log_in!(*raw_levels)
-    levels = raw_levels.flatten.uniq
-    invalid_levels = levels - Member::SECURITY_LEVEL_NAMES
-    raise ArgumentError, "Invalid levels: #{invalid_levels.inspect}" if !invalid_levels.empty?
+  def require_log_in! *perm_levels
+
+		return true if perm_levels.empty? && logged_in?
+
     if !logged_in? 
-      session[:return_page] = request.fullpath
-      redirect('/log-in/')
+			if request.get?
+				session[:return_page] = request.fullpath
+				redirect('/log-in/')
+			else
+				render_error_msg( "Not logged in. Log-in first and try again.", 200  )
+			end
     end
 
-		return :STRANGER if logged_in? && levels.empty?
-
-    level = levels.detect {|l| current_member.has_power_of?(l) }
-    if current_member && !level
-      error(404, "Not found.")
-    end
+		if !current_member.any_of_these_powers?(perm_levels)
+			error(404, "Not found.")
+		end
  
-    level
+    true
   end
 
   def log_out!
@@ -40,36 +41,22 @@ helpers do # ===============================
   end
   
   def logged_in?
-    session[:member_username] && current_member && !current_member.new?
+    session[:member_id] && current_member && !current_member.new?
   end # === def      
 
   def current_member=(mem)
-      raise "CURRENT MEMBER ALREADY SET" if mem && session[:member_username]
-      session[:member_username] = mem._id
+      raise "CURRENT MEMBER ALREADY SET" if logged_in?
+      session[:member_id] = mem._id
   end    
 
   def current_member
-    return nil if !session[:member_username]
-    @current_member ||= Member[:id => session[:member_username] ]
-    return nil unless @current_member
+    return nil if !session[:member_id]
+    @current_member ||= Member.by_id( session[:member_id] )
+    return nil if !@current_member
     @current_member
   end # === def
   
-  def check_creditials!
-    
-    dev_log_it("CREDITIAL CHECK >>> #{controller.inspect} #{action.inspect}")
-    
-    return true if logged_in? && current_member.has_power_of?( required_permission_level )
-    return true if required_permission_level.eql?( :STRANGER )
-    
-    if request.get?
-      session[:return_page] = request.fullpath
-      redirect('/log-in/')
-    else
-      render_error_msg( "Not logged in. Log-in first and try again.", 200  )
-    end
-    
-  end # === def check_creditials!            
+      
   
   
 end # === helpers

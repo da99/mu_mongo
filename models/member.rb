@@ -34,6 +34,11 @@ class Member
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
 
+  # ==== Class Methods =====================================================    
+
+	def self.valid_security_level?(perm_level)
+		SECURITY_LEVELS.include?(perm_level)
+	end
 
   # ==== Getters =====================================================    
   
@@ -123,6 +128,12 @@ class Member
   def usernames
     assoc_cache[:usernames] ||= lives.map { |l| l[:username]}
   end
+
+	def any_of_these_powers?(*raw_levels)
+		raw_levels.flatten.detect { |level| 
+			has_power_of?(level) 
+		}
+	end
 
   def has_power_of?(raw_level)
 
