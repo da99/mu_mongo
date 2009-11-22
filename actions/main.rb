@@ -1,54 +1,63 @@
 require 'builder'
 
-get( '/') { 
-  describe :main, :show
-  render_mab
-}
+controller :main do 
 
-
-get '/help/' do 
-  describe :main, :help
-  render_mab
-end
-
-get( '/blog/' ) {
-  redirect('/news/')
-}
-
-get( '/about/' ) { 
-  redirect('/help/')
-}
-
-
-get '/salud/' do 
-  describe :main, :salud
-  render_mab 
-end
-
-%w{ /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/ }.each do |url|
-  get( url, :mobile=>false ) {
-    redirect('/salud/m/')
+  get( '/' ) { 
+    action :show
+    render_mab
   }
-end
 
-get( '/reset/' ) {
+  redirect {
+    from :about
+    to :help
+  }
+
+  get( '/help/' ) {
+    action :help
+    render_mab
+  }
+
+  get( '/salud/' ) { 
+    action :salud
+    render_mab 
+  }
+
+end # === controller :main
+
+redirect {
+  from :blog 
+  to :news
+}
+
+redirect {
+  from '/*robots.txt'
+  to '/robots.txt'
+}
+
+redirect {
+  from *(%w{ /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/ })
+  to '/salud/m/'
+}
+
+# %w{ /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/ }.each do |url|
+#   get( url, :mobile=>false ) {
+#     redirect('/salud/m/')
+#   }
+# end
+
+get( '/reset/' ) do
     TemplateCache.reset
     CSSCache.reset
     redirect( env['HTTP_REFERER'] || '/' )
-}
+end
 
 
-get('/timer/') {
+get('/timer/') do
   halt "Not ready yet."
-  describe :timer, :show
+  controller :timer
+  action :show
   render_mab
-}
-
-
-get('/*robots.txt') {
-  redirect('/robots.txt')
-}
-
+end
 
 get '/*beeping.*' do
   exts = ['mp3', 'wav'].detect  { |e| e == params['splat'].last.downcase }
@@ -78,107 +87,109 @@ end
 #                             Temp Actions
 # ===================================================================
 
+controller :topic do
 
-get '/economy/' do
-  describe :topic, :economy
-  render_mab
-end
+  get '/economy/' do
+    action  :economy
+    render_mab
+  end
 
-get '/music/' do
-  describe :topic, :music
-  render_mab
-end
+  get '/music/' do
+    action  :music
+    render_mab
+  end
 
-get '/sports/' do
-  describe :topic, :sports
-  render_mab
-end
+  get '/sports/' do
+    action  :sports
+    render_mab
+  end
 
-get '/housing/' do
-  describe :topic, :housing
-  render_mab
-end
+  get '/housing/' do
+    action  :housing
+    render_mab
+  end
 
-get '/news/' do
-  describe :topic, :news
-  render_mab
-end
+  get '/news/' do
+    action  :news
+    render_mab
+  end
 
-get '/bubblegum/' do # :index
-  @news = News.reverse_order(:created_at).limit(10).all
-  @news_tags = NewsTag.all
-  describe :topic, :bubblegum
-  render_mab
-end
+  get '/bubblegum/' do # :index
+    @news = News.reverse_order(:created_at).limit(10).all
+    @news_tags = NewsTag.all
+    action  :bubblegum
+    render_mab
+  end
 
 
-get '/computer/' do
-  describe :topic, :computer
-  render_mab
-end
+  get '/computer/' do
+    action  :computer
+    render_mab
+  end
 
-get '/preggers/' do
-  describe :topic, :preggers
-  render_mab
-end 
+  get '/preggers/' do
+    action  :preggers
+    render_mab
+  end 
 
-get '/hair/' do
-  describe :topic, :hair
-  render_mab
-end
+  get '/hair/' do
+    action  :hair
+    render_mab
+  end
 
-get '/back-pain/' do
-  describe :topic, :back_pain
-  render_mab
-end
+  get '/back-pain/' do
+    action  :back_pain
+    render_mab
+  end
 
-get '/child-care/' do
-  describe :topic, :child_care
-  render_mab
-end
+  get '/child-care/' do
+    action  :child_care
+    render_mab
+  end
 
-get '/arthritis/' do
-  describe :topic, :arthritis
-  render_mab
-end
+  get '/arthritis/' do
+    action  :arthritis
+    render_mab
+  end
 
-get '/flu/' do
-  describe :topic, :flu
-  render_mab
-end
+  get '/flu/' do
+    action  :flu
+    render_mab
+  end
 
-get '/heart/' do
-  describe :topic, :heart
-  render_mab
-end
+  get '/heart/' do
+    action  :heart
+    render_mab
+  end
 
-get '/cancer/' do
-  describe :topic, :cancer
-  render_mab
-end
+  get '/cancer/' do
+    action  :cancer
+    render_mab
+  end
 
-get '/hiv/' do
-  describe :topic, :hiv
-  render_mab
-end
+  get '/hiv/' do
+    action  :hiv
+    render_mab
+  end
 
-get '/depression/' do
-  describe :topic, :depression
-  render_mab
-end
+  get '/depression/' do
+    action  :depression
+    render_mab
+  end
 
-get '/dementia/' do
-  describe :topic, :dementia
-  render_mab
-end
+  get '/dementia/' do
+    action  :dementia
+    render_mab
+  end
 
-get '/meno-osteo/' do
-  describe :topic, :meno_osteo
-  render_mab
-end
+  get '/meno-osteo/' do
+    action  :meno_osteo
+    render_mab
+  end
 
-get '/health/' do
-  describe :topic, :health
-  render_mab
-end
+  get '/health/' do
+    action  :health
+    render_mab
+  end
 
+end # === controller :topics

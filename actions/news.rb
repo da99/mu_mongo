@@ -31,7 +31,8 @@ CRUD_for(News) {
 }
 
 get '/news/by_date/:year/:month/' do
-  describe :news, :by_date
+  controller :news
+  action :by_date
   
   year = params[:year].to_i
   month = params[:month].to_i
@@ -75,7 +76,8 @@ get %r{/news/by_tag/([0-9]+)/} do |id|
 end
 
 get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
-  describe :news, :by_tag
+  controller :news
+  action :by_tag
   @news_tag = tag_name
   @news = News.get_by_tag @news_tag
   render_mab

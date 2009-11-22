@@ -3,7 +3,8 @@
 
 get( "/sign\-up/" ) do
   require_ssl!
-  describe :member, :new
+  controller :member
+  action :new
   render_mab
 end
 
@@ -34,7 +35,8 @@ end # == post :create
 # Show account and HTML pages on same view.
 get( "/account/" ) do
   require_log_in!
-  describe :account, :show
+  controller :account
+  action :show
   render_mab
 end # == get :show
 
