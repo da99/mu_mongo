@@ -1,4 +1,4 @@
-require 'builder'
+require 'builder' # For RSS
 
 controller :main do 
 

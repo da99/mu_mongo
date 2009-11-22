@@ -43,7 +43,7 @@ div( :id=>"nav_bar" ) {
 
       next if !show_it 
 
-      if the_app.current_action[:controller] == c_name && the_app.current_action[:action] == a_name
+      if the_app.controller == c_name && the_app.action == a_name
         selected.call text
       else
         unselected.call text, path 
