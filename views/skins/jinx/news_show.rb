@@ -1,4 +1,4 @@
-save_to('title') { app_vars[:news].title }
+save_to('title') { the_app.doc.title }
 
 
 
@@ -14,21 +14,21 @@ div.content! {
   div.news_post {
    
    div.info {
-    span.published_at app_vars[:news].published_at.strftime('%b  %d, %Y')
+    span.published_at the_app.doc.published_at.strftime('%b  %d, %Y')
    }
-   h4 app_vars[:news].title
+   h4 the_app.doc.title
    div.body { 
-     the_app.news_to_html app_vars[:news], :body
+     the_app.news_to_html the_app.doc, :body
    }
 
-   if !app_vars[:news].tags.empty?
+   if !the_app.doc.tags.empty?
 		 div.tags {
-			if app_vars[:news].updator?(the_app.current_member)
+			if the_app.doc.updator?(the_app.current_member)
 				a('Edit', :href=>"#{the_app.request.path_info}edit/")
 			end
 				p.title 'Tags:'
 				ul {
-					app_vars[:news].tags.each do |tag|
+					the_app.doc.tags.each do |tag|
 						li {
 							a(tag, :href=>"/news/by_tag/#{tag}/")
 						}

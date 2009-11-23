@@ -9,7 +9,9 @@ helpers {
 CRUD_for(News) {
 
   new 
-  show 
+  show {
+    dont_require_log_in
+  }
   edit 
 
   create do 

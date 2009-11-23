@@ -11,36 +11,29 @@ error {
 
 not_found {
 
-  # Add trailing slash and use a  permanent redirect.
-  # Why a trailing slash? Many software programs
-  # look for files by appending them to the url: /salud/robots.txt
-  # Without adding a slash, they will go to: /saludrobots.txt
-  if request.get? && !request.xhr? && request.query_string.to_s.strip.empty?
+  if redirectable_get?
 
-    if request.path_info != '/' &&  # Request is not for homepage.
-        request.path_info !~ /\.[a-z0-9]+$/ &&  # Request is not for a file.
-          request.path_info[ request.path_info.size - 1 , 1] != '/'  # Request does not end in /
-      redirect( request.url + '/' , 301 )
-    end
+    # Try adding a slash to URI.
+    redirect_to_slashed_path_info
 
-    uri_downcase = request.fullpath.downcase
+    # Try downcasing URI.
+    redirect_to_downcased_path
 
-    if uri_downcase != request.fullpath
-      redirect uri_downcase
-    end
-
-    %w{ mobi mobile iphone pda }.each do |ending|
-      if request.path_info.split('/').last.downcase == ending
-        redirect( request.url.sub(/#{ending}\/?$/, 'm/') , 301 )
-      end
-    end
+    # Try mobile version.
+    use_mobile_version_if_requested
 
   end
 
-  if !robot_agent?
+  # 
+  # Log error.
+  #
+  if !robot? 
     IssueClient.create(env,  options.environment, "404 - Not Found", "Referer: #{env['HTTP_REFERER']}" )
   end
 
+  # 
+  # Preset 404 message.
+  #
   if request.xhr?
     '<div class="error">Action not found.</div>'
   else

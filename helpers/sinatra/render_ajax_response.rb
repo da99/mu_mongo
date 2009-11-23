@@ -3,11 +3,10 @@ helpers {
   def render_success_msg(msg)
     controller :main
     action :success_msg
-    delete_form_draft_cookie
     @success_msg = msg
     @partial ||= template_name
     
-    halt( 200, render_mab )
+    halt( 200, 'Data was saved.') # render_mab )
   end
 
   
@@ -15,7 +14,7 @@ helpers {
     controller :main
     action :error_msg
     @error_msg = msg
-    halt( http_error_code || 200, render_mab)
+    halt( http_error_code || 200, 'Error occurred. Go back to previous page.') # render_mab)
   end
 
 } # === helpers

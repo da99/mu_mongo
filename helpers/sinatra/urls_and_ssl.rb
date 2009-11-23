@@ -1,35 +1,6 @@
 
-# If path is a String, adds a slash at the end if one does 
-# not exist.
-#
-# Options:
-#   :mobile => Default is true, unless path has a period.
-#              E.g.: /sitemap.xml. 
-#              Set to true to force using a path, even with
-#              period in the path.
-def get( raw_path, opts={}, &blok)
-  path = raw_path.is_a?(String) && !raw_path['.'] ? 
-            File.join(raw_path.strip, '/') : 
-            raw_path
-  
-  if path.is_a?(String) 
-    use_mobile = opts.delete(:mobile) 
-    if (use_mobile.nil? && !path['.']) || use_mobile
-      m_path = File.join( path, 'm/' )
-      Sinatra::Application.get m_path, opts, &blok
-    end
-  end
-
-  Sinatra::Application.get path, opts, &blok
-end
-
-
 before {
   
-  if request.env['HTTP_USER_AGENT'] == 'MSIE 7.0'
-    halt 404, "404 - Not Found"
-  end
-
   # url must not be blank. Sometimes I get error reports where the  URL is blank.
   # I have no idea how that is even possible, so I put this:
   if production? && 
@@ -37,16 +8,16 @@ before {
         request.path_info.to_s.strip.empty? )
     raise( ArgumentError, "POSSIBLE SECURITY ISSUES: URL is blank: #{env['REQUEST_URI'].inspect}, #{request.path_info.inspect}" ) 
   end
+  
+  halt( 404, "404 - Not Found" ) if blacklisted_robot?
 
-  if request.get? && request.path_info =~ /\/m\/?$/
-    @mobile_request = true
-    #request.path_info = request.path_info.sub(/\/m\/?$/, '/') # File.join(request.path_info, "m/")
-  end
     
 } # === before  
 
 helpers {
 
+    # :redirect is over-ridden here because of :keep_flash 
+    # (part of custom flash implementation)
     def redirect(uri, *args)
       if !request.get? && args.detect { |s| s.to_i > 200 && s.to_i < 500 }
         raise ArgumentError,
@@ -58,30 +29,11 @@ helpers {
         status 303
       end
 
-      #if request.get? && mobile_request?
-      #  uri = File.join(uri, 'm/')
-      #end
-      
       keep_flash
 
       response['Location'] = uri
       halt(*args)
     end
-
-    def mobile_request?(path = nil)
-      @mobile_request || (path || request.path_info).strip =~ /\/m\/?$/
-    end
-
-    def mobile_path(raw_path)
-      return raw_path if !raw_path.respond_to?(:to_s)
-      return raw_path.to_s if mobile_request?(raw_path.to_s)
-      File.join( raw_path.to_s.strip, 'm/')
-    end
-
-    def mobile_path_if_requested(raw_path)
-      return raw_path if !mobile_request?
-      mobile_path raw_path
-    end   
 
     def publicize_path(path)
      File.join( options.public, Wash.path( path ) )
@@ -103,6 +55,8 @@ helpers {
       "http#{ using_ssl? ? 's' : '' }://#{request.host}"
     end
     
+    # ==== SSL =================================================
+
     def using_ssl?
       (env['HTTPS'] == 'on' || 
           env['HTTP_X_FORWARDED_PROTO'] =='https' || 
@@ -124,6 +78,56 @@ helpers {
       redirect 'https://' + request.url.sub('http://', '') , 301 # permanent redirect
 
     end # === def 
+
+    # ==== 404 Helpers ===========================================
+    # ==== Mainly used in  :not_found
+
+    # Some :GET requests should not be redirected,
+    # like those with QUERY_STRING of Ajax requests (:xhr?).
+    def redirectable_get?
+       request.get? && 
+      !request.xhr? && 
+       request.query_string.to_s.strip.empty?
+    end
+
+    def add_slash_to_path_info( path = nil )
+      path ||= request.path_info
+      
+      if path != '/' &&  # Request is not for homepage.
+         path !~ /\.[a-z0-9]+$/ &&  # Request is not for a file.
+         path[ path.size - 1 , 1] != '/'  # Request does not end in /
+
+        return path + '/'
+      end
+
+      path 
+    end
+
+    # Add trailing slash and use a permanent redirect (301)
+    # by default.
+    # Why a trailing slash? Many software programs
+    # look for files by appending them to the url: /salud/robots.txt
+    # Without adding a slash, they will go to: /saludrobots.txt.
+    def redirect_to_slashed_path_info http_code = 301
+      return false if !guessable_get?
+
+      if request.path_info != add_slash_to_path 
+        redirect( add_slash_to_path, 301 )
+      end
+      false
+    end
+
+    def redirect_to_downcased_path_info
+      return false if !guessable_get?
+
+      uri_downcase = request.path_info.downcase
+
+      if uri_downcase != request.fullpath
+        redirect uri_downcase
+      end
+
+      false
+    end
 
 
 } # === helpers

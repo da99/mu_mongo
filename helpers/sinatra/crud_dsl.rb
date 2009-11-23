@@ -14,7 +14,7 @@ helpers {
   end
 
   def crud_model_options
-    return ArgumentError, "No model specified." if !model
+    raise( ArgumentError, "No model specified." ) if !model
     options.send("crud_#{model_underscore}")
   end
 
@@ -29,9 +29,7 @@ helpers {
     action action_name
     o      = crud_action_options
 
-    #return o.inspect
-    
-    require_log_in! if o.require_log_in!
+    require_log_in! if o.require_log_in
 
     case action
 
@@ -46,7 +44,7 @@ helpers {
 
       when :show
         begin
-          @doc = model.read current_member, clean_room[:id]
+          doc model.read current_member, clean_room[:id]
         rescue model::NoRecordFound, model::UnauthorizedReader
           pass
         end
@@ -55,14 +53,14 @@ helpers {
 
       when :edit
         begin
-          @doc = model.edit current_member, clean_room[:id]
+          doc model.edit current_member, clean_room[:id]
         rescue model::NoRecordFound, model::UnauthorizedEditor
           pass
         end
 
       when :create
         begin
-          @doc              = model.create current_member, clean_room
+          doc               model.create current_member, clean_room
           flash.success_msg = choose( o.success_msg, 'Successfully saved data.')
           redirect          choose(o.redirect_success, "/#{model_underscore}/#{@doc._id}/" )
 
@@ -76,7 +74,7 @@ helpers {
 
       when :update
         begin
-          @doc              = model.update(current_member, clean_room)
+          doc               model.update(current_member, clean_room)
           flash.success_msg = choose( o.success_msg,    "Updated data." )
           redirect          choose( o.redirect_success, request.path_info )
 
@@ -90,7 +88,7 @@ helpers {
 
       when :delete
         begin
-          @doc              = model.delete!( current_member, clean_room[:id])
+          doc               model.delete!( current_member, clean_room[:id])
           flash.success_msg = choose( o.success_msg, "Deleted." )
 
         rescue model::NoRecordFound, model::UnauthorizedDeletor
@@ -270,6 +268,10 @@ configure do
 
     def redirect path=nil, &blok
       new_option( __method_name__, path || blok)
+    end
+
+    def dont_require_log_in
+      new_option( :require_log_in, false )
     end
 
     def manipulator_name action_name

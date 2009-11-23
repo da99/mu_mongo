@@ -17,7 +17,7 @@ helpers {
 	# 	:model 						- Always
 	# 	:model_underscore - Always
 	# 	:controller 			- Only if not set.
-	def model class_obj
+	def model class_obj = nil
 		if class_obj
 			describe_property __method_name__, class_obj
 			describe_property :model_underscore, class_obj.to_s.underscore.to_sym
@@ -25,7 +25,7 @@ helpers {
 				describe_property :controller, model_underscore
 			end
 		end
-		describe_or_get_property :model, *args
+		describe_or_get_property __method_name__
 	end
 
 	# This can only bet set by used :model with an Class instance argument.
@@ -87,10 +87,34 @@ helpers {
     content_type :xml, :charset => 'utf-8'
   end
 
-  def robot_agent?
-    env['HTTP_USER_AGENT'] && 
-      (env['HTTP_USER_AGENT']['Googlebot'] ||
-       env['HTTP_USER_AGENT']['Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 4.0; obot)'])
+  # ==== Robots ========================================================
+
+  def valid_robots
+    ['Googlebot',
+     'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 4.0; obot)'
+    ]
+  end
+
+  def blacklisted_robots
+    ['MSIE 7.0']
+  end
+
+  def all_robots
+    valid_robots + blacklisted_robots
+  end
+
+  def robot?
+    return true if !env['HTTP_USER_AGENT']
+
+    all_robots.detect { |ua|
+      env['HTTP_USER_AGENT'][ua]
+    }
+  end
+
+  def blacklisted_robot?
+    blacklisted_robots.detect { |ua|
+      env['HTTP_USER_AGENT'][ua]
+    }
   end
 
 } # === helpers

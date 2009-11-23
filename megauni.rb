@@ -48,6 +48,7 @@ require_these 'helpers/sinatra', %w{
   sanitize_input
   describe_action
   urls_and_ssl
+  mobilize
   flasher
   old_apps
   describe_action
@@ -59,7 +60,7 @@ require_these 'helpers/sinatra', %w{
   swiss_clock
   text_to_html
   red_cloth
-  crud_for_models
+  crud_dsl
   controller_dsl
   redirect_dsl
 }

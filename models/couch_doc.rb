@@ -69,7 +69,7 @@ class CouchDoc
     begin
       data = GET_naked( id )
       return(data) if !data[:data_model]
-      Object.const_get(data[:data_model]).new_from_db(data)
+      doc = Object.const_get(data[:data_model]).new_from_db(data)
     rescue RestClient::ResourceNotFound 
       raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
     end
