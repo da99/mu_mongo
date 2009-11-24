@@ -13,6 +13,7 @@ describe 'News App (public actions)' do
 
   it 'renders mobile version of :index' do
     get '/news/m/'
+    follow_redirect!
     last_response.should.be.ok
   end
 

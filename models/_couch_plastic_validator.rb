@@ -91,9 +91,9 @@ module CouchPlastic
           raw_member_level
       end
 
-      if !current_editor && member_level == Member::STRANGER
+      if !@doc.manipulator && member_level == Member::STRANGER
         instance_eval &blok 
-      elsif current_editor && current_editor.has_power_of?(member_level)
+      elsif @doc.manipulator && @doc.manipulator.has_power_of?(member_level)
         instance_eval &blok
       else 
         # Do nothing.
@@ -126,7 +126,7 @@ module CouchPlastic
 
     READERS = [ 
       :doc, :col, :val, :original_val,
-      :allow_set, :allow_other_validations, :after_proc,
+      :allow_set, :after_proc,
       :default_error_msg,
       :only_one_more_error_allowed 
     ]
@@ -155,26 +155,25 @@ module CouchPlastic
       self.allow_set                   = true
       self.only_one_more_error_allowed = true
 
-      self.allow_other_validations     = false
-
       instance_eval &(doc.class.validator_actions[col][1])
+
+      self.doc.clean_data[self.col] = self.val
 
       if allow_set?
         doc.new_data[self.col] = self.val
       end
 
-      if after_proc?
-        self.allow_other_validations = true
-        instance_eval &blok
-        self.allow_other_validations = false
-      end
+      instance_eval &after_proc if after_proc?
 
     end
 
     def method_missing *args 
       if args.size == 1 
-        return val if args.first == col
-        return original_val if args.first.to_s == "original_#{col}"
+        meth_name = args.first
+        return val if meth_name == col
+        return original_val if meth_name.to_s == "original_#{col}"
+        return doc.new_data[meth_name] if doc.new_data.has_key?(meth_name)
+        return doc.clean_data[meth_name] if doc.clean_data.has_key?(meth_name)
       end
       super(*args)
     end
@@ -200,7 +199,7 @@ module CouchPlastic
     end
 
     def _cap_col_name_
-      doc.human_name(col).capitalize
+      doc.human_field_name(col).capitalize
     end
 
     public # =========================
@@ -228,7 +227,7 @@ module CouchPlastic
 
     def set_other(raw_col, new_val = nil, &blok)
 
-      new_col = col.to_sym
+      new_col = raw_col.to_sym
 
       if new_val && block_given?
         raise ArgumentError, ":new_val and :blok must not be both set." 
@@ -247,10 +246,11 @@ module CouchPlastic
       self.after_proc = blok
     end
 
-    def validate(new_col, &blok)
-      if allow_other_validations
-        self.class.new(doc, new_col, &blok)
+    def validate new_col
+      if block_given?
+        raise ArgumentError, "This method does not accept a block."
       end
+      self.class.new @doc, new_col
     end
 
     def default_error_msg( msg )
@@ -265,6 +265,11 @@ module CouchPlastic
       instance_eval &blok
       self.only_one_more_error_allowed = false
       nil
+    end
+
+    def if_not_new &blok
+      return false if @doc.new?
+      instance_eval &blok
     end
 
     # === TIME METHODS ====
@@ -299,6 +304,14 @@ module CouchPlastic
     # === STRING METHODS ====
 
     def symbolize
+      return true if @val.is_a?(Symbol)
+      if !@val.is_a?(String)
+        raise ArgumentError, "#{col.inspect} has to be either a String or Symbol."
+      end
+
+      if @val.empty?
+        raise ArgumentError, "Can't use symbolize on an empty string: #{col.inspect}" 
+      end
       @val = @val.to_s.to_sym
     end
 
@@ -360,7 +373,7 @@ module CouchPlastic
         when String
           msg = "#{_cap_col_name_} must match #{s_or_regex}."
           @val == s_or_regex
-        when Regex
+        when Regexp
           msg = "#{_cap_col_name_} is invalid."
           @val =~ s_or_regex
       end
@@ -372,9 +385,12 @@ module CouchPlastic
     end
     
     def clean_with regex, &blok_for_regex
-      @val = @val.gsub(regex, '', &blok_for_regex)
+      @val = if block_given?
+        @val.gsub(regex, &blok_for_regex)
+      else
+        @val.gsub(regex, '')
+      end
     end
-
 
 
   end # ==== class Validator

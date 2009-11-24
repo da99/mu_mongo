@@ -42,6 +42,17 @@ class Member
 
   # ==== Getters =====================================================    
   
+  def self.new_from_db *args
+    doc = super(*args)
+
+    sec_level = doc.original_data[:security_level]
+    if sec_level
+      doc.original_data[:security_level] = sec_level.to_sym
+    end
+
+    doc
+  end
+
   def self.by_username username
     raise ArgumentError, "Invalid username: #{username.inspect}" if !username
     CouchDoc.GET(:member_usernames, :key=>username, :limit=>1, :include_docs=>true)
@@ -57,12 +68,12 @@ class Member
   #
   def self.authenticate( raw_vals )
       
-      un = Member.by_username( raw_vals[:username] )
+      mem = Member.by_username( raw_vals[:username] )
 
-      correct_password = BCrypt::Password.new(un.owner.hashed_password) === (raw_vals[:password] + un.owner.salt)
+      correct_password = BCrypt::Password.new(mem.hashed_password) === (raw_vals[:password] + mem.salt)
       
       if correct_password
-        return un.owner
+        return mem
       end
 
       raise IncorrectPassword, "Password is invalid for: #{raw_vals[:username]}"
@@ -87,7 +98,7 @@ class Member
     }
 
     from(ADMIN) {
-      ask_for :permission_level
+      ask_for :security_level
     }
 
   }
@@ -126,7 +137,17 @@ class Member
   end
   
   def usernames
-    assoc_cache[:usernames] ||= lives.map { |l| l[:username]}
+    assoc_cache[:usernames] ||= lives.values.map { |l| l[:username]}
+  end
+
+  def lives
+    return {} if !original_data.has_key?(:lives)
+    super
+  end
+
+  def security_level
+    return :MEMBER if !original_data.has_key?(:security_level) && !new?
+    super
   end
 
 	def any_of_these_powers?(*raw_levels)
@@ -149,9 +170,9 @@ class Member
     return true if target_level == STRANGER
     return false if new? 
 
-    member_index = SECURITY_LEVELS.index(self.permission_level)
+    member_index = SECURITY_LEVELS.index(self.security_level)
     target_index = SECURITY_LEVELS.index(target_level)
-    return member_level_index >= target_index
+    return member_index >= target_index
 
   end # === def security_clearance?
 
@@ -168,13 +189,13 @@ class Member
   
   # ==== Validators =====================================================
 
-  validator :password, :confirm_password do 
+  validator :password do 
    
     strip
     
     detect {
 
-      match(confirm_password) {
+      match(doc.raw_data[:confirm_password].to_s.strip) {
         "Password and password confirmation do not match."
       }
       
@@ -198,7 +219,7 @@ class Member
       }
 
       set_other(:hashed_password) {
-        BCrypt::Password.create( pass + self.new_data[:salt] ).to_s
+        BCrypt::Password.create( password + salt ).to_s
       }
 
     }
@@ -206,11 +227,11 @@ class Member
   end # === def set_password
   
   
-  validator :permission_level do 
+  validator :security_level do 
     if_not_in(SECURITY_LEVELS) { 
-      raise Member::InvalidPermissionLevel.new(permission_level)
+      raise Member::InvalidPermissionLevel.new(security_level)
     }
-  end # === def set_permission_level
+  end # === def set_security_level
   
  
   validator :email do 
@@ -234,21 +255,28 @@ class Member
 
     symbolize
     
-    if_in(doc.lives.keys) {
-      raise %~
-        Either programmer error or 
-        security attempt: 
-        No existing life allowed in 
-        :add_life from user data.
-      ~.split.join(' ')
+    if_not_new {
+      if_in(doc.lives.keys) {
+        raise %~
+          Either programmer error or 
+          security attempt: 
+          No existing life allowed in 
+          :add_life from user data.
+        ~.split.join(' ')
+      }
     }
 
-    if_not_in(LIVES) { 
+    if_not_in(Member::LIVES) { 
       raise %~
         Error or Security Attempt: 
         Invalid Life category: 
         #{add_life.inspect}
       ~.split.join(' ')
+    }
+
+    override {
+      doc.new_data[:lives] ||= {}
+      doc.new_data[:lives][add_life]={}
     }
     
     after {
@@ -271,12 +299,15 @@ class Member
       end
     }
 
-    between_size( 2, 20 )
 
     detect {
+
+      between_size( 2, 20 )
+
       match( /[a-z0-9]/i ) {
         'Username must have at least one letter or number.' 
       }
+
     }
 
     override {

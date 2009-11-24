@@ -112,6 +112,7 @@ helpers {
   end
 
   def blacklisted_robot?
+    return false if !env['HTTP_USER_AGENT']
     blacklisted_robots.detect { |ua|
       env['HTTP_USER_AGENT'][ua]
     }

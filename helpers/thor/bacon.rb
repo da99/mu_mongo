@@ -14,8 +14,10 @@ class Bacon < Thor
     require File.expand_path('megauni')
 
     DesignDoc.create_or_update
-    whisper 'Created design doc.'
+    whisper 'Created: design doc.'
 
+    # === Create News ==========================
+    
     n = News.new
     n.raw_data.update({:title=>'Longevinex', 
       :teaser=>'teaser', 
@@ -24,21 +26,25 @@ class Bacon < Thor
     })
     n.save_create
 
-return
-    new_values = {
-      :password=>'regular-password-1',
-      :confirm_password=>'regular-password-1',
-      :username=>'regular-member-1'
-    }
-    m = Member.create nil, new_values
+    # === Create Members ==========================
+    
+    Member.create( nil, {
+      :password          =>'regular-password-1',
+      :confirm_password  =>'regular-password-1',
+      :add_life_username =>'regular-member-1',
+      :add_life          =>Member::LIVES.first
+    })
+    
+    Member.create( nil, {
+      :password          =>'admin-password-1',
+      :confirm_password  =>'admin-password-1',
+      :add_life_username =>'admin-member',
+      :add_life          =>Member::LIVES.first
+    })
 
-    new_values = {
-      :password=>'admin-password-1',
-      :confirm_password=>'admin-password-1',
-      :permission_level=>Member::MEMBER,
-      :username=>'admin-member-1'
-    }
-    m = Member.create nil, new_values
+    admin_mem = Member.by_username( 'admin-member' )
+    admin_mem.new_data[:security_level] = :ADMIN
+    admin_mem.save_update
 
   end
 

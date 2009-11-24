@@ -85,6 +85,16 @@ module CouchPlastic
     @raw_data ||= {}
   end
 
+  def clean_data key = nil
+    if !key
+      @clean_data ||={}
+    else
+      if !clean_data.has_key?(key)
+        raise ArgumentError, "#{key.inspect} not found for :clean_data."
+      end
+    end
+  end
+
   def assoc_cache
     @assoc_cache ||= {}
   end
@@ -97,7 +107,7 @@ module CouchPlastic
   #            Methods Related to DSL for Editors
   # ========================================================= 
 
-  attr_reader :current_editor
+  attr_reader :manipulator
 
   def set_manipulator mem, new_data
     raise ArgumentError, "Method can only be used once." if @manipulator
@@ -152,12 +162,12 @@ module CouchPlastic
     clear_assoc_cache
     validate
 
-    data = new_data.clone
+    data = original_data.clone.update(new_data)
     data[:_rev] = original_data[:_rev]
     data[:updated_at] = Time.now.utc if self.class.enabled?(:updated_at)
     
     begin
-      results = CouchDoc.PUT( original_data[:_id], data.to_json )
+      results = CouchDoc.PUT( original_data[:_id], data )
       original_data[:_rev] = results[:rev]
       original_data[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
       original_data.update(new_data)
@@ -168,6 +178,7 @@ module CouchPlastic
         raise
       end
     end
+
   end
 
   def delete!

@@ -81,7 +81,7 @@ class CouchDoc
   def self.GET(view_name, params={})
 
     if !DesignDoc.view_exists?(view_name)
-      raise ArgumentError, "Non-existent view name: #{view_name}"
+      raise ArgumentError, "Non-existent view name: #{view_name.inspect}"
     end
 
     # Check to see if :reduce option is needed.

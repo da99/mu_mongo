@@ -33,14 +33,14 @@ class DesignDoc
   end
 
   def self.view_exists? view_name
-    as_hash.has_key? view_name
+    as_hash[:views].has_key? view_name
   end
 
   def self.view_has_reduce?(view_name)
-    if view_exists?(view_name)
+    if !view_exists?(view_name)
       raise ArgumentError, "View not found: #{view_name.inspect}"
     end
-    as_hash[view_name][:reduce].has_key?(:reduce)
+    as_hash[:views][view_name].has_key?(:reduce)
   end
 
   def self.as_hash

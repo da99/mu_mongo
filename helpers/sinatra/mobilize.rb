@@ -12,11 +12,11 @@ helpers {
   end
 
   def use_mobile_version
-    set_cookie("use_mobile_version", :value=>'yes', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
+    response.set_cookie("use_mobile_version", :value=>'yes', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
   end
 
   def stop_using_mobile_version
-    set_cookie('use_mobile_version', :value=>'no', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
+    response.set_cookie('use_mobile_version', :value=>'no', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
   end
 
   def mobile_request?(path = nil)

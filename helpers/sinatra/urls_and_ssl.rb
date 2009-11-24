@@ -109,16 +109,16 @@ helpers {
     # look for files by appending them to the url: /salud/robots.txt
     # Without adding a slash, they will go to: /saludrobots.txt.
     def redirect_to_slashed_path_info http_code = 301
-      return false if !guessable_get?
+      return false if !redirectable_get?
 
-      if request.path_info != add_slash_to_path 
-        redirect( add_slash_to_path, 301 )
+      if request.path_info != add_slash_to_path_info 
+        redirect( add_slash_to_path_info, 301 )
       end
       false
     end
 
     def redirect_to_downcased_path_info
-      return false if !guessable_get?
+      return false if !redirectable_get?
 
       uri_downcase = request.path_info.downcase
 

@@ -120,7 +120,7 @@ __END__
       @perm_levels ||={}
     end
 
-    def set_permission_level( new_level, *actions )
+    def set_security_level( new_level, *actions )
       actions.each { |raw_target_action| 
         target_action = raw_target_action.to_sym
         if __perm_levels__.has_key?(target_action)
@@ -130,6 +130,6 @@ __END__
       }
     end
 
-    def get_permission_level(target_action)
+    def get_security_level(target_action)
       __perm_levels__.fetch( target_action.to_sym,  Member::NO_ACCESS )
     end

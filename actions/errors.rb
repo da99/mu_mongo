@@ -17,7 +17,7 @@ not_found {
     redirect_to_slashed_path_info
 
     # Try downcasing URI.
-    redirect_to_downcased_path
+    redirect_to_downcased_path_info
 
     # Try mobile version.
     use_mobile_version_if_requested
