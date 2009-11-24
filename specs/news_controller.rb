@@ -6,7 +6,7 @@ describe 'News App (public actions)' do
   end
 
   it 'renders :show with an :id' do
-    n = News.get_by_tag( :hearts, :limit=>1 )
+    n = News.by_tag( :hearts, :limit=>1 )
     get "/news/#{n._id}/"
     last_response.should.be.ok
   end
@@ -22,13 +22,13 @@ describe 'News App (public actions)' do
   end
 
   it 'renders a group by tags' do
-    tags = News.get_tags
+    tags = News.tags
 		get "/news/by_tag/#{tags.first}/"
     last_response.should.be.ok
   end
 
   it 'renders a group by date' do
-    news = News.get_by_published_at(:limit=>1, :startkey=>'2000-01-01')
+    news = News.by_published_at(:limit=>1, :startkey=>'2000-01-01')
     get "/news/by_date/#{news.published_at.year}/#{news.published_at.month}/"
     last_response.should.be.ok
   end
@@ -102,7 +102,7 @@ end # ===
 
 describe 'News :edit (action)' do
   before do
-    @news = News.get_by_published_at(:limit=>1)
+    @news = News.by_published_at(:limit=>1)
     @edit_path = "/news/#{@news[:id]}/edit/"
   end
   it 'requires log-in' do
@@ -124,7 +124,7 @@ end # ===
 
 describe 'News :update (action)' do
   before do
-    @news = News.get_by_published_at(:limit=>1)
+    @news = News.by_published_at(:limit=>1)
     @update_path = "/news/#{@news[:id]}/"
   end
 
@@ -200,7 +200,7 @@ describe 'Hearts App Compatibility' do
   end
 
   it 'responds with 404 for a heart link that does not exist.' do
-    post_id  = News.get_by_published_at(:limit=>1)._id.to_i + 1
+    post_id  = News.by_published_at(:limit=>1)._id.to_i + 1
     get "/heart_link/#{post_id}/"
     follow_redirect!
     last_response.status.should.be == 404

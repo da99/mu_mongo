@@ -1,9 +1,128 @@
 module CouchPlastic
 
+
+  # =========================================================
+  #               Validation-related Methods
+  # ========================================================= 
+
+  def validate
+    SetterDSL.new self
+    raise_if_invalid
+  end
+
+  def errors
+    @errors ||= []
+  end
+
+  def raise_if_invalid
+    
+    if !errors.empty? 
+      raise Invalid.new( self, "Document has validation errors." )
+    end
+
+    if new_data.empty?
+      raise NoNewValues, "No new data to save."
+    end
+
+    true
+
+  end 
+
+  # =========================================================
+  #                  Module: ClassMethods
+  # ========================================================= 
+
+  module ClassMethods
+   
+    def setter_actions
+      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
+    end
+
+    def setter action, &blok
+      if setter_actions[action]
+        raise ArgumentError, "Already used: #{action.inspect}" 
+      end
+      setter_actions[action] = blok
+    end
+
+    def validator_actions
+      @validator_actions ||= {}
+    end
+
+    def validator *cols, &blok
+      col = cols.first
+      if validator_actions[col]
+        raise ArgumentError, "Validator already exists for: #{col.inspect}"
+      end
+      validator_actions[col] = [cols, blok]
+    end 
+
+  end # === module ClassMethods
+
+ 
+  # =========================================================
+  #                  Class: SetterDSL
+  # =========================================================  
+  
+  class SetterDSL
+
+    def initialize new_doc
+      @doc = new_doc
+      @doc_class = new_doc.class
+      if @doc.new?
+        instance_eval &@doc_class.setters[:create]
+      else
+        instance_eval &@doc_class.setters[:update]
+      end
+    end
+
+    def from raw_member_level, &blok
+
+      member_level = case raw_member_level
+        when :self
+          self
+        when Symbol
+          if @doc.respond_to?(raw_member_level)
+            @doc.send raw_member_level
+          else
+            raw_member_level
+          end
+        else
+          raw_member_level
+      end
+
+      if !current_editor && member_level == Member::STRANGER
+        instance_eval &blok 
+      elsif current_editor && current_editor.has_power_of?(member_level)
+        instance_eval &blok
+      else 
+        # Do nothing.
+      end
+
+    end
+
+    def demand *cols
+      cols.flatten.each { |k|
+        ValidatorDSL.new @doc, k
+      }
+    end
+    
+    def ask_for *cols
+      cols.flatten.each { |k|
+        if raw_data.has_key?(k)
+          ValidatorDSL.new @doc, k
+        end
+      }
+    end  
+
+  end # === class SetterDSL
+
+
   # =========================================================
   #   Implements the Validator DSL for CouchPlastic models.
   # =========================================================
-  class Validator
+
+  class ValidatorDSL
 
     READERS = [ 
       :doc, :col, :val, :original_val,
@@ -13,20 +132,20 @@ module CouchPlastic
     ]
     
     private  # ============================================== 
-    attr_writer *READERS
+      attr_writer *READERS
 
-    READERS.each { |sym|
-      eval(%~
-        def #{sym}?
-          @#{sym}
-        end
-      ~);
-    }
+      READERS.each { |sym|
+        eval(%~
+          def #{sym}?
+            @#{sym}
+          end
+        ~);
+      }
 
     public  # ==============================================
-    attr_reader *READERS
+      attr_reader *READERS
 
-    def initialize(raw_doc, raw_col, &blok)
+    def initialize(raw_doc, raw_col)
 
       self.doc                         = raw_doc
       self.col                         = raw_col.to_sym
@@ -38,10 +157,10 @@ module CouchPlastic
 
       self.allow_other_validations     = false
 
-      instance_eval &blok
+      instance_eval &(doc.class.validator_actions[col])
 
       if allow_set?
-        doc.new_values[self.col] = self.val
+        doc.new_data[self.col] = self.val
       end
 
       if after_proc?
@@ -60,7 +179,7 @@ module CouchPlastic
       super(*args)
     end
 
-    
+
     private # ==== PRIVATE METHODS ======================
 
 
@@ -119,7 +238,7 @@ module CouchPlastic
                 instance_eval( &blok ) :
                 new_val
 
-      @doc.new_values[new_col] = result
+      @doc.new_data[new_col] = result
     end
 
     # === MISCELLANEOUS METHODS ====

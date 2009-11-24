@@ -73,12 +73,12 @@ class Member
 
   enable_timestamps
 
-  during(:create) { 
+  setter(:create) { 
     demand :add_life, :password
     ask_for :avatar_link, :email
   }
 
-  during(:update) { 
+  setter(:update) { 
 
     ask_for :old_life, :add_life 
 
@@ -122,7 +122,7 @@ class Member
   # sensitive information is not shown.
   #
   def inspect
-    assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original[:_id]}>"
+    assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.original_data[:_id]}>"
   end
   
   def usernames
@@ -198,7 +198,7 @@ class Member
       }
 
       set_other(:hashed_password) {
-        BCrypt::Password.create( pass + self.new_values[:salt] ).to_s
+        BCrypt::Password.create( pass + self.new_data[:salt] ).to_s
       }
 
     }

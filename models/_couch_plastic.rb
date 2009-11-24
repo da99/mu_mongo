@@ -51,14 +51,14 @@ module CouchPlastic
   
   def method_missing *args
     meth_name = args.first.to_sym
-    if args.size == 1 && original.has_key?(meth_name)
-      return original[meth_name]
+    if args.size == 1 && original_data.has_key?(meth_name)
+      return original_data[meth_name]
     end
     super
   end
 
   def new?
-    original.empty?
+    original_data.empty?
   end
  
   def human_field_name( col )
@@ -69,31 +69,22 @@ module CouchPlastic
   #      Methods for handling Old/New Data
   # ========================================================= 
 
-  # :d is short for data. Uses :original.
-  def d(key)
-    if !has?(key)
-      raise ArgumentError, "Unknown key: #{key.inspect}"
-    end
-    original[key]
-  end
-
   def has?(key)
-    original.has_key? key
+    original_data.has_key? key
   end
 
-  def original
-    @original ||= {}
+  def original_data
+    @original_data ||= {}
   end
 
-  def _set_original_(new_hash)
-    raise ArgumentError, "Only a Hash is allowed." if !new_hash.is_a?(Hash)
-    @original = new_hash
+  def new_data
+    @new_data ||= {}
   end
 
-  def new_values
-    @new_values ||= {}
+  def raw_data 
+    @raw_data ||= {}
   end
- 
+
   def assoc_cache
     @assoc_cache ||= {}
   end
@@ -106,42 +97,12 @@ module CouchPlastic
   #            Methods Related to DSL for Editors
   # ========================================================= 
 
-  attr_reader :current_editor, :raw_data
+  attr_reader :current_editor
 
   def set_manipulator mem, new_data
     raise ArgumentError, "Method can only be used once." if @manipulator
     @manipulator = mem
     @raw_data = new_data
-  end
-
-  def demand *cols
-    cols.flatten.each { |k|
-      send("#{k}_setter")
-    }
-  end
-  
-  def ask_for *cols
-    cols.flatten.each { |k|
-      if raw_data.has_key?(k)
-        send("#{k}_setter")
-      end
-    }
-  end
-
-  def from raw_member_level, &blok
-    member_level = case raw_member_level
-      when :self
-        self
-      else
-        raw_member_level
-    end
-
-    if !current_editor && member_level == Member::STRANGER
-      instance_eval &blok 
-    elsif current_editor && current_editor.has_power_of?(member_level)
-      instance_eval &blok
-    else 
-    end
   end
 
   # =========================================================
@@ -159,7 +120,7 @@ module CouchPlastic
     clear_assoc_cache
     validate
 
-    data = new_values.clone
+    data = new_data.clone
     data[:data_model] = self.class.name
     data[:created_at] = Time.now.utc if self.class.enabled?(:created_at)
 
@@ -167,11 +128,11 @@ module CouchPlastic
 
     begin
       results = CouchDoc.PUT( new_id, data)
-      _set_original_(original.update(new_values))
-      original[:_id]        = new_id
-      original[:_rev]       = results[:rev]
-      original[:created_at] = data[:created_at] if data.has_key?(:created_at)
-      original[:data_model] = data[:data_model]
+      @original_data.update(new_data)
+      original_data[:_id]        = new_id
+      original_data[:_rev]       = results[:rev]
+      original_data[:created_at] = data[:created_at] if data.has_key?(:created_at)
+      original_data[:data_model] = data[:data_model]
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -191,15 +152,15 @@ module CouchPlastic
     clear_assoc_cache
     validate
 
-    data = new_values.clone
-    data[:_rev] = original[:_rev]
+    data = new_data.clone
+    data[:_rev] = original_data[:_rev]
     data[:updated_at] = Time.now.utc if self.class.enabled?(:updated_at)
     
     begin
-      results = CouchDoc.PUT( original[:_id], data.to_json )
-      original[:_rev] = results[:rev]
-      original[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
-      _set_original_(original.update(new_values))
+      results = CouchDoc.PUT( original_data[:_id], data.to_json )
+      original_data[:_rev] = results[:rev]
+      original_data[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
+      original_data.update(new_data)
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -213,31 +174,10 @@ module CouchPlastic
     
     clear_assoc_cache
 
-    results = CouchDoc.delete( original[:id], original[:_rev] )
-    original.clear # Mark document as new.
+    results = CouchDoc.delete( original_data[:id], original_data[:_rev] )
+    original_data.clear # Mark document as new.
 
   end
-
-  # =========================================================
-  #               Validation-related Methods
-  # ========================================================= 
-
-  def errors
-    @errors ||= []
-  end
-
-  def validate
-    if !errors.empty? 
-      raise Invalid.new( self, "Document has validation errors." )
-    end
-
-    if new_values.empty?
-      raise NoNewValues, "No new data to save."
-    end
-
-    true
-  end 
-
 
   # =========================================================
   #                  Module: ClassMethods
@@ -247,22 +187,11 @@ module CouchPlastic
 
     def new_from_db(data)
       d = new
-      d._set_original_(data)
+      d.original_data.update(data)
       d
     end
 
     # ===== DSL-icious ======================================
-
-    def actions
-      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
-    end
-
-    def during action, &blok
-      if actions[action]
-        raise ArgumentError, "Already used: #{action.inspect}" 
-      end
-      actions[action] = blok
-    end
 
     def enable_timestamps
       enable :created_at, :updated_at
@@ -283,15 +212,8 @@ module CouchPlastic
       @use_options ||=[]
       @use_options.include? opt.to_sym
     end
+    
 
-    def validator *cols, &blok
-      col = cols.first
-      @validators ||= {}
-      if @validators[col]
-        raise ArgumentError, "Validator already exists for: #{col.inspect}"
-      end
-      @validators[col] = [cols, blok]
-    end
 
     # ===== CRUD Methods ====================================
 
@@ -321,7 +243,6 @@ module CouchPlastic
         raise UnauthorizedCreator.new(d,editor)
       end
       d.set_manipulator editor, raw_data
-      d.instance_eval &actions[:create]
       d.save_create 
       d
     end
@@ -332,7 +253,6 @@ module CouchPlastic
         raise UnauthorizedUpdator.new(d,editor)
       end
       d.set_manipulator editor, raw_data
-      d.instance_eval &actions[:update]
       d.save_update 
       d
     end

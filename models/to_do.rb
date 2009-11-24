@@ -18,14 +18,14 @@ class ToDo < Sequel::Model
   
   # ==== CRUD ====================================================
 
-  during :create do 
+  setter :create do 
     demand :title, :details
     ask_for :days, :hours, :minutes, :seconds,
             :starts_at, :ends_at
     
   end
 
-  during :update do
+  setter :update do
     from( :owner ) {
       ask_for :title, :details,
               :days, :hours, :minutes, :seconds,

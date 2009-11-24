@@ -2,7 +2,7 @@
 
 helpers {
   def news_tags
-    @all_news_tags ||= News.get_tags
+    @all_news_tags ||= News.tags
   end
 }
 
@@ -52,7 +52,7 @@ get '/news/by_date/:year/:month/' do
       @next_month = Time.utc(year, month+1)    
   end
   @date = Time.utc(year, month)
-  @news = News.get_by_published_at(:descending=>true, :startkey=>@next_month, :endkey=>@prev_month)
+  @news = News.by_published_at(:descending=>true, :startkey=>@next_month, :endkey=>@prev_month)
   render_mab
 end # ===
 
@@ -81,7 +81,7 @@ get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
   controller :news
   action :by_tag
   @news_tag = tag_name
-  @news = News.get_by_tag @news_tag
+  @news = News.by_tag @news_tag
   render_mab
 end
 

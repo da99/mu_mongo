@@ -7,21 +7,19 @@ class News
 
   # ==== Getters =====================================================    
   
-  def self.get_tags
-    rows = CouchDoc.GET(:news_tags, 
-        :reduce=>true, 
-       :group=>true)[:rows]
+  def self.tags
+    rows = CouchDoc.GET(:news_tags, :reduce=>true, :group=>true)[:rows]
     rows.map { |r| 
       r[:key]
     }
   end
 
-  def self.get_by_tag tag, raw_params={}
+  def self.by_tag tag, raw_params={}
     params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
     CouchDoc.GET(:news_by_tag, params)
   end
 
-  def self.get_by_published_at raw_params={}
+  def self.by_published_at raw_params={}
     # time_format = '%Y-%m-%d %H:%M:%S'
     # dt = Time.now.utc
     # start_dt = dt.strftime(time_format)
@@ -34,12 +32,12 @@ class News
 
   enable_timestamps
 
-  during( :create ) {
+  setter( :create ) {
     demand :title, :body, :published_at 
     ask_for :teaser, :tags 
   }
 
-  during( :update ) {
+  setter( :update ) {
     ask_for :title, :body, :teaser, :published_at, :tags
   }
 
@@ -70,16 +68,16 @@ class News
   end
 
   def created_at
-    Time.parse( original[:created_at] )
+    Time.parse( original_data[:created_at] )
   end
 
   def updated_at
-    return nil if !original[:updated_at] || original[:updated_at].empty?
-    Time.parse( original[:updated_at] )
+    return nil if !original_data[:updated_at] || original_data[:updated_at].empty?
+    Time.parse( original_data[:updated_at] )
   end
 
   def published_at
-    Time.parse(original[:published_at])
+    Time.parse(original_data[:published_at])
   end
 
 

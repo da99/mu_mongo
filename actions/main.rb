@@ -75,7 +75,7 @@ end
 
 get '/rss.xml' do
   content_xml_utf8
-  @posts = News.get_by_published_at(:limit=>5, :descending=>true)
+  @posts = News.by_published_at(:limit=>5, :descending=>true)
   main_rss_file = Pow( options.views, 'main_rss.rb' )
   builder do |xml|
     eval main_rss_file.read, nil, main_rss_file.to_s, 1
