@@ -122,7 +122,7 @@ module CouchPlastic
 
     data = new_data.clone
     data[:data_model] = self.class.name
-    data[:created_at] = Time.now.utc if self.class.enabled?(:created_at)
+    data[:created_at] = Helper.utc_now_as_string if self.class.enabled?(:created_at)
 
     new_id = data.delete(:_id) || CouchDoc.GET_uuid
 

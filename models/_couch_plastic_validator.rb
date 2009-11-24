@@ -70,9 +70,9 @@ module CouchPlastic
       @doc = new_doc
       @doc_class = new_doc.class
       if @doc.new?
-        instance_eval &@doc_class.setters[:create]
+        instance_eval &@doc_class.setter_actions[:create]
       else
-        instance_eval &@doc_class.setters[:update]
+        instance_eval &@doc_class.setter_actions[:update]
       end
     end
 
@@ -109,7 +109,7 @@ module CouchPlastic
     
     def ask_for *cols
       cols.flatten.each { |k|
-        if raw_data.has_key?(k)
+        if @doc.raw_data.has_key?(k)
           ValidatorDSL.new @doc, k
         end
       }
@@ -157,7 +157,7 @@ module CouchPlastic
 
       self.allow_other_validations     = false
 
-      instance_eval &(doc.class.validator_actions[col])
+      instance_eval &(doc.class.validator_actions[col][1])
 
       if allow_set?
         doc.new_data[self.col] = self.val
@@ -270,12 +270,12 @@ module CouchPlastic
     # === TIME METHODS ====
 
     def to_datetime(time_or_str)
-      CouchPlastic::Helper.time_string(time_or_str)
+      @val = CouchPlastic::Helper.time_string(time_or_str)
     end
 
-    def to_datetime_or_now(nil_or_time_or_str)
+    def to_datetime_or_now(nil_or_time_or_str = nil)
       v = nil_or_time_or_str
-      v ? to_datetime(v) : CouchPlastic::Helper.utc_now
+      @val = v ? to_datetime(v) : CouchPlastic::Helper.utc_now_as_string
     end
 
     # === ARRAY METHODS ====
@@ -300,6 +300,24 @@ module CouchPlastic
 
     def symbolize
       @val = @val.to_s.to_sym
+    end
+
+    def strip
+      @val = @val.to_s.strip
+    end
+
+    def split
+      if !@val.is_a?(Array)
+        @val = @val.to_s.split
+      end
+    end
+
+    def must_not_be_empty &err_msg
+      if @val.empty?
+        msg = "#{_cap_col_name_} must not be empty"
+        _choose_and_add_error_msg_( msg, &err_msg)
+      end
+      true
     end
 
     def must_be_string &err_msg_blok
@@ -334,10 +352,6 @@ module CouchPlastic
       msg = "#{_cap_col_name_} needs to be between #{min} and #{max} characters in length."
       _choose_and_add_error_msg_(msg, &blok)
       false
-    end
-
-    def strip
-      @val = @val.to_s.strip
     end
 
     def match(s_or_regex, &err_msg_blok)

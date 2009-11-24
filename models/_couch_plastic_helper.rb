@@ -8,12 +8,16 @@ module CouchPlastic
     class << self
 
       def time_string(time_or_str)
-        raise "needs implementation."
+        t = Time.parse(time_or_str.to_s)
+        t.strftime('%Y-%m-%d %H:%M:%S')
       end
 
       def utc_now
-        # return as string
-        raise "needs implementation."
+        Time.now.utc
+      end
+
+      def utc_now_as_string
+        time_string(utc_now)
       end
 
     end
