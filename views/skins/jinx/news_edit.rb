@@ -1,4 +1,4 @@
-save_to('title') { 'Editing: ' + app_vars[:news][:title] }
+save_to('title') { 'Editing: ' + the_app.doc.title }
 
 partial('__nav_bar')
 
@@ -6,40 +6,40 @@ div.content!  {
 
   partial '__flash_msg' if the_app.flash_msg?
 
-  a("View", :href=>"/news/#{app_vars[:news][:id]}/")
+  a("View", :href=>"/news/#{the_app.doc._id}/")
   
   h3 @title # "Editing: #{app_vars[:news][:title]}" 
 
-  form.form_news_edit!(:action=>"/news/#{app_vars[:news][:id]}/", :method=>'post') {
+  form.form_news_edit!(:action=>"/news/#{the_app.doc._id}/", :method=>'post') {
 
     fieldset {
       label 'Title'
-      input.text( :value=>app_vars[:news][:title], :id=>"news_title", :name=>"title", :type=>"text" )
+      input.text( :value=>the_app.doc.title, :id=>"news_title", :name=>"title", :type=>"text" )
     }
 
     fieldset {
       label 'Teaser'
-      textarea(app_vars[:news][:teaser], :id=>"news_teaser", :name=>"teaser")
+      textarea(the_app.doc.teaser, :id=>"news_teaser", :name=>"teaser")
     }
 
     fieldset {
       label 'body'
-      textarea(app_vars[:news][:body], :id=>"news_body", :name=>"body")
+      textarea(the_app.doc.body, :id=>"news_body", :name=>"body")
     }
 
     fieldset {
       label 'Tags'
       div.checkboxes {
         the_app.news_tags.each { |t|
-          if app_vars[:news].has_tag_id?(t[:id])
+          if the_app.doc.tags.include?(t)
             div.box.selected {
-              checkbox true, :name=>"tags[]", :value=>t[:id]
-              span t[:filename]
+              checkbox true, :name=>"tags[]", :value=>t
+              span t
             }
           else
             div.box {
-              checkbox false, :name=>"tags[]", :value=>t[:id]
-              span t[:filename]
+              checkbox false, :name=>"tags[]", :value=>t
+              span t
             }
           end
         } 

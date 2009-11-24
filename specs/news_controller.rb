@@ -42,6 +42,7 @@ describe 'News :new (action)' do
     get '/news/new/', {}, ssl_hash
     follow_ssl_redirect!
     last_request.fullpath.should.be == '/log-in/'
+		get '/log-out/'
   end
 
   it 'does not allow regular members to view it.' do
@@ -69,23 +70,22 @@ describe 'News :create (action)' do
   end
 
   it 'does not allow strangers' do
-    should.raise(Member::UnauthorizedCreator) {
-      post *@path_args
-    }
+		post *@path_args
+		last_response.body.should =~ /Not logged in. Log-in first and try again/
+		get '/log-out/'
   end
 
   it 'does not allow members' do
     log_in_member
-    should.raise(Member::UnauthorizedCreator) {
-      post *@path_args
-    }
+    post *@path_args
+    last_response.status.should.be == 404
   end
 
   it 'allows admins' do
     log_in_admin
     post *@path_args
     follow_ssl_redirect!
-    last_request.fullpath.should.be =~ /^\/news\/[0-9]+\//
+    last_request.fullpath.should.be =~ /^\/news\/[A-Za-z0-9]{6,32}\//
     last_response.should.be.ok
     last_response.body.should.be =~ /#{Regexp.escape(@new_values[:title])}/
     last_response.body.should.be =~ /#{Regexp.escape(@new_values[:body])}/
@@ -104,7 +104,7 @@ end # ===
 describe 'News :edit (action)' do
   before do
     @news = News.by_published_at(:limit=>1)
-    @edit_path = "/news/#{@news[:id]}/edit/"
+    @edit_path = "/news/#{@news._id}/edit/"
   end
   it 'requires log-in' do
     get @edit_path, {}, ssl_hash
@@ -126,14 +126,13 @@ end # ===
 describe 'News :update (action)' do
   before do
     @news = News.by_published_at(:limit=>1)
-    @update_path = "/news/#{@news[:id]}/"
+    @update_path = "/news/#{@news._id}/"
   end
 
   it 'does not allow members to update' do
     log_in_member
-    should.raise(Member::UnauthorizedEditor) {
-      put @update_path, {:title=>'New Title'}, ssl_hash
-    }
+    put @update_path, {:title=>'New Title'}, ssl_hash
+		last_response.status.should.be == 404
   end 
 
   it 'allows admins to update' do
@@ -148,6 +147,7 @@ describe 'News :update (action)' do
     log_in_admin
     put @update_path, {:title=>'', :body=>''}, ssl_hash
     follow_ssl_redirect!
+		last_request.fullpath.should.be == "/news/#{@news._id}/edit/"
     last_response.body.should.be =~ /Title is required/
     last_response.body.should.be =~ /Body is required/
   end
@@ -159,8 +159,10 @@ describe 'Hearts App Compatibility' do
   it 'renders mobile version of :index' do
     get '/hearts/m/'
     follow_redirect!
-    last_response.should.be.ok
-    last_request.fullpath.should.be == '/news/m/'
+    last_request.fullpath.should.be == '/hearts/'
+    follow_redirect!
+    last_response.status.should == 200
+    last_request.fullpath.should.be == '/news/'
   end
 
   it 'redirects /blog/ to /news/' do 
@@ -187,22 +189,22 @@ describe 'Hearts App Compatibility' do
 
   it 'redirects archives by_category to news archives by_tag. ' +
      '(E.g.: /heart_links/by_category/16/)' do
-      get '/heart_links/by_category/16/'
+      get '/heart_links/by_category/167/'
       follow_redirect!
-      last_request.fullpath.should.be == '/news/by_tag/16/'
-      last_response.should.be.ok
+      last_request.fullpath.should.be == '/news/by_tag/167/'
   end
 
   it 'redirects a "/heart_link/10/" to "/news/10/".' do
-    get '/heart_link/10/'
+		@news = News.by_published_at(:limit=>1)
+    get "/heart_link/#{@news._id}/"
     follow_redirect!
-    last_request.fullpath.should.be == '/news/10/'
+    last_request.fullpath.should.be == "/news/#{@news._id}/"
+		last_response.status.should.be == 200
     last_response.should.be.ok
   end
 
   it 'responds with 404 for a heart link that does not exist.' do
-    post_id  = News.by_published_at(:limit=>1)._id.to_i + 1
-    get "/heart_link/#{post_id}/"
+    get "/heart_link/1000000/"
     follow_redirect!
     last_response.status.should.be == 404
   end

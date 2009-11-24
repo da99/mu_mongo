@@ -32,7 +32,7 @@ module CouchPlastic
       if doc.is_a?(String)
         return super(doc)
       end
-      title = self.class.to_s.gsub('Unauthorized', '')
+      title = self.class.to_s.gsub('CouchPlastic::Unauthorized', '')
       msg = "#{doc.inspect}, #{title}: #{mem.inspect}"
       super(msg)
     end
@@ -49,6 +49,21 @@ module CouchPlastic
   #           Miscellaneous Methods
   # ========================================================= 
   
+  def initialize *args
+    editor   = args.first
+    raw_data = args[1]
+    if !editor && !raw_data
+      return super()
+    end
+
+    if !creator?(editor)
+      raise UnauthorizedNew.new(self,editor)
+    end
+    set_manipulator editor, raw_data
+    super()
+
+  end
+
   def method_missing *args
     meth_name = args.first.to_sym
     if args.size == 1 && original_data.has_key?(meth_name)

@@ -24,9 +24,9 @@ helpers {
   end
 
   def do_crud model_class, action_name
-    
-    model  model_class
+
     action action_name
+    model  model_class
     o      = crud_action_options
 
     require_log_in! if o.require_log_in
@@ -34,10 +34,11 @@ helpers {
     case action
 
       when :new
+
         begin
           model.new(current_member)
         rescue model::UnauthorizedNew
-          pass
+          not_found
         end
 
         return render_mab
@@ -46,7 +47,7 @@ helpers {
         begin
           doc model.read current_member, clean_room[:id]
         rescue model::NoRecordFound, model::UnauthorizedReader
-          pass
+          not_found
         end
         
         return render_mab
@@ -55,20 +56,22 @@ helpers {
         begin
           doc model.edit current_member, clean_room[:id]
         rescue model::NoRecordFound, model::UnauthorizedEditor
-          pass
+          not_found
         end
+
+        return render_mab
 
       when :create
         begin
           doc               model.create current_member, clean_room
           flash.success_msg = choose( o.success_msg, 'Successfully saved data.')
-          redirect          choose(o.redirect_success, "/#{model_underscore}/#{@doc._id}/" )
+          redirect          choose(o.redirect_success, "/#{model_underscore}/#{doc._id}/" )
 
         rescue model::UnauthorizedCreator
-          pass
+          halt(404, "Page Not Found.")
 
         rescue model::Invalid
-          flash.error_msg  choose( o.error_msg,      to_html_lists($!.doc.errors) )
+          flash.error_msg =  choose( o.error_msg,      to_html_list($!.doc.errors) )
           redirect         choose( o.redirect_error, "/#{model_underscore}/new/"  )
         end
 
@@ -79,7 +82,7 @@ helpers {
           redirect          choose( o.redirect_success, request.path_info )
 
         rescue model::NoRecordFound, model::UnauthorizedUpdator
-          pass
+          not_found
 
         rescue model::Invalid
           flash.error_msg = choose( o.error_msg, to_html_list($!.doc.errors) )
@@ -128,7 +131,9 @@ configure do
       :http_method, 
       :success_msg, 
       :error_msg, 
-      :redirect 
+      :redirect,
+			:redirect_error,
+			:redirect_success
     ]
 
     ACTIONS = [:new, :show, :edit, :create, :update, :delete].uniq
@@ -200,13 +205,15 @@ configure do
       # end
       #
       #
+
+			line = __LINE__
       self.class.instance_eval %~
         
         #{this_http_method} #{this_path}, *(#{this_path_options}) do
           do_crud #{this_model}, #{this_action}  
         end
 
-      ~
+      ~, __FILE__, line
       
     end
 
@@ -226,8 +233,9 @@ configure do
       options.keys.each do |action|
         action_opts = options[action]
         o_keys = action_opts.keys
+				append_keys = OPTIONS - o_keys
         o_vals = o_keys.map {|k| action_opts[k] }
-        new_options[action] = Struct.new(*o_keys).new(*o_vals)
+        new_options[action] = Struct.new(*(o_keys+append_keys)).new(*o_vals)
       end
       @options = new_options
     end

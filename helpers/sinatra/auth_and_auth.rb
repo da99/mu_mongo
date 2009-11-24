@@ -14,7 +14,7 @@ helpers do # ===============================
 				session[:return_page] = request.fullpath
 				redirect('/log-in/')
 			else
-				render_error_msg( "Not logged in. Log-in first and try again.", 200  )
+				render_error_msg( 200, "Not logged in. Log-in first and try again." )
 			end
     end
 
@@ -26,7 +26,7 @@ helpers do # ===============================
   end
 
   def log_out!
-    return_page = session[:return_page]
+    #return_page = session[:return_page]
     
     # I hate this because it requires specific implementation knowledge
     # about Rack::Flash. However, until I figure out a better solution,
@@ -34,7 +34,7 @@ helpers do # ===============================
     #flash_session = session[:__FLASH__]
     
     session.clear
-    session[:return_page] = return_page
+    #session[:return_page] = return_page
     keep_flash
 
     # session[:__FLASH__] = flash_session 

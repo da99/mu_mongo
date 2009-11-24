@@ -70,7 +70,7 @@ helpers {
       return nil if using_ssl?
       
       if request.xhr? || request.post?
-        render_error_msg( "Programmer error. Using unsecure line.", 200  )
+        render_error_msg( 200, "Programmer error. Using unsecure line."  )
       end
             
       # Redirect to SSL

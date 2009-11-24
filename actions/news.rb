@@ -134,7 +134,7 @@ get %r{/hearts?_links/([0-9]+)/} do |id|  #  /hearts_links/29/
   redirect( "/news/#{ id }/"  )
 end
 
-get %r{/heart_link/([0-9]+)/} do |id| #  /heart_link/29/
+get %r{/heart_link/([A-Za-z0-9]+)/} do |id| #  /heart_link/29/
   redirect("/news/#{id}/")
 end
 

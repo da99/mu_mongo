@@ -124,6 +124,8 @@ module CouchPlastic
 
   class ValidatorDSL
 
+		class NoMoreErrors < StandardError; end
+
     READERS = [ 
       :doc, :col, :val, :original_val,
       :allow_set, :after_proc,
@@ -153,7 +155,7 @@ module CouchPlastic
       self.original_val                = val
       
       self.allow_set                   = true
-      self.only_one_more_error_allowed = true
+      self.only_one_more_error_allowed = false
 
       instance_eval &(doc.class.validator_actions[col][1])
 
@@ -184,7 +186,7 @@ module CouchPlastic
 
     def _add_to_errors_ msg
       @doc.errors << msg
-      raise NoErrorsAllowed, "---" if self.only_one_more_error_allowed?
+      raise NoMoreErrors, "---" if only_one_more_error_allowed?
       msg
     end
     
@@ -253,8 +255,15 @@ module CouchPlastic
       self.class.new @doc, new_col
     end
 
-    def default_error_msg( msg )
-      @default_error_msg = msg
+    def default_error_msg( *args )
+			case args.size
+				when 0
+					@default_error_msg
+				when 1
+					@default_error_msg = msg
+				else
+					raise ArgumentError, "Only 0 or 1 args allowed: #{args.inspect}"
+			end
     end
    
     # Executes even if :doc has pre-existing errors.
@@ -262,7 +271,10 @@ module CouchPlastic
     # error in the blok is encountered.
     def detect &blok
       self.only_one_more_error_allowed = true
-      instance_eval &blok
+			begin
+      	instance_eval &blok
+			rescue NoMoreErrors
+			end
       self.only_one_more_error_allowed = false
       nil
     end
@@ -327,22 +339,21 @@ module CouchPlastic
 
     def must_not_be_empty &err_msg
       if @val.empty?
-        msg = "#{_cap_col_name_} must not be empty"
+        msg = "#{_cap_col_name_} is required."
         _choose_and_add_error_msg_( msg, &err_msg)
       end
       true
     end
 
     def must_be_string &err_msg_blok
-      
       if !@val.is_a?(String)
-        msg =  "#{_cap_col_name_} must not be empty."
-        _choose_and_add_error_msg_( msg, &err_msg_blok )
-        return false
+				raise "Programmer Error: #{col.inspect} must be a string."
       end
 
-      true
+			msg =  "#{_cap_col_name_} ."
+			_choose_and_add_error_msg_( msg, &err_msg_blok )
 
+      true
     end
 
     # Turns :val into a stripped string if it does not

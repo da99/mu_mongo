@@ -25,7 +25,7 @@ post( "/log-in/"  ) do
       mem = Member.authenticate(clean_room)
       self.current_member = mem
       return_page = session.delete :return_page
-      redirect( return_page || '/account/' )
+      redirect( return_page || '/my-work/' )
     rescue Member::NoRecordFound, Member::IncorrectPassword, LogInAttempt::TooManyFailedAttempts
       begin
         LogInAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])

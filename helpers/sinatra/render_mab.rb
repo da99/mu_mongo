@@ -185,8 +185,12 @@ module Sinatra
             #                Leave out '.rb' since it is automatically added.
             #     :locals  - Hash with keys/values to be combined with the curreny local instance
             #                variables.
-            def render_mab( opts = {} )
-          
+            def render_mab( file_name_or_opts = nil )
+          			if file_name_or_opts.is_a?(String)
+									opts={:file_name => file_name_or_opts}
+								else
+									opts = {} 
+								end
                 response['Content-Type']   = 'text/html; charset = utf-8'
                 response['Accept-Charset'] = 'utf-8'
                 response['Cache-Control']  = 'no-cache'
@@ -195,7 +199,8 @@ module Sinatra
                 # Find template. ==================================================
                 
                 # ======= See if we need to use a layout.
-                use_layout = !template_is_a_partial? && ( !opts.has_key?(:layout) || ( opts.has_key?(:layout) && opts[:layout] ) )
+                use_layout = !template_is_a_partial? && 
+															( !opts.has_key?(:layout) || ( opts.has_key?(:layout) && opts[:layout] ) )
                                 
                 # Setup instance variables for Markaby. ==========================
                 iv_hash = instance_variables.inject({}) do |m, iv|

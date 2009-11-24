@@ -80,6 +80,10 @@ class News
     Time.parse(original_data[:published_at])
   end
 
+	def tags
+		return [] if !original_data[:tags]
+		super
+	end
 
   # ==== Validators =====================================================
 
@@ -97,7 +101,7 @@ class News
 
   validator :body do
     strip
-    between_size(1,10)
+    must_not_be_empty
   end # ===
 
   validator :published_at do

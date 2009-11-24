@@ -9,6 +9,8 @@ class LogInAttempt
   # =========================================================
   
   def self.log_failed_attempt( ip_address )
+return 0
+
     params = { :ip_address=>ip_address, :created_at=>utc_today }
     old_la = LogInAttempt.filter(params).first
     
@@ -27,6 +29,9 @@ class LogInAttempt
   end # === def self.log_failed_attempt
 
   def self.too_many?(ip_address)
+return false
+
+
     return false
     old_la = LogInAttempt.where(:ip_address=>ip_address, :created_at=>utc_today).first
     return false if !old_la

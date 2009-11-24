@@ -7,11 +7,11 @@ div.content!  {
   div.usernames {
     h4 'Usernames'
     a.new('Add Another Username.', :href=>'#add_username')
-    the_app.current_member.usernames.each { |un|
-      div.un(:id=>un.username) {
-        div.username un.username
-        div.category un.category
-        div.email( un.email || "[No email address set.]" )
+    the_app.current_member.lives.each { |life_cat, life|
+      div.un(:id=>"life_#{life_cat}") {
+        div.username life[:username]
+        div.category life_cat
+        div.email( life[:email] || "[No email address set.]" )
         a.edit("Edit", :href=>'#edit_username')
       }
     }

@@ -52,6 +52,10 @@ helpers {
 		describe_or_get_property __method_name__, *args
 	end
 
+	def reset_properties
+		@props = {}
+	end
+
 	def has_property? raw_name
 		@props.has_key?(raw_name)
 	end
@@ -60,7 +64,7 @@ helpers {
 		name = raw_name.to_sym
 		@props ||= {}
 		if has_property?(name)
-			raise ArgumentError, "You can only set #{name.inspect} once."
+			raise ArgumentError, "You can only set #{name.inspect} once: #{value.inspect}, #{@props.inspect}"
 		end
 		@props[name] = value
 	end
