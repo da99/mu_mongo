@@ -53,6 +53,34 @@ module CoreFuncs
     }
   end
 
+  def if_file_not_exists( pow_file, &blok )
+
+    if pow_file.exists? && !pow_file.file?
+      raise ArgumentError, "File name exists, but it is not a file: #{pow_file}"
+    end
+
+    if !pow_file.exists? 
+      if block_given?
+        return instance_eval &blok
+      else
+        raise ArgumentError, "Proc/lambda required."
+      end
+    end
+
+  end
+  
+  # Parameters:
+  #   arg_hash - Keys :to, :from. Values all Pow file objects.
+  def link_file arg_hash
+    require_hash_keys args_hash, :from, :to
+    must_be_a_file          arg_hash[:to]
+    must_be_a_symbolic_link arg_hash[:from]
+
+    results = capture_all( "ln -s %s %s" , arg_hash[:from], arg_hash[:to])
+    raise ArgumentError, results if !results.empty?
+    true
+  end
+
   def append_to_my_error_log(content)
     append_file MY_ERROR_LOG, content
   end
@@ -96,9 +124,10 @@ module CoreFuncs
   def shell_capture(*args)
     stem    = args.shift
     cmd     = stem % ( args.map { |s| s.to_s.inspect } )
-    
-    results = Open3.popen3( cmd ) { |stdin, stdout, stderr|
-      [ stdout.read, stderr.read ].map { |s|
+    print_results   = args.last == :print
+
+    Open3.popen3( cmd ) { |stdin3, stdout3, stderr3|
+      [ stdout3.read, stderr3.read ].map { |s|
         s.respond_to?(:strip) ?
           s.strip :
           s

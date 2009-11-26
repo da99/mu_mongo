@@ -1,7 +1,9 @@
 
 
 module Kernel
-private
+
+   private # =========================================
+
    def __previous_method_name__
      caller[1] =~ /`([^']*)'/ && $1.to_sym
    end
@@ -10,11 +12,20 @@ private
      caller[0] =~ /`([^']*)'/ && $1.to_sym
    end
 
-
    def __previous_line__
-    caller[1].sub(File.dirname(File.expand_path('.')), '')
+    caller[1].sub(file.dirname(file.expand_path('.')), '')
    end
    
+   def require_hash_keys h, *k_arr
+    valid   = k_arr.flatten
+    invalid = h.keys - valid
+    if !invalid.empty?
+      raise ArgumentError, "Invalid keys in #{__previous_method_name__}: #{invalid.inspect}"
+    end
+
+    true
+   end
+
    def at_least_something?( unknown )
    
     return false if !unknown
@@ -22,7 +33,7 @@ private
     if unknown.respond_to?(:strip)
       stripped = unknown.strip
       return stripped if !stripped.empty?
-    elsif unknown.is_a?(Numeric)
+    elsif unknown.is_a?(numeric)
       return unknown if unknown > 0 
     else
       unknown

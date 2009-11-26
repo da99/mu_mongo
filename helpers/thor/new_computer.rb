@@ -52,6 +52,8 @@ class NewComputer < Thor
     install_light_conf
 
     install_gemrc
+    
+    install_rdebug
 
     install_open_with_gvim_tabs
 
@@ -78,7 +80,7 @@ class NewComputer < Thor
     end
 
     dir_objs = capture_all('cd %s && ls', dropbox_dir).split("\n")
-    if dir_objs.size > 1
+    if dir_objs.size > 3 # BZR_DIR Photos Public
       shout "Too many things in #{dropbox_dir}. Only one must exist."
       return nil
     end
@@ -187,7 +189,7 @@ class NewComputer < Thor
 
   def install_gemrc
     gem_rc_yaml = (MY_PREFS / 'ruby' / 'gemrc.yaml')
-    gem_rc = Pow( '~/.gemrc' )
+    gem_rc = Pow( File.expand_path( '~/.gemrc' ) )
     both_exists = gem_rc_yaml.exists? && gem_rc.exists?
     both_match = both_exists &&
                   gem_rc_yaml.read.strip == gem_rc.read.strip &&
@@ -204,6 +206,16 @@ class NewComputer < Thor
     invoke('gems:update')
 
   end
+
+  def install_rdebug
+    linked = Pow('~/.rdebugrc')
+    if_file_not_exists(linked) {
+      link( 
+        :from => (MY_PREFS / 'ruby' / 'rdebugrc.rb'), 
+        :to   => linked
+      )
+    }
+  end 
 
   def install_bash_profile
     bash_profile = Pow('~/.bash_profile')

@@ -56,7 +56,7 @@ class Bacon < Thor
     
     if !errors.empty?
       say( errors, :red )
-      return errors
+      exit(1)
     end
 
     say( colorize(output) + "\n\n" )
