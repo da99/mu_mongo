@@ -24,7 +24,7 @@ describe 'News App (public actions)' do
 
   it 'renders a group by tags' do
     tags = News.tags
-		get "/news/by_tag/#{tags.first}/"
+    get "/news/by_tag/#{tags.first}/"
     last_response.should.be.ok
   end
 
@@ -42,7 +42,7 @@ describe 'News :new (action)' do
     get '/news/new/', {}, ssl_hash
     follow_ssl_redirect!
     last_request.fullpath.should.be == '/log-in/'
-		get '/log-out/'
+    get '/log-out/'
   end
 
   it 'does not allow regular members to view it.' do
@@ -70,9 +70,9 @@ describe 'News :create (action)' do
   end
 
   it 'does not allow strangers' do
-		post *@path_args
-		last_response.body.should =~ /Not logged in. Log-in first and try again/
-		get '/log-out/'
+    post *@path_args
+    last_response.body.should =~ /Not logged in. Log-in first and try again/
+    get '/log-out/'
   end
 
   it 'does not allow members' do
@@ -132,7 +132,7 @@ describe 'News :update (action)' do
   it 'does not allow members to update' do
     log_in_member
     put @update_path, {:title=>'New Title'}, ssl_hash
-		last_response.status.should.be == 404
+    last_response.status.should.be == 404
   end 
 
   it 'allows admins to update' do
@@ -147,7 +147,7 @@ describe 'News :update (action)' do
     log_in_admin
     put @update_path, {:title=>'', :body=>''}, ssl_hash
     follow_ssl_redirect!
-		last_request.fullpath.should.be == "/news/#{@news._id}/edit/"
+    last_request.fullpath.should.be == "/news/#{@news._id}/edit/"
     last_response.body.should.be =~ /Title is required/
     last_response.body.should.be =~ /Body is required/
   end
@@ -195,11 +195,11 @@ describe 'Hearts App Compatibility' do
   end
 
   it 'redirects a "/heart_link/10/" to "/news/10/".' do
-		@news = News.by_published_at(:limit=>1)
+    @news = News.by_published_at(:limit=>1)
     get "/heart_link/#{@news._id}/"
     follow_redirect!
     last_request.fullpath.should.be == "/news/#{@news._id}/"
-		last_response.status.should.be == 200
+    last_response.status.should.be == 200
     last_response.should.be.ok
   end
 

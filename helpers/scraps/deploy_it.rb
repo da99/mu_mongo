@@ -18,7 +18,8 @@ set :deploy_to, "/home/#{user}/#{application}"# Where on the server your app wil
 set :deploy_via, :remote_cache 
 # set :deploy_via, :checkout  # For this tutorial, svn checkout will be the deployment method, but check out :remote_cache in the future
 # set :git_shallow_clone, 1
-# set :chmod755, "app config db lib public vendor script script/* public/disp*"  	# Some files that will need proper permissions
+# set :chmod755, "app config db lib public vendor script script/* public/disp*"  
+# Some files that will need proper permissions
 
 ssh_options[:keys] = %w(/home/da01/.ssh/id_dsa)            # If you are using ssh_keys
 ssh_options[:forward_agent] = true

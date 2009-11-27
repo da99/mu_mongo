@@ -7,20 +7,20 @@ helpers do # ===============================
 
   def require_log_in! *perm_levels
 
-		return true if perm_levels.empty? && logged_in?
+    return true if perm_levels.empty? && logged_in?
 
     if !logged_in? 
-			if request.get?
-				session[:return_page] = request.fullpath
-				redirect('/log-in/')
-			else
-				render_error_msg( 200, "Not logged in. Log-in first and try again." )
-			end
+      if request.get?
+        session[:return_page] = request.fullpath
+        redirect('/log-in/')
+      else
+        render_error_msg( 200, "Not logged in. Log-in first and try again." )
+      end
     end
 
-		if !current_member.any_of_these_powers?(perm_levels)
-			error(404, "Not found.")
-		end
+    if !current_member.any_of_these_powers?(perm_levels)
+      error(404, "Not found.")
+    end
  
     true
   end

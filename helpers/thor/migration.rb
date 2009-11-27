@@ -3,7 +3,7 @@ class Migration < Thor
 
   include Thor::Sandbox::CoreFuncs
 
-	desc  :create, "Create a migration file. Tip: You can use model:create to automatically create migration." 
+  desc  :create, "Create a migration file. Tip: You can use model:create to automatically create migration." 
   def create
 
     # Require Sequel in order to use :camelize method
@@ -30,7 +30,7 @@ class Migration < Thor
     
     whisper "Done: #{file_path}"
     `gvim --remote-tab-silent #{file_path}`
-	end # === task :create_migration => "__setup__:env"
+  end # === task :create_migration => "__setup__:env"
 
 end # === namespace :migration
 

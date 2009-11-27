@@ -34,7 +34,7 @@ class View < Thor
     shout "Done. Don't forget search for all SASS files and change\n#{old_view_name}  ==>  #{new_view_name}"
   end
   
-	desc  :create , "Create a view file with SASS file (unless it is a partial)." 
+  desc  :create , "Create a view file with SASS file (unless it is a partial)." 
   def create
     # Require Sequel in order to use :camelize method
     void_actions = ['create', 'update', 'delete', 'destroy']
@@ -63,7 +63,7 @@ class View < Thor
       end # === if void_actions.include?(action_name)
     }
 
-	end # === task :create 
+  end # === task :create 
 
   private # =========================================================
 

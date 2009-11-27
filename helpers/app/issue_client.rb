@@ -28,37 +28,37 @@ class IssueClient
           title, body, e = args
       end
 
-			query_string = (env['QUERY_STRING'].to_s.strip.empty? ? 
-											'' : 
-											' (with query string)' 
-										 )
-			path_info    = env['PATH_INFO'].to_s + query_string
+      query_string = (env['QUERY_STRING'].to_s.strip.empty? ? 
+                      '' : 
+                      ' (with query string)' 
+                     )
+      path_info    = env['PATH_INFO'].to_s + query_string
 
-			data = data_template.merge( 
-			 {:path_info  => path_info,
-				:api_key    => 'luv.4all.29bal--w0l3mg930--3',
-				:app_name   => 'Mega Uni', 
-				:title      => (title || e.message),
-				:body       => (body || e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
-				:environment => environ.to_s ,
-				:user_agent => env['HTTP_USER_AGENT'],
-				:ip_address => env['REMOTE_ADDR'] || 'MISSING'
-			})
+      data = data_template.merge( 
+       {:path_info  => path_info,
+        :api_key    => 'luv.4all.29bal--w0l3mg930--3',
+        :app_name   => 'Mega Uni', 
+        :title      => (title || e.message),
+        :body       => (body || e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
+        :environment => environ.to_s ,
+        :user_agent => env['HTTP_USER_AGENT'],
+        :ip_address => env['REMOTE_ADDR'] || 'MISSING'
+      })
 
-			case environ.to_sym
-				when :production
-					RestClient.post( 'https://miniuni.heroku.com/error', data)
-				when :development, :test
-					error_file   = Pow("~/Desktop/MEGAUNI_ERRORS_#{environ}.txt")
-					orig_content = error_file.file? && environ.to_sym != :test ? 
-													error_file.read : 
-													''
-					error_file.create { |f|
-						f.puts( data.inspect + "\n\n" + orig_content )
-					}
-				else
-					raise ArgumentError, "Unknown environment: #{environ.inspect}"
-			end
+      case environ.to_sym
+        when :production
+          RestClient.post( 'https://miniuni.heroku.com/error', data)
+        when :development, :test
+          error_file   = Pow("~/Desktop/MEGAUNI_ERRORS_#{environ}.txt")
+          orig_content = error_file.file? && environ.to_sym != :test ? 
+                          error_file.read : 
+                          ''
+          error_file.create { |f|
+            f.puts( data.inspect + "\n\n" + orig_content )
+          }
+        else
+          raise ArgumentError, "Unknown environment: #{environ.inspect}"
+      end
  
     end    
 end

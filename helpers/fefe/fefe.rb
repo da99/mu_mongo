@@ -10,14 +10,16 @@ def FeFe(name_of_class, &blok)
   if Object.const_defined?(new_name)
     return Object.const_get(new_name)
   end
-  eval(%~
+  lib_class = eval(%~
     class #{new_name}
-      extend FeFe_Class_Dsl
     end
-
 
     #{new_name}
   ~)
+  lib_class.send :include, Butler_Dsl
+  lib_class.send :include, FeFe_Helper_Methods
+  lib_class.send :extend, FeFe_Class_Dsl
+
   FeFe(name_of_class).instance_eval &blok
 
 end 
@@ -25,7 +27,7 @@ end
 class FeFe_The_French_Maid
 
   TASK_DIRECTORY = File.expand_path('~/megauni/helpers/fefe/tasks')
-  MY_LIFE        = '~/MyLife'.expand_directory_path
+  MY_LIFE        = '~/MyLife'.directory_name
   MY_PREFS       = MY_LIFE.down_directory( 'prefs' )
 
 
@@ -45,8 +47,7 @@ class FeFe_The_French_Maid
   def do_task lib_and_task, *args
     lib, task, lib_class = extract_lib(lib_and_task)
 
-    lib_class.send :include, Butler_Dsl
-    lib_class.send :include, FeFe_Helper_Methods
+
 
     i = lib_class.new
     i.run_task task, *args

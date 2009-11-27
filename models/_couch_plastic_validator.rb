@@ -124,7 +124,7 @@ module CouchPlastic
 
   class ValidatorDSL
 
-		class NoMoreErrors < StandardError; end
+    class NoMoreErrors < StandardError; end
 
     READERS = [ 
       :doc, :col, :val, :original_val,
@@ -256,14 +256,14 @@ module CouchPlastic
     end
 
     def default_error_msg( *args )
-			case args.size
-				when 0
-					@default_error_msg
-				when 1
-					@default_error_msg = msg
-				else
-					raise ArgumentError, "Only 0 or 1 args allowed: #{args.inspect}"
-			end
+      case args.size
+        when 0
+          @default_error_msg
+        when 1
+          @default_error_msg = msg
+        else
+          raise ArgumentError, "Only 0 or 1 args allowed: #{args.inspect}"
+      end
     end
    
     # Executes even if :doc has pre-existing errors.
@@ -271,10 +271,10 @@ module CouchPlastic
     # error in the blok is encountered.
     def detect &blok
       self.only_one_more_error_allowed = true
-			begin
-      	instance_eval &blok
-			rescue NoMoreErrors
-			end
+      begin
+        instance_eval &blok
+      rescue NoMoreErrors
+      end
       self.only_one_more_error_allowed = false
       nil
     end
@@ -347,11 +347,11 @@ module CouchPlastic
 
     def must_be_string &err_msg_blok
       if !@val.is_a?(String)
-				raise "Programmer Error: #{col.inspect} must be a string."
+        raise "Programmer Error: #{col.inspect} must be a string."
       end
 
-			msg =  "#{_cap_col_name_} ."
-			_choose_and_add_error_msg_( msg, &err_msg_blok )
+      msg =  "#{_cap_col_name_} ."
+      _choose_and_add_error_msg_( msg, &err_msg_blok )
 
       true
     end

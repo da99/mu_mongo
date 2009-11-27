@@ -30,10 +30,10 @@ class Gems < Thor
         }
       end    
       
-			please_wait 'Gems are being updated. This could take a while...'
+      please_wait 'Gems are being updated. This could take a while...'
 
       output = capture_all('gem update') 
-			whisper output
+      whisper output
       output
 
     end   

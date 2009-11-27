@@ -5,7 +5,7 @@ class Controller < Thor
 
   include Thor::Sandbox::CoreFuncs
 
-	desc  :create , "Create a controller file. Tip: You can use model:create to automatically create controller."
+  desc  :create , "Create a controller file. Tip: You can use model:create to automatically create controller."
 
   def create
 
@@ -28,7 +28,7 @@ set :#{m}_actions, [ :show,
     
 EOF
     return Pow(file_path) { |f| f.puts txt }
-	end # === task :create 
+  end # === task :create 
 
 end # === namespace :controller
 

@@ -80,10 +80,10 @@ class News
     Time.parse(original_data[:published_at])
   end
 
-	def tags
-		return [] if !original_data[:tags]
-		super
-	end
+  def tags
+    return [] if !original_data[:tags]
+    super
+  end
 
   # ==== Validators =====================================================
 

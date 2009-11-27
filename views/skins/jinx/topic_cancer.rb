@@ -68,7 +68,7 @@ div.content!  {
         p "Bacteria, viruses, tumors all use excess iron in the body to grow. "
         p "IP-6 decreases iron levels, but must be used for a short time period (4 months or less)."
         p "Vitamin Shoppe. Buy the cheapest. They are all the same."
-	      p "Also available at: LuckyVitamin.com – 888-635-0474 - Source Naturals IP-6 - $10 – 90 tablets"
+        p "Also available at: LuckyVitamin.com – 888-635-0474 - Source Naturals IP-6 - $10 – 90 tablets"
       }    
     }
 

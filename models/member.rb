@@ -36,9 +36,9 @@ class Member
 
   # ==== Class Methods =====================================================    
 
-	def self.valid_security_level?(perm_level)
-		SECURITY_LEVELS.include?(perm_level)
-	end
+  def self.valid_security_level?(perm_level)
+    SECURITY_LEVELS.include?(perm_level)
+  end
 
   # ==== Getters =====================================================    
   
@@ -150,11 +150,11 @@ class Member
     super
   end
 
-	def any_of_these_powers?(*raw_levels)
-		raw_levels.flatten.detect { |level| 
-			has_power_of?(level) 
-		}
-	end
+  def any_of_these_powers?(*raw_levels)
+    raw_levels.flatten.detect { |level| 
+      has_power_of?(level) 
+    }
+  end
 
   def has_power_of?(raw_level)
 

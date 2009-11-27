@@ -26,7 +26,7 @@ class Server < Thor
     exec 'shotgun --server=thin --port=4567 config.ru'
   end
 
-	map '-d' => :dev
+  map '-d' => :dev
   desc 'dev', "Runs Unicorn in :development mode. (Uses :exec.)"
   def dev
     invoke 'sass:delete'

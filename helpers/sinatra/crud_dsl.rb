@@ -132,8 +132,8 @@ configure do
       :success_msg, 
       :error_msg, 
       :redirect,
-			:redirect_error,
-			:redirect_success
+      :redirect_error,
+      :redirect_success
     ]
 
     ACTIONS = [:new, :show, :edit, :create, :update, :delete].uniq
@@ -206,7 +206,7 @@ configure do
       #
       #
 
-			line = __LINE__
+      line = __LINE__
       self.class.instance_eval %~
         
         #{this_http_method} #{this_path}, *(#{this_path_options}) do
@@ -233,7 +233,7 @@ configure do
       options.keys.each do |action|
         action_opts = options[action]
         o_keys = action_opts.keys
-				append_keys = OPTIONS - o_keys
+        append_keys = OPTIONS - o_keys
         o_vals = o_keys.map {|k| action_opts[k] }
         new_options[action] = Struct.new(*(o_keys+append_keys)).new(*o_vals)
       end

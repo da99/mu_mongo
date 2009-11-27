@@ -1,5 +1,5 @@
 save_to(:title) { "Lista" }
-		
+    
 
 div(:id=>"about_me") {
   p {
@@ -15,7 +15,7 @@ div.revols(:id=>"health") {
     a('Mas detailes.', :href=>"http://www.lewrockwell.com/spl/prevent-heart-attack-or-stroke.html")
   }
   p 'Longevinex - (866) 405-4000'
-  ul {			  
+  ul {        
     li {
       a( :href=>"http://www.longevinexadvantage.com" ) { 'Longevinex Advantage' } 
       br
@@ -54,12 +54,12 @@ div.revols(:id=>"health") {
     li {
       span( 'Sitio:' )
       a(:href=>'http://www.luckyVitamin.com/') { 'LuckyVitamin.com' }
-    }		  
+    }     
     li {
       a( :href=>"http://www.luckyvitamin.com/item/itemKey/69152" ) { 'Source Naturals Hyaluronic Joint Complex' }
       br 
       span ' - $15 - 60 pastillas - Osteo-arthritis knee pain (dolor de rodilla).'
-    }		
+    }   
     li {
       a( :href=>'http://www.luckyvitamin.com/item/itemKey/53515' ) { 'NAC' } 
       br 
@@ -82,7 +82,7 @@ div.revols(:id=>"health") {
       a(:href=>"http://www.luckyvitamin.com/item/itemKey/58713") { 'Brevail' } 
       br 
       span ' - $14 - 30 pastillas - (extracto de linaza)'
-    }		    
+    }       
     
     li {
       a( :href=>"http://www.luckyvitamin.com/item/itemKey/67144") { 'Source Naturals IP-6' }
@@ -117,7 +117,7 @@ div.revols(:id=>"health") {
       a( :href=>"http://www.naturalhealthlibrarian.com/" ) { 'Natural Health Librarian' }
       br 
       span "E-books. (Libros digitales)"
-    }		    
+    }       
   }
   
 
@@ -149,7 +149,7 @@ div.revols(:id=>"soap") {
     li {
       span { 'Shampoo' }
       a(:href=>'http://www.luckyvitamin.com/item/itemKey/75203') { "Kirk's Natural - Original Coco Castile" }
-    }		  
+    }     
   
   }
   
@@ -179,7 +179,7 @@ div.revols(:id=>"soap") {
       span 'This article explains gov\'t (local/state/federal) is taking 50% of wealth out of the economy:'
       a( 'Bank on Inflation', :href=>'http://www.atimes.com/atimes/Global_Economy/KH14Dj01.html' )
     }
-  }		  
+  }     
   
 }
 
@@ -200,7 +200,7 @@ div.revols(:id=>"home") {
     }
   }
   
-  p { span 'Para Correo Propaganda (Stop junk mail)' }		  
+  p { span 'Para Correo Propaganda (Stop junk mail)' }      
   
   ul {
     li {

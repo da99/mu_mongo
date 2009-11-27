@@ -10,11 +10,11 @@ div.content! {
     span ", over to this new site."
   }
   
-	if News.creator?(the_app.current_member)
-		div {
-			a('Create', :href=>'/news/new/')
-		}
-	end
+  if News.creator?(the_app.current_member)
+    div {
+      a('Create', :href=>'/news/new/')
+    }
+  end
 
   div.news_post.archives! {
     h4 'Archives By Date and Tag'

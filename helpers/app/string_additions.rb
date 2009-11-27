@@ -1,19 +1,24 @@
 class String
 
   def directory_name
-    return nil if self.strip == ''
-    return self if File.directory?(self)
-    ex_dir = File.expand_path(self)
-    return ex_dir if File.directory?(ex_dir)
-    nil
+    return nil if self.strip.empty?
+
+    [ self, 
+      File.expand_path(self),
+      File.dirname(File.expand_path(self))
+    ].detect { |d_path|
+      File.directory? d_path
+    }
   end
 
   def file_name
-    return nil if self.strip == ''
-    return self if File.file?(self)
-    ex_file = File.expand_path(self)
-    return ex_file if File.file?(ex_file)
-    nil
+    return nil if self.strip.empty?
+    
+    [ self,
+      File.expand_path(self)
+    ].detect { |f_path|
+      File.file? f_path
+    }
   end
 
   def file_system_name
@@ -21,56 +26,43 @@ class String
   end
 
   def directory?
-    directory_name
+    return false if self.strip.empty?
+    !![  
+      self, 
+      File.expand_path(self)
+    ].detect { |d_path| 
+      File.directory? d_path 
+    }
   end
 
   def file?
-    file_name
+    return false if self.strip.empty?
+    !![
+      self,
+      File.expand_path(self)
+    ].detect { |f_path|
+      File.file? f_path
+    }
   end
 
   def up_directory *args
-
-    return nil if empty?
     
-    dirname = File.dir_name(self)
+    return nil if self.strip.empty?
     
-    s = if directory?
-      s
+    dirname = directory_name
+    return nil if !dirname
 
-    # Compensate for special environment like IRB
-    # where __FILE__ might be '(irb)'.
-    elsif File.directory?(dirname) 
-      dirname
-
-    else
-      nil
-
-    end
-
-    return nil if !s
-
-    File.expand_path(File.join(s, '..', *args))
+    File.expand_path(File.join(dirname, '..', *args))
   end
 
   def down_directory *args
     raise ArgumentError, "Unable to continue w/o arguments: #{args.inspect}" if args.empty?
-    raise ArgumentError, "This method is invalid since String is empty." if empty?
+    raise ArgumentError, "This method is invalid since String is empty." if self.strip.empty?
 
-    dirname = File.dir_name(self)
+    dirname = directory_name
+    return nil if !dirname 
 
-    # Handle special case:
-    #   __FILE__ == '(irb)'
-    d = if directory?
-      self 
-    elsif File.directory?(dirname)
-      dirname 
-    else
-      nil
-    end
-
-    return nil if !d 
-
-    exp = File.expand_path(File.join(d, *args))
+    File.expand_path(File.join(dirname, *args))
   end
 
   def camelize(first_letter_in_uppercase = :upper)

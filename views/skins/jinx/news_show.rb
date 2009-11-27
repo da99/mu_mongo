@@ -22,21 +22,21 @@ div.content! {
    }
 
    if !the_app.doc.tags.empty?
-		 div.tags {
-			if the_app.doc.updator?(the_app.current_member)
-				a('Edit', :href=>"#{the_app.request.path_info}edit/")
-			end
-				p.title 'Tags:'
-				ul {
-					the_app.doc.tags.each do |tag|
-						li {
-							a(tag, :href=>"/news/by_tag/#{tag}/")
-						}
-					end
-				}
-			
-		 }
-	 end
+     div.tags {
+      if the_app.doc.updator?(the_app.current_member)
+        a('Edit', :href=>"#{the_app.request.path_info}edit/")
+      end
+        p.title 'Tags:'
+        ul {
+          the_app.doc.tags.each do |tag|
+            li {
+              a(tag, :href=>"/news/by_tag/#{tag}/")
+            }
+          end
+        }
+      
+     }
+   end
   }
   
 } # === div.content!

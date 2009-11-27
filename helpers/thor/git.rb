@@ -115,7 +115,7 @@ class Git < Thor
 
   private # ===================================================
 
-	def commit_pending?(raw_out)
+  def commit_pending?(raw_out)
     output = (raw_out || invoke(:update) )
     output['nothing to commit'] ?
       false :

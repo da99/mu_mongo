@@ -77,7 +77,7 @@ require_these 'actions', %w{
   member
   session
   news
-	resty
+  resty
   try_textile
 }
 

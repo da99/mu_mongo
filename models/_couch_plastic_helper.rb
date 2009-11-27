@@ -1,7 +1,7 @@
 module CouchPlastic
   
   # =========================================================
-  #				Special class for use throughout app.
+  #       Special class for use throughout app.
   # ========================================================= 
   class Helper
 
