@@ -1,40 +1,36 @@
 
+FeFe(:My_Computer) do
 
-
-
-
-class FeFe_My_Computer
-
-  O_RDEBUG = MY_PREFS.down_directory('ruby', 'rdebugrc.rb')
+  O_RDEBUG = self::MY_PREFS.down_directory('ruby', 'rdebugrc.rb')
   L_RDEBUG = '~/.rdebugrc'
 
-  O_GEMRC  = MY_PREFS.down_directory('ruby', 'gemrc.yaml')
+  O_GEMRC  = self::MY_PREFS.down_directory('ruby', 'gemrc.yaml')
   L_GEMRC  = '~/.gemrc'
 
-  O_IRB_RC = MY_PREFS.down_directory('ruby', 'irbrc.rb')
+  O_IRB_RC = self::MY_PREFS.down_directory('ruby', 'irbrc.rb')
   L_IRB_RC = '~/.irbrc'
 
   GCONF    = File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml')
 
   DROPBOX  = File.expand_path('~/Dropbox')
 
-  BZR_DIR  = MY_LIFE.down_directory('.bzr')
+  BZR_DIR  = self::MY_LIFE.down_directory('.bzr')
   BACKUP_DIR = File.join(DROPBOX, 'BZR_DIR')
 
-  O_VIMRC = MY_PREFS.down_directory('vim/vimrc.vim')
+  O_VIMRC = self::MY_PREFS.down_directory('vim/vimrc.vim')
   L_VIMRC = '~/.vimrc'
 
-  O_DOT_VIM = MY_PREFS.down_directory('vim', 'dotvim')
+  O_DOT_VIM = self::MY_PREFS.down_directory('vim', 'dotvim')
   L_DOT_VIM = '~/.vim'
 
   MY_EMAIL = 'diego@miniuni.com'
   MY_NAME = 'da01'
   
-  O_BASH_PROFILE = MY_PREFS.down_directory('_bash_profile' )
+  O_BASH_PROFILE = self::MY_PREFS.down_directory('_bash_profile' )
   L_BASH_PROFILE = '~/.bash_profile'
   MY_DOT_PROFILE = '~/.profile'
 
-  O_LIGHT_CONF = MY_PREFS.down_directory( 'light.conf')
+  O_LIGHT_CONF = self::MY_PREFS.down_directory( 'light.conf')
   L_LIGHT_CONF = "/etc/lighttpd/lighttpd.conf"
 
   describe :setup do
@@ -43,7 +39,6 @@ class FeFe_My_Computer
       Sets up your new computer.
     ~
 
-    requires_nothing
 
     steps {
 
@@ -165,10 +160,12 @@ class FeFe_My_Computer
 
       docu 'Installing bash profile.'
       if !File.read(MY_DOT_PROFILE)['. "$HOME/.bash_profile"']
-        shout "Add the following to your .profile:"
-        shout "if [ -f "$HOME/.bash_profile" ]; then"
-        shout '. "$HOME/.bash_profile"'
-        shout 'fi'
+        shout %~ 
+					Add the following to your .profile:
+					if [ -f "$HOME/.bash_profile" ]; then
+					. "$HOME/.bash_profile"
+					fi
+				~
       end
 
 

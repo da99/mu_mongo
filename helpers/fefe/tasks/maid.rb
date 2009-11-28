@@ -23,10 +23,21 @@ FeFe(:Maid) do
       Lists all the task collections, but not the tasks.
     !
     
-    steps {
-      __FILE__.ruby_files_wo_rb.each { |f|
-        puts ' ' + File.basename(f)
-      }
+    steps([:collection, nil]) { |collection|
+      if collection
+        coll_obj = FeFe_The_French_Maid.require_collection(collection)
+        if !coll_obj
+          puts "Task collection not found."
+          return nil
+        end
+        coll_obj.tasks.values.each { |t|
+          puts( t.name.inspect + (t.options ? ' : ' + t.options.inspect : '') )
+        }
+      else
+        __FILE__.ruby_files_wo_rb.each { |f|
+          puts File.basename(f)
+        }
+      end
     }
   end
 
