@@ -1,4 +1,7 @@
-require File.expand_path('~/megauni/helpers/app/string_additions.rb')
+
+# ===================================================
+#                    Main DSL 
+# ===================================================
 
 module Demand_Arguments_Dsl
 
@@ -39,26 +42,6 @@ module Demand_Arguments_Dsl
         end
       }.join("\n")
     end
-
-    # def file_and_line arr
-# 
-#       include_gems = Object.const_defined?(:Gem)
-# 
-#       caller_entry = arr.detect { |l|
-#         first_pass = !l[self.class.demand_arguments_parent_class_file}] &&
-#                      !l[__FILE__]
-#         if !first_pass && include_gems
-#           Gem.all_load_paths.detect { |g_path|
-#             !l[g_path]
-#           }
-#         else
-#           first_pass
-#         end
-#       } || arr.first
-
-    #   f_and_l = caller_entry.split(':')
-      # f_and_l[0,2]
-    # end
 
     def print_and_exit msg, shift_entries = 2
       msg ||= "Unknown assertion error."
@@ -154,7 +137,7 @@ module Demand_Arguments_Dsl
       end
       
       if block_given?
-        h_v = HashArgumentDSL.new
+        h_v = Dsl_For_Demand_Hash.new
         h_v.instance_eval &blok
         invalid = arg.keys - h_v.keys
         missing = h_v.demand - args.keys
@@ -188,7 +171,7 @@ module Demand_Arguments_Dsl
 
     def demand_sym_link_matches &blok
       demand_block blok
-      dsl = Generic_Dsl.new(:from=>:string, :to=>:string, &blok)
+      dsl =  Dsl_For_Demand_Sym_Link_Matches.new(&blok)
       demand_exists_on_filesystem dsl.from
       if File.exists?(dsl.to.file_system_name)
         if File.readlink(dsl.to.file_system_name) != dsl.from.file_system_name
@@ -201,46 +184,32 @@ module Demand_Arguments_Dsl
 
 end # === Demand_Arguments_Dsl
 
-class Generic_Dsl
 
-  attr_reader :cache, :fields, :options
+# ===================================================
+#              DSL Implementations
+# ===================================================
 
-  def initialize opts, &blok
-    @options = opts.symbolize_keys
-    @fields = @options.keys
-    @cache = {}
-    @fields.each { |f|
-      @cache[f] = []
-    }
-    instance_eval &blok
-  end
 
-  def method_missing meth_name, *args
+class Dsl_For_Demand_Sym_Link_Matches
 
-    return(super) if !@fields.include?(meth_name)
+	def initialize &blok
+		instance_eval &blok
+	end
 
-    case args.size
-      when 0
-        cache[meth_name]
-      else
-        cache[meth_name] ||= []
-        case @options[meth_name]
-          when :string
-            cache[meth_name] = args.first.to_s
-          when :array
-            cache[meth_name] << args
-          when :object
-            cache[meth_name] = args.first
-          else
-            raise ArgumentError, "Unknown: #{@options[meth_name]}"
-        end
-    end
+	def from *old_file
+		return @from if old_file.empty?
+		@from = File.join(*old_file) 
+	end
 
-  end
+	def to *new_file
+		return @to if new_file.empty?
+		@to = File.join(*new_file)
+	end
 
-end # ==== Generic_Dsl
+end
 
-class HashArgumentDSL
+
+class Dsl_For_Demand_Hash
     def keys
       [demand, allow].flatten
     end
@@ -254,5 +223,5 @@ class HashArgumentDSL
       @allow = (@allow + args).flatten
       @allow
     end 
-end # === HashArgumentDSL
+end # === Dsl_For_Demand_Hash
 

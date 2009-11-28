@@ -1,6 +1,5 @@
 module Butler_Dsl
 
-
   attr_reader :dir, :file
 
   def self.included new_class
@@ -37,25 +36,33 @@ module Butler_Dsl
     demand_block blok
     dsl = Sym_Link_Dsl.new &blok
     demand_file_exists dsl.from
-    demand_sym_link_matches {
-      from dsl.from
-      to   dsl.to
-    }
+
+		if File.exists?(dsl.to)
+			demand_sym_link_matches {
+				from dsl.from
+				to   dsl.to
+			}
+		else
+			File.symlink( dsl.from, dsl.to )
+		end
+
   end
 
 end # === Butler_Dsl
 
 class Sym_Link_Dsl
   attr_reader :from, :to
-  def initialize 
-    yield
+  def initialize &blok
+    instance_eval &blok
   end
 
-  def from new_file
-    @from
+  def from *args
+		return @from if args.empty?
+    @from = File.join(*args)
   end
 
-  def to new_file
-    @to
+  def to *args
+		return @to if args.empty?
+    @to = File.join(*args)
   end
 end # === Sym_Link_Dsl

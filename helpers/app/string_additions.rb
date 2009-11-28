@@ -1,5 +1,9 @@
 class String
 
+  def expand_path
+    File.expand_path self
+  end
+
   def directory_name
     return nil if self.strip.empty?
 
@@ -75,6 +79,17 @@ class String
     s = split('_').map(&:capitalize).join('_')
   end
 
+  def ruby_files_wo_rb
+    
+    dirname = directory_name
+    return [] if !dirname
+    
+    Dir.entries(dirname).
+      reject { |e| e =~ /^\.+$/ }.
+      map { |f| File.expand_path(f).sub(/\.rb$/i, '') }
+    
+  end
+  
 end # === String
 
 

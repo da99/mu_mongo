@@ -1,7 +1,19 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+# -*- ruby -*-
 
-require File.expand_path( '~/megauni/helpers/app/demand_arguments_dsl' )
-require File.expand_path( '~/megauni/helpers/app/butler_dsl' )
+%w{
+  string_additions
+  demand_arguments_dsl
+  butler_dsl
+}.each { |file|
+ require File.expand_path(File.join(File.readlink(__FILE__),'../..','app',file))
+}
+
+
+
+# ===================================================
+# ========= Create a new FeFe Task Collection
+# ===================================================
 
 def FeFe(name_of_class, &blok)
 
@@ -10,19 +22,28 @@ def FeFe(name_of_class, &blok)
   if Object.const_defined?(new_name)
     return Object.const_get(new_name)
   end
-  lib_class = eval(%~
+
+  fefe_class = eval(%~
     class #{new_name}
     end
 
     #{new_name}
   ~)
-  lib_class.send :include, Butler_Dsl
-  lib_class.send :include, FeFe_Helper_Methods
-  lib_class.send :extend, FeFe_Class_Dsl
 
-  FeFe(name_of_class).instance_eval &blok
+  fefe_class.send :include, Butler_Dsl
+  fefe_class.send :include, FeFe_Helper_Methods
+  fefe_class.send :extend, FeFe_Class_Dsl
+  fefe_class.instance_eval &blok
 
 end 
+
+
+
+
+# ===================================================
+# ======== I present you with: FeFe
+# ===================================================
+
 
 class FeFe_The_French_Maid
 
@@ -39,18 +60,15 @@ class FeFe_The_French_Maid
       do_global_tasks
     end
 
-    @orders[:task_order].each { |task_name|
+    @orders[:task_order].map { |task_name|
       do_task( task_name, *@orders[task_name] )
     }
   end
 
   def do_task lib_and_task, *args
-    lib, task, lib_class = extract_lib(lib_and_task)
-
-
-
-    i = lib_class.new
-    i.run_task task, *args
+    lib, task, maid_class = extract_lib(lib_and_task)
+    maid                  = maid_class.new
+    maid.run_task task, *args
   end
 
   def extract_lib str
@@ -92,6 +110,17 @@ class FeFe_The_French_Maid
 
 end # === FeFe_The_French_Maid =================================
 
+
+
+
+
+
+# ===================================================
+# ======== This is used in defining
+# ======== a new collection.
+# ===================================================
+
+
 module FeFe_Class_Dsl
 
   include Demand_Arguments_Dsl
@@ -104,7 +133,7 @@ module FeFe_Class_Dsl
 
     demand_sym name
 
-    i = Task_Dsl.new( &blok ).info
+    i = Task_Dsl.new( name, &blok ).info
 
     demand_string i.it
     demand_block  i.steps
@@ -113,13 +142,15 @@ module FeFe_Class_Dsl
       :name, :it, :options, :steps
     ).new( name, i.it, i.options, i.steps)
 
+    define_method "__fefe_task_#{name}__", &tasks[name].steps
   end
 
   class Task_Dsl
 
     include Demand_Arguments_Dsl
     
-    def initialize &blok
+    def initialize task_name, &blok
+      @task_name = task_name
       instance_eval &blok
     end
 
@@ -138,7 +169,16 @@ module FeFe_Class_Dsl
 
   end # === Task_Dsl
 
-end
+end # === module
+
+
+
+
+# ===================================================
+# ======== Methods available to each
+# ======== FeFe task.
+# ===================================================
+
 
 module FeFe_Helper_Methods # ===================================
 
@@ -151,21 +191,24 @@ module FeFe_Helper_Methods # ===================================
 
   def run_task task_name, *args
     s = self.class.tasks[task_name].steps
-    if s.arity.zero?
-      instance_eval &s
-    else
-      demand_to_be_done  
-      o = self.class[task_name].options
-    end
-
+    # require 'rubygems'; require 'ruby-debug/debugger';
+    send("__fefe_task_#{task_name}__", args)
   end
+
 end # === FeFe_Helper_Methods ==================================
 
 
 
-if $0 == File.basename(__FILE__) 
-  FeFe_The_French_Maid.new.do_task_from_argv
-end
+# ===================================================
+# ======== FeFe can also be run within 
+# ======== other Ruby scripts.
+# ===================================================
+if $0 == __FILE__ 
+  puts
+  FeFe_The_French_Maid.new.do_task_from_argv.inspect
+  puts
+end # ===============================================
+
 
 
 
