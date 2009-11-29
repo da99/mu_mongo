@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
+require 'rubygems'
+
 %w{
   string_additions
   demand_arguments_dsl
@@ -9,13 +11,10 @@
  require File.expand_path(File.join(File.readlink(__FILE__),'../..','app',file))
 }
 
-require 'rubygems'
-
 
 # ===================================================
 # ======== Where the action begins...
 # ===================================================
-
 
 class FeFe_The_French_Maid
 
@@ -34,39 +33,41 @@ class FeFe_The_French_Maid
 
   class << self
     
-    def str_to_fefe_class_name(str)
-      'FeFe_' + str.split('_').map(&:capitalize).join('_')
+    def parse_collection_colon_task str
+      lib, raw_task  = str.split(':')[0,2].map(&:strip)
+      task           = raw_task.to_sym if raw_task
+      lib_class      = collection_name_to_class lib
+      return [lib, task, lib_class]
     end
 
-    def require_collection lib
+    def collection_name_to_class lib
       
-      lib_class_name = str_to_fefe_class_name(lib)
-      
-      if Object.const_defined?(lib_class_name)
-        return Object.const_get(lib_class_name)
-      end
-        
-      file_name = File.join(Prefs::TASK_DIRECTORY, lib + '.rb')
+      lib_class_name = 'FeFe_' + lib.split('_').map(&:capitalize).join('_')
       
       begin
-        code = File.read(file_name)
-      rescue Errno::ENOENT
-        raise ArgumentError, "File does not exist for #{lib.inspect}: #{file_name}"
-      end
-
-      fefe_class = Class.new
-      fefe_class.send :extend, FeFe_Dsl::Class_Methods
-      fefe_class.send :include, FeFe_Dsl::Instance_Methods
-      fefe_class.instance_eval code
-      fefe_class
         
-    end
-    
-    def extract_lib str
-      lib, raw_task  = str.split(':')[0,2].map(&:strip)
-      task           = raw_task.to_sym
-      lib_class      = require_collection lib
-      return [lib, task, lib_class]
+        Object.const_get(lib_class_name)
+        
+      rescue NameError
+        
+        file_name = File.join(Prefs::TASK_DIRECTORY, lib + '.rb')
+
+        begin
+          code = File.read(file_name)
+        rescue Errno::ENOENT
+          raise ArgumentError, "File does not exist for #{lib.inspect}: #{file_name}"
+        end
+
+        fefe_class = Class.new do
+          extend FeFe_Dsl::Class_Methods
+          include FeFe_Dsl::Instance_Methods
+          instance_eval code, file_name, 1
+          # Without a file name given to :instance_eval, 
+          # ruby-debug will not work.
+        end
+        
+      end
+      
     end
     
   end # ======== class << self
@@ -88,19 +89,19 @@ class FeFe_The_French_Maid
     orders
   end
 
-  def do_task_from_argv
+  def run_task_from_argv
     parse_order *(ARGV.map(&:split).flatten)
     if !@orders[:global].empty?
       do_global_tasks
     end
 
     @orders[:task_order].map { |task_name|
-      do_task( task_name, *@orders[task_name] )
+      run_task( task_name, *@orders[task_name] )
     }
   end
 
-  def do_task lib_and_task, *args
-    lib, task, maid_class = self.class.extract_lib(lib_and_task)
+  def run_task lib_and_task, *args
+    lib, task, maid_class = self.class.parse_collection_colon_task(lib_and_task)
     maid                  = maid_class.new
     maid.run_task task, *args
   end
@@ -138,7 +139,7 @@ module FeFe_Dsl
 
       tasks[name] = Struct.new( 
                                :name, :it, :options, :steps
-                              ).new( name, i.it, i.options, i.steps)
+                    ).new( name, i.it, i.options, i.steps)
 
       define_method "__fefe_task_#{name}__", &tasks[name].steps
     end
@@ -178,7 +179,7 @@ module FeFe_Dsl
     include FeFe_The_French_Maid::Prefs
  
     def fefe_run task_name, *args
-      FeFe_The_French_Maid.do_task(task_name, *args)
+      FeFe_The_French_Maid.run_task(task_name, *args)
     end
 
     def run_task task_name, *raw_args
@@ -190,14 +191,13 @@ module FeFe_Dsl
         m << (val || a_default)
         m
       }
-      # require 'rubygems'; require 'ruby-debug/debugger';
 
       send("__fefe_task_#{task_name}__", *args)
     end
 
   end # === Instance_Methods
 
-end # === module
+end # === FeFe_Dsl
 
 
 # ===================================================
@@ -206,7 +206,7 @@ end # === module
 # ===================================================
 if $0 == __FILE__ 
   puts
-  FeFe_The_French_Maid.new.do_task_from_argv.inspect
+  FeFe_The_French_Maid.new.run_task_from_argv.inspect
   puts
 end # ===============================================
 

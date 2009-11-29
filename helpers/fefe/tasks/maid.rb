@@ -24,7 +24,7 @@
     
     steps([:collection, nil]) { |collection|
       if collection
-        coll_obj = FeFe_The_French_Maid.require_collection(collection)
+        coll_obj = FeFe_The_French_Maid.collection_name_to_class(collection)
         if !coll_obj
           puts "Task collection not found."
           return nil

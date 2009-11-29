@@ -81,12 +81,15 @@ class String
 
   def ruby_files_wo_rb
     
+    
+    
+    
     dirname = directory_name
     return [] if !dirname
     
     Dir.entries(dirname).
       reject { |e| e =~ /^\.+$/ }.
-      map { |f| File.expand_path(f).sub(/\.rb$/i, '') }
+      map { |f| File.expand_path(File.join(dirname,f)).sub(/\.rb$/i, '') }
     
   end
   
