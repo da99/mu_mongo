@@ -1,3 +1,6 @@
+class Maid
+	
+	include FeFe
 
   describe :install do
 
@@ -18,6 +21,7 @@
   end
   
   describe :list do
+		
     it %!
       Lists all the task collections, but not the tasks.
     !
@@ -33,11 +37,13 @@
           puts( t.name.inspect + (t.options ? ' : ' + t.options.inspect : '') )
         }
       else
+				
         __FILE__.ruby_files_wo_rb.each { |f|
           puts File.basename(f)
         }
+				
       end
     }
   end
 
-
+end # ======== Maid

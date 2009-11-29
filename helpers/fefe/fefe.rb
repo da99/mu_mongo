@@ -42,7 +42,7 @@ class FeFe_The_French_Maid
 
     def collection_name_to_class lib
       
-      lib_class_name = 'FeFe_' + lib.split('_').map(&:capitalize).join('_')
+      lib_class_name = lib.split('_').map(&:capitalize).join('_')
       
       begin
         
@@ -50,21 +50,17 @@ class FeFe_The_French_Maid
         
       rescue NameError
         
-        file_name = File.join(Prefs::TASK_DIRECTORY, lib + '.rb')
+        file_name = File.join(Prefs::TASK_DIRECTORY, lib )
 
         begin
-          code = File.read(file_name)
-        rescue Errno::ENOENT
+          require file_name
+        rescue LoadError
           raise ArgumentError, "File does not exist for #{lib.inspect}: #{file_name}"
         end
 
-        fefe_class = Class.new do
-          extend FeFe_Dsl::Class_Methods
-          include FeFe_Dsl::Instance_Methods
-          instance_eval code, file_name, 1
-          # Without a file name given to :instance_eval, 
-          # ruby-debug will not work.
-        end
+
+
+        Object.const_get(lib_class_name)
         
       end
       
@@ -117,13 +113,20 @@ end # === FeFe_The_French_Maid =================================
 # ======== a new collection.
 # ===================================================
 
+module FeFe
+  
+  include Demand_Arguments_Dsl
+  include Butler_Dsl
+  include FeFe_The_French_Maid::Prefs
 
-module FeFe_Dsl
+  def self.included new_class
+    new_class.send :extend, Class_Methods
+  end
 
   module Class_Methods
-    
-    include Demand_Arguments_Dsl
 
+    include Demand_Arguments_Dsl
+    
     def tasks
       @tasks ||= {} 
     end
@@ -132,19 +135,41 @@ module FeFe_Dsl
 
       demand_sym name
 
-      i = Task_Dsl.new( name, &blok ).info
+      i = FeFe_Dsl::Task_Dsl.new( name, &blok ).info
 
       demand_string i.it
       demand_block  i.steps
 
       tasks[name] = Struct.new( 
                                :name, :it, :options, :steps
-                    ).new( name, i.it, i.options, i.steps)
+                              ).new( name, i.it, i.options, i.steps)
 
-      define_method "__fefe_task_#{name}__", &tasks[name].steps
-    end
-    
+                              define_method "__fefe_task_#{name}__", &tasks[name].steps
+    end 
+
   end # ======== Class_Methods
+  
+ 
+  def fefe_run task_name, *args
+    FeFe_The_French_Maid.run_task(task_name, *args)
+  end
+
+  def run_task task_name, *raw_args
+    task_info = self.class.tasks[task_name]
+    opts = task_info.options
+    args = opts.inject([]) { |m,i|
+      a_name, a_default = i
+      val               = raw_args[ opts.index(i) || opts.size ]
+      m << (val || a_default)
+      m
+    }
+
+    send("__fefe_task_#{task_name}__", *args)
+  end
+
+end # ======== FeFe
+
+module FeFe_Dsl
 
   class Task_Dsl
 
@@ -172,30 +197,7 @@ module FeFe_Dsl
 
   end # === Task_Dsl
 
-  module Instance_Methods
-    
-    include Demand_Arguments_Dsl
-    include Butler_Dsl
-    include FeFe_The_French_Maid::Prefs
- 
-    def fefe_run task_name, *args
-      FeFe_The_French_Maid.run_task(task_name, *args)
-    end
 
-    def run_task task_name, *raw_args
-      task_info = self.class.tasks[task_name]
-      opts = task_info.options
-      args = opts.inject([]) { |m,i|
-        a_name, a_default = i
-        val               = raw_args[ opts.index(i) || opts.size ]
-        m << (val || a_default)
-        m
-      }
-
-      send("__fefe_task_#{task_name}__", *args)
-    end
-
-  end # === Instance_Methods
 
 end # === FeFe_Dsl
 

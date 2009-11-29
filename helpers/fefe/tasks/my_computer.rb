@@ -1,4 +1,6 @@
+class My_Computer
 
+	include FeFe
 
   O_RDEBUG = self::MY_PREFS.down_directory('ruby', 'rdebugrc.rb')
   L_RDEBUG = '~/.rdebugrc'
@@ -179,7 +181,7 @@
 
   end 
 
- # === FeFe_Setup_My_Computer
+end # === FeFe_Setup_My_Computer
 
 
 __END__

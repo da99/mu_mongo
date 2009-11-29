@@ -24,6 +24,12 @@ class String
       File.file? f_path
     }
   end
+  
+  def file_read
+    path = file_name
+    return nil if !path
+    File.read(path)
+  end
 
   def file_system_name
     file_name || directory_name
@@ -80,16 +86,24 @@ class String
   end
 
   def ruby_files_wo_rb
-    
-    
-    
+    ruby_files false
+  end
+
+  def ruby_files w_extension = true
     
     dirname = directory_name
     return [] if !dirname
     
     Dir.entries(dirname).
       reject { |e| e =~ /^\.+$/ }.
-      map { |f| File.expand_path(File.join(dirname,f)).sub(/\.rb$/i, '') }
+      map { |f| 
+        path = File.expand_path(File.join(dirname,f))
+        if w_extension
+          path
+        else
+          path.sub(/\.rb$/i, '') 
+        end
+      }
     
   end
   

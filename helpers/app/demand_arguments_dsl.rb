@@ -5,17 +5,12 @@
 
 module Demand_Arguments_Dsl
 
-    attr_accessor :assertion_exit_msg
+    attr_accessor :assertion_exit_msg, :assertion_call_back
 
     def on_assertion_exit( &new_proc )
       if !@on_assertion_exit 
         @on_assertion_exit = proc {
-          if !ENV['RACK_ENV'] && File.expand_path('~/')['home/da01']
-            puts assertion_exit_msg
-            exit(1)
-          else
-            raise ArgumentError, assertion_exit_msg
-          end
+					raise ArgumentError, assertion_exit_msg
         }
       end
       if block_given?
@@ -46,26 +41,33 @@ module Demand_Arguments_Dsl
     def print_and_exit msg, shift_entries = 2
       msg ||= "Unknown assertion error."
       @using_gems ||= Object.const_defined?(:Gem)
-      entries = caller[shift_entries,caller.size].select { |l|
-        if @using_gems
-          !Gem.all_load_paths.detect { |lp|
-            l[lp]
+      entries = caller[shift_entries,caller.size].map { |l|
+        use_it = if @using_gems
+          use_it = !Gem.default_path.detect { |lp|
+            l[lp] || l['ruby/site_ruby']
           }
         else
           true
         end
-      }
+				if use_it
+					l.split(':')[0,2]
+				else
+					nil
+				end
+      }.compact.uniq
       
       seirtne = entries.reverse
-
+			
+			@assertion_exit_msg = msg
+			@assertion_call_back ||=''
+			
       seirtne.each { |l|
-        @assertion_exit_msg ||=''
-        
-        file, line = l.split(':')[0,2]
+				 
+        file, line = l
 
-        @assertion_exit_msg += %~
+        @assertion_call_back += %~
 #{'*' * msg.size}
-#{file}
+#{ file }:#{line}
 #{'*' * msg.size}
 #{read_around_line(file, line)}
 #{'*' * msg.size}
@@ -73,7 +75,7 @@ module Demand_Arguments_Dsl
         
       }
 
-      @assertion_exit_msg = @assertion_exit_msg + %~
+      @assertion_call_back = @assertion_call_back + %~
 
 \e[31m
 #{' =' * (msg.size/2)}        
@@ -82,7 +84,8 @@ module Demand_Arguments_Dsl
 \e[0m
 
       ~
-      on_assertion_exit.call
+			
+      instance_eval &on_assertion_exit
 
     end
     
