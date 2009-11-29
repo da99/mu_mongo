@@ -1,4 +1,3 @@
-FeFe(:Maid) do
 
   describe :install do
 
@@ -41,5 +40,4 @@ FeFe(:Maid) do
     }
   end
 
-end
 
