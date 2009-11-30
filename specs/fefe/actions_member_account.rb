@@ -11,7 +11,7 @@ class Actions_Member_Account
   it "redirects to /log-in/ for non-members" do
     get '/account/', {}, ssl_hash
     follow_ssl_redirect!
-    demand_match last_request.fullpath, '/log-in/'
+    demand_match '/log-in/', last_request.fullpath
     demand_match 200, last_response.status
   end
 
