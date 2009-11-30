@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
+$KCODE == 'UTF8'
 require 'rubygems'
 
 %w{
@@ -87,7 +88,7 @@ class FeFe_The_French_Maid
               @orders[current_order][current_option] += ' ' + arg
               @orders[current_order][current_option] = @orders[current_order][current_option].strip
             else
-              @orders[current_order][:global] << arg
+              raise ArgumentError, "Option has no key: #{arg.inspect}"
             end
           end
         else

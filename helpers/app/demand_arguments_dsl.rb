@@ -1,4 +1,6 @@
 
+DemandFailed = Class.new(StandardError)
+
 # ===================================================
 #                    Main DSL 
 # ===================================================
@@ -10,7 +12,7 @@ module Demand_Arguments_Dsl
     def on_assertion_exit( &new_proc )
       if !@on_assertion_exit 
         @on_assertion_exit = proc {
-					raise ArgumentError, assertion_exit_msg
+					raise DemandFailed, assertion_exit_msg
         }
       end
       if block_given?
@@ -100,11 +102,34 @@ module Demand_Arguments_Dsl
       b
     end
 
+    def demand_regex re
+      return true if re.is_a?(Regexp)
+      print_and_exit "Needs to be a Regexp: #{re.inspect}"
+    end
+
+    def demand_false bool
+      return true if bool == false
+      print_and_exit "This needs to be false: #{bool.inspect}"
+    end
+
+    def demand_true bool
+      return true if bool == true
+      print_and_exit "This needs to be true: #{bool.inspect}"
+    end
+
     def demand_string s
       if !s.is_a?(String)
         print_and_exit "String is required."
       end
       s
+    end
+
+    def demand_regex_match re, str
+      demand_regex re
+      demand_string str
+      match = str =~ re
+      return match if match
+      print_and_exit "String does not match Regex: #{re.inspect}, #{str.inspect}"
     end
 
     def demand_sym sym
@@ -183,6 +208,11 @@ module Demand_Arguments_Dsl
       else
         print_and_exit "Does not exist: #{dsl.to}"
       end
+    end
+
+    def demand_equal one, two
+      return true if one == two
+      print_and_exit("These must match: #{one.inspect}, #{two.inspect}")
     end
 
 end # === Demand_Arguments_Dsl

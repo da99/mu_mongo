@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift File.expand_path('specs/fefe')
+
 class Tests
   
   include FeFe
@@ -8,7 +10,7 @@ class Tests
 
     steps([:file, nil], [:inspect, nil]) { |file, inspect_test|
 
-      puts "\e[37m ==================================== \e[0m"
+      puts "\e[37m ===================================== \e[0m"
       rb_files = if file
                    new_file = new_file_rb = File.expand_path(File.join('specs/fefe/',file))
                    new_file_rb += '.rb' unless new_file[/\.rb$/]
@@ -27,7 +29,7 @@ class Tests
         require rb_file
         ft_class = Object.const_get(class_name)
       }
-      puts "\e[37m ==================================== \e[0m"
+      puts "\e[37m ===================================== \e[0m"
 
     }
 
@@ -42,7 +44,7 @@ module FeFe_Test
   def on_assertion_exit 
     if FeFe_Test.inspect_test? && FeFe_Test.inspect_test == FeFe_Test.count
       puts @assertion_call_back
-      raise ArgumentError, @assertion_exit_msg
+      raise DemandFailed, assertion_exit_msg
     end
     super
   end
@@ -113,8 +115,8 @@ module FeFe_Test
         return false
       end 
       @context = title
-      puts '* ' * 15
-      puts 'CONTEXT: ' + title
+      puts ' *' * 19
+      puts ' CONTEXT: ' + title
       puts ''
     end
 
@@ -147,7 +149,7 @@ module FeFe_Test
       instance_eval &body
       [ true, "ok" ]
     rescue Object => e
-      [ false, e.message ]
+      [ false, e.message, e ]
     end
 
     if @after
@@ -157,11 +159,12 @@ module FeFe_Test
     if @results.first
       puts "  ok   : #{@count}: #{@title}" 
     else
+      puts ''
       puts "\e[31m  FAIL: #{@count}: #{@title}\e[0m"
-      puts "  #{@results[1]}"
+      puts "  #{@results[2].class}: #{@results[1]}"
+      puts ''
     end
 
-    puts ''
   end
 
 end # ======== FeFe_Test
