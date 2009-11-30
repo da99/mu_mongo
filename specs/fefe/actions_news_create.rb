@@ -1,6 +1,10 @@
 require '__rack__'
 
 class Actions_News_Create
+
+  
+  include FeFe_Test
+
   
   context 'News :create (action)' 
   

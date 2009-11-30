@@ -2,7 +2,17 @@ require '__rack__'
 
 class Actions_News_Hearts_Compatibility
   
+  include FeFe_Test
+
+  
   context  'Hearts App Compatibility' 
+  
+  it 'renders :index' do
+    get "/hearts/"
+    follow_redirect!
+    demand_match 200, last_response.status
+    demand_match "/news/", last_request.fullpath
+  end
   
   it 'renders mobile version of :index' do
     get '/hearts/m/'
@@ -48,7 +58,6 @@ class Actions_News_Hearts_Compatibility
     follow_redirect!
     demand_match "/news/#{@news._id}/", last_request.fullpath 
     demand_match 200, last_response.status 
-    demand_match 200, last_response.status
   end
 
   it 'responds with 404 for a heart link that does not exist.' do

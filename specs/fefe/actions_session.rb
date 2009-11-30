@@ -1,6 +1,10 @@
+require '__rack__'
 
+class Actions_Session
+  
+  include FeFe_Test
 
-describe 'Log-in for Member' do
+context 'Log-in for Member' 
 
   before do
     @username = 'da01'
@@ -11,34 +15,34 @@ describe 'Log-in for Member' do
     get '/log-in' 
     follow_redirect!
     follow_redirect!
-    last_response.body.should =~ /\<button/
+    demand_regex_match /\<button/, last_response.body
   end
 
   it 'redirects to SSL' do
     get '/log-in/'
-    last_request.env["rack.url_scheme"].should.not.be == "https"
+    demand_no_match "https", last_request.env["rack.url_scheme"]
     follow_redirect!
-    last_request.env["rack.url_scheme"].should.be == "https"
-    last_response.body.should =~ /\<button/
+    demand_match "https", last_request.env["rack.url_scheme"]
+    demand_regex_match /\<button/, last_response.body
   end
 
   it 'renders ok on SSL' do
     get '/log-in/', {}, ssl_hash
-    last_response.should.be.ok
-    last_response.body.should =~ /Log-in/
+    demand_match 200, last_response.status
+    demand_regex_match /Log-in/, last_response.body 
   end
 
   it 'redirects and displays errors' do
     post '/log-in/', {}, ssl_hash
     follow_ssl_redirect!
-    last_response.body.should =~ /Incorrect info. Try again./
+    demand_regex_match /Incorrect info. Try again./, last_response.body
   end
 
   it 'allows Member access if creditials are correct.' do
     post '/log-in/', {:username=>@username, :password=>@password}, ssl_hash
     follow_ssl_redirect!
-    last_request.path_info.should == '/account/'
-    last_response.should.be.ok
+    demand_match '/account/', last_request.path_info
+    demand_match 200, last_response.status
   end
 
   it 'won\'t accept any more log-in attempts (even with right creditials) ' +
@@ -48,7 +52,7 @@ describe 'Log-in for Member' do
     end
     post '/log-in/', {:username=>@username, :password=>@password}, ssl_hash
     follow_ssl_redirect!
-    last_request.path_info.should == '/log-in/'
+    demand_match '/log-in/', last_request.path_info
     LogInAttempt.delete
   end
 

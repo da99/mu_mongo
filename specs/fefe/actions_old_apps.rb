@@ -1,3 +1,5 @@
+require '__rack__'
+
 # 
 #
 # Note: when setting 'SERVER_NAME', the value 
@@ -9,46 +11,51 @@
 # it would not reflect real-world conditions.
 #
 #
-describe 'Old Apps' do
+class Actions_Old_Apps
+
+  
+  include FeFe_Test
+
+  context 'Old Apps' 
 
   it 'shows a moving message for www.myeggtimer.com' do
     domain = 'www.myeggtimer.com'
     get '/', {}, { 'HTTP_HOST'=> domain }
-    last_response.body.should =~ /over to the new address/
+    demand_regex_match /over to the new address/, last_response.body
   end 
 
   it 'should redirect www.busynoise.com/ to /egg/' do
     domain = 'www.busynoise.com'
     get '/', {}, { 'HTTP_HOST' =>domain  }
     follow_redirect!
-    last_request.fullpath.should.be == '/egg'
+    demand_match '/egg', last_request.fullpath
   end
 
   it 'shows a moving message for www.busynoise.com/egg/' do
     domain =  'www.busynoise.com/'
     get '/egg/', {}, { 'HTTP_HOST'=> domain }
-    last_request.host.should == domain 
-    last_request.fullpath.should == '/egg/'
-    last_response.body.should =~ /This website has moved/
+    demand_match domain, last_request.host
+    demand_match '/egg/', last_request.fullpath
+    demand_regex_match /This website has moved/, last_response.body
   end
 
   it 'shows a moving message for www.busynoise.com/egg' do 
     domain =  'www.busynoise.com'
     get '/egg', {}, { 'HTTP_HOST'=> domain }
-    last_request.host.should == domain 
-    last_request.fullpath.should == '/egg'
-    last_response.body.should =~ /This website has moved/
+    demand_match last_request.host, domain 
+    demand_match last_request.fullpath, '/egg'
+    demand_regex_match /This website has moved/, last_response.body 
   end
 
   it 'renders /bigstopwatch' do
     get '/bigstopwatch'
     follow_redirect!
-    last_response.should.be.ok
+    demand_match 200, last_response.status
   end
 
   it 'renders /bigstopwatch/' do
     get '/bigstopwatch/'
-    last_response.should.be.ok
+    demand_match 200, last_response.status
   end
 
 end

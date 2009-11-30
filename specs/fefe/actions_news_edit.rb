@@ -2,6 +2,9 @@ require '__rack__'
 
 class Actions_News_Edit
   
+  
+  include FeFe_Test
+
   context  'News :edit (action)' 
   
   before do

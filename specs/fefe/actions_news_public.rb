@@ -2,6 +2,9 @@ require '__rack__'
 
 class Actions_News_Public
   
+  include FeFe_Test
+
+  
   context  'News App (public actions)' 
 
   it 'renders :index' do

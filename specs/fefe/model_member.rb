@@ -1,7 +1,11 @@
+require '__rack__'
 
+class Model_Member
 
+  
+  include FeFe_Test
 
-describe 'Member creation' do
+context 'Member creation' 
 
   it( 'creates a username after save.' ) {
     u_name = 'da01' + Time.now.utc.to_i.to_s
@@ -15,8 +19,8 @@ describe 'Member creation' do
     end
     
     u = Username.reverse_order(:id).first
-    u[:owner_id].should.be == m[:id]
-    u[:username].should.be == u_name
+    demand_match u[:owner_id], m[:id]
+    demand_match u[:username], u_name
   }
  
   it( 'does not create itself + username if username is already taken.' ) {
@@ -29,9 +33,9 @@ describe 'Member creation' do
       :username => u_name
     })
     rescue Sequel::ValidationFailed
-      $!.message.to_s.should.be =~ /^Username is already taken/i
+      demand_regex_match /^Username is already taken/i, $!.message.to_s
     end
-    Username.order(:id).count.should.be == u_count
-    Member.order(:id).count.should.be == m_count
+    demand_match Username.order(:id).count, u_count
+    demand_match Member.order(:id).count, m_count
   }
 end # ===

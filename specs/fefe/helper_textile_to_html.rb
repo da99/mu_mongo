@@ -1,4 +1,10 @@
-describe 'Helper: textile_to_html' do
+require '__rack__'
+
+class Helper_Textile_To_Html
+
+  include FeFe_Test
+
+  context 'Helper: textile_to_html' 
 
   it 'renders RedCloth textile to html' do
     app.get '/ttt1' do
@@ -8,12 +14,11 @@ describe 'Helper: textile_to_html' do
     end
 
     get '/ttt1'
-    last_response.body.strip.should == '<div class="red">Hello</div>'
+    demand_match last_response.body.strip, '<div class="red">Hello</div>'
   end
 
-end # === describe
+  context 'Helper: textile_to_html with "img" tag' 
 
-describe 'Helper: textile_to_html with "img" tag' do
   it 'renders img tag to valid html img tags.' do
     app.get '/ttt2' do
       textile_to_html(" 
@@ -24,7 +29,7 @@ describe 'Helper: textile_to_html with "img" tag' do
     get '/ttt2'
     body_parts = last_response.body.split.sort
     target_parts = '<img src="/images/sinatra.img" alt="*" title="*" class="red" />'.split.sort
-    body_parts.should == target_parts
+    demand_match body_parts, target_parts
   end
 
   it 'ignores non-numeric characters in w/h dimensions' do
@@ -38,7 +43,7 @@ describe 'Helper: textile_to_html with "img" tag' do
     get '/ttt3'
     body_parts =last_response.body.split.sort
     target_parts = '<img src="/images/ime.png" alt="*" title="*" width="34" height="65" />'.split.sort
-    body_parts.should == target_parts
+    demand_match body_parts, target_parts
   end 
 
   it 'escapes html in alt text.' do
@@ -54,7 +59,8 @@ describe 'Helper: textile_to_html with "img" tag' do
     body_parts =last_response.body.split.sort
     alt_text = "Something &lt;bold&gt;brave&lt;/bold&gt;."
     target_parts = %~<img src="/images/u.png" alt="#{alt_text}" title="#{alt_text}" width="30" height="30" />~.split.sort
-    body_parts.should == target_parts
+    demand_match body_parts, target_parts
   end
 
-end # === describe
+
+end

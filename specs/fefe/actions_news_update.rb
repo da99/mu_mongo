@@ -1,6 +1,9 @@
 require '__rack__'
 
 class Actions_News_Update
+  
+  include FeFe_Test
+
 
   context 'News :update (action)' 
 
