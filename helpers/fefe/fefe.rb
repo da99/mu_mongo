@@ -71,17 +71,31 @@ class FeFe_The_French_Maid
   def parse_order *args
     current_order = nil 
     @orders = {:global => [], :task_order => []}
+    current_option = nil
     args.flatten.each { |arg|
       if arg.include?(':')
         current_order = arg
         @orders[:task_order] << current_order
-        @orders[current_order] = []
-      elsif current_order
-        @orders[current_order] << arg
+        @orders[current_order] = {:global=>[]}
       else
-        @orders[:global] << arg
+        if current_order
+          if arg[/^\-/] 
+            current_option = arg.sub(/\-+/,'').strip.to_sym
+            @orders[current_order][current_option] ||= ''
+          else
+            if current_option
+              @orders[current_order][current_option] += ' ' + arg
+              @orders[current_order][current_option] = @orders[current_order][current_option].strip
+            else
+              @orders[current_order][:global] << arg
+            end
+          end
+        else
+          @orders[:global] << arg
+        end
       end
     }
+    
     orders
   end
 
@@ -92,14 +106,14 @@ class FeFe_The_French_Maid
     end
 
     @orders[:task_order].map { |task_name|
-      run_task( task_name, *@orders[task_name] )
+      run_task( task_name, @orders[task_name] )
     }
   end
 
-  def run_task lib_and_task, *args
+  def run_task lib_and_task, opts_hash
     lib, task, maid_class = self.class.parse_collection_colon_task(lib_and_task)
     maid                  = maid_class.new
-    maid.run_task task, *args
+    maid.run_task task, opts_hash
   end
 
 
@@ -154,15 +168,21 @@ module FeFe
     FeFe_The_French_Maid.run_task(task_name, *args)
   end
 
-  def run_task task_name, *raw_args
+  def run_task task_name, raw_args
     task_info = self.class.tasks[task_name]
     opts = task_info.options
     args = opts.inject([]) { |m,i|
+      
       a_name, a_default = i
-      val               = raw_args[ opts.index(i) || opts.size ]
-      m << (val || a_default)
+      
+      m <<  (raw_args.has_key?(a_name) && raw_args[a_name]) ||
+            (opts.index(i) && raw_args[:global][opts.index(i)] ) ||
+            a_default
+      
       m
     }
+
+# require 'rubygems'; require 'ruby-debug'; debugger
 
     send("__fefe_task_#{task_name}__", *args)
   end

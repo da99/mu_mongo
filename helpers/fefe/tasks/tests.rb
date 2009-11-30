@@ -6,12 +6,14 @@ class Tests
 
     it %! Runs FeFe tests for your app in the fefe/ directory. !
 
-    steps([:file, nil], [:inspect_test, nil]) { |file, inspect_test|
+    steps([:file, nil], [:inspect, nil]) { |file, inspect_test|
 
       puts "\e[37m ==================================== \e[0m"
       rb_files = if file
-                   demand_file_exists file
-                   [file]
+                   new_file = new_file_rb = File.expand_path(File.join('specs/fefe/',file))
+                   new_file_rb += '.rb' unless new_file[/\.rb$/]
+                   demand_file_exists new_file_rb
+                   [new_file]
                  else
                   'specs/fefe/'.ruby_files_wo_rb
                  end
@@ -30,7 +32,7 @@ class Tests
     }
 
   end
-  
+    
 end # ======== Tests
 
 module FeFe_Test
