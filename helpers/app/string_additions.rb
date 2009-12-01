@@ -107,6 +107,15 @@ class String
     
   end
   
+  def each_file &blok
+    return nil if !directory?
+    raise ArgumentError, "Block is needed." unless block_given?
+    dir = directory_name
+    Dir.entries(dir).each { |file_name|
+      blok.call File.expand_path(File.join(dir, file_name))
+    }
+  end
+  
 end # === String
 
 

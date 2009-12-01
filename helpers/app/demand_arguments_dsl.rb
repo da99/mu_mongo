@@ -12,6 +12,7 @@ module Demand_Arguments_Dsl
     def on_assertion_exit( &new_proc )
       if !@on_assertion_exit 
         @on_assertion_exit = proc {
+          puts assertion_call_back
 					raise DemandFailed, assertion_exit_msg
         }
       end
@@ -119,9 +120,25 @@ module Demand_Arguments_Dsl
 
     def demand_string s
       if !s.is_a?(String)
-        print_and_exit "String is required."
+        print_and_exit "String is required: #{s.inspect}"
       end
       s
+    end
+    
+    def demand_string_not_empty raw_s
+      demand_string raw_s
+      s = raw_s.strip
+      if s.empty?
+        print_and_exit "String must not be empty."
+      end
+      s
+    end
+    
+    def demand_symbol sym
+      if !sym.is_a?(Symbol)
+        print_and_exit "Symbol is required: #{sym.inspect}"
+      end
+      sym
     end
 
     def demand_regex_match re, str

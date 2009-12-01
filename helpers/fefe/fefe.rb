@@ -3,6 +3,7 @@
 
 $KCODE == 'UTF8'
 require 'rubygems'
+require 'open3'
 
 %w{
   string_additions
@@ -111,7 +112,8 @@ class FeFe_The_French_Maid
     }
   end
 
-  def run_task lib_and_task, opts_hash
+  def run_task lib_and_task, opts_hash = {}
+
     lib, task, maid_class = self.class.parse_collection_colon_task(lib_and_task)
     maid                  = maid_class.new
     maid.run_task task, opts_hash
@@ -166,11 +168,16 @@ module FeFe
   
  
   def fefe_run task_name, *args
-    FeFe_The_French_Maid.run_task(task_name, *args)
+    FeFe_The_French_Maid.new.run_task(task_name, *args)
   end
 
-  def run_task task_name, raw_args
+  def run_task task_name, raw_args 
+    demand_symbol task_name
     task_info = self.class.tasks[task_name]
+    unless task_info
+      raise ArgumentError, "Task does not exist: #{task_name.inspect}"
+    end
+    
     opts = task_info.options
     args = opts.inject([]) { |m,i|
       
@@ -187,6 +194,47 @@ module FeFe
 
     send("__fefe_task_#{task_name}__", *args)
   end
+  
+  
+  # ===================================================
+  # ======== Print methods.
+  # ===================================================
+  
+  def puts_white raw_msg
+    msg = raw_msg.to_s
+    puts "\e[37m#{msg}\e[0m"
+  end
+
+  def puts_red raw_msg
+    msg = raw_msg.to_s
+    puts "\e[31m#{m}\e[0m"
+  end
+      
+  def shell_out(*args, &blok)
+    stem          = args.shift
+    cmd           = stem % ( args.map { |s| s.to_s.inspect } )
+
+    results, errors = Open3.popen3( cmd ) { |stdin3, stdout3, stderr3|
+      [ stdout3.readlines, stderr3.readlines ]
+    }
+    
+    if !errors.empty?
+
+      if block_given?
+        return blok.call(results, errors)
+      end
+      
+      puts_red '========  Error from shell_out:  =========  '
+      errors.join("\n").each { |err|
+        puts_red err
+      }      
+      
+      exit(1)
+      
+    end
+    
+    results.join(" ")
+  end  
 
 end # ======== FeFe
 

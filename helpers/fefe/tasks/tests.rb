@@ -30,10 +30,57 @@ class Tests
         ft_class = Object.const_get(class_name)
       }
       puts "\e[37m ===================================== \e[0m"
-
+      
+      FeFe_Test.results # [total, passed, failed] == [ 5, 3, 2] 
     }
 
-  end
+  end # ======== :run
+  
+  describe :db_reset! do
+    
+    it "Reset the :test database"
+    
+    steps do
+      invoke('db:reset!')
+
+      ENV['RACK_ENV'] = 'test'
+      require File.expand_path('megauni')
+
+      DesignDoc.create_or_update
+      whisper 'Created: design doc.'
+
+      # === Create News ==========================
+      
+      n = News.new
+      n.raw_data.update({:title=>'Longevinex', 
+        :teaser=>'teaser', 
+        :body=>'Test body.', 
+        :tags=>['surfer_hearts', 'hearts', 'pets']
+      })
+      n.save_create
+
+      # === Create Members ==========================
+      
+      Member.create( nil, {
+        :password          =>'regular-password-1',
+        :confirm_password  =>'regular-password-1',
+        :add_life_username =>'regular-member-1',
+        :add_life          =>Member::LIVES.first
+      })
+      
+      Member.create( nil, {
+        :password          =>'admin-password-1',
+        :confirm_password  =>'admin-password-1',
+        :add_life_username =>'admin-member',
+        :add_life          =>Member::LIVES.first
+      })
+
+      admin_mem = Member.by_username( 'admin-member' )
+      admin_mem.new_data[:security_level] = :ADMIN
+      admin_mem.save_update
+      
+    end
+  end # ======== :db_reset!
     
 end # ======== Tests
 
