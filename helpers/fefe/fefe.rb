@@ -224,12 +224,9 @@ module FeFe
     
   end
 
-  def puts_system_in_white *args
-  end
-
   def puts_red raw_msg
     msg = raw_msg.to_s
-    puts "\e[31m#{m}\e[0m"
+    puts "\e[31m#{msg}\e[0m"
   end
   
   def development?
