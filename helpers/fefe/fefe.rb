@@ -7,6 +7,7 @@ require 'open3'
 
 %w{
   string_additions
+  symbol_additions
   demand_arguments_dsl
   butler_dsl
 }.each { |file|
@@ -57,7 +58,7 @@ class FeFe_The_French_Maid
         begin
           require file_name
         rescue LoadError
-          raise ArgumentError, "File does not exist for #{lib.inspect}: #{file_name}"
+          raise LoadError, "Error for #{lib.inspect}: #{$!.message}"
         end
 
 
@@ -161,19 +162,21 @@ module FeFe
                                :name, :it, :options, :steps
                               ).new( name, i.it, i.options, i.steps)
 
-                              define_method "__fefe_task_#{name}__", &tasks[name].steps
+                              define_method "__fefe_task_#{name.bang_to_bang}__", &tasks[name].steps
     end 
 
   end # ======== Class_Methods
   
  
-  def fefe_run task_name, *args
-    FeFe_The_French_Maid.new.run_task(task_name, *args)
+  def fefe_run task_name, opts={}
+    FeFe_The_French_Maid.new.run_task(task_name, opts)
   end
+
 
   def run_task task_name, raw_args 
     demand_symbol task_name
-    task_info = self.class.tasks[task_name]
+
+    task_info = self.class.tasks[task_name] || self.class.tasks[task_name.bang_to_bang]
     unless task_info
       raise ArgumentError, "Task does not exist: #{task_name.inspect}"
     end
@@ -192,7 +195,7 @@ module FeFe
 
 # require 'rubygems'; require 'ruby-debug'; debugger
 
-    send("__fefe_task_#{task_name}__", *args)
+    send("__fefe_task_#{task_name.bang_to_bang}__", *args)
   end
   
   

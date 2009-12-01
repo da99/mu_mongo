@@ -4,6 +4,16 @@ class String
     File.expand_path self
   end
 
+  def expand_file_path
+    raise ArgumentError, "Not a file: #{self.inspect}" unless file?
+    expand_path
+  end
+
+  def expand_directory_path
+    raise ArgumentError, "Not a directory: #{self.inspect}" unless directory?
+    expand_path
+  end
+
   def directory_name
     return nil if self.strip.empty?
 

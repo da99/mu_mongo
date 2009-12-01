@@ -27,8 +27,10 @@ class Git
       if commit_pending?
         puts_white shell_out( 'git commit -m %s ', comment)
         puts_white "COMMITTED: #{comment}"
+        true
       else
         puts_red "NO GO: Nothing to commit."
+        false
       end
       
     end
