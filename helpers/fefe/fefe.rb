@@ -28,6 +28,7 @@ class FeFe_The_French_Maid
     TASK_DIRECTORY = File.expand_path('~/megauni/helpers/fefe/tasks')
     MY_LIFE        = '~/MyLife'.directory_name
     MY_PREFS       = MY_LIFE.down_directory( 'prefs' )
+    PRIMARY_APP    = 'megauni'
   end
 
   # ======== When FeFe is given a set of orders, they are 
@@ -76,7 +77,7 @@ class FeFe_The_French_Maid
     @orders = {:global => [], :task_order => []}
     current_option = nil
     args.flatten.each { |arg|
-      if arg.include?(':')
+      if arg[/.+\:.+/] && !arg[' '] # Avoid strings with :, like Git commit messages.
         current_order = arg
         @orders[:task_order] << current_order
         @orders[current_order] = {:global=>[]}
@@ -203,16 +204,38 @@ module FeFe
   # ======== Print methods.
   # ===================================================
   
-  def puts_white raw_msg
-    msg = raw_msg.to_s
-    puts "\e[37m#{msg}\e[0m"
+  def puts_white raw_msg = nil
+    if !raw_msg && !block_given?
+      raise ArgumentError, "No string or block given."
+    end
+    if raw_msg && block_given?
+      raise ArgumentError, "Both string and block given. You can only use one."
+    end
+
+    if raw_msg
+      msg = raw_msg.to_s
+      puts "\e[37m#{msg}\e[0m"
+    else
+      puts "\e[37m"
+      output = yield
+      puts "\e[0m"
+      output
+    end
+    
+  end
+
+  def puts_system_in_white *args
   end
 
   def puts_red raw_msg
     msg = raw_msg.to_s
     puts "\e[31m#{m}\e[0m"
   end
-      
+  
+  def development?
+    ENV['RACK_ENV'] == 'development' || !ENV['RACK_ENV']
+  end
+
   def shell_out(*args, &blok)
     stem          = args.shift
     cmd           = stem % ( args.map { |s| s.to_s.inspect } )
