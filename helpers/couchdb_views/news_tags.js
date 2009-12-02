@@ -11,3 +11,4 @@ function(doc) {
     for(var t in doc.tags)
       emit(doc.tags[t], 1);
 };
+

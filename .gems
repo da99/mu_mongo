@@ -1,12 +1,9 @@
-sinatra  --version '>=0.9'
-sequel --version '>= 3.2.0'
-pow --version '>= 0.2.2'
-joho-Markaby --version '>= 0.5' --source http://gems.github.com
-mattetti-multibyte --source http://gems.github.com
+sinatra --version '>=0.9'
+joho-Markaby --version '>=0.5'
+mattetti-multibyte
 htmlentities
 rest-client
-loofah 
-nakajima-rack-flash --source http://gems.github.com
+loofah
 bcrypt-ruby
 RedCloth
-
+pow --version '>=0.2.2'

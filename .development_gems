@@ -1,12 +1,10 @@
-unicorn
-haml # required or else chriseppstein-compass won't install.
-chriseppstein-compass  --source http://gems.github.com
-chriseppstein-compass-960-plugin  --source http://gems.github.com
-bacon
-trollop
-ruby-debug # http://pivots.pivotallabs.com/users/chad/blog/articles/366-ruby-debug-in-30-seconds-we-don-t-need-no-stinkin-gui-
-wirble # Makes IRB a lot easier to deal with.
+rack
 thin
 launchy
 darkfish-rdoc
-# webrat
+unicorn
+haml
+chriseppstein-compass
+chriseppstein-compass-960-plugin
+ruby-debug # http://pivots.pivotallabs.com/users/chad/blog/articles/366-ruby-debug-in-30-seconds-we-don-t-need-no-stinkin-gui-
+wirble

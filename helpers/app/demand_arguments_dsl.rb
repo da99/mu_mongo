@@ -150,12 +150,27 @@ module Demand_Arguments_Dsl
     end
 
     def demand_sym sym
-      if !sym.is_a?(Symbol)
-        print_and_exit "Symbol is required. #{sym.class} objects are not allowed."
-      end
-      sym
+      return sym if sym.is_a?(Symbol)
+			print_and_exit "Symbol is required. #{sym.class} objects are not allowed."
     end
 
+		
+		# ===================================================
+		# ======== Arrays
+		# ===================================================
+		
+		def demand_array arr
+			return true if arr.is_a?(Array)
+			print_and_exit "This must be an Array: #{arr.inspect}"
+		end
+
+		def demand_array_includes arr, ele
+			demand_array arr
+			return true if arr.include?(ele)
+
+			print_and_exit "Array, #{arr.inspect}, must include: #{ele.inspect}"
+		end
+		
     def demand_block blok
       return blok if blok.is_a? Proc
       print_and_exit "This needs to be a Proc/lambda: #{blok.inspect}"

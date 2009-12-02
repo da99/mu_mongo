@@ -58,7 +58,6 @@ class Git
       end
 
       # Check if specs all pass.
-      #puts_white capture_all('gem update')
       total, passed, errors = run_task( 'fefe:tests' )
       if total == passed
         raise "#{failed} tests failed."

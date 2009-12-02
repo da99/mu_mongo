@@ -1,51 +1,35 @@
-
-
 my_app_root     = File.expand_path( File.dirname(__FILE__) )
-maintain_page_1 = my_app_root + '/helpers/sinatra/maintain'
-maintain_page_2 = my_app_root + '/helpers/sinatra/down.maintain' 
+down_time_file  = File.join(my_app_root , '/helpers/sinatra/maintain')
+issue_client    = File.join(my_app_root , '/helpers/app/issue_client')
 
-begin # showing maintainence page if it exists.
-
-  require( maintain_page_1 )
-
-rescue LoadError
-
-  begin # the app.
+begin
   
-    require( my_app_root + '/megauni' )
-
-  rescue # error in the app.
-
-    begin
-      raise if Sinatra::Application.environment.to_sym === :development
-
-      $KCODE = 'UTF8'
-      require 'rubygems'
-      require 'sinatra'
-
-      # Show maintenance message.
-      begin
-        require( maintain_page_1  )
-      rescue LoadError
-        require( maintain_page_2 )
-      end
-
-      # Log error.
-      require( my_app_root + '/helpers/app/issue_client' )
-      IssueClient.create( 
-          {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' },
-          Sinatra::Application.environment, 
-          $!
-      )
-
-    rescue
-      before {
-        halt "Error occurred. Come back later."
-      }
-    end
-
+  require( my_app_root + '/megauni' )
+  
+  if DesignDoc.needs_push_to_db?
+    DesignDoc.create_or_update
   end
+  
+rescue Object => e
+  
+  require issue_client
+  
+  begin
+    if ENV['RACK_ENV'] != 'development'
+      IssueClient.create( 
+                         {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' },
+                         Sinatra::Application.environment, 
+                         $!
+                        )
+    end
+  rescue Object => e
+    raise e if ENV['RACK_ENV'] == 'development'
+  end
+ 
+  require down_time_file
+
 end
+
 
 # Finally, start the app.
 run Sinatra::Application

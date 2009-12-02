@@ -14,6 +14,7 @@ class Tests
       rb_files = if file
                    new_file = new_file_rb = File.expand_path(File.join('specs/fefe/',file))
                    new_file_rb += '.rb' unless new_file[/\.rb$/]
+									 new_file = new_file.sub(/\.rb$/, '')
                    demand_file_exists new_file_rb
                    [new_file]
                  else
@@ -29,9 +30,17 @@ class Tests
         require rb_file
         ft_class = Object.const_get(class_name)
       }
-      puts "\e[37m ===================================== \e[0m"
       
-      FeFe_Test.results # [total, passed, failed] == [ 5, 3, 2] 
+      total, passed, failed = FeFe_Test.results # [total, passed, failed] == [ 5, 3, 2] 
+			puts ''
+			if total == passed
+				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
+				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
+				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
+			else
+				puts_red " * * * * * * * * * * * * * * * * * * * "
+			end
+			puts ''
     }
 
   end # ======== :run
@@ -96,6 +105,10 @@ module FeFe_Test
     super
   end
 
+	def self.results
+		[@count.to_i, @count_passed.to_i, @count_failed.to_i ]
+	end
+
   def self.count
     @count ||= 0
   end
@@ -104,6 +117,16 @@ module FeFe_Test
     @count ||=0
     @count += 1
   end
+
+	def self.add_passed_count
+		@count_passed ||= 0
+		@count_passed+=1
+	end
+
+	def self.add_failed_count
+		@count_failed ||= 0
+		@count_failed += 1
+	end
 
   def self.inspect_test raw_num = nil
     if raw_num
@@ -204,8 +227,10 @@ module FeFe_Test
     end
     
     if @results.first
+			FeFe_Test.add_passed_count
       puts "  ok   : #{@count}: #{@title}" 
     else
+			FeFe_Test.add_failed_count
       puts ''
       puts "\e[31m  FAIL: #{@count}: #{@title}\e[0m"
       puts "  #{@results[2].class}: #{@results[1]}"

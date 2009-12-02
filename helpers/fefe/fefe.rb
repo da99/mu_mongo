@@ -77,7 +77,7 @@ class FeFe_The_French_Maid
     @orders = {:global => [], :task_order => []}
     current_option = nil
     args.flatten.each { |arg|
-      if arg[/.+\:.+/] && !arg[' '] # Avoid strings with :, like Git commit messages.
+      if arg[/.+\:.+/] && !arg[' '] # Avoid strings with ':', like Git commit messages.
         current_order = arg
         @orders[:task_order] << current_order
         @orders[current_order] = {:global=>[]}
@@ -104,7 +104,7 @@ class FeFe_The_French_Maid
   end
 
   def run_task_from_argv
-    parse_order *(ARGV.map(&:split).flatten)
+    parse_order *(ARGV)
     if !@orders[:global].empty?
       do_global_tasks
     end
@@ -226,7 +226,7 @@ module FeFe
 
   def puts_red raw_msg
     msg = raw_msg.to_s
-    puts "\e[31m#{msg}\e[0m"
+    puts "\e[1m\e[31m#{msg}\e[0m"
   end
   
   def development?

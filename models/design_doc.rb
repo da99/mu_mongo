@@ -11,7 +11,7 @@ class DesignDoc
 
   ID = '_design/megauni'
 
-  def self.doc
+  def self.from_db
     begin
       CouchDoc.GET_by_id ID
     rescue CouchPlastic::NoRecordFound 
@@ -19,35 +19,49 @@ class DesignDoc
     end
   end
 
+  def self.cached_from_db
+    @cached_from_db ||= from_db
+  end
+
+  def self.needs_push_to_db?
+    newest_doc = from_file_system
+    old_doc    = from_db
+    return true if !old_doc
+    
+    docs_match = begin
+      [true] == newest_doc[:views].keys.map { |k|
+        old_doc[:views][k] == newest_doc[:views][k]
+      }.uniq
+    end
+
+    !docs_match
+  end
+  
   def self.create_or_update
-    return( doc ? update : create )
+    return( from_db ? update : create )
   end
 
   def self.create
-    CouchDoc.PUT ID, fresh_hash
+    CouchDoc.PUT ID, from_file_system
   end
 
   def self.update
-    new_doc = doc.update(fresh_hash)
+    new_doc = from_db.update(from_file_system)
     CouchDoc.PUT ID, new_doc
   end
 
   def self.view_exists? view_name
-    as_hash[:views].has_key? view_name
+    cached_from_db[:views].has_key? view_name
   end
 
   def self.view_has_reduce?(view_name)
     if !view_exists?(view_name)
       raise ArgumentError, "View not found: #{view_name.inspect}"
     end
-    as_hash[:views][view_name].has_key?(:reduce)
+    cached_from_db[:views][view_name].has_key?(:reduce)
   end
 
-  def self.as_hash
-    @as_hash ||= fresh_hash
-  end
-
-  def self.fresh_hash
+  def self.from_file_system
     doc = {:views=>{}}
 
     Views.each { |v|
