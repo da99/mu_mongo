@@ -1,9 +1,31 @@
 class String
 
+  def must_not_be_empty
+    str = strip
+    raise ArgumentError, "String can't be empty." if str.empty?
+    str
+  end
+
   def expand_path
-		s = strip
-		raise ArgumentError, "String can't be empty." if s.empty?
-    File.expand_path s
+    File.expand_path must_not_be_empty
+  end
+
+  def has_extension? s_or_sym
+    ext = '.' + s_or_sym.to_s.must_not_be_empty.sub(/^\.+/, '')
+    !!self[/#{Regexp.escape(ext)}$/]
+  end
+
+  def replace_extension s_or_sym
+    ext       = '.' + s_or_sym.to_s.must_not_be_empty.sub(/^\.+/, '')
+    base_name = File.basename(self)
+    pieces    = base_name.split('.')
+    case pieces.size
+      when 1
+        self + ext
+      else
+        pieces.pop
+        self.sub(/#{Regexp.escape(base_name)}$/, pieces.join('.') + ext)
+    end
   end
 
   def file_system_name

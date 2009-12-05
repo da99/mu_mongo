@@ -30,11 +30,11 @@ class Sass
     steps do
       return nil if !'views/skins/jinx/sass'.directory?
 
-      public_dir = File.expand_path( 'public/skins/jinx/css' )
+      public_dir = 'public/skins/jinx/css'.directory.path
 
       'views/skins/jinx/sass'.directory.each_file { |f| 
-        if f.file? && f.to_s =~ /\.sass$/ 
-          css_file = File.join(public_dir, File.basename(f).sub( /\.sass$/, '') + '.css' )
+        if f.has_extension?('.sass')
+          css_file = File.join(public_dir, f.file.name.replace_extension( '.css' ) )
           File.delete(css_file) if css_file.file? 
         end
       }
