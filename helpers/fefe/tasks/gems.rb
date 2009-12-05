@@ -2,12 +2,12 @@ class Gems
     
     include FeFe
     
-    GEM_MANIFEST       = File.join('~/', PRIMARY_APP, '.gems').expand_file_path
-    GEM_MANIFEST_ARRAY = GEM_MANIFEST.file_read.strip.split("\n")
+    GEM_MANIFEST       = File.join('~/', PRIMARY_APP, '.gems').file.expand_path
+    GEM_MANIFEST_ARRAY = GEM_MANIFEST.file.read.strip.split("\n")
     GEM_PRODUCTION_PAIR = [GEM_MANIFEST, GEM_MANIFEST_ARRAY]
 
     GEM_MANIFEST_DEV   = GEM_MANIFEST.sub('.gems', '.development_gems')
-    GEM_MANIFEST_DEV_ARRAY = GEM_MANIFEST_DEV.file_read.strip.split("\n")
+    GEM_MANIFEST_DEV_ARRAY = GEM_MANIFEST_DEV.file.read.strip.split("\n")
     GEM_DEVELOPMENT_PAIR = [GEM_MANIFEST_DEV, GEM_MANIFEST_DEV_ARRAY]
 
     describe :development_install do

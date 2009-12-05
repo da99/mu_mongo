@@ -96,18 +96,11 @@ module Demand_Arguments_Dsl
       print_and_exit "Please implement this part of the program.", 1
     end
 
-    def demand_binding b
-      if !b.is_a?(Binding)
-        print_and_exit "Binding required."
-      end
-      b
-    end
-
-    def demand_regex re
-      return true if re.is_a?(Regexp)
-      print_and_exit "Needs to be a Regexp: #{re.inspect}"
-    end
-
+    
+		# ===================================================
+		# ======== Equality & Booleans
+		# ===================================================
+		
     def demand_false bool
       return true if bool == false
       print_and_exit "This needs to be false: #{bool.inspect}"
@@ -118,9 +111,37 @@ module Demand_Arguments_Dsl
       print_and_exit "This needs to be true: #{bool.inspect}"
     end
 
+    def demand_equal one, two
+      return true if one == two
+      print_and_exit("These must be equal: #{one.inspect}, #{two.inspect}")
+    end
+    
+		# ===================================================
+		# ======== Regexp
+		# ===================================================
+		
+
+    def demand_regex re
+      return true if re.is_a?(Regexp)
+      print_and_exit "Regexp is required: #{re.inspect}"
+    end
+
+    def demand_regex_match re, str
+      demand_regex re
+      demand_string str
+      match = str =~ re
+      return match if match
+      print_and_exit "String does not match Regex: #{re.inspect}, #{str.inspect}"
+    end
+
+		
+		# ===================================================
+		# ======== Strings & Symbols
+		# ===================================================
+		
     def demand_string s
       if !s.is_a?(String)
-        print_and_exit "String is required: #{s.inspect}"
+        print_and_exit "A String is required: #{s.inspect}"
       end
       s
     end
@@ -136,115 +157,120 @@ module Demand_Arguments_Dsl
     
     def demand_symbol sym
       if !sym.is_a?(Symbol)
-        print_and_exit "Symbol is required: #{sym.inspect}"
+        print_and_exit "A Symbol is required: #{sym.inspect}"
       end
       sym
     end
-
-    def demand_regex_match re, str
-      demand_regex re
-      demand_string str
-      match = str =~ re
-      return match if match
-      print_and_exit "String does not match Regex: #{re.inspect}, #{str.inspect}"
-    end
-
-    def demand_sym sym
-      return sym if sym.is_a?(Symbol)
-			print_and_exit "Symbol is required. #{sym.class} objects are not allowed."
-    end
+    alias_method :demand_sym, :demand_symbol
 
 		
 		# ===================================================
-		# ======== Arrays
+		# ======== Hashes & Arrays
 		# ===================================================
 		
+      
+    def demand_hash arg, &blok
+      if !arg.is_a?(Hash)
+        print_and_exit( "A Hash is required: #{arg.inspect}" )
+      end
+      
+      if block_given?
+        h_v = Dsl_For_Demand_Hash.new
+        h_v.instance_eval &blok
+        invalid = (arg.keys - h_v.keys).map(&:inspect)
+        missing = (h_v.demand - arg.keys).map(&:inspect)
+        if !invalid.empty?
+          print_and_exit "Invalid keys: #{invalid.join(', ')}"
+        end
+        if !missing.empty?
+          print_and_exit "Missing keys: #{missing.join(', ')}"
+        end
+      end
+      arg
+    end
+
 		def demand_array arr
 			return true if arr.is_a?(Array)
-			print_and_exit "This must be an Array: #{arr.inspect}"
+			print_and_exit "An Array is required: #{arr.inspect}"
+		end
+    
+		def demand_array_not_empty arr
+      demand_array arr
+			return true if !arr.empty?
+			print_and_exit "Array can't be empty: #{arr.inspect}"
 		end
 
 		def demand_array_includes arr, ele
 			demand_array arr
 			return true if arr.include?(ele)
 
-			print_and_exit "Array, #{arr.inspect}, must include: #{ele.inspect}"
+			print_and_exit "Missing element in Array: #{ele.inspect} --> #{arr.inspect}"
 		end
 		
+		
+		# ===================================================
+		# ======== Blocks
+		# ===================================================
+
+    def demand_binding b
+      if !b.is_a?(Binding)
+        print_and_exit "A Binding is required: #{b.inspect}"
+      end
+      b
+    end		
+    
     def demand_block blok
       return blok if blok.is_a? Proc
-      print_and_exit "This needs to be a Proc/lambda: #{blok.inspect}"
+      print_and_exit "A Block is required: #{blok.inspect}"
     end
 
     def demand_block_given b
       demand_binding b
-      if !eval("block_given?", b)
-        print_and_exit "Block required."
-      end
+      return true if eval("block_given?", b)
+      print_and_exit "A Block is required."
     end
 
     def demand_no_block_given b
       demand_binding b
       blok_given = eval("block_given?", b)
-      if blok_given
-        print_and_exit "No block allowed."
-      end
+      return true unless blok_given
+      print_and_exit "No Block allowed."
     end
-      
-    def demand_hash arg, &blok
-      if !arg.is_a?(Hash)
-        print_and_exit( "Not a hash: #{arg.inspect}" )
-      end
-      
-      if block_given?
-        h_v = Dsl_For_Demand_Hash.new
-        h_v.instance_eval &blok
-        invalid = arg.keys - h_v.keys
-        missing = h_v.demand - args.keys
-        if !invalid.empty?
-          print_and_exit "Invalid keys: #{invalid.join(', ')}"
-        end
-        if !missing.empty?
-          print_and_exit "Missing keys: #{invalid.join(', ')}"
-        end
-      end
-      arg
-    end
-
+		
+		# ===================================================
+		# ======== Files & Directories
+		# ===================================================
+		
     def demand_directory_exists raw_arg
-      d= raw_arg.directory_name
-      return d if d
-      print_and_exit "Not an existing directory: #{raw_arg.inspect}"
+      dir = File.expand_path(raw_arg)
+      return dir if File.directory?(dir)
+      print_and_exit "An existing directory is required: #{raw_arg.inspect}"
     end
 
     def demand_file_exists raw_file
-      f = raw_file.file_name
-      return f if f
-      print_and_exit "Not an existing file: #{raw_file.inspect}"
+      file = File.expand_path(raw_file)
+      return file if File.file?(file)
+      print_and_exit "An existing file is required: #{raw_file.inspect}"
     end
 
     def demand_exists_on_filesystem raw_path
-      f = raw_path.file_system_name
-      return f if f
-      print_and_exit "File or directory must exist: #{raw_path}"
+      obj = File.expand_path(raw_path)
+      return obj if File.exists?(obj)
+      print_and_exit "A valid file or directory is required: #{raw_path.inspect}"
+    end
+
+    def demand_not_exists_on_filesystem raw_path
+      obj = File.expand_path(raw_path)
+      return obj if !File.exists?(obj)
+      print_and_exit "File or directory must not exist: #{raw_path.inspect}"
     end
 
     def demand_sym_link_matches &blok
       demand_block blok
       dsl =  Dsl_For_Demand_Sym_Link_Matches.new(&blok)
-      demand_exists_on_filesystem dsl.from
-      if File.exists?(dsl.to.file_system_name)
-        if File.readlink(dsl.to.file_system_name) != dsl.from.file_system_name
-          print_and_exit("Files are not the same: #{dsl.from}, #{dsl.to}")
-        end
-      else
-        print_and_exit "Does not exist: #{dsl.to}"
+      if !File.identical?(dsl.to, dsl.from)
+        print_and_exit("File and symbolic link must match: #{dsl.from.inspect}, #{dsl.to.inspect}")
       end
-    end
-
-    def demand_equal one, two
-      return true if one == two
-      print_and_exit("These must match: #{one.inspect}, #{two.inspect}")
     end
 
 end # === Demand_Arguments_Dsl
@@ -263,12 +289,12 @@ class Dsl_For_Demand_Sym_Link_Matches
 
 	def from *old_file
 		return @from if old_file.empty?
-		@from = File.join(*old_file) 
+		@from = File.join(*old_file).file_system_name 
 	end
 
 	def to *new_file
 		return @to if new_file.empty?
-		@to = File.join(*new_file)
+		@to = File.join(*new_file).file_system_name
 	end
 
 end

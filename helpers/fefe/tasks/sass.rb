@@ -32,7 +32,7 @@ class Sass
 
       public_dir = File.expand_path( 'public/skins/jinx/css' )
 
-      'views/skins/jinx/sass'.each_file { |f| 
+      'views/skins/jinx/sass'.directory.each_file { |f| 
         if f.file? && f.to_s =~ /\.sass$/ 
           css_file = File.join(public_dir, File.basename(f).sub( /\.sass$/, '') + '.css' )
           File.delete(css_file) if css_file.file? 

@@ -9,7 +9,7 @@ require 'open3'
   string_additions
   symbol_additions
   demand_arguments_dsl
-  butler_dsl
+	color_puts
 }.each { |file|
  require File.expand_path(File.join(File.readlink(__FILE__),'../..','app',file))
 }
@@ -26,8 +26,8 @@ class FeFe_The_French_Maid
   # ======== FeFe class using :include.
   module Prefs
     TASK_DIRECTORY = File.expand_path('~/megauni/helpers/fefe/tasks')
-    MY_LIFE        = '~/MyLife'.directory_name
-    MY_PREFS       = MY_LIFE.down_directory( 'prefs' )
+    MY_LIFE        = '~/MyLife'.directory.path
+    MY_PREFS       = MY_LIFE.directory.down( 'prefs' )
     PRIMARY_APP    = 'megauni'
   end
 
@@ -135,8 +135,8 @@ end # === FeFe_The_French_Maid =================================
 module FeFe
   
   include Demand_Arguments_Dsl
-  include Butler_Dsl
   include FeFe_The_French_Maid::Prefs
+  include Color_Puts
 
   def self.included new_class
     new_class.send :extend, Class_Methods
@@ -145,7 +145,8 @@ module FeFe
   module Class_Methods
 
     include Demand_Arguments_Dsl
-    
+    include Color_Puts
+
     def tasks
       @tasks ||= {} 
     end
@@ -199,36 +200,6 @@ module FeFe
     send("__fefe_task_#{task_name.bang_to_bang}__", *args)
   end
   
-  
-  # ===================================================
-  # ======== Print methods.
-  # ===================================================
-  
-  def puts_white raw_msg = nil
-    if !raw_msg && !block_given?
-      raise ArgumentError, "No string or block given."
-    end
-    if raw_msg && block_given?
-      raise ArgumentError, "Both string and block given. You can only use one."
-    end
-
-    if raw_msg
-      msg = raw_msg.to_s
-      puts "\e[37m#{msg}\e[0m"
-    else
-      puts "\e[37m"
-      output = yield
-      puts "\e[0m"
-      output
-    end
-    
-  end
-
-  def puts_red raw_msg
-    msg = raw_msg.to_s
-    puts "\e[1m\e[31m#{msg}\e[0m"
-  end
-  
   def development?
     ENV['RACK_ENV'] == 'development' || !ENV['RACK_ENV']
   end
@@ -266,7 +237,6 @@ module FeFe_Dsl
   class Task_Dsl
 
     include Demand_Arguments_Dsl
-    include Butler_Dsl
     
     def initialize task_name, &blok
       @task_name = task_name

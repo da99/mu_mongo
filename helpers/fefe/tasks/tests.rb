@@ -3,7 +3,8 @@ $LOAD_PATH.unshift File.expand_path('specs/fefe')
 class Tests
   
   include FeFe
-  
+  include Color_Puts
+
   describe :run do
 
     it %! Runs FeFe tests for your app in the fefe/ directory. !
@@ -34,11 +35,13 @@ class Tests
       total, passed, failed = FeFe_Test.results # [total, passed, failed] == [ 5, 3, 2] 
 			puts ''
 			if total == passed
-				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
-				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
-				puts "\e[1m\e[32m * * * * * * * * * * * * * * * * * * * \e[0m"
+				puts_green " * * * * * * * * * * * * * * * * * * * "
+				puts_green "      ALL TESTS PASSSED: #{total}"
+				puts_green " * * * * * * * * * * * * * * * * * * * "
 			else
-				puts_red " * * * * * * * * * * * * * * * * * * * "
+				puts_red   " * * * * * * * * * * * * * * * * * * * "
+				puts_multi :red, "  FAILED: #{failed}", :white, ', ', :green, " PASSED: #{passed}"
+				puts_red   " * * * * * * * * * * * * * * * * * * * "
 			end
 			puts ''
     }
@@ -96,13 +99,17 @@ end # ======== Tests
 module FeFe_Test
   
   include Demand_Arguments_Dsl
+	include Color_Puts
   
   def on_assertion_exit 
-    if FeFe_Test.inspect_test? && FeFe_Test.inspect_test == FeFe_Test.count
-      puts @assertion_call_back
-      raise DemandFailed, assertion_exit_msg
-    end
-    super
+    lambda {
+			if FeFe_Test.inspect_test? && FeFe_Test.inspect_test == FeFe_Test.count
+				puts @assertion_call_back
+				puts @assertion_exit_msg
+				exit(1)
+			end
+			raise DemandFailed, assertion_exit_msg
+		}
   end
 
 	def self.results
@@ -232,9 +239,15 @@ module FeFe_Test
     else
 			FeFe_Test.add_failed_count
       puts ''
-      puts "\e[31m  FAIL: #{@count}: #{@title}\e[0m"
-      puts "  #{@results[2].class}: #{@results[1]}"
-      puts ''
+      puts_red "  FAIL: #{@count}: #{@title}"
+			puts_white "  #{@results[2].class}: #{@results[1]} "
+			if !@results[2].backtrace.first['on_assertion_exit']
+				@results[2].backtrace.each { |l|
+					puts l if l[FeFe_The_French_Maid::Prefs::PRIMARY_APP] && 
+						!l['instance_eval'] && !l['__fefe']
+				}
+			end
+			puts ''
     end
 
   end

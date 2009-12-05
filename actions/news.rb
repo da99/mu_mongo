@@ -8,7 +8,21 @@ helpers {
 
 CRUD_for(News) {
 
-  new 
+  new {
+		on_api_change {
+			version_macro
+			update_key :date do |val|
+				if val == 'next tuesday'
+					change_to 'earliest tuesday'
+					add_key :datetime, 'earliest tuesday @ whenever'
+				end
+			end
+			remove_key :suffix
+			
+			mark_api_as_changed
+		}
+	}
+
   show {
     dont_require_log_in
   }

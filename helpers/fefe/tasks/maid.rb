@@ -10,11 +10,7 @@ class Maid
 
     steps {
 			require 'rubygems'
-      sym_link_file {
-        from __FILE__.up_directory('fefe.rb')
-        to   Gem.bindir, 'fefe'
-      }
-
+      __FILE__.file.ancestor('../fefe.rb').file.alter_ego_as( Gem.bindir, 'fefe')
 			puts 'Finished linking FeFe executable.'
     }
 

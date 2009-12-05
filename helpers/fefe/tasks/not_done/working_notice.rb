@@ -1,46 +1,39 @@
-# ====================================================================================
-# ====================================================================================
-class WorkingNotice < Thor
 
-  include Thor::Sandbox::CoreFuncs
+
+class Site_Is
+
+  include FeFe
   
-  desc :start, 'Puts up a maintenence page for all actions. Takes into account AJAX and POST requests.'
-  def start
+  CONFIG_RU        = '~/' + APP_NAME + '/config.ru'
+  CONFIG_SITE_DOWN = '/~' + APP_NAME + '/config.site_down.rb'
+  
+  CONFIG_RU_ORIGINAL = CONFIG_RU.sub( File.basename(CONFIG_RU), 'config.original.ru')
+
+  describe :down do
+    it 'Puts up a maintenence page for all actions. Takes into account AJAX and POST requests.'
     
-    maintain_file = Pow('helpers/sinatra/down.maintain.rb')
-    raise "File not found: #{maintain_file}" if !maintain_file.exists?
-    
-    # Copy file to helpers/sinatra
-    maintain_file.move_to( Pow('helpers/sinatra/maintain.rb'))
-    
-    # add_then_commit_and_push 
-    invoke 'git:update'
-    
-    commit_results = capture_all( 'git commit -m "Added temporary maintainence page."' )
-    shout commit_results
-    
-    push_results = capture_all('git push heroku master')
-    shout push_results
+    steps {
+      CONFIG_RU.file.rename_to( CONFIG_RU_ORIGINAL )
+      CONFIG_SITE_DOWN.file.rename_to( CONFIG_RU )
+      run_task 'git:update'
+      run_task 'git:commit', :msg=>"Added temporary maintainence page." 
+      puts_white shell_out('git push heroku master')
+    }
     
   end # === task :start
   
-  desc :over, 'Takes down maintence page.'
-  def over
+  describe :up do 
+    it 'Takes down maintence page.'
   
-    # Delete file from helpers/sinatra
-    maintain_file = Pow('helpers/sinatra/maintain.rb')
-    raise "File does not exists: #{maintain_file}" if !maintain_file.exists?
-    maintain_file.move_to(Pow('helpers/sinatra/down.maintain.rb'))
-    
-    # add_then_commit_and_push 
-    invoke 'git:update'
-    
-    commit_results = capture_all( 'git commit -m "Removed temporary maintainence page."')
-    shout commit_results
-    
-    push_results = capture_all('git push heroku master')
-    shout push_results
-    
+    steps {
+      demand_file_exists CONFIG_RU_ORIGINAL
+      CONFIG_RU.file.rename_to(CONFIG_SITE_DOWN)
+      CONFIG_RU_ORIGINAL.file.rename_to(CONFIG_RU)
+      run_task 'git:update'
+      run_task 'git:commit', :msg=>'Took down site maintainence page.'
+      run_task 'git:push'
+    }
+
   end # === task :over
   
 end # === namespace :maintain

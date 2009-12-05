@@ -1,60 +1,38 @@
 class String
 
   def expand_path
-    File.expand_path self
-  end
-
-  def expand_file_path
-    raise ArgumentError, "Not a file: #{self.inspect}" unless file?
-    expand_path
-  end
-
-  def expand_directory_path
-    raise ArgumentError, "Not a directory: #{self.inspect}" unless directory?
-    expand_path
-  end
-
-  def directory_name
-    return nil if self.strip.empty?
-
-    [ self, 
-      File.expand_path(self),
-      File.dirname(File.expand_path(self))
-    ].detect { |d_path|
-      File.directory? d_path
-    }
-  end
-
-  def file_name
-    return nil if self.strip.empty?
-    
-    [ self,
-      File.expand_path(self)
-    ].detect { |f_path|
-      File.file? f_path
-    }
-  end
-  
-  def file_read
-    path = file_name
-    return nil if !path
-    File.read(path)
+		s = strip
+		raise ArgumentError, "String can't be empty." if s.empty?
+    File.expand_path s
   end
 
   def file_system_name
-    file_name || directory_name
+    file.path || directory.path
   end
 
   def directory?
-    return false if self.strip.empty?
-    !![  
-      self, 
-      File.expand_path(self)
-    ].detect { |d_path| 
-      File.directory? d_path 
-    }
+		s = self.strip
+    return false if s.empty?
+		@directory_name ||= begin
+													[ 
+														s, 
+														File.expand_path(s)
+													].detect { |d_path|
+														File.directory? d_path
+													}
+												end
+		!!@directory_name
   end
 
+  def directory
+    @string_directory ||= begin
+														if !directory?
+															raise ArgumentError, "Needs to be a directory: #{inspect}"
+														end
+														String_as_Directory.new @directory_name
+													end
+  end
+                          
   def file?
     return false if self.strip.empty?
     !![
@@ -65,24 +43,8 @@ class String
     }
   end
 
-  def up_directory *args
-    
-    return nil if self.strip.empty?
-    
-    dirname = directory_name
-    return nil if !dirname
-
-    File.expand_path(File.join(dirname, '..', *args))
-  end
-
-  def down_directory *args
-    raise ArgumentError, "Unable to continue w/o arguments: #{args.inspect}" if args.empty?
-    raise ArgumentError, "This method is invalid since String is empty." if self.strip.empty?
-
-    dirname = directory_name
-    return nil if !dirname 
-
-    File.expand_path(File.join(dirname, *args))
+  def file
+    @string_as_file ||= String_as_File.new(self)
   end
 
   def camelize(first_letter_in_uppercase = :upper)
@@ -94,6 +56,50 @@ class String
   def camel_flat
     s = split('_').map(&:capitalize).join('_')
   end
+  
+end # === String
+
+class String_as_Directory
+	attr_reader :orig_path
+	
+	def initialize raw_str
+		str = raw_str.strip
+		path = File.expand_path(str)
+		if str.empty? || !File.directory?(path)
+			raise ArgumentError, "Must be a directory: #{str}"
+		end
+		@orig_path = path
+	end
+	
+	def name 
+		File.basename(orig_path)
+	end
+	
+	def path
+		orig_path
+	end
+
+	def exists?
+		File.exists?(orig_path)
+	end
+
+  def up *args
+    File.expand_path(File.join(path, '..', *args))
+  end
+
+  def down *args
+    raise ArgumentError, "Unable to continue w/o arguments: #{args.inspect}" if args.empty?
+    File.expand_path(File.join(path, *args))
+  end
+  
+  def each_file &blok
+    return nil if !path.directory?
+    raise ArgumentError, "Block is needed." unless block_given?
+    Dir.entries(path).each { |file_name|
+      file_path = File.expand_path(File.join(path, file_name))
+      blok.call(file_path) if File.file?(file_path)
+    }
+  end
 
   def ruby_files_wo_rb
     ruby_files false
@@ -101,31 +107,63 @@ class String
 
   def ruby_files w_extension = true
     
-    dirname = directory_name
-    return [] if !dirname
-    
-    Dir.entries(dirname).
-      reject { |e| e =~ /^\.+$/ }.
-      map { |f| 
-        path = File.expand_path(File.join(dirname,f))
-        if w_extension
-          path
+    Dir.entries(path).map { |file_name| 
+        if file_name =~ /\.rb$/
+          full_path = File.expand_path(File.join(path,file_name))
+          w_extension ?
+            full_path :
+            full_path.sub(/\.rb$/i, '') 
         else
-          path.sub(/\.rb$/i, '') 
+          nil
         end
-      }
+      }.compact
     
+  end	
+	
+end # ======== String_as_Directory
+
+class String_as_File
+
+  attr_reader :orig_path
+
+  def initialize str
+		if str.directory?
+			raise ArgumentError, "Already a directory: #{str.inspect}"
+		end
+		if !str.file?
+			raise ArgumentError, "File does not exist: #{str.inspect}"
+		end
+    @orig_path = File.expand_path(str)
+  end
+
+	def exists?
+		File.exists?(orig_path)
+	end  
+	
+  def name
+    File.basename(orig_path)
   end
   
-  def each_file &blok
-    return nil if !directory?
-    raise ArgumentError, "Block is needed." unless block_given?
-    dir = directory_name
-    Dir.entries(dir).each { |file_name|
-      blok.call File.expand_path(File.join(dir, file_name))
-    }
+  def path
+    orig_path
   end
-  
-end # === String
 
+  def read
+    File.read(orig_path)
+  end
+ 
+  def expand_path
+    File.expand_path(orig_path)
+  end 
+	
+  def rename_to file_name_or_path
+    f_path = if File.basename(file_name_or_path) == file_name_or_path
+							 File.join(File.dirname(path), file_name_or_path)
+						 else
+							 File.expand_path(file_name_or_path)
+						 end
+    File.rename path, f_path
+    f_path
+  end
 
+end # ======== String_as_File
