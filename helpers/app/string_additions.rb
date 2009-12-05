@@ -187,5 +187,19 @@ class String_as_File
     File.rename path, f_path
     f_path
   end
+  
+  def create_alias *args
+    new_file = File.join(*args).expand_path
+    return new_file if File.exists?(new_file) && File.identical?(path, new_file)
+    if File.exists?(new_file)
+      raise ArgumentError, "File already exists: #{new_file.inspect}"
+    end
+    File.symlink(path, new_file)
+    new_file
+  end
+
+  def relative *args
+    demand_to_be_done
+  end
 
 end # ======== String_as_File

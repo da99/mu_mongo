@@ -10,6 +10,7 @@ class Sass
     steps {
       return nil if !'views/skins/jinx/sass'.directory?
       puts_white "Compiling SASS to CSS..."
+      puts_white ''
       results = shell_out(
         "compass -r ninesixty -f 960 --sass-dir views/skins/jinx/sass --css-dir public/skins/jinx/css -s compressed"
       )
@@ -33,8 +34,8 @@ class Sass
       public_dir = 'public/skins/jinx/css'.directory.path
 
       'views/skins/jinx/sass'.directory.each_file { |f| 
-        if f.has_extension?('.sass')
-          css_file = File.join(public_dir, f.file.name.replace_extension( '.css' ) )
+        if f.has_extension?(:sass)
+          css_file = File.join(public_dir, f.file.name.replace_extension( :css ) )
           File.delete(css_file) if css_file.file? 
         end
       }

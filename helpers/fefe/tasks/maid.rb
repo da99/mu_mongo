@@ -10,7 +10,7 @@ class Maid
 
     steps {
 			require 'rubygems'
-      __FILE__.file.ancestor('../fefe.rb').file.alter_ego_as( Gem.bindir, 'fefe')
+      __FILE__.file.relative('../fefe.rb').file.create_alias( Gem.bindir, 'fefe')
 			puts 'Finished linking FeFe executable.'
     }
 
