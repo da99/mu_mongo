@@ -95,7 +95,7 @@ class FeFe_The_French_Maid
             end
           end
         else
-          @orders[:global] << arg
+          @orders[:global] << arg.sub(/^\-+/, '')
         end
       end
     }
@@ -106,7 +106,18 @@ class FeFe_The_French_Maid
   def run_task_from_argv
     parse_order *(ARGV)
     if !@orders[:global].empty?
-      do_global_tasks
+      
+      # require 'rubygems'; require 'ruby-debug'; debugger
+      
+      
+      @orders[:global].each { |k|
+        case k.upcase
+        when 'NO_COLOR_PUTS'
+          ENV[k.upcase] = 'true'
+        else
+          raise ArgumentError, "Unknown global option for FeFe: #{k.inspect}"
+        end
+      }
     end
 
     @orders[:task_order].map { |task_name|

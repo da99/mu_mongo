@@ -67,7 +67,7 @@ end
 
 get '/sitemap.xml' do
   content_xml_utf8
-  @news = News.reverse_order(:created_at).limit(5).all
+  @news = News.by_published_at(:limit=>5, :descending=>true)
   builder do |xml|
     file = Pow( options.views, 'sitemap.rb' )
     eval file.read, nil, file.to_s, 1

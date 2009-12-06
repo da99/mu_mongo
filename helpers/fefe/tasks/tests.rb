@@ -11,7 +11,7 @@ class Tests
 
     steps([:file, nil], [:inspect, nil]) { |file, inspect_test|
 
-      puts "\e[37m ===================================== \e[0m"
+      puts_white " ===================================== "
       rb_files = if file
                    new_file = new_file_rb = File.expand_path(File.join('specs/fefe/',file))
                    new_file_rb += '.rb' unless new_file[/\.rb$/]

@@ -16,11 +16,11 @@ module Color_Puts
 
     if raw_msg
       msg = raw_msg.to_s
-      puts "\e[37m#{msg}\e[0m"
+      puts_multi :white, msg
     else
-      puts "\e[37m"
+      puts( ENV['NO_COLOR_PUTS'] ? '' : "\e[37m" )
       output = yield
-      puts "\e[0m"
+      puts( ENV['NO_COLOR_PUTS'] ? '' :  "\e[0m" )
       output
     end
     
@@ -28,12 +28,12 @@ module Color_Puts
 
   def puts_red raw_msg
     msg = raw_msg.to_s
-    puts "\e[1m\e[31m#{msg}\e[0m"
+    puts_multi :red, msg
   end
   
 	def puts_green raw_msg
 		msg = raw_msg.to_s
-		puts "\e[1m\e[32m#{raw_msg}\e[0m"
+    puts_multi :green, raw_msg
 	end
 	
 	def puts_multi *colored_text
@@ -45,11 +45,11 @@ module Color_Puts
 			text  = colored_text.shift
 			case color
 			when :red
-				final_arr << "\e[1m\e[31m#{text}\e[0m"
+				final_arr << ( ENV['NO_COLOR_PUTS'] ? text.to_s : "\e[1m\e[31m#{text}\e[0m" )
 			when :green
-				final_arr << "\e[1m\e[32m#{text}\e[0m"
+				final_arr << ( ENV['NO_COLOR_PUTS'] ? text.to_s : "\e[1m\e[32m#{text}\e[0m" )
 			when :white
-				final_arr << "\e[37m#{text}\e[0m"
+				final_arr << ( ENV['NO_COLOR_PUTS'] ? text.to_s : "\e[37m#{text}\e[0m" )
 			end
 		end while !colored_text.empty?
 

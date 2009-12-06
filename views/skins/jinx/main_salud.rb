@@ -158,7 +158,7 @@ div.revols(:id=>"soap") {
   ul {
     li {
       span 'Non-Flouride Toothpaste'
-      a( :href="http://www.luckyvitamin.com/item/itemKey/53785" ) {'Now XyliWhite Toothpaste Gel'}
+      a( :href=>"http://www.luckyvitamin.com/item/itemKey/53785" ) {'Now XyliWhite Toothpaste Gel'}
     }
 
     li {

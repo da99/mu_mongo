@@ -34,7 +34,7 @@ class Maid
         }
       else
 				
-        __FILE__.ruby_files_wo_rb.each { |f|
+        __FILE__.file.directory.ruby_files_wo_rb.each { |f|
           puts File.basename(f)
         }
 				
