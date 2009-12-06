@@ -12,7 +12,15 @@ helpers {
   end
 
   def use_mobile_version
-    response.set_cookie("use_mobile_version", :value=>'yes', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
+    
+    # require 'rubygems'; require 'ruby-debug'; debugger
+    
+    
+    response.set_cookie("use_mobile_version", {
+      :value   => 'yes',
+      :path    => '/',
+      :expires => (Time.now + (60 * 60 * 24 * 365 * 10)),
+    })
   end
 
   def stop_using_mobile_version

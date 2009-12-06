@@ -1,7 +1,9 @@
 
 class CouchDoc
   
-  class HTTP_Error < StandardError; end
+	HTTP_Error = Class.new(StandardError)
+	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
+
 
   ValidQueryOptions = %w{ 
       key
@@ -24,7 +26,17 @@ class CouchDoc
     results = begin
       yield
     rescue RestClient::RequestFailed
-      raise HTTP_Error, "#{$!.http_code} - #{$!.http_body}"
+			err = case $!.http_code
+						when 409
+							if $!.http_body =~ /update conflict/ 
+								HTTP_Error_409_Update_Conflict
+							else
+								HTTP_Error
+							end
+						else
+							HTTP_Error
+						end
+			raise err, "#{$!.http_code} - #{$!.http_body}"
     end
 
     json_parse results

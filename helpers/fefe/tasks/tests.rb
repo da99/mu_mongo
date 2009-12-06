@@ -53,13 +53,13 @@ class Tests
     it "Reset the :test database"
     
     steps do
-      invoke('db:reset!')
+      fefe_run('db:reset!')
 
       ENV['RACK_ENV'] = 'test'
       require File.expand_path('megauni')
 
       DesignDoc.create_or_update
-      whisper 'Created: design doc.'
+      puts_white 'Created: design doc.'
 
       # === Create News ==========================
       

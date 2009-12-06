@@ -75,6 +75,10 @@ module CouchPlastic
         instance_eval &@doc_class.setter_actions[:update]
       end
     end
+	
+		def doc
+			@doc
+		end
 
     def from raw_member_level, &blok
 
@@ -190,12 +194,11 @@ module CouchPlastic
       msg
     end
     
-    def _choose_and_add_error_msg_ raw_msg = nil, &blok
-      msg = [ 
+    def _choose_and_add_error_msg_ *msgs, &blok
+      msg = ([ 
         default_error_msg,
         block_given?  && instance_eval( &blok ),
-        raw_msg
-      ].detect { |m| m }
+      ] + msgs).detect { |m| m }
 
       _add_to_errors_ msg
     end
@@ -369,16 +372,16 @@ module CouchPlastic
 
     # Turns :val into a stripped string if it does not
     # respond to :size.
-    def between_size( min, max, &blok ) 
+    def between_size( min, max, str = nil, &blok ) 
       strip if !@val.respond_to?(:jsize)
       return true if @val.jsize.between?(min, max)
 
       msg = "#{_cap_col_name_} needs to be between #{min} and #{max} characters in length."
-      _choose_and_add_error_msg_(msg, &blok)
+      _choose_and_add_error_msg_((str && str % [min, max]), msg, &blok)
       false
     end
 
-    def match(s_or_regex, &err_msg_blok)
+    def match(s_or_regex, err_msg = nil,  &err_msg_blok)
 
       they_match = case s_or_regex
         when String
@@ -390,7 +393,7 @@ module CouchPlastic
       end
 
       return true if they_match
-      _choose_and_add_error_msg_(msg, &err_msg_blok)
+      _choose_and_add_error_msg_(err_msg, msg, &err_msg_blok)
       false
 
     end

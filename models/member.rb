@@ -85,8 +85,9 @@ class Member
   enable_timestamps
 
   setter(:create) { 
-    demand :add_life, :password
+		doc.new_data[:_id] = CouchDoc.GET_uuid
     ask_for :avatar_link, :email
+    demand  :password, :add_life
   }
 
   setter(:update) { 
@@ -302,16 +303,27 @@ class Member
 
     detect {
 
-      between_size( 2, 20 )
+      between_size 2, 20,  'Username must be between %d and %d characters.'
 
-      match( /[a-z0-9]/i ) {
-        'Username must have at least one letter or number.' 
-      }
+      match( /[a-z0-9]/i,  'Username must have at least one letter or number.') 
 
     }
 
     override {
+			
       doc.new_data[:lives][add_life][:username] = add_life_username
+			
+			if doc.errors.empty?
+				m_id = doc.new? ? doc.new_data[:_id] : doc._id
+				doc_id = 'username-' + doc.new_data[:lives][add_life][:username]
+				begin
+					CouchDoc.PUT( doc_id, 
+												{:member_id=>m_id} 
+					)
+				rescue CouchDoc::HTTP_Error_409_Update_Conflict
+					doc.errors << "Username already taken: #{add_life_username}"
+				end
+			end
     }
 
   } # validator :add_life_username

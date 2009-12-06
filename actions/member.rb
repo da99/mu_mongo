@@ -14,14 +14,17 @@ post( "/member/" ) do
 
   begin
 
-    m = Member.creator( current_member, clean_room )
+# require 'rubygems'; require 'ruby-debug'; debugger
+
+
+    m = Member.create( current_member, clean_room )
     self.current_member = m
     flash.success_msg = "Your account has been created."
     redirect('/account/')
     
-  rescue Sequel::ValidationFailed
+  rescue Member::Invalid
 
-    flash.error_msg = to_html_list( $!.message )
+    flash.error_msg = to_html_list( $!.doc.errors )
     session[ :form_username  ] = clean_room[:username] 
              
     redirect('/sign-up/')
@@ -43,11 +46,11 @@ end # == get :show
       
 put( "/member/" )  do
   begin
-    m = Member.updator( current_member, clean_room )
+    m = Member.update( current_member, clean_room )
     flash.success_msg = "Data has been updated and saved."
     redirect('/account/')
-  rescue Sequel::ValidationFailed
-    flash.error_msg = to_html_list($!.message)
+  rescue Member::Invalid
+    flash.error_msg = to_html_list($!.doc.errors)
     redirect('/account/')
   end
 end # === put :update

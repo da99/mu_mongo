@@ -8,25 +8,29 @@ class Actions_Main_Mobile
 
   context 'Main App (Mobile)' 
 
-  it 'renders a mobile version of the homepage' do
+  it 'sets the mobilize cookie and redirects /m/ to homepage' do
     get '/m/'
-    demand_equal 200, last_response.status
+    follow_redirect!
+    demand_equal '/', last_request.fullpath
+    demand_equal 'yes', last_request.cookies['use_mobile_version']
   end
 
   it 'add a slash to the mobile homepage path: /m' do
     get '/m'
     follow_redirect!
-    demand_equal '/m/', last_request.fullpath
-    demand_equal 200, last_response.status
+    follow_redirect!
+    demand_equal '/', last_request.fullpath
   end
 
   it 'renders /salud/m/' do
     get '/salud/m/'
+    follow_redirect!
     demand_equal 200, last_response.status
   end
 
   it 'renders /help/m/' do
     get '/help/m/' 
+    follow_redirect!
     demand_equal 200, last_response.status
   end
 
