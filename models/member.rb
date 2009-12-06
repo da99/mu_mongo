@@ -309,28 +309,38 @@ class Member
 
     }
 
+
     override {
 			
       doc.new_data[:lives][add_life][:username] = add_life_username
 			
 			if doc.errors.empty?
-				m_id = doc.new? ? doc.new_data[:_id] : doc._id
-				doc_id = 'username-' + doc.new_data[:lives][add_life][:username]
 				begin
-					CouchDoc.PUT( doc_id, 
-												{:member_id=>m_id} 
-					)
+					doc._reserve_username_( add_life_username )
 				rescue CouchDoc::HTTP_Error_409_Update_Conflict
 					doc.errors << "Username already taken: #{add_life_username}"
 				end
 			end
+			
     }
 
   } # validator :add_life_username
 
+	def _reserve_username_ new_un
+		this_id = if new?
+								if new_data[:_id]
+									new_data[:_id]
+								else
+									new_data[:_id] = CouchDoc.GET_uuid
+								end
+							else
+								_id
+							end
+		doc_id = 'username-' + new_un
+		CouchDoc.PUT( doc_id,  {:member_id=>this_id} )
+	end
 
   private # ==================================================
-
 
   def _add_to_history_(hash)
     if !hash.is_a?(Hash)
