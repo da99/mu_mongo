@@ -7,17 +7,16 @@ class App_String_Additions_File
 
 	before {
 		@path = '~/megauni/config.ru'
+    @delete_files = []
 	}
 
   after {
-    if @delete_files
-      @delete_files.each { |file|
-        file_path = File.expand_path(file.to_s)
-        if File.file?(file_path) || File.symlink?(file_path)
-          File.delete(file_path)
-        end
-      }
-    end
+    @delete_files.each { |file|
+      file_path = File.expand_path(file.to_s)
+      if File.file?(file_path) || File.symlink?(file_path)
+        File.delete(file_path)
+      end
+    }
   }
   
 	it 'lets you ask: file?' do
@@ -57,72 +56,95 @@ class App_String_Additions_File
 	end
 	
 	it 'renames file' do
-    old_file = File.expand_path( '~/Desktop/s123456'+Time.now.utc.to_i.to_s+'.rb' )
-    new_file = File.expand_path('~/Desktop/s_new_123456' + Time.now.utc.to_i.to_s + '.rb')
+    @delete_files << (old_file = File.expand_path( '~/Desktop/s123456'+Time.now.utc.to_i.to_s+'.rb' ))
+    @delete_files << (new_file = File.expand_path('~/Desktop/s_new_123456' + Time.now.utc.to_i.to_s + '.rb'))
+    
     system("echo 'test 123' > #{old_file}")
     old_file.file.rename_to(new_file)
     demand_equal(
       true,
       File.file?(new_file)
     )
-    @delete_files = [old_file, new_file]
   end
 
-  it 'raises an error if new file name already exists.' do
-    old_file = File.expand_path( '~/Desktop/s123456'+Time.now.utc.to_i.to_s+'.rb' )
-    new_file = File.expand_path('~/Desktop/s_new_123456' + Time.now.utc.to_i.to_s + '.rb')
-    system("touch #{old_file}")
-    system("touch #{new_file}")
-    begin
+  it 'raises an error if new file name already exists and is non-identical.' do
+    @delete_files << (old_file = File.expand_path( '~/Desktop/s123456'+Time.now.utc.to_i.to_s+'.rb' ))
+    @delete_files << (new_file = File.expand_path('~/Desktop/s_new_123456' + Time.now.utc.to_i.to_s + '.rb'))
+    
+    system(%!echo "12354" > #{old_file}!)
+    system(%!echo "567"   > #{new_file}!)
+    
+    e = begin
       old_file.file.rename_to(new_file)
-    rescue ArgumentError => e
-      demand_regex_match( /existing file/, e.message )
+    rescue ArgumentError => err
+      err
     end
     
-    @delete_files = [old_file, new_file]
+    demand_equal( "File already exists: #{new_file.inspect}", e.message )
   end
 
   context 'Creating symbolic links with :create_alias'
 
   it 'uses relative paths' do
-    old_file = '~/Desktop/old_file.rb.rb.rb'
-    new_file = './new_file.rb.txt.rb'
+    @delete_files << (old_file = '~/Desktop/old_file.rb.rb.rb')
+    @delete_files << (new_file = './new_file.rb.txt.rb')
     
     system(%! echo "test 12345" > #{old_file}!)
     old_file.file.create_alias(new_file)
     demand_true( File.exists?(new_file.expand_path) )
     
-    @delete_files = [old_file, new_file]
   end
   
   it 'uses expanded paths' do
-    old_file = '~/Desktop/old_file.1.rb.rb.rb'
-    new_file = '~/Desktop/new_file.2.rb.txt.rb'.expand_path
+    @delete_files << (old_file = '~/Desktop/old_file.1.rb.rb.rb')
+    @delete_files << (new_file = '~/Desktop/new_file.2.rb.txt.rb'.expand_path)
     
     system(%! echo "test 135" > #{old_file}!)
     old_file.file.create_alias(new_file)
     demand_true( File.exists?(new_file.expand_path) )
-    
-    @delete_files = [old_file, new_file]
   end
   
   it 'raises ArgumentError if new alias is a non-identical file.' do
-    old_file = '~/Desktop/old_file.300.rb.sass'
-    existing_file = '~/Desktop/existing.file.300.rb.sass'
+    @delete_files << (old_file = '~/Desktop/old_file.300.rb.sass')
+    @delete_files << (existing_file = '~/Desktop/existing.file.300.rb.sass')
     
     system(%! echo "test 135" > #{old_file}!)
     system(%! echo "test 456" > #{existing_file}!)
     
-    begin
+    e = begin
       old_file.file.create_alias(existing_file)
-    rescue ArgumentError=>e
-      demand_equal(
-        "File already exists: #{existing_file.expand_path.inspect}", 
-        e.message
-      )
+    rescue ArgumentError=>err
+      err
     end
 
-    @delete_files = [old_file, existing_file]
+    demand_equal(
+      "File already exists: #{existing_file.expand_path.inspect}", 
+      e.message
+    )
   end
+  
+  context 'Acessing files and directories with :relative' 
+
+  it 'allows access to sibling files.' do
+    file       = __FILE__.file.directory.ruby_files.first
+    found_file = __FILE__.file.relative(File.basename(file))
+
+    demand_equal file, found_file 
+  end
+
+  it 'allows access to parent directories.' do
+    dir       = File.expand_path( File.join(__FILE__.file.directory.path, '../..') )
+    found_dir = __FILE__.file.relative('../..')
+    
+    demand_equal dir, found_dir
+  end
+
+  it 'allows access to files in parent directories.' do
+    orig_file  = File.expand_path( File.join( __FILE__.file.directory.path, '../../megauni.rb') )
+    found_file = __FILE__.file.relative('../../megauni.rb')
+    
+    demand_equal orig_file, found_file
+  end
+
 
 end

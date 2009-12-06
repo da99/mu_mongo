@@ -100,4 +100,24 @@ class App_String_Additions_Directory
     demand_equal ruby_files, @real_dir_path.directory.ruby_files_wo_rb
   end
 
+	it 'gives you access to files in the directory.' do
+		dir            = File.dirname(File.expand_path(__FILE__))
+		orig_file_name = Dir.entries(dir).detect { |name|
+			File.file?(File.join(dir, name))
+		}
+		orig_file      = File.expand_path(File.join(dir, orig_file_name))
+		
+		demand_equal orig_file, __FILE__.file.directory.relative( orig_file_name)
+	end
+
+	it 'gives you access to files in parent directories.' do
+		dir            = File.dirname(File.expand_path(__FILE__+'/'+'../../') )
+		orig_file_name = Dir.entries(dir).detect { |name|
+			File.file?(File.join(dir, name))
+		}
+		orig_file      = File.expand_path( File.join(dir, orig_file_name))
+		
+		demand_equal orig_file, __FILE__.file.directory.relative( '../../', orig_file_name)
+	end
+	
 end

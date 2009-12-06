@@ -12,12 +12,12 @@ class String
 
   def has_extension? s_or_sym
     ext = '.' + s_or_sym.to_s.must_not_be_empty.sub(/^\.+/, '')
-    !!self[/#{Regexp.escape(ext)}$/]
+    !!must_not_be_empty[/#{Regexp.escape(ext)}$/]
   end
 
   def replace_extension s_or_sym
     ext       = '.' + s_or_sym.to_s.must_not_be_empty.sub(/^\.+/, '')
-    base_name = File.basename(self)
+    base_name = File.basename(must_not_be_empty)
     pieces    = base_name.split('.')
     case pieces.size
       when 1
@@ -142,6 +142,10 @@ class String_as_Directory
     
   end	
 	
+  def relative *args
+    File.join(path, *args).expand_path
+  end
+  
 end # ======== String_as_Directory
 
 class String_as_File
@@ -170,6 +174,10 @@ class String_as_File
     orig_path
   end
 
+  def directory
+    File.join(path, '..').expand_path.directory
+  end
+
   def read
     File.read(orig_path)
   end
@@ -184,6 +192,13 @@ class String_as_File
 						 else
 							 File.expand_path(file_name_or_path)
 						 end
+    if File.exists?(f_path) 
+      if File.identical?(f_path, path)
+        return f_path
+      else
+        raise ArgumentError, "File already exists: #{f_path.inspect}"
+      end
+    end
     File.rename path, f_path
     f_path
   end
@@ -199,7 +214,7 @@ class String_as_File
   end
 
   def relative *args
-    demand_to_be_done
+    File.join(path, '..', *args).expand_path
   end
 
 end # ======== String_as_File
