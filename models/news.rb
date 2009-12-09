@@ -96,7 +96,7 @@ class News
   # ==== Validators =====================================================
 
   def title_validator 
-    clean(:title) {
+    new_data.title = clean(:title) {
       strip 
       must_not_be_empty
     }
@@ -109,22 +109,20 @@ class News
   end # ===
 
   def body_validator
-    clean :body do
+    new_data.body = clean :body do
       strip
       must_not_be_empty
     end
   end # ===
 
   def published_at_validator
-    clean :published_at do
+    new_data.published_at = clean :published_at do
       to_datetime_or_now
     end
   end
 
   def tags_validator
-    tags = raw_data[:tags].to_s.split
-    return nil if tags.empty?
-    clean_data[:tags] = tags
+    new_data.tags = clean_data[:tags] = raw_data[:tags].to_s.split.map(&:strip).reject(&:empty?)
   end
 
 end # === end News

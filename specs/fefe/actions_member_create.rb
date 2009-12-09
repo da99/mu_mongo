@@ -32,7 +32,7 @@ class Actions_Member_Create
     vals = { :password=>'myuni4vr', 
              :confirm_password=>'myuni4vr', 
              :add_life=>'friend', 
-             :add_life_username=>'admin-member'}
+             :add_life_username=>'admin-member-1'}
     post '/member/', vals, ssl_hash
     follow_ssl_redirect!
     demand_regex_match( /Username already taken\: admin\-member/, last_response.body )
