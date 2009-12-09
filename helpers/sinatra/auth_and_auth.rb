@@ -46,7 +46,7 @@ helpers do # ===============================
 
   def current_member=(mem)
       raise "CURRENT MEMBER ALREADY SET" if logged_in?
-      session[:member_id] = mem._id
+      session[:member_id] = mem.original_data._id
   end    
 
   def current_member

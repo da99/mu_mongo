@@ -16,7 +16,7 @@ class Actions_Member_Create
   it 'redirects and shows password errors' do 
     post '/member/', {:add_life=>'friend', :add_life_username=>'da01111'}, ssl_hash
     follow_ssl_redirect!
-    demand_regex_match /Password needs to be at least 5 characters in length/, last_response.body 
+    demand_regex_match /Password must be at least 5 characters in length/, last_response.body 
   end
 
   it 'redirects and shows username errors' do

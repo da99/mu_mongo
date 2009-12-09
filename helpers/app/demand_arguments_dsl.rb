@@ -149,17 +149,13 @@ module Demand_Arguments_Dsl
     def demand_string_not_empty raw_s
       demand_string raw_s
       s = raw_s.strip
-      if s.empty?
-        print_and_exit "String must not be empty."
-      end
-      s
+      return s unless s.empty?
+			print_and_exit "String must not be empty."
     end
     
     def demand_symbol sym
-      if !sym.is_a?(Symbol)
-        print_and_exit "A Symbol is required: #{sym.inspect}"
-      end
-      sym
+      return sym if sym.is_a?(Symbol)
+			print_and_exit "A Symbol is required: #{sym.inspect}"
     end
     alias_method :demand_sym, :demand_symbol
 
@@ -207,6 +203,12 @@ module Demand_Arguments_Dsl
 			print_and_exit "Missing element in Array: #{ele.inspect} --> #{arr.inspect}"
 		end
 		
+		def demand_array_not_include arr, ele
+			demand_array arr
+			return true if !arr.include?(ele)
+
+			print_and_exit "Element should not be in Array: #{ele.inspect} --> #{arr.inspect}"
+		end
 		
 		# ===================================================
 		# ======== Blocks

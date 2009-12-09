@@ -237,6 +237,30 @@ class App_Demand_Arguments
 			demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
 	end
 	
+	
+  it 'demands an element is *not* included in the Array.' do
+		@pony.do_this { demand_array_not_include [1,2,3], 4 }
+		e = begin
+			@pony.do_this { demand_array_not_include [1,2,3], 2 }
+		rescue DemandFailed=>err
+      err
+		end
+			demand_equal( 
+        "Element should not be in Array: #{2} --> #{[1,2,3].inspect}",
+        e.message
+      )
+	end
+	
+
+  it 'demands an Array when checking to see if element is *not* in the Array.' do
+		e = begin
+			@pony.do_this { demand_array_not_include({:a=>:b}, :a)}
+		rescue DemandFailed=>err
+      err
+		end
+			demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
+	end
+	
   context 'Bindings & Blocks'
 
 	it 'demands a binding' do 

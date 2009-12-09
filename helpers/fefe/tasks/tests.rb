@@ -88,7 +88,7 @@ class Tests
       })
 
       admin_mem = Member.by_username( 'admin-member' )
-      admin_mem.new_data[:security_level] = :ADMIN
+      admin_mem.new_data.security_level = :ADMIN
       admin_mem.save_update
       
     end

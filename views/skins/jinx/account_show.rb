@@ -7,7 +7,7 @@ div.content!  {
   div.usernames {
     h4 'Usernames'
     a.new('Add Another Username.', :href=>'#add_username')
-    the_app.current_member.lives.each { |life_cat, life|
+    the_app.current_member.data.lives.each { |life_cat, life|
       div.un(:id=>"life_#{life_cat}") {
         div.username life[:username]
         div.category life_cat

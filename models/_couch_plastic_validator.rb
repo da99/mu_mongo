@@ -5,9 +5,28 @@ module CouchPlastic
   #               Validation-related Methods
   # ========================================================= 
 
-  def validate
-    SetterDSL.new self
-    raise_if_invalid
+  def clean field, &blok
+    v = Cleaner_Dsl.new( human_field_name(field), raw_data[field] )
+    begin
+      v.execute blok
+      clean_data[field] = v.options.clean
+    rescue Cleaner_Dsl::Invalid
+      v.errors.each { |err|
+        errors << err
+      }
+      raise_if_invalid
+    end
+  end
+  
+  def clean_but_dont_set field, &blok
+
+    v = Cleaner_Dsl.new( human_field_name(field), raw_data[field] )
+    begin
+      v.execute blok
+    rescue Cleaner_Dsl::Invalid
+      raise_if_invalid
+    end
+
   end
 
   def errors
@@ -20,7 +39,7 @@ module CouchPlastic
       raise Invalid.new( self, "Document has validation errors." )
     end
 
-    if new_data.empty?
+    if new_data.as_hash.empty?
       raise NoNewValues, "No new data to save."
     end
 
@@ -128,7 +147,7 @@ module CouchPlastic
 
   class ValidatorDSL
 
-    class NoMoreErrors < StandardError; end
+    class No_More_Errors < StandardError; end
 
     READERS = [ 
       :doc, :col, :val, :original_val,
@@ -166,7 +185,7 @@ module CouchPlastic
       self.doc.clean_data[self.col] = self.val
 
       if allow_set?
-        doc.new_data[self.col] = self.val
+        doc.new_data.send(self.col.to_s + '=', self.val)
       end
 
       instance_eval &after_proc if after_proc?
@@ -178,7 +197,7 @@ module CouchPlastic
         meth_name = args.first
         return val if meth_name == col
         return original_val if meth_name.to_s == "original_#{col}"
-        return doc.new_data[meth_name] if doc.new_data.has_key?(meth_name)
+        return doc.new_data.send(meth_name) if doc.new_data.has_key?(meth_name)
         return doc.clean_data[meth_name] if doc.clean_data.has_key?(meth_name)
       end
       super(*args)
@@ -190,7 +209,7 @@ module CouchPlastic
 
     def _add_to_errors_ msg
       @doc.errors << msg
-      raise NoMoreErrors, "---" if only_one_more_error_allowed?
+      raise No_More_Errors, "---" if only_one_more_error_allowed?
       msg
     end
     
@@ -242,7 +261,7 @@ module CouchPlastic
                 instance_eval( &blok ) :
                 new_val
 
-      @doc.new_data[new_col] = result
+      @doc.new_data.as_hash[new_col] = result
     end
 
     # === MISCELLANEOUS METHODS ====
@@ -276,7 +295,7 @@ module CouchPlastic
       self.only_one_more_error_allowed = true
       begin
         instance_eval &blok
-      rescue NoMoreErrors
+      rescue No_More_Errors
       end
       self.only_one_more_error_allowed = false
       nil

@@ -68,20 +68,20 @@ class News
   end
 
   def created_at
-    Time.parse( original_data[:created_at] )
+    Time.parse( original_data.created_at )
   end
 
   def updated_at
-    return nil if !original_data[:updated_at] || original_data[:updated_at].empty?
-    Time.parse( original_data[:updated_at] )
+    return nil if !original_data.updated_at || original_data.updated_at.empty?
+    Time.parse( original_data.updated_at )
   end
 
   def published_at
-    Time.parse(original_data[:published_at])
+    Time.parse(original_data.published_at)
   end
 
   def tags
-    return [] if !original_data[:tags]
+    return [] if !original_data.tags
     super
   end
 

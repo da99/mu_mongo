@@ -11,6 +11,8 @@ require_these 'helpers/app', %w{
   pow
   symbolize_keys
   json
+	data_pouch
+  cleaner_dsl
 }
 
 # ===============================================

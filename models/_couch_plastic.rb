@@ -3,6 +3,8 @@ require_these 'models', [ :_couch_plastic_validator, :_couch_plastic_helper ]
 
 module CouchPlastic
   
+  include Demand_Arguments_Dsl
+
   # =========================================================
   #                  self.included
   # ========================================================= 
@@ -51,8 +53,8 @@ module CouchPlastic
   
   def initialize *args
     editor   = args.first
-    raw_data = args[1]
-    if !editor && !raw_data
+    raw_data.update( args[1] ) if args[1]
+    if !editor && !raw_data.empty?
       return super()
     end
 
@@ -66,14 +68,15 @@ module CouchPlastic
 
   def method_missing *args
     meth_name = args.first.to_sym
-    if args.size == 1 && original_data.has_key?(meth_name)
-      return original_data[meth_name]
+    if args.size == 1 && self.class.fields.include?(meth_name)
+      raise "Change API: #{args.inspect} --- LINE --- #{caller.first.inspect}" 
+      return original_data.send(meth_name)
     end
     super
   end
 
   def new?
-    original_data.empty?
+    original_data.as_hash.empty?
   end
  
   def human_field_name( col )
@@ -85,29 +88,49 @@ module CouchPlastic
   # ========================================================= 
 
   def has?(key)
-    original_data.has_key? key
+    original_data.as_hash.has_key? key
   end
 
   def original_data
-    @original_data ||= {}
+    @original_data ||= Data_Pouch.new(*(self.class.fields))
   end
+  alias_method :data, :original_data
 
   def new_data
-    @new_data ||= {}
+    @new_data ||= begin
+      dp = Data_Pouch.new(:the_doc, *(self.class.fields))
+      
+      dp.the_doc = self
+      
+      def dp.ask_for(*args)
+        args.each { |raw_fld|
+          fld = raw_fld.to_sym
+          if the_doc.raw_data.has_key?(fld)
+            demand fld
+          end
+        }
+      end
+      
+      def dp.demand(*args)
+        args.each { |raw_fld|
+          fld = raw_fld.to_sym
+          begin
+            the_doc.send("#{fld}_validator")
+          rescue the_doc.class::Invalid
+          end
+        }
+      end
+      
+      dp
+    end
   end
 
   def raw_data 
     @raw_data ||= {}
   end
 
-  def clean_data key = nil
-    if !key
-      @clean_data ||={}
-    else
-      if !clean_data.has_key?(key)
-        raise ArgumentError, "#{key.inspect} not found for :clean_data."
-      end
-    end
+  def clean_data 
+    @clean_data ||={}
   end
 
   def assoc_cache
@@ -124,10 +147,10 @@ module CouchPlastic
 
   attr_reader :manipulator
 
-  def set_manipulator mem, new_data
+  def set_manipulator mem, new_raw_data
     raise ArgumentError, "Method can only be used once." if @manipulator
     @manipulator = mem
-    @raw_data = new_data
+    @raw_data    = new_raw_data
   end
 
   # =========================================================
@@ -143,21 +166,22 @@ module CouchPlastic
     raise "This is not a new document." if !new?
 
     clear_assoc_cache
-    validate
+    setter_for_create
+    raise_if_invalid
 
-    data = new_data.clone
+    data = new_data.as_hash.clone
     data[:data_model] = self.class.name
-    data[:created_at] = Helper.utc_now_as_string if self.class.enabled?(:created_at)
+    data[:created_at] = Helper.utc_now_as_string if self.class.fields.include?(:created_at)
 
     new_id = data.delete(:_id) || CouchDoc.GET_uuid
 
     begin
       results = CouchDoc.PUT( new_id, data)
-      @original_data.update(new_data)
-      original_data[:_id]        = new_id
-      original_data[:_rev]       = results[:rev]
-      original_data[:created_at] = data[:created_at] if data.has_key?(:created_at)
-      original_data[:data_model] = data[:data_model]
+      @original_data.as_hash.update(new_data.as_hash)
+      original_data._id        = new_id
+      original_data._rev       = results[:rev]
+      original_data.created_at = data[:created_at] if data.has_key?(:created_at)
+      original_data.data_model = data[:data_model]
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -175,17 +199,18 @@ module CouchPlastic
   def save_update *opts
 
     clear_assoc_cache
-    validate
+    setter_for_update
+    raise_if_invalid
 
-    data = original_data.clone.update(new_data)
-    data[:_rev] = original_data[:_rev]
-    data[:updated_at] = Time.now.utc if self.class.enabled?(:updated_at)
+    data = original_data.as_hash.clone.update(new_data.as_hash)
+    data[:_rev] = original_data._rev
+    data[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
     
     begin
-      results = CouchDoc.PUT( original_data[:_id], data )
-      original_data[:_rev] = results[:rev]
-      original_data[:updated_at] = data[:updated_at] if data.has_key?(:updated_at)
-      original_data.update(new_data)
+      results = CouchDoc.PUT( original_data._id, data )
+      original_data._rev = results[:rev]
+      original_data.updated_at = data[:updated_at] if data.has_key?(:updated_at)
+      original_data.as_hash.update(new_data.as_hash)
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -200,8 +225,8 @@ module CouchPlastic
     
     clear_assoc_cache
 
-    results = CouchDoc.delete( original_data[:id], original_data[:_rev] )
-    original_data.clear # Mark document as new.
+    results = CouchDoc.delete( original_data.id, original_data._rev )
+    original_data.as_hash.clear # Mark document as new.
 
   end
 
@@ -211,34 +236,42 @@ module CouchPlastic
   
   module ClassMethods # =====================================
 
+    include Demand_Arguments_Dsl
+
     def new_from_db(data)
       d = new
-      d.original_data.update(data)
+      d.original_data.as_hash.update(data)
       d
     end
 
     # ===== DSL-icious ======================================
 
+    def fields 
+      @fields ||= [:_id, :data_model, :_rev]
+    end
+
+    def allow_fields *args
+      args.each { |fld|
+        fields << fld.to_sym
+      }
+      @fields.uniq!
+      @fields
+    end
+
     def enable_timestamps
-      enable :created_at, :updated_at
+      allow_fields :created_at, :updated_at
     end
 
-    def enable *opts
-      valid_opts = [:created_at, :updated_at]
-      invalid_opts = opts - valid_opts
-      if !invalid_opts.empty?
-        raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
-      end
-      @use_options ||= []
-      @use_options = @use_options + opts
-      @use_options
-    end
-
-    def enabled? opt
-      @use_options ||=[]
-      @use_options.include? opt.to_sym
-    end
-    
+    # def enable *opts
+    #   valid_opts = [:created_at, :updated_at]
+    #   invalid_opts = opts - valid_opts
+    #   if !invalid_opts.empty?
+    #     raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
+    #   end
+    #   @use_options ||= []
+    #   @use_options = @use_options + opts
+    #   @use_options
+    # end
 
 
     # ===== CRUD Methods ====================================
@@ -263,28 +296,28 @@ module CouchPlastic
       d
     end
 
-    def create editor, raw_data # CREATE
+    def create editor, new_raw_data # CREATE
       d = new
       if !d.creator?(editor)
         raise UnauthorizedCreator.new(d,editor)
       end
-      d.set_manipulator editor, raw_data
+      d.set_manipulator editor, new_raw_data
       d.save_create 
       d
     end
 
-    def update editor, raw_data # UPDATE
-      d = CouchDoc.GET_by_id(raw_data[:id])
+    def update editor, new_raw_data # UPDATE
+      d = CouchDoc.GET_by_id(new_raw_data[:id])
       if !d.updator?(editor)
         raise UnauthorizedUpdator.new(d,editor)
       end
-      d.set_manipulator editor, raw_data
+      d.set_manipulator editor, new_raw_data
       d.save_update 
       d
     end
 
-    def delete! editor, raw_data # DELETE
-      d = CouchDoc.GET_by_id(raw_data[:id])
+    def delete! editor, new_raw_data # DELETE
+      d = CouchDoc.GET_by_id(new_raw_data[:id])
       if !d.deletor?(editor)
         raise UnauthorizedDeletor.new(d, editor)
       end
