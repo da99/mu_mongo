@@ -92,8 +92,8 @@ class Member
 
   def setter_for_create
 		new_data._id = CouchDoc.GET_uuid
-    new_data.ask_for :avatar_link, :email
-    new_data.demand  :password, :add_life
+    ask_for :avatar_link, :email
+    demand  :password, :add_life
   end
     
   
@@ -251,11 +251,14 @@ class Member
     demand_array_includes Member::LIVES, add_life
       
     if !new?
-      demand_array_not_include lives.keys, add_life
+      demand_array_not_include(
+        data.lives.keys, 
+        add_life
+      )
     end
 
-    new_data.lives ||= {}
-    new_data.lives[add_life]={}
+    new_data.lives = (original_data.lives || {})
+    new_data.lives[add_life] ||={}
     
     add_life_username_validator
 

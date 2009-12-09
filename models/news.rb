@@ -5,6 +5,13 @@ class News
 
   include CouchPlastic
 
+  enable_timestamps
+
+  allow_fields :title, 
+               :teaser,
+               :body,
+               :tags
+
   # ==== Getters =====================================================    
   
   def self.tags
@@ -32,14 +39,14 @@ class News
 
   enable_timestamps
 
-  setter( :create ) {
+  def setter_for_create
     demand :title, :body, :published_at 
     ask_for :teaser, :tags 
-  }
+  end
 
-  setter( :update ) {
+  def setter_for_update
     ask_for :title, :body, :teaser, :published_at, :tags
-  }
+  end
 
   # ==== Authorizations =====================================================
  
@@ -87,30 +94,36 @@ class News
 
   # ==== Validators =====================================================
 
-  validator :title do 
-    strip 
-    must_not_be_empty
+  def title_validator 
+    clean(:title) {
+      strip 
+      must_not_be_empty
+    }
   end # === 
 
-  validator :teaser do 
-    strip
-    dont_set_if {
-      teaser.empty?
-    }
+  def teaser_validator
+    teaser = raw_data[:teaser].to_s.strip
+    return nil if teaser.empty?
+    new_data.teaser = teaser
   end # ===
 
-  validator :body do
-    strip
-    must_not_be_empty
+  def body_validator
+    clean :body do
+      strip
+      must_not_be_empty
+    end
   end # ===
 
-  validator :published_at do
-    to_datetime_or_now
+  def published_at_validator
+    clean :published_at do
+      to_datetime_or_now
+    end
   end
 
-  validator :tags do
-    split
-    dont_set_if { tags.empty? }
+  def tags_validator
+    tags = raw_data[:tags].to_s.split
+    return nil if tags.empty?
+    clean_data[:tags] = tags
   end
 
 end # === end News

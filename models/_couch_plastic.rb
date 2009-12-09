@@ -52,17 +52,20 @@ module CouchPlastic
   # ========================================================= 
   
   def initialize *args
-    editor   = args.first
-    raw_data.update( args[1] ) if args[1]
-    if !editor && !raw_data.empty?
+    
+    if args.empty?
       return super()
     end
+    
+    super()
+    
+    editor   = args.first
+    raw_data.update( args[1] ) if args[1]
 
     if !creator?(editor)
       raise UnauthorizedNew.new(self,editor)
     end
     set_manipulator editor, raw_data
-    super()
 
   end
 
@@ -98,33 +101,32 @@ module CouchPlastic
 
   def new_data
     @new_data ||= begin
-      dp = Data_Pouch.new(:the_doc, *(self.class.fields))
+      dp = Data_Pouch.new(*(self.class.fields))
       
-      dp.the_doc = self
-      
-      def dp.ask_for(*args)
-        args.each { |raw_fld|
-          fld = raw_fld.to_sym
-          if the_doc.raw_data.has_key?(fld)
-            demand fld
-          end
-        }
-      end
-      
-      def dp.demand(*args)
-        args.each { |raw_fld|
-          fld = raw_fld.to_sym
-          begin
-            the_doc.send("#{fld}_validator")
-          rescue the_doc.class::Invalid
-          end
-        }
-      end
       
       dp
     end
   end
 
+  def ask_for(*args)
+    args.each { |raw_fld|
+      fld = raw_fld.to_sym
+      if raw_data.has_key?(fld)
+        demand fld
+      end
+    }
+  end
+
+  def demand(*args)
+    args.each { |raw_fld|
+      fld = raw_fld.to_sym
+      begin
+        send("#{fld}_validator")
+      rescue Invalid
+      end
+    }
+  end
+      
   def raw_data 
     @raw_data ||= {}
   end

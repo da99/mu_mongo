@@ -91,7 +91,7 @@ class FeFe_The_French_Maid
               @orders[current_order][current_option] += ' ' + arg
               @orders[current_order][current_option] = @orders[current_order][current_option].strip
             else
-              raise ArgumentError, "Option has no key: #{arg.inspect}"
+              raise ArgumentError, "Option has no key: #{arg.inspect} --- all arguments: #{args.inspect}"
             end
           end
         else

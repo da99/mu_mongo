@@ -63,33 +63,39 @@ class Tests
 
       # === Create News ==========================
       
-      n = News.new
-      n.raw_data.update({:title=>'Longevinex', 
+      CouchDoc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
         :teaser=>'teaser', 
         :body=>'Test body.', 
         :tags=>['surfer_hearts', 'hearts', 'pets']
       })
-      n.save_create
 
       # === Create Members ==========================
       
-      Member.create( nil, {
-        :password          =>'regular-password-1',
-        :confirm_password  =>'regular-password-1',
-        :add_life_username =>'regular-member-1',
-        :add_life          =>Member::LIVES.first
-      })
+      CouchDoc.PUT("member-regular-member-1",
+        { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
+          :salt            => "yJ2OuJpdIy",
+          :data_model      => "Member",
+          :created_at      => "2009-12-09 08:31:36",
+          :lives           => { "friend" => {'username' => "regular-member"} }
+        }
+      )
       
-      Member.create( nil, {
-        :password          =>'admin-password-1',
-        :confirm_password  =>'admin-password-1',
-        :add_life_username =>'admin-member',
-        :add_life          =>Member::LIVES.first
-      })
+      CouchDoc.PUT("username-regular-member",  {:member_id =>"member-regular-member-1"} )
 
-      admin_mem = Member.by_username( 'admin-member' )
-      admin_mem.new_data.security_level = :ADMIN
-      admin_mem.save_update
+      CouchDoc.PUT("member-admin-member-1",
+        { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
+          :salt            => "4LKK5YOOLX",
+          :data_model      => "Member",
+          :created_at      => "2009-12-09 08:31:36",
+          :lives           => { "friend" => {'username' => "admin-member"} }
+        }
+      )
+
+      CouchDoc.PUT("username-admin-member", {:member_id =>	"member-admin-member-1"}       )
+      
+      # admin_mem = Member.by_username( 'admin-member' )
+      # admin_mem.new_data.security_level = :ADMIN
+      # admin_mem.save_update
       
     end
   end # ======== :db_reset!
