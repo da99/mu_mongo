@@ -7,11 +7,11 @@ xml.rss :version => "2.0" do
     
     @posts.each { |post|
       xml.item {
-        xml.title post.title
-        xml.link File.join( options.site_url, 'news', "#{post._id}/")
-        xml.description post.body
-        xml.pubDate Time.parse((post.published_at || post.created_at).to_s).rfc822()
-        xml.guid File.join( options.site_url, 'news', "#{post._id}/")
+        xml.title post.data.title
+        xml.link File.join( options.site_url, 'news', "#{post.data._id}/")
+        xml.description post.data.body
+        xml.pubDate Time.parse((post.data.published_at || post.data.created_at).to_s).rfc822()
+        xml.guid File.join( options.site_url, 'news', "#{post.data._id}/")
       }
     }
   end

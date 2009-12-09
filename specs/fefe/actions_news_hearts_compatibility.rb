@@ -54,9 +54,9 @@ class Actions_News_Hearts_Compatibility
 
   it 'redirects a "/heart_link/10/" to "/news/10/".' do
     @news = News.by_published_at(:limit=>1)
-    get "/heart_link/#{@news._id}/"
+    get "/heart_link/#{@news.data._id}/"
     follow_redirect!
-    demand_equal "/news/#{@news._id}/", last_request.fullpath 
+    demand_equal "/news/#{@news.data._id}/", last_request.fullpath 
     demand_equal 200, last_response.status 
   end
 
