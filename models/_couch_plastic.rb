@@ -264,17 +264,6 @@ module CouchPlastic
       allow_fields :created_at, :updated_at
     end
 
-    # def enable *opts
-    #   valid_opts = [:created_at, :updated_at]
-    #   invalid_opts = opts - valid_opts
-    #   if !invalid_opts.empty?
-    #     raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
-    #   end
-    #   @use_options ||= []
-    #   @use_options = @use_options + opts
-    #   @use_options
-    # end
-
 
     # ===== CRUD Methods ====================================
 
@@ -337,6 +326,17 @@ end # === module CouchPlastic ================================================
 
 
 __END__
+
+    # def enable *opts
+    #   valid_opts = [:created_at, :updated_at]
+    #   invalid_opts = opts - valid_opts
+    #   if !invalid_opts.empty?
+    #     raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
+    #   end
+    #   @use_options ||= []
+    #   @use_options = @use_options + opts
+    #   @use_options
+    # end
 
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )

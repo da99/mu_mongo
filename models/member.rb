@@ -6,20 +6,18 @@ class Member
 
   enable_timestamps
   
-  allow_fields :created_at, 
-             :updated_at, 
-             :lives, 
-             :data_model, 
-             :hashed_password, 
-             :salt,
-             :security_level
+  allow_fields :lives, 
+               :data_model, 
+               :hashed_password, 
+               :salt,
+               :security_level
 
   # =========================================================
   #                     CONSTANTS
   # =========================================================  
   
-  IncorrectPassword      = Class.new( StandardError )
-  InvalidPermissionLevel = Class.new( StandardError )
+  Incorrect_Password      = Class.new( StandardError )
+  Invalid_Security_Level = Class.new( StandardError )
 
   SECURITY_LEVELS        = [ :NO_ACCESS, :STRANGER, :MEMBER, :EDITOR, :ADMIN ]
   SECURITY_LEVELS.each do |k|
@@ -50,12 +48,7 @@ class Member
   
   def self.new_from_db *args
     doc = super(*args)
-
-    sec_level = doc.original_data.security_level
-    if sec_level
-      doc.original_data.security_level = sec_level.to_sym
-    end
-
+    doc.original_data.security_level = doc.original_data.security_level.to_sym
     doc
   end
 
@@ -74,7 +67,7 @@ class Member
   #   raw_vals - Hash with at least 2 keys: :username, :password
   # 
   # Raises: 
-  #   Member::IncorrectPassword
+  #   Member::Incorrect_Password
   #
   def self.authenticate( raw_vals )
       username = demand_string_not_empty raw_vals[:username]
@@ -85,13 +78,14 @@ class Member
       
       return mem if correct_password
 
-      raise IncorrectPassword, "Password is invalid for: #{username.inspect}"
+      raise Incorrect_Password, "Password is invalid for: #{username.inspect}"
   end 
 
   # ==== CRUD/CRUD-related =====================================================
 
   def setter_for_create
-		new_data._id = CouchDoc.GET_uuid
+		new_data._id            = CouchDoc.GET_uuid
+		new_data.security_level = :MEMBER
     ask_for :avatar_link, :email
     demand  :password, :add_life
   end
@@ -99,14 +93,14 @@ class Member
   
   def setter_for_update 
 
-    new_data.ask_for :old_life, :add_life 
+    ask_for :old_life, :add_life 
 
     if manipulator == self
-      new_data.ask_for :password  
+      ask_for :password  
     end
 
     if manipulator.has_power_of? ADMIN
-      new_data.ask_for :security_level
+      ask_for :security_level
     end
 
   end
@@ -148,10 +142,10 @@ class Member
     assoc_cache[:usernames] ||= original_data.lives.values.map { |l| l[:username]}
   end
 
-  def security_level
-    return :MEMBER if !original_data.as_hash.has_key?(:security_level) && !new?
-    original_data.as_hash[:security_level]
-  end
+  # def security_level
+  #   return :MEMBER if !original_data.as_hash.has_key?(:security_level) && !new?
+  #   original_data.as_hash[:security_level]
+  # end
 
   def any_of_these_powers?(*raw_levels)
     raw_levels.flatten.detect { |level| 
@@ -166,14 +160,14 @@ class Member
     target_level = raw_level.is_a?(String) ? raw_level.to_sym : raw_level
 
     if !SECURITY_LEVELS.include?(target_level)
-      raise InvalidPermissionLevel, raw_level.inspect
+      raise Invalid_Security_Level, raw_level.inspect
     end
     
     return false if target_level == NO_ACCESS
     return true if target_level == STRANGER
     return false if new? 
 
-    member_index = SECURITY_LEVELS.index(self.security_level)
+    member_index = SECURITY_LEVELS.index(self.data.security_level)
     target_index = SECURITY_LEVELS.index(target_level)
     return member_index >= target_index
 
@@ -219,7 +213,7 @@ class Member
   def security_level_validator 
     new_data.security_level = clean(:security_level) {
       if_not_in(SECURITY_LEVELS) { 
-        raise Member::InvalidPermissionLevel, security_level.inspect
+        raise Member::Invalid_Security_Level, options.clean.inspect
       }
     }
   end # === def set_security_level

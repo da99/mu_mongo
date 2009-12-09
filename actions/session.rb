@@ -26,7 +26,7 @@ post( "/log-in/"  ) do
       self.current_member = mem
       return_page = session.delete :return_page
       redirect( return_page || '/my-work/' )
-    rescue Member::NoRecordFound, Member::IncorrectPassword, LogInAttempt::TooManyFailedAttempts
+    rescue Member::NoRecordFound, Member::Incorrect_Password, LogInAttempt::TooManyFailedAttempts
       begin
         LogInAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
         flash.error_msg = "Incorrect info. Try again."

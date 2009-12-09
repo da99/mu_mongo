@@ -69,33 +69,33 @@ class Tests
         :tags=>['surfer_hearts', 'hearts', 'pets']
       })
 
-      # === Create Members ==========================
+      # === Create Regular Member ==========================
       
       CouchDoc.PUT("member-regular-member-1",
         { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
           :salt            => "yJ2OuJpdIy",
           :data_model      => "Member",
           :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "regular-member"} }
+          :lives           => { "friend" => {'username' => "regular-member"} },
+          :security_level  => :MEMBER
         }
       )
       
       CouchDoc.PUT("username-regular-member",  {:member_id =>"member-regular-member-1"} )
+      
+      # === Create Admin Member ==========================
 
       CouchDoc.PUT("member-admin-member-1",
         { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
           :salt            => "4LKK5YOOLX",
           :data_model      => "Member",
           :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "admin-member"} }
+          :lives           => { "friend" => {'username' => "admin-member"} },
+          :security_level  => :ADMIN
         }
       )
 
       CouchDoc.PUT("username-admin-member", {:member_id =>	"member-admin-member-1"}       )
-      
-      # admin_mem = Member.by_username( 'admin-member' )
-      # admin_mem.new_data.security_level = :ADMIN
-      # admin_mem.save_update
       
     end
   end # ======== :db_reset!

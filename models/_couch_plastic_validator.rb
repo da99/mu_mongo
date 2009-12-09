@@ -47,38 +47,48 @@ module CouchPlastic
 
   end 
 
+
+end # ==== module CouchPlastic
+
+__END__
+
+
   # =========================================================
   #                  Module: ClassMethods
   # ========================================================= 
 
-  module ClassMethods
-   
-    def setter_actions
-      @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
-    end
+  # =========================================================
+  #                  Module: ClassMethods
+  # ========================================================= 
 
-    def setter action, &blok
-      if setter_actions[action]
-        raise ArgumentError, "Already used: #{action.inspect}" 
-      end
-      setter_actions[action] = blok
-    end
 
-    def validator_actions
-      @validator_actions ||= {}
-    end
+  # module ClassMethods
+  #  
+    # def setter_actions
+    #   @crud_tailors ||= {:create=>nil,:update=>nil, :read=>nil, :delete=>nil}
+    # end
 
-    def validator *cols, &blok
-      col = cols.first
-      if validator_actions[col]
-        raise ArgumentError, "Validator already exists for: #{col.inspect}"
-      end
-      validator_actions[col] = [cols, blok]
-    end 
+    # def setter action, &blok
+    #   if setter_actions[action]
+    #     raise ArgumentError, "Already used: #{action.inspect}" 
+    #   end
+    #   setter_actions[action] = blok
+    # end
 
-  end # === module ClassMethods
+    # def validator_actions
+    #   @validator_actions ||= {}
+    # end
 
- 
+    # def validator *cols, &blok
+    #   col = cols.first
+    #   if validator_actions[col]
+    #     raise ArgumentError, "Validator already exists for: #{col.inspect}"
+    #   end
+    #   validator_actions[col] = [cols, blok]
+    # end 
+# 
+#   end # === module ClassMethods
+
   # =========================================================
   #                  Class: SetterDSL
   # =========================================================  
@@ -428,4 +438,3 @@ module CouchPlastic
 
   end # ==== class Validator
 
-end # ==== module CouchPlastic
