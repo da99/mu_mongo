@@ -34,7 +34,7 @@ div.content! {
         span.published_at post.published_at.strftime('%b  %d, %Y')
         a.permalink('PermaLink', :href=>"/news/#{post._id}/")
        }
-       h4 post.title
+       h4 post.data.title
        div.body { 
          the_app.news_to_html post, :body
        }

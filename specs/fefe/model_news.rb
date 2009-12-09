@@ -11,10 +11,10 @@ class Model_News
     now = Time.now.utc + 10000
     post = News.new
     post.created_at = yesterday
-    demand_match post.last_modified_at, yesterday
+    demand_equal post.last_modified_at, yesterday
 
     post.updated_at = now
-    demand_match post.last_modified_at, now
+    demand_equal post.last_modified_at, now
   end
 
 end # === 'News instance'

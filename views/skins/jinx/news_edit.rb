@@ -1,4 +1,4 @@
-save_to('title') { 'Editing: ' + the_app.doc.title }
+save_to('title') { 'Editing: ' + the_app.doc.data.title }
 
 partial('__nav_bar')
 
@@ -14,7 +14,7 @@ div.content!  {
 
     fieldset {
       label 'Title'
-      input.text( :value=>the_app.doc.title, :id=>"news_title", :name=>"title", :type=>"text" )
+      input.text( :value=>the_app.doc.data.title, :id=>"news_title", :name=>"title", :type=>"text" )
     }
 
     fieldset {

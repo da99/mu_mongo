@@ -10,7 +10,8 @@ class News
   allow_fields :title, 
                :teaser,
                :body,
-               :tags
+               :tags,
+               :published_at
 
   # ==== Getters =====================================================    
   
@@ -84,7 +85,7 @@ class News
   end
 
   def published_at
-    Time.parse(original_data.published_at)
+    Time.parse( data.published_at || data.created_at )
   end
 
   def tags

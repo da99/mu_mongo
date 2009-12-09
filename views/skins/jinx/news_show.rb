@@ -1,4 +1,4 @@
-save_to('title') { the_app.doc.title }
+save_to('title') { the_app.doc.data.title }
 
 
 
@@ -16,7 +16,7 @@ div.content! {
    div.info {
     span.published_at the_app.doc.published_at.strftime('%b  %d, %Y')
    }
-   h4 the_app.doc.title
+   h4 the_app.doc.data.title
    div.body { 
      the_app.news_to_html the_app.doc, :body
    }

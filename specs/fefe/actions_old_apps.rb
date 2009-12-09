@@ -28,34 +28,34 @@ class Actions_Old_Apps
     domain = 'www.busynoise.com'
     get '/', {}, { 'HTTP_HOST' =>domain  }
     follow_redirect!
-    demand_match '/egg', last_request.fullpath
+    demand_equal '/egg', last_request.fullpath
   end
 
   it 'shows a moving message for www.busynoise.com/egg/' do
     domain =  'www.busynoise.com/'
     get '/egg/', {}, { 'HTTP_HOST'=> domain }
-    demand_match domain, last_request.host
-    demand_match '/egg/', last_request.fullpath
+    demand_equal domain, last_request.host
+    demand_equal '/egg/', last_request.fullpath
     demand_regex_match /This website has moved/, last_response.body
   end
 
   it 'shows a moving message for www.busynoise.com/egg' do 
     domain =  'www.busynoise.com'
     get '/egg', {}, { 'HTTP_HOST'=> domain }
-    demand_match last_request.host, domain 
-    demand_match last_request.fullpath, '/egg'
+    demand_equal last_request.host, domain 
+    demand_equal last_request.fullpath, '/egg'
     demand_regex_match /This website has moved/, last_response.body 
   end
 
   it 'renders /bigstopwatch' do
     get '/bigstopwatch'
     follow_redirect!
-    demand_match 200, last_response.status
+    demand_equal 200, last_response.status
   end
 
   it 'renders /bigstopwatch/' do
     get '/bigstopwatch/'
-    demand_match 200, last_response.status
+    demand_equal 200, last_response.status
   end
 
 end

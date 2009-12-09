@@ -66,7 +66,10 @@ class Tests
       CouchDoc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
         :teaser=>'teaser', 
         :body=>'Test body.', 
-        :tags=>['surfer_hearts', 'hearts', 'pets']
+        :tags=>['surfer_hearts', 'hearts', 'pets'],
+        :created_at=>'2009-10-11 02:02:22',
+        :published_at=>'2009-12-09 01:01:22',
+        :data_model => 'News'
       })
 
       # === Create Regular Member ==========================

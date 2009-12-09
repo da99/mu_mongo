@@ -65,7 +65,7 @@ helpers {
         begin
           doc               model.create current_member, clean_room
           flash.success_msg = choose( o.success_msg, 'Successfully saved data.')
-          redirect          choose(o.redirect_success, "/#{model_underscore}/#{doc._id}/" )
+          redirect          choose(o.redirect_success, "/#{model_underscore}/#{doc.data._id}/" )
 
         rescue model::UnauthorizedCreator
           halt(404, "Page Not Found.")
@@ -86,7 +86,7 @@ helpers {
 
         rescue model::Invalid
           flash.error_msg = choose( o.error_msg, to_html_list($!.doc.errors) )
-          redirect        choose( o.redirect_error, "/#{model_underscore}/#{$!.doc._id}/edit/" )
+          redirect        choose( o.redirect_error, "/#{model_underscore}/#{$!.doc.data._id}/edit/" )
         end
 
       when :delete

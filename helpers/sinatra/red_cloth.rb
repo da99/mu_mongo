@@ -49,9 +49,9 @@ helpers {
 
   def news_to_html post, field
     if post.last_modified_at < Time.utc(2009, 9, 17)
-      post.send field
+      post.data.send field
     else
-      textile_to_html( post.send(field) )
+      textile_to_html( post.data.send(field) )
     end
   end
 } # === helpers

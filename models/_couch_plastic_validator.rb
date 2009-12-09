@@ -9,6 +9,9 @@ module CouchPlastic
     v = Cleaner_Dsl.new( human_field_name(field), raw_data[field] )
     begin
       v.execute blok
+      if self.class.fields.include?(field)
+        new_data.send(field.to_s + '=',  v.options.clean )
+      end
       clean_data[field] = v.options.clean
     rescue Cleaner_Dsl::Invalid
       v.errors.each { |err|
@@ -23,6 +26,7 @@ module CouchPlastic
     v = Cleaner_Dsl.new( human_field_name(field), raw_data[field] )
     begin
       v.execute blok
+      v.options.clean
     rescue Cleaner_Dsl::Invalid
       raise_if_invalid
     end

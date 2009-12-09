@@ -30,16 +30,16 @@ CRUD_for(News) {
   edit 
 
   create do 
-    success_msg { "Save: #{doc.title}" }
+    success_msg { "Save: #{doc.data.title}" }
   end
 
   update do 
-    success_msg { "Update: #{doc.title}" }
+    success_msg { "Update: #{doc.data.title}" }
   end
 
   delete do
 
-    success_msg { "Delete: #{doc.title}" }
+    success_msg { "Delete: #{doc.data.title}" }
 
     redirect '/my-work/'
 
@@ -175,7 +175,7 @@ __END__
 #   require_log_in!
 #   begin
 #     n = New.create current_member, clean_room
-#     flash.success_msg = "Saved: #{n.title}"
+#     flash.success_msg = "Saved: #{n.data.title}"
 #     redirect "/news/#{n._id}/"
 #   rescue News::UnauthorizedCreator
 #     pass
@@ -213,7 +213,7 @@ __END__
 #   require_log_in!
 #   begin
 #     doc = News.update(current_member, clean_room)
-#     flash.success_msg = "Updated: #{doc.title}"
+#     flash.success_msg = "Updated: #{doc.data.title}"
 #     redirect request.path_info
 #   rescue News::NoRecordFound, News::UnauthorizedUpdator
 #     pass
@@ -227,7 +227,7 @@ __END__
 #   require_log_in!
 #   begin
 #     doc = News.delete!( current_member, clean_room[:id])
-#     flash.success_msg = "Deleted: #{doc.title}"
+#     flash.success_msg = "Deleted: #{doc.data.title}"
 #   rescue News::NoRecordFound, News::UnauthorizedDeletor
 #     flash.success_msg = "Deleted."
 #   end

@@ -14,7 +14,7 @@ class Helper_Textile_To_Html
     end
 
     get '/ttt1'
-    demand_match last_response.body.strip, '<div class="red">Hello</div>'
+    demand_equal last_response.body.strip, '<div class="red">Hello</div>'
   end
 
   context 'Helper: textile_to_html with "img" tag' 
@@ -29,7 +29,7 @@ class Helper_Textile_To_Html
     get '/ttt2'
     body_parts = last_response.body.split.sort
     target_parts = '<img src="/images/sinatra.img" alt="*" title="*" class="red" />'.split.sort
-    demand_match body_parts, target_parts
+    demand_equal body_parts, target_parts
   end
 
   it 'ignores non-numeric characters in w/h dimensions' do
@@ -43,7 +43,7 @@ class Helper_Textile_To_Html
     get '/ttt3'
     body_parts =last_response.body.split.sort
     target_parts = '<img src="/images/ime.png" alt="*" title="*" width="34" height="65" />'.split.sort
-    demand_match body_parts, target_parts
+    demand_equal body_parts, target_parts
   end 
 
   it 'escapes html in alt text.' do
@@ -59,7 +59,7 @@ class Helper_Textile_To_Html
     body_parts =last_response.body.split.sort
     alt_text = "Something &lt;bold&gt;brave&lt;/bold&gt;."
     target_parts = %~<img src="/images/u.png" alt="#{alt_text}" title="#{alt_text}" width="30" height="30" />~.split.sort
-    demand_match body_parts, target_parts
+    demand_equal body_parts, target_parts
   end
 
 

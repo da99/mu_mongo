@@ -27,14 +27,14 @@ class Actions_News_Create
   it 'does not allow members' do
     log_in_member
     post *@path_args
-    demand_match 404, last_response.status
+    demand_equal 404, last_response.status
   end
 
   it 'allows admins' do
     log_in_admin
     post *@path_args
     follow_ssl_redirect!
-    demand_match 200, last_response
+    demand_equal 200, last_response.status
     demand_regex_match /^\/news\/[A-Za-z0-9]{6,32}\// , last_request.fullpath
     demand_regex_match  /#{Regexp.escape(@new_values[:title])}/, last_response.body 
     demand_regex_match /#{Regexp.escape(@new_values[:body])}/, last_response.body

@@ -22,13 +22,13 @@ context 'Log-in for Member'
     get '/log-in/'
     demand_no_match "https", last_request.env["rack.url_scheme"]
     follow_redirect!
-    demand_match "https", last_request.env["rack.url_scheme"]
+    demand_equal "https", last_request.env["rack.url_scheme"]
     demand_regex_match /\<button/, last_response.body
   end
 
   it 'renders ok on SSL' do
     get '/log-in/', {}, ssl_hash
-    demand_match 200, last_response.status
+    demand_equal 200, last_response.status
     demand_regex_match /Log-in/, last_response.body 
   end
 
@@ -41,8 +41,8 @@ context 'Log-in for Member'
   it 'allows Member access if creditials are correct.' do
     post '/log-in/', {:username=>@username, :password=>@password}, ssl_hash
     follow_ssl_redirect!
-    demand_match '/account/', last_request.path_info
-    demand_match 200, last_response.status
+    demand_equal '/account/', last_request.path_info
+    demand_equal 200, last_response.status
   end
 
   it 'won\'t accept any more log-in attempts (even with right creditials) ' +
@@ -52,7 +52,7 @@ context 'Log-in for Member'
     end
     post '/log-in/', {:username=>@username, :password=>@password}, ssl_hash
     follow_ssl_redirect!
-    demand_match '/log-in/', last_request.path_info
+    demand_equal '/log-in/', last_request.path_info
     LogInAttempt.delete
   end
 

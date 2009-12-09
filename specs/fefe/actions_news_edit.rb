@@ -21,13 +21,13 @@ class Actions_News_Edit
   it 'is not viewable by members' do
     log_in_member
     get @edit_path, {}, ssl_hash
-    demand_match 404, last_response.status
+    demand_equal 404, last_response.status
   end
   
   it 'is viewable by admins' do
     log_in_admin
     get @edit_path, {}, ssl_hash
-    demand_match 200, last_response
+    demand_equal 200, last_response
   end
   
 end # === 

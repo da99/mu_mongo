@@ -19,8 +19,8 @@ context 'Member creation'
     end
     
     u = Username.reverse_order(:id).first
-    demand_match u[:owner_id], m[:id]
-    demand_match u[:username], u_name
+    demand_equal u[:owner_id], m[:id]
+    demand_equal u[:username], u_name
   }
  
   it( 'does not create itself + username if username is already taken.' ) {
@@ -35,7 +35,7 @@ context 'Member creation'
     rescue Sequel::ValidationFailed
       demand_regex_match /^Username is already taken/i, $!.message.to_s
     end
-    demand_match Username.order(:id).count, u_count
-    demand_match Member.order(:id).count, m_count
+    demand_equal Username.order(:id).count, u_count
+    demand_equal Member.order(:id).count, m_count
   }
 end # ===
