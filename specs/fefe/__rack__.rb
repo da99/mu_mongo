@@ -35,7 +35,7 @@ module FeFe_Test
   end
 
   def log_in_admin
-    mem = Member.by_username('admin-member')
+    mem = Member.by_username('admin-member-1')
     demand_true mem.has_power_of?( :ADMIN )
     post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password-1'}, ssl_hash
     follow_ssl_redirect!

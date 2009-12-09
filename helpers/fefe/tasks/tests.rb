@@ -76,12 +76,12 @@ class Tests
           :salt            => "yJ2OuJpdIy",
           :data_model      => "Member",
           :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "regular-member"} },
+          :lives           => { "friend" => {'username' => "regular-member-1"} },
           :security_level  => :MEMBER
         }
       )
       
-      CouchDoc.PUT("username-regular-member",  {:member_id =>"member-regular-member-1"} )
+      CouchDoc.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
       
       # === Create Admin Member ==========================
 
@@ -90,12 +90,12 @@ class Tests
           :salt            => "4LKK5YOOLX",
           :data_model      => "Member",
           :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "admin-member"} },
+          :lives           => { "friend" => {'username' => "admin-member-1"} },
           :security_level  => :ADMIN
         }
       )
 
-      CouchDoc.PUT("username-admin-member", {:member_id =>	"member-admin-member-1"}       )
+      CouchDoc.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
       
     end
   end # ======== :db_reset!
