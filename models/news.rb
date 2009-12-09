@@ -41,6 +41,7 @@ class News
   enable_timestamps
 
   def setter_for_create
+    new_data.tags = []
     demand :title, :body, :published_at 
     ask_for :teaser, :tags 
   end
@@ -88,10 +89,6 @@ class News
     Time.parse( data.published_at || data.created_at )
   end
 
-  def tags
-    return [] if !original_data.tags
-    super
-  end
 
   # ==== Validators =====================================================
 

@@ -6,11 +6,11 @@ div.content!  {
 
   partial '__flash_msg' if the_app.flash_msg?
 
-  a("View", :href=>"/news/#{the_app.doc._id}/")
+  a("View", :href=>"/news/#{the_app.doc.data._id}/")
   
   h3 @title # "Editing: #{app_vars[:news][:title]}" 
 
-  form.form_news_edit!(:action=>"/news/#{the_app.doc._id}/", :method=>'post') {
+  form.form_news_edit!(:action=>"/news/#{the_app.doc.data._id}/", :method=>'post') {
 
     fieldset {
       label 'Title'
@@ -19,19 +19,19 @@ div.content!  {
 
     fieldset {
       label 'Teaser'
-      textarea(the_app.doc.teaser, :id=>"news_teaser", :name=>"teaser")
+      textarea(the_app.doc.data.teaser, :id=>"news_teaser", :name=>"teaser")
     }
 
     fieldset {
       label 'body'
-      textarea(the_app.doc.body, :id=>"news_body", :name=>"body")
+      textarea(the_app.doc.data.body, :id=>"news_body", :name=>"body")
     }
 
     fieldset {
       label 'Tags'
       div.checkboxes {
         the_app.news_tags.each { |t|
-          if the_app.doc.tags.include?(t)
+          if the_app.doc.data.tags.include?(t)
             div.box.selected {
               checkbox true, :name=>"tags[]", :value=>t
               span t
