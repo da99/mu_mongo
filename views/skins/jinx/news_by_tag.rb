@@ -32,7 +32,7 @@ div.content! {
        
        div.info {
         span.published_at post.published_at.strftime('%b  %d, %Y')
-        a.permalink('PermaLink', :href=>"/news/#{post._id}/")
+        a.permalink('PermaLink', :href=>"/news/#{post.data._id}/")
        }
        h4 post.data.title
        div.body { 

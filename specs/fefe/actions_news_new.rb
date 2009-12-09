@@ -10,7 +10,6 @@ class Actions_News_New
     get '/news/new/', {}, ssl_hash
     follow_ssl_redirect!
     demand_equal '/log-in/', last_request.fullpath
-    # get '/log-out/'
   end
 
   it 'does not allow regular members to view it.' do

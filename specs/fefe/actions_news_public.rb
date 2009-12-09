@@ -14,7 +14,7 @@ class Actions_News_Public
 
   it 'renders :show with an :id' do
     n = News.by_tag( :hearts, :limit=>1 )
-    get "/news/#{n._id}/"
+    get "/news/#{n.data._id}/"
     demand_equal 200, last_response.status
   end
 
