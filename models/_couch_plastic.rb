@@ -1,3 +1,19 @@
+#
+# {
+# 	on_api_change {
+# 		version_macro
+# 		update_key :date do |val|
+# 			if val == 'next tuesday'
+# 				change_to 'earliest tuesday'
+# 				add_key :datetime, 'earliest tuesday @ whenever'
+# 			end
+# 		end
+# 		remove_key :suffix
+# 		
+# 		mark_api_as_changed
+# 	}
+# }
+#
 
 require_these 'models', [ :_couch_plastic_validator, :_couch_plastic_helper ]
 

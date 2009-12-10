@@ -5,6 +5,14 @@ helpers do # ===============================
 
   # === Member related helpers ========================
 
+  def require_log_in?
+    !@dont_require_log_in
+  end
+
+  def dont_require_log_in
+    @dont_require_log_in = true
+  end
+
   def require_log_in! *perm_levels
 
     return true if perm_levels.empty? && logged_in?

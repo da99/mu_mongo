@@ -1,5 +1,4 @@
 
-
 helpers {
   def news_tags
     @all_news_tags ||= News.tags
@@ -7,75 +6,35 @@ helpers {
 }
 
 get '/news/new/' do # NEW
-  do_crud News
+  crud! News
 end
 
 post '/news/' do # CREATE 
   success_msg { "Save: #{doc.data.title}" }
-  do_crud( News ) 
+  crud!( News ) 
 end
 
 get '/news/:id/' do |id| # SHOW
   dont_require_log_in
-  do_crud News
+  crud! News
 end
 
 get '/news/edit/:id' do # EDIT 
-  do_crud News
+  crud! News
 end
 
 put '/news/:id/' do |id| # UPDATE 
   success_msg { "Update: #{doc.data.title}" }
-  do_crud( News )  
+  crud!( News )  
 end
 
 delete '/news/:id/' do |id| # DELETE
-
   success_msg { "Delete: #{doc.data.title}"  }
   redirect_success { '/my-work/' }
-  do_crud( News )  
-
+  crud!( News )  
 end
 
-# CRUD_for(News) {
 
-  # {
-	# 	on_api_change {
-	# 		version_macro
-	# 		update_key :date do |val|
-	# 			if val == 'next tuesday'
-	# 				change_to 'earliest tuesday'
-	# 				add_key :datetime, 'earliest tuesday @ whenever'
-	# 			end
-	# 		end
-	# 		remove_key :suffix
-	# 		
-	# 		mark_api_as_changed
-	# 	}
-	# }
-
-  # show {
-  #   dont_require_log_in
-  # }
-  # edit 
-
-  # create do 
-  #   success_msg { "Save: #{doc.data.title}" }
-  # end
-
-  # update do 
-  #   success_msg { "Update: #{doc.data.title}" }
-  # end
-
-  # delete do
-
-  #   success_msg { "Delete: #{doc.data.title}" }
-
-  #   redirect '/my-work/'
-
-  # end
-
-# }
 
 get '/news/by_date/:year/:month/' do
   controller :news
@@ -130,9 +89,9 @@ get %r{/news/by_tag/([a-zA-Z0-9\-]+)/} do |tag_name|
   render_mab
 end
 
-
+# =======================================================================================
 # =========================== HEART LINKS COMPATIBILITY =================================
-
+# =======================================================================================
 
 get '/media/heart_links/images/*' do
   redirect( 'http://surferhearts.s3.amazonaws.com/heart_links' + File.join('/', params['splat'] ))
@@ -186,83 +145,5 @@ end
 get '/rss/?' do
   redirect('/rss.xml')
 end
-
-__END__
-
-
-# get '/news/new/' do # NEW
-#   require_log_in!
-#   begin
-#     News.new(current_member)
-#   rescue News::UnauthorizedNew
-#     pass
-#   end
-#   describe News, :new
-#   render_mab
-# end
-
-# post '/news/' do # CREATE
-#   require_log_in!
-#   begin
-#     n = New.create current_member, clean_room
-#     flash.success_msg = "Saved: #{n.data.title}"
-#     redirect "/news/#{n._id}/"
-#   rescue News::UnauthorizedCreator
-#     pass
-#   rescue News::Invalid
-#     flash.error_msg = to_html_list($!.doc.errors)
-#     redirect "/news/new/"
-#   end
-# 
-# end
-
-# get '/news/:id/' do # SHOW
-#   begin
-#     @news = News.read(current_member, clean_room[:id])
-#   rescue News::NoRecordFound, News::UnauthorizedReader
-#     pass 
-#   end
-# 
-#   describe News, :show
-#   render_mab
-# end 
-
-# get '/news/:id/edit/' do # EDIT
-#   require_log_in!
-#   begin
-#     @news = News.edit(current_member, clean_room[:id])
-#   rescue News::NoRecordFound, News::UnauthorizedEditor
-#     pass
-#   end
-# 
-#   describe News, :edit
-#   render_mab
-# end
-
-# put '/news/:id/' do # UPDATE
-#   require_log_in!
-#   begin
-#     doc = News.update(current_member, clean_room)
-#     flash.success_msg = "Updated: #{doc.data.title}"
-#     redirect request.path_info
-#   rescue News::NoRecordFound, News::UnauthorizedUpdator
-#     pass
-#   rescue News::Invalid
-#     flash.error_msg = to_html_list($!.doc.errors)
-#     redirect("/news/#{$!.doc._id}/edit/")
-#   end
-# end
-
-# delete '/news/:id/' do # DELETE
-#   require_log_in!
-#   begin
-#     doc = News.delete!( current_member, clean_room[:id])
-#     flash.success_msg = "Deleted: #{doc.data.title}"
-#   rescue News::NoRecordFound, News::UnauthorizedDeletor
-#     flash.success_msg = "Deleted."
-#   end
-# 
-#   redirect '/my-work/'
-# end
 
 

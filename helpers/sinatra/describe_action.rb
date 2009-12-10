@@ -91,6 +91,29 @@ helpers {
     content_type :xml, :charset => 'utf-8'
   end
 
+  # ==== Messages & Redirect paths =====================================
+
+  [:success_msg, :redirect_success, :error_msg, :redirect_error].each do |meth|
+    eval(%~
+      def #{meth} txt = nil, &blok
+         if !txt && !block_given?
+            case @#{meth}
+            when Proc
+              instance_eval &@#{meth}
+            else
+              @#{meth}
+            end
+         end
+         @#{meth} = txt || blok
+      end
+
+      def #{meth}? 
+         !!@#{meth}
+      end
+    ~)
+  end
+
+
   # ==== Robots ========================================================
 
   def valid_robots
