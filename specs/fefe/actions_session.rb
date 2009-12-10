@@ -20,7 +20,7 @@ context 'Log-in for Member'
 
   it 'redirects to SSL' do
     get '/log-in/'
-    demand_no_match "https", last_request.env["rack.url_scheme"]
+    demand_not_equal "https", last_request.env["rack.url_scheme"]
     follow_redirect!
     demand_equal "https", last_request.env["rack.url_scheme"]
     demand_regex_match /\<button/, last_response.body

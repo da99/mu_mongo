@@ -49,7 +49,6 @@ class Actions_Old_Apps
 
   it 'renders /bigstopwatch' do
     get '/bigstopwatch'
-    follow_redirect!
     demand_equal 200, last_response.status
   end
 

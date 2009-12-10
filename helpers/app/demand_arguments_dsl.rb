@@ -24,7 +24,14 @@ module Demand_Arguments_Dsl
 
     def read_around_line raw_file, raw_line, surround = 2
 
-      file         = demand_file_exists(raw_file)
+      file         = File.expand_path(raw_file)
+      line         = raw_line.to_i
+      
+      if !File.file?(file)
+        return "\e[31mFile not found: #{file}: #{line}\e[0m" 
+      end
+      
+      file         = File.expand_path(raw_file)
       line         = raw_line.to_i
 
       file_content = File.read(file)
@@ -114,6 +121,11 @@ module Demand_Arguments_Dsl
     def demand_equal one, two
       return true if one == two
       print_and_exit("These must be equal: #{one.inspect}, #{two.inspect}")
+    end
+    
+    def demand_not_equal one, two
+      return true if one != two
+      print_and_exit("These must not be equal: #{one.inspect}, #{two.inspect}")
     end
     
 		# ===================================================

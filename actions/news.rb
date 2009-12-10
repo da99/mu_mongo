@@ -6,9 +6,39 @@ helpers {
   end
 }
 
-CRUD_for(News) {
+get '/news/new/' do # NEW
+  do_crud News
+end
 
-  new 
+post '/news/' do # CREATE 
+  success_msg { "Save: #{doc.data.title}" }
+  do_crud( News ) 
+end
+
+get '/news/:id/' do |id| # SHOW
+  dont_require_log_in
+  do_crud News
+end
+
+get '/news/edit/:id' do # EDIT 
+  do_crud News
+end
+
+put '/news/:id/' do |id| # UPDATE 
+  success_msg { "Update: #{doc.data.title}" }
+  do_crud( News )  
+end
+
+delete '/news/:id/' do |id| # DELETE
+
+  success_msg { "Delete: #{doc.data.title}"  }
+  redirect_success { '/my-work/' }
+  do_crud( News )  
+
+end
+
+# CRUD_for(News) {
+
   # {
 	# 	on_api_change {
 	# 		version_macro
@@ -24,28 +54,28 @@ CRUD_for(News) {
 	# 	}
 	# }
 
-  show {
-    dont_require_log_in
-  }
-  edit 
+  # show {
+  #   dont_require_log_in
+  # }
+  # edit 
 
-  create do 
-    success_msg { "Save: #{doc.data.title}" }
-  end
+  # create do 
+  #   success_msg { "Save: #{doc.data.title}" }
+  # end
 
-  update do 
-    success_msg { "Update: #{doc.data.title}" }
-  end
+  # update do 
+  #   success_msg { "Update: #{doc.data.title}" }
+  # end
 
-  delete do
+  # delete do
 
-    success_msg { "Delete: #{doc.data.title}" }
+  #   success_msg { "Delete: #{doc.data.title}" }
 
-    redirect '/my-work/'
+  #   redirect '/my-work/'
 
-  end
+  # end
 
-}
+# }
 
 get '/news/by_date/:year/:month/' do
   controller :news

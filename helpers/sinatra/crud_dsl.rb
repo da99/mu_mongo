@@ -15,28 +15,84 @@ helpers {
 
   def crud_model_options
     raise( ArgumentError, "No model specified." ) if !model
-    options.send("crud_#{model_underscore}")
+    options.send("crud_#{model_underscore}") 
   end
 
   def crud_action_options
     return ArgumentError, "No action specified." if !action
+    return Struct.new(:require_log_in, 
+      :model_class, 
+      :model_underscore, 
+      :action,
+      :path, 
+      :path_options,
+      :http_method, 
+      :success_msg, 
+      :error_msg, 
+      :redirect,
+      :redirect_error,
+      :redirect_success).new # if !crud_model_options
     crud_model_options[action]
   end
 
-  def do_crud model_class, action_name
+  def require_log_in?
+    !@dont_require_log_in
+  end
+
+  def dont_require_log_in
+    @dont_require_log_in = true
+  end
+
+  [:success_msg, :redirect_success, :error_msg, :redirect_error].each do |meth|
+    eval(%~
+      def #{meth} txt = nil, &blok
+         if !txt && !block_given?
+            if @#{meth}.is_a?(Proc)
+              instance_eval &@#{meth}
+            else
+              @#{meth}
+            end
+         end
+         @#{meth} = txt || blok
+      end
+
+      def #{meth}? 
+         !!@#{meth}
+      end
+    ~)
+  end
+
+  def do_crud model_class, raw_action_name = nil
+
+    action_name = raw_action_name || begin
+      if request.get? && request.path =~ /\/edit/
+        :edit
+      elsif request.get? && request.path =~ /\/new\//
+        :new
+      elsif request.get?
+        :show
+      elsif request.post?
+        :create
+      elsif request.put?
+        :update
+      elsif request.delete?
+        :delete
+      else
+        raise "Oh, c'mon?!?!"
+      end
+    end
 
     action action_name
     model  model_class
-    o      = crud_action_options
 
-    require_log_in! if o.require_log_in
+    require_log_in! if require_log_in?
 
     case action
 
       when :new
 
         begin
-          model.new(current_member)
+          doc model.new(current_member)
         rescue model::UnauthorizedNew
           not_found
         end
@@ -64,43 +120,41 @@ helpers {
       when :create
         begin
           doc               model.create current_member, clean_room
-          flash.success_msg = choose( o.success_msg, 'Successfully saved data.')
-          redirect          choose(o.redirect_success, "/#{model_underscore}/#{doc.data._id}/" )
+          flash.success_msg = ( success_msg || 'Successfully saved data.')
+          redirect(redirect_success ||  "/#{model_underscore}/#{doc.data._id}/" )
 
         rescue model::UnauthorizedCreator
           halt(404, "Page Not Found.")
 
         rescue model::Invalid
-          flash.error_msg =  choose( o.error_msg,      to_html_list($!.doc.errors) )
-          redirect         choose( o.redirect_error, "/#{model_underscore}/new/"  )
+          flash.error_msg =  ( error_msg   ||  to_html_list($!.doc.errors) )
+          redirect( redirect_error || "/#{model_underscore}/new/"  )
         end
 
       when :update
         begin
           doc               model.update(current_member, clean_room)
-          flash.success_msg = choose( o.success_msg,    "Updated data." )
-          redirect          choose( o.redirect_success, request.path_info )
+          flash.success_msg = ( success_msg  || "Updated data." )
+          redirect( redirect_success || request.path_info )
 
         rescue model::NoRecordFound, model::UnauthorizedUpdator
           not_found
 
         rescue model::Invalid
-          flash.error_msg = choose( o.error_msg, to_html_list($!.doc.errors) )
-          redirect        choose( o.redirect_error, "/#{model_underscore}/#{$!.doc.data._id}/edit/" )
+          flash.error_msg = ( error_msg || to_html_list($!.doc.errors) )
+          redirect( redirect_error || "/#{model_underscore}/#{$!.doc.data._id}/edit/" )
         end
 
       when :delete
         begin
           doc               model.delete!( current_member, clean_room[:id])
-          flash.success_msg = choose( o.success_msg, "Deleted." )
-
+          flash.success_msg = ( success_msg ||  "Deleted." )
         rescue model::NoRecordFound, model::UnauthorizedDeletor
           flash.success_msg = "Deleted."
         end
 
-        redirect choose( o.redirect_success, '/my-work/' )
+        redirect( redirect_success || '/my-work/' )
         
-
       else
         raise ArgumentError, "Invalid action: #{action_name}"
     end
@@ -108,11 +162,11 @@ helpers {
   end
 }
 
-def CRUD_for(class_obj, &blok) 
-
-  CRUD_DSL.new(class_obj, &blok)
-
-end
+# def CRUD_for(class_obj, &blok) 
+# 
+#   CRUD_DSL.new(class_obj, &blok)
+# 
+# end
 
 
 configure do 
