@@ -206,8 +206,6 @@ module FeFe
       m
     }
 
-# require 'rubygems'; require 'ruby-debug'; debugger
-
     send("__fefe_task_#{task_name.bang_to_bang}__", *args)
   end
   
@@ -240,6 +238,13 @@ module FeFe
     
     results.join(" ")
   end  
+  
+  def create_directory raw_new_dir
+    new_dir = raw_new_dir.expand_path
+    return true if new_dir.directory?
+    raise ArgumentError, "Non-directory already exists: #{new_dir.inspect}" if new_dir.exists?
+    system("mkdir #{new_dir.inspect}")
+  end
 
 end # ======== FeFe
 

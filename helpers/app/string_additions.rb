@@ -1,13 +1,30 @@
 class String
 
   def must_not_be_empty
-    str = strip
-    raise ArgumentError, "String can't be empty." if str.empty?
-    str
+    @stripped = begin
+                  str = strip
+                  raise ArgumentError, "String can't be empty." if str.empty?
+                  str
+                end
+  end
+
+  def must_exist_on_file_system
+    return true if File.symlink?(expand_path)
+    return true if File.exists?(expand_path)
+    raise ArgumentError, "Does not exist: #{expand_path.inspect}"
   end
 
   def expand_path
-    File.expand_path must_not_be_empty
+    @expanded_path ||= begin
+                         must_not_be_empty
+                         File.expand_path must_not_be_empty
+                       end
+  end
+
+  def move_to_trash
+    must_not_be_empty
+    must_exist_on_file_system
+    system("mv -i #{expand_path.inspect} ~/.local/share/Trash/files ")
   end
 
   def has_extension? s_or_sym
@@ -121,6 +138,16 @@ class String_as_Directory
       file_path = File.expand_path(File.join(path, file_name))
       blok.call(file_path) if File.file?(file_path)
     }
+  end
+  
+  def create_alias *args
+    new_dir = File.join(*args).expand_path
+    return new_dir if File.exists?(new_dir) && File.identical?(path, new_dir)
+    if File.exists?(new_dir)
+      raise ArgumentError, "Already exists: #{new_dir.inspect}"
+    end
+    File.symlink(path, new_dir)
+    new_dir
   end
 
   def ruby_files_wo_rb

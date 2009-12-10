@@ -7,7 +7,17 @@ class App_String_Additions_Directory
 
 	before {
     @real_dir_path = File.dirname(File.expand_path(__FILE__))
+    @delete_files = []
 	}
+
+  after {
+    @delete_files.each { |raw_file|
+      file = raw_file.expand_path
+      if file['Desktop']
+        file.move_to_trash
+      end
+    }
+  }
 
   it 'returns true if String is an existing dir and you ask :directory?' do
     demand_equal( true, '~/'.directory? )
@@ -120,4 +130,48 @@ class App_String_Additions_Directory
 		demand_equal orig_file, __FILE__.file.directory.relative( '../../', orig_file_name)
 	end
 	
+  context ':create_alias' 
+
+  it 'creates a symbolic link to a directory' do
+    @delete_files << (o_dir = "~/Desktop/dir_#{Time.now.to_i}".expand_path)
+    @delete_files << (l_dir = "~/Desktop/dir_linked_#{Time.now.to_i}".expand_path)
+
+    system("mkdir #{o_dir.inspect}")
+    o_dir.directory.create_alias l_dir
+    demand_equal( true, File.identical?(o_dir, l_dir) )
+    demand_equal( true, File.symlink?(l_dir) )
+  end
+
+  it 'raises ArgumentError if directory already exists for symbolic link' do
+    @delete_files << (o_dir = "~/Desktop/dir_e_#{Time.now.to_i}".expand_path)
+    @delete_files << (l_dir = "~/Desktop/dir_d_#{Time.now.to_i}".expand_path)
+
+    system("mkdir #{o_dir.inspect}")
+    system("mkdir #{l_dir.inspect}")
+
+    err = begin
+      o_dir.directory.create_alias(l_dir)
+    rescue ArgumentError => e
+      e
+    end
+
+    demand_equal( "Already exists: #{l_dir.inspect}", err.message)
+  end
+
+  it 'raises ArgumentError if file already exists for symbolic link' do
+    @delete_files << (o_dir = "~/Desktop/dir_______#{rand(200)}".expand_path)
+    @delete_files << (l_dir = "~/Desktop/file__#{Time.now.to_i}".expand_path)
+
+    system("mkdir #{o_dir.inspect}")
+    system("echo \"test\" > #{l_dir.inspect}")
+
+    err = begin
+      o_dir.directory.create_alias(l_dir)
+    rescue ArgumentError => e
+      e
+    end
+
+    demand_equal( "Already exists: #{l_dir.inspect}", err.message)
+  end
+
 end

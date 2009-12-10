@@ -2,36 +2,36 @@ class My_Computer
 
 	include FeFe
 
-  O_RDEBUG = self::MY_PREFS.down_directory('ruby', 'rdebugrc.rb')
+  O_RDEBUG = MY_PREFS.directory.down('ruby', 'rdebugrc.rb')
   L_RDEBUG = '~/.rdebugrc'
 
-  O_GEMRC  = self::MY_PREFS.down_directory('ruby', 'gemrc.yaml')
+  O_GEMRC  = MY_PREFS.directory.down('ruby', 'gemrc.yaml')
   L_GEMRC  = '~/.gemrc'
 
-  O_IRB_RC = self::MY_PREFS.down_directory('ruby', 'irbrc.rb')
+  O_IRB_RC = MY_PREFS.directory.down('ruby', 'irbrc.rb')
   L_IRB_RC = '~/.irbrc'
 
   GCONF    = File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml')
 
   DROPBOX  = File.expand_path('~/Dropbox')
 
-  BZR_DIR  = self::MY_LIFE.down_directory('.bzr')
-  BACKUP_DIR = File.join(DROPBOX, 'BZR_DIR')
+  BZR_DIR  = MY_LIFE.directory.down('.bzr')
+  BACKUP_DIR = File.join(DROPBOX, 'BACKUP_MyLife')
 
-  O_VIMRC = self::MY_PREFS.down_directory('vim/vimrc.vim')
+  O_VIMRC = MY_PREFS.directory.down('vim/vimrc.vim')
   L_VIMRC = '~/.vimrc'
 
-  O_DOT_VIM = self::MY_PREFS.down_directory('vim', 'dotvim')
+  O_DOT_VIM = MY_PREFS.directory.down('vim', 'dotvim')
   L_DOT_VIM = '~/.vim'
 
   MY_EMAIL = 'diego@miniuni.com'
   MY_NAME = 'da01'
   
-  O_BASH_PROFILE = self::MY_PREFS.down_directory('_bash_profile' )
+  O_BASH_PROFILE = MY_PREFS.directory.down('_bash_profile' )
   L_BASH_PROFILE = '~/.bash_profile'
   MY_DOT_PROFILE = '~/.profile'
 
-  O_LIGHT_CONF = self::MY_PREFS.down_directory( 'light.conf')
+  O_LIGHT_CONF = MY_PREFS.directory.down( 'light.conf')
   L_LIGHT_CONF = "/etc/lighttpd/lighttpd.conf"
 
   describe :setup do
@@ -43,72 +43,68 @@ class My_Computer
 
     steps {
 
-      whisper %~
-        Flash fix for Ubuntu: 
-        http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem 
-      ~
+      # puts_white %~
+      #   Flash fix for Ubuntu: 
+      #   http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem 
+      # ~
 
-      sym_link {
-        docu 'ruby-debug configuration file:'
-        from O_RDEBUG
-        to   L_RDEBUG
-      }
+      puts_white 'ruby-debug configuration file:'
+      O_RDEBUG.file.create_alias  L_RDEBUG
 
-      sym_link {
-        docu 'gem configuration file:'
-        from O_GEMRC
-        to   L_GEMRC
-      }
+      puts_white 'gem configuration file:'
+      O_GEMRC.file.create_alias L_GEMRC
 
-      sym_link {
-        docu 'irb configuration file:'
-        from O_IRB_RC
-        to   L_IRB_RC
-      }
+      puts_white 'irb configuration file:'
+      O_IRB_RC.file.create_alias L_IRB_RC
 
-      docu %~
-        Checks if hidden files are 
+      puts_white %~
+        Checking if hidden files are 
         displayed by default in Nautilus.
-      ~
+      ~.split.join(' ')
 
-      demand_file(GCONF) do
-        on_error {
-          shout %~
+      demand_file_exists(GCONF) 
+      if !GCONF.file.read['show_hidden_files']
+          puts_red %~
             Always show hidden files in  Nautilus:
             http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html
             Alt+F2 > gconf-editor > "desktop / gnome / file_views"
           ~
-        }
-        exists
-        contains 'show_hidden_files'
       end
 
-      docu 'Installing dropbox.'
+      puts_white 'Creating Dropbox directory.'
 
       create_directory(DROPBOX)
+      create_directory(BACKUP_DIR)
 
-      sym_link {
-        from BZR_DIR
-        to   BACKUP_DIR
-      }
-      if !capture('which dropbox')['dropbox']
-        shout 'Install DropBox.'
+      if !shell_out('which dropbox')['dropbox']
+        puts_red 'Install DropBox.'
       end
 
-      docu %~
+      if shell_out('which rsync')['rsync']
+        cron_task ="cd #{MY_LIFE} && #{shell_out('which rsync').strip} -av --delete #{MY_LIFE} #{BACKUP_DIR}"
+        if !shell_out('crontab -l')[cron_task]
+          puts_red "Setup CRONT:"
+          puts_red "crontab -e"
+          puts_red "59 */3 * * * #{cron_task}"
+        end
+      else
+        puts_red 'Install rsync and run this task again.'
+      end
+      
+      puts_white %~
         Checking Firefox configuration...' 
         http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/
-      ~
+      ~.split.join(' ')
 
       vals = {}
       vals[:"browser.history_expire_days.mirror"] = 3
       vals[:"browser.history_expire_days"] = 3
       vals[:"browser.history_expire_sites"] = 1000
-      grep_vals = capture("grep history -r ~/.mozilla/firefox --include=prefs.js")
+      grep_vals = shell_out("grep history -r ~/.mozilla/firefox --include=prefs.js")
 
       vals.each do |k,v|
         if !grep_vals[/#{k}...#{v}/]
-          shout "Change Firefox option: #{k} ===>> #{v}" 
+          puts_red "Change Firefox option: #{k} ===>> #{v}" 
         end
       end
 
@@ -122,46 +118,40 @@ class My_Computer
       ]
 
       plugins.each do |plug|
-          results = capture("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
-          whisper( "Install #{plug} for Firefox" ) if !results[plug]
+          results = shell_out("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
+          puts_red( "Install #{plug} for Firefox" ) if !results[plug]
       end
 
-      docu 'Configuring Bzr.'
+      # puts_white 'Configuring Bzr.'
 
-      if !capture('which bzr')
-        shout "Install bzr: https://launchpad.net/~bzr/+archive/ppa"
+      # if !shell_out('which bzr')
+      #   puts_red "Install bzr: https://launchpad.net/~bzr/+archive/ppa"
+      # else
+      #   shell_out('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
+      # end
+
+      puts_white 'Checks for git.'
+
+      if !shell_out('which git')['git']
+        puts_red 'Install git with PPA.'
       else
-        capture('bzr whoami "%s <%s>"' % [MY_NAME, MY_EMAIL])
+        results = shell_out('git config --global user.name %s' % MY_NAME.inspect)
+        results += shell_out('git config --global user.email %s' % MY_EMAIL)
+        if !results.strip.empty?
+          puts_red( results )
+        end
       end
 
-      docu 'Checks for git.'
-
-      if !capture('which git')['git']
-        shout 'Install git with PPA.'
-      else
-        shout capture_all('git config --global user.name %s' % MY_NAME.inspect)
-        shout capture_all('git config --global user.email %s' % MY_EMAIL)
-      end
-
-      docu 'Linking VIM configuration file.'
+      puts_white 'Linking VIM configuration file.'
       
-      sym_link {
-        docu
-        from O_VIMRC
-        to   L_VIMRC
-      }
+      O_VIMRC.file.create_alias( L_VIMRC )
 
-      docu 'Linking VIM dot directory.'
-      
-      sym_link {
-        docu
-        from O_DOT_VIM
-        to   L_DOT_VIM
-      }
+      puts_white 'Linking VIM dot directory.'
+      O_DOT_VIM.directory.create_alias  L_DOT_VIM
 
-      docu 'Installing bash profile.'
-      if !File.read(MY_DOT_PROFILE)['. "$HOME/.bash_profile"']
-        shout %~ 
+      puts_white 'Installing bash profile.'
+      if !MY_DOT_PROFILE.file.read['. "$HOME/.bash_profile"']
+        puts_red %~ 
 					Add the following to your .profile:
 					if [ -f "$HOME/.bash_profile" ]; then
 					. "$HOME/.bash_profile"
@@ -170,12 +160,12 @@ class My_Computer
       end
 
 
-      docu 'Checks for Lighttd config.'
+      puts_white 'Checking for Lighttd config.'
 
 
-      unless_file_exists(L_LIGHT_CONF) do
-        shout( "Sudo copy file to #{L_LIGHT_CONG}" )
-      end
+      # if !L_LIGHT_CONF.file? 
+      #   puts_red( "Sudo copy file to #{L_LIGHT_CONF}" )
+      # end
 
     } # === steps
 
@@ -188,19 +178,19 @@ __END__
 
 
   if !Pow('/etc/passwd').read['nginx_www']
-    shout "Execute the following: "
-    shout 'sudo adduser --system --home /home/da01/Documents/nginx_data --no-create-home  --shell /bin/bash --group --gecos "Nginx WWW Admin" nginx_www'
-    shout 'chown -R nginx_www:nginx_www /home/da01/Documents/nginx_data'
-    shout 'chmod -R 0770 /home/da01/Documents/nginx_data'
+    puts_red "Execute the following: "
+    puts_red 'sudo adduser --system --home /home/da01/Documents/nginx_data --no-create-home  --shell /bin/bash --group --gecos "Nginx WWW Admin" nginx_www'
+    puts_red 'chown -R nginx_www:nginx_www /home/da01/Documents/nginx_data'
+    puts_red 'chmod -R 0770 /home/da01/Documents/nginx_data'
   end
   
-  docu %~
+  puts_white %~
     Setups Cron.
   ~
-  cron_task ="cd #{MY_LIFE()} && #{capture('which fefe')} bzr:my_life_dev_check"
-  if !capture_all('crontab -l')[cron_task]
-    whisper "Setup CRONT:"
-    whisper "crontab -e"
-    whisper "59 */3 * * * #{cron_task}"
+  cron_task ="cd #{MY_LIFE()} && #{shell_out('which fefe')} bzr:my_life_dev_check"
+  if !shell_out_all('crontab -l')[cron_task]
+    puts_white "Setup CRONT:"
+    puts_white "crontab -e"
+    puts_white "59 */3 * * * #{cron_task}"
   end
 
