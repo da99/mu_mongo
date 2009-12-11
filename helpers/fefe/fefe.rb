@@ -11,7 +11,7 @@ require 'open3'
   demand_arguments_dsl
 	color_puts
 }.each { |file|
- require File.expand_path(File.join(File.readlink(__FILE__),'../..','app',file))
+ require File.expand_path('helpers/app/'+file)
 }
 
 

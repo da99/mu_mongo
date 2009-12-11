@@ -13,6 +13,7 @@ require_these 'helpers/app', %w{
   json
 	data_pouch
   cleaner_dsl
+  demand_arguments_dsl
 }
 
 # ===============================================

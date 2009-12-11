@@ -5,36 +5,43 @@ helpers {
   end
 }
 
+# =========================================================
+#               CRUD actions
+# =========================================================
+
 get '/news/new/' do # NEW
-  crud! News
+  crud!
 end
 
 post '/news/' do # CREATE 
   success_msg { "Save: #{doc.data.title}" }
-  crud!( News ) 
+  crud!
 end
 
 get '/news/:id/' do |id| # SHOW
   dont_require_log_in
-  crud! News
+  crud! 
 end
 
 get '/news/edit/:id' do # EDIT 
-  crud! News
+  crud! 
 end
 
 put '/news/:id/' do |id| # UPDATE 
   success_msg { "Update: #{doc.data.title}" }
-  crud!( News )  
+  crud! 
 end
 
 delete '/news/:id/' do |id| # DELETE
   success_msg { "Delete: #{doc.data.title}"  }
-  redirect_success { '/my-work/' }
-  crud!( News )  
+  redirect_success '/my-work/' 
+  crud! 
 end
 
 
+# =========================================================
+#               READ-related actions
+# =========================================================
 
 get '/news/by_date/:year/:month/' do
   controller :news

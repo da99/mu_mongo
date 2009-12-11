@@ -2,8 +2,12 @@
 
 helpers {
 
-  def crud! model_class, raw_action_name = nil
+  def crud! raw_model_class = nil, raw_action_name = nil
 
+    model_class = raw_model_class || 
+                  Object.const_get(
+                    request.path.split('/')[1].split('_').map(&:capitalize).join('_')
+                  )
     action_name = raw_action_name || begin
       if request.get? && request.path =~ /\/edit/
         :edit
