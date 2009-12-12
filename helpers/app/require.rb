@@ -9,10 +9,10 @@ def require_these( dir, allow_only=nil )
       require File.expand_path( File.join(dir, file_name.to_s) )
     }
   else
-    Dir[ File.join(dir, '*.rb') ].each { |f| 
+    Dir[ File.join(dir, '*.rb') ].each { |file_name_rb| 
       # Replace 'models/resty.rb' to 'models/resty'
-      file_name = f.sub(/\.rb$/, '')  
-      require File.expand_path(file_name)
+      file_name = file_name_rb.sub(/\.rb$/, '')  
+      require file_name
     }
   end
 end

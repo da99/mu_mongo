@@ -95,7 +95,7 @@ module Demand_Arguments_Dsl
 
       ~
 			
-      instance_eval &on_assertion_exit
+      instance_eval( &on_assertion_exit )
 
     end
     
@@ -184,7 +184,7 @@ module Demand_Arguments_Dsl
       
       if block_given?
         h_v = Dsl_For_Demand_Hash.new
-        h_v.instance_eval &blok
+        h_v.instance_eval( &blok )
         invalid = (arg.keys - h_v.keys).map(&:inspect)
         missing = (h_v.demand - arg.keys).map(&:inspect)
         if !invalid.empty?
@@ -298,7 +298,7 @@ end # === Demand_Arguments_Dsl
 class Dsl_For_Demand_Sym_Link_Matches
 
 	def initialize &blok
-		instance_eval &blok
+		instance_eval( &blok )
 	end
 
 	def from *old_file

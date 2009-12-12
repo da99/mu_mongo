@@ -1,9 +1,17 @@
-#!/usr/bin/env ruby
+#!/home/da01/Documents/rubyee/bin/ruby -w
 # -*- ruby -*-
 
-$KCODE == 'UTF8'
+#
+#
+# Make sure warnings are turned on with "ruby -w".
+#
+#
+
+
+$KCODE = 'UTF8'
 require 'rubygems'
 require 'open3'
+
 
 %w{
   string_additions
@@ -11,7 +19,7 @@ require 'open3'
   demand_arguments_dsl
 	color_puts
 }.each { |file|
- require File.expand_path('helpers/app/'+file)
+  require( File.readlink(File.expand_path('~/megauni')) + '/helpers/app/'+file)
 }
 
 
@@ -104,7 +112,7 @@ class FeFe_The_French_Maid
   end
 
   def run_task_from_argv
-    parse_order *(ARGV)
+    parse_order( *ARGV  )
     if !@orders[:global].empty?
       
       # require 'rubygems'; require 'ruby-debug'; debugger
@@ -256,7 +264,7 @@ module FeFe_Dsl
     
     def initialize task_name, &blok
       @task_name = task_name
-      instance_eval &blok
+      instance_eval( &blok )
     end
 
     def info

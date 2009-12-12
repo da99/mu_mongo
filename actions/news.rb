@@ -1,4 +1,7 @@
 
+
+
+
 helpers {
   def news_tags
     @all_news_tags ||= News.tags
@@ -9,9 +12,109 @@ helpers {
 #               CRUD actions
 # =========================================================
 
-get '/news/new/' do # NEW
-  crud!
+# get '/news/new/' do # NEW
+#   crud!
+# end
+
+module Sin_Mic
+  
+  attr_reader :sin
+  
+  def initialize sin_scope
+    @sin = sin_scope
+  end
+  
 end
+
+class News_Mic
+	
+	include Sin_Mic
+	
+	def GET_new
+		sin.crud!
+	end
+
+
+	def POST # CREATE 
+		sin.success_msg { "Save: #{doc.data.title}" }
+		sin.crud!
+	end
+
+	def GET_list # 
+		"list of news items"
+	end
+
+	def GET id  # SHOW
+		return "id: #{id}"
+		sin.dont_require_log_in
+		sin.crud! 
+	end
+
+	def GET_edit id # EDIT 
+		sin.crud! 
+	end
+
+	def PUT id  # UPDATE 
+		sin.success_msg { "Update: #{doc.data.title}" }
+		sin.crud! 
+	end
+
+	def DELETE id # DELETE
+		success_msg { "Delete: #{doc.data.title}"  }
+		redirect_success '/my-work/' 
+		crud! 
+	end
+
+
+end # === News_Mic
+
+
+set :mic_class_name_suffix, '_Mic'
+set :mic_classes, [News_Mic]
+set :mic_class_names, lambda { mic_classes.map(&:to_s) }
+
+before {
+
+	# require 'rubygems'; require 'ruby-debug'; debugger
+
+	http_meth_downcase   = request.request_method.to_s.downcase
+	default_mic_class = options.mic_classes.first
+	pieces               = request.path.split('/')
+
+	pieces.shift if pieces.first === ''
+
+	if pieces.empty?
+		halt default_mic_class.new(self).send(request.request_method)
+	end
+
+	mic_class_name = pieces.first.gsub(/[^a-zA-Z0-9_]/, '_').split('_').map(&:capitalize).join('_') + options.mic_class_name_suffix
+
+	if options.mic_class_names.include?(mic_class_name)
+		pieces.shift
+
+		mic_class = Object.const_get(mic_class_name)
+
+		if pieces.empty? && request.get?
+			if mic_class.public_instance_methods.include?(request.request_method + '_list') 
+				halt mic_class.new(self).send('GET_list')
+			end
+		end
+
+		action_name = [ request.request_method , pieces.first ].compact.join('_')
+
+		if mic_class.public_instance_methods.include?(action_name) &&
+			mic_class.instance_method(action_name).arity === (pieces.empty? ? 0 : pieces.size - 1 )
+			pieces.shift
+			halt mic_class.new(self).send(action_name, *pieces)
+		end  
+		
+		if mic_class.public_instance_methods.include?(request.request_method) &&
+			 mic_class.instance_method(request.request_method).arity === (pieces.size)
+			halt mic_class.new(self).send(request.request_method, *pieces)
+		end
+	end
+
+}
 
 post '/news/' do # CREATE 
   success_msg { "Save: #{doc.data.title}" }
