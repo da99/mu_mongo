@@ -18,10 +18,6 @@ module Bunny_Response
     @header[key] = raw_val.to_s
   end
 
-  def set_as_plain_text
-    set_header 'Content-Type', 'text/plain'
-  end
-
   # Set the Content-Type of the response body given a media type or file
   # extension.
   def set_content_type(mime_type, params={})

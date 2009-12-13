@@ -1,5 +1,5 @@
 
-class Bunny_Chaser
+class Bunny_Mating
 
   attr_accessor :env, :request, :response, :params
 
@@ -10,7 +10,7 @@ class Bunny_Chaser
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
 
-   # return [200, {'Content-Length' => 5.to_s, 'Content-Type' => 'text/plain' }, 'zzzzz' ] 
+   # return [200, {'Content-Type' => 'text/plain' }, 'zzzzz' ] 
      
     begin
       
@@ -25,7 +25,9 @@ class Bunny_Chaser
       @response.body   = '<h1>Not Found</h1>'
       
     rescue Object
-      
+      if The_Bunny_Farm.development? 
+        raise $!
+      end
       @env['little.microphone.error'] = $!
       error! '<h1>Unknown Error.</h1>'
       
@@ -33,9 +35,10 @@ class Bunny_Chaser
 
     status, header, body = @response.finish
 
-    # Never produce a body on HEAD requests. Do retain the Content-Length
-    # unless it's "0", in which case we assume it was calculated erroneously
-    # for a manual HEAD response and remove it entirely.
+    # From The Sinatra Framework:
+    #   Never produce a body on HEAD requests. Do retain the Content-Length
+    #   unless it's "0", in which case we assume it was calculated erroneously
+    #   for a manual HEAD response and remove it entirely.
     if @env['REQUEST_METHOD'] == 'HEAD'
       body = []
       header.delete('Content-Length') if header['Content-Length'] == '0'
@@ -44,13 +47,19 @@ class Bunny_Chaser
     [status, header, body]
   end
 
+  The_Bunny_Farm::Options::ENVIRONS.each { |envir|
+    %~
+      def #{envir}?
+        ENV['RACK_ENV'] == "#{envir}"
+      end
+    ~
+  }
   
   # Halt processing and redirect to the URI provided.
   def redirect! *args
     response.redirect *args
     raise Bad_Bunny::Redirect
   end
-
 
   def not_found *args
     error! *args
@@ -60,8 +69,17 @@ class Bunny_Chaser
   def error!(body, code = 500)
     response.status = code
     response.body   = body unless body.nil?
-    response.header['Content-Length'] = body.size.to_s
     raise Bad_Bunny.const_get("Error_#{code}")
+  end
+
+  def render_text_plain txt
+    response.body = txt
+    response.set_header 'Content-Type', 'text/plain'
+  end
+
+  def render_text_html txt
+    response.body = txt
+    response.set_header 'Content-Type', 'text/html'
   end
   
   # ------------------------------------------------------------------------------------
@@ -73,7 +91,7 @@ class Bunny_Chaser
   end
 
   def mic_classes
-    [Hello_Bunny, Request_Bunny]
+    [Hello_Bunny, Inspect_Bunny]
   end
 
 	def mic_class_names
@@ -88,7 +106,7 @@ class Bunny_Chaser
     pieces.shift if pieces.first === ''
 
     if pieces.empty?
-      mic_classes.first.new(self).send(http_meth + '_list')
+      mic_classes.first.new.send(http_meth + '_list', self)
       return true
     end
 
@@ -105,7 +123,7 @@ class Bunny_Chaser
 
       if pieces.empty? && request.get?
         if mic_class.public_instance_methods.include?(request.request_method + '_list') 
-          mic_class.new(self).send('GET_list')
+          mic_class.new.send('GET_list', self)
           return true
         end
       end
@@ -113,18 +131,20 @@ class Bunny_Chaser
       action_name = [ request.request_method , pieces.first ].compact.join('_')
 
       if mic_class.public_instance_methods.include?(action_name) &&
-        mic_class.instance_method(action_name).arity === (pieces.empty? ? 0 : pieces.size - 1 )
+        mic_class.instance_method(action_name).arity === (pieces.empty? ? 1 : pieces.size )
         pieces.shift
-        mic_class.new(self).send(action_name, *pieces)
+        mic_class.new.send(action_name, self, *pieces)
         return true
       end  
       
       if mic_class.public_instance_methods.include?(request.request_method) &&
-         mic_class.instance_method(request.request_method).arity === (pieces.size)
-         mic_class.new(self).send(request.request_method, *pieces)
+         mic_class.instance_method(request.request_method).arity === (pieces.size + 1)
+         mic_class.new.send(request.request_method, self, *pieces)
          return true
       end
+      
+      raise Bad_Bunny::HTTP_404, "Bunny Not Found to handle: #{response.request_method} #{response.path}"
     end   
   end
   
-end # === Bunny_Chaser
+end # === Bunny_Mating

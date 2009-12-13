@@ -1,7 +1,6 @@
 require 'rack'
 require 'rack/utils'
 
-
 class The_Bunny_Farm
   
 	module Options
@@ -29,7 +28,7 @@ class The_Bunny_Farm
   def self.call(env)
     # For Thread safety in Rack, no instance variables should be changed.
     # Therefore, use :dup and a different version of :call
-    Bunny_Chaser.new.call!(env) 
+    Bunny_Mating.new.call!(env) 
   end
 
 	class << self
@@ -44,7 +43,6 @@ class The_Bunny_Farm
 	
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
-
 module Bad_Bunny
   HTTP_404      = Class.new(StandardError)
   Redirect      = Class.new(StandardError)
@@ -52,17 +50,14 @@ end # === Bad_Bunny
 
 require 'helpers/the_bunny/request'
 require 'helpers/the_bunny/response'
-require 'helpers/the_bunny/chaser'
-require 'helpers/the_bunny/dna'
-
+require 'helpers/the_bunny/mating'
 
 class Hello_Bunny
-  include Bunny_DNA
 
-  def GET_list
+  def GET_list the_stage
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index("# START " + "COUNTING")
-    render_html %~ 
+    the_stage.render_text_html %~ 
     Hello. This is The Bunny Farm on top of Rack. 
     I am only #{The_Bunny_Farm.total_lines} lines big.
     The path to this document is: #{the_stage.request.env_key(:PATH_INFO)}
@@ -74,12 +69,11 @@ class Hello_Bunny
 
 end # === Hello_Bunny
 
-class Request_Bunny
-	include Bunny_DNA
+class Inspect_Bunny
 
-	def GET_list
-		if The_Bunny_Farm.development?
-			render_html "<pre>" + the_stage.request.env.keys.sort.map { |key| 
+	def GET_request the_stage
+		if the_stage.development?
+			the_stage.render_text_html "<pre>" + the_stage.request.env.keys.sort.map { |key| 
 				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + the_stage.request.env[key].inspect 
 			}.join("<br />") + "</pre>"
 		else
@@ -92,7 +86,6 @@ end # === Request_Bunny
 __END__
 
 module Bunny_Cache_Controller
-
 
   # Specify response freshness policy for HTTP caches (Cache-Control header).
   # Any number of non-value directives (:public, :private, :no_cache,
