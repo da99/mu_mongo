@@ -16,12 +16,14 @@ class The_Bunny_Farm
   end
 
 	def self.total_lines
-		Dir[File.dirname(__FILE__) + '/*.rb'].inject(0) { |m, file|
-			
-			pieces = File.read(file).split("\n").map(&:strip)
-			end_index = ( pieces.index('__END__') || pieces.size )
-			m + (pieces[0, end_index].size)
-		}
+		['', '/middleware'].inject(0) { |total, dir|
+      total + Dir[File.dirname(__FILE__) + dir + '/*.rb'].inject(0) { |m, file|
+        
+        pieces = File.read(file).split("\n").map(&:strip)
+        end_index = ( pieces.index('__END__') || pieces.size )
+        m + (pieces[0, end_index].size)
+      } 
+    }
 	end
 
   def self.call(env)
@@ -45,49 +47,13 @@ end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 module Bad_Bunny
   HTTP_404      = Class.new(StandardError)
-  Unknown_Error = Class.new(StandardError)
+  Redirect      = Class.new(StandardError)
 end # === Bad_Bunny
 
 require 'helpers/the_bunny/request'
 require 'helpers/the_bunny/response'
 require 'helpers/the_bunny/chaser'
-
-module Bunny_DNA
-  
-  attr_reader :the_stage
-  
-  def initialize new_stage
-    @the_stage = new_stage
-  end
-
-  def render_html txt
-    @the_stage.response.set_body txt
-  end
-  
-end # === Bunny_DNA
-
-
-module Bunny_Helpers
- 
-  include Rack::Utils
-
-  # Halt processing and redirect to the URI provided.
-  def redirect! *args
-    response.redirect *args
-    raise Bad_Bunnys::Redirect
-  end
-
-  # Halt processing and return the error status provided.
-  def error!(body, code = 500)
-    response.set_body = body unless body.nil?
-    raise Bad_Bunnys.const_get("Error_#{code}")
-  end
-
-  def not_found *args
-    error *args
-  end
-
-end # ===  module Helpers * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+require 'helpers/the_bunny/dna'
 
 
 class Hello_Bunny
@@ -97,7 +63,7 @@ class Hello_Bunny
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index("# START " + "COUNTING")
     render_html %~ 
-    Hello. This is the The Bunny. 
+    Hello. This is The Bunny Farm on top of Rack. 
     I am only #{The_Bunny_Farm.total_lines} lines big.
     The path to this document is: #{the_stage.request.env_key(:PATH_INFO)}
 

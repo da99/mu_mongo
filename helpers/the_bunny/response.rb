@@ -11,29 +11,11 @@ module Bunny_Response
     new_key
   end
 
-  def valid_statuses
-    @valid_statuses ||= (100..600).to_a
-  end
-
-  def set_status raw_val
-    
-    new_val = raw_val.to_i
-    return(@status = new_val) if valid_statuses.include?(new_val)
-    
-    raise ArgumentError, "Invalid status: #{raw_val.inspect}"
-  end
-
   def set_header key, raw_val 
     if !valid_header_keys.include?(key)
       raise ArgumentError, "Invalid header key: #{key.inspect}"
     end
     @header[key] = raw_val.to_s
-  end
-
-  def set_body raw_body
-    new_body = raw_body.to_s
-    set_header 'Content-Length', new_body.size
-    @body = new_body
   end
 
   def set_as_plain_text
@@ -59,7 +41,7 @@ module Bunny_Response
 
 end # === Rack::Response
 
-Method_Air_Bags.collide? Bunny_Response, Rack::Response
+Method_Air_Bags.open_if_collision Bunny_Response, Rack::Response
 
 class Rack::Response
 	include Bunny_Response

@@ -27,7 +27,7 @@ module Bunny_Request
   
 end # ==== Rack::Request 
 
-Method_Air_Bags.collide? Bunny_Request, Rack::Request
+Method_Air_Bags.open_if_collision Bunny_Request, Rack::Request
 
 class Rack::Request
 	

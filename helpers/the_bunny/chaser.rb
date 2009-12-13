@@ -3,6 +3,8 @@ class Bunny_Chaser
 
   attr_accessor :env, :request, :response, :params
 
+  include Rack::Utils
+  
   def call!(new_env)
     @env      = new_env
     @request  = Rack::Request.new(@env)
@@ -14,17 +16,18 @@ class Bunny_Chaser
       
       run_the_request 
       
+    rescue Bad_Bunny::Redirect
+      
     rescue Bad_Bunny::HTTP_404
       
       @env['little.microphone.error'] = $!
-      @response.set_status 404
-      @response.set_body   '<h1>Not Found</h1>'
+      @response.status = 404
+      @response.body   = '<h1>Not Found</h1>'
       
-    rescue Bad_Bunny::Unknown_Error
+    rescue Object
       
       @env['little.microphone.error'] = $!
-      @response.set_status 500
-      @response.set_body   '<h1>Unknown Error.</h1>'
+      error! '<h1>Unknown Error.</h1>'
       
     end
 
@@ -41,7 +44,26 @@ class Bunny_Chaser
     [status, header, body]
   end
 
+  
+  # Halt processing and redirect to the URI provided.
+  def redirect! *args
+    response.redirect *args
+    raise Bad_Bunny::Redirect
+  end
 
+
+  def not_found *args
+    error! *args
+  end
+
+  # Halt processing and return the error status provided.
+  def error!(body, code = 500)
+    response.status = code
+    response.body   = body unless body.nil?
+    response.header['Content-Length'] = body.size.to_s
+    raise Bad_Bunny.const_get("Error_#{code}")
+  end
+  
   # ------------------------------------------------------------------------------------
   private # ----------------------------------------------------------------------------
   # ------------------------------------------------------------------------------------

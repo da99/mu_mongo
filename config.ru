@@ -12,13 +12,10 @@ my_app_root     = File.expand_path( File.dirname(__FILE__) )
 down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
 issue_client    = File.join( my_app_root, '/helpers/app/issue_client')
 
-
 begin
-  
-
 
   require( 'helpers/app/method_air_bags'  )
-  require( 'helpers/the_bunny/the_bunny'  )
+  require( 'helpers/the_bunny/farm'  )
   require( 'helpers/the_bunny/middleware/allow_only_roman_uri'  )
 
   # ===============================================
