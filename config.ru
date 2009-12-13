@@ -17,6 +17,7 @@ begin
   require( 'helpers/app/method_air_bags'  )
   require( 'helpers/the_bunny/farm'  )
   require( 'helpers/the_bunny/middleware/allow_only_roman_uri'  )
+  require( 'helpers/the_bunny/middleware/squeeze_uri_dots'  )
 
   # ===============================================
   # App Helpers
@@ -41,8 +42,11 @@ begin
   # Configurations
   # ===============================================
 
+	use Rack::ContentLength
   use Allow_Only_Roman_Uri
+	use Squeeze_Uri_Dots
   use Rack::Session::Pool  
+	
   # use( Rack::Reloader, 2 ) if The_Bunny_Farm.development?
 
   # Lil_Config = Struct.new(

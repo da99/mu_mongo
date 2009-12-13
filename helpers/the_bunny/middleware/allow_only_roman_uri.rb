@@ -5,9 +5,9 @@ class Allow_Only_Roman_Uri
   end
   
   def call new_env
-    if new_env['PATH_INFO'][/[^a-zA-Z0-9\_\-\/\.]+/]
+    if new_env['REQUEST_URI'][/[^a-zA-Z0-9\_\-\/\.]+/]
       content = "<h1>Not Found</h1>"
-      [404, {'Content-Type' => 'text/html', 'Content-Type' => content.size.to_s }, content]
+      [404, { 'Content-Type' => 'text/html' }, content]
     else
       @app.call new_env
     end
