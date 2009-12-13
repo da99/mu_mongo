@@ -15,7 +15,7 @@ class The_Bunny_Farm
   end
 
 	def self.total_lines
-		['', '/middleware'].inject(0) { |total, dir|
+		['', '../../../middleware'].inject(0) { |total, dir|
       total + Dir[File.dirname(__FILE__) + dir + '/*.rb'].inject(0) { |m, file|
         
         pieces = File.read(file).split("\n").map(&:strip)

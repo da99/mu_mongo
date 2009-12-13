@@ -16,8 +16,8 @@ begin
 
   require( 'helpers/app/method_air_bags'  )
   require( 'helpers/the_bunny/farm'  )
-  require( 'helpers/the_bunny/middleware/allow_only_roman_uri'  )
-  require( 'helpers/the_bunny/middleware/squeeze_uri_dots'  )
+  require( 'middleware/allow_only_roman_uri'  )
+  require( 'middleware/squeeze_uri_dots'  )
 
   # ===============================================
   # App Helpers
