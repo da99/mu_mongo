@@ -1,5 +1,5 @@
 
-class Lil_Mic_Gig
+class Bunny_Chaser
 
   attr_accessor :env, :request, :response, :params
 
@@ -14,13 +14,13 @@ class Lil_Mic_Gig
       
       run_the_request 
       
-    rescue Lil_Mic_Show_Stopper::HTTP_404
+    rescue Bad_Bunny::HTTP_404
       
       @env['little.microphone.error'] = $!
       @response.set_status 404
       @response.set_body   '<h1>Not Found</h1>'
       
-    rescue Lil_Mic_Show_Stopper::Unknown_Error
+    rescue Bad_Bunny::Unknown_Error
       
       @env['little.microphone.error'] = $!
       @response.set_status 500
@@ -47,11 +47,11 @@ class Lil_Mic_Gig
   # ------------------------------------------------------------------------------------
 
   def mic_class_name_suffix
-    '_Mic'
+    '_Bunny'
   end
 
   def mic_classes
-    [Hello_Mic, Request_Mic]
+    [Hello_Bunny, Request_Bunny]
   end
 
 	def mic_class_names
@@ -105,4 +105,4 @@ class Lil_Mic_Gig
     end   
   end
   
-end # === Lil_Mic_Gig
+end # === Bunny_Chaser

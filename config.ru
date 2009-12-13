@@ -14,8 +14,12 @@ issue_client    = File.join( my_app_root, '/helpers/app/issue_client')
 
 
 begin
+  
+
+
   require( 'helpers/app/method_air_bags'  )
-  require( 'helpers/lil_mic/lil_mic'  )
+  require( 'helpers/the_bunny/the_bunny'  )
+  require( 'helpers/the_bunny/middleware/allow_only_roman_uri'  )
 
   # ===============================================
   # App Helpers
@@ -40,8 +44,9 @@ begin
   # Configurations
   # ===============================================
 
+  use Allow_Only_Roman_Uri
   use Rack::Session::Pool  
-  # use( Rack::Reloader, 2 ) if The_Little_Microphone_Web_Framework.development?
+  # use( Rack::Reloader, 2 ) if The_Bunny_Farm.development?
 
   # Lil_Config = Struct.new(
   #   :SITE_DOMAIN, 
@@ -58,7 +63,7 @@ begin
   # ).new
 
 
-  class The_Little_Microphone_Web_Framework
+  class The_Bunny_Farm
     
     module Options
       SITE_DOMAIN        = 'megaUni.com'
@@ -76,7 +81,7 @@ begin
   case ENV['RACK_ENV']
     
     when 'test'
-      class The_Little_Microphone_Web_Framework
+      class The_Bunny_Farm
         module Options
           CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
           DB_NAME     = 'megauni-test'
@@ -86,7 +91,7 @@ begin
       
     when 'development'
       # require 'helpers/sinatra/css'
-      class The_Little_Microphone_Web_Framework
+      class The_Bunny_Farm
         module Options
           CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
           DB_NAME     = "megauni-dev"
@@ -95,7 +100,7 @@ begin
       end
 
     when 'production'
-      class The_Little_Microphone_Web_Framework
+      class The_Bunny_Farm
         module Options
           CouchDB_URI = "http://un**:pswd**@127.0.0.1:5984/"
           DB_NAME     = 'megauni-production'
@@ -168,7 +173,7 @@ begin
   # DesignDoc.create_or_update if DesignDoc.needs_push_to_db?
     
   # Finally, start the app.
-  the_app = The_Little_Microphone_Web_Framework
+  the_app = The_Bunny_Farm
   run the_app
 
 rescue Object => e

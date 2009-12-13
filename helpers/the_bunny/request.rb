@@ -1,7 +1,7 @@
 
 # The request object. See Rack::Request for more info:
 # http://rack.rubyforge.org/doc/classes/Rack/Request.html
-module Lil_Mic_Request 
+module Bunny_Request 
   
   def env_key raw_find_key
     find_key = raw_find_key.to_s.strip
@@ -27,11 +27,11 @@ module Lil_Mic_Request
   
 end # ==== Rack::Request 
 
-Method_Air_Bags.collide? Lil_Mic_Request, Rack::Request
+Method_Air_Bags.collide? Bunny_Request, Rack::Request
 
 class Rack::Request
 	
-	include Lil_Mic_Request
+	include Bunny_Request
 
 	# Taken with permission from The Sinatra Framework:
 	#   Override Rack 0.9.x's #params implementation (see #72 in Sinatra's lighthouse)

@@ -2,7 +2,7 @@ require 'rack'
 require 'rack/utils'
 
 
-class The_Little_Microphone_Web_Framework
+class The_Bunny_Farm
   
 	module Options
 		ENVIRONS = [:development, :production, :test]
@@ -26,8 +26,8 @@ class The_Little_Microphone_Web_Framework
 
   def self.call(env)
     # For Thread safety in Rack, no instance variables should be changed.
-    # Therefore, use :dup and a different version of :call!
-    Lil_Mic_Gig.new.call!(env) 
+    # Therefore, use :dup and a different version of :call
+    Bunny_Chaser.new.call!(env) 
   end
 
 	class << self
@@ -43,16 +43,16 @@ class The_Little_Microphone_Web_Framework
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 
-module Lil_Mic_Show_Stopper
+module Bad_Bunny
   HTTP_404      = Class.new(StandardError)
   Unknown_Error = Class.new(StandardError)
-end # === Lil_Mic_Show_Stopper
+end # === Bad_Bunny
 
-require 'helpers/lil_mic/lil_mic_request'
-require 'helpers/lil_mic/lil_mic_response'
-require 'helpers/lil_mic/lil_mic_gig'
+require 'helpers/the_bunny/request'
+require 'helpers/the_bunny/response'
+require 'helpers/the_bunny/chaser'
 
-module Lil_Mic_Base
+module Bunny_DNA
   
   attr_reader :the_stage
   
@@ -64,23 +64,23 @@ module Lil_Mic_Base
     @the_stage.response.set_body txt
   end
   
-end # === Lil_Mic_Base
+end # === Bunny_DNA
 
 
-module Lil_Mic_Helpers
+module Bunny_Helpers
  
   include Rack::Utils
 
   # Halt processing and redirect to the URI provided.
   def redirect! *args
     response.redirect *args
-    raise Lil_Mic_Show_Stoppers::Redirect
+    raise Bad_Bunnys::Redirect
   end
 
   # Halt processing and return the error status provided.
   def error!(body, code = 500)
     response.set_body = body unless body.nil?
-    raise Lil_Mic_Show_Stoppers.const_get("Error_#{code}")
+    raise Bad_Bunnys.const_get("Error_#{code}")
   end
 
   def not_found *args
@@ -90,15 +90,15 @@ module Lil_Mic_Helpers
 end # ===  module Helpers * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 
-class Hello_Mic
-  include Lil_Mic_Base
+class Hello_Bunny
+  include Bunny_DNA
 
   def GET_list
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index("# START " + "COUNTING")
     render_html %~ 
-    Hello. This is the The_Little_Microphone_Framework. 
-    I am only #{The_Little_Microphone_Web_Framework.total_lines} lines big.
+    Hello. This is the The Bunny. 
+    I am only #{The_Bunny_Farm.total_lines} lines big.
     The path to this document is: #{the_stage.request.env_key(:PATH_INFO)}
 
     Shhhh.....
@@ -106,26 +106,26 @@ class Hello_Mic
     ~.gsub("\n", "<br />")
   end
 
-end # === Hello_Mic
+end # === Hello_Bunny
 
-class Request_Mic
-	include Lil_Mic_Base
+class Request_Bunny
+	include Bunny_DNA
 
 	def GET_list
-		if The_Little_Microphone_Web_Framework.development?
+		if The_Bunny_Farm.development?
 			render_html "<pre>" + the_stage.request.env.keys.sort.map { |key| 
 				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + the_stage.request.env[key].inspect 
 			}.join("<br />") + "</pre>"
 		else
-			raise Lil_Mic_Show_Stopper::HTTP_404, "/request only allowed in :development environments."
+			raise Bad_Bunny::HTTP_404, "/request only allowed in :development environments."
 		end
 	end
 	
-end # === Request_Mic
+end # === Request_Bunny
 
 __END__
 
-module Lil_Mic_Cache_Controller
+module Bunny_Cache_Controller
 
 
   # Specify response freshness policy for HTTP caches (Cache-Control header).
@@ -217,9 +217,9 @@ module Lil_Mic_Cache_Controller
   end
 
 
-end  # === module Lil_Mic_Cache_Controller
+end  # === module Bunny_Cache_Controller
 
-module Lil_Mic_Callers
+module Bunny_Callers
 
 
   def dump_errors!(boom)
@@ -252,7 +252,7 @@ module Lil_Mic_Callers
       reject { |file,line| CALLERS_TO_IGNORE.any? { |pattern| file =~ pattern } }
   end
 
-end # === Lil_Mic_Callers -----------------------------------------------------
+end # === Bunny_Callers -----------------------------------------------------
 
 
 

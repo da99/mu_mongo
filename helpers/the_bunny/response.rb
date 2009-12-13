@@ -1,5 +1,5 @@
 
-module Lil_Mic_Response
+module Bunny_Response
   
   def valid_header_keys
     @valid_header_keys ||= (@header.keys + ['Content-Disposition', 'Content-Type', 'Content-Length']).uniq
@@ -59,8 +59,8 @@ module Lil_Mic_Response
 
 end # === Rack::Response
 
-Method_Air_Bags.collide? Lil_Mic_Response, Rack::Response
+Method_Air_Bags.collide? Bunny_Response, Rack::Response
 
 class Rack::Response
-	include Lil_Mic_Response
+	include Bunny_Response
 end # === Rack::Response

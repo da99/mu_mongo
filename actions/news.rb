@@ -16,7 +16,7 @@ helpers {
 #   crud!
 # end
 
-module Sin_Mic
+module Sin_Bunny
   
   attr_reader :sin
   
@@ -26,9 +26,9 @@ module Sin_Mic
   
 end
 
-class News_Mic
+class News_Bunny
 	
-	include Sin_Mic
+	include Sin_Bunny
 	
 	def GET_new
 		sin.crud!
@@ -66,11 +66,11 @@ class News_Mic
 	end
 
 
-end # === News_Mic
+end # === News_Bunny
 
 
-set :mic_class_name_suffix, '_Mic'
-set :mic_classes, [News_Mic]
+set :mic_class_name_suffix, '_Bunny'
+set :mic_classes, [News_Bunny]
 set :mic_class_names, lambda { mic_classes.map(&:to_s) }
 
 before {
