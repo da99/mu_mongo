@@ -1,18 +1,23 @@
 require 'rack'
 require 'rack/utils'
 
-class The_Bunny_Farm
+class The_Bunny
   
+  # ======== CLASS stuff ======== 
+
 	module Options
 		ENVIRONS = [:development, :production, :test]
 	end
 
-  attr_accessor :app
-
-  def initialize(app=nil)
-    raise "app : #{app.inspect}"
-    @app = app
-  end
+	class << self
+		Options::ENVIRONS.each { |envi|
+			eval %~
+				def #{envi}?
+					ENV['RACK_ENV'] == '#{envi}'
+				end
+			~
+		}
+	end
 
 	def self.total_lines
 		['', '../../../middleware'].inject(0) { |total, dir|
@@ -26,21 +31,217 @@ class The_Bunny_Farm
 	end
 
   def self.call(env)
+    #
+    # NOTE: 
     # For Thread safety in Rack, no instance variables should be changed.
     # Therefore, use :dup and a different version of :call
-    Bunny_Mating.new.call!(env) 
+    # 
+    new(env) 
   end
 
-	class << self
-		Options::ENVIRONS.each { |envi|
-			eval %~
-				def #{envi}?
-					ENV['RACK_ENV'] == '#{envi}'
-				end
-			~
-		}
+  # ======== INSTANCE stuff ======== 
+  
+  include Rack::Utils
+  attr_accessor :app
+  attr_accessor :env, :request, :response, :params
+
+  def initialize(new_env)
+    @app = self
+    @env = new_env
+    @env      = new_env
+    @request  = Rack::Request.new(@env)
+    @response = Rack::Response.new
+
+    begin
+      
+      run_the_request 
+      
+    rescue Bad_Bunny::Redirect
+      
+    rescue Bad_Bunny::HTTP_404
+      
+      @env['little.microphone.error'] = $!
+      @response.status = 404
+      @response.body   = '<h1>Not Found</h1>'
+      
+    rescue Object
+      if The_Bunny
+        raise $!
+      end
+      @env['little.microphone.error'] = $!
+      error! '<h1>Unknown Error.</h1>'
+      
+    end
+
+    status, header, body = @response.finish
+
+    # From The Sinatra Framework:
+    #   Never produce a body on HEAD requests. Do retain the Content-Length
+    #   unless it's "0", in which case we assume it was calculated erroneously
+    #   for a manual HEAD response and remove it entirely.
+    if @env['REQUEST_METHOD'] == 'HEAD'
+      body = []
+      header.delete('Content-Length') if header['Content-Length'] == '0'
+    end
+
+    [status, header, body]
+  end
+
+  Options::ENVIRONS.each { |envir|
+    %~
+      def #{envir}?
+        ENV['RACK_ENV'] == "#{envir}"
+      end
+    ~
+  }
+  
+  def redirect! *args
+    render_text_plain ''
+    response.redirect *args
+    raise Bad_Bunny::Redirect
+  end
+
+  def not_found! body
+    error! body, 404
+  end
+
+  # Halt processing and return the error status provided.
+  def error!(body, code = 500)
+    response.status = code
+    response.body   = body unless body.nil?
+    raise Bad_Bunny.const_get("Error_#{code}")
+  end
+
+  def render_text_plain txt
+    response.body = txt
+    response.set_header 'Content-Type', 'text/plain'
+  end
+
+  def render_text_html txt
+    response.body = txt
+    response.set_header 'Content-Type', 'text/html'
+  end
+   
+  def env_key raw_find_key
+    find_key = raw_find_key.to_s.strip
+    if @env.has_key?(find_key)
+      return @env[find_key]
+    end
+    raise ArgumentError, "Key not found: #{find_key.inspect}"
+  end
+
+  def set_env_key find_key, new_value
+    env_key find_key
+    @env[find_key] = new_value
+  end
+
+  # Returns an array of acceptable media types for the response
+  def allowed_mime_types
+    @allowed_mime_types ||= @env['HTTP_ACCEPT'].to_s.split(',').map { |a| a.strip }
+  end
+
+  def ssl?
+    (@env['HTTP_X_FORWARDED_PROTO'] || @env['rack.url_scheme']) === 'https'
+  end
+   
+  def valid_header_keys
+    @valid_header_keys ||= (@header.keys + ['Content-Disposition', 'Content-Type', 'Content-Length']).uniq
+  end
+
+  def add_valid_header_key raw_key
+    new_key = raw_key.to_s.strip
+    @valid_header_keys = (valid_header_keys + [raw_key]).uniq
+    new_key
+  end
+
+  def set_header key, raw_val 
+    if !valid_header_keys.include?(key)
+      raise ArgumentError, "Invalid header key: #{key.inspect}"
+    end
+    @header[key] = raw_val.to_s
+  end
+
+  # Set the Content-Type of the response body given a media type or file
+  # extension.
+  def set_content_type(mime_type, params={})
+    if params.any?
+      params = params.collect { |kv| "%s=%s" % kv }.join(', ')
+      set_header 'Content-Type', [mime_type, params].join(";")
+    else
+      set_header 'Content-Type', mime_type
+    end
+  end
+
+  # Set the Content-Disposition to "attachment" with the specified filename,
+  # instructing the user agents to prompt to save.
+  def set_attachment(filename)
+    set_header 'Content-Disposition', 'attachment; filename="%s"' % File.basename(filename)
+  end  
+  
+  # ------------------------------------------------------------------------------------
+  private # ----------------------------------------------------------------------------
+  # ------------------------------------------------------------------------------------
+
+  def mic_classes
+    [Hello_Bunny, Inspect_Bunny]
+  end
+  
+  def mic_class_name_suffix
+    '_Bunny'
+  end
+
+	def mic_class_names
+		@mic_class_names ||= mic_classes.map(&:to_s)
 	end
-	
+
+  def run_the_request 
+    
+    http_meth = request.env_key(:REQUEST_METHOD).to_s
+    pieces    = request.env_key(:PATH_INFO).split('/')
+
+    pieces.shift if pieces.first === ''
+
+    if pieces.empty?
+      mic_classes.first.new.send(http_meth + '_list', self)
+      return true
+    end
+
+    mic_class_name = pieces.first.
+                      gsub(/[^a-zA-Z0-9_]/, '_').
+                      split('_').map(&:capitalize).
+                      join('_') + 
+                      mic_class_name_suffix
+
+    if mic_class_names.include?(mic_class_name)
+      pieces.shift
+
+      mic_class = Object.const_get(mic_class_name)
+
+      if pieces.empty? && request.get?
+        if mic_class.public_instance_methods.include?(request.request_method + '_list') 
+          mic_class.new.send('GET_list', self)
+          return true
+        end
+      end
+
+      action_name = [ request.request_method , pieces.first ].compact.join('_')
+
+      if mic_class.public_instance_methods.include?(action_name) &&
+        mic_class.instance_method(action_name).arity === (pieces.empty? ? 1 : pieces.size )
+        pieces.shift
+        mic_class.new.send(action_name, self, *pieces)
+        return true
+      end  
+      
+      if mic_class.public_instance_methods.include?(request.request_method) &&
+         mic_class.instance_method(request.request_method).arity === (pieces.size + 1)
+         mic_class.new.send(request.request_method, self, *pieces)
+         return true
+      end
+      
+      raise Bad_Bunny::HTTP_404, "Bunny Not Found to handle: #{response.request_method} #{response.path}"
+    end   
+  end
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 module Bad_Bunny
@@ -59,7 +260,7 @@ class Hello_Bunny
     end_index     = file_contents.index("# START " + "COUNTING")
     the_stage.render_text_html %~ 
     Hello. This is The Bunny Farm on top of Rack. 
-    I am only #{The_Bunny_Farm.total_lines} lines big.
+    I am only #{The_Bunny.total_lines} lines big.
     The path to this document is: #{the_stage.request.env_key(:PATH_INFO)}
 
     Shhhh.....

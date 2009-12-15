@@ -14,8 +14,7 @@ issue_client    = File.join( my_app_root, '/helpers/app/issue_client')
 
 begin
 
-  require( 'helpers/app/method_air_bags'  )
-  require( 'helpers/the_bunny/farm'  )
+  require( 'middleware/the_bunny'  )
   require( 'middleware/allow_only_roman_uri'  )
   require( 'middleware/squeeze_uri_dots'  )
 
@@ -42,12 +41,17 @@ begin
   # Configurations
   # ===============================================
 
+  if The_Bunny.development?
+    require( 'middleware/mab_in_disguise'  )
+    use Mab_In_Disguise
+  end
+
 	use Rack::ContentLength
   use Allow_Only_Roman_Uri
 	use Squeeze_Uri_Dots
   use Rack::Session::Pool  
 	
-  # use( Rack::Reloader, 2 ) if The_Bunny_Farm.development?
+  # use( Rack::Reloader, 2 ) if The_Bunny.development?
 
   # Lil_Config = Struct.new(
   #   :SITE_DOMAIN, 
@@ -64,7 +68,7 @@ begin
   # ).new
 
 
-  class The_Bunny_Farm
+  class The_Bunny
     
     module Options
       SITE_DOMAIN        = 'megaUni.com'
@@ -82,7 +86,7 @@ begin
   case ENV['RACK_ENV']
     
     when 'test'
-      class The_Bunny_Farm
+      class The_Bunny
         module Options
           CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
           DB_NAME     = 'megauni-test'
@@ -92,7 +96,7 @@ begin
       
     when 'development'
       # require 'helpers/sinatra/css'
-      class The_Bunny_Farm
+      class The_Bunny
         module Options
           CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
           DB_NAME     = "megauni-dev"
@@ -101,7 +105,7 @@ begin
       end
 
     when 'production'
-      class The_Bunny_Farm
+      class The_Bunny
         module Options
           CouchDB_URI = "http://un**:pswd**@127.0.0.1:5984/"
           DB_NAME     = 'megauni-production'
@@ -174,7 +178,7 @@ begin
   # DesignDoc.create_or_update if DesignDoc.needs_push_to_db?
     
   # Finally, start the app.
-  the_app = The_Bunny_Farm
+  the_app = The_Bunny
   run the_app
 
 rescue Object => e
