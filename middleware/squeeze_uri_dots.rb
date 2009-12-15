@@ -5,7 +5,7 @@ class Squeeze_Uri_Dots
   end
   
   def call new_env
-    if new_env['REQUEST_URI']['..'] # Using :REQUEST_URI includes query string
+    if new_env['REQUEST_URI']['..'] || new_env['REQUEST_URI']['./'] || new_env['REQUEST_URI']['/.'] # Using :REQUEST_URI includes query string
       squeezed = new_env['REQUEST_URI'].gsub(/\.+/, '.').gsub('./', '/').gsub('/.','/')
       res      = Rack::Response.new
       res.redirect squeezed, 301

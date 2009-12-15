@@ -17,6 +17,11 @@ class The_Bunny
 				end
 			~
 		}
+
+    def environment
+      ENV['RACK_ENV']
+    end
+
 	end
 
 	def self.total_lines
@@ -36,7 +41,7 @@ class The_Bunny
     # For Thread safety in Rack, no instance variables should be changed.
     # Therefore, use :dup and a different version of :call
     # 
-    new(env) 
+    new(env).call!
   end
 
   # ======== INSTANCE stuff ======== 
@@ -72,7 +77,9 @@ class The_Bunny
       error! '<h1>Unknown Error.</h1>'
       
     end
+  end
 
+  def call!
     status, header, body = @response.finish
 
     # From The Sinatra Framework:
@@ -95,6 +102,10 @@ class The_Bunny
     ~
   }
   
+  def environment 
+    ENV['RACK_ENV']
+  end
+
   def redirect! *args
     render_text_plain ''
     response.redirect *args
@@ -119,7 +130,10 @@ class The_Bunny
 
   def render_text_html txt
     response.body = txt
-    response.set_header 'Content-Type', 'text/html'
+    set_header 'Content-Type',     'text/html; charset = utf-8'
+    set_header 'Accept-Charset',   'utf-8'
+    set_header 'Cache-Control',    'no-cache'
+    set_header 'Pragma',           'no-cache'
   end
    
   def env_key raw_find_key
@@ -145,7 +159,13 @@ class The_Bunny
   end
    
   def valid_header_keys
-    @valid_header_keys ||= (@header.keys + ['Content-Disposition', 'Content-Type', 'Content-Length']).uniq
+    @valid_header_keys ||= (@response.header.keys + [ 'Accept-Charset', 
+    'Content-Disposition', 
+    'Content-Type', 
+    'Content-Length',
+    'Cache-Control',
+    'Pragma'
+    ]).uniq
   end
 
   def add_valid_header_key raw_key
@@ -158,7 +178,7 @@ class The_Bunny
     if !valid_header_keys.include?(key)
       raise ArgumentError, "Invalid header key: #{key.inspect}"
     end
-    @header[key] = raw_val.to_s
+    @response.header[key] = raw_val.to_s
   end
 
   # Set the Content-Type of the response body given a media type or file
@@ -196,8 +216,8 @@ class The_Bunny
 
   def run_the_request 
     
-    http_meth = request.env_key(:REQUEST_METHOD).to_s
-    pieces    = request.env_key(:PATH_INFO).split('/')
+    http_meth = env_key(:REQUEST_METHOD).to_s
+    pieces    = env_key(:PATH_INFO).split('/')
 
     pieces.shift if pieces.first === ''
 
@@ -249,22 +269,18 @@ module Bad_Bunny
   Redirect      = Class.new(StandardError)
 end # === Bad_Bunny
 
-require 'helpers/the_bunny/request'
-require 'helpers/the_bunny/response'
-require 'helpers/the_bunny/mating'
-
 class Hello_Bunny
 
   def GET_list the_stage
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
-    end_index     = file_contents.index("# START " + "COUNTING")
+    end_index     = file_contents.index('__' + 'END' + '__')
     the_stage.render_text_html %~ 
     Hello. This is The Bunny Farm on top of Rack. 
     I am only #{The_Bunny.total_lines} lines big.
-    The path to this document is: #{the_stage.request.env_key(:PATH_INFO)}
+    The path to this document is: #{the_stage.env_key(:PATH_INFO)}
 
     Shhhh.....
-    SSL is set to: #{the_stage.request.ssl?.inspect}
+    SSL is set to: #{the_stage.ssl?.inspect}
     ~.gsub("\n", "<br />")
   end
 

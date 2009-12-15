@@ -178,8 +178,7 @@ begin
   # DesignDoc.create_or_update if DesignDoc.needs_push_to_db?
     
   # Finally, start the app.
-  the_app = The_Bunny
-  run the_app
+  run The_Bunny
 
 rescue Object => e
   
@@ -190,7 +189,9 @@ rescue Object => e
   #  ENV['RACK_ENV'], 
   #  $!
   # ) 
-
+	if ENV['RACK_ENV'] == 'development'
+		raise e
+	end
   the_app = lambda { |env|
     suffix = case ENV['RACK_ENV']
              when 'development'
