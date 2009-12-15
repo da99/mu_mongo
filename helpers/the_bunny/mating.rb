@@ -55,14 +55,14 @@ class Bunny_Mating
     ~
   }
   
-  # Halt processing and redirect to the URI provided.
   def redirect! *args
+    render_text_plain ''
     response.redirect *args
     raise Bad_Bunny::Redirect
   end
 
-  def not_found *args
-    error! *args
+  def not_found! body
+    error! body, 404
   end
 
   # Halt processing and return the error status provided.
@@ -86,12 +86,12 @@ class Bunny_Mating
   private # ----------------------------------------------------------------------------
   # ------------------------------------------------------------------------------------
 
-  def mic_class_name_suffix
-    '_Bunny'
-  end
-
   def mic_classes
     [Hello_Bunny, Inspect_Bunny]
+  end
+  
+  def mic_class_name_suffix
+    '_Bunny'
   end
 
 	def mic_class_names
