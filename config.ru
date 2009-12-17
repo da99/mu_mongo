@@ -7,6 +7,7 @@ require 'jcode'
 # ===============================================
 require 'multibyte'
 require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
+require 'mustache'
 
 my_app_root     = File.expand_path( File.dirname(__FILE__) )
 down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')

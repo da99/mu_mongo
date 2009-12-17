@@ -24,14 +24,14 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 
     title( "{{title}}" )
 
-    link( :rel=>"shortcut icon", :href=>"{{full_uri}}/favicon.ico", :type=>"image/x-icon")
+    link( :rel=>"shortcut icon", :href=>"{{url}}favicon.ico", :type=>"image/x-icon")
 		
-    self << "{{#mobile_request?}}"
+    mustache("mobile_request?") {
       link( :rel=>"stylesheet",    :href=>"{{css_file}}", :media=>"screen", :type=>"text/css" )
       # link( :rel=>"stylesheet",    :href=>"/skins/{{skin_name}}/css/{{page_name}}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
-    self << "{{/mobile_request?}}"
+		}
     
-		self << "{{head_content}}"
+		mustache "head_content"
    
   } # head
 
@@ -39,11 +39,10 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     div.container! { 
     
       div.timestamp! '{{js_epoch_time}}'
-			# the_app.js_epoch_time(Time.now.utc.to_i).to_s
 
-      mustache '{{#loading}}'
+      mustache 'loading' do
         div.loading! 'Loading...'
-			mustache '{{/loading}}'
+			end
 
       # ================= the_content ================================
 
@@ -55,11 +54,10 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       # ================= the_footer ================================
       div.footer! {
 				span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-        # span "(c) #{[2009,Time.now.utc.year].uniq.join('-')} #{the_app.options.site_domain}. Some rights reserved."
       } # the_footer
       
     
-			self << '{{javascripts}}'
+			mustache 'javascripts'
 
       # if @javascripts
       #   if @javascripts.eql?( 'default' )

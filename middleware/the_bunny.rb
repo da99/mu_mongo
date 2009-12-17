@@ -1,5 +1,6 @@
 require 'rack'
 require 'rack/utils'
+require 'views/Bunny_Mustache'
 
 class The_Bunny
   
@@ -24,17 +25,6 @@ class The_Bunny
 
 	end
 
-	def self.total_lines
-		['', '../../../middleware'].inject(0) { |total, dir|
-      total + Dir[File.dirname(__FILE__) + dir + '/*.rb'].inject(0) { |m, file|
-        
-        pieces = File.read(file).split("\n").map(&:strip)
-        end_index = ( pieces.index('__END__') || pieces.size )
-        m + (pieces[0, end_index].size)
-      } 
-    }
-	end
-
   def self.call(env)
     #
     # NOTE: 
@@ -47,12 +37,11 @@ class The_Bunny
   # ======== INSTANCE stuff ======== 
   
   include Rack::Utils
-  attr_accessor :app
-  attr_accessor :env, :request, :response, :params
+  attr_accessor :app, :env, :request, :response, :params
 
   def initialize(new_env)
-    @app = self
-    @env = new_env
+    @app      = self
+    @env      = new_env
     @env      = new_env
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
@@ -135,6 +124,19 @@ class The_Bunny
     set_header 'Cache-Control',    'no-cache'
     set_header 'Pragma',           'no-cache'
   end
+
+  def render_html_template obj, meth = nil
+    meth_name        = meth || (caller[0] =~ /`([^']*)'/ && $1)
+    file_name        = "#{obj.class}_#{meth_name}"
+    template_content = File.read(File.expand_path('templates/english/mustache/' + file_name + '.html'))
+    
+    require "views/#{file_name}.rb"
+    view_class = Object.const_get(file_name)
+    view_class.raise_on_context_miss = true
+    html       = view_class.new(self).render( template_content )
+    
+    render_text_html(html)
+  end
    
   def env_key raw_find_key
     find_key = raw_find_key.to_s.strip
@@ -203,7 +205,7 @@ class The_Bunny
   # ------------------------------------------------------------------------------------
 
   def mic_classes
-    [Hello_Bunny, Inspect_Bunny]
+    [Inspect_Bunny]
   end
   
   def mic_class_name_suffix
@@ -269,27 +271,17 @@ module Bad_Bunny
   Redirect      = Class.new(StandardError)
 end # === Bad_Bunny
 
-class Hello_Bunny
+class Inspect_Bunny
 
   def GET_list the_stage
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index('__' + 'END' + '__')
-    the_stage.render_text_html %~ 
-    Hello. This is The Bunny Farm on top of Rack. 
-    I am only #{The_Bunny.total_lines} lines big.
-    The path to this document is: #{the_stage.env_key(:PATH_INFO)}
-
-    Shhhh.....
-    SSL is set to: #{the_stage.ssl?.inspect}
-    ~.gsub("\n", "<br />")
+    
+    the_stage.render_html_template self
   end
-
-end # === Hello_Bunny
-
-class Inspect_Bunny
-
+  
 	def GET_request the_stage
-		if the_stage.development?
+		if the_stage.class.development?
 			the_stage.render_text_html "<pre>" + the_stage.request.env.keys.sort.map { |key| 
 				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + the_stage.request.env[key].inspect 
 			}.join("<br />") + "</pre>"

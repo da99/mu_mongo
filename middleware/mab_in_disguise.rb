@@ -17,10 +17,23 @@ class Markaby::Builder
     input attrs.update(defaults)     
   end
 
-  def mustache mus
-    text(
-       "\n#{mus}\n\n"
-    )
+	def partial file_name
+		caller_file = File.expand_path(caller[0].split(':').first)
+		caller_dir  = File.dirname(File.expand_path(caller_file))
+		partial_file = File.join(caller_dir, file_name)
+		raise "Not a file: #{partial_file}" if not File.file?(partial_file)
+		partial_content = File.read(partial_file)
+		eval(partial_content, nil, partial_file, 1)
+	end
+
+  def mustache mus, &blok
+    if block_given?
+      text "\n{{\##{mus}}}\n\n"
+      yield
+      text "\n{{/#{mus}}}\n\n" 
+    else
+      text "\n{{#{mus}}}\n\n"
+    end
   end
 
   def partial( raw_file_name )
@@ -68,7 +81,7 @@ class Mab_In_Disguise
       
       template_files(mab_dir).each { |file_name|
         
-        new_file_name = File.join(mus_dir, File.basename(file_name) )
+        new_file_name = File.join(mus_dir, File.basename(file_name) ).sub(/\.rb$/,'.html')
         is_partial    = file_name[/^__/]
         content       = File.read(file_name)
 
@@ -78,7 +91,6 @@ class Mab_In_Disguise
 
         compiled      = Markaby::Builder.new { eval(content, nil, file_name, 2) }
         
-        # puts "Writing to file: #{new_file_name}"
         File.open(new_file_name, 'w') { |f_io| 
           f_io.write compiled 
         }
