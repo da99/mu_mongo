@@ -1,4 +1,3 @@
-save_to('title') { 'My Account' }
 partial('__nav_bar')
 
 
@@ -7,14 +6,13 @@ div.content!  {
   div.usernames {
     h4 'Usernames'
     a.new('Add Another Username.', :href=>'#add_username')
-    the_app.current_member.data.lives.each { |life_cat, life|
-      div.un(:id=>"life_#{life_cat}") {
-        div.username life[:username]
-        div.category life_cat
-        div.email( life[:email] || "[No email address set.]" )
+    mustache 'lives' do
+      div.un(:id=>"life_{{category}}") {
+        div.username '{{username}}' 
+        div.category '{{category}}' 
         a.edit("Edit", :href=>'#edit_username')
       }
-    }
+    end
   }
 
   div.delete_account! {

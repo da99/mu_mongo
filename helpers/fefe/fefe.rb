@@ -19,7 +19,7 @@ require 'open3'
   demand_arguments_dsl
 	color_puts
 }.each { |file|
-  require( File.readlink(File.expand_path('~/megauni')) + '/helpers/app/'+file)
+  require( 'helpers/app/'+file)
 }
 
 

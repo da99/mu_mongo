@@ -5,7 +5,8 @@ class Markaby::Builder
   set(:indent, 1)
   
   def save_to(name,  &new_proc)
-    raise "Not done."
+    text "\nNot done: save_to #{name.inspect}\n"
+    return
     instance_variable_set( :"@#{name}" , capture(&new_proc) )       
   end # === save_to
 
@@ -37,8 +38,9 @@ class Markaby::Builder
   end
 
   def partial( raw_file_name )
-    
-    file_name = File.expand_path(raw_file_name).to_s
+    calling_file = caller[0].split(':').first
+    calling_dir  = File.dirname(calling_file)
+    file_name = File.expand_path(File.join(calling_dir,raw_file_name)).to_s
     file_name += '.rb' if !file_name['.rb']
     
     # Find template file.

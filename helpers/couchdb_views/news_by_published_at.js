@@ -8,5 +8,5 @@
 
 function(doc) { 
   if (doc.data_model == 'News' && doc.published_at)  
-    emit( doc.published_at, null);
+    emit( doc.published_at, doc.created_at);
 };

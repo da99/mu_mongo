@@ -12,12 +12,12 @@ get( "/skins/:skin/css/:file.css" ) do |raw_skin, raw_file|
     file      = ( raw_file =~ /([a-zA-Z0-9\_\-]{2,})/ && $1 )
     
     sass_dir      = File.join( options.views, 'sass' )
-    sass_template = Pow( sass_dir , file + '.sass')
+    sass_template = File.join( sass_dir , file + '.sass')
 
-    raise( "CSS file not found: #{request.path_info}" ) if !sass_template.file?
+    raise( "CSS file not found: #{request.path_info}" ) if !File.file?(sass_template)
         
     ::Sass::Engine.new( 
-        sass_template.read, 
+        File.read(sass_template), 
         :load_paths=> [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
     ).render 
    

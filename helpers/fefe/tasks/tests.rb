@@ -56,21 +56,23 @@ class Tests
       fefe_run('db:reset!')
 
       ENV['RACK_ENV'] = 'test'
-      require File.expand_path('megauni')
 
+      require 'megauni'
+      
       DesignDoc.create_or_update
       puts_white 'Created: design doc.'
-
+      
       # === Create News ==========================
       
       CouchDoc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
-        :teaser=>'teaser', 
-        :body=>'Test body.', 
-        :tags=>['surfer_hearts', 'hearts', 'pets'],
-        :created_at=>'2009-10-11 02:02:22',
-        :published_at=>'2009-12-09 01:01:22',
-        :data_model => 'News'
+        :teaser   =>'teaser', 
+        :body     =>'Test body.', 
+        :tags     =>['surfer_hearts', 'hearts', 'pets'],
+        :created_at   =>'2009-10-11 02:02:27',
+        :published_at =>'2009-12-09 01:01:26',
+        :data_model   => 'News'
       })
+
 
       # === Create Regular Member ==========================
       
@@ -223,7 +225,7 @@ module FeFe_Test
 
   def run body
     if @before
-      instance_eval &@before
+      instance_eval( &@before )
     end
     
     @results = begin
@@ -232,14 +234,14 @@ module FeFe_Test
         require 'rubygems'; require 'ruby-debug'; debugger
       end
 
-      instance_eval &body
+      instance_eval( &body )
       [ true, "ok" ]
     rescue Object => e
       [ false, e.message, e ]
     end
 
     if @after
-      instance_eval &@after
+      instance_eval( &@after )
     end
     
     if @results.first

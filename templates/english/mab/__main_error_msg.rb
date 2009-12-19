@@ -1,4 +1,4 @@
 div.error_msg {
-  div.title( app_vars[:error_msg]["\n"] ? 'Errors:' : 'Error:' )
-  div.msg { app_vars[:error_msg].split("\n").join("<br />") }
+  div.title '{{error_or_errors}}:' 
+  div.msg { '{{error_msg_li}}'  }
 }

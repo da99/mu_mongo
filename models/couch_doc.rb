@@ -1,9 +1,10 @@
+require 'helpers/app/json'
 
 class CouchDoc
   
-	HTTP_Error = Class.new(StandardError)
+	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
-
+	No_Record_Found                = Class.new(StandardError)
 
   ValidQueryOptions = %w{ 
       key
@@ -51,7 +52,7 @@ class CouchDoc
 
   def self.GET_naked(path, params = {})
 
-    db_url = File.join(DB_CONN, path.to_s) 
+    db_url = File.join( ::DB_CONN, path.to_s) 
     
     if params.empty?
       return( 
@@ -83,7 +84,7 @@ class CouchDoc
       return(data) if !data[:data_model]
       doc = Object.const_get(data[:data_model]).new_from_db(data)
     rescue RestClient::ResourceNotFound 
-      raise CouchPlastic::NoRecordFound, "Document with id, #{id}, not found."
+      raise CouchDoc::No_Record_Found, "Document with id, #{id}, not found."
     end
 
     doc
@@ -128,7 +129,7 @@ class CouchDoc
   def self.PUT( doc_id, obj)
     url = File.join(DB_CONN, doc_id.to_s)
     rest_call { 
-      RestClient.put( url, obj.to_json ) 
+      RestClient.put( url, obj.to_json, {'Content-Type' => 'application/json'} ) 
     }
   end
 

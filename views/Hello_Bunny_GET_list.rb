@@ -1,4 +1,4 @@
-class Hello_Bunny_GET_list
+class Hello_Bunny_GET_list < Bunny_Mustache
 
   def title
     'Coming Soon...'

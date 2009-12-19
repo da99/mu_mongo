@@ -24,7 +24,7 @@ class Cleaner_Dsl
   end
   
 	def execute blok
-		instance_eval &blok 
+		instance_eval( &blok  )
 	end
 
   def errors
@@ -98,7 +98,7 @@ class Cleaner_Dsl
 
   def if_in(arr, &blok)
     if arr.include?(options.clean)
-      instance_eval &blok
+      instance_eval( &blok )
     else
       false
     end
@@ -106,7 +106,7 @@ class Cleaner_Dsl
 
   def if_not_in(arr, &blok)
     if !arr.include?(options.clean)
-      instance_eval &blok
+      instance_eval( &blok )
     else
       false
     end

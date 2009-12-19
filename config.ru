@@ -1,42 +1,15 @@
 
-$KCODE = 'UTF8'
-require 'jcode'
-
-# ===============================================
-# Important Gems
-# ===============================================
-require 'multibyte'
-require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
-require 'mustache'
-
-my_app_root     = File.expand_path( File.dirname(__FILE__) )
-down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
-issue_client    = File.join( my_app_root, '/helpers/app/issue_client')
-
 begin
 
-  require( 'middleware/the_bunny'  )
-  require( 'middleware/allow_only_roman_uri'  )
-  require( 'middleware/squeeze_uri_dots'  )
+  require 'middleware/the_bunny'  
+  require 'middleware/allow_only_roman_uri'
+  require 'middleware/squeeze_uri_dots' 
+  require 'megauni'
+  require 'mustache'
 
-  # ===============================================
-  # App Helpers
-  # ===============================================
-  # require( 'helpers/app/require'  )
-  # require_these 'helpers/app', %w{
-  #   kernel
-  #   chars_compat
-  #   string_blank
-  #   string_inflections
-  #   read_if_file
-  #   pow
-  #   symbolize_keys
-  #   json
-  #   data_pouch
-  #   cleaner_dsl
-  #   demand_arguments_dsl
-  # }
-  
+  my_app_root     = File.expand_path( File.dirname(__FILE__) )
+  down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
+  issue_client    = File.join( my_app_root, '/helpers/app/issue_client') 
   
   # ===============================================
   # Configurations
@@ -54,6 +27,7 @@ begin
 	
   # use( Rack::Reloader, 2 ) if The_Bunny.development?
 
+
   # Lil_Config = Struct.new(
   #   :SITE_DOMAIN, 
   #   :SITE_TITLE,
@@ -69,71 +43,7 @@ begin
   # ).new
 
 
-  class The_Bunny
-    
-    module Options
-      SITE_DOMAIN        = 'megaUni.com'
-      SITE_TITLE         = 'Mega Uni'
-      SITE_TAG_LINE      = 'For all your different lives: friends, family, work.'
-      SITE_HELP_EMAIL    = "helpme@#{SITE_DOMAIN}"
-      SITE_URL           = "http://www.#{SITE_DOMAIN}/"
-      SITE_SUPPORT_EMAIL = "helpme@#{SITE_DOMAIN}"
-      VIEWS_DIR          = 'views/skins/jinx' # .expand_path
-      DESIGN_DOC_ID      = '_design/megauni'
-    end
-    
-  end # === class
 
-  case ENV['RACK_ENV']
-    
-    when 'test'
-      class The_Bunny
-        module Options
-          CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
-          DB_NAME     = 'megauni-test'
-          DB_CONN     = File.join(CouchDB_URI, DB_NAME)
-        end
-      end
-      
-    when 'development'
-      # require 'helpers/sinatra/css'
-      class The_Bunny
-        module Options
-          CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
-          DB_NAME     = "megauni-dev"
-          DB_CONN     = File.join( CouchDB_URI, DB_NAME )
-        end
-      end
-
-    when 'production'
-      class The_Bunny
-        module Options
-          CouchDB_URI = "http://un**:pswd**@127.0.0.1:5984/"
-          DB_NAME     = 'megauni-production'
-          DB_CONN     = File.join(CouchDB_URI, DB_NAME)
-        end
-      end
-
-
-    else
-      raise ArgumentError, "Unknown RACK_ENV value: #{ENV['RACK_ENV'].inspect}"
-
-  end # === case
-
-
-  # ===============================================
-  # Require Models.
-  # ===============================================
-  # require_these 'models', %w{
-  #   _couch_plastic
-  #   couch_doc
-  #   design_doc
-  #   resty
-  #   member
-  #   log_in_attempt
-  #   news
-  # }
-  
   
   # ===============================================
   # Helpers for Requests

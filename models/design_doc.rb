@@ -14,7 +14,7 @@ class DesignDoc
   def self.from_db
     begin
       CouchDoc.GET_by_id ID
-    rescue CouchPlastic::NoRecordFound 
+    rescue CouchDoc::No_Record_Found 
       nil
     end
   end
