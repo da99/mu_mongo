@@ -11,6 +11,7 @@ class The_Bunny
 	end
 
 	class << self
+    
 		Options::ENVIRONS.each { |envi|
 			eval %~
 				def #{envi}?
@@ -38,7 +39,8 @@ class The_Bunny
   
   include Rack::Utils
   attr_accessor :app, :env, :request, :response, :params
-
+  attr_reader   :controller, :controller_name, :action_name 
+  
   def initialize(new_env)
     @app      = self
     @env      = new_env
@@ -90,6 +92,15 @@ class The_Bunny
       end
     ~
   }
+ 
+  def controller= class_obj
+    @controller = class_obj
+    @controller_name = class_obj.to_s.sub('_Bunny', '').to_sym
+  end 
+
+  def action_name= new_name
+    @action_name = new_name.to_s.strip.sub('GET_','').to_sym
+  end
   
   def environment 
     ENV['RACK_ENV']
@@ -125,9 +136,10 @@ class The_Bunny
     set_header 'Pragma',           'no-cache'
   end
 
+
   def render_html_template obj, meth = nil
     meth_name        = meth || (caller[0] =~ /`([^']*)'/ && $1)
-    file_name        = "#{obj.class}_#{meth_name}"
+    file_name        = "#{controller_name}_#{action_name}"
     template_content = File.read(File.expand_path('templates/english/mustache/' + file_name + '.html'))
     
     require "views/#{file_name}.rb"
@@ -240,8 +252,10 @@ class The_Bunny
       mic_class = Object.const_get(mic_class_name)
 
       if pieces.empty? && request.get?
-        if mic_class.public_instance_methods.include?(request.request_method + '_list') 
-          mic_class.new.send('GET_list', self)
+        if mic_class.public_instance_methods.include?('GET_list') 
+          self.controller=  mic_class
+          self.action_name= 'list'
+          mic_class.new.send 'GET_list', self 
           return true
         end
       end
@@ -251,12 +265,16 @@ class The_Bunny
       if mic_class.public_instance_methods.include?(action_name) &&
         mic_class.instance_method(action_name).arity === (pieces.empty? ? 1 : pieces.size )
         pieces.shift
+        self.controller=  mic_class
+        self.action_name= action_name
         mic_class.new.send(action_name, self, *pieces)
         return true
       end  
       
       if mic_class.public_instance_methods.include?(request.request_method) &&
          mic_class.instance_method(request.request_method).arity === (pieces.size + 1)
+         self.controller=  mic_class
+         self.action_name= request.request_method
          mic_class.new.send(request.request_method, self, *pieces)
          return true
       end
