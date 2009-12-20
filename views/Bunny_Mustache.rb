@@ -44,29 +44,23 @@ class Bunny_Mustache < Mustache
     !logged_in?
   end
 
+  # === FLASH MESSAGES ===
+
   def flash_msg?
     !!(@app.flash.success_msg || @app.flash.error_msg)
   end
 
-  def success_msg
-    @app.flash.success_msg
-  end
+  def flash_msg
+    return nil if not flash_msg?
 
-  def error_or_errors
-    @app.flash.error_msg.to_s["\n"] ?
+    if @app.flash.success_msg
+      {:class_name=>'success_msg', :title=>'Success', :msg=>@app.flass.success_msg}
+    else
+      title = @app.flash.error_msg.to_s["\n"] ?
       'Errors' :
       'Error'
-  end
-  alias_method :errors_or_error, :error_or_errors
-
-  def error_msg
-    @app.flash.error_msg
-  end
-
-  def error_msg_li
-    @app.flash.error_msg.split('</li>').size > 2 ? 
-      'Errors' : 
-      'Error'
+      {:class_name=>'error_msg', :title=>title, :msg=>@app.flass.error_msg}
+    end
   end
 
   # === NAV BAR ===

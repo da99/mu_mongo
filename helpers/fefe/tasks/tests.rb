@@ -59,7 +59,7 @@ class Tests
 
       require 'megauni'
       
-      DesignDoc.create_or_update
+      Design_Doc.create_or_update
       puts_white 'Created: design doc.'
       
       # === Create News ==========================

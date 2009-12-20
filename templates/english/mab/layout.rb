@@ -47,7 +47,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       # ================= the_content ================================
 
 
-#! content
+partial( "{{content_file}}" )
 
  
 

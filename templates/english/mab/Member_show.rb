@@ -9,7 +9,7 @@ div.nav_bar! {
   ul {  
     li { a('Home', :href=>'/') }
     
-    if logged_in?
+    mustache 'logged_in?' do
       li { a('Logout', :href=>'/log-out/') }
     end
 
@@ -35,12 +35,6 @@ ul.tabs.create_tabs! {
 div.form_holder.tab_selected.create_slice_location! {
 
 
-  div.slice_locations! {
-    @slice_locations.each { |loc|
-      @slice_location = loc
-      partial '__slice_location'
-    } # each
-  }
 
   form(:action=>"/slice_location/create", :method=>:post, :name=>'form_create_slice_location') {
     

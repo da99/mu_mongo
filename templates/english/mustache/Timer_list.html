@@ -1,0 +1,1215 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+   <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+   <meta http-equiv="Content-Style-Type" content="text/css"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
+   <meta http-equiv="expires" content="Thu, 12 Mar 2004 12:34:12 GMT"/>
+   <meta http-equiv="pragma" content="no-cache"/>
+   <meta content="{{meta_description}}" name="description"/>
+   <meta content="{{meta_keywords}}" name="keywords"/>
+   <title>{{title}}</title>
+   <link type="image/x-icon" href="{{url}}favicon.ico" rel="shortcut icon"/>
+
+{{#mobile_request?}}
+
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+
+{{/mobile_request?}}
+
+
+{{head_content}}
+
+  </head>
+  <body id="the_body">
+   <div id="container">
+    <div id="timestamp">{{js_epoch_time}}</div>
+
+{{#loading}}
+
+    <div id="loading">Loading...</div>
+
+{{/loading}}
+
+
+Not done: save_to "title"
+
+Not done: save_to "keywords"
+
+Not done: save_to "description"
+
+Not done: save_to "javascripts"
+
+Not done: save_to "opening_msg"
+      <div id="nav_bar">
+       <div id="logo">
+
+{{opening_msg}}
+
+
+{{#no_opening_msg}}
+
+        <p class="nippon">
+何とかしてよ        </p>
+
+{{/no_opening_msg}}
+
+        <p class="english">
+
+{{opening_msg_site_title}}
+
+        </p>
+       </div>
+       <ul class="help">
+
+{{#nav_bar}}
+
+
+{{#selected_home}}
+
+         <li>
+          <a href="/">Home</a>
+         </li>
+
+{{/selected_home}}
+
+
+{{#unselected_home}}
+
+         <li class="selected">
+          <span>Home</span>
+         </li>
+
+{{/unselected_home}}
+
+
+{{/nav_bar}}
+
+       </ul>
+       <h4>Egg Timers</h4>
+       <ul class="to_dos">
+
+{{#nav_bar}}
+
+
+{{#selected_my-egg-timer}}
+
+         <li>
+          <a href="/my-egg-timer/">Old Timer</a>
+         </li>
+
+{{/selected_my-egg-timer}}
+
+
+{{#unselected_my-egg-timer}}
+
+         <li class="selected">
+          <span>Old Timer</span>
+         </li>
+
+{{/unselected_my-egg-timer}}
+
+
+{{#selected_busy-noise}}
+
+         <li>
+          <a href="/busy-noise/">New Timer</a>
+         </li>
+
+{{/selected_busy-noise}}
+
+
+{{#unselected_busy-noise}}
+
+         <li class="selected">
+          <span>New Timer</span>
+         </li>
+
+{{/unselected_busy-noise}}
+
+
+{{/nav_bar}}
+
+       </ul>
+
+{{#development?}}
+
+
+{{#logged_in?}}
+
+       <h4>Non-Members</h4>
+       <ul class="non_members">
+
+{{#nav_bar}}
+
+
+{{#selected_sign-up}}
+
+         <li>
+          <a href="/sign-up/">Sign-up</a>
+         </li>
+
+{{/selected_sign-up}}
+
+
+{{#unselected_sign-up}}
+
+         <li class="selected">
+          <span>Sign-up</span>
+         </li>
+
+{{/unselected_sign-up}}
+
+
+{{/nav_bar}}
+
+       </ul>
+
+{{/logged_in?}}
+
+       <h4>Members</h4>
+       <ul class="members">
+
+{{#logged_in?}}
+
+
+{{#nav_bar}}
+
+
+{{#selected_account}}
+
+         <li>
+          <a href="/account/">Account</a>
+         </li>
+
+{{/selected_account}}
+
+
+{{#unselected_account}}
+
+         <li class="selected">
+          <span>Account</span>
+         </li>
+
+{{/unselected_account}}
+
+
+{{#selected_log-out}}
+
+         <li>
+          <a href="/log-out/">Log-out</a>
+         </li>
+
+{{/selected_log-out}}
+
+
+{{#unselected_log-out}}
+
+         <li class="selected">
+          <span>Log-out</span>
+         </li>
+
+{{/unselected_log-out}}
+
+
+{{/nav_bar}}
+
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+
+{{#nav_bar}}
+
+
+{{#selected_log-in}}
+
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
+
+{{/selected_log-in}}
+
+
+{{#unselected_log-in}}
+
+         <li class="selected">
+          <span>Log-in</span>
+         </li>
+
+{{/unselected_log-in}}
+
+
+{{/nav_bar}}
+
+
+{{/not_logged_in?}}
+
+       </ul>
+       <h4>Stuff To Do</h4>
+       <ul class="to_dos">
+
+{{#nav_bar}}
+
+
+{{#selected_add-to-do}}
+
+         <li>
+          <a href="/add-to-do/">Add to do</a>
+         </li>
+
+{{/selected_add-to-do}}
+
+
+{{#unselected_add-to-do}}
+
+         <li class="selected">
+          <span>Add to do</span>
+         </li>
+
+{{/unselected_add-to-do}}
+
+
+{{#selected_today}}
+
+         <li>
+          <a href="/today/">Today</a>
+         </li>
+
+{{/selected_today}}
+
+
+{{#unselected_today}}
+
+         <li class="selected">
+          <span>Today</span>
+         </li>
+
+{{/unselected_today}}
+
+
+{{#selected_tomorrow}}
+
+         <li>
+          <a href="/tomorrow/">Tomorrow</a>
+         </li>
+
+{{/selected_tomorrow}}
+
+
+{{#unselected_tomorrow}}
+
+         <li class="selected">
+          <span>Tomorrow</span>
+         </li>
+
+{{/unselected_tomorrow}}
+
+
+{{#selected_this-month}}
+
+         <li>
+          <a href="/this-month/">This Month</a>
+         </li>
+
+{{/selected_this-month}}
+
+
+{{#unselected_this-month}}
+
+         <li class="selected">
+          <span>This Month</span>
+         </li>
+
+{{/unselected_this-month}}
+
+
+{{/nav_bar}}
+
+       </ul>
+       <h4>Lives</h4>
+       <ul class="lives">
+
+{{#nav_bar}}
+
+
+{{#selected_friend}}
+
+         <li>
+          <a href="/friend/">Friend</a>
+         </li>
+
+{{/selected_friend}}
+
+
+{{#unselected_friend}}
+
+         <li class="selected">
+          <span>Friend</span>
+         </li>
+
+{{/unselected_friend}}
+
+
+{{#selected_family}}
+
+         <li>
+          <a href="/family/">Family</a>
+         </li>
+
+{{/selected_family}}
+
+
+{{#unselected_family}}
+
+         <li class="selected">
+          <span>Family</span>
+         </li>
+
+{{/unselected_family}}
+
+
+{{#selected_work}}
+
+         <li>
+          <a href="/work/">Work</a>
+         </li>
+
+{{/selected_work}}
+
+
+{{#unselected_work}}
+
+         <li class="selected">
+          <span>Work</span>
+         </li>
+
+{{/unselected_work}}
+
+
+{{#selected_pet-owner}}
+
+         <li>
+          <a href="/pet-owner/">Pet Owner</a>
+         </li>
+
+{{/selected_pet-owner}}
+
+
+{{#unselected_pet-owner}}
+
+         <li class="selected">
+          <span>Pet Owner</span>
+         </li>
+
+{{/unselected_pet-owner}}
+
+
+{{#selected_celebrity}}
+
+         <li>
+          <a href="/celebrity/">Celebrity</a>
+         </li>
+
+{{/selected_celebrity}}
+
+
+{{#unselected_celebrity}}
+
+         <li class="selected">
+          <span>Celebrity</span>
+         </li>
+
+{{/unselected_celebrity}}
+
+
+{{/nav_bar}}
+
+       </ul>
+
+{{/development?}}
+
+       <h4>Clubs</h4>
+       <ul class="news">
+
+{{#nav_bar}}
+
+
+{{#selected_bubblegum}}
+
+         <li>
+          <a href="/bubblegum/">Bubblegum Pop</a>
+         </li>
+
+{{/selected_bubblegum}}
+
+
+{{#unselected_bubblegum}}
+
+         <li class="selected">
+          <span>Bubblegum Pop</span>
+         </li>
+
+{{/unselected_bubblegum}}
+
+
+{{#selected_child-care}}
+
+         <li>
+          <a href="/child-care/">Child Care</a>
+         </li>
+
+{{/selected_child-care}}
+
+
+{{#unselected_child-care}}
+
+         <li class="selected">
+          <span>Child Care</span>
+         </li>
+
+{{/unselected_child-care}}
+
+
+{{#selected_computer}}
+
+         <li>
+          <a href="/computer/">Computer Use</a>
+         </li>
+
+{{/selected_computer}}
+
+
+{{#unselected_computer}}
+
+         <li class="selected">
+          <span>Computer Use</span>
+         </li>
+
+{{/unselected_computer}}
+
+
+{{#selected_economy}}
+
+         <li>
+          <a href="/economy/">Economy + War</a>
+         </li>
+
+{{/selected_economy}}
+
+
+{{#unselected_economy}}
+
+         <li class="selected">
+          <span>Economy + War</span>
+         </li>
+
+{{/unselected_economy}}
+
+
+{{#selected_hair}}
+
+         <li>
+          <a href="/hair/">Skin &amp; Hair</a>
+         </li>
+
+{{/selected_hair}}
+
+
+{{#unselected_hair}}
+
+         <li class="selected">
+          <span>Skin &amp; Hair</span>
+         </li>
+
+{{/unselected_hair}}
+
+
+{{#selected_housing}}
+
+         <li>
+          <a href="/housing/">Housing &amp; Apartments</a>
+         </li>
+
+{{/selected_housing}}
+
+
+{{#unselected_housing}}
+
+         <li class="selected">
+          <span>Housing &amp; Apartments</span>
+         </li>
+
+{{/unselected_housing}}
+
+
+{{#selected_health}}
+
+         <li>
+          <a href="/health/">Pain &amp; Disease</a>
+         </li>
+
+{{/selected_health}}
+
+
+{{#unselected_health}}
+
+         <li class="selected">
+          <span>Pain &amp; Disease</span>
+         </li>
+
+{{/unselected_health}}
+
+
+{{#selected_preggers}}
+
+         <li>
+          <a href="/preggers/">Pregnancy</a>
+         </li>
+
+{{/selected_preggers}}
+
+
+{{#unselected_preggers}}
+
+         <li class="selected">
+          <span>Pregnancy</span>
+         </li>
+
+{{/unselected_preggers}}
+
+
+{{#selected_salud}}
+
+         <li>
+          <a href="/salud/">Salud (Espa&#241;ol)</a>
+         </li>
+
+{{/selected_salud}}
+
+
+{{#unselected_salud}}
+
+         <li class="selected">
+          <span>Salud (Espa&#241;ol)</span>
+         </li>
+
+{{/unselected_salud}}
+
+
+{{#selected_news}}
+
+         <li>
+          <a href="/news/">Other Topics</a>
+         </li>
+
+{{/selected_news}}
+
+
+{{#unselected_news}}
+
+         <li class="selected">
+          <span>Other Topics</span>
+         </li>
+
+{{/unselected_news}}
+
+
+{{/nav_bar}}
+
+       </ul>
+      </div>
+     <div id="content">
+      <div id="work">
+       <div class="countdown job">
+        <div style="display: none" class="undo">
+         <div>
+          <span>You have deleted egg timer: </span>
+          <span class="short_headline">---</span>
+         </div>
+         <div>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
+         </div>
+        </div>
+        <div class="status">
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
+         <div class="time_status">
+          <span class="number">9</span>
+          <span class="unit">m</span>
+          <span class="number">19</span>
+          <span class="unit">s</span>
+         </div>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
+         <div class="buzzer_option selected_buzzer">
+          <input type="checkbox" checked="checked" value="true" name="sound_alarm"/>
+          <span>
+Ring when done.          </span>
+         </div>
+        </div>
+        <div class="summary">
+         <h4>
+Dinner's ready         </h4>
+         <div class="setting">
+9 min countdown         </div>
+         <ul class="control_panel">
+          <li>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
+          </li>
+          <li>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
+          </li>
+          <li>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
+          </li>
+         </ul>
+         <div class="details_control_panel">
+          <a class="show" href="#egg_show_details">
+View Details          </a>
+          <a class="hide" href="#egg_hide_details">
+Hide Details          </a>
+         </div>
+         <div class="details">
+Travel to Europe.         </div>
+        </div>
+       </div>
+       <div class="countdown job running">
+        <div style="display: none" class="undo">
+         <div>
+          <span>You have deleted egg timer: </span>
+          <span class="short_headline">---</span>
+         </div>
+         <div>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
+         </div>
+        </div>
+        <div class="status">
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
+         <div class="time_status">
+          <span class="unit">-</span>
+          <span class="number">8</span>
+          <span class="unit">m</span>
+          <span class="number">12</span>
+          <span class="unit">s</span>
+         </div>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
+         <div class="buzzer_option selected_buzzer">
+          <input type="checkbox" checked="checked" value="true" name="sound_alarm"/>
+          <span>
+Ring when done.          </span>
+         </div>
+        </div>
+        <div class="summary">
+         <h4>
+Dinner's ready         </h4>
+         <div class="setting">
+9 min countdown         </div>
+         <ul class="control_panel">
+          <li>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
+          </li>
+          <li>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
+          </li>
+          <li>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
+          </li>
+         </ul>
+         <div class="details_control_panel">
+          <a class="show" href="#egg_show_details">
+View Details          </a>
+          <a class="hide" href="#egg_hide_details">
+Hide Details          </a>
+         </div>
+         <div class="details">
+Travel to Europe.         </div>
+        </div>
+       </div>
+       <div class="countdown job paused">
+        <div style="display: none" class="undo">
+         <div>
+          <span>You have deleted egg timer: </span>
+          <span class="short_headline">---</span>
+         </div>
+         <div>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
+         </div>
+        </div>
+        <div class="status">
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
+         <a class="continue" href="#continue" onclick="javascript:EggClock.play(this)">Continue</a>
+         <a class="start_over" href="#start_over" onclick="javascript:EggClock.play(this)">Start Over</a>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
+         <div class="time_status">
+          <span class="unit">-</span>
+          <span class="number">4</span>
+          <span class="unit">m</span>
+          <span class="number">8</span>
+          <span class="unit">s</span>
+         </div>
+         <div class="buzzer_option selected_buzzer">
+          <input type="checkbox" checked="checked" value="true" name="sound_alarm"/>
+          <span>
+Ring when done.          </span>
+         </div>
+        </div>
+        <div class="summary">
+         <h4>
+Dinner's ready         </h4>
+         <div class="setting">
+9 min countdown         </div>
+         <ul class="control_panel">
+          <li>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
+          </li>
+          <li>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
+          </li>
+          <li>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
+          </li>
+         </ul>
+         <div class="details_control_panel">
+          <a class="show" href="#egg_show_details">
+View Details          </a>
+          <a class="hide" href="#egg_hide_details">
+Hide Details          </a>
+         </div>
+         <div class="details">
+Travel to Europe.         </div>
+        </div>
+       </div>
+       <div class="job alarm">
+        <div class="undo">
+         <div>
+          <span>
+You have deleted alarm:&nbsp;          </span>
+          <span class="short_headline">
+--          </span>
+         </div>
+         <div>
+          <a class="undo" href="#egg_undelete">
+Undo deletion.          </a>
+         </div>
+        </div>
+        <div class="status">
+         <div class="time_status">
+          <span class="number">
+* * * *          </span>
+         </div>
+        </div>
+        <div class="summary">
+         <h4>[title]</h4>
+         <div class="setting">[x mins]</div>
+         <ul class="control_panel">
+          <li>
+           <a class="play" href="#egg_at_play">
+Play           </a>
+          </li>
+          <li>
+           <a class="check_mark" href="#egg_check_marked">
+Check Mark This           </a>
+          </li>
+          <li>
+           <a class="x_mark" href="#egg_x_marked">
+X Mark This           </a>
+          </li>
+          <li>
+           <a class="ready_to_start" href="#egg_ready_to_start">
+Start All Over           </a>
+          </li>
+          <li>
+           <a class="edit" href="#egg_edit">
+Edit / Delete           </a>
+          </li>
+         </ul>
+         <div class="details_control_panel">
+          <a class="show" href="#egg_show_details">
+View Details          </a>
+          <a class="hide" href="#egg_hide_details">
+Hide Details          </a>
+         </div>
+         <div class="details">
+[details]         </div>
+        </div>
+       </div>
+      </div>
+      <ul class="tabs">
+       <li class="tab_selected">
+        <a href="#instructions" onclick="Swiss.tab.select( this ); return false;">Instructions:</a>
+       </li>
+       <li>
+        <a href="#create_countdown" onclick="Swiss.tab.select( this ); return false;">Egg Timer:</a>
+       </li>
+       <li>
+        <a href="#create_alarm" onclick="Swiss.tab.select( this ); return false;">Time Alarm:</a>
+       </li>
+       <li>
+        <a href="#create_note" onclick="Swiss.tab.select( this ); return false;">Notes:</a>
+       </li>
+      </ul>
+      <div class="form tab_selected" id="instructions">
+       <ol>
+        <li class="one">
+         <div class="title">Create a new alarm, note or egg timer.</div>
+        </li>
+        <li class="two">
+         <div class="title">Turn up speaker volumn.</div>
+         <div class="body">
+          <a href="#start" onclick="return Instruct.start_test();" id="start_test">
+Click here to test your speakers.          </a>
+          <a href="#stop" onclick="return Instruct.stop_test();" id="stop_test">
+Stop test.          </a>
+         </div>
+        </li>
+        <li class="three">
+         <div class="title">Repeat step 1.</div>
+         <div class="body">
+          <span>You can add multiple countdowns/alarms/notes.</span>
+         </div>
+        </li>
+       </ol>
+      </div>
+      <div class="form tab_unselected" id="create_note">
+       <form action="/" class="create_egg" method="post" name="form_note" id="form_note">
+        <fieldset>
+         <label>
+Title:         </label>
+         <input type="text" class="text" value="" name="headline" maxlength="200"/>
+        </fieldset>
+        <fieldset class="textarea">
+         <label>
+Details:         </label>
+         <textarea cols="10" rows="5" name="details"></textarea>
+        </fieldset>
+        <div class="buttons">
+         <button class="save" onclick="return Post.note();">Save &amp; Post</button>
+        </div>
+       </form>
+      </div>
+      <div class="form tab_unselected" id="create_countdown">
+       <form action="/" class="create_egg" method="post" name="form_countdown" id="form_countdown">
+        <div class="time_units_block group">
+         <div class="title">
+Type in units:         </div>
+         <fieldset class="input_text days">
+          <input type="text" class="text" value="0" name="days" maxlength="3"/>
+          <label>Days</label>
+         </fieldset>
+         <fieldset class="input_text">
+          <input type="text" class="text" value="0" name="hours" maxlength="3"/>
+          <label>Hrs.</label>
+         </fieldset>
+         <fieldset class="input_text">
+          <input type="text" class="text" value="15" name="minutes" maxlength="3"/>
+          <label>Mins.</label>
+         </fieldset>
+         <fieldset class="input_text">
+          <input type="text" class="text" value="0" name="seconds" maxlength="3"/>
+          <label>Secs.</label>
+         </fieldset>
+        </div>
+        <fieldset>
+         <label>Title:</label>
+         <input type="text" class="text" value="" name="headline" maxlength="200"/>
+        </fieldset>
+        <fieldset>
+         <label>
+Details:         </label>
+         <textarea cols="10" class="text name" rows="5" name="details"></textarea>
+        </fieldset>
+        <div class="buttons">
+         <button class="save" onclick="return Post.countdown();">Save &amp; Run</button>
+        </div>
+       </form>
+      </div>
+      <div class="form tab_unselected" id="create_alarm">
+       <form action="/" class="create_egg" method="post" name="form_alarm" id="form_alarm">
+        <div class="title">Select Time:</div>
+        <div class="group">
+         <fieldset>
+          <select class="hours" name="hours">
+           <option value="1" selected="selected">
+1           </option>
+           <option value="2">
+2           </option>
+           <option value="3">
+3           </option>
+           <option value="4">
+4           </option>
+           <option value="5">
+5           </option>
+           <option value="6">
+6           </option>
+           <option value="7">
+7           </option>
+           <option value="8">
+8           </option>
+           <option value="9">
+9           </option>
+           <option value="10">
+10           </option>
+           <option value="11">
+11           </option>
+           <option value="0">
+12           </option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <select class="minutes" name="minutes">
+           <option value="0" selected="selected">
+00           </option>
+           <option value="15">
+15           </option>
+           <option value="30">
+30           </option>
+           <option value="45">
+45           </option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <select class="am_pm" name="am_pm">
+           <option value="am" selected="selected">
+AM           </option>
+           <option value="pm">
+PM           </option>
+          </select>
+         </fieldset>
+        </div>
+        <fieldset>
+         <label>
+Title:         </label>
+         <input type="text" class="text" value="" name="headline" maxlength="200"/>
+        </fieldset>
+        <fieldset>
+         <label>
+Details:         </label>
+         <textarea cols="10" class="text name" rows="5" name="details"></textarea>
+        </fieldset>
+        <div class="buttons">
+         <button class="save" onclick="return Post.alarm();">Save &amp; Run</button>
+        </div>
+       </form>
+      </div>
+     </div>
+     <div class="template note">
+      <div class="undo">
+       <div>
+        <span>
+You have deleted note:&nbsp;        </span>
+        <span class="short_headline">
+---        </span>
+       </div>
+       <div>
+        <a class="undo" href="#egg_undelete">
+Undo deletion.        </a>
+       </div>
+      </div>
+      <div class="control_panel">
+       <div class="buttons">
+        <a class="ready_to_start" href="#egg_ready_to_start">
+Start All Over        </a>
+        <a class="check_mark" href="#egg_check_marked">
+Check Mark This        </a>
+        <a class="x_mark" href="#egg_x_marked">
+X Mark This        </a>
+        <a class="edit" href="#egg_edit">
+Edit / Delete        </a>
+       </div>
+      </div>
+      <div class="status">
+      </div>
+      <div class="summary">
+       <h4>
+[title]       </h4>
+       <div class="setting">
+Note       </div>
+       <div class="details_control_panel">
+        <a class="show" href="#egg_show_details">
+View Details        </a>
+        <a class="hide" href="#egg_hide_details">
+Hide Details        </a>
+       </div>
+       <div class="details">
+[details]       </div>
+      </div>
+     </div>
+     <div class="form template" id="note_editor">
+      <div class="short_headline">
+       <span>
+Editing:&nbsp;       </span>
+       <span class="short_headline">
+       </span>
+      </div>
+      <div class="land">
+       <form action="/" class="create_egg" method="post">
+        <div class="fieldset_block headline">
+         <fieldset>
+          <label>
+Headline:          </label>
+          <input type="text" class="text name" value="" name="headline" maxlength="200"/>
+         </fieldset>
+        </div>
+        <div class="fieldset_block details">
+         <fieldset>
+          <label>
+Details:          </label>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
+         </fieldset>
+        </div>
+        <div class="buttons">
+         <button class="save">Save</button>
+         <button class="cancel">Cancel</button>
+         <button class="delete">Delete Note</button>
+        </div>
+       </form>
+      </div>
+     </div>
+     <div class="form editor" id="countdown_editor">
+      <div class="short_headline">
+       <span>
+Editing:&nbsp;       </span>
+       <span class="short_headline">
+       </span>
+      </div>
+      <div class="land">
+       <form action="/" class="create_egg" method="post">
+        <div class="fieldset_block time_units_block">
+         <div class="title">
+Type in units:         </div>
+         <fieldset>
+          <input type="text" value="0" name="days" maxlength="3"/>
+          <label>
+Days          </label>
+         </fieldset>
+         <fieldset>
+          <input type="text" value="0" name="hours" maxlength="3"/>
+          <label>
+Hrs.          </label>
+         </fieldset>
+         <fieldset>
+          <input type="text" value="15" name="minutes" maxlength="3"/>
+          <label>
+Mins.          </label>
+         </fieldset>
+         <fieldset>
+          <input type="text" value="0" name="seconds" maxlength="3"/>
+          <label>
+Secs.          </label>
+         </fieldset>
+        </div>
+        <div class="fieldset_block headline">
+         <fieldset>
+          <label>
+Title:          </label>
+          <input type="text" class="text name" value="" name="headline" maxlength="200"/>
+         </fieldset>
+        </div>
+        <div class="fieldset_block details">
+         <fieldset>
+          <label>
+Details:          </label>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
+         </fieldset>
+        </div>
+        <div class="buttons">
+         <button class="save">Save</button>
+         <button class="cancel">Cancel</button>
+         <button class="delete">Delete EggTimer</button>
+        </div>
+       </form>
+      </div>
+     </div>
+     <div class="form editor" id="alarm_editor">
+      <div class="short_headline">
+       <span>Editing: &amp;</span>
+       <span class="short_headline">
+       </span>
+      </div>
+      <div class="land">
+       <form action="/" class="create_egg" method="post">
+        <div class="fieldset_block time_units_block">
+         <div class="title">Select Time:</div>
+         <fieldset>
+          <select class="hours" name="hours">
+           <option value="1">
+1           </option>
+           <option value="2">
+2           </option>
+           <option value="3">
+3           </option>
+           <option value="4">
+4           </option>
+           <option value="5">
+5           </option>
+           <option value="6">
+6           </option>
+           <option value="7">
+7           </option>
+           <option value="8">
+8           </option>
+           <option value="9">
+9           </option>
+           <option value="10">
+10           </option>
+           <option value="11">
+11           </option>
+           <option value="0">
+12           </option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <select class="minutes" name="minutes">
+           <option value="0">
+00           </option>
+           <option value="15">
+15           </option>
+           <option value="30">
+30           </option>
+           <option value="45">
+45           </option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <select class="am_pm" name="am_pm">
+           <option value="am">
+AM           </option>
+           <option value="pm">
+PM           </option>
+          </select>
+         </fieldset>
+        </div>
+        <div class="fieldset_block headline">
+         <fieldset>
+          <label>Title:</label>
+          <input type="text" class="text name" value="" name="headline" maxlength="200"/>
+         </fieldset>
+        </div>
+        <div class="fieldset_block details">
+         <fieldset>
+          <label>Details:</label>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
+         </fieldset>
+        </div>
+        <div class="buttons">
+         <button class="save">Save</button>
+         <button class="cancel">Cancel</button>
+         <button class="delete">Delete Alarm</button>
+        </div>
+       </form>
+      </div>
+     </div>
+    <div id="footer">
+     <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
+    </div>
+
+{{javascripts}}
+
+   </div>
+  </body>
+ </html>

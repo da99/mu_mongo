@@ -1,26 +1,13 @@
 
 
-mustache 'success_msg' do
+mustache 'flash_msg?' do
 
-	div.flash_msg!( :class=>'success_msg' ) {
-		h4 'Success'
-		div.msg '{{success_msg}}'
+	div.flash_msg!( :class=>'{{class_name}}' ) {
+		h4 '{{title}}'
+		div.msg '{{msg}}'
 	}
 
 end
-
-
-mustache 'error_msg' do
-
-	div.flash_msg!( :class=>'error_msg' ) {
-		h4 '{{error_or_errors}}' 
-		div.msg  { '{{error_msg_li}}' }
-	}
-
-end
-
-
-
 
 
 

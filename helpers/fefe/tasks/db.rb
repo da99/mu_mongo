@@ -5,11 +5,11 @@ class Db
   include FeFe
   
   describe :migrate  do
-    it "Migrate to latest version of the DesignDoc."
+    it "Migrate to latest version of the Design_Doc."
     steps { 
       puts_white "Please wait..."
       db_connect!
-      results = DesignDoc.create_or_update
+      results = Design_Doc.create_or_update
       puts_white "Done migrating up."
       results
     }

@@ -10,10 +10,12 @@ div.content! {
     span ", over to this new site."
   }
   
-  if News.creator?(the_app.current_member)
+  mustache 'news_creator?' do
+  #if News.creator?(the_app.current_member)
     div {
       a('Create', :href=>'/news/new/')
     }
+  # end
   end
 
   div.news_post.archives! {

@@ -13,7 +13,7 @@ class Bacon < Thor
     ENV['RACK_ENV'] = 'test'
     require File.expand_path('megauni')
 
-    DesignDoc.create_or_update
+    Design_Doc.create_or_update
     whisper 'Created: design doc.'
 
     # === Create News ==========================

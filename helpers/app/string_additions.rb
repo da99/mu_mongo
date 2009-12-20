@@ -1,5 +1,9 @@
 class String
 
+  def strip_slashes
+    strip.gsub(/\A\/|\/\Z/, '')
+  end
+
   def must_not_be_empty
     @stripped = begin
                   str = strip

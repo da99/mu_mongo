@@ -17,7 +17,7 @@ div.content! {
     span ", over to this new site."
   }
   
-  h2( @title.gsub('_', ' ') )
+  h2( '{{title}}' )
   
   if app_vars[:news].empty?
     div.heart_link {

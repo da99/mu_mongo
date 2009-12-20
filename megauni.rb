@@ -18,6 +18,7 @@ require 'rest_client'
   require_these 'helpers/app', %w{
     kernel
     chars_compat
+    string_additions
     string_blank
     string_inflections
     read_if_file
@@ -31,6 +32,8 @@ require 'rest_client'
 
   DESIGN_DOC_ID      = '_design/megauni'
   
+  require 'middleware/the_bunny'  
+
   class The_Bunny
     
     module Options
@@ -69,7 +72,10 @@ require 'rest_client'
 
   end # === case
   
-  
+  require_these 'controllers', %w{
+    Hello
+    Inspect
+  }
  
   # ===============================================
   # Require Models.
@@ -77,7 +83,7 @@ require 'rest_client'
   require_these 'models', %w{
     _couch_plastic
     couch_doc
-    design_doc
+    Design_Doc
 
   }     # resty
     # member

@@ -23,8 +23,6 @@ save_to('javascripts') {
 }
 
 
-
-
 save_to('opening_msg') {
     div( :id=>'big_clock' ) { 
       p.day "---"
@@ -36,7 +34,6 @@ save_to('opening_msg') {
 
 partial('__nav_bar')
 
-div.loading! "Loading..."
 
 div.content! { 
   

@@ -5,9 +5,7 @@ partial('__nav_bar')
 
 div.content! do
   
-  mustache 'flash_msg?' {
-    partial '__flash_msg'
-  }
+  partial '__flash_msg'
 
   div.coming_soon! {
     span "Coming Soon..." 

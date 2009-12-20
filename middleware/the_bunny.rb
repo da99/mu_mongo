@@ -216,71 +216,83 @@ class The_Bunny
   private # ----------------------------------------------------------------------------
   # ------------------------------------------------------------------------------------
 
-  def mic_classes
-    [Inspect_Bunny]
-  end
-  
-  def mic_class_name_suffix
-    '_Bunny'
-  end
+  def respond_to_request? ctrl_class
 
-	def mic_class_names
-		@mic_class_names ||= mic_classes.map(&:to_s)
-	end
-
-  def run_the_request 
-    
     http_meth = env_key(:REQUEST_METHOD).to_s
-    pieces    = env_key(:PATH_INFO).split('/')
+    pieces    = env_key(:PATH_INFO).gsub(/\A\/|\/\Z/, '').split('/').map { |sub|
+      sub.gsub(/[^a-zA-Z0-9_]/, '_') 
+    }
 
-    pieces.shift if pieces.first === ''
+    ctrlr, a_name, args = if env_key(:PATH_INFO) === '/'
+      
+      [ Bunny_DNA.controllers.first,  
+        'list',
+        []
+      ]
+      
+    else
+      
+      mic_class_name = pieces.shift.
+                        split('_').
+                        map(&:capitalize).
+                        join('_') + 
+                        mic_class_name_suffix
 
-    if pieces.empty?
-      mic_classes.first.new.send(http_meth + '_list', self)
+      if Object.const_defined?(mic_class_name)
+        
+        mic_class   = Object.const_get(mic_class_name)
+        action_name = [ http_meth , pieces.first ].compact.join('_')
+        meth        = pieces.first ? pieces.first.to_s.gsub(/[^a-zA-Z0-9_]/, '_') : 'NONE'
+      
+        
+        if pieces.empty? && 
+           request.get? &&
+           mic_class.public_instance_methods.include?('GET_list')
+          
+           [ mic_class, 'list', [] ]
+          
+        elsif mic_class.public_instance_methods.include?(action_name) &&
+              mic_class.instance_method(action_name).arity === (pieces.empty? ? 1 : pieces.size )
+
+          pieces.shift
+          [ mic_class, meth, pieces ]
+          
+        elsif mic_class.public_instance_methods.include?(http_meth) &&
+              mic_class.instance_method(http_meth).arity === (pieces.size + 1)
+
+          [ mic_class, http_meth, pieces ]
+          
+        end
+
+      else
+        []
+      end
+
+    end   
+    
+    if ctrlr && a_name && args
+      self.controller  = ctrlr
+      self.action_name = a_name
+      controller.new.send("#{http_meth}_#{action_name}", self, *args)
       return true
     end
-
-    mic_class_name = pieces.first.
-                      gsub(/[^a-zA-Z0-9_]/, '_').
-                      split('_').map(&:capitalize).
-                      join('_') + 
-                      mic_class_name_suffix
-
-    if mic_class_names.include?(mic_class_name)
-      pieces.shift
-
-      mic_class = Object.const_get(mic_class_name)
-
-      if pieces.empty? && request.get?
-        if mic_class.public_instance_methods.include?('GET_list') 
-          self.controller=  mic_class
-          self.action_name= 'list'
-          mic_class.new.send 'GET_list', self 
-          return true
-        end
-      end
-
-      action_name = [ request.request_method , pieces.first ].compact.join('_')
-
-      if mic_class.public_instance_methods.include?(action_name) &&
-        mic_class.instance_method(action_name).arity === (pieces.empty? ? 1 : pieces.size )
-        pieces.shift
-        self.controller=  mic_class
-        self.action_name= action_name
-        mic_class.new.send(action_name, self, *pieces)
-        return true
-      end  
       
-      if mic_class.public_instance_methods.include?(request.request_method) &&
-         mic_class.instance_method(request.request_method).arity === (pieces.size + 1)
-         self.controller=  mic_class
-         self.action_name= request.request_method
-         mic_class.new.send(request.request_method, self, *pieces)
-         return true
+    raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
+  end
+
+  def run_the_request 
+    the_app = self
+    results = Bunny_DNA.controllers.detect { |control|
+      begin
+        control.run this_app
+      rescue Bad_Bunny::HTTP_404
+        nil
       end
-      
-      raise Bad_Bunny::HTTP_404, "Bunny Not Found to handle: #{response.request_method} #{response.path}"
-    end   
+    }
+
+    return true if results
+    raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
+
   end
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
@@ -289,26 +301,56 @@ module Bad_Bunny
   Redirect      = Class.new(StandardError)
 end # === Bad_Bunny
 
-class Inspect_Bunny
-
-  def GET_list the_stage
-    file_contents = File.read(File.expand_path(__FILE__)).split("\n")
-    end_index     = file_contents.index('__' + 'END' + '__')
-    
-    the_stage.render_html_template self
-  end
+#
+# Base Module for controllers.
+#
+module Bunny_DNA
   
-	def GET_request the_stage
-		if the_stage.class.development?
-			the_stage.render_text_html "<pre>" + the_stage.request.env.keys.sort.map { |key| 
-				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + the_stage.request.env[key].inspect 
-			}.join("<br />") + "</pre>"
-		else
-			raise Bad_Bunny::HTTP_404, "/request only allowed in :development environments."
-		end
-	end
-	
-end # === Request_Bunny
+  def self.controllers
+    @controllers ||= []
+  end
+
+  def self.included target
+    target.extend Class_Methods
+    target.map( '/' + target.name.downcase )
+    controllers << target
+  end
+
+  module Class_Methods
+    
+    def map new_str = nil, &blok
+      return @map if !new_str && !block_given?
+      @map = blok || (new_str == '/' ? new_str : new_str.strip_slashes )
+    end
+
+    def maps_to? new_app
+      
+      str = ( new_app.is_a?(String) ? new_app : new_app.request.path )
+      if str != '/'
+        str = str.strip_slashes
+      end
+
+      case map
+        when String
+          str == map
+        when Regexp
+          str =~ map
+      else
+        map.call str
+      end
+    end
+
+    def run new_app
+      if not maps_to?(new_app)
+        raise Bad_Bunny::HTTP_404, 
+          "#{self} does not handle #{new_app.request.request_method} #{new_app.request.path}" 
+      end
+    end
+  end # === Class_Methods
+
+end # === module Bunny_DNA
+
+
 
 __END__
 

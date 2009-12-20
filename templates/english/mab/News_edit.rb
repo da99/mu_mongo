@@ -4,7 +4,7 @@ partial('__nav_bar')
 
 div.content!  {
 
-  partial '__flash_msg' if the_app.flash_msg?
+  partial '__flash_msg' 
 
   a("View", :href=>"/news/#{the_app.doc.data._id}/")
   

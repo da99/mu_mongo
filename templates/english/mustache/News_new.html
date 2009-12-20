@@ -37,32 +37,6 @@
 
 
 Not done: save_to "title"
-
-Not done: save_to "meta_description"
-
-Not done: save_to "meta_keywords"
-     <div id="content">
-      <ul class="faq">
-       <li>
-        <div class="question">For Babies and up.</div>
-        <div class="answer">
-         <p>The most important are: a multi-vitamin, Vitamin D3, and Vitamin C.</p>
-         <p>
-          <span>Go to: </span>
-          <a href="http://www.lifespannutrition.com/">LifeSpanNutrition.com</a>
-          <span>.  Under 'Product Search', there are menus. Use the one for 'Select Age Category'.</span>
-         </p>
-        </div>
-       </li>
-       <li>
-        <div class="question">SIDS (Sudden Infant Death Syndrome)</div>
-        <div class="answer">
-         <span>Buy: </span>
-         <a href="http://www.naturalhealthlibrarian.com/ebook.asp?page=SIDS">E-book by Bill Sardi.</a>
-        </div>
-       </li>
-      </ul>
-     </div>
       <div id="nav_bar">
        <div id="logo">
 
@@ -643,6 +617,39 @@ Not done: save_to "meta_keywords"
 
        </ul>
       </div>
+     <div id="content">
+      <h3>Create News</h3>
+
+{{#flash_msg?}}
+
+       <div class="{{class_name}}" id="flash_msg">
+        <h4>{{title}}</h4>
+        <div class="msg">{{msg}}</div>
+       </div>
+
+{{/flash_msg?}}
+
+      <form action="/news/" method="post" name="form_new_news" id="form_new_news">
+       <fieldset>
+        <label>Title</label>
+        <input type="text" class="text" value="" name="title" id="news_title"/>
+       </fieldset>
+       <fieldset>
+        <label>Teaser</label>
+        <textarea name="teaser" id="news_teaser"></textarea>
+       </fieldset>
+       <fieldset>
+        <label>body</label>
+        <textarea name="body" id="news_body"></textarea>
+       </fieldset>
+       <fieldset>
+        <label>Tags</label>
+       </fieldset>
+       <div class="buttons">
+        <button class="create" onclick="document.getElementById('form_news_new').submit(); return false;">Create News</button>
+       </div>
+      </form>
+     </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>

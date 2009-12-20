@@ -7,9 +7,7 @@ partial('__nav_bar')
 div.content! { 
 
   # ================= div.flash_msg =============================
-  mustache 'flash_msg?' do
-		partial '__flash_msg' 
-	end
+	partial '__flash_msg' 
 
 
   h3 'Create a New Account'

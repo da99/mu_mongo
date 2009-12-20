@@ -1,6 +1,6 @@
  <?xml version="1.0" encoding="UTF-8"?>
  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
@@ -13,11 +13,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link href="{{url}}favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+   <link type="image/x-icon" href="{{url}}favicon.ico" rel="shortcut icon"/>
 
 {{#mobile_request?}}
 
-   <link href="{{css_file}}" type="text/css" rel="stylesheet" media="screen"/>
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
 
 {{/mobile_request?}}
 
@@ -35,134 +35,134 @@
 
 {{/loading}}
 
-     <div id="nav_bar">
-      <div id="logo">
+      <div id="nav_bar">
+       <div id="logo">
 
 {{opening_msg}}
 
 
 {{#no_opening_msg}}
 
-       <p class="nippon">
-何とかしてよ       </p>
+        <p class="nippon">
+何とかしてよ        </p>
 
 {{/no_opening_msg}}
 
-       <p class="english">
+        <p class="english">
 
 {{opening_msg_site_title}}
 
-       </p>
-      </div>
-      <ul class="help">
+        </p>
+       </div>
+       <ul class="help">
 
 {{#nav_bar}}
 
 
 {{#selected_home}}
 
-        <li>
-         <a href="/">Home</a>
-        </li>
+         <li>
+          <a href="/">Home</a>
+         </li>
 
 {{/selected_home}}
 
 
 {{#unselected_home}}
 
-        <li class="selected">
-         <span>Home</span>
-        </li>
+         <li class="selected">
+          <span>Home</span>
+         </li>
 
 {{/unselected_home}}
 
 
 {{/nav_bar}}
 
-      </ul>
-      <h4>Egg Timers</h4>
-      <ul class="to_dos">
+       </ul>
+       <h4>Egg Timers</h4>
+       <ul class="to_dos">
 
 {{#nav_bar}}
 
 
 {{#selected_my-egg-timer}}
 
-        <li>
-         <a href="/my-egg-timer/">Old Timer</a>
-        </li>
+         <li>
+          <a href="/my-egg-timer/">Old Timer</a>
+         </li>
 
 {{/selected_my-egg-timer}}
 
 
 {{#unselected_my-egg-timer}}
 
-        <li class="selected">
-         <span>Old Timer</span>
-        </li>
+         <li class="selected">
+          <span>Old Timer</span>
+         </li>
 
 {{/unselected_my-egg-timer}}
 
 
 {{#selected_busy-noise}}
 
-        <li>
-         <a href="/busy-noise/">New Timer</a>
-        </li>
+         <li>
+          <a href="/busy-noise/">New Timer</a>
+         </li>
 
 {{/selected_busy-noise}}
 
 
 {{#unselected_busy-noise}}
 
-        <li class="selected">
-         <span>New Timer</span>
-        </li>
+         <li class="selected">
+          <span>New Timer</span>
+         </li>
 
 {{/unselected_busy-noise}}
 
 
 {{/nav_bar}}
 
-      </ul>
+       </ul>
 
 {{#development?}}
 
 
 {{#logged_in?}}
 
-      <h4>Non-Members</h4>
-      <ul class="non_members">
+       <h4>Non-Members</h4>
+       <ul class="non_members">
 
 {{#nav_bar}}
 
 
 {{#selected_sign-up}}
 
-        <li>
-         <a href="/sign-up/">Sign-up</a>
-        </li>
+         <li>
+          <a href="/sign-up/">Sign-up</a>
+         </li>
 
 {{/selected_sign-up}}
 
 
 {{#unselected_sign-up}}
 
-        <li class="selected">
-         <span>Sign-up</span>
-        </li>
+         <li class="selected">
+          <span>Sign-up</span>
+         </li>
 
 {{/unselected_sign-up}}
 
 
 {{/nav_bar}}
 
-      </ul>
+       </ul>
 
 {{/logged_in?}}
 
-      <h4>Members</h4>
-      <ul class="members">
+       <h4>Members</h4>
+       <ul class="members">
 
 {{#logged_in?}}
 
@@ -172,36 +172,36 @@
 
 {{#selected_account}}
 
-        <li>
-         <a href="/account/">Account</a>
-        </li>
+         <li>
+          <a href="/account/">Account</a>
+         </li>
 
 {{/selected_account}}
 
 
 {{#unselected_account}}
 
-        <li class="selected">
-         <span>Account</span>
-        </li>
+         <li class="selected">
+          <span>Account</span>
+         </li>
 
 {{/unselected_account}}
 
 
 {{#selected_log-out}}
 
-        <li>
-         <a href="/log-out/">Log-out</a>
-        </li>
+         <li>
+          <a href="/log-out/">Log-out</a>
+         </li>
 
 {{/selected_log-out}}
 
 
 {{#unselected_log-out}}
 
-        <li class="selected">
-         <span>Log-out</span>
-        </li>
+         <li class="selected">
+          <span>Log-out</span>
+         </li>
 
 {{/unselected_log-out}}
 
@@ -220,18 +220,18 @@
 
 {{#selected_log-in}}
 
-        <li>
-         <a href="/log-in/">Log-in</a>
-        </li>
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
 
 {{/selected_log-in}}
 
 
 {{#unselected_log-in}}
 
-        <li class="selected">
-         <span>Log-in</span>
-        </li>
+         <li class="selected">
+          <span>Log-in</span>
+         </li>
 
 {{/unselected_log-in}}
 
@@ -241,406 +241,406 @@
 
 {{/not_logged_in?}}
 
-      </ul>
-      <h4>Stuff To Do</h4>
-      <ul class="to_dos">
+       </ul>
+       <h4>Stuff To Do</h4>
+       <ul class="to_dos">
 
 {{#nav_bar}}
 
 
 {{#selected_add-to-do}}
 
-        <li>
-         <a href="/add-to-do/">Add to do</a>
-        </li>
+         <li>
+          <a href="/add-to-do/">Add to do</a>
+         </li>
 
 {{/selected_add-to-do}}
 
 
 {{#unselected_add-to-do}}
 
-        <li class="selected">
-         <span>Add to do</span>
-        </li>
+         <li class="selected">
+          <span>Add to do</span>
+         </li>
 
 {{/unselected_add-to-do}}
 
 
 {{#selected_today}}
 
-        <li>
-         <a href="/today/">Today</a>
-        </li>
+         <li>
+          <a href="/today/">Today</a>
+         </li>
 
 {{/selected_today}}
 
 
 {{#unselected_today}}
 
-        <li class="selected">
-         <span>Today</span>
-        </li>
+         <li class="selected">
+          <span>Today</span>
+         </li>
 
 {{/unselected_today}}
 
 
 {{#selected_tomorrow}}
 
-        <li>
-         <a href="/tomorrow/">Tomorrow</a>
-        </li>
+         <li>
+          <a href="/tomorrow/">Tomorrow</a>
+         </li>
 
 {{/selected_tomorrow}}
 
 
 {{#unselected_tomorrow}}
 
-        <li class="selected">
-         <span>Tomorrow</span>
-        </li>
+         <li class="selected">
+          <span>Tomorrow</span>
+         </li>
 
 {{/unselected_tomorrow}}
 
 
 {{#selected_this-month}}
 
-        <li>
-         <a href="/this-month/">This Month</a>
-        </li>
+         <li>
+          <a href="/this-month/">This Month</a>
+         </li>
 
 {{/selected_this-month}}
 
 
 {{#unselected_this-month}}
 
-        <li class="selected">
-         <span>This Month</span>
-        </li>
+         <li class="selected">
+          <span>This Month</span>
+         </li>
 
 {{/unselected_this-month}}
 
 
 {{/nav_bar}}
 
-      </ul>
-      <h4>Lives</h4>
-      <ul class="lives">
+       </ul>
+       <h4>Lives</h4>
+       <ul class="lives">
 
 {{#nav_bar}}
 
 
 {{#selected_friend}}
 
-        <li>
-         <a href="/friend/">Friend</a>
-        </li>
+         <li>
+          <a href="/friend/">Friend</a>
+         </li>
 
 {{/selected_friend}}
 
 
 {{#unselected_friend}}
 
-        <li class="selected">
-         <span>Friend</span>
-        </li>
+         <li class="selected">
+          <span>Friend</span>
+         </li>
 
 {{/unselected_friend}}
 
 
 {{#selected_family}}
 
-        <li>
-         <a href="/family/">Family</a>
-        </li>
+         <li>
+          <a href="/family/">Family</a>
+         </li>
 
 {{/selected_family}}
 
 
 {{#unselected_family}}
 
-        <li class="selected">
-         <span>Family</span>
-        </li>
+         <li class="selected">
+          <span>Family</span>
+         </li>
 
 {{/unselected_family}}
 
 
 {{#selected_work}}
 
-        <li>
-         <a href="/work/">Work</a>
-        </li>
+         <li>
+          <a href="/work/">Work</a>
+         </li>
 
 {{/selected_work}}
 
 
 {{#unselected_work}}
 
-        <li class="selected">
-         <span>Work</span>
-        </li>
+         <li class="selected">
+          <span>Work</span>
+         </li>
 
 {{/unselected_work}}
 
 
 {{#selected_pet-owner}}
 
-        <li>
-         <a href="/pet-owner/">Pet Owner</a>
-        </li>
+         <li>
+          <a href="/pet-owner/">Pet Owner</a>
+         </li>
 
 {{/selected_pet-owner}}
 
 
 {{#unselected_pet-owner}}
 
-        <li class="selected">
-         <span>Pet Owner</span>
-        </li>
+         <li class="selected">
+          <span>Pet Owner</span>
+         </li>
 
 {{/unselected_pet-owner}}
 
 
 {{#selected_celebrity}}
 
-        <li>
-         <a href="/celebrity/">Celebrity</a>
-        </li>
+         <li>
+          <a href="/celebrity/">Celebrity</a>
+         </li>
 
 {{/selected_celebrity}}
 
 
 {{#unselected_celebrity}}
 
-        <li class="selected">
-         <span>Celebrity</span>
-        </li>
+         <li class="selected">
+          <span>Celebrity</span>
+         </li>
 
 {{/unselected_celebrity}}
 
 
 {{/nav_bar}}
 
-      </ul>
+       </ul>
 
 {{/development?}}
 
-      <h4>Clubs</h4>
-      <ul class="news">
+       <h4>Clubs</h4>
+       <ul class="news">
 
 {{#nav_bar}}
 
 
 {{#selected_bubblegum}}
 
-        <li>
-         <a href="/bubblegum/">Bubblegum Pop</a>
-        </li>
+         <li>
+          <a href="/bubblegum/">Bubblegum Pop</a>
+         </li>
 
 {{/selected_bubblegum}}
 
 
 {{#unselected_bubblegum}}
 
-        <li class="selected">
-         <span>Bubblegum Pop</span>
-        </li>
+         <li class="selected">
+          <span>Bubblegum Pop</span>
+         </li>
 
 {{/unselected_bubblegum}}
 
 
 {{#selected_child-care}}
 
-        <li>
-         <a href="/child-care/">Child Care</a>
-        </li>
+         <li>
+          <a href="/child-care/">Child Care</a>
+         </li>
 
 {{/selected_child-care}}
 
 
 {{#unselected_child-care}}
 
-        <li class="selected">
-         <span>Child Care</span>
-        </li>
+         <li class="selected">
+          <span>Child Care</span>
+         </li>
 
 {{/unselected_child-care}}
 
 
 {{#selected_computer}}
 
-        <li>
-         <a href="/computer/">Computer Use</a>
-        </li>
+         <li>
+          <a href="/computer/">Computer Use</a>
+         </li>
 
 {{/selected_computer}}
 
 
 {{#unselected_computer}}
 
-        <li class="selected">
-         <span>Computer Use</span>
-        </li>
+         <li class="selected">
+          <span>Computer Use</span>
+         </li>
 
 {{/unselected_computer}}
 
 
 {{#selected_economy}}
 
-        <li>
-         <a href="/economy/">Economy + War</a>
-        </li>
+         <li>
+          <a href="/economy/">Economy + War</a>
+         </li>
 
 {{/selected_economy}}
 
 
 {{#unselected_economy}}
 
-        <li class="selected">
-         <span>Economy + War</span>
-        </li>
+         <li class="selected">
+          <span>Economy + War</span>
+         </li>
 
 {{/unselected_economy}}
 
 
 {{#selected_hair}}
 
-        <li>
-         <a href="/hair/">Skin &amp; Hair</a>
-        </li>
+         <li>
+          <a href="/hair/">Skin &amp; Hair</a>
+         </li>
 
 {{/selected_hair}}
 
 
 {{#unselected_hair}}
 
-        <li class="selected">
-         <span>Skin &amp; Hair</span>
-        </li>
+         <li class="selected">
+          <span>Skin &amp; Hair</span>
+         </li>
 
 {{/unselected_hair}}
 
 
 {{#selected_housing}}
 
-        <li>
-         <a href="/housing/">Housing &amp; Apartments</a>
-        </li>
+         <li>
+          <a href="/housing/">Housing &amp; Apartments</a>
+         </li>
 
 {{/selected_housing}}
 
 
 {{#unselected_housing}}
 
-        <li class="selected">
-         <span>Housing &amp; Apartments</span>
-        </li>
+         <li class="selected">
+          <span>Housing &amp; Apartments</span>
+         </li>
 
 {{/unselected_housing}}
 
 
 {{#selected_health}}
 
-        <li>
-         <a href="/health/">Pain &amp; Disease</a>
-        </li>
+         <li>
+          <a href="/health/">Pain &amp; Disease</a>
+         </li>
 
 {{/selected_health}}
 
 
 {{#unselected_health}}
 
-        <li class="selected">
-         <span>Pain &amp; Disease</span>
-        </li>
+         <li class="selected">
+          <span>Pain &amp; Disease</span>
+         </li>
 
 {{/unselected_health}}
 
 
 {{#selected_preggers}}
 
-        <li>
-         <a href="/preggers/">Pregnancy</a>
-        </li>
+         <li>
+          <a href="/preggers/">Pregnancy</a>
+         </li>
 
 {{/selected_preggers}}
 
 
 {{#unselected_preggers}}
 
-        <li class="selected">
-         <span>Pregnancy</span>
-        </li>
+         <li class="selected">
+          <span>Pregnancy</span>
+         </li>
 
 {{/unselected_preggers}}
 
 
 {{#selected_salud}}
 
-        <li>
-         <a href="/salud/">Salud (Espa&#241;ol)</a>
-        </li>
+         <li>
+          <a href="/salud/">Salud (Espa&#241;ol)</a>
+         </li>
 
 {{/selected_salud}}
 
 
 {{#unselected_salud}}
 
-        <li class="selected">
-         <span>Salud (Espa&#241;ol)</span>
-        </li>
+         <li class="selected">
+          <span>Salud (Espa&#241;ol)</span>
+         </li>
 
 {{/unselected_salud}}
 
 
 {{#selected_news}}
 
-        <li>
-         <a href="/news/">Other Topics</a>
-        </li>
+         <li>
+          <a href="/news/">Other Topics</a>
+         </li>
 
 {{/selected_news}}
 
 
 {{#unselected_news}}
 
-        <li class="selected">
-         <span>Other Topics</span>
-        </li>
+         <li class="selected">
+          <span>Other Topics</span>
+         </li>
 
 {{/unselected_news}}
 
 
 {{/nav_bar}}
 
-      </ul>
-     </div>
-    <div id="content">
-     <div class="usernames">
-      <h4>Usernames</h4>
-      <a href="#add_username" class="new">Add Another Username.</a>
+       </ul>
+      </div>
+     <div id="content">
+      <div class="usernames">
+       <h4>Usernames</h4>
+       <a class="new" href="#add_username">Add Another Username.</a>
 
 {{#lives}}
 
-      <div class="un" id="life_{{category}}">
-       <div class="username">{{username}}</div>
-       <div class="category">{{category}}</div>
-       <a href="#edit_username" class="edit">Edit</a>
-      </div>
+       <div class="un" id="life_{{category}}">
+        <div class="username">{{username}}</div>
+        <div class="category">{{category}}</div>
+        <a class="edit" href="#edit_username">Edit</a>
+       </div>
 
 {{/lives}}
 
-     </div>
-     <div id="delete_account">
-      <h4>Delete Everything.</h4>
-      <div class="msg">Once you delete your account, all usernames,
+      </div>
+      <div id="delete_account">
+       <h4>Delete Everything.</h4>
+       <div class="msg">Once you delete your account, all usernames,
       all data,
       will be lost permanently. 
       For your privacy, there is no going back. No undo.
       It will be as if you never existed on this website.</div>
-      <a href="#delete" class="delete">Delete Entire Account</a>
+       <a class="delete" href="#delete">Delete Entire Account</a>
+      </div>
      </div>
-    </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>

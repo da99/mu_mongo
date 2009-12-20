@@ -1,5 +1,11 @@
 require 'markaby'
 
+class Ignore_Everything
+  def method_missing *args
+    return self
+  end
+end
+
 class Markaby::Builder
   
   set(:indent, 1)
@@ -18,6 +24,11 @@ class Markaby::Builder
       end
     })
   end
+
+  def the_app
+    @the_app = Ignore_Everything.new
+  end
+  alias_method :app_vars, :the_app
 
   def save_to(name,  &new_proc)
     text "\nNot done: save_to #{name.inspect}\n"
@@ -97,17 +108,18 @@ class Mab_In_Disguise
       layout_content = File.read(layout_file(mab_dir))
       
       template_files(mab_dir).each { |file_name|
-        
+        next if file_name['.xml.']
         new_file_name = File.join(mus_dir, File.basename(file_name) ).sub(/\.rb$/,'.html')
         is_partial    = file_name[/^__/]
-        content       = File.read(file_name)
 
-        if not is_partial
-          content = layout_content.sub("\n#! content\n", "\n\n#{content}\n\n")
+        if is_partial
+          content = File.read(file_name)
+        else
+          content = layout_content.sub("{{content_file}}", File.basename(file_name))
         end
 
-        compiled      = Markaby::Builder.new { eval(content, nil, file_name, 2) }
-        
+        compiled = Markaby::Builder.new { eval(content, nil, file_name, 1) }
+
         File.open(new_file_name, 'w') { |f_io| 
           f_io.write compiled 
         }

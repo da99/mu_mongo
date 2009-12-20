@@ -1,7 +1,6 @@
 
 begin
 
-  require 'middleware/the_bunny'  
   require 'middleware/allow_only_roman_uri'
   require 'middleware/squeeze_uri_dots' 
   require 'megauni'
@@ -86,7 +85,7 @@ begin
   #   try_textile
   # }
     
-  # DesignDoc.create_or_update if DesignDoc.needs_push_to_db?
+  # Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
     
   # Finally, start the app.
   run The_Bunny

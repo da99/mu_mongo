@@ -7,7 +7,7 @@ div.content!  {
   
   h3 'Create News'
 
-  partial '__flash_msg' if the_app.flash_msg?
+  partial '__flash_msg' 
 
   form.form_new_news!(:action=>'/news/', :method=>'post') {
   

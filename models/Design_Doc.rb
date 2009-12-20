@@ -1,6 +1,6 @@
 
 
-class DesignDoc
+class Design_Doc
 
   Views = %w{
     news_by_tag
@@ -87,5 +87,5 @@ class DesignDoc
     ) 
   end
 
-end # === class DesignDoc
+end # === class Design_Doc
 

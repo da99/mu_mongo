@@ -5,9 +5,7 @@ partial('__nav_bar')
 div.content! {
 
   # ================= div.flash_msg =============================
-  if the_app.flash_msg?
-    partial '__flash_msg'
-  end
+  partial '__flash_msg'
 
   h3 'Log-in'
   

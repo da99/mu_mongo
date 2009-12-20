@@ -93,7 +93,7 @@ class CouchDoc
 
   def self.GET(view_name, params={})
 
-    if !DesignDoc.view_exists?(view_name)
+    if !Design_Doc.view_exists?(view_name)
       raise ArgumentError, "Non-existent view name: #{view_name.inspect}"
     end
 
@@ -102,7 +102,7 @@ class CouchDoc
     # since View may change in the future from 
     # 'map' to 'map/reduce'.
     if !params.has_key?(:reduce)
-      if DesignDoc.view_has_reduce?(view_name)
+      if Design_Doc.view_has_reduce?(view_name)
         params[:reduce] = false
       end
     end
