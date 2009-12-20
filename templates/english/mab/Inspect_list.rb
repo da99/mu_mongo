@@ -1,3 +1,6 @@
+# /home/da01/megauni/views/Inspect_list.rb
+
+
 p {
 	span 'Hello. This is The Bunny on top of Rack.'
 	br 

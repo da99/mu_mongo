@@ -1,4 +1,5 @@
-class Account_Bunny_GET_list < Bunny_Mustache
+# /home/da01/megauni/templates/english/mab/Account_list.rb
+class Account_list < Bunny_Mustache
 
   def title 
     'My Account'

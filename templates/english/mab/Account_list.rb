@@ -1,3 +1,5 @@
+# /home/da01/megauni/views/Account_list.rb
+
 partial('__nav_bar')
 
 

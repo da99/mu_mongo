@@ -3,8 +3,11 @@ class Views
 	include FeFe
 
 	describe :create do
+		
 		it 'Creates a template with corresponding view file.'
+		
 		steps([:name, nil], [:lang, 'english']) do |name, lang|
+			
 			demand_regex_match( /\A[a-zA-Z\-\_0-9]+\Z/, name)
 			dir  = File.join('templates', lang.downcase, 'mab')
 			mab  = File.join(dir, name + '.rb').expand_path
@@ -12,30 +15,17 @@ class Views
 			created = []
 			already = []
 
-			if File.file?(mab)
-				already << mab
-			else
-				# Create Markaby file.
-				File.open(mab, 'w') do |file|
-					file.puts %~
+			templates = {}
+			templates[mab] = %~
 # #{view}
 # #{name}
 
 partial('__nav_bar')
 
 div.content! { 
-}
-					~.lstrip
-				end
-				created << mab
-			end
+} ~.lstrip
 
-			if File.file?(view)
-				already << view
-			else
-				# Create :view file.
-				File.open(view, 'w') do |file|
-					file.puts %~
+			templates[view] = %~
 # #{mab}
 
 class #{name} < Bunny_Mustache
@@ -44,28 +34,26 @@ class #{name} < Bunny_Mustache
     '...'
   end
 	
-end # === #{name}
-					~.lstrip
+end # === #{name} ~.lstrip
+
+			templates.each do |file, content|
+				
+				if File.file?(file)
+					puts_white 'Already existed:'
+				else
+					# Create file.
+					File.open(file, 'w') do |file_io|
+						file_io.puts content
+					end
+					puts_white 'Created:'
 				end
-				created << view
+				
+				puts_white file
+				
 			end
 
-			if not already.empty?
-				puts_white 'Already existed:'
-				already.each { |file|
-					puts_white file
-				}
-			end
-
-			if not created.empty?
-				puts_white 'Created:'
-				already.each { |file|
-					puts_white file
-				}
-			end
-
-		end
-	end
+		end # === steps
+	end # === describe
 
 end # === Views
 

@@ -1,3 +1,5 @@
+# /home/da01/megauni/views/Hello_list.rb
+ 
 partial('__nav_bar')
 
 

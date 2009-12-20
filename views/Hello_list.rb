@@ -1,4 +1,6 @@
-class Hello_Bunny_GET_list < Bunny_Mustache
+# /home/da01/megauni/templates/english/mab/Hello_list.rb
+
+class Hello_list < Bunny_Mustache
 
   def title
     'Coming Soon...'

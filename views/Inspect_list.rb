@@ -1,4 +1,6 @@
-class Inspect_Bunny_GET_list < Bunny_Mustache
+# /home/da01/megauni/templates/english/mab/Inspect_list.rb
+
+class Inspect_list < Bunny_Mustache
 
   def title
     'Hello, World'
