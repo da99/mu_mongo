@@ -195,6 +195,7 @@ module FeFe
 
 
   def run_task task_name, raw_args 
+		
     demand_symbol task_name
 
     task_info = self.class.tasks[task_name] || self.class.tasks[task_name.bang_to_bang]
@@ -207,9 +208,11 @@ module FeFe
       
       a_name, a_default = i
       
-      m <<  (raw_args.has_key?(a_name) && raw_args[a_name]) ||
-            (opts.index(i) && raw_args[:global][opts.index(i)] ) ||
-            a_default
+      m <<  ( 
+						 (raw_args.has_key?(a_name) && raw_args[a_name]) ||
+							(opts.index(i) && raw_args[:global][opts.index(i)] ) ||
+							a_default
+						)
       
       m
     }

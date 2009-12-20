@@ -9,7 +9,12 @@ class Views
 			dir  = File.join('templates', lang.downcase, 'mab')
 			mab  = File.join(dir, name + '.rb').expand_path
 			view = File.join('views', name + '.rb')
-			if !File.file?(mab)
+			created = []
+			already = []
+
+			if File.file?(mab)
+				already << mab
+			else
 				# Create Markaby file.
 				File.open(mab, 'w') do |file|
 					file.puts %~
@@ -20,11 +25,14 @@ partial('__nav_bar')
 
 div.content! { 
 }
-					~
+					~.lstrip
 				end
+				created << mab
 			end
 
-			if !File.file?(view)
+			if File.file?(view)
+				already << view
+			else
 				# Create :view file.
 				File.open(view, 'w') do |file|
 					file.puts %~
@@ -37,9 +45,25 @@ class #{name} < Bunny_Mustache
   end
 	
 end # === #{name}
-					~
+					~.lstrip
 				end
+				created << view
 			end
+
+			if not already.empty?
+				puts_white 'Already existed:'
+				already.each { |file|
+					puts_white file
+				}
+			end
+
+			if not created.empty?
+				puts_white 'Created:'
+				already.each { |file|
+					puts_white file
+				}
+			end
+
 		end
 	end
 
