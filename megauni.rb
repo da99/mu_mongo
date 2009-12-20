@@ -72,10 +72,13 @@ require 'rest_client'
 
   end # === case
   
-  require_these 'controllers', %w{
+  %w{
     Hello
     Inspect
-  }
+  }.each { |control|
+		require "controllers/#{control}"
+		The_Bunny.controllers << Object.const_get(control)
+	}
  
   # ===============================================
   # Require Models.

@@ -1,7 +1,5 @@
 class Inspect
 
-  include Bunny_DNA
-
   def GET_list the_stage
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index('__' + 'END' + '__')

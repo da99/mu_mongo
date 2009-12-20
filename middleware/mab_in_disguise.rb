@@ -92,6 +92,7 @@ end # === Markaby::Builder
 class Mab_In_Disguise
   
   def initialize new_app
+		@m_times = {}
     @app = new_app
   end
   
@@ -108,7 +109,12 @@ class Mab_In_Disguise
       layout_content = File.read(layout_file(mab_dir))
       
       template_files(mab_dir).each { |file_name|
+				
         next if file_name['.xml.']
+				
+				m_time = File.mtime(file_name)
+				next if @m_times[file_name] == m_time
+
         new_file_name = File.join(mus_dir, File.basename(file_name) ).sub(/\.rb$/,'.html')
         is_partial    = file_name[/^__/]
 
@@ -124,12 +130,11 @@ class Mab_In_Disguise
           f_io.write compiled 
         }
 
+				@m_times[file_name] = m_time
+
       }
       
     }
-    
-    # require 'rubygems'; require 'ruby-debug'; debugger
-    
     
     @app.call(new_env)
   end

@@ -24,15 +24,31 @@ class The_Bunny
       ENV['RACK_ENV']
     end
 
+    def controllers
+      @controllers ||= []
+    end
+
 	end
 
-  def self.call(env)
+  def self.call(new_env)
     #
     # NOTE: 
     # For Thread safety in Rack, no instance variables should be changed.
     # Therefore, use :dup and a different version of :call
     # 
-    new(env).call!
+    the_app = new(new_env)
+    status, header, body = the_app.response.finish
+
+    # From The Sinatra Framework:
+    #   Never produce a body on HEAD requests. Do retain the Content-Length
+    #   unless it's "0", in which case we assume it was calculated erroneously
+    #   for a manual HEAD response and remove it entirely.
+    if new_env['REQUEST_METHOD'] == 'HEAD'
+      body = []
+      header.delete('Content-Length') if header['Content-Length'] == '0'
+    end
+
+    [status, header, body]
   end
 
   # ======== INSTANCE stuff ======== 
@@ -68,21 +84,6 @@ class The_Bunny
       error! '<h1>Unknown Error.</h1>'
       
     end
-  end
-
-  def call!
-    status, header, body = @response.finish
-
-    # From The Sinatra Framework:
-    #   Never produce a body on HEAD requests. Do retain the Content-Length
-    #   unless it's "0", in which case we assume it was calculated erroneously
-    #   for a manual HEAD response and remove it entirely.
-    if @env['REQUEST_METHOD'] == 'HEAD'
-      body = []
-      header.delete('Content-Length') if header['Content-Length'] == '0'
-    end
-
-    [status, header, body]
   end
 
   Options::ENVIRONS.each { |envir|
@@ -125,7 +126,10 @@ class The_Bunny
 
   def render_text_plain txt
     response.body = txt
-    response.set_header 'Content-Type', 'text/plain'
+    set_header 'Content-Type', 'text/plain; charset = utf-8'
+    set_header 'Accept-Charset',   'utf-8'
+    set_header 'Cache-Control',    'no-cache'
+    set_header 'Pragma',           'no-cache'
   end
 
   def render_text_html txt
@@ -281,17 +285,35 @@ class The_Bunny
   end
 
   def run_the_request 
-    the_app = self
-    results = Bunny_DNA.controllers.detect { |control|
+    
+    the_app   = self
+    http_meth = request.request_method
+    results   = self.class.controllers.detect { |control|
+      
+      pieces  = request.path.strip_slashes.split('/')
+      a_name  = http_meth
+      
       begin
-        control.run this_app
-      rescue Bad_Bunny::HTTP_404
-        nil
-      end
+        
+          pieces.shift if pieces.first == control.name.downcase
+          pieces.push('list') if pieces.empty?
+          a_name = [a_name, pieces.shift].compact.join('_')
+          if control.public_instance_methods.include?(a_name) && 
+             control.instance_method(a_name).arity === pieces.size + 1
+            self.controller  = control
+            self.action_name = a_name['_'] ? a_name.split("_")[1,100] : a_name
+            control.new.send(a_name, self, *pieces)
+            break
+          end
+          
+      end until pieces.empty?
+
+      self.controller
+
     }
 
     return true if results
-    raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
+    raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
 
   end
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -300,56 +322,6 @@ module Bad_Bunny
   HTTP_404      = Class.new(StandardError)
   Redirect      = Class.new(StandardError)
 end # === Bad_Bunny
-
-#
-# Base Module for controllers.
-#
-module Bunny_DNA
-  
-  def self.controllers
-    @controllers ||= []
-  end
-
-  def self.included target
-    target.extend Class_Methods
-    target.map( '/' + target.name.downcase )
-    controllers << target
-  end
-
-  module Class_Methods
-    
-    def map new_str = nil, &blok
-      return @map if !new_str && !block_given?
-      @map = blok || (new_str == '/' ? new_str : new_str.strip_slashes )
-    end
-
-    def maps_to? new_app
-      
-      str = ( new_app.is_a?(String) ? new_app : new_app.request.path )
-      if str != '/'
-        str = str.strip_slashes
-      end
-
-      case map
-        when String
-          str == map
-        when Regexp
-          str =~ map
-      else
-        map.call str
-      end
-    end
-
-    def run new_app
-      if not maps_to?(new_app)
-        raise Bad_Bunny::HTTP_404, 
-          "#{self} does not handle #{new_app.request.request_method} #{new_app.request.path}" 
-      end
-    end
-  end # === Class_Methods
-
-end # === module Bunny_DNA
-
 
 
 __END__

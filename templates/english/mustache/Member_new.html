@@ -629,7 +629,7 @@ Not done: save_to "title"
 {{/flash_msg?}}
 
       <h3>Create a New Account</h3>
-      <form action="/member/" method="post" name="sign_up_form" id="sign_up_form">
+      <form method="post" name="sign_up_form" id="sign_up_form" action="/member/">
        <fieldset>
         <label>Username</label>
         <input type="text" class="text" value="{{ session_form_username }}" name="username" id="username_name"/>
