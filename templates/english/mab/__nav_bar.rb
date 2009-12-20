@@ -14,17 +14,17 @@ div( :id=>"nav_bar" ) {
     }
   }
 
-
   ul.help {
-    mustache 'nav_help' do
-      mustache 'link'
+    mustache 'nav_bar' do
+      nav_bar 'home'
     end
   }
    
     h4 'Egg Timers'
     ul.to_dos {
-      mustache 'nav_timers' do
-        mustache 'link'
+      mustache 'nav_bar' do
+        nav_bar 'my-egg-timer', 'Old Timer'
+        nav_bar 'busy-noise', 'New Timer'
       end
     }
 
@@ -33,56 +33,65 @@ div( :id=>"nav_bar" ) {
       mustache 'logged_in?' do
         h4 'Non-Members'
         ul.non_members {
-          nav_bar_li.call '/sign-up/', 'Create Account', :member, :new
+          mustache 'nav_bar' do
+            nav_bar 'sign-up'
+          end
         }
       end
 
       h4 'Members'
       ul.members {
-        if the_app.logged_in? 
-          nav_bar_li.call '/account/', 'My Account', :account, :show
-          nav_bar_li.call '/log-out/', 'Logout', :session, :destroy
-        else
-          nav_bar_li.call '/log-in/', 'Log-in', :session, :new
+        mustache 'logged_in?' do
+          mustache 'nav_bar' do
+            nav_bar 'account'
+            nav_bar 'log-out'
+          end
+        end
+
+        mustache 'not_logged_in?' do
+          mustache 'nav_bar' do
+            nav_bar 'log-in'
+          end
         end
       }
 
       h4 'Stuff To Do'
       ul.to_dos {
-        #nav_bar_li.call '/add-to-do/', '+ Add Stuff', :to_dos, :add
-        nav_bar_li.call '/today/', 'Today', :to_dos, :today
-        nav_bar_li.call '/tomorrow/', 'Tomorrow', :to_dos, :tomorrow
-        nav_bar_li.call '/this-month/', 'This Month', :to_dos, :this_month
-        #nav_bar_li.call '/my-egg-timer/', 'Old Egg Timer', :egg, :my
-        #nav_bar_li.call '/busy-noise/', 'New Egg Timer', :egg, :busy
+        mustache 'nav_bar' do
+          nav_bar 'add-to-do', 'Add to do'
+          nav_bar 'today' 
+          nav_bar 'tomorrow'
+          nav_bar 'this-month', 'This Month'
+        end
       }
 
       h4 'Lives'
       ul.lives {
-        nav_bar_li.call '/friend/',    '(9) Friend',    :lives, :friend
-        nav_bar_li.call '/family/',    'Family',    :lives, :family
-        nav_bar_li.call '/work/',    'Work',    :lives, :worker
-        nav_bar_li.call '/romance/',  '(100) Romance',   :lives, :romance
-        nav_bar_li.call '/pet-owner/', 'Pet Owner', :lives, :pet_owner
-        nav_bar_li.call '/celebrity/', 'Celebrity', :lives, :celebrity
+        mustache 'nav_bar' do
+          nav_bar 'friend'
+          nav_bar 'family'
+          nav_bar 'work'
+          nav_bar 'pet-owner', 'Pet Owner'
+          nav_bar 'celebrity'
+        end
       }
     
     end # if development?
 
     h4 'Clubs'
     ul.news {
-      nav_bar_li.call '/bubblegum/', 'Bubblegum Pop', :topic, :bubblegum
-      nav_bar_li.call '/child-care/', 'Child Care',   :topic, :child_care
-      nav_bar_li.call '/computer/', 'Computer Use',   :topic, :computer
-      nav_bar_li.call '/economy/',  'Economy + War',  :topic, :economy
-      nav_bar_li.call '/hair/',     'Skin & Hair',    :topic, :skin
-      nav_bar_li.call '/housing/',  'Housing & Apartments', :topic, :housing
-      #nav_bar_li.call '/music/',    'Music',          :topic, :music
-      nav_bar_li.call '/health/',   'Pain & Disease',         :topic, :health
-      nav_bar_li.call '/preggers/', 'Pregnancy',      :topic, :preggers
-      nav_bar_li.call '/salud/',    'Salud (Español)', :main, :salud
-      #nav_bar_li.call '/sports/',   'Sports',         :topic, :sports
-      nav_bar_li.call '/news/',     'Other Topics',    :topic, :news
+      mustache 'nav_bar' do
+        nav_bar 'bubblegum', 'Bubblegum Pop'
+        nav_bar 'child-care', 'Child Care'
+        nav_bar 'computer', 'Computer Use'
+        nav_bar 'economy',  'Economy + War'
+        nav_bar 'hair',     'Skin & Hair'
+        nav_bar 'housing',  'Housing & Apartments'
+        nav_bar 'health',   'Pain & Disease'
+        nav_bar 'preggers', 'Pregnancy'
+        nav_bar 'salud',    'Salud (Español)'
+        nav_bar 'news',     'Other Topics'
+      end
     }
 
     # h4 'Pain & Disease'

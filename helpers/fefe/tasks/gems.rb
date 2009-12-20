@@ -11,7 +11,7 @@ class Gems
     GEM_DEVELOPMENT_PAIR = [GEM_MANIFEST_DEV, GEM_MANIFEST_DEV_ARRAY]
 
     describe :development_install do
-      it 'It install a gem for the development environment.'
+      it 'Installs a gem for the development environment.'
       steps([:cmd, nil]) do |cmd|
         run_task :install, :cmd => cmd, :env=>'development'
       end

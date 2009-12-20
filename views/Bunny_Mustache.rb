@@ -1,3 +1,5 @@
+require 'mustache'
+
 class Bunny_Mustache < Mustache
 	
 	def initialize new_app
@@ -35,9 +37,12 @@ class Bunny_Mustache < Mustache
 	end
 
   def logged_in?
-    false
+    @app.logged_in?
   end
 
+  def not_logged_in?
+    !logged_in?
+  end
 
   def flash_msg?
     !!(@app.flash.success_msg || @app.flash.error_msg)
@@ -73,55 +78,83 @@ class Bunny_Mustache < Mustache
     !!opening_msg
   end
 
-  def selected t
-      li.selected {
-        span t
-      }
-  end
 
-  def unselected t, u
-      li {
-        a t, :href=> u 
-      }
-  end
 
   def opening_msg_site_title
     if @app.request.path == '/'
       The_Bunny::Options::SITE_TITLE
     else
       %~<a href="/">#{The_Bunny::Options::SITE_TITLE}</a>~
+    end
   end
    
-  def nav_bar_li path, text, c_name, a_name, show
+  def nav_bar_li shortcut, text, c_name, a_name
+    
+    # if shortcut === 'home'
+    #   path = '/'
+    # else
+    #   path = "/#{shortcut}/"
+    # end
 
-      show_it = case show
-        when :if_member
-          the_app.logged_in?
-        when :if_not_member
-          !the_app.logged_in?
-        else
-          true
-      end
+    # selected = lambda { |t|
+    #   %~
+    #   <li class="selected">
+    #     <span>#{t}</span>
+    #   </li>
+    #   ~
+    # }
 
-      return if !show_it 
+    # unselected = lambda { |t, u|
+    #   %~
+    #   <li>
+    #     <a href="#{u}">#{t}</a>
+    #   </li>
+    #   ~
+    # }
 
-      if the_app.controller == c_name && the_app.action == a_name
-        selected.call text
-      else
-        unselected.call text, path 
-      end     
+    @app.controller_name == c_name && @app.action_name == a_name
+  end
+
+  def nav_bar
+    @nav_bar ||= begin
       
-  end
+      new_hash = {}
 
-  def nav_bar_li_slash 
-    nav_bar_li '/', 'Home', :main, :show
-  end
+        #['/add-to-do/', '+ Add Stuff', :to_dos, :add ],
+      
+      [ [ 'home',         :main,    :show ],
+        [ 'help',         :main,    :help],
+        [ 'my-egg-timer', :egg,     :my],
+        [ 'busy-noise',   :egg,     :busy],
+        [ 'sign-up',      :member,  :new],
+        [ 'account',      :account, :show       ],
+        [ 'log-out',      :session, :destroy   ],
+        [ 'log-in',       :session, :new       ],
+        [ 'today',        :to_dos,  :today     ],
+        [ 'tomorrow',     :to_dos,  :tomorrow  ],
+        [ 'this-month',   :to_dos,  :this_month ],
+        [ 'friend',       :lives,   :friend     ],
+        [ 'family',       :lives,   :family    ],
+        [ 'work',         :lives,   :worker    ],
+        [ 'pet-owner',    :lives,   :pet_owner  ],
+        [ 'celebrity',    :lives,   :celebrity ],
+        [ 'bubblegum',    :topic,   :bubblegum],
+        [ 'child-care',   :topic,   :child_care],
+        [ 'computer',     :topic,   :computer],
+        [ 'economy',      :topic,   :economy],
+        [ 'hair',         :topic,   :skin],
+        [ 'housing',      :topic,   :housing],
+        [ 'health',       :topic,   :health],
+        [ 'preggers',     :topic,   :preggers],
+        [ 'salud',        :main,    :salud],
+        [ 'news',         :topic,   :news]
+      ].each { |shortcut, c_name, a_name|
+        new_hash["selected_#{shortcut}"]   = @app.controller_name == c_name && @app.action_name == a_name
+        new_hash["unselected_#{shortcut}"] = !new_hash["selected_#{shortcut}"]
+      }
 
-  def nav_bar_li_slash_help
-    nav_bar_li '/help/', 'Help', :main, :help
+      new_hash
+    end
   end
-
-      nav_bar_li.call '/my-egg-timer/', 'Old', :egg, :my
-      nav_bar_li.call '/busy-noise/', 'New', :egg, :busy
 
 end # === Bunny_Mustache

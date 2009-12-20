@@ -7,7 +7,9 @@ partial('__nav_bar')
 div.content! { 
 
   # ================= div.flash_msg =============================
-  partial '__flash_msg' if the_app.flash_msg?
+  mustache 'flash_msg?' do
+		partial '__flash_msg' 
+	end
 
 
   h3 'Create a New Account'
@@ -16,7 +18,7 @@ div.content! {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"username_name", :name=>"username", :type=>"text", :value=>the_app.session[:form_username] )
+      input.text( :id=>"username_name", :name=>"username", :type=>"text", :value=>'{{ session_form_username }}' )
     }
     
     fieldset {

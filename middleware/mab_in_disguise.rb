@@ -4,6 +4,21 @@ class Markaby::Builder
   
   set(:indent, 1)
   
+  def nav_bar shortcut, txt = nil
+    path = shortcut == 'home' ? '/' : "/#{shortcut}/"
+    txt ||= shortcut.to_s.capitalize
+    text(capture {
+      mustache "selected_#{shortcut}" do
+        li {
+          a txt, :href=>"#{path}"
+        }
+      end
+      mustache "unselected_#{shortcut}" do
+        li.selected { span txt }
+      end
+    })
+  end
+
   def save_to(name,  &new_proc)
     text "\nNot done: save_to #{name.inspect}\n"
     return
