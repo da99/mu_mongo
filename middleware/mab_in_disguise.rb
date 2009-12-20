@@ -111,6 +111,7 @@ class Mab_In_Disguise
       template_files(mab_dir).each { |file_name|
 				
         next if file_name['.xml.']
+				next if file_name[/Heart|News|Topic|textile/]
 				
 				m_time = File.mtime(file_name)
 				next if @m_times[file_name] == m_time
