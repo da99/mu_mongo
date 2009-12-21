@@ -29,9 +29,9 @@ class Bunny_Mustache < Mustache
     return(super(meth, *args)) unless meth =~ @not_prefix
     
     orig_meth = meth.sub(@not_prefix, '')
-    return(super(meth, *args) unless methods.include?(orig_meth)
+    return(super(meth, *args)) unless methods.include?(orig_meth)
 
-    !send(orig_meth, *args)
+    !(send(orig_meth, *args))
   end
 
   def development?
