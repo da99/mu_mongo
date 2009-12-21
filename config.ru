@@ -3,6 +3,8 @@ begin
 
   require 'middleware/allow_only_roman_uri'
   require 'middleware/squeeze_uri_dots' 
+	require 'middleware/find_the_bunny'
+
   require 'megauni'
   require 'mustache'
 
@@ -14,16 +16,29 @@ begin
   # Configurations
   # ===============================================
 
+
+	# === Protective
+  use Allow_Only_Roman_Uri
+	use Squeeze_Uri_Dots
+	
+	# === Modifiers
+	use Rack::ContentLength
+
+	# === Content Generators
+  if The_Bunny.development?
+		require 'middleware/render_css' 
+		use Render_Css
+  end
+
+	# === Helpers
+  use Rack::Session::Pool
+	use Find_The_Bunny
+
   if The_Bunny.development?
     require( 'middleware/mab_in_disguise'  )
     use Mab_In_Disguise
   end
 
-	use Rack::ContentLength
-  use Allow_Only_Roman_Uri
-	use Squeeze_Uri_Dots
-  use Rack::Session::Pool  
-	
   # use( Rack::Reloader, 2 ) if The_Bunny.development?
 
 

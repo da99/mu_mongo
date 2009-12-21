@@ -7,11 +7,11 @@ class Hello_list < Bunny_Mustache
   end
 
   def meta_description
-    @app.class::SITE_TAG_LINE
+    @app.class::Options::SITE_TAG_LINE
   end
 
   def meta_keywords
-    @app.class::SITE_KEYWORDS
+    @app.class::Options::SITE_KEYWORDS
   end
 
    

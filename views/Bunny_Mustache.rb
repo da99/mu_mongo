@@ -10,6 +10,30 @@ class Bunny_Mustache < Mustache
     The_Bunny.development?
   end
 
+	def url
+		@app.request.fullpath
+	end
+
+	def mobile_request?
+		false
+	end
+
+	def css_file
+		"/stylesheets/english/#{@app.controller_name}_#{@app.action_name}.css"
+	end
+
+	def not_mobile_request?
+		!mobile_request?
+	end
+
+	def head_content
+		''
+	end
+
+	def loading
+		nil
+	end
+
   def site_title
     The_Bunny::Options::SITE_TITLE
   end
@@ -37,7 +61,7 @@ class Bunny_Mustache < Mustache
 	end
 
   def logged_in?
-    @app.logged_in?
+    nil #@app.logged_in?
   end
 
   def not_logged_in?
@@ -47,7 +71,7 @@ class Bunny_Mustache < Mustache
   # === FLASH MESSAGES ===
 
   def flash_msg?
-    !!(@app.flash.success_msg || @app.flash.error_msg)
+    nil # !!(@app.flash.success_msg || @app.flash.error_msg)
   end
 
   def flash_msg
@@ -141,8 +165,10 @@ class Bunny_Mustache < Mustache
         [ 'health',       :topic,   :health],
         [ 'preggers',     :topic,   :preggers],
         [ 'salud',        :main,    :salud],
-        [ 'news',         :topic,   :news]
-      ].each { |shortcut, c_name, a_name|
+        [ 'news',         :topic,   :news],
+				[ 'add-to-do',    :something, :add_to_do]
+      ].each { |raw_shortcut, c_name, a_name|
+				shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
         new_hash["selected_#{shortcut}"]   = @app.controller_name == c_name && @app.action_name == a_name
         new_hash["unselected_#{shortcut}"] = !new_hash["selected_#{shortcut}"]
       }

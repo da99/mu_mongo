@@ -66,21 +66,30 @@ class The_Bunny
 
     begin
       
-      run_the_request 
+      map = (env['the_bunny'] || {})
+      vals = map.values_at(:controller, :action_name, :args).compact
+      if not ( vals.size == 3)
+        raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
+      end
+      
+      self.controller  = vals[0]
+      self.action_name = vals[1]
+      controller.new.send("#{env['REQUEST_METHOD']}_#{action_name}", self, *vals[2] )
       
     rescue Bad_Bunny::Redirect
       
     rescue Bad_Bunny::HTTP_404
       
-      @env['little.microphone.error'] = $!
+      @env['bad.bunny'] = $!
       @response.status = 404
-      @response.body   = '<h1>Not Found</h1>'
+      @response.body   = "<h1>Not Found</h1><p>#{@env['PATH_INFO']}</p>"
       
     rescue Object
-      if The_Bunny
+      
+      if The_Bunny.development?
         raise $!
       end
-      @env['little.microphone.error'] = $!
+      @env['bad.bunny'] = $!
       error! '<h1>Unknown Error.</h1>'
       
     end
@@ -141,8 +150,7 @@ class The_Bunny
   end
 
 
-  def render_html_template obj, meth = nil
-    meth_name        = meth || (caller[0] =~ /`([^']*)'/ && $1)
+  def render_html_template 
     file_name        = "#{controller_name}_#{action_name}"
     template_content = File.read(File.expand_path('templates/english/mustache/' + file_name + '.html'))
     
@@ -284,38 +292,6 @@ class The_Bunny
     raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
   end
 
-  def run_the_request 
-    
-    the_app   = self
-    http_meth = request.request_method
-    results   = self.class.controllers.detect { |control|
-      
-      pieces  = request.path.strip_slashes.split('/')
-      a_name  = http_meth
-      
-      begin
-        
-          pieces.shift if pieces.first == control.name.downcase
-          pieces.push('list') if pieces.empty?
-          a_name = [a_name, pieces.shift].compact.join('_')
-          if control.public_instance_methods.include?(a_name) && 
-             control.instance_method(a_name).arity === pieces.size + 1
-            self.controller  = control
-            self.action_name = a_name['_'] ? a_name.split("_")[1,100] : a_name
-            control.new.send(a_name, self, *pieces)
-            break
-          end
-          
-      end until pieces.empty?
-
-      self.controller
-
-    }
-
-    return true if results
-    raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
-
-  end
 end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 module Bad_Bunny

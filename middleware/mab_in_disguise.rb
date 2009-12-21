@@ -10,8 +10,9 @@ class Markaby::Builder
   
   set(:indent, 1)
   
-  def nav_bar shortcut, txt = nil
-    path = shortcut == 'home' ? '/' : "/#{shortcut}/"
+  def nav_bar raw_shortcut, txt = nil
+		shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
+    path = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
     txt ||= shortcut.to_s.capitalize
     text(capture {
       mustache "selected_#{shortcut}" do

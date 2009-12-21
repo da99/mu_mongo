@@ -15,11 +15,11 @@
    <title>{{title}}</title>
    <link type="image/x-icon" href="{{url}}favicon.ico" rel="shortcut icon"/>
 
-{{#mobile_request?}}
+{{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link media="screen" type="text/css" href="{{css_file}}" rel="stylesheet"/>
 
-{{/mobile_request?}}
+{{/not_mobile_request?}}
 
 
 {{head_content}}

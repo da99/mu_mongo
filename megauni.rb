@@ -44,6 +44,8 @@ require 'rest_client'
       SITE_URL           = "http://www.#{SITE_DOMAIN}/"
       SITE_SUPPORT_EMAIL = "helpme@#{SITE_DOMAIN}"
       VIEWS_DIR          = 'views/skins/jinx' # .expand_path
+			SITE_KEYWORDS      = 'office games'
+			LANGUAGES          = ['english']
     end
     
   end # === class

@@ -15,11 +15,11 @@
    <title>{{title}}</title>
    <link type="image/x-icon" href="{{url}}favicon.ico" rel="shortcut icon"/>
 
-{{#mobile_request?}}
+{{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link media="screen" type="text/css" href="{{css_file}}" rel="stylesheet"/>
 
-{{/mobile_request?}}
+{{/not_mobile_request?}}
 
 
 {{head_content}}
@@ -96,40 +96,40 @@ Not done: save_to "opening_msg"
 {{#nav_bar}}
 
 
-{{#selected_my-egg-timer}}
+{{#selected_my_egg_timer}}
 
          <li>
           <a href="/my-egg-timer/">Old Timer</a>
          </li>
 
-{{/selected_my-egg-timer}}
+{{/selected_my_egg_timer}}
 
 
-{{#unselected_my-egg-timer}}
+{{#unselected_my_egg_timer}}
 
          <li class="selected">
           <span>Old Timer</span>
          </li>
 
-{{/unselected_my-egg-timer}}
+{{/unselected_my_egg_timer}}
 
 
-{{#selected_busy-noise}}
+{{#selected_busy_noise}}
 
          <li>
           <a href="/busy-noise/">New Timer</a>
          </li>
 
-{{/selected_busy-noise}}
+{{/selected_busy_noise}}
 
 
-{{#unselected_busy-noise}}
+{{#unselected_busy_noise}}
 
          <li class="selected">
           <span>New Timer</span>
          </li>
 
-{{/unselected_busy-noise}}
+{{/unselected_busy_noise}}
 
 
 {{/nav_bar}}
@@ -147,22 +147,22 @@ Not done: save_to "opening_msg"
 {{#nav_bar}}
 
 
-{{#selected_sign-up}}
+{{#selected_sign_up}}
 
          <li>
-          <a href="/sign-up/">Sign-up</a>
+          <a href="/sign-up/">Sign_up</a>
          </li>
 
-{{/selected_sign-up}}
+{{/selected_sign_up}}
 
 
-{{#unselected_sign-up}}
+{{#unselected_sign_up}}
 
          <li class="selected">
-          <span>Sign-up</span>
+          <span>Sign_up</span>
          </li>
 
-{{/unselected_sign-up}}
+{{/unselected_sign_up}}
 
 
 {{/nav_bar}}
@@ -198,22 +198,22 @@ Not done: save_to "opening_msg"
 {{/unselected_account}}
 
 
-{{#selected_log-out}}
+{{#selected_log_out}}
 
          <li>
-          <a href="/log-out/">Log-out</a>
+          <a href="/log-out/">Log_out</a>
          </li>
 
-{{/selected_log-out}}
+{{/selected_log_out}}
 
 
-{{#unselected_log-out}}
+{{#unselected_log_out}}
 
          <li class="selected">
-          <span>Log-out</span>
+          <span>Log_out</span>
          </li>
 
-{{/unselected_log-out}}
+{{/unselected_log_out}}
 
 
 {{/nav_bar}}
@@ -228,22 +228,22 @@ Not done: save_to "opening_msg"
 {{#nav_bar}}
 
 
-{{#selected_log-in}}
+{{#selected_log_in}}
 
          <li>
-          <a href="/log-in/">Log-in</a>
+          <a href="/log-in/">Log_in</a>
          </li>
 
-{{/selected_log-in}}
+{{/selected_log_in}}
 
 
-{{#unselected_log-in}}
+{{#unselected_log_in}}
 
          <li class="selected">
-          <span>Log-in</span>
+          <span>Log_in</span>
          </li>
 
-{{/unselected_log-in}}
+{{/unselected_log_in}}
 
 
 {{/nav_bar}}
@@ -258,22 +258,22 @@ Not done: save_to "opening_msg"
 {{#nav_bar}}
 
 
-{{#selected_add-to-do}}
+{{#selected_add_to_do}}
 
          <li>
           <a href="/add-to-do/">Add to do</a>
          </li>
 
-{{/selected_add-to-do}}
+{{/selected_add_to_do}}
 
 
-{{#unselected_add-to-do}}
+{{#unselected_add_to_do}}
 
          <li class="selected">
           <span>Add to do</span>
          </li>
 
-{{/unselected_add-to-do}}
+{{/unselected_add_to_do}}
 
 
 {{#selected_today}}
@@ -312,22 +312,22 @@ Not done: save_to "opening_msg"
 {{/unselected_tomorrow}}
 
 
-{{#selected_this-month}}
+{{#selected_this_month}}
 
          <li>
           <a href="/this-month/">This Month</a>
          </li>
 
-{{/selected_this-month}}
+{{/selected_this_month}}
 
 
-{{#unselected_this-month}}
+{{#unselected_this_month}}
 
          <li class="selected">
           <span>This Month</span>
          </li>
 
-{{/unselected_this-month}}
+{{/unselected_this_month}}
 
 
 {{/nav_bar}}
@@ -393,22 +393,22 @@ Not done: save_to "opening_msg"
 {{/unselected_work}}
 
 
-{{#selected_pet-owner}}
+{{#selected_pet_owner}}
 
          <li>
           <a href="/pet-owner/">Pet Owner</a>
          </li>
 
-{{/selected_pet-owner}}
+{{/selected_pet_owner}}
 
 
-{{#unselected_pet-owner}}
+{{#unselected_pet_owner}}
 
          <li class="selected">
           <span>Pet Owner</span>
          </li>
 
-{{/unselected_pet-owner}}
+{{/unselected_pet_owner}}
 
 
 {{#selected_celebrity}}
@@ -459,22 +459,22 @@ Not done: save_to "opening_msg"
 {{/unselected_bubblegum}}
 
 
-{{#selected_child-care}}
+{{#selected_child_care}}
 
          <li>
           <a href="/child-care/">Child Care</a>
          </li>
 
-{{/selected_child-care}}
+{{/selected_child_care}}
 
 
-{{#unselected_child-care}}
+{{#unselected_child_care}}
 
          <li class="selected">
           <span>Child Care</span>
          </li>
 
-{{/unselected_child-care}}
+{{/unselected_child_care}}
 
 
 {{#selected_computer}}
@@ -861,9 +861,9 @@ Hide Details          </a>
         <li class="two">
          <div class="title">Turn up speaker volumn.</div>
          <div class="body">
-          <a href="#start" id="start_test" onclick="return Instruct.start_test();">
+          <a href="#start" onclick="return Instruct.start_test();" id="start_test">
 Click here to test your speakers.          </a>
-          <a href="#stop" id="stop_test" onclick="return Instruct.stop_test();">
+          <a href="#stop" onclick="return Instruct.stop_test();" id="stop_test">
 Stop test.          </a>
          </div>
         </li>
@@ -934,7 +934,7 @@ Details:         </label>
         <div class="group">
          <fieldset>
           <select class="hours" name="hours">
-           <option selected="selected" value="1">
+           <option value="1" selected="selected">
 1           </option>
            <option value="2">
 2           </option>
@@ -962,7 +962,7 @@ Details:         </label>
          </fieldset>
          <fieldset>
           <select class="minutes" name="minutes">
-           <option selected="selected" value="0">
+           <option value="0" selected="selected">
 00           </option>
            <option value="15">
 15           </option>
@@ -974,7 +974,7 @@ Details:         </label>
          </fieldset>
          <fieldset>
           <select class="am_pm" name="am_pm">
-           <option selected="selected" value="am">
+           <option value="am" selected="selected">
 AM           </option>
            <option value="pm">
 PM           </option>
