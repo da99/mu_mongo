@@ -4,24 +4,44 @@ class Ignore_Everything
   def method_missing *args
     return self
   end
+	def to_s
+		''
+	end
 end
 
 class Markaby::Builder
   
   set(:indent, 1)
   
+  def nav_bar_li template_name, raw_shortcut, txt = nil
+		shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
+		path     = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
+    txt      ||= shortcut.to_s.capitalize
+    if self.template_name === template_name
+      text(capture {
+        li.selected { span txt }
+      })
+    else
+      text(capture {
+        li {
+          a txt, :href=>"#{path}"
+        }
+      })
+    end
+  end
+
   def nav_bar raw_shortcut, txt = nil
 		shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
     path = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
     txt ||= shortcut.to_s.capitalize
     text(capture {
       mustache "selected_#{shortcut}" do
+        li.selected { span txt }
+      end
+      mustache "unselected_#{shortcut}" do
         li {
           a txt, :href=>"#{path}"
         }
-      end
-      mustache "unselected_#{shortcut}" do
-        li.selected { span txt }
       end
     })
   end
@@ -117,6 +137,7 @@ class Mab_In_Disguise
 				m_time = File.mtime(file_name)
 				next if @m_times[file_name] == m_time
 
+        template_name = File.basename(file_name).sub('.rb', '').to_sym
         new_file_name = File.join(mus_dir, File.basename(file_name) ).sub(/\.rb$/,'.html')
         is_partial    = file_name[/^__/]
 
@@ -126,7 +147,7 @@ class Mab_In_Disguise
           content = layout_content.sub("{{content_file}}", File.basename(file_name))
         end
 
-        compiled = Markaby::Builder.new { eval(content, nil, file_name, 1) }
+        compiled = Markaby::Builder.new(:template_name=>template_name) { eval(content, nil, file_name, 1) }
 
         File.open(new_file_name, 'w') { |f_io| 
           f_io.write compiled 

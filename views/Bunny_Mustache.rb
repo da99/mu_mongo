@@ -93,7 +93,7 @@ class Bunny_Mustache < Mustache
   end
 
   def no_opening_msg
-    !!opening_msg
+    !opening_msg
   end
 
 
@@ -140,8 +140,8 @@ class Bunny_Mustache < Mustache
 
         #['/add-to-do/', '+ Add Stuff', :to_dos, :add ],
       
-      [ [ 'home',         :main,    :show ],
-        [ 'help',         :main,    :help],
+      [ [ 'home',         :Hello,    :list ],
+        [ 'help',         :Hello,    :help],
         [ 'my-egg-timer', :egg,     :my],
         [ 'busy-noise',   :egg,     :busy],
         [ 'sign-up',      :member,  :new],
@@ -164,13 +164,19 @@ class Bunny_Mustache < Mustache
         [ 'housing',      :topic,   :housing],
         [ 'health',       :topic,   :health],
         [ 'preggers',     :topic,   :preggers],
-        [ 'salud',        :main,    :salud],
+        [ 'salud',        :Hello,    :salud],
         [ 'news',         :topic,   :news],
 				[ 'add-to-do',    :something, :add_to_do]
       ].each { |raw_shortcut, c_name, a_name|
+        
 				shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
-        new_hash["selected_#{shortcut}"]   = @app.controller_name == c_name && @app.action_name == a_name
+        
+        new_hash["selected_#{shortcut}"]   = (
+          @app.controller_name == c_name && @app.action_name == a_name
+        )
+        
         new_hash["unselected_#{shortcut}"] = !new_hash["selected_#{shortcut}"]
+        
       }
 
       new_hash
