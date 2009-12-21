@@ -2,9 +2,37 @@ require 'mustache'
 
 class Bunny_Mustache < Mustache
 	
+  attr_reader :not_prefix
 	def initialize new_app
 		@app = new_app
+    @not_prefix =  /^not?_/
 	end
+
+  def respond_to? raw_meth_name
+    
+    orig = super(raw_meth_name)
+    return( orig ) if orig
+
+    meth_name = raw_meth_name.to_s
+    return( orig ) if not meth_name[@not_prefix]
+
+    orig_meth        = meth_name.sub(@not_prefix, '')
+    orig_meth_exists = super(orig_meth)
+    return orig_meth_exists if not orig_meth_exists
+
+    true
+    
+  end
+
+  def method_missing *args
+    meth = args.shift.to_s
+    return(super(meth, *args)) unless meth =~ @not_prefix
+    
+    orig_meth = meth.sub(@not_prefix, '')
+    return(super(meth, *args) unless methods.include?(orig_meth)
+
+    !send(orig_meth, *args)
+  end
 
   def development?
     The_Bunny.development?
@@ -20,10 +48,6 @@ class Bunny_Mustache < Mustache
 
 	def css_file
 		"/stylesheets/english/#{@app.controller_name}_#{@app.action_name}.css"
-	end
-
-	def not_mobile_request?
-		!mobile_request?
 	end
 
 	def head_content
@@ -64,10 +88,6 @@ class Bunny_Mustache < Mustache
     nil #@app.logged_in?
   end
 
-  def not_logged_in?
-    !logged_in?
-  end
-
   # === FLASH MESSAGES ===
 
   def flash_msg?
@@ -92,94 +112,12 @@ class Bunny_Mustache < Mustache
   def opening_msg
   end
 
-  def no_opening_msg
-    !opening_msg
-  end
-
-
 
   def opening_msg_site_title
     if @app.request.path == '/'
       The_Bunny::Options::SITE_TITLE
     else
       %~<a href="/">#{The_Bunny::Options::SITE_TITLE}</a>~
-    end
-  end
-   
-  def nav_bar_li shortcut, text, c_name, a_name
-    
-    # if shortcut === 'home'
-    #   path = '/'
-    # else
-    #   path = "/#{shortcut}/"
-    # end
-
-    # selected = lambda { |t|
-    #   %~
-    #   <li class="selected">
-    #     <span>#{t}</span>
-    #   </li>
-    #   ~
-    # }
-
-    # unselected = lambda { |t, u|
-    #   %~
-    #   <li>
-    #     <a href="#{u}">#{t}</a>
-    #   </li>
-    #   ~
-    # }
-
-    @app.controller_name == c_name && @app.action_name == a_name
-  end
-
-  def nav_bar
-    @nav_bar ||= begin
-      
-      new_hash = {}
-
-        #['/add-to-do/', '+ Add Stuff', :to_dos, :add ],
-      
-      [ [ 'home',         :Hello,    :list ],
-        [ 'help',         :Hello,    :help],
-        [ 'my-egg-timer', :egg,     :my],
-        [ 'busy-noise',   :egg,     :busy],
-        [ 'sign-up',      :member,  :new],
-        [ 'account',      :account, :show       ],
-        [ 'log-out',      :session, :destroy   ],
-        [ 'log-in',       :session, :new       ],
-        [ 'today',        :to_dos,  :today     ],
-        [ 'tomorrow',     :to_dos,  :tomorrow  ],
-        [ 'this-month',   :to_dos,  :this_month ],
-        [ 'friend',       :lives,   :friend     ],
-        [ 'family',       :lives,   :family    ],
-        [ 'work',         :lives,   :worker    ],
-        [ 'pet-owner',    :lives,   :pet_owner  ],
-        [ 'celebrity',    :lives,   :celebrity ],
-        [ 'bubblegum',    :topic,   :bubblegum],
-        [ 'child-care',   :topic,   :child_care],
-        [ 'computer',     :topic,   :computer],
-        [ 'economy',      :topic,   :economy],
-        [ 'hair',         :topic,   :skin],
-        [ 'housing',      :topic,   :housing],
-        [ 'health',       :topic,   :health],
-        [ 'preggers',     :topic,   :preggers],
-        [ 'salud',        :Hello,    :salud],
-        [ 'news',         :topic,   :news],
-				[ 'add-to-do',    :something, :add_to_do]
-      ].each { |raw_shortcut, c_name, a_name|
-        
-				shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
-        
-        new_hash["selected_#{shortcut}"]   = (
-          @app.controller_name == c_name && @app.action_name == a_name
-        )
-        
-        new_hash["unselected_#{shortcut}"] = !new_hash["selected_#{shortcut}"]
-        
-      }
-
-      new_hash
     end
   end
 

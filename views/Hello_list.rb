@@ -13,6 +13,5 @@ class Hello_list < Bunny_Mustache
   def meta_keywords
     @app.class::Options::SITE_KEYWORDS
   end
-
    
 end # === Hello_Bunny_GET_list
