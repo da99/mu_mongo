@@ -19,7 +19,7 @@ class Markaby::Builder
     txt      ||= shortcut.to_s.capitalize
     if self.template_name === template_name
       text(capture {
-        li.selected { span txt }
+        li.selected { span "| #{txt} |" }
       })
     else
       text(capture {
