@@ -39,7 +39,7 @@
 
 =dev_bg
   #the_body
-    background: #fff url("/16_col.gif") repeat-y center center
+    background: #F7F7F7 url("/16_col.gif") repeat-y center center
   #container
     border-top= 2px "solid" #000
   #content
@@ -91,7 +91,8 @@ img.right
 
 
 #the_body
-  :font= "13px/1.5" "Helvetica, 'Liberation Sans', FreeSans, serif"
+  font= "13px/1.5" "Helvetica, 'Liberation Sans', FreeSans, serif"
+  background-color: #33CCFF 
   
 #container
   +grid-container
@@ -128,103 +129,70 @@ img.right
 =left_nav_bar
   #nav_bar
     margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
-    border-right= !nav_bar_border  "dashed" #000
-    h4
-      text-align: left
-    ul
-      margin-left: 50px
-      text-align: right
-      li
-        margin: 0 -2px 0 0
-        span
-          padding: 5px 15px 5px 5px
-          border= !nav_bar_border  "dashed" #000
-            right-width: 0  
-          background: #fff url("/skins/jinx/images/selected_nav_bar_bg_left.jpg") repeat-y
-        a:link, a:visited, a:hover, a:active, a:focus
-          padding: 5px 15px 5px 5px
         
-    #logo
-      text-align: right
-      p.nippon
-        padding: 0 15px 5px 0
-        text-shadow: #bbb 0px 2px 2px
-      p.english
-        margin: 0 15px 0 0        
 =right_nav_bar
   #nav_bar
     margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
-    border-left= !nav_bar_border  "dashed" #000
-    h4
-      text-align: right    
-    ul
-      margin-right: 50px
-      text-align: left
-      li
-        margin: 0 0 0 -2px
-        span
-          padding: 5px 5px 5px 15px
-          border= !nav_bar_border  "dashed" #000
-            left-width: 0  
-          background: #fff url("/skins/jinx/images/selected_nav_bar_bg_right.jpg") repeat-y
-        a:link, a:visited, a:hover, a:active, a:focus
-          padding: 5px 5px 5px 15px
         
-    #logo
-      text-align: left 
-      p.nippon
-        padding: 0 0 5px 15px
-        text-shadow: #bbb 2px 2px 2px
-      p.english
-        margin: 0 0 0 15px
 
 #nav_bar
   +grid(4)
   padding-bottom: 200px
+  margin-top: -20px
   h4
-    padding: 2px 5px
-    margin: 0 13px
-    font-size: 12px
-    background-color: #003860
-    color: #fff
+    padding: 0
+    font-size: 13px
+    font-weight: bold
+    background-color: #eef
+    text-transform: lowercase
+    color: #003860
+    margin: 0 40px 
+    text-align: center
   ul
     +no-bullets
-    padding-bottom: 20px
-    text-align: right
+    padding-bottom: 10px
+    text-align: center
+    margin: 0 40px
+    background-color: #EEEEFF
     li
+      padding: 0 0 2px 0
       span
         display: block
-        margin: 3px 0 
-        border= !nav_bar_border  "dashed" #000
         font-weight: bold
         text-transform: uppercase      
       a:link, a:visited
         display: block
-        text-transform: uppercase
+        padding: 2px 0
         font-weight: bold
         color: #f00919
       a:hover, a:active, a:focus
         color: #fff
         background: #E40051
+  ul.news
+    -moz-border-radius: 0 0 10px 10px
+    -webkit-border-radius: 0 0 10px 10px
   #logo
+    text-align: center
     color: #000
-    padding-bottom: 5px
-    p.nippon
-      font-family: sans-serif
-      font-weight: bold
-      font-size: 25px 
-      line-height: 1.3em
-      margin: 0 
+    margin: 0 40px
     p.english 
-      font-family: courier, monospace
+      color: #f00919
+      font-family= !custom_sans_serif
       font-size: 20px 
       font-weight: bold
-      border-top: 2px dotted #f00919
-      padding: 2px 0 0 0
+      padding: 140px 0 0 0
+      background-color: #fff
       a
-        font-family: courier, monospace
         font-size: 20px
         display: block
+    p.nippon
+      background-color: #EEEEFF 
+      color: #3A5970
+      border-top: 1px solid #33CCFF
+      font-size: 12px 
+      font-weight: bold
+      padding-top: 10px
+      margin: 0 
       
 
 #loading
@@ -254,7 +222,13 @@ p
   padding-bottom: 10px
   margin-bottom: 0
 
-
+div.block
+  background-color: #E0FF93
+  padding: 5px 10px
+  font-size: 16px
+  h4
+    font-size: 14px
+    color: #007382
 
 div.tab_selected
   display: block

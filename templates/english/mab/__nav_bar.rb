@@ -3,15 +3,16 @@ div( :id=>"nav_bar" ) {
   div( :id=>"logo" ) { 
     mustache 'opening_msg'
     mustache 'no_opening_msg' do
+      p.english { 
+        mustache 'opening_msg_site_title' 
+      }
       p.nippon { 
-        "何とかしてよ" # Please do something
+        "を単一化します" # Unify
+				#"何とかしてよ" # Please do something
         # "私のユニ" # My Uni
         # "幸せな、脂肪の <br /> ウェブサイト"
       } 
     end
-    p.english { 
-      mustache 'opening_msg_site_title' 
-    }
   }
 
   ul.help {

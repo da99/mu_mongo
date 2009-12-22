@@ -11,12 +11,14 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     meta( :'http-equiv'=>"Content-Type"        , :content=>"text/html; charset=utf-8" )
     meta( :'http-equiv'=>"Content-Language"    , :content=>"en-US" )
     
-    # unless @allow_browser_cache
+    mustache 'meta_cache' do
+      meta( :'http-equiv'=>'expires' , :content=>(Time.now.utc + (60 * 60) ).strftime('%a, %d-%b-%Y %H:%M:%S GMT') )
+		end
+
+		mustache 'no_meta_cache' do
       meta( :'http-equiv'=>'expires' , :content=>'Thu, 12 Mar 2004 12:34:12 GMT' )
       meta( :'http-equiv'=>'pragma'  , :content=>'no-cache' )
-    # else
-    #   meta( :'http-equiv'=>'expires' , :value=>(Time.now.utc + (60 * 60) ).strftime('%a, %d-%b-%Y %H:%M:%S GMT') )
-    # end
+    end
 
 		meta( :name=>'description', :content=>"{{meta_description}}")
 
@@ -47,7 +49,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       # ================= the_content ================================
 
 
-partial( "{{content_file}}" )
+			partial( "{{content_file}}" )
 
  
 
