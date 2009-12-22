@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -7,8 +7,21 @@
    <meta content="en-US" http-equiv="Content-Language"/>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="en-US" http-equiv="Content-Language"/>
+
+{{#meta_cache}}
+
+   <meta content="Tue, 22-Dec-2009 07:06:44 GMT" http-equiv="expires"/>
+
+{{/meta_cache}}
+
+
+{{#no_meta_cache}}
+
    <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
    <meta content="no-cache" http-equiv="pragma"/>
+
+{{/no_meta_cache}}
+
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
@@ -42,16 +55,16 @@
 
 {{#no_opening_msg}}
 
-        <p class="nippon">
-何とかしてよ        </p>
-
-{{/no_opening_msg}}
-
         <p class="english">
 
 {{opening_msg_site_title}}
 
         </p>
+        <p class="nippon">
+を単一化します        </p>
+
+{{/no_opening_msg}}
+
        </div>
        <ul class="help">
          <li class="selected">
@@ -187,10 +200,8 @@
 
 {{/flash_msg?}}
 
-      <div id="coming_soon">
-       <span>Coming Soon...</span>
-      </div>
-      <div>
+      <div class="block" id="coming_soon_content">
+       <h4>Coming Soon...</h4>
        <p>I am still adding new features/content, so check each Monday for new stuff.</p>
        <p>This is a personal/non-commercial site. It has products that have helped me and others.</p>
        <p>There are no advertisements or affililate links here.</p>
