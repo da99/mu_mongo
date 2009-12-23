@@ -1,4 +1,4 @@
-class Member_Control
+class Member_Cage
   include The_Bunny
     
   # ============= Member Actions ==========================          
@@ -47,5 +47,5 @@ class Member_Control
     end
   end # === put :update
 
-end # === Member_Control
+end # === Member_Cage
 

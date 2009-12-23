@@ -9,7 +9,7 @@ class Find_The_Bunny
 		new_env['the_bunny'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
 		
-    results = The_Bunny_Farm.controllers.detect { |control|
+    results = The_Bunny_Farm.bunnies.detect { |control|
       
       pieces = new_env['PATH_INFO'].strip_slashes.split('/')
       a_name = http_meth

@@ -1,4 +1,4 @@
-class Inspect
+class Inspect_Cage
   include The_Bunny
 
   def GET_list 

@@ -76,16 +76,16 @@ require 'rest_client'
   
   %w{
     Hello
-    Session
-    Member_Control
+    Session_Cage
+    Member_Cage   
   }.each { |control|
-		require "controllers/#{control}"
-		The_Bunny_Farm.controllers << Object.const_get(control)
+		require "cages/#{control}"
+		The_Bunny_Farm.bunnies << Object.const_get(control)
 	}
 
   if The_Bunny_Farm.development?
-    require "controllers/Inspect"
-    The_Bunny_Farm.controllers << Inspect
+    require "controllers/Inspect_Cage"
+    The_Bunny_Farm.bunnies << Inspect_Cage
   end
  
   # ===============================================

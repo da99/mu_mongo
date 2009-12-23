@@ -1,4 +1,4 @@
-class Session
+class Session_Cage
   include The_Bunny
 
   def GET_log_in 
@@ -36,6 +36,6 @@ class Session
        
   end # === post_it_for
 
-end # === Session
+end # === Session_Cage
 
 

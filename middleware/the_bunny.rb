@@ -22,12 +22,8 @@ class The_Bunny_Farm
     ENV['RACK_ENV']
   end
 
-  def self.controllers
-    @controllers ||= []
-  end
-  
   def self.bunnies
-    controllers
+    @bunnies ||= []
   end
 
   def self.call(new_env)

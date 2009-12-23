@@ -1,4 +1,4 @@
-# /home/da01/megauni/views/Inspect_list.rb
+# /home/da01/megauni/views/Inspect_Cage_list.rb
 
 
 p {

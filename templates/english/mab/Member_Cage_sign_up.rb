@@ -1,6 +1,6 @@
-# ~/megauni/views/Member_Control_sign_up.rb
-# ~/megauni/templates/english/sass/Member_Control_sign_up.sass
-# Member_Control_sign_up
+# ~/megauni/views/Member_Cage_sign_up.rb
+# ~/megauni/templates/english/sass/Member_Cage_sign_up.sass
+# Member_Cage_sign_up
 
 div.content! { 
   
