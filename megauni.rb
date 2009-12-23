@@ -84,7 +84,7 @@ require 'rest_client'
 	}
 
   if The_Bunny_Farm.development?
-    require "controllers/Inspect_Cage"
+    require "cages/Inspect_Cage"
     The_Bunny_Farm.bunnies << Inspect_Cage
   end
  
