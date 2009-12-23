@@ -129,33 +129,12 @@ class Mab_In_Disguise
       mus_dir        = File.join(dir, 'mustache')
       layout_content = File.read(layout_file(mab_dir))
       
-      template_files(mab_dir).each { |file_name|
-				
-        next if file_name['.xml.']
-				next if file_name[/Heart|News|Topic|textile/]
-				
-				m_time = File.mtime(file_name)
-				next if @m_times[file_name] == m_time
+      # Delete all Mustache files.
+      Dir.glob( mus_dir + '/*.html' ).each do |html_file|
+        File.delete(html_file)
+      end
 
-        template_name = File.basename(file_name).sub('.rb', '').to_sym
-        new_file_name = File.join(mus_dir, File.basename(file_name) ).sub(/\.rb$/,'.html')
-        is_partial    = file_name[/^__/]
 
-        if is_partial
-          content = File.read(file_name)
-        else
-          content = layout_content.sub("{{content_file}}", File.basename(file_name))
-        end
-
-        compiled = Markaby::Builder.new(:template_name=>template_name) { eval(content, nil, file_name, 1) }
-
-        File.open(new_file_name, 'w') { |f_io| 
-          f_io.write compiled 
-        }
-
-				@m_times[file_name] = m_time
-
-      }
       
     }
     
@@ -208,7 +187,35 @@ class Mab_In_Disguise
 
     end
 
-
-
   end # === render_mab   
+  
+  def mab_to_mustache lang, template_name
+    file_basename = template_name.to_s
+    
+    mab_dir       = File.join('templates', lang, 'mab')
+    mab_file      = File.join(mab_dir, file_basename.to_s + '.rb')
+    layout_file   = File.join(mab_dir, 'layout.rb')
+    
+    mus_dir       = File.join('templates', lang, 'mus')
+    mus_file      = File.join(mus_dir, file_basename.to_s + '.html')
+      
+    return nil if file_basename[/Heart|News|Topic|textile|\.xml\./]
+    
+    is_partial    = file_name[/^__/]
+
+    content = if is_partial
+      File.read(mab_file)
+    else
+      File.read(layout_file).sub("{{content_file}}", file_basename)
+    end
+
+    compiled = Markaby::Builder.new(:template_name=>template_name) { eval(content, nil, file_name, 1) }
+
+    File.open(mus_file, 'w') { |f_io| 
+      f_io.write compiled 
+    }
+
+    compiled
+  end
+
 end # === Mab_In_Disguise

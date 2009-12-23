@@ -19,9 +19,9 @@ class Views
 
 			templates = {}
 			templates[mab] = %~
-# #{view}
-# #{sass}
-# #{name}
+# VIEW #{view}
+# SASS #{sass}
+# NAME #{name}
 
 div.content! { 
   
@@ -34,9 +34,9 @@ partial('__nav_bar')
 ~.lstrip
 
 			templates[view] = %~
-# #{mab}
-# #{sass}
-# #{name}
+# MAB   #{mab}
+# SASS  #{sass}
+# NAME  #{name}
 
 class #{name} < Bunny_Mustache
 
@@ -48,9 +48,9 @@ end # === #{name} ~.lstrip
 
       if sass
         templates[sass] = %~
-// #{mab}
-// #{view}
-// #{name}
+// MAB  #{mab}
+// VIEW #{view}
+// NAME #{name}
 
 @import layout.sass
 

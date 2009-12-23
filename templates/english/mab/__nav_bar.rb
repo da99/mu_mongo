@@ -36,7 +36,7 @@ div( :id=>"nav_bar" ) {
       mustache 'not_logged_in?' do
         h4 'Non-Members'
         ul.non_members {
-          nav_bar_li :Member_new, 'sign-up'
+          nav_bar_li :Member_new, 'sign-up', 'Create Account'
         }
       end
 

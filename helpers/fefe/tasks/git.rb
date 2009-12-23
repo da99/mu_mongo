@@ -51,6 +51,7 @@ class Git
 
       puts_red "Not done."
       puts_red "First, update gems."
+      puts_red "Then, compile MAB to Mustache."
       puts_red "Second, run tests."
       puts_red "Third, if tests pass, update both .gems and .development_gems."
       puts_red "Fourth, push if tests pass."
