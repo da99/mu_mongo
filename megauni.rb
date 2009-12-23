@@ -34,7 +34,7 @@ require 'rest_client'
   
   require 'middleware/the_bunny'  
 
-  class The_Bunny
+  class The_Bunny_Farm
     
     module Options
       SITE_DOMAIN        = 'megaUni.com'
@@ -80,12 +80,12 @@ require 'rest_client'
     Member_Control
   }.each { |control|
 		require "controllers/#{control}"
-		The_Bunny.controllers << Object.const_get(control)
+		The_Bunny_Farm.controllers << Object.const_get(control)
 	}
 
-  if The_Bunny.development?
+  if The_Bunny_Farm.development?
     require "controllers/Inspect"
-    The_Bunny.controllers << Inspect
+    The_Bunny_Farm.controllers << Inspect
   end
  
   # ===============================================

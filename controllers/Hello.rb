@@ -1,4 +1,5 @@
-module Hello
+class Hello
+  include The_Bunny
 
 	def GET_list 
 		render_html_template

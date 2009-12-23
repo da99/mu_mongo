@@ -7,7 +7,7 @@ class Inspect_list < Bunny_Mustache
   end
 
   def total_lines
-    The_Bunny.total_lines
+    The_Bunny_Farm.total_lines
   end
 
   def path_info

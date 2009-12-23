@@ -8,7 +8,7 @@ class Render_Css
 
 	def initialize new_app
 		@app = new_app
-		langs = The_Bunny::Options::LANGUAGES.join('|')
+		langs = The_Bunny_Farm::Options::LANGUAGES.join('|')
 		@css_regexp = %r!/stylesheets/#{langs}/[a-zA-Z0-9\_]+\.css!
 	end
 
@@ -24,7 +24,7 @@ class Render_Css
 
 		lang, file_name = new_env['PATH_INFO'].split('/')[-2,2]
 
-		if not The_Bunny::Options::LANGUAGES.include?(lang)
+		if not The_Bunny_Farm::Options::LANGUAGES.include?(lang)
 			return @app.call(new_env)
 		end
 

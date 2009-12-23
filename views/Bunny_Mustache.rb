@@ -35,7 +35,7 @@ class Bunny_Mustache < Mustache
   end
 
   def development?
-    The_Bunny.development?
+    The_Bunny_Farm.development?
   end
 
 	def url
@@ -59,11 +59,11 @@ class Bunny_Mustache < Mustache
 	end
 
   def site_title
-    The_Bunny::Options::SITE_TITLE
+    The_Bunny_Farm::Options::SITE_TITLE
   end
 
 	def site_domain
-		The_Bunny::Options::SITE_DOMAIN
+		The_Bunny_Farm::Options::SITE_DOMAIN
 	end
 	
 	def js_epoch_time raw_i = nil
@@ -118,7 +118,7 @@ class Bunny_Mustache < Mustache
   end
 
   def site_title
-    The_Bunny::Options::SITE_TITLE
+    The_Bunny_Farm::Options::SITE_TITLE
   end
 
 end # === Bunny_Mustache

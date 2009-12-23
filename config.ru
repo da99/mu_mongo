@@ -25,7 +25,7 @@ begin
 	use Rack::ContentLength
 
 	# === Content Generators
-  if The_Bunny.development?
+  if The_Bunny_Farm.development?
 		require 'middleware/render_css' 
 		use Render_Css
   end
@@ -34,12 +34,12 @@ begin
   use Rack::Session::Pool
 	use Find_The_Bunny
 
-  if The_Bunny.development?
+  if The_Bunny_Farm.development?
     require( 'middleware/mab_in_disguise'  )
     use Mab_In_Disguise
   end
 
-  # use( Rack::Reloader, 2 ) if The_Bunny.development?
+  # use( Rack::Reloader, 2 ) if The_Bunny_Farm.development?
 
 
   # Lil_Config = Struct.new(
@@ -103,7 +103,7 @@ begin
   # Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
     
   # Finally, start the app.
-  run The_Bunny
+  run The_Bunny_Farm
 
 rescue Object => e
   

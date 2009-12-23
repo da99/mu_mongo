@@ -1,5 +1,5 @@
-
-module Session
+class Session
+  include The_Bunny
 
   def GET_log_in 
     render_html_template

@@ -1,4 +1,5 @@
-module Member_Control
+class Member_Control
+  include The_Bunny
     
   # ============= Member Actions ==========================          
 

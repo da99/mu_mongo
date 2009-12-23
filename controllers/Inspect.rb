@@ -1,4 +1,5 @@
-module Inspect
+class Inspect
+  include The_Bunny
 
   def GET_list 
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
@@ -8,7 +9,7 @@ module Inspect
   end
   
 	def GET_request 
-		if The_Bunny.development?
+		if The_Bunny_Farm.development?
 			render_text_html "<pre>" + request.env.keys.sort.map { |key| 
 				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + request.env[key].inspect 
 			}.join("<br />") + "</pre>"

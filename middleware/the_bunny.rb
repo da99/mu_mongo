@@ -2,7 +2,7 @@ require 'rack'
 require 'rack/utils'
 require 'views/Bunny_Mustache'
 
-class The_Bunny
+class The_Bunny_Farm
   
   # ======== CLASS stuff ======== 
 
@@ -25,6 +25,10 @@ class The_Bunny
   def self.controllers
     @controllers ||= []
   end
+  
+  def self.bunnies
+    controllers
+  end
 
   def self.call(new_env)
     #
@@ -32,20 +36,77 @@ class The_Bunny
     # For Thread safety in Rack, no instance variables should be changed.
     # Therefore, use :dup and a different version of :call
     # 
-    the_app = new(new_env)
-    status, header, body = the_app.response.finish
+    
+    begin
 
-    # From The Sinatra Framework:
-    #   Never produce a body on HEAD requests. Do retain the Content-Length
-    #   unless it's "0", in which case we assume it was calculated erroneously
-    #   for a manual HEAD response and remove it entirely.
-    if new_env['REQUEST_METHOD'] == 'HEAD'
-      body = []
-      header.delete('Content-Length') if header['Content-Length'] == '0'
-    end
+      map = (new_env['the_bunny'] || {})
+      vals = map.values_at(:controller, :action_name, :args).compact
+      if not ( vals.size == 3)
+        request = Rack::Request.new(new_env)
+        raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
+      end
 
-    [status, header, body]
+      the_app = vals[0].new(new_env)
+      the_app.controller  = the_app.class
+      the_app.action_name = vals[1]
+      
+      begin
+        the_app.send("#{new_env['REQUEST_METHOD']}_#{the_app.action_name}", *vals[2] )
+      rescue Bad_Bunny::Redirect
+      end  
+      
+      status, header, body = the_app.response.finish
+
+      # From The Sinatra Framework:
+      #   Never produce a body on HEAD requests. Do retain the Content-Length
+      #   unless it's "0", in which case we assume it was calculated erroneously
+      #   for a manual HEAD response and remove it entirely.
+      if new_env['REQUEST_METHOD'] == 'HEAD'
+        body = []
+        header.delete('Content-Length') if header['Content-Length'] == '0'
+      end
+
+      [status, header, body]
+
+    rescue Bad_Bunny::HTTP_404
+
+      new_env['bad.bunny'] = $!
+      response             = Rack::Response.new
+      response.status      = 404
+      response.body        = "<h1>Not Found</h1><p>#{new_env['PATH_INFO']}</p>"
+      response.finish
+
+    rescue Object
+
+      if The_Bunny_Farm.development?
+        raise $!
+      end
+      new_env['bad.bunny'] = $!
+      response             = Rack::Response
+      response.status      = 500
+      response.body        = '<h1>Unknown Error.</h1>'
+      response.finish
+
+    end   
+    
   end
+
+
+end # === The_Bunny_Farm
+
+
+
+
+
+module Bad_Bunny
+  HTTP_404      = Class.new(StandardError)
+  Redirect      = Class.new(StandardError)
+end # === Bad_Bunny
+
+
+
+
+module The_Bunny
 
   # ======== INSTANCE stuff ======== 
   
@@ -60,39 +121,10 @@ class The_Bunny
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
 
-    begin
-      
-      map = (env['the_bunny'] || {})
-      vals = map.values_at(:controller, :action_name, :args).compact
-      if not ( vals.size == 3)
-        raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
-      end
-      
-      self.controller  = vals[0]
-      self.action_name = vals[1]
-      self.extend controller
-      self.send("#{env['REQUEST_METHOD']}_#{action_name}", *vals[2] )
-      
-    rescue Bad_Bunny::Redirect
-      
-    rescue Bad_Bunny::HTTP_404
-      
-      @env['bad.bunny'] = $!
-      @response.status = 404
-      @response.body   = "<h1>Not Found</h1><p>#{@env['PATH_INFO']}</p>"
-      
-    rescue Object
-      
-      if The_Bunny.development?
-        raise $!
-      end
-      @env['bad.bunny'] = $!
-      error! '<h1>Unknown Error.</h1>'
-      
-    end
+
   end
 
-  Options::ENVIRONS.each { |envir|
+  The_Bunny_Farm::Options::ENVIRONS.each { |envir|
     %~
       def #{envir}?
         ENV['RACK_ENV'] == "#{envir}"
@@ -292,15 +324,7 @@ class The_Bunny
       
     raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
   end
-
-end # ----- class Base * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-
-module Bad_Bunny
-  HTTP_404      = Class.new(StandardError)
-  Redirect      = Class.new(StandardError)
-end # === Bad_Bunny
-
-
+end # === The_Bunny
 __END__
 
 module Bunny_Cache_Controller
