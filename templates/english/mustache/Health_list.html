@@ -76,7 +76,7 @@ Not done: save_to "meta_keywords"
 {{#development?}}
 
 
-{{#logged_in?}}
+{{#not_logged_in?}}
 
        <h4>Non-Members</h4>
        <ul class="non_members">
@@ -85,7 +85,7 @@ Not done: save_to "meta_keywords"
          </li>
        </ul>
 
-{{/logged_in?}}
+{{/not_logged_in?}}
 
        <h4>Members</h4>
        <ul class="members">
