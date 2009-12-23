@@ -1,5 +1,6 @@
-save_to(:title) { "Lista" }
-    
+# VIEW ~/megauni/views/Hello_salud.rb
+# SASS ~/megauni/templates/english/sass/Hello_salud.sass
+# NAME Hello_salud
 
 div(:id=>"about_me") {
   p {
@@ -235,5 +236,3 @@ div.revols(:id=>"home") {
   }
   
 }
-
-

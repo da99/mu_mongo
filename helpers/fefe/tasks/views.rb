@@ -59,12 +59,12 @@ end # === #{name} ~.lstrip
       end
 
 			templates.each do |file, content|
-				
-				if File.file?(file)
+			  full_path = file.expand_path	
+				if File.file?(full_path)
 					puts_white 'Already existed:'
 				else
 					# Create file.
-					File.open( file.expand_path, 'w') do |file_io|
+					File.open( full_path, 'w') do |file_io|
 						file_io.puts content
 					end
 					puts_white 'Created:'

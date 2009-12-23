@@ -5,8 +5,8 @@ class Hello
 		render_html_template
 	end
 
-	def GET_hi 
-		render_text_html "<p>Hello ;)</p>"
-	end
+  def GET_salud
+    render_html_template
+  end
 
-end
+end # === Hello
