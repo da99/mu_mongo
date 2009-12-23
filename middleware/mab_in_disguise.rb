@@ -13,13 +13,14 @@ class Markaby::Builder
   
   set(:indent, 1)
   
-  def nav_bar_li template_name, raw_shortcut, txt = nil
-		shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
-		path     = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
+  def nav_bar_li controller, raw_shortcut, txt = nil
+		shortcut      = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
+		template_name = "#{controller}_#{shortcut}".to_sym
+		path          = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
     txt      ||= shortcut.to_s.capitalize
     if self.template_name === template_name
       text(capture {
-        li.selected { span "| #{txt} |" }
+        li.selected { span "< #{txt} " }
       })
     else
       text(capture {
@@ -130,12 +131,10 @@ class Mab_In_Disguise
       layout_content = File.read(layout_file(mab_dir))
       
       # Delete all Mustache files.
-      Dir.glob( mus_dir + '/*.html' ).each do |html_file|
+      Dir.glob( File.join(mus_dir, '*.html') ).each do |html_file|
         File.delete(html_file)
       end
 
-
-      
     }
     
     @app.call(new_env)
@@ -189,19 +188,19 @@ class Mab_In_Disguise
 
   end # === render_mab   
   
-  def mab_to_mustache lang, template_name
+  def self.mab_to_mustache lang, template_name
     file_basename = template_name.to_s
     
     mab_dir       = File.join('templates', lang, 'mab')
     mab_file      = File.join(mab_dir, file_basename.to_s + '.rb')
     layout_file   = File.join(mab_dir, 'layout.rb')
     
-    mus_dir       = File.join('templates', lang, 'mus')
+    mus_dir       = File.join('templates', lang, 'mustache')
     mus_file      = File.join(mus_dir, file_basename.to_s + '.html')
       
     return nil if file_basename[/Heart|News|Topic|textile|\.xml\./]
     
-    is_partial    = file_name[/^__/]
+    is_partial    = file_basename[/^__/]
 
     content = if is_partial
       File.read(mab_file)
@@ -209,11 +208,13 @@ class Mab_In_Disguise
       File.read(layout_file).sub("{{content_file}}", file_basename)
     end
 
-    compiled = Markaby::Builder.new(:template_name=>template_name) { eval(content, nil, file_name, 1) }
-
-    File.open(mus_file, 'w') { |f_io| 
-      f_io.write compiled 
+    compiled = Markaby::Builder.new(:template_name=>template_name) { 
+      eval(content, nil, is_partial ? mab_file : layout_file, 1)
     }
+
+    # File.open(mus_file, 'w') { |f_io| 
+    #   f_io.write compiled 
+    # }
 
     compiled
   end
