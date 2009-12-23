@@ -75,11 +75,16 @@ class Bunny_Mustache < Mustache
 		[2009,Time.now.utc.year].uniq.join('-')
 	end
 
+  # === META ====
+
 	def meta_description
 	end
 
 	def meta_keywords
 	end
+
+  def meta_cache
+  end
 
 	def javascripts
 	end
@@ -112,13 +117,8 @@ class Bunny_Mustache < Mustache
   def opening_msg
   end
 
-
-  def opening_msg_site_title
-    if @app.request.path == '/'
-      The_Bunny::Options::SITE_TITLE
-    else
-      %~<a href="/">#{The_Bunny::Options::SITE_TITLE}</a>~
-    end
+  def site_title
+    The_Bunny::Options::SITE_TITLE
   end
 
 end # === Bunny_Mustache

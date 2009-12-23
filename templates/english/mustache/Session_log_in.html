@@ -40,13 +40,42 @@
 
 {{/loading}}
 
+     <div id="content">
+
+{{#flash_msg?}}
+
+       <div class="{{class_name}}" id="flash_msg">
+        <h4>{{title}}</h4>
+        <div class="msg">{{msg}}</div>
+       </div>
+
+{{/flash_msg?}}
+
+      <div class="block">
+       <h3>Log-in</h3>
+       <form action="/log-in/" method="post" name="log_in_form" id="log_in_form">
+        <fieldset>
+         <label>Username</label>
+         <input type="text" class="text" value="" name="username" id="member_username"/>
+        </fieldset>
+        <fieldset>
+         <label>Password</label>
+         <input type="password" class="text" value="" name="password" id="member_password"/>
+        </fieldset>
+        <div class="buttons">
+         <button class="create" onclick="document.getElementById('log_in_form').submit(); return false;">Log-in</button>
+        </div>
+       </form>
+      </div>
+     </div>
       <div id="nav_bar">
        <div id="logo">
 
 {{#no_opening_msg}}
 
         <p class="english">
-{{site_title}}        </p>
+         <a href="/">{{site_title}}</a>
+        </p>
 
 {{/no_opening_msg}}
 
@@ -94,8 +123,8 @@
 
 {{#not_logged_in?}}
 
-         <li>
-          <a href="/log-in/">Log_in</a>
+         <li class="selected">
+          <span>| Log_in |</span>
          </li>
 
 {{/not_logged_in?}}
@@ -171,27 +200,6 @@
          </li>
        </ul>
       </div>
-     <div id="content">
-
-{{#flash_msg?}}
-
-       <div class="{{class_name}}" id="flash_msg">
-        <h4>{{title}}</h4>
-        <div class="msg">{{msg}}</div>
-       </div>
-
-{{/flash_msg?}}
-
-      <div class="block" id="coming_soon_content">
-       <h4>Coming Soon...</h4>
-       <div class="body">
-        <p>I am still adding new features/content, so check each Monday for new stuff.</p>
-        <p>This is a personal/non-commercial site. It has products that have helped me and others.</p>
-        <p>There are no advertisements or affililate links here.</p>
-        <p>Currently, it's just for friends and family who keep asking me what to buy.</p>
-       </div>
-      </div>
-     </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>

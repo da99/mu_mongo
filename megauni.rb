@@ -76,11 +76,16 @@ require 'rest_client'
   
   %w{
     Hello
-    Inspect
+    Session
   }.each { |control|
 		require "controllers/#{control}"
 		The_Bunny.controllers << Object.const_get(control)
 	}
+
+  if The_Bunny.development?
+    require "controllers/Inspect"
+    The_Bunny.controllers << Inspect
+  end
  
   # ===============================================
   # Require Models.

@@ -5,11 +5,8 @@ class String
   end
 
   def must_not_be_empty
-    @stripped = begin
-                  str = strip
-                  raise ArgumentError, "String can't be empty." if str.empty?
-                  str
-                end
+    raise ArgumentError, "String can't be empty." if strip.empty?
+    strip
   end
 
   def must_exist_on_file_system
@@ -19,10 +16,7 @@ class String
   end
 
   def expand_path
-    @expanded_path ||= begin
-                         must_not_be_empty
-                         File.expand_path must_not_be_empty
-                       end
+    File.expand_path must_not_be_empty
   end
 
   def move_to_trash
@@ -53,27 +47,22 @@ class String
     file.path || directory.path
   end
 
+  def directory_name
+		must_not_be_empty
+    [ 
+      strip, 
+      File.expand_path(strip)
+    ].detect { |d_path|
+      File.directory? d_path
+    }
+  end
+
   def directory?
-		s = self.strip
-    return false if s.empty?
-		@directory_name ||= begin
-													[ 
-														s, 
-														File.expand_path(s)
-													].detect { |d_path|
-														File.directory? d_path
-													}
-												end
-		!!@directory_name
+		!!directory_name
   end
 
   def directory
-    @string_directory ||= begin
-														if !directory?
-															raise ArgumentError, "Needs to be a directory: #{inspect}"
-														end
-														String_as_Directory.new @directory_name
-													end
+    String_as_Directory.new self
   end
                           
   def file?
@@ -106,12 +95,8 @@ class String_as_Directory
 	attr_reader :orig_path
 	
 	def initialize raw_str
-		str = raw_str.strip
-		path = File.expand_path(str)
-		if str.empty? || !File.directory?(path)
-			raise ArgumentError, "Must be a directory: #{str}"
-		end
-		@orig_path = path
+		@orig_path = raw_str.directory_name
+    raise "Directory does not exist: #{raw_str}" if not @orig_path
 	end
 	
 	def name 

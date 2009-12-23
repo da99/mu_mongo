@@ -1,4 +1,4 @@
-# /home/da01/megauni/templates/english/mab/Hello_list.rb
+# ~/megauni/templates/english/mab/Hello_list.rb
 
 class Hello_list < Bunny_Mustache
 

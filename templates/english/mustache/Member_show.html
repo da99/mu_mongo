@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -72,7 +72,7 @@ Not done: save_to "loading"
       </li>
      </ul>
      <div class="form_holder tab_selected" id="create_slice_location">
-      <form method="post" name="form_create_slice_location" action="/slice_location/create">
+      <form action="/slice_location/create" method="post" name="form_create_slice_location">
        <h3>Create a location</h3>
        <fieldset class="input_text title">
         <label>Title</label>
@@ -87,12 +87,12 @@ Not done: save_to "loading"
        </fieldset>
        <div class="status_msg"></div>
        <div class="buttons">
-        <a href="#save_slice_location" class="save" onclick="SliceLocation.create(this); return false;">Save</a>
+        <a class="save" href="#save_slice_location" onclick="SliceLocation.create(this); return false;">Save</a>
        </div>
       </form>
      </div>
      <div class="form_holder tab_unselected" id="update_account">
-      <form class="update_account" method="post" name="form_update_settings" action="/work/update_account">
+      <form action="/work/update_account" class="update_account" method="post" name="form_update_settings">
        <h3>Update Email</h3>
        <fieldset class="input_text email">
         <label>Update Email</label>
@@ -100,10 +100,10 @@ Not done: save_to "loading"
        </fieldset>
        <div class="status_msg"></div>
        <div class="buttons">
-        <a href="#update_my_settings" class="update" onclick="Member.update_account(this); return false;">Update</a>
+        <a class="update" href="#update_my_settings" onclick="Member.update_account(this); return false;">Update</a>
        </div>
       </form>
-      <form class="update_password" method="post" name="form_update_password" action="/work/update_password">
+      <form action="/work/update_password" class="update_password" method="post" name="form_update_password">
        <h3>Update Password</h3>
        <fieldset class="input_text password">
         <label>Old Password</label>
@@ -119,7 +119,7 @@ Not done: save_to "loading"
        </fieldset>
        <div class="status_msg"></div>
        <div class="buttons">
-        <a href="#update_password" class="update" onclick="Member.update_password(this); return false;">Update Password</a>
+        <a class="update" href="#update_password" onclick="Member.update_password(this); return false;">Update Password</a>
        </div>
       </form>
      </div>

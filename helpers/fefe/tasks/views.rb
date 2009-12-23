@@ -9,24 +9,34 @@ class Views
 		steps([:name, nil], [:lang, 'english']) do |name, lang|
 			
 			demand_regex_match( /\A[a-zA-Z\-\_0-9]+\Z/, name)
-			dir  = File.join('templates', lang.downcase, 'mab')
-			mab  = File.join(dir, name + '.rb').expand_path
-			view = File.join('views', name + '.rb')
+      wdir = '~/' + File.basename(Dir.getwd)
+			dir  = File.join(wdir,  'mab')
+			mab  = File.join(wdir, 'templates', lang, 'mab', name + '.rb')
+      sass = File.join(wdir, 'templates', lang, 'sass', name + '.sass')
+			view = File.join(wdir, 'views', name + '.rb')
 			created = []
 			already = []
 
 			templates = {}
 			templates[mab] = %~
 # #{view}
+# #{sass}
 # #{name}
+
+div.content! { 
+  
+
+  
+} # === div.content!
 
 partial('__nav_bar')
 
-div.content! { 
-} ~.lstrip
+~.lstrip
 
 			templates[view] = %~
 # #{mab}
+# #{sass}
+# #{name}
 
 class #{name} < Bunny_Mustache
 
@@ -36,13 +46,25 @@ class #{name} < Bunny_Mustache
 	
 end # === #{name} ~.lstrip
 
+      if sass
+        templates[sass] = %~
+// #{mab}
+// #{view}
+// #{name}
+
+@import layout.sass
+
+
+~.lstrip
+      end
+
 			templates.each do |file, content|
 				
 				if File.file?(file)
 					puts_white 'Already existed:'
 				else
 					# Create file.
-					File.open(file, 'w') do |file_io|
+					File.open( file.expand_path, 'w') do |file_io|
 						file_io.puts content
 					end
 					puts_white 'Created:'

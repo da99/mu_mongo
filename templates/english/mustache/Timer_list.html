@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -53,27 +53,17 @@ Not done: save_to "opening_msg"
       <div id="nav_bar">
        <div id="logo">
 
-{{opening_msg}}
-
-
 {{#no_opening_msg}}
 
         <p class="english">
-
-{{opening_msg_site_title}}
-
+         <a href="/">{{site_title}}</a>
         </p>
-        <p class="nippon">
-を単一化します        </p>
 
 {{/no_opening_msg}}
 
+        <p class="nippon">
+を単一化します        </p>
        </div>
-       <ul class="help">
-         <li>
-          <a href="/">Home</a>
-         </li>
-       </ul>
        <h4>Egg Timers</h4>
        <ul class="to_dos">
          <li>
@@ -201,18 +191,18 @@ Not done: save_to "opening_msg"
           <span class="short_headline">---</span>
          </div>
          <div>
-          <a href="#egg_undelete" class="undo">Undo deletion.</a>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
          </div>
         </div>
         <div class="status">
-         <a href="#play" class="play" onclick="javascript:EggClock.play(this)">Play</a>
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
          <div class="time_status">
           <span class="number">9</span>
           <span class="unit">m</span>
           <span class="number">19</span>
           <span class="unit">s</span>
          </div>
-         <a href="#play" class="pause" onclick="javascript:EggClock.play(this)">Pause</a>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
          <div class="buzzer_option selected_buzzer">
           <input type="checkbox" checked="checked" value="true" name="sound_alarm"/>
           <span>
@@ -226,19 +216,19 @@ Dinner's ready         </h4>
 9 min countdown         </div>
          <ul class="control_panel">
           <li>
-           <a href="#egg_check_marked" class="check_mark">Check Mark</a>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
           </li>
           <li>
-           <a href="#egg_x_marked" class="x_mark">X Mark</a>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
           </li>
           <li>
-           <a href="#egg_edit" class="edit">Edit / Delete</a>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
           </li>
          </ul>
          <div class="details_control_panel">
-          <a href="#egg_show_details" class="show">
+          <a class="show" href="#egg_show_details">
 View Details          </a>
-          <a href="#egg_hide_details" class="hide">
+          <a class="hide" href="#egg_hide_details">
 Hide Details          </a>
          </div>
          <div class="details">
@@ -252,11 +242,11 @@ Travel to Europe.         </div>
           <span class="short_headline">---</span>
          </div>
          <div>
-          <a href="#egg_undelete" class="undo">Undo deletion.</a>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
          </div>
         </div>
         <div class="status">
-         <a href="#play" class="play" onclick="javascript:EggClock.play(this)">Play</a>
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
          <div class="time_status">
           <span class="unit">-</span>
           <span class="number">8</span>
@@ -264,7 +254,7 @@ Travel to Europe.         </div>
           <span class="number">12</span>
           <span class="unit">s</span>
          </div>
-         <a href="#play" class="pause" onclick="javascript:EggClock.play(this)">Pause</a>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
          <div class="buzzer_option selected_buzzer">
           <input type="checkbox" checked="checked" value="true" name="sound_alarm"/>
           <span>
@@ -278,19 +268,19 @@ Dinner's ready         </h4>
 9 min countdown         </div>
          <ul class="control_panel">
           <li>
-           <a href="#egg_check_marked" class="check_mark">Check Mark</a>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
           </li>
           <li>
-           <a href="#egg_x_marked" class="x_mark">X Mark</a>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
           </li>
           <li>
-           <a href="#egg_edit" class="edit">Edit / Delete</a>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
           </li>
          </ul>
          <div class="details_control_panel">
-          <a href="#egg_show_details" class="show">
+          <a class="show" href="#egg_show_details">
 View Details          </a>
-          <a href="#egg_hide_details" class="hide">
+          <a class="hide" href="#egg_hide_details">
 Hide Details          </a>
          </div>
          <div class="details">
@@ -304,14 +294,14 @@ Travel to Europe.         </div>
           <span class="short_headline">---</span>
          </div>
          <div>
-          <a href="#egg_undelete" class="undo">Undo deletion.</a>
+          <a class="undo" href="#egg_undelete">Undo deletion.</a>
          </div>
         </div>
         <div class="status">
-         <a href="#play" class="play" onclick="javascript:EggClock.play(this)">Play</a>
-         <a href="#continue" class="continue" onclick="javascript:EggClock.play(this)">Continue</a>
-         <a href="#start_over" class="start_over" onclick="javascript:EggClock.play(this)">Start Over</a>
-         <a href="#play" class="pause" onclick="javascript:EggClock.play(this)">Pause</a>
+         <a class="play" href="#play" onclick="javascript:EggClock.play(this)">Play</a>
+         <a class="continue" href="#continue" onclick="javascript:EggClock.play(this)">Continue</a>
+         <a class="start_over" href="#start_over" onclick="javascript:EggClock.play(this)">Start Over</a>
+         <a class="pause" href="#play" onclick="javascript:EggClock.play(this)">Pause</a>
          <div class="time_status">
           <span class="unit">-</span>
           <span class="number">4</span>
@@ -332,19 +322,19 @@ Dinner's ready         </h4>
 9 min countdown         </div>
          <ul class="control_panel">
           <li>
-           <a href="#egg_check_marked" class="check_mark">Check Mark</a>
+           <a class="check_mark" href="#egg_check_marked">Check Mark</a>
           </li>
           <li>
-           <a href="#egg_x_marked" class="x_mark">X Mark</a>
+           <a class="x_mark" href="#egg_x_marked">X Mark</a>
           </li>
           <li>
-           <a href="#egg_edit" class="edit">Edit / Delete</a>
+           <a class="edit" href="#egg_edit">Edit / Delete</a>
           </li>
          </ul>
          <div class="details_control_panel">
-          <a href="#egg_show_details" class="show">
+          <a class="show" href="#egg_show_details">
 View Details          </a>
-          <a href="#egg_hide_details" class="hide">
+          <a class="hide" href="#egg_hide_details">
 Hide Details          </a>
          </div>
          <div class="details">
@@ -360,7 +350,7 @@ You have deleted alarm:&nbsp;          </span>
 --          </span>
          </div>
          <div>
-          <a href="#egg_undelete" class="undo">
+          <a class="undo" href="#egg_undelete">
 Undo deletion.          </a>
          </div>
         </div>
@@ -375,30 +365,30 @@ Undo deletion.          </a>
          <div class="setting">[x mins]</div>
          <ul class="control_panel">
           <li>
-           <a href="#egg_at_play" class="play">
+           <a class="play" href="#egg_at_play">
 Play           </a>
           </li>
           <li>
-           <a href="#egg_check_marked" class="check_mark">
+           <a class="check_mark" href="#egg_check_marked">
 Check Mark This           </a>
           </li>
           <li>
-           <a href="#egg_x_marked" class="x_mark">
+           <a class="x_mark" href="#egg_x_marked">
 X Mark This           </a>
           </li>
           <li>
-           <a href="#egg_ready_to_start" class="ready_to_start">
+           <a class="ready_to_start" href="#egg_ready_to_start">
 Start All Over           </a>
           </li>
           <li>
-           <a href="#egg_edit" class="edit">
+           <a class="edit" href="#egg_edit">
 Edit / Delete           </a>
           </li>
          </ul>
          <div class="details_control_panel">
-          <a href="#egg_show_details" class="show">
+          <a class="show" href="#egg_show_details">
 View Details          </a>
-          <a href="#egg_hide_details" class="hide">
+          <a class="hide" href="#egg_hide_details">
 Hide Details          </a>
          </div>
          <div class="details">
@@ -443,7 +433,7 @@ Stop test.          </a>
        </ol>
       </div>
       <div class="form tab_unselected" id="create_note">
-       <form class="create_egg" method="post" name="form_note" id="form_note" action="/">
+       <form action="/" class="create_egg" method="post" name="form_note" id="form_note">
         <fieldset>
          <label>
 Title:         </label>
@@ -452,7 +442,7 @@ Title:         </label>
         <fieldset class="textarea">
          <label>
 Details:         </label>
-         <textarea rows="5" name="details" cols="10"></textarea>
+         <textarea cols="10" rows="5" name="details"></textarea>
         </fieldset>
         <div class="buttons">
          <button class="save" onclick="return Post.note();">Save &amp; Post</button>
@@ -460,7 +450,7 @@ Details:         </label>
        </form>
       </div>
       <div class="form tab_unselected" id="create_countdown">
-       <form class="create_egg" method="post" name="form_countdown" id="form_countdown" action="/">
+       <form action="/" class="create_egg" method="post" name="form_countdown" id="form_countdown">
         <div class="time_units_block group">
          <div class="title">
 Type in units:         </div>
@@ -488,7 +478,7 @@ Type in units:         </div>
         <fieldset>
          <label>
 Details:         </label>
-         <textarea rows="5" class="text name" name="details" cols="10"></textarea>
+         <textarea cols="10" class="text name" rows="5" name="details"></textarea>
         </fieldset>
         <div class="buttons">
          <button class="save" onclick="return Post.countdown();">Save &amp; Run</button>
@@ -496,7 +486,7 @@ Details:         </label>
        </form>
       </div>
       <div class="form tab_unselected" id="create_alarm">
-       <form class="create_egg" method="post" name="form_alarm" id="form_alarm" action="/">
+       <form action="/" class="create_egg" method="post" name="form_alarm" id="form_alarm">
         <div class="title">Select Time:</div>
         <div class="group">
          <fieldset>
@@ -556,7 +546,7 @@ Title:         </label>
         <fieldset>
          <label>
 Details:         </label>
-         <textarea rows="5" class="text name" name="details" cols="10"></textarea>
+         <textarea cols="10" class="text name" rows="5" name="details"></textarea>
         </fieldset>
         <div class="buttons">
          <button class="save" onclick="return Post.alarm();">Save &amp; Run</button>
@@ -573,19 +563,19 @@ You have deleted note:&nbsp;        </span>
 ---        </span>
        </div>
        <div>
-        <a href="#egg_undelete" class="undo">
+        <a class="undo" href="#egg_undelete">
 Undo deletion.        </a>
        </div>
       </div>
       <div class="control_panel">
        <div class="buttons">
-        <a href="#egg_ready_to_start" class="ready_to_start">
+        <a class="ready_to_start" href="#egg_ready_to_start">
 Start All Over        </a>
-        <a href="#egg_check_marked" class="check_mark">
+        <a class="check_mark" href="#egg_check_marked">
 Check Mark This        </a>
-        <a href="#egg_x_marked" class="x_mark">
+        <a class="x_mark" href="#egg_x_marked">
 X Mark This        </a>
-        <a href="#egg_edit" class="edit">
+        <a class="edit" href="#egg_edit">
 Edit / Delete        </a>
        </div>
       </div>
@@ -597,9 +587,9 @@ Edit / Delete        </a>
        <div class="setting">
 Note       </div>
        <div class="details_control_panel">
-        <a href="#egg_show_details" class="show">
+        <a class="show" href="#egg_show_details">
 View Details        </a>
-        <a href="#egg_hide_details" class="hide">
+        <a class="hide" href="#egg_hide_details">
 Hide Details        </a>
        </div>
        <div class="details">
@@ -614,7 +604,7 @@ Editing:&nbsp;       </span>
        </span>
       </div>
       <div class="land">
-       <form class="create_egg" method="post" action="/">
+       <form action="/" class="create_egg" method="post">
         <div class="fieldset_block headline">
          <fieldset>
           <label>
@@ -626,7 +616,7 @@ Headline:          </label>
          <fieldset>
           <label>
 Details:          </label>
-          <textarea rows="5" class="text name" name="details" cols="10"></textarea>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
          </fieldset>
         </div>
         <div class="buttons">
@@ -645,27 +635,27 @@ Editing:&nbsp;       </span>
        </span>
       </div>
       <div class="land">
-       <form class="create_egg" method="post" action="/">
+       <form action="/" class="create_egg" method="post">
         <div class="fieldset_block time_units_block">
          <div class="title">
 Type in units:         </div>
          <fieldset>
-          <input type="text" value="0" maxlength="3" name="days"/>
+          <input type="text" value="0" name="days" maxlength="3"/>
           <label>
 Days          </label>
          </fieldset>
          <fieldset>
-          <input type="text" value="0" maxlength="3" name="hours"/>
+          <input type="text" value="0" name="hours" maxlength="3"/>
           <label>
 Hrs.          </label>
          </fieldset>
          <fieldset>
-          <input type="text" value="15" maxlength="3" name="minutes"/>
+          <input type="text" value="15" name="minutes" maxlength="3"/>
           <label>
 Mins.          </label>
          </fieldset>
          <fieldset>
-          <input type="text" value="0" maxlength="3" name="seconds"/>
+          <input type="text" value="0" name="seconds" maxlength="3"/>
           <label>
 Secs.          </label>
          </fieldset>
@@ -681,7 +671,7 @@ Title:          </label>
          <fieldset>
           <label>
 Details:          </label>
-          <textarea rows="5" class="text name" name="details" cols="10"></textarea>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
          </fieldset>
         </div>
         <div class="buttons">
@@ -699,7 +689,7 @@ Details:          </label>
        </span>
       </div>
       <div class="land">
-       <form class="create_egg" method="post" action="/">
+       <form action="/" class="create_egg" method="post">
         <div class="fieldset_block time_units_block">
          <div class="title">Select Time:</div>
          <fieldset>
@@ -760,7 +750,7 @@ PM           </option>
         <div class="fieldset_block details">
          <fieldset>
           <label>Details:</label>
-          <textarea rows="5" class="text name" name="details" cols="10"></textarea>
+          <textarea cols="10" class="text name" rows="5" name="details"></textarea>
          </fieldset>
         </div>
         <div class="buttons">

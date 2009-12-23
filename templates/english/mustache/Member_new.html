@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -45,27 +45,17 @@ Not done: save_to "title"
       <div id="nav_bar">
        <div id="logo">
 
-{{opening_msg}}
-
-
 {{#no_opening_msg}}
 
         <p class="english">
-
-{{opening_msg_site_title}}
-
+         <a href="/">{{site_title}}</a>
         </p>
-        <p class="nippon">
-を単一化します        </p>
 
 {{/no_opening_msg}}
 
+        <p class="nippon">
+を単一化します        </p>
        </div>
-       <ul class="help">
-         <li>
-          <a href="/">Home</a>
-         </li>
-       </ul>
        <h4>Egg Timers</h4>
        <ul class="to_dos">
          <li>
@@ -196,7 +186,7 @@ Not done: save_to "title"
 {{/flash_msg?}}
 
       <h3>Create a New Account</h3>
-      <form method="post" name="sign_up_form" id="sign_up_form" action="/member/">
+      <form action="/member/" method="post" name="sign_up_form" id="sign_up_form">
        <fieldset>
         <label>Username</label>
         <input type="text" class="text" value="{{ session_form_username }}" name="username" id="username_name"/>

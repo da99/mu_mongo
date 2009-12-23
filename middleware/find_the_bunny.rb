@@ -22,13 +22,13 @@ class Find_The_Bunny
 				end
 
 				pieces.push('list') if pieces.empty?
-				a_name = [a_name, pieces.shift].compact.join('_')
+				a_name = [a_name, pieces.shift.split('-')].compact.join('_')
 				
 				if control.public_instance_methods.include?(a_name) && 
 					control.instance_method(a_name).arity === pieces.size + 1
 					
 					new_env['the_bunny'][:controller]  = control
-					new_env['the_bunny'][:action_name] = (a_name['_'] ? a_name.split("_")[1,100] : a_name)
+					new_env['the_bunny'][:action_name] = (a_name['_'] ? a_name.split("_")[1,100].join('_') : a_name)
 					new_env['the_bunny'][:args]        = pieces
 					break
 					
