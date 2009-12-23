@@ -1,11 +1,11 @@
-class Hello
+module Hello
 
-	def GET_list the_stage
-		the_stage.render_html_template
+	def GET_list 
+		render_html_template
 	end
 
-	def GET_hi the_stage
-		the_stage.render_text_html "<p>Hello ;)</p>"
+	def GET_hi 
+		render_text_html "<p>Hello ;)</p>"
 	end
 
 end

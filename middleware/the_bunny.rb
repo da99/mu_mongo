@@ -10,25 +10,21 @@ class The_Bunny
 		ENVIRONS = [:development, :production, :test]
 	end
 
-	class << self
-    
-		Options::ENVIRONS.each { |envi|
-			eval %~
-				def #{envi}?
-					ENV['RACK_ENV'] == '#{envi}'
-				end
-			~
-		}
+  Options::ENVIRONS.each { |envi|
+    eval %~
+      def self.#{envi}?
+        ENV['RACK_ENV'] == '#{envi}'
+      end
+    ~
+  }
 
-    def environment
-      ENV['RACK_ENV']
-    end
+  def self.environment
+    ENV['RACK_ENV']
+  end
 
-    def controllers
-      @controllers ||= []
-    end
-
-	end
+  def self.controllers
+    @controllers ||= []
+  end
 
   def self.call(new_env)
     #
@@ -74,7 +70,8 @@ class The_Bunny
       
       self.controller  = vals[0]
       self.action_name = vals[1]
-      controller.new.send("#{env['REQUEST_METHOD']}_#{action_name}", self, *vals[2] )
+      self.extend controller
+      self.send("#{env['REQUEST_METHOD']}_#{action_name}", *vals[2] )
       
     rescue Bad_Bunny::Redirect
       
