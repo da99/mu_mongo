@@ -4,6 +4,7 @@ begin
   require 'middleware/allow_only_roman_uri'
   require 'middleware/squeeze_uri_dots' 
 	require 'middleware/find_the_bunny'
+  require 'middleware/Always_Find_Favicon'
 
   require 'megauni'
   require 'mustache'
@@ -25,9 +26,13 @@ begin
 	use Rack::ContentLength
 
 	# === Content Generators
+  use Always_Find_Favicon
+
   if The_Bunny_Farm.development?
 		require 'middleware/render_css' 
 		use Render_Css
+
+    use Rack::Static, :root=> 'public', :urls => ["/images", "/favicon.ico", '/stylesheets', '/apple-touch-icon.png']
   end
 
 	# === Helpers

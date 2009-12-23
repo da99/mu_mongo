@@ -22,7 +22,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 
     title( "{{title}}" )
 
-    link( :rel=>"shortcut icon", :href=>"{{url}}favicon.ico", :type=>"image/x-icon")
+    link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
 		
     mustache("not_mobile_request?") {
       link( :rel=>"stylesheet",    :href=>"{{css_file}}", :media=>"screen", :type=>"text/css" )

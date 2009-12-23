@@ -78,7 +78,7 @@ class The_Bunny_Farm
         raise $!
       end
       new_env['bad.bunny'] = $!
-      response             = Rack::Response
+      response             = Rack::Response.new
       response.status      = 500
       response.body        = '<h1>Unknown Error.</h1>'
       response.finish

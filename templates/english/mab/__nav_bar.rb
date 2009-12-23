@@ -31,51 +31,51 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
     }
 
-    mustache 'development?' do
+    # mustache 'development?' do
 
-      mustache 'not_logged_in?' do
-        h4 'Non-Members'
-        ul.non_members {
-          nav_bar_li :Member_Cage, 'sign-up', 'Create Account'
-        }
-      end
+    #   mustache 'not_logged_in?' do
+    #     h4 'Non-Members'
+    #     ul.non_members {
+    #       nav_bar_li :Member_Cage, 'sign-up', 'Create Account'
+    #     }
+    #   end
 
-      h4 'Members'
-      ul.members {
-        mustache 'logged_in?' do
-          nav_bar_li :Member, 'account'
-          nav_bar_li :Session_Cage, 'log-out'
-        end
+    #   h4 'Members'
+    #   ul.members {
+    #     mustache 'logged_in?' do
+    #       nav_bar_li :Member, 'account'
+    #       nav_bar_li :Session_Cage, 'log-out'
+    #     end
 
-        mustache 'not_logged_in?' do
-          nav_bar_li :Session_Cage, 'log-in'
-        end
-      }
+    #     mustache 'not_logged_in?' do
+    #       nav_bar_li :Session_Cage, 'log-in'
+    #     end
+    #   }
 
-      h4 'Stuff To Do'
-      ul.to_dos {
-          nav_bar_li :Something, 'add-to-do', 'Add to do'
-          nav_bar_li :To_dos, 'today' 
-          nav_bar_li :To_dos, 'tomorrow'
-          nav_bar_li :To_dos, 'this-month', 'This Month'
-      }
+    #   h4 'Stuff To Do'
+    #   ul.to_dos {
+    #       nav_bar_li :Something, 'add-to-do', 'Add to do'
+    #       nav_bar_li :To_dos, 'today' 
+    #       nav_bar_li :To_dos, 'tomorrow'
+    #       nav_bar_li :To_dos, 'this-month', 'This Month'
+    #   }
 
-      h4 'Lives'
-      ul.lives {
-         
-          nav_bar_li :Lives, 'friend'
-          nav_bar_li :Lives, 'family'
-          nav_bar_li :Lives, 'work'
-          nav_bar_li :Lives, 'pet-owner', 'Pet Owner'
-          nav_bar_li :Lives, 'celebrity'
-      }
-    
-    end # if development?
+    #   h4 'Lives'
+    #   ul.lives {
+    #      
+    #       nav_bar_li :Lives, 'friend'
+    #       nav_bar_li :Lives, 'family'
+    #       nav_bar_li :Lives, 'work'
+    #       nav_bar_li :Lives, 'pet-owner', 'Pet Owner'
+    #       nav_bar_li :Lives, 'celebrity'
+    #   }
+    # 
+    # end # === if development?
 
     h4 'Clubs'
     ul.news {
        
-        nav_bar_li :Topic, 'bubblegum', 'Bubblegum Pop'
+        nav_bar_li :Topic, 'salud',    'Salud (Español)'
         nav_bar_li :Topic, 'child-care', 'Child Care'
         nav_bar_li :Topic, 'computer', 'Computer Use'
         nav_bar_li :Topic, 'economy',  'Economy + War'
@@ -83,8 +83,8 @@ div( :id=>"nav_bar" ) {
         nav_bar_li :Topic, 'housing',  'Housing & Apartments'
         nav_bar_li :Topic, 'health',   'Pain & Disease'
         nav_bar_li :Topic, 'preggers', 'Pregnancy'
-        nav_bar_li :Topic, 'salud',    'Salud (Español)'
         nav_bar_li :Topic, 'news',     'Other Topics'
+        nav_bar_li :Topic, 'bubblegum', 'Bubblegum Pop'
     }
 
     # h4 'Pain & Disease'
