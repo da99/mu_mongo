@@ -40,6 +40,38 @@
 
 {{/loading}}
 
+     <div id="content">
+
+{{#flash_msg?}}
+
+       <div class="{{class_name}}" id="flash_msg">
+        <h4>{{title}}</h4>
+        <div class="msg">{{msg}}</div>
+       </div>
+
+{{/flash_msg?}}
+
+      <h3>Create a New Account</h3>
+      <form action="/member/" method="post" name="sign_up_form" id="sign_up_form">
+       <fieldset>
+        <label>Username</label>
+        <input type="text" class="text" value="{{ session_form_username }}" name="username" id="username_name"/>
+       </fieldset>
+       <fieldset>
+        <label>Password</label>
+        <input type="password" class="text" value="" name="password" id="password"/>
+       </fieldset>
+       <fieldset>
+        <label>
+         <span>Confirm Password</span>
+        </label>
+        <input type="password" class="text" value="" name="confirm_password" id="confirm_password"/>
+       </fieldset>
+       <div class="buttons">
+        <button class="create" onclick="document.getElementById('sign_up_form').submit(); return false;">Create My New Account</button>
+       </div>
+      </form>
+     </div>
       <div id="nav_bar">
        <div id="logo">
 
@@ -172,32 +204,6 @@
          </li>
        </ul>
       </div>
-     <div id="content">
-      <div class="usernames">
-       <h4>Usernames</h4>
-       <a class="new" href="#add_username">Add Another Username.</a>
-
-{{#lives}}
-
-       <div class="un" id="life_{{category}}">
-        <div class="username">{{username}}</div>
-        <div class="category">{{category}}</div>
-        <a class="edit" href="#edit_username">Edit</a>
-       </div>
-
-{{/lives}}
-
-      </div>
-      <div id="delete_account">
-       <h4>Delete Everything.</h4>
-       <div class="msg">Once you delete your account, all usernames,
-      all data,
-      will be lost permanently. 
-      For your privacy, there is no going back. No undo.
-      It will be as if you never existed on this website.</div>
-       <a class="delete" href="#delete">Delete Entire Account</a>
-      </div>
-     </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>

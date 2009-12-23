@@ -77,6 +77,7 @@ require 'rest_client'
   %w{
     Hello
     Session
+    Member_Control
   }.each { |control|
 		require "controllers/#{control}"
 		The_Bunny.controllers << Object.const_get(control)

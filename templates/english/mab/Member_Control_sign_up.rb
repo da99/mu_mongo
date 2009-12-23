@@ -1,11 +1,9 @@
-save_to('title') { 'Sign-up' }
-
-
-partial('__nav_bar')
-
+# ~/megauni/views/Member_Control_sign_up.rb
+# ~/megauni/templates/english/sass/Member_Control_sign_up.sass
+# Member_Control_sign_up
 
 div.content! { 
-
+  
   # ================= div.flash_msg =============================
 	partial '__flash_msg' 
 
@@ -38,12 +36,5 @@ div.content! {
   
 } # === div.content!
 
-
-
-
-
-
-
-
-
+partial('__nav_bar')
 
