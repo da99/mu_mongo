@@ -1,12 +1,3 @@
-save_to('title'){ "Back pain vitamins and supplements." }
-
-save_to('meta_description') { 
-  "vitamins and supplements for back pain."
-}
-
-save_to('meta_keywords') {
-  "back pain vitamins supplements"
-}
 
 
 

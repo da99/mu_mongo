@@ -27,12 +27,11 @@ begin
 
 	# === Content Generators
   use Always_Find_Favicon
-
+  use Rack::Static, :root=> 'public', :urls => ["/images", "/favicon.ico", '/apple-touch-icon.png']
+  
   if The_Bunny_Farm.development?
 		require 'middleware/render_css' 
 		use Render_Css
-
-    use Rack::Static, :root=> 'public', :urls => ["/images", "/favicon.ico", '/stylesheets', '/apple-touch-icon.png']
   end
 
 	# === Helpers

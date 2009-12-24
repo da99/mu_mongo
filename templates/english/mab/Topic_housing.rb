@@ -1,13 +1,3 @@
-save_to('title'){ "Housekeeping and Cleanup" }
-
-save_to('meta_description') { 
-  "Take care of your home."
-}
-
-save_to('meta_keywords') {
-  "mouse traps"
-}
-
 
 
 div.content!  { 

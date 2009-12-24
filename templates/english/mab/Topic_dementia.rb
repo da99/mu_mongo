@@ -1,14 +1,3 @@
-save_to('title'){ "Avoid Dementia or Alzheimer's" }
-
-save_to('meta_description') { 
-  "Supplements to avoid age-related memory problems and Alzheimer's."
-}
-
-save_to('meta_keywords') {
-  "dementia longevinex ip-6 Alzheimer's"
-}
-
-
 
 div.content!  { 
   ul.faq {

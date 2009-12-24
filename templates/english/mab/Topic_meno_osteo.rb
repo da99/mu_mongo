@@ -1,13 +1,3 @@
-save_to('title'){ "Prevent Osteoporosis and Menopause symptoms." }
-
-save_to('meta_description') { 
-  "Osteo-porosis and Menopause vitamins."
-}
-
-save_to('meta_keywords') {
-  "Ostero-porosis, Heart (corazon), Menopause, Cancer, Flu, Fibromyalgia, Sleep (sueno), PMS, Hormonal Imbalances"
-}
-
 
 
 div.content!  {

@@ -1,12 +1,3 @@
-save_to('title'){ "Skin & Hair." }
-
-save_to('meta_description') { 
-  "Slow down Loss of Hair"
-}
-
-save_to('meta_keywords') {
-  "hair skin vitamins alternatives shampoo"
-}
 
 
 

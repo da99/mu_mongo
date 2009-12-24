@@ -1,13 +1,3 @@
-save_to('title'){ "To Serve Man." }
-
-save_to('meta_description') { 
-  "Do you need help?"
-}
-
-save_to('meta_keywords') {
-  "cancer vitamins "
-}
-
 
 
 div.content!  { 
@@ -16,8 +6,8 @@ div.content!  {
     li {
       div.question "Not ready."
       div.answer {
-        span 'Try this section until this section is finished:'
-        a('Bubblegum Pop', :href=>'/bubblegum/')
+        span 'Try this site until this section is finished:'
+        a('LewRockwell.com', :href=>'http://www.lewrockwell.com/')
       }
     }
 

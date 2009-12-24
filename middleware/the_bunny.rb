@@ -183,6 +183,10 @@ module The_Bunny
 												 Mab_In_Disguise.mab_to_mustache( 'english', file_name )
 											 end
     
+    if not template_content
+      raise "Something went wrong. No template content found for: #{file_name.inspect}"
+    end
+
     require "views/#{file_name}.rb"
     view_class = Object.const_get(file_name)
     view_class.raise_on_context_miss = true

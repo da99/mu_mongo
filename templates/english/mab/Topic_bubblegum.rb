@@ -1,4 +1,3 @@
-save_to('title') { 'Formerly: Surfer Hearts' }
 
 
 

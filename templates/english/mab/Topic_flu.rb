@@ -1,12 +1,3 @@
-save_to('title'){ "Get Rid of Cold & Flur." }
-
-save_to('meta_description') { 
-  "Vitamins and supplments to quickly rid body of cold and flu."
-}
-
-save_to('meta_keywords') {
-  "cold flu vitamins "
-}
 
 div.content!  { 
   ul.faq {

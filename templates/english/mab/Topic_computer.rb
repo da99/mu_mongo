@@ -1,13 +1,3 @@
-save_to('title'){ "Buying and Using a Computer" }
-
-save_to('meta_description') { 
-  "computer buying"
-}
-
-save_to('meta_keywords') {
-  "computers"
-}
-
 
 
 div.content!  { 

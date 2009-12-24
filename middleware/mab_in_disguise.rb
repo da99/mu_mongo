@@ -198,7 +198,7 @@ class Mab_In_Disguise
     mus_dir       = File.join('templates', lang, 'mustache')
     mus_file      = File.join(mus_dir, file_basename.to_s + '.html')
       
-    return nil if file_basename[/Heart|News|Topic|textile|\.xml\./]
+    return nil if file_basename[/Heart|News|textile|\.xml\./]
     
     is_partial    = file_basename[/^__/]
 

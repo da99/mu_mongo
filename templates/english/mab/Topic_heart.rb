@@ -1,13 +1,3 @@
-save_to('title'){ "To Serve Man." }
-
-save_to('meta_description') { 
-  "Vitamins to prevent heart attacks and diabetes."
-}
-
-save_to('meta_keywords') {
-  "vitamins supplements diabetes heart attacks"
-}
-
 
 
 div.content!  { 

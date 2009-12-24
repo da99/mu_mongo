@@ -1,12 +1,3 @@
-save_to('title'){ "Safe Supplements for Severe Depression." }
-
-save_to('meta_description') { 
-  "Avoid drugs. Take supplements for your depression."
-}
-
-save_to('meta_keywords') {
-  "methylcobalamin methyl-b-12 folic acid "
-}
 
 
 

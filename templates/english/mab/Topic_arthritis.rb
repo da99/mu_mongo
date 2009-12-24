@@ -1,15 +1,3 @@
-save_to('title'){ "Join-Pain from Arthritis" }
-
-save_to('meta_description') { 
-  "Vitamins and supplements for rhumatoid and osteo-arthritis."
-}
-
-save_to('meta_keywords') {
-  "vitamins supplements arthritis rhumatoid osteoarthritis"
-}
-
-
-
 div.content!  { 
 
   p {

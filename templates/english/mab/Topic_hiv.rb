@@ -1,13 +1,3 @@
-save_to('title'){ "Vitamins for HIV/AIDS/STDs" }
-
-save_to('meta_description') { 
-  "Avoid AIDS drugs. Take vitamins and supplements properly."
-}
-
-save_to('meta_keywords') {
-  "aids hiv stds"
-}
-
 
 
 div.content!  { 
