@@ -64,7 +64,7 @@ class Tests
       
       # === Create News ==========================
       
-      CouchDoc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
+      Couch_Doc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
         :teaser   =>'teaser', 
         :body     =>'Test body.', 
         :tags     =>['surfer_hearts', 'hearts', 'pets'],
@@ -76,7 +76,7 @@ class Tests
 
       # === Create Regular Member ==========================
       
-      CouchDoc.PUT("member-regular-member-1",
+      Couch_Doc.PUT("member-regular-member-1",
         { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
           :salt            => "yJ2OuJpdIy",
           :data_model      => "Member",
@@ -86,11 +86,11 @@ class Tests
         }
       )
       
-      CouchDoc.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
+      Couch_Doc.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
       
       # === Create Admin Member ==========================
 
-      CouchDoc.PUT("member-admin-member-1",
+      Couch_Doc.PUT("member-admin-member-1",
         { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
           :salt            => "4LKK5YOOLX",
           :data_model      => "Member",
@@ -100,7 +100,7 @@ class Tests
         }
       )
 
-      CouchDoc.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
+      Couch_Doc.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
       
     end
   end # ======== :db_reset!

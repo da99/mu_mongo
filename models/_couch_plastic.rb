@@ -75,13 +75,13 @@ module CouchPlastic
     
     super()
     
-    editor   = args.first
-    raw_data.update( args[1] ) if args[1]
+    self.set_manipulator args.first
+    self.set_raw_data( args[1] ) if args[1]
 
     if !creator?(editor)
       raise UnauthorizedNew.new(self,editor)
     end
-    set_manipulator editor, raw_data
+    set_manipulator editor
 
   end
 
@@ -110,16 +110,24 @@ module CouchPlastic
     original_data.as_hash.has_key? key
   end
 
+
   def original_data
     @original_data ||= Data_Pouch.new(*(self.class.fields))
   end
   alias_method :data, :original_data
 
+  def set_original_data new_hash
+    @original_data = new_hash
+    @original_data.each { |k,v|
+      @original_data[k] = self.class.format_field(k, v)
+    }
+    @original_data
+  end
+
+  
   def new_data
     @new_data ||= begin
       dp = Data_Pouch.new(*(self.class.fields))
-      
-      
       dp
     end
   end
@@ -147,6 +155,10 @@ module CouchPlastic
     @raw_data ||= {}
   end
 
+  def set_raw_data  new_hash
+    @raw_data = new_hash
+  end
+
   def clean_data 
     @clean_data ||={}
   end
@@ -160,15 +172,34 @@ module CouchPlastic
   end
 
   # =========================================================
+  #            Methods Related to Timestamps
+  # ========================================================= 
+
+  def last_modified_at
+    return nil unless self.class.timestamps_enabled?
+    updated_at || created_at
+  end
+
+  def created_at
+    return nil unless self.class.timestamps_enabled?
+    original_data.created_at.to_time
+  end
+
+  def updated_at
+    return nil unless self.class.timestamps_enabled?
+    original_data.updated_at.to_time
+  end
+  
+  
+  # =========================================================
   #            Methods Related to DSL for Editors
   # ========================================================= 
 
   attr_reader :manipulator
 
-  def set_manipulator mem, new_raw_data
+  def set_manipulator mem
     raise ArgumentError, "Method can only be used once." if @manipulator
     @manipulator = mem
-    @raw_data    = new_raw_data
   end
 
   # =========================================================
@@ -184,17 +215,17 @@ module CouchPlastic
     raise "This is not a new document." if !new?
 
     clear_assoc_cache
-    setter_for_create
+    before_create
     raise_if_invalid
 
     data = new_data.as_hash.clone
     data[:data_model] = self.class.name
     data[:created_at] = Helper.utc_now_as_string if self.class.fields.include?(:created_at)
 
-    new_id = data.delete(:_id) || CouchDoc.GET_uuid
+    new_id = data.delete(:_id) || Couch_Doc.GET_uuid
 
     begin
-      results = CouchDoc.PUT( new_id, data)
+      results = Couch_Doc.PUT( new_id, data)
       @original_data.as_hash.update(new_data.as_hash)
       original_data._id        = new_id
       original_data._rev       = results[:rev]
@@ -217,7 +248,7 @@ module CouchPlastic
   def save_update *opts
 
     clear_assoc_cache
-    setter_for_update
+    before_update
     raise_if_invalid
 
     data = original_data.as_hash.clone.update(new_data.as_hash)
@@ -225,7 +256,7 @@ module CouchPlastic
     data[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
     
     begin
-      results = CouchDoc.PUT( original_data._id, data )
+      results = Couch_Doc.PUT( original_data._id, data )
       original_data._rev = results[:rev]
       original_data.updated_at = data[:updated_at] if data.has_key?(:updated_at)
       original_data.as_hash.update(new_data.as_hash)
@@ -243,7 +274,7 @@ module CouchPlastic
     
     clear_assoc_cache
 
-    results = CouchDoc.delete( original_data.id, original_data._rev )
+    results = Couch_Doc.delete( original_data.id, original_data._rev )
     original_data.as_hash.clear # Mark document as new.
 
   end
@@ -256,21 +287,46 @@ module CouchPlastic
 
     include Demand_Arguments_Dsl
 
-    def new_from_db(data)
-      d = new
-      d.original_data.as_hash.update(data)
-      d
-    end
-
     # ===== DSL-icious ======================================
 
     def fields 
       @fields ||= [:_id, :data_model, :_rev]
     end
 
+    def formatters
+      @formatters ||= {}
+    end
+
+    def format_field k, v
+      raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
+      return v unless @formatters.has_key?(k)
+
+      case @formatters[k]
+        when Symbol
+          v.to_sym
+        when Proc
+          @formatters[k].call v
+      end
+    end
+
     def allow_fields *args
       args.each { |fld|
-        fields << fld.to_sym
+        case fld
+          when Array
+
+            case fld.last
+              when Symbol, Proc
+              else
+                raise "Unknown formatter class: #{fld.last.inspect}"
+            end
+            
+            fld_sym = fld.first.to_sym
+            fields << fld_sym
+            formatters[fld_sym] = fld.last
+            
+          else
+            fields << fld.to_sym
+        end
       }
       @fields.uniq!
       @fields
@@ -280,15 +336,20 @@ module CouchPlastic
       allow_fields :created_at, :updated_at
     end
 
+    def timestamps_enabled?
+      allow_fields.include?(:created_at) &&
+        allow_fields.include?(:updated_at)
+    end
+
 
     # ===== CRUD Methods ====================================
 
     def by_id( id ) # READ
-      CouchDoc.GET_by_id id
+      Couch_Doc.GET_by_id id
     end
 
     def read mem, id # READ
-      d = CouchDoc.GET_by_id(id)
+      d = Couch_Doc.GET_by_id(id)
       if !d.reader?(mem)
         raise UnauthorizedReader.new(d,mem)
       end
@@ -296,7 +357,7 @@ module CouchPlastic
     end
 
     def edit mem, id # EDIT
-      d = CouchDoc.GET_by_id(id)
+      d = Couch_Doc.GET_by_id(id)
       if !d.updator?(mem)
         raise UnauthorizedEditor.new(d,mem)
       end
@@ -308,23 +369,25 @@ module CouchPlastic
       if !d.creator?(editor)
         raise UnauthorizedCreator.new(d,editor)
       end
-      d.set_manipulator editor, new_raw_data
+      d.set_manipulator editor
+      d.set_raw_data  new_raw_data
       d.save_create 
       d
     end
 
     def update editor, new_raw_data # UPDATE
-      d = CouchDoc.GET_by_id(new_raw_data[:id])
+      d = Couch_Doc.GET_by_id(new_raw_data[:id])
       if !d.updator?(editor)
         raise UnauthorizedUpdator.new(d,editor)
       end
-      d.set_manipulator editor, new_raw_data
+      d.set_manipulator editor
+      d.set_raw_data new_raw_data
       d.save_update 
       d
     end
 
     def delete! editor, new_raw_data # DELETE
-      d = CouchDoc.GET_by_id(new_raw_data[:id])
+      d = Couch_Doc.GET_by_id(new_raw_data[:id])
       if !d.deletor?(editor)
         raise UnauthorizedDeletor.new(d, editor)
       end

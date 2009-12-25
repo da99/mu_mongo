@@ -10,7 +10,7 @@ class Member
                :data_model, 
                :hashed_password, 
                :salt,
-               :security_level
+               [ :security_level, Symbol ]
 
   # =========================================================
   #                     CONSTANTS
@@ -46,15 +46,9 @@ class Member
 
   # ==== Getters =====================================================    
   
-  def self.new_from_db *args
-    doc = super(*args)
-    doc.original_data.security_level = doc.original_data.security_level.to_sym
-    doc
-  end
-
   def self.by_username raw_username
     username = demand_string_not_empty(raw_username)
-    CouchDoc.GET( :member_usernames, 
+    Couch_Doc.GET( :member_usernames, 
                   :key=>username, 
                   :limit=>1, 
                   :include_docs=>true
@@ -81,17 +75,17 @@ class Member
       raise Incorrect_Password, "Password is invalid for: #{username.inspect}"
   end 
 
-  # ==== CRUD/CRUD-related =====================================================
+  # ==== Hooks =====================================================
 
-  def setter_for_create
-		new_data._id            = CouchDoc.GET_uuid
+  def before_create
+		new_data._id            = Couch_Doc.GET_uuid
 		new_data.security_level = :MEMBER
     ask_for :avatar_link, :email
     demand  :password, :add_life
   end
     
   
-  def setter_for_update 
+  def before_update 
 
     ask_for :old_life, :add_life 
 
@@ -140,17 +134,6 @@ class Member
   
   def usernames
     assoc_cache[:usernames] ||= original_data.lives.values.map { |l| l[:username]}
-  end
-
-  # def security_level
-  #   return :MEMBER if !original_data.as_hash.has_key?(:security_level) && !new?
-  #   original_data.as_hash[:security_level]
-  # end
-
-  def any_of_these_powers?(*raw_levels)
-    raw_levels.flatten.detect { |level| 
-      has_power_of?(level) 
-    }
   end
 
   def has_power_of?(raw_level)
@@ -283,7 +266,7 @@ class Member
     if errors.empty?
       begin
         _reserve_username_( add_life_username )
-      rescue CouchDoc::HTTP_Error_409_Update_Conflict
+      rescue Couch_Doc::HTTP_Error_409_Update_Conflict
         errors << "Username already taken: #{add_life_username}"
       end
     end
@@ -296,13 +279,13 @@ class Member
 								if new_data._id
 									new_data._id
 								else
-									new_data._id = CouchDoc.GET_uuid
+									new_data._id = Couch_Doc.GET_uuid
 								end
 							else
 								_id
 							end
 		doc_id = 'username-' + new_un
-		CouchDoc.PUT( doc_id,  {:member_id=>this_id} )
+		Couch_Doc.PUT( doc_id,  {:member_id=>this_id} )
 	end
 
   private # ==================================================

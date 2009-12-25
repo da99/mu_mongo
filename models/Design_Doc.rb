@@ -13,8 +13,8 @@ class Design_Doc
 
   def self.from_db
     begin
-      CouchDoc.GET_by_id ID
-    rescue CouchDoc::No_Record_Found 
+      Couch_Doc.GET_by_id ID
+    rescue Couch_Doc::No_Record_Found 
       nil
     end
   end
@@ -42,12 +42,12 @@ class Design_Doc
   end
 
   def self.create
-    CouchDoc.PUT ID, from_file_system
+    Couch_Doc.PUT ID, from_file_system
   end
 
   def self.update
     new_doc = from_db.update(from_file_system)
-    CouchDoc.PUT ID, new_doc
+    Couch_Doc.PUT ID, new_doc
   end
 
   def self.view_exists? view_name

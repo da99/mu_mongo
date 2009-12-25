@@ -1,6 +1,6 @@
 require 'helpers/app/json'
 
-class CouchDoc
+class Couch_Doc
   
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
@@ -82,9 +82,10 @@ class CouchDoc
     begin
       data = GET_naked( id )
       return(data) if !data[:data_model]
-      doc = Object.const_get(data[:data_model]).new_from_db(data)
+      doc = Object.const_get(data[:data_model])
+      doc.set_original_data data
     rescue RestClient::ResourceNotFound 
-      raise CouchDoc::No_Record_Found, "Document with id, #{id}, not found."
+      raise Couch_Doc::No_Record_Found, "Document with id, #{id}, not found."
     end
 
     doc
@@ -113,7 +114,8 @@ class CouchDoc
     return results if !params[:include_docs]
 
     objs = results[:rows].inject([]) { |m,r|
-      m << Object.const_get(r[:doc][:data_model]).new_from_db(r[:doc])
+      m << Object.const_get(r[:doc][:data_model])
+      m.set_original_data r[:doc]
       m
     }
 
@@ -143,6 +145,6 @@ class CouchDoc
   end
 
 
-end #  == class CouchDoc =====================================
+end #  == class Couch_Doc =====================================
 
 

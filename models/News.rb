@@ -1,6 +1,4 @@
 
-require 'time' # To use Time.parse.
-
 class News 
 
   include CouchPlastic
@@ -16,7 +14,7 @@ class News
   # ==== Getters =====================================================    
   
   def self.tags
-    rows = CouchDoc.GET(:news_tags, :reduce=>true, :group=>true)[:rows]
+    rows = Couch_Doc.GET(:news_tags, :reduce=>true, :group=>true)[:rows]
     rows.map { |r| 
       r[:key]
     }
@@ -24,7 +22,7 @@ class News
 
   def self.by_tag tag, raw_params={}
     params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
-    CouchDoc.GET(:news_by_tag, params)
+    Couch_Doc.GET(:news_by_tag, params)
   end
 
   def self.by_published_at raw_params={}
@@ -33,20 +31,18 @@ class News
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
     params = {:include_docs =>true}.update(raw_params)
-    CouchDoc.GET(:news_by_published_at, params)
+    Couch_Doc.GET(:news_by_published_at, params)
   end
 
-  # ==== CRUD =====================================================
+  # ==== Hooks =====================================================
 
-  enable_timestamps
-
-  def setter_for_create
+  def before_create
     new_data.tags = []
     demand :title, :body, :published_at 
     ask_for :teaser, :tags 
   end
 
-  def setter_for_update
+  def before_update
     ask_for :title, :body, :teaser, :published_at, :tags
   end
 
@@ -72,21 +68,8 @@ class News
 
   # ==== Accessors =====================================================
 
-  def last_modified_at
-    updated_at || created_at
-  end
-
-  def created_at
-    Time.parse( original_data.created_at )
-  end
-
-  def updated_at
-    return nil if !original_data.updated_at || original_data.updated_at.empty?
-    Time.parse( original_data.updated_at )
-  end
-
   def published_at
-    Time.parse( data.published_at || data.created_at )
+    data.published_at.to_time
   end
 
 
