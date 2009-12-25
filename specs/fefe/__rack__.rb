@@ -1,8 +1,7 @@
 require 'rack/test'
 ENV['RACK_ENV'] = 'test'
-
-require File.expand_path('.').split('/').last  # <-- your sinatra app
-set :environment, :test
+require 'middleware/Fake_Server'
+require File.expand_path('.').split('/').last  
 
 
 module FeFe_Test
@@ -10,7 +9,14 @@ module FeFe_Test
   include Rack::Test::Methods
    
   def app
-    Sinatra::Application
+    @app ||= begin
+               rack    = Rack::Builder.new
+               rack.use Fake_Server
+               file    = File.expand_path('config.ru')
+               content = File.read(file)
+               rack.instance_eval(content, file, 1)
+               rack.to_app
+             end
   end   
 
   def ssl_hash
@@ -31,7 +37,7 @@ module FeFe_Test
     demand_false( mem.has_power_of?( :ADMIN ) )
     post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password-1'}, ssl_hash
     follow_ssl_redirect!
-    demand_regex_match /my-work/, last_request.fullpath
+    demand_regex_match( /my-work/, last_request.fullpath )
   end
 
   def log_in_admin
@@ -39,7 +45,7 @@ module FeFe_Test
     demand_true mem.has_power_of?( :ADMIN )
     post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password-1'}, ssl_hash
     follow_ssl_redirect!
-    demand_regex_match /my-work/, last_request.fullpath
+    demand_regex_match( /my-work/, last_request.fullpath )
   end
 
   

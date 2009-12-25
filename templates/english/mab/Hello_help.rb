@@ -1,17 +1,9 @@
-save_to('title'){ "To Serve Man." }
+# VIEW ~/megauni/views/Hello_help.rb
+# SASS ~/megauni/templates/english/sass/Hello_help.sass
+# NAME Hello_help
 
-save_to('meta_description') { 
-  "Do you need help?"
-}
-
-save_to('meta_keywords') {
-  "cancer vitamins "
-}
-
-
-
-
-div.content!  { 
+div.content! { 
+  
   ul.faq {
   
     # li {
@@ -50,28 +42,9 @@ div.content!  {
       }
     }
 
-
-  
-
-
-
-
-
-     
   } # === ul
-} # == div.content!
-
-
+  
+} # === div.content!
 
 partial('__nav_bar')
 
-
-__END__
-    li {
-      div.question "I'm worried about the economy."
-      div.answer {
-        span "You should be. It's a Depression, not a Recession."
-        span " If you believe inflationary prices are coming, try researching this company: "
-        a('BullionVault.com', :href=>'http://www.bullionvault.com/')
-      }
-    } 

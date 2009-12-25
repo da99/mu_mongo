@@ -9,4 +9,8 @@ class Hello
     render_html_template
   end
 
+  def GET_help
+    render_html_template
+  end
+
 end # === Hello

@@ -17,6 +17,11 @@ module CouchPlastic
       raise_if_invalid
     end
   end
+
+  def clean_and_set field, &blok
+    new_val = clean(field, &blok)
+    new_data.send( "#{field}=", new_val)
+  end
   
   def clean_but_ignore_errors field, &blok
 

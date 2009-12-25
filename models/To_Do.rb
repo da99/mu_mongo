@@ -1,4 +1,4 @@
-class ToDo < Sequel::Model
+class To_Do < Sequel::Model
 
   # ==== ASSOCIATIONS ==================================================
   
@@ -48,4 +48,4 @@ class ToDo < Sequel::Model
     }
   end
 
-end # === end ToDo
+end # === end To_Do

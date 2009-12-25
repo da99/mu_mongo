@@ -124,7 +124,10 @@ module FeFe_Test
   end
 
 	def self.results
-		[@count.to_i, @count_passed.to_i, @count_failed.to_i ]
+    @count ||= 0
+    @count_passed ||= 0
+    @count_failed ||= 0
+		[@count, @count_passed, @count_failed ]
 	end
 
   def self.count
@@ -150,7 +153,7 @@ module FeFe_Test
     if raw_num
       @inspect_test = raw_num.to_i
     else
-      @inspect_test
+      @inspect_test ||= nil
     end
   end
 
@@ -159,7 +162,7 @@ module FeFe_Test
   end
 
   def self.inspection?
-    !!@inspect_test
+    !!inspect_test
   end
 
   def self.included new_class
@@ -182,20 +185,27 @@ module FeFe_Test
       
       if FeFe_Test.inspection? && !FeFe_Test.inspect_test?
         return false
-
       end
 
-      f_unit = new(title, FeFe_Test.count, @before, @after )
+      f_unit = new(title, FeFe_Test.count, before, after )
       
       f_unit.run blok
     end
     
     def before &blok
-      @before = blok
+      if block_given?
+        @before = blok
+      else
+        @before ||= nil
+      end
     end
     
     def after &blok
-      @after = blok
+      if block_given?
+        @after = blok
+      else
+        @after ||= nil
+      end
     end
 
     def context title
@@ -254,8 +264,8 @@ module FeFe_Test
 			puts_white "  #{@results[2].class}: #{@results[1]} "
 			if !@results[2].backtrace.first['on_assertion_exit']
 				@results[2].backtrace.each { |l|
-					puts l if l[FeFe_The_French_Maid::Prefs::PRIMARY_APP] && 
-						!l['instance_eval'] && !l['__fefe']
+					puts l  if (!l['lib/ruby/gems'] && !l['lib/ruby/site_ruby'] && !l['bin/fefe'] && !l['fefe/tasks'])  || (@results[2].backtrace.index(l) < 2)
+          # if l[FeFe_The_French_Maid::Prefs::PRIMARY_APP] && 	!l['instance_eval'] && !l['__fefe']
 				}
 			end
 			puts ''

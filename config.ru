@@ -29,7 +29,7 @@ begin
   use Always_Find_Favicon
   use Rack::Static, :root=> 'public', :urls => ["/images", "/favicon.ico", '/apple-touch-icon.png']
   
-  if The_Bunny_Farm.development?
+  if The_Bunny_Farm.non_production?
 		require 'middleware/render_css' 
 		use Render_Css
   end
@@ -38,12 +38,11 @@ begin
   use Rack::Session::Pool
 	use Find_The_Bunny
 
-  if The_Bunny_Farm.development?
+  if The_Bunny_Farm.non_production?
     require( 'middleware/mab_in_disguise'  )
     use Mab_In_Disguise
   end
 
-  # use( Rack::Reloader, 2 ) if The_Bunny_Farm.development?
 
 
   # Lil_Config = Struct.new(

@@ -18,6 +18,10 @@ class The_Bunny_Farm
     ~
   }
 
+  def self.non_production?
+    !['production', 'staging'].include?(ENV['RACK_ENV'])
+  end
+
   def self.environment
     ENV['RACK_ENV']
   end
@@ -128,6 +132,19 @@ module The_Bunny
     ~
   }
  
+  def clean_params 
+    @clean_params ||= begin
+                        data = {}
+                        request.params.each { |k,v| 
+                          data[k] = v ? v.strip : nil
+                          if data[k].empty?
+                            data[k] = nil
+                          end
+                        }
+                        data
+                      end
+  end
+
   def controller= class_obj
     @controller = class_obj
     @controller_name = class_obj.to_s.sub('_Bunny', '').to_sym
@@ -143,7 +160,7 @@ module The_Bunny
 
   def redirect! *args
     render_text_plain ''
-    response.redirect *args
+    response.redirect( *args )
     raise Bad_Bunny::Redirect
   end
 

@@ -21,15 +21,15 @@ div( :id=>"nav_bar" ) {
     } 
   }
 
-  # ul.help {
-  #   nav_bar_li :Hello_list, 'home'
-  # }
+  ul.help {
+    nav_bar_li :Hello, 'help'
+  }
    
-    h4 'Egg Timers'
-    ul.to_dos {
-      nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
-      nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
-    }
+  h4 'Egg Timers'
+  ul.to_dos {
+    nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
+    nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
+  }
 
     # mustache 'development?' do
 
@@ -72,50 +72,50 @@ div( :id=>"nav_bar" ) {
     # 
     # end # === if development?
 
-    h4 'Clubs'
-    ul.news {
-       
-        nav_bar_li :Topic, 'salud',    'Salud (Español)'
-        nav_bar_li :Topic, 'child-care', 'Child Care'
-        nav_bar_li :Topic, 'computer', 'Computer Use'
-        nav_bar_li :Topic, 'economy',  'Economy + War'
-        nav_bar_li :Topic, 'hair',     'Skin & Hair'
-        nav_bar_li :Topic, 'housing',  'Housing & Apartments'
-        nav_bar_li :Topic, 'health',   'Pain & Disease'
-        nav_bar_li :Topic, 'preggers', 'Pregnancy'
-        nav_bar_li :Topic, 'news',     'Other Topics'
-        nav_bar_li :Topic, 'bubblegum', 'Bubblegum Pop'
-    }
+  h4 'Clubs'
+  ul.news {
+     
+      nav_bar_li :Topic, 'salud',    'Salud (Español)'
+      nav_bar_li :Topic, 'child-care', 'Child Care'
+      nav_bar_li :Topic, 'computer', 'Computer Use'
+      nav_bar_li :Topic, 'economy',  'Economy + War'
+      nav_bar_li :Topic, 'hair',     'Skin & Hair'
+      nav_bar_li :Topic, 'housing',  'Housing & Apartments'
+      nav_bar_li :Topic, 'health',   'Pain & Disease'
+      nav_bar_li :Topic, 'preggers', 'Pregnancy'
+      nav_bar_li :Topic, 'news',     'Other Topics'
+      nav_bar_li :Topic, 'bubblegum', 'Bubblegum Pop'
+  }
 
-    # h4 'Pain & Disease'
-    # ul.human_body { 
-    #   nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
-    #   nav_bar_li.call '/back-pain/',  'Back Pain',           :topic, :back_pain
-    #   nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
-    #   nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
-    #   nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
-    #   nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
-    #   nav_bar_li.call '/heart/',      'Heart & Diabetes',   :topic, :heart
-    #   nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
-    #   nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
-    #   nav_bar_li.call '/health/',     'Other Health',        :topic, :health
-    # }
+  # h4 'Pain & Disease'
+  # ul.human_body { 
+  #   nav_bar_li.call '/arthritis/',  'Arthritis (osteo & rhumatoid)', :topic, :arthritis
+  #   nav_bar_li.call '/back-pain/',  'Back Pain',           :topic, :back_pain
+  #   nav_bar_li.call '/cancer/',     'Cancer',              :topic, :cancer
+  #   nav_bar_li.call '/dementia/',   'Dementia/Alzheirmer', :topic, :dementia
+  #   nav_bar_li.call '/depression/', 'Depression',          :topic, :depresssion
+  #   nav_bar_li.call '/flu/',        'Flu/Cold',            :topic, :flu
+  #   nav_bar_li.call '/heart/',      'Heart & Diabetes',   :topic, :heart
+  #   nav_bar_li.call '/hiv/',        'HIV/AIDS/STDs',       :topic, :hiv
+  #   nav_bar_li.call '/meno-osteo/', 'Osteoporosis & Menopause',      :topic, :meno_osteo
+  #   nav_bar_li.call '/health/',     'Other Health',        :topic, :health
+  # }
 
 
 
-      # ['/apartments/', 'Houses & Apartments', :housing, :index],
-      # ['/lingua/', 'Translate', :lingua, :index],
-      # ['/dating/', 'Lunch Date', :dating, :index],
-      # ['/pets/', 'Pets & Mascots', :pets, :index],
-      # ['/secrets/', 'Secrets', :health, :index],
-      # ['/make-overs/', 'Make-overs', :health, :makeovers],
-      # Home/Apartment.
-      # 
-      # Office Help.
-      #  Daily Summary.
-      #  To-Dos.
-      #  Projects
-      #  Calendar
-      #  Create Global To-Do List.
+    # ['/apartments/', 'Houses & Apartments', :housing, :index],
+    # ['/lingua/', 'Translate', :lingua, :index],
+    # ['/dating/', 'Lunch Date', :dating, :index],
+    # ['/pets/', 'Pets & Mascots', :pets, :index],
+    # ['/secrets/', 'Secrets', :health, :index],
+    # ['/make-overs/', 'Make-overs', :health, :makeovers],
+    # Home/Apartment.
+    # 
+    # Office Help.
+    #  Daily Summary.
+    #  To-Dos.
+    #  Projects
+    #  Calendar
+    #  Create Global To-Do List.
   
 } # === div.nav_bar!

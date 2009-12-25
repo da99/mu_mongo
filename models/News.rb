@@ -83,8 +83,7 @@ class News
   end # === 
 
   def teaser_validator
-    teaser = raw_data[:teaser].to_s.strip
-    return nil if teaser.empty?
+    return nil unless teaser.empty?
     new_data.teaser = teaser
   end # ===
 

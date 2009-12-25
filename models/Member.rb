@@ -10,7 +10,7 @@ class Member
                :data_model, 
                :hashed_password, 
                :salt,
-               [ :security_level, Symbol ]
+               :security_level
 
   # =========================================================
   #                     CONSTANTS
@@ -19,7 +19,7 @@ class Member
   Incorrect_Password      = Class.new( StandardError )
   Invalid_Security_Level = Class.new( StandardError )
 
-  SECURITY_LEVELS        = [ :NO_ACCESS, :STRANGER, :MEMBER, :EDITOR, :ADMIN ]
+  SECURITY_LEVELS        = %w{ NO_ACCESS STRANGER  MEMBER  EDITOR   ADMIN }
   SECURITY_LEVELS.each do |k|
     const_set k, k
   end
@@ -79,7 +79,7 @@ class Member
 
   def before_create
 		new_data._id            = Couch_Doc.GET_uuid
-		new_data.security_level = :MEMBER
+		new_data.security_level = Member::MEMBER
     ask_for :avatar_link, :email
     demand  :password, :add_life
   end
@@ -171,34 +171,29 @@ class Member
 
   def password_validator
                 
-    confirm_password = raw_data[:confirm_password].to_s.strip
-
     password = clean(:password) {
       strip
-      must_equal confirm_password, 'Password and password confirmation do not match.'
+      must_equal raw_data[:confirm_password], 'Password and password confirmation do not match.'
       min_size   5
       match( /[0-9]/, 'Password must have at least one number' )
     }
     
     new_data.salt = begin
-                        # Salt and encrypt values.
-                        chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                        (1..10).inject('') { |new_pass, i|  
-                          new_pass += chars[rand(chars.size-1)] 
-                          new_pass
-                        }
-                      end
+                      # Salt and encrypt values.
+                      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                      (1..10).inject('') { |new_pass, i|  
+                        new_pass += chars[rand(chars.size-1)] 
+                        new_pass
+                      }
+                    end
 
     new_data.hashed_password = BCrypt::Password.create( password + new_data.salt ).to_s
     
   end
   
   def security_level_validator 
-    new_data.security_level = clean(:security_level) {
-      if_not_in(SECURITY_LEVELS) { 
-        raise Member::Invalid_Security_Level, options.clean.inspect
-      }
-    }
+    demand_array_includes Security_Levels, raw_data[:security_level]
+    new_data.security_level = raw_data[:security_level]
   end # === def set_security_level
   
  
@@ -223,7 +218,7 @@ class Member
   
   def add_life_validator 
     
-    add_life = clean(:add_life) { symbolize }
+    add_life = raw_data[:add_life].to_sym
     
     demand_array_includes Member::LIVES, add_life
       
@@ -265,16 +260,17 @@ class Member
     
     if errors.empty?
       begin
-        _reserve_username_( add_life_username )
+        reserve_username( add_life_username )
       rescue Couch_Doc::HTTP_Error_409_Update_Conflict
         errors << "Username already taken: #{add_life_username}"
       end
     end
-			
 
   end # validator :add_life_username
 
-	def _reserve_username_ new_un
+  private # ==================================================
+
+	def reserve_username new_un
 		this_id = if new?
 								if new_data._id
 									new_data._id
@@ -288,9 +284,7 @@ class Member
 		Couch_Doc.PUT( doc_id,  {:member_id=>this_id} )
 	end
 
-  private # ==================================================
-
-  def _add_to_history_(hash)
+  def add_to_history(hash)
     if !hash.is_a?(Hash)
       raise ArgumentError, "Only Hash object is allowed."
     end

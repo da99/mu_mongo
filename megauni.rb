@@ -58,7 +58,6 @@ require 'rest_client'
         DB_CONN     = File.join(CouchDB_URI, DB_NAME)     
       
     when 'development'
-      # require 'helpers/sinatra/css'
       CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
       DB_NAME     = "megauni-dev"
       DB_CONN     = File.join( CouchDB_URI, DB_NAME )

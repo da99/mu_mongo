@@ -58,10 +58,6 @@ class Bunny_Mustache < Mustache
 		nil
 	end
 
-  def site_title
-    The_Bunny_Farm::Options::SITE_TITLE
-  end
-
 	def site_domain
 		The_Bunny_Farm::Options::SITE_DOMAIN
 	end

@@ -9,7 +9,7 @@ class Actions_Main
   it "shows homepage: / " do
     get '/'
     demand_equal 200, last_response.status
-    demand_regex_match /megauni/i, last_response.body  
+    demand_regex_match( /megauni/i, last_response.body )
   end
 
   it "shows /busy-noise" do
@@ -27,7 +27,7 @@ class Actions_Main
   it "adds a slash to a file path" do
     get '/busy-noise'
     follow_redirect!
-    demand_regex_match /noise\/$/, last_request.path_info  
+    demand_regex_match( /noise\/$/, last_request.path_info )
     demand_equal 200, last_response.status
   end
 

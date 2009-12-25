@@ -20,7 +20,7 @@ class Markaby::Builder
     txt      ||= shortcut.to_s.capitalize
     if self.template_name === template_name
       text(capture {
-        li.selected { span "< #{txt} " }
+        li.selected { span "< #{txt} >" }
       })
     else
       text(capture {
@@ -52,11 +52,11 @@ class Markaby::Builder
   end
   alias_method :app_vars, :the_app
 
-  def save_to(name,  &new_proc)
-    text "\nNot done: save_to #{name.inspect}\n"
-    return
-    instance_variable_set( :"@#{name}" , capture(&new_proc) )       
-  end # === save_to
+  # def save_to(name,  &new_proc)
+  #   text "\nNot done: save_to #{name.inspect}\n"
+  #   return
+  #   instance_variable_set( :"@#{name}" , capture(&new_proc) )       
+  # end # === save_to
 
   def checkbox selected, attrs
     defaults = { :type=>'checkbox' }
@@ -65,15 +65,6 @@ class Markaby::Builder
     end
     input attrs.update(defaults)     
   end
-
-	def partial file_name
-		caller_file = File.expand_path(caller[0].split(':').first)
-		caller_dir  = File.dirname(File.expand_path(caller_file))
-		partial_file = File.join(caller_dir, file_name)
-		raise "Not a file: #{partial_file}" if not File.file?(partial_file)
-		partial_content = File.read(partial_file)
-		eval(partial_content, nil, partial_file, 1)
-	end
 
   def mustache mus, &blok
     if block_given?
@@ -120,7 +111,7 @@ class Mab_In_Disguise
   
   def call new_env
 
-    if ENV['RACK_ENV'] != 'development'
+    if The_Bunny_Farm.production?
       raise("Can't be used in this environment: #{ENV['RACK_ENV']}") 
     end
 
