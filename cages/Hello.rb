@@ -13,4 +13,9 @@ class Hello
     render_html_template
   end
 
+  def GET_sitemap_xml
+    render_xml_template
+  end
+
+
 end # === Hello

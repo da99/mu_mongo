@@ -10,10 +10,7 @@ helpers do
     epoch_time.to_i * 1000
   end
   
-  # From: http://www.codeism.com/archive/show/578
-  def w3c_date(date)
-   date.utc.strftime("%Y-%m-%dT%H:%M:%S+00:00")
-  end
+
   
   def js_date(dt)
     dt.strftime('%B, %d %Y %H:%M:%S UTC')

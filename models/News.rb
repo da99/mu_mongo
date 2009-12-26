@@ -72,6 +72,10 @@ class News
     data.published_at.to_time
   end
 
+	def last_modified_at
+		latest = [data.created_at, data.updated_at, data.published_at].compact.sort.first
+		latest.to_time
+	end
 
   # ==== Validators =====================================================
 

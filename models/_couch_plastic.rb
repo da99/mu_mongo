@@ -117,11 +117,11 @@ module CouchPlastic
   alias_method :data, :original_data
 
   def set_original_data new_hash
-    @original_data = new_hash
-    @original_data.each { |k,v|
-      @original_data[k] = self.class.format_field(k, v)
+		@original_data = nil
+    new_hash.each { |k,v|
+      original_data.send "#{k}=", self.class.format_field(k, v)
     }
-    @original_data
+    original_data
   end
 
   
@@ -187,6 +187,7 @@ module CouchPlastic
 
   def updated_at
     return nil unless self.class.timestamps_enabled?
+		return nil if original_data.updated_at.nil?
     original_data.updated_at.to_time
   end
   
@@ -299,13 +300,13 @@ module CouchPlastic
 
     def format_field k, v
       raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
-      return v unless @formatters.has_key?(k)
+      return v unless formatters.has_key?(k)
 
-      case @formatters[k]
+      case formatters[k]
         when Symbol
           v.to_sym
         when Proc
-          @formatters[k].call v
+          formatters[k].call v
       end
     end
 

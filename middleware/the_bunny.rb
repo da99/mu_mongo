@@ -175,9 +175,17 @@ module The_Bunny
     raise Bad_Bunny.const_get("Error_#{code}")
   end
 
+	def render_application_xml txt
+    response.body = txt
+    set_header 'Content-Type', 'application/xml; charset=utf-8'
+    set_header 'Accept-Charset',   'utf-8'
+    set_header 'Cache-Control',    'no-cache'
+    set_header 'Pragma',           'no-cache'
+	end
+
   def render_text_plain txt
     response.body = txt
-    set_header 'Content-Type', 'text/plain; charset = utf-8'
+    set_header 'Content-Type', 'text/plain; charset=utf-8'
     set_header 'Accept-Charset',   'utf-8'
     set_header 'Cache-Control',    'no-cache'
     set_header 'Pragma',           'no-cache'
@@ -197,7 +205,11 @@ module The_Bunny
     template_content = begin
 												 File.read(File.expand_path('templates/english/mustache/' + file_name.to_s + '.html'))
 											 rescue Errno::ENOENT
-												 Mab_In_Disguise.mab_to_mustache( 'english', file_name )
+												 begin
+													 Mab_In_Disguise.mab_to_mustache( 'english', file_name )
+												 rescue Errno::ENOENT
+													 nil
+												 end
 											 end
     
     if not template_content
@@ -211,6 +223,30 @@ module The_Bunny
     
     render_text_html(html)
   end
+
+	def render_xml_template
+    file_name        = "#{controller_name}_#{action_name}".to_sym
+    template_content = begin
+												 File.read(File.expand_path('templates/english/mustache/' + file_name.to_s + '.html'))
+											 rescue Errno::ENOENT
+												 begin
+													 Xml_In_Disguise.xml_to_mustache( 'english', file_name )
+												 rescue Errno::ENOENT
+													 nil
+												 end
+											 end
+    
+    if not template_content
+      raise "Something went wrong. No template content found for: #{file_name.inspect}"
+    end
+
+    require "views/#{file_name}.rb"
+    view_class = Object.const_get(file_name)
+    view_class.raise_on_context_miss = true
+    xml       = view_class.new(self).render( template_content )
+    
+		render_application_xml xml
+	end
    
   def env_key raw_find_key
     find_key = raw_find_key.to_s.strip

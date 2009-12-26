@@ -114,8 +114,9 @@ class Couch_Doc
     return results if !params[:include_docs]
 
     objs = results[:rows].inject([]) { |m,r|
-      m << Object.const_get(r[:doc][:data_model])
-      m.set_original_data r[:doc]
+      doc = Object.const_get(r[:doc][:data_model]).new
+      doc.set_original_data r[:doc]
+			m << doc
       m
     }
 

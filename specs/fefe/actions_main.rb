@@ -26,9 +26,7 @@ class Actions_Main
 
   it "adds a slash to a file path" do
     get '/busy-noise'
-    follow_redirect!
-    demand_regex_match( /noise\/$/, last_request.path_info )
-    demand_equal 200, last_response.status
+    demand_regex_match( /noise\/$/, last_response.headers['Location'] )
   end
 
   it "does not add a slash to a missing file: cat.png" do
@@ -39,7 +37,7 @@ class Actions_Main
   it "shows: sitemap.xml as xml" do
     get '/sitemap.xml' 
     demand_equal 200, last_response.status
-    demand_equal last_response.content_type,  'application/xml;charset=utf-8'
+    demand_equal last_response.content_type,  'application/xml; charset=utf-8'
   end
 
   it "renders /help/" do

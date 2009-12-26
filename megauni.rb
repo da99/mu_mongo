@@ -1,6 +1,6 @@
 
 $KCODE = 'UTF8'
-ENV['RACK_ENV'] ||= 'test'
+ENV['RACK_ENV'] ||= 'development'
 
 require 'jcode'
 
@@ -95,8 +95,7 @@ require 'rest_client'
     _couch_plastic
     Couch_Doc
     Design_Doc
-
+    News
   }     # resty
     # Member
     # log_in_attempt
-    # News

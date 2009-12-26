@@ -22,7 +22,7 @@ class Find_The_Bunny
 				end
 
 				pieces.push('list') if pieces.empty?
-				a_name = [a_name, pieces.shift.split('-')].compact.join('_')
+				a_name = [a_name, pieces.shift.split('-')].compact.join('_').gsub('.', '_')
 				
 				if control.public_instance_methods.include?(a_name) && 
 					control.instance_method(a_name).arity === pieces.size 

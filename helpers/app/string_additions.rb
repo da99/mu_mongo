@@ -4,6 +4,14 @@ class String
     strip.gsub(/\A\/|\/\Z/, '')
   end
 
+	def to_time
+		return nil unless self =~ /\d{4}-\d{2}-\d{2}\ \d{2}:\d{2}:\d{2}/
+		pieces = split(' ')
+		year, month, day = pieces.first.split('-')
+		hour, mins, secs = pieces.last.split(':')
+		Time.utc year, month, day, hour, mins, secs
+	end
+
   def must_not_be_empty
     raise ArgumentError, "String can't be empty." if strip.empty?
     strip

@@ -61,6 +61,10 @@ class Bunny_Mustache < Mustache
 	def site_domain
 		The_Bunny_Farm::Options::SITE_DOMAIN
 	end
+
+	def site_url
+		The_Bunny_Farm::Options::SITE_URL
+	end
 	
 	def js_epoch_time raw_i = nil
 		i = raw_i ? raw_i.to_i : Time.now.utc.to_i
@@ -115,6 +119,14 @@ class Bunny_Mustache < Mustache
 
   def site_title
     The_Bunny_Farm::Options::SITE_TITLE
+  end
+
+	
+	private # ======== 
+
+  # From: http://www.codeism.com/archive/show/578
+  def w3c_date(date)
+   date.utc.strftime("%Y-%m-%dT%H:%M:%S+00:00")
   end
 
 end # === Bunny_Mustache

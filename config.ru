@@ -1,14 +1,21 @@
 
 begin
 
-  require 'middleware/allow_only_roman_uri'
+  require 'middleware/Allow_Only_Roman_Uri'
   require 'middleware/squeeze_uri_dots' 
-	require 'middleware/find_the_bunny'
+	require 'middleware/Find_The_Bunny'
   require 'middleware/Always_Find_Favicon'
+  require 'middleware/Slashify_Path_Ending'
+  require 'middleware/Serve_Public_Folder'
 
   require 'megauni'
   require 'mustache'
 
+  if The_Bunny_Farm.non_production?
+    require( 'middleware/Xml_In_Disguise'  )
+    require( 'middleware/Mab_In_Disguise'  )
+  end
+  
   my_app_root     = File.expand_path( File.dirname(__FILE__) )
   down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
   issue_client    = File.join( my_app_root, '/helpers/app/issue_client') 
@@ -21,16 +28,17 @@ begin
 	# === Protective
   use Allow_Only_Roman_Uri
 	use Squeeze_Uri_Dots
+  use Slashify_Path_Ending
 	
 	# === Modifiers
 	use Rack::ContentLength
 
 	# === Content Generators
   use Always_Find_Favicon
-  use Rack::Static, :root=> 'public', :urls => ["/images", "/favicon.ico", '/apple-touch-icon.png']
+  use Serve_Public_Folder, ['/busy-noise/', '/my-egg-timer/', '/styles/', '/skins/']
   
   if The_Bunny_Farm.non_production?
-		require 'middleware/render_css' 
+		require 'middleware/Render_Css' 
 		use Render_Css
   end
 
@@ -38,10 +46,6 @@ begin
   use Rack::Session::Pool
 	use Find_The_Bunny
 
-  if The_Bunny_Farm.non_production?
-    require( 'middleware/mab_in_disguise'  )
-    use Mab_In_Disguise
-  end
 
 
 
@@ -117,7 +121,7 @@ rescue Object => e
   #  ENV['RACK_ENV'], 
   #  $!
   # ) 
-	if ENV['RACK_ENV'] == 'development'
+	if ['test', 'development'].include?(ENV['RACK_ENV'])
 		raise e
 	end
   the_app = lambda { |env|
