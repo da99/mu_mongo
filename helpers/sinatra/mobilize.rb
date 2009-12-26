@@ -2,26 +2,7 @@
 
 helpers {
 
-  def use_mobile_version_if_requested 
-    %w{ mobi mobile iphone pda m }.each do |ending|
-      if request.path_info.split('/').last.downcase == ending
-        use_mobile_version
-        redirect( request.url.sub(/#{ending}\/?$/, '') , 301 )
-      end
-    end
-  end
 
-  def use_mobile_version
-    
-    # require 'rubygems'; require 'ruby-debug'; debugger
-    
-    
-    response.set_cookie("use_mobile_version", {
-      :value   => 'yes',
-      :path    => '/',
-      :expires => (Time.now + (60 * 60 * 24 * 365 * 10)),
-    })
-  end
 
   def stop_using_mobile_version
     response.set_cookie('use_mobile_version', :value=>'no', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )

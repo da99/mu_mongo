@@ -19,9 +19,6 @@ not_found {
     # Try downcasing URI.
     redirect_to_downcased_path_info
 
-    # Try mobile version.
-    use_mobile_version_if_requested
-
   end
 
   # 

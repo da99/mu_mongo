@@ -22,16 +22,16 @@ class Actions_Main_Mobile
     demand_equal '/', last_request.fullpath
   end
 
-  it 'renders /salud/m/' do
+  it 'redirects /salud/m/ to /salud/' do
     get '/salud/m/'
-    follow_redirect!
-    demand_equal 200, last_response.status
+    demand_equal 302, last_response.status
+    demand_equal '/salud/', last_response.headers['Location']
   end
 
-  it 'renders /help/m/' do
+  it 'redirects /help/m/ to /help/' do
     get '/help/m/' 
-    follow_redirect!
-    demand_equal 200, last_response.status
+    demand_equal 302, last_response.status
+    demand_equal '/help/', last_response.headers['Location']
   end
 
   it 'redirects the following to /salud/m/: /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/' do

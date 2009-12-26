@@ -7,6 +7,7 @@ begin
   require 'middleware/Always_Find_Favicon'
   require 'middleware/Slashify_Path_Ending'
   require 'middleware/Serve_Public_Folder'
+  require 'middleware/Redirect_Mobile'
 
   require 'megauni'
   require 'mustache'
@@ -26,12 +27,15 @@ begin
 
 
 	# === Protective
+	use Rack::ContentLength
   use Allow_Only_Roman_Uri
 	use Squeeze_Uri_Dots
   use Slashify_Path_Ending
+  use Redirect_Mobile
 	
+
 	# === Modifiers
-	use Rack::ContentLength
+
 
 	# === Content Generators
   use Always_Find_Favicon
