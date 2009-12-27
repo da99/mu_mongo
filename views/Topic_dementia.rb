@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_dementia.rb
-# SASS  ~/megauni/templates/english/sass/Topic_dementia.sass
+# MAB   ~/megauni/templates/English/mab/Topic_dementia.rb
+# SASS  ~/megauni/templates/English/sass/Topic_dementia.sass
 # NAME  Topic_dementia
 
 class Topic_dementia < Bunny_Mustache

@@ -1,4 +1,4 @@
-# /home/da01/megauni/templates/english/mab/Inspect_Cage_list.rb
+# /home/da01/megauni/templates/English/mab/Inspect_Cage_list.rb
 
 class Inspect_Cage_list < Bunny_Mustache
 

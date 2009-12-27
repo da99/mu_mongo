@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_cancer.rb
-# SASS  ~/megauni/templates/english/sass/Topic_cancer.sass
+# MAB   ~/megauni/templates/English/mab/Topic_cancer.rb
+# SASS  ~/megauni/templates/English/sass/Topic_cancer.sass
 # NAME  Topic_cancer
 
 class Topic_cancer < Bunny_Mustache

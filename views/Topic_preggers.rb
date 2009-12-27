@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_preggers.rb
-# SASS  ~/megauni/templates/english/sass/Topic_preggers.sass
+# MAB   ~/megauni/templates/English/mab/Topic_preggers.rb
+# SASS  ~/megauni/templates/English/sass/Topic_preggers.sass
 # NAME  Topic_preggers
 
 class Topic_preggers < Bunny_Mustache

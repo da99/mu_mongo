@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_depression.rb
-# SASS  ~/megauni/templates/english/sass/Topic_depression.sass
+# MAB   ~/megauni/templates/English/mab/Topic_depression.rb
+# SASS  ~/megauni/templates/English/sass/Topic_depression.sass
 # NAME  Topic_depression
 
 class Topic_depression < Bunny_Mustache

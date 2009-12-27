@@ -1,4 +1,4 @@
-module CouchPlastic
+module Couch_Plastic
   
   # =========================================================
   #       Special class for use throughout app.
@@ -24,4 +24,4 @@ module CouchPlastic
 
   end # === class Helper
 
-end # ==== module CouchPlastic
+end # ==== module Couch_Plastic

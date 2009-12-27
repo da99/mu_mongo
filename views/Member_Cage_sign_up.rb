@@ -1,5 +1,5 @@
-# ~/megauni/templates/english/mab/Member_Cage_sign_up.rb
-# ~/megauni/templates/english/sass/Member_Cage_sign_up.sass
+# ~/megauni/templates/English/mab/Member_Cage_sign_up.rb
+# ~/megauni/templates/English/sass/Member_Cage_sign_up.sass
 # Member_Cage_sign_up
 
 class Member_Cage_sign_up < Bunny_Mustache

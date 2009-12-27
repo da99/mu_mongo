@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_flu.rb
-# SASS  ~/megauni/templates/english/sass/Topic_flu.sass
+# MAB   ~/megauni/templates/English/mab/Topic_flu.rb
+# SASS  ~/megauni/templates/English/sass/Topic_flu.sass
 # NAME  Topic_flu
 
 class Topic_flu < Bunny_Mustache

@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_meno_osteo.rb
-# SASS  ~/megauni/templates/english/sass/Topic_meno_osteo.sass
+# MAB   ~/megauni/templates/English/mab/Topic_meno_osteo.rb
+# SASS  ~/megauni/templates/English/sass/Topic_meno_osteo.sass
 # NAME  Topic_meno_osteo
 
 class Topic_meno_osteo < Bunny_Mustache

@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_arthritis.rb
-# SASS  ~/megauni/templates/english/sass/Topic_arthritis.sass
+# MAB   ~/megauni/templates/English/mab/Topic_arthritis.rb
+# SASS  ~/megauni/templates/English/sass/Topic_arthritis.sass
 # NAME  Topic_arthritis
 
 class Topic_arthritis < Bunny_Mustache

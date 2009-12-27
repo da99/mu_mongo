@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_heart.rb
-# SASS  ~/megauni/templates/english/sass/Topic_heart.sass
+# MAB   ~/megauni/templates/English/mab/Topic_heart.rb
+# SASS  ~/megauni/templates/English/sass/Topic_heart.sass
 # NAME  Topic_heart
 
 class Topic_heart < Bunny_Mustache

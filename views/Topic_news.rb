@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_news.rb
-# SASS  ~/megauni/templates/english/sass/Topic_news.sass
+# MAB   ~/megauni/templates/English/mab/Topic_news.rb
+# SASS  ~/megauni/templates/English/sass/Topic_news.sass
 # NAME  Topic_news
 
 class Topic_news < Bunny_Mustache

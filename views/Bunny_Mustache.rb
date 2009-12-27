@@ -43,11 +43,12 @@ class Bunny_Mustache < Mustache
 	end
 
 	def mobile_request?
-		false
+		@app.request.cookies['use_mobile_version'] && 
+			@app.request.cookies['use_mobile_version'] != 'no'
 	end
 
 	def css_file
-		"/stylesheets/english/#{@app.controller_name}_#{@app.action_name}.css"
+		"/stylesheets/English/#{@app.controller_name}_#{@app.action_name}.css"
 	end
 
 	def head_content

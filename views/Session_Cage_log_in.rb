@@ -1,5 +1,5 @@
-# ~/megauni/templates/english/mab/Session_Cage_log_in.rb
-# ~/megauni/templates/english/sass/Session_Cage_log_in.sass
+# ~/megauni/templates/English/mab/Session_Cage_log_in.rb
+# ~/megauni/templates/English/sass/Session_Cage_log_in.sass
 # Session_Cage_log_in
 
 class Session_Cage_log_in < Bunny_Mustache

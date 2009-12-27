@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_computer.rb
-# SASS  ~/megauni/templates/english/sass/Topic_computer.sass
+# MAB   ~/megauni/templates/English/mab/Topic_computer.rb
+# SASS  ~/megauni/templates/English/sass/Topic_computer.sass
 # NAME  Topic_computer
 
 class Topic_computer < Bunny_Mustache

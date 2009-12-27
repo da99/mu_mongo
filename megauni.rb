@@ -45,7 +45,7 @@ require 'rest_client'
       SITE_SUPPORT_EMAIL = "helpme@#{SITE_DOMAIN}"
       VIEWS_DIR          = 'views/skins/jinx' # .expand_path
 			SITE_KEYWORDS      = 'office games'
-			LANGUAGES          = ['english']
+			LANGUAGES          = ['English']
     end
     
   end # === class

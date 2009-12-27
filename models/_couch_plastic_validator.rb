@@ -1,4 +1,4 @@
-module CouchPlastic
+module Couch_Plastic
 
 
   # =========================================================
@@ -54,7 +54,7 @@ module CouchPlastic
   end 
 
 
-end # ==== module CouchPlastic
+end # ==== module Couch_Plastic
 
 __END__
 
@@ -158,7 +158,7 @@ __END__
 
 
   # =========================================================
-  #   Implements the Validator DSL for CouchPlastic models.
+  #   Implements the Validator DSL for Couch_Plastic models.
   # =========================================================
 
   class ValidatorDSL
@@ -325,12 +325,12 @@ __END__
     # === TIME METHODS ====
 
     def to_datetime(time_or_str)
-      @val = CouchPlastic::Helper.time_string(time_or_str)
+      @val = Couch_Plastic::Helper.time_string(time_or_str)
     end
 
     def to_datetime_or_now(nil_or_time_or_str = nil)
       v = nil_or_time_or_str
-      @val = v ? to_datetime(v) : CouchPlastic::Helper.utc_now_as_string
+      @val = v ? to_datetime(v) : Couch_Plastic::Helper.utc_now_as_string
     end
 
     # === ARRAY METHODS ====

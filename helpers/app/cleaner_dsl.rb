@@ -86,12 +86,12 @@ class Cleaner_Dsl
   # === TIME METHODS ====
 
   def to_datetime(time_or_str)
-    set_to CouchPlastic::Helper.time_string(time_or_str)
+    set_to Couch_Plastic::Helper.time_string(time_or_str)
   end
 
   def to_datetime_or_now(nil_or_time_or_str = nil)
     v = nil_or_time_or_str
-    set_to( v ? to_datetime(v) : CouchPlastic::Helper.utc_now_as_string )
+    set_to( v ? to_datetime(v) : Couch_Plastic::Helper.utc_now_as_string )
   end
 
   # === ARRAY METHODS ====

@@ -1,11 +1,12 @@
 
 class News 
 
-  include CouchPlastic
+  include Couch_Plastic
 
   enable_timestamps
 
-  allow_fields :title, 
+  allow_fields :club,
+               :title, 
                :teaser,
                :body,
                :tags,
@@ -52,17 +53,11 @@ class News
     return false if !editor
     editor.has_power_of? :ADMIN
   end
-
+  alias_method :updator?, :creator?
+  alias_method :deletor?, :creator?
+  
   def reader? editor # SHOW
     true
-  end
-
-  def updator? editor # EDIT, UPDATE
-    creator? editor
-  end
-
-  def deletor? editor # DELETE
-    creator? editor
   end
 
 
@@ -80,32 +75,29 @@ class News
   # ==== Validators =====================================================
 
   def title_validator 
-    new_data.title = clean(:title) {
-      strip 
-      must_not_be_empty
-    }
+    must_be { not_empty }
   end # === 
 
   def teaser_validator
-    return nil unless teaser.empty?
-    new_data.teaser = teaser
+    accept_anything
   end # ===
 
   def body_validator
-    new_data.body = clean :body do
-      strip
-      must_not_be_empty
-    end
+    must_be { not_empty }
   end # ===
 
   def published_at_validator
-    new_data.published_at = clean :published_at do
+    sanitize {
       to_datetime_or_now
-    end
+    }
   end
 
   def tags_validator
-    new_data.tags = clean_data[:tags] = raw_data[:tags].to_s.split.map(&:strip).reject(&:empty?)
+    sanitize {
+      split("\n").
+      map(&:strip).
+      reject(&:empty?)
+    }
   end
 
 end # === end News

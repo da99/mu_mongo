@@ -6,7 +6,7 @@ class Views
 		
 		it 'Creates a template with corresponding view file.'
 		
-		steps([:name, nil], [:lang, 'english']) do |name, lang|
+		steps([:name, nil], [:lang, 'English']) do |name, lang|
 			
 			demand_regex_match( /\A[a-zA-Z\-\_0-9]+\Z/, name)
       wdir = '~/' + File.basename(Dir.getwd)

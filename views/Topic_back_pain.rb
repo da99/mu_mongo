@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_back_pain.rb
-# SASS  ~/megauni/templates/english/sass/Topic_back_pain.sass
+# MAB   ~/megauni/templates/English/mab/Topic_back_pain.rb
+# SASS  ~/megauni/templates/English/sass/Topic_back_pain.sass
 # NAME  Topic_back_pain
 
 class Topic_back_pain < Bunny_Mustache

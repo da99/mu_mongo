@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_hair.rb
-# SASS  ~/megauni/templates/english/sass/Topic_hair.sass
+# MAB   ~/megauni/templates/English/mab/Topic_hair.rb
+# SASS  ~/megauni/templates/English/sass/Topic_hair.sass
 # NAME  Topic_hair
 
 class Topic_hair < Bunny_Mustache

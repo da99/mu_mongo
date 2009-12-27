@@ -1,4 +1,4 @@
-# /home/da01/megauni/templates/english/mab/Account_list.rb
+# /home/da01/megauni/templates/English/mab/Account_list.rb
 class Account_list < Bunny_Mustache
 
   def title 

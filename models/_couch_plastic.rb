@@ -17,7 +17,7 @@
 
 require_these 'models', [ :_couch_plastic_validator, :_couch_plastic_helper ]
 
-module CouchPlastic
+module Couch_Plastic
   
   include Demand_Arguments_Dsl
 
@@ -26,7 +26,7 @@ module CouchPlastic
   # ========================================================= 
 
   def self.included(target)
-    target.extend ClassMethods
+    target.extend Couch_Plastic_Class_Methods
   end
 
   # =========================================================
@@ -50,7 +50,7 @@ module CouchPlastic
       if doc.is_a?(String)
         return super(doc)
       end
-      title = self.class.to_s.gsub('CouchPlastic::Unauthorized', '')
+      title = self.class.to_s.gsub('Couch_Plastic::Unauthorized', '')
       msg = "#{doc.inspect}, #{title}: #{mem.inspect}"
       super(msg)
     end
@@ -123,12 +123,29 @@ module CouchPlastic
     }
     original_data
   end
-
   
   def new_data
     @new_data ||= begin
       dp = Data_Pouch.new(*(self.class.fields))
       dp
+    end
+  end
+
+  def value_is_clean field_name
+    raise "implement"
+  end
+
+  def set_cleanest_value field_name, val
+    raise "implement"
+  end
+
+  def cleanest_value field_name
+    if new_data.as_hash.has_key?(field_name) 
+      new_data.send( field_name )
+    elsif clean_data.has_key?(field_name)
+      clean_data[field_name]
+    else
+      raw_data[field_name]
     end
   end
 
@@ -141,14 +158,18 @@ module CouchPlastic
     }
   end
 
-  def demand(*args)
-    args.each { |raw_fld|
-      fld = raw_fld.to_sym
-      begin
-        send("#{fld}_validator")
-      rescue Invalid
-      end
-    }
+  def demand(*args, &blok)
+    if block_given?
+      raise "not implemented"
+    else
+      args.each { |raw_fld|
+        fld = raw_fld.to_sym
+        begin
+          send("#{fld}_validator")
+        rescue Invalid
+        end
+      }
+    end
   end
       
   def raw_data 
@@ -181,12 +202,12 @@ module CouchPlastic
   end
 
   def created_at
-    return nil unless self.class.timestamps_enabled?
+    return nil unless self.class.allow_fields.include?(:created_at)
     original_data.created_at.to_time
   end
 
   def updated_at
-    return nil unless self.class.timestamps_enabled?
+    return nil unless self.class.allow_fields.include?(:updated_at)
 		return nil if original_data.updated_at.nil?
     original_data.updated_at.to_time
   end
@@ -281,143 +302,278 @@ module CouchPlastic
   end
 
   # =========================================================
-  #                  Module: ClassMethods
+  #                  Validator Helpers
   # ========================================================= 
   
-  module ClassMethods # =====================================
+  def validator_field_name
+     caller[2] =~ /`([^']*)'/ && $1.to_sym
+  end
 
-    include Demand_Arguments_Dsl
+  def accept_anything
+    field = validator_field_name
+    set_cleanest_value(
+      field,
+      raw_data[field]
+    )
+  end
 
-    # ===== DSL-icious ======================================
+  def sanitize &blok
+    field = validator_field_name
+    val   = raw_data[field]
+    val.extend Couch_Plastic_Sanitizer_Methods
+    set_cleanest_value(
+      field, 
+      raw_data[field].instance_eval(&blok)
+    )
+  end
 
-    def fields 
-      @fields ||= [:_id, :data_model, :_rev]
+  def must_be &blok
+    begin
+      new_validator = Couch_Plastic_Validator.new(self, validator_field_name )
+      new_validator.validate blok
+    rescue Couch_Plastic_Validator::Invalid
     end
+  end
 
-    def formatters
-      @formatters ||= {}
+  def must_be_or_raise! &blok
+    begin
+      new_vald = Couch_Plastic_Validator.new(self, validator_field_name)
+      new_vald.use_runtime_error
+      new_vald.validate blok
+    rescue Couch_Plastic_Validator::Invalid
     end
+  end
 
-    def format_field k, v
-      raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
-      return v unless formatters.has_key?(k)
+end # === module Couch_Plastic ================================================
 
-      case formatters[k]
-        when Symbol
-          v.to_sym
-        when Proc
-          formatters[k].call v
+
+module Couch_Plastic_Sanitizer_Methods
+
+  def with regexp, &blok
+    gsub regexp, &blok
+  end
+
+end # === 
+
+class Couch_Plastic_Validator
+
+  Invalid = Class.new(StandardError)
+
+  attr_reader :doc, :field_name, :english_field_name
+
+  def initialize new_doc, new_field_name, &blok
+    @doc                = new_doc
+    @field_name         = new_field_name.to_sym
+    @english_field_name = @field_name.to_s.capitlize.gsub('_', ' ')
+  end
+
+  def use_runtime_error 
+    @raise_on_error = true
+  end
+
+  def use_runtime_error?
+    !!@raise_on_error
+  end
+
+  def record_error new_msg
+    msg = (new_msg % english_field_name)
+    raise msg if use_runtime_error?
+    doc.errors << msg
+    raise Invalid, "Error found on #{field_name}"
+  end
+
+  def clean_val
+    doc.cleanest_value field_name
+  end
+
+  def validate blok
+    instance_eval &blok
+    if doc.errors.empty?
+      doc.value_is_clean( field_name )
+    end
+  end
+
+  # ======== Methods for validation.
+
+  # def error_msg new_msg = nil
+  #   return @error_msg unless new_msg
+  #   @error_msg = new_msg
+  # end
+
+  def not_empty
+    if clean_val.nil? || clean_val.strip.empty?
+      record_error '% is required.'
+    end
+  end
+
+  def equal val, err_msg = nil
+    if clean_val != val
+      record_error( err_msg || "% must be equal to #{val.inspect}" )
+    end
+  end
+
+  def in_array arr, err_msg = nil
+    unless arr.include?(clean_val)
+      default_err = "% is invalid. Must be either: #{arr.map(&:inspect).join(', ')}"
+      record_error( err_msg || default_err )
+    end
+  end
+
+  def match regexp, err_msg = nil
+    if clean_val !~ regexp
+      record_error( err_msg || '% is invalid.')
+    end
+  end
+
+  def min_size raw_int, err_msg = nil
+    if !clean_val.respond_to?(:size) ||
+       clean_val.size != raw_int.to_i
+      
+      record_error( err_msg || "% must be at least #{raw_int} characters long." )
+      
+    end
+  end
+
+  def not_in_array arr, err_msg = nil
+    if arr.include?(clean_val)
+      record_error( err_msg || '% is already taken.' )
+    end
+  end
+
+  def string err_msg = nil
+    if not clean_val.is_a?(String)
+      record_error( err_msg || '% is invalid.' )
+    end
+  end
+
+end # === Couch_Plastic_Validator
+
+
+
+# =========================================================
+# === Module: Class Methods for Couch_Plastic 
+# ========================================================= 
+
+module Couch_Plastic_Class_Methods 
+
+  include Demand_Arguments_Dsl
+
+  # ===== DSL-icious ======
+
+  def fields 
+    @fields ||= [:_id, :data_model, :_rev]
+  end
+
+  def formatters
+    @formatters ||= {}
+  end
+
+  def format_field k, v
+    raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
+    return v unless formatters.has_key?(k)
+
+    case formatters[k]
+      when Symbol
+        v.to_sym
+      when Proc
+        formatters[k].call v
+    end
+  end
+
+  def allow_fields *args
+    args.each { |fld|
+      case fld
+        when Array
+
+          case fld.last
+            when Symbol, Proc
+            else
+              raise "Unknown formatter class: #{fld.last.inspect}"
+          end
+          
+          fld_sym = fld.first.to_sym
+          fields << fld_sym
+          formatters[fld_sym] = fld.last
+          
+        else
+          fields << fld.to_sym
       end
+    }
+    @fields.uniq!
+    @fields
+  end
+
+  def enable_timestamps
+    allow_fields :created_at, :updated_at
+  end
+
+  def timestamps_enabled?
+    allow_fields.include?(:created_at) &&
+      allow_fields.include?(:updated_at)
+  end
+
+
+  # ===== CRUD Methods ====================================
+
+  def by_id( id ) # READ
+    Couch_Doc.GET_by_id id
+  end
+
+  def read mem, id # READ
+    d = Couch_Doc.GET_by_id(id)
+    if !d.reader?(mem)
+      raise UnauthorizedReader.new(d,mem)
     end
+    d
+  end
 
-    def allow_fields *args
-      args.each { |fld|
-        case fld
-          when Array
-
-            case fld.last
-              when Symbol, Proc
-              else
-                raise "Unknown formatter class: #{fld.last.inspect}"
-            end
-            
-            fld_sym = fld.first.to_sym
-            fields << fld_sym
-            formatters[fld_sym] = fld.last
-            
-          else
-            fields << fld.to_sym
-        end
-      }
-      @fields.uniq!
-      @fields
+  def edit mem, id # EDIT
+    d = Couch_Doc.GET_by_id(id)
+    if !d.updator?(mem)
+      raise UnauthorizedEditor.new(d,mem)
     end
+    d
+  end
 
-    def enable_timestamps
-      allow_fields :created_at, :updated_at
+  def create editor, new_raw_data # CREATE
+    d = new
+    if !d.creator?(editor)
+      raise UnauthorizedCreator.new(d,editor)
     end
+    d.set_manipulator editor
+    d.set_raw_data  new_raw_data
+    d.save_create 
+    d
+  end
 
-    def timestamps_enabled?
-      allow_fields.include?(:created_at) &&
-        allow_fields.include?(:updated_at)
+  def update editor, new_raw_data # UPDATE
+    d = Couch_Doc.GET_by_id(new_raw_data[:id])
+    if !d.updator?(editor)
+      raise UnauthorizedUpdator.new(d,editor)
     end
+    d.set_manipulator editor
+    d.set_raw_data new_raw_data
+    d.save_update 
+    d
+  end
 
-
-    # ===== CRUD Methods ====================================
-
-    def by_id( id ) # READ
-      Couch_Doc.GET_by_id id
+  def delete! editor, new_raw_data # DELETE
+    d = Couch_Doc.GET_by_id(new_raw_data[:id])
+    if !d.deletor?(editor)
+      raise UnauthorizedDeletor.new(d, editor)
     end
-
-    def read mem, id # READ
-      d = Couch_Doc.GET_by_id(id)
-      if !d.reader?(mem)
-        raise UnauthorizedReader.new(d,mem)
-      end
-      d
-    end
-
-    def edit mem, id # EDIT
-      d = Couch_Doc.GET_by_id(id)
-      if !d.updator?(mem)
-        raise UnauthorizedEditor.new(d,mem)
-      end
-      d
-    end
-
-    def create editor, new_raw_data # CREATE
-      d = new
-      if !d.creator?(editor)
-        raise UnauthorizedCreator.new(d,editor)
-      end
-      d.set_manipulator editor
-      d.set_raw_data  new_raw_data
-      d.save_create 
-      d
-    end
-
-    def update editor, new_raw_data # UPDATE
-      d = Couch_Doc.GET_by_id(new_raw_data[:id])
-      if !d.updator?(editor)
-        raise UnauthorizedUpdator.new(d,editor)
-      end
-      d.set_manipulator editor
-      d.set_raw_data new_raw_data
-      d.save_update 
-      d
-    end
-
-    def delete! editor, new_raw_data # DELETE
-      d = Couch_Doc.GET_by_id(new_raw_data[:id])
-      if !d.deletor?(editor)
-        raise UnauthorizedDeletor.new(d, editor)
-      end
-      d.delete!
-      d
-    end
+    d.delete!
+    d
+  end
 
 
-  end # === module ClassMethods ==============================================
+end # === module ClassMethods ==============================================
 
-
-end # === module CouchPlastic ================================================
 
 
 
 
 __END__
-
-    # def enable *opts
-    #   valid_opts = [:created_at, :updated_at]
-    #   invalid_opts = opts - valid_opts
-    #   if !invalid_opts.empty?
-    #     raise ArgumentError, "Invalid Options: #{invalid_opts.join( ', ' )}" 
-    #   end
-    #   @use_options ||= []
-    #   @use_options = @use_options + opts
-    #   @use_options
-    # end
-
 
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )

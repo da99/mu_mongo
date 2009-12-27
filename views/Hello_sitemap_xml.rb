@@ -1,5 +1,5 @@
-# mab   ~/megauni/templates/english/xml/Hello_sitemap_xml.rb
-# SASS  ~/megauni/templates/english/sass/Hello_sitemap_xml.sass
+# mab   ~/megauni/templates/English/xml/Hello_sitemap_xml.rb
+# SASS  ~/megauni/templates/English/sass/Hello_sitemap_xml.sass
 # NAME  Hello_sitemap_xml
 
 class Hello_sitemap_xml < Bunny_Mustache

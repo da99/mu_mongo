@@ -203,10 +203,10 @@ module The_Bunny
   def render_html_template 
     file_name        = "#{controller_name}_#{action_name}".to_sym
     template_content = begin
-												 File.read(File.expand_path('templates/english/mustache/' + file_name.to_s + '.html'))
+												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
 											 rescue Errno::ENOENT
 												 begin
-													 Mab_In_Disguise.mab_to_mustache( 'english', file_name )
+													 Mab_In_Disguise.mab_to_mustache( 'English', file_name )
 												 rescue Errno::ENOENT
 													 nil
 												 end
@@ -227,10 +227,10 @@ module The_Bunny
 	def render_xml_template
     file_name        = "#{controller_name}_#{action_name}".to_sym
     template_content = begin
-												 File.read(File.expand_path('templates/english/mustache/' + file_name.to_s + '.html'))
+												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
 											 rescue Errno::ENOENT
 												 begin
-													 Xml_In_Disguise.xml_to_mustache( 'english', file_name )
+													 Xml_In_Disguise.xml_to_mustache( 'English', file_name )
 												 rescue Errno::ENOENT
 													 nil
 												 end

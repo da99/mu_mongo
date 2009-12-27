@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_housing.rb
-# SASS  ~/megauni/templates/english/sass/Topic_housing.sass
+# MAB   ~/megauni/templates/English/mab/Topic_housing.rb
+# SASS  ~/megauni/templates/English/sass/Topic_housing.sass
 # NAME  Topic_housing
 
 class Topic_housing < Bunny_Mustache

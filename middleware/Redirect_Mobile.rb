@@ -15,22 +15,30 @@ class Redirect_Mobile
   def call env
     do_salud    = @salud_urls.detect { |url| env['PATH_INFO'].index(url) === 0 }
     do_redirect = env['PATH_INFO'].index( @url )
-    if not (do_redirect || do_salud)
+    do_stop_mobile = env['PATH_INFO'] == '/stop_mobile_version/'
+    if not (do_redirect || do_salud || do_stop_mobile)
       return(@app.call(env))
     end
 
     response = Rack::Response.new
-    response.set_cookie("use_mobile_version", {
-      :value   => 'yes',
-      :path    => '/',
-      :expires => (Time.now + (60 * 60 * 24 * 365 * 10)),
-    }) 
+
+    if do_redirect || do_salud
+      response.set_cookie("use_mobile_version", {
+        :value   => 'yes',
+        :path    => '/',
+        :expires => (Time.now + (60 * 60 * 24 * 365 * 10)),
+      }) 
+    end
     
     if do_salud
       response.redirect '/salud/m/'
-    else
+    elsif do_redirect
       response.redirect env['PATH_INFO'].sub( @url, '/' )
+    else
+      response.set_cookie('use_mobile_version', :value=>'no', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
+      response.redirect '/'
     end
+    
     response.finish
   end
 

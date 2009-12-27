@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_hiv.rb
-# SASS  ~/megauni/templates/english/sass/Topic_hiv.sass
+# MAB   ~/megauni/templates/English/mab/Topic_hiv.rb
+# SASS  ~/megauni/templates/English/sass/Topic_hiv.sass
 # NAME  Topic_hiv
 
 class Topic_hiv < Bunny_Mustache

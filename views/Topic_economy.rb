@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_economy.rb
-# SASS  ~/megauni/templates/english/sass/Topic_economy.sass
+# MAB   ~/megauni/templates/English/mab/Topic_economy.rb
+# SASS  ~/megauni/templates/English/sass/Topic_economy.sass
 # NAME  Topic_economy
 
 class Topic_economy < Bunny_Mustache

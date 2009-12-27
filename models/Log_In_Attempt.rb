@@ -1,5 +1,5 @@
 class LogInAttempt
-  include CouchPlastic
+  include Couch_Plastic
 
   MAX = 4
   class TooManyFailedAttempts < StandardError; end

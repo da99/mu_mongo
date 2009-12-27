@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Hello_help.rb
-# SASS  ~/megauni/templates/english/sass/Hello_help.sass
+# MAB   ~/megauni/templates/English/mab/Hello_help.rb
+# SASS  ~/megauni/templates/English/sass/Hello_help.sass
 # NAME  Hello_help
 
 class Hello_help < Bunny_Mustache

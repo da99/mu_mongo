@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/english/mab/Topic_child_care.rb
-# SASS  ~/megauni/templates/english/sass/Topic_child_care.sass
+# MAB   ~/megauni/templates/English/mab/Topic_child_care.rb
+# SASS  ~/megauni/templates/English/sass/Topic_child_care.sass
 # NAME  Topic_child_care
 
 class Topic_child_care < Bunny_Mustache

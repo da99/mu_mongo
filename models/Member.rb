@@ -2,7 +2,7 @@ require 'bcrypt'
 
 class Member 
 
-  include CouchPlastic
+  include Couch_Plastic
 
   enable_timestamps
   
@@ -171,10 +171,11 @@ class Member
 
   def password_validator
                 
-    password = clean(:password) {
-      strip
-      must_equal raw_data[:confirm_password], 'Password and password confirmation do not match.'
-      min_size   5
+    sanitize { strip }
+
+    must_be {
+      equal raw_data[:confirm_password], 'Password and password confirmation do not match.'
+      min_size 5
       match( /[0-9]/, 'Password must have at least one number' )
     }
     
@@ -192,8 +193,9 @@ class Member
   end
   
   def security_level_validator 
-    demand_array_includes Security_Levels, raw_data[:security_level]
-    new_data.security_level = raw_data[:security_level]
+    must_be_or_raise! { 
+      in_array Security_Levels 
+    }
   end # === def set_security_level
   
  
@@ -203,14 +205,15 @@ class Member
     email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
     valid_email_format  = /\A#{email_finder}\z/
 
-    new_data.email = clean(:email) {
+    sanitize {
+      with(  /[^a-z0-9\.\-\_\+\@]/i  )
+    }
+
+    must_be {
       
-      error_msg 'Email is invalid.'
-      
-      must_be_string
+      string
       min_size 6
-      clean_with(  /[^a-z0-9\.\-\_\+\@]/i  )
-      match_with original_value
+      equal raw_data[:email], 'Email has invalid characters.'
       
     }
   
@@ -218,15 +221,16 @@ class Member
   
   def add_life_validator 
     
-    add_life = raw_data[:add_life].to_sym
+    sanitize { to_sym }
     
-    demand_array_includes Member::LIVES, add_life
+    must_be_or_raise! {
+      in_array Member::LIVES
+    }
       
     if !new?
-      demand_array_not_include(
-        data.lives.keys, 
-        add_life
-      )
+      must_be_or_raise! {
+        not_in_array doc.data.lives.keys
+      }
     end
 
     new_data.lives = (original_data.lives || {})
@@ -238,25 +242,29 @@ class Member
   
   def add_life_username_validator
 
-    add_life_username = clean(:add_life_username) do 
+    sanitize {
       
       # Delete invalid characters and 
       # reduce any suspicious characters. 
       # '..*' becomes '.', '--' becomes '-'
-      clean_with(/[^a-z0-9]{1,}/i) { |s|
+      with(/[^a-z0-9]{1,}/i) { |s|
         if ['_', '.', '-'].include?( s[0,1] )
           s[0,1]
         else
           ''
         end
       }
+      
+    }
+
+    must_be {
 
       between_size 2, 20,  'Username must be between %d and %d characters.'
       match( /[a-z0-9]/i,  'Username must have at least one letter or number.') 
 
-    end 
+    } 
 
-    new_data.lives[clean_data[:add_life]][:username] = add_life_username
+    new_data.lives[cleanest_value(:add_life)][:username] = cleanest_value(:add_life_username)
     
     if errors.empty?
       begin
