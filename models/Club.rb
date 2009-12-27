@@ -3,12 +3,16 @@ class Club
 
   include Couch_Plastic
 
-  allow_fields :filename, :title, :teaser, :lang, :created_at
+  allow_fields :filename, 
+               :title, 
+               :teaser, 
+               :lang, 
+               :created_at
 
   # ==== Hooks ====
 
   def before_create
-    new_data.lang = 'English'
+    set_cleanest_value :lang, 'English'
     demand :title, :teaser
     ask_for :lang
   end
@@ -29,10 +33,16 @@ class Club
     true
   end
 
+  # ======== Accessors ======== 
+
+  def news raw_params = {}
+    params = {:limit=>10, :descending=>true}.update(raw_params)
+    News.by_club(self.data.filename, params )
+  end
 
   # ======== Validators ========= 
   
-  def filename
+  def filename_validator
     must_be { not_empty }
   end
 

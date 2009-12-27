@@ -15,7 +15,7 @@
 # }
 #
 
-require_these 'models', [ :_couch_plastic_validator, :_couch_plastic_helper ]
+require_these 'models', [ :Couch_Plastic_Validator, :Couch_Plastic_Helper ]
 
 module Couch_Plastic
   

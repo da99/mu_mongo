@@ -92,9 +92,10 @@ require 'rest_client'
   # Require Models.
   # ===============================================
   require_these 'models', %w{
-    _couch_plastic
     Couch_Doc
     Design_Doc
+    Couch_Plastic
+    Club
     News
   }     # resty
     # Member
