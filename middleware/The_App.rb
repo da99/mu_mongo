@@ -1,8 +1,6 @@
 require 'rack'
 require 'rack/utils'
-require 'views/Bunny_Mustache'
 require 'controls/Control_Base'
-
 
 
 class The_App
@@ -42,13 +40,10 @@ class The_App
   # 
   def self.call(new_env)
 
-    the_app = new_env['the_bunny'][:controller].new(new_env)
+    control, action_method, args = new_env['the.app.meta'].values_at(:controller, :action_method, :args)
     
-    the_app.send( 
-      new_env['the_bunny'][:action_method], 
-      *new_env['the_bunny'][:args] 
-    )
-    
+    the_app = new_env['the.app'] = control.new(new_env)
+    the_app.send( action_method, *args )
     the_app.response.finish
     
   end

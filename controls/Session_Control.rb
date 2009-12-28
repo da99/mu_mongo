@@ -1,4 +1,4 @@
-class Session_Cage
+class Session_Control
   include Control_Base
 
   def GET_log_in 
@@ -36,6 +36,6 @@ class Session_Cage
        
   end # === post_it_for
 
-end # === Session_Cage
+end # === Session_Control
 
 

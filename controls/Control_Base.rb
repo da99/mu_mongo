@@ -1,3 +1,4 @@
+require 'views/Bunny_Mustache'
 
 module Control_Base
 
@@ -12,7 +13,6 @@ module Control_Base
     @env      = new_env
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
-    @env['bunny.app'] = self
   end
 
   def controller
@@ -24,7 +24,7 @@ module Control_Base
   end
 
   def action_name
-    @action_name ||= env['the_bunny'][:action_name]
+    @action_name ||= env['the.app.meta'][:action_name]
   end
   
   def clean_params 
@@ -100,6 +100,7 @@ module Control_Base
                            else
                             ext.capitalize
                            end
+                           require( "middleware/#{disguise}_In_Disguise"  )
                            eval( %~ #{disguise}_In_Disguise.mab_to_mustache( lang, file_name ) ~ )
 												 rescue Errno::ENOENT
 													 nil

@@ -11,13 +11,18 @@ class Catch_Bad_Bunny
         begin
           @app.call the_env
         rescue The_App::Redirect
-          the_env['bunny.app'].response.finish
+          the_env['the.app'].response.finish
         end
       rescue The_App::HTTP_404
-        the_env['bad.bunny'] = $!
-        response             = the_env['bunny.app'].response
+        the_env['the.app.error'] = $!
+        response             = the_env['the.app'].response
         response.status      = 404
-        response.body        = (the_env['bunny.404'] || "<h1>Not Found</h1><p>#{the_env['PATH_INFO']}</p>" )
+        response.body        = begin
+                                 the_env['the.app.404'] || File.read('public/404.html')
+                               rescue Object
+                                 "<h1>Not Found</h1>
+                                 <p>Check spelling: #{the_env['PATH_INFO']}</p>"
+                               end
         response.finish
       end
     rescue Object => e
@@ -26,7 +31,7 @@ class Catch_Bad_Bunny
         raise $!
       end
       
-      the_env['bad.bunny'] = $!
+      the_env['the.app.error'] = $!
       response             = Rack::Response.new
       response.status      = 500
       response.body        = begin

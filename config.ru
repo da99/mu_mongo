@@ -16,12 +16,8 @@ begin
 	}
 
   require 'megauni'
-  require 'mustache'
-
-  if The_App.non_production?
-    require( 'middleware/Xml_In_Disguise'  )
-    require( 'middleware/Mab_In_Disguise'  )
-  end
+  
+  Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
   
   my_app_root     = File.expand_path( File.dirname(__FILE__) )
   down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
@@ -59,24 +55,6 @@ begin
   use Strip_If_Head_Request
 
 
-
-  # Lil_Config = Struct.new(
-  #   :SITE_DOMAIN, 
-  #   :SITE_TITLE,
-  #   :SITE_TAG_LINE
-  #   :SITE_HELP_EMAIL, 
-  #   :SITE_URL, 
-  #   :SITE_SUPPORT_EMAIL,
-  #   :VIEWS_DIR,
-  #   :CouchDB_URI,
-  #   :DB_NAME,  
-  #   :DB_CONN,
-  #   :DESIGN_DOC_ID
-  # ).new
-
-
-
-  
   # ===============================================
   # Helpers for Requests
   # ===============================================
@@ -118,7 +96,6 @@ begin
   #   try_textile
   # }
     
-  # Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
     
   # Finally, start the app.
   run The_App

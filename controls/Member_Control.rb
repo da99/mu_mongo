@@ -1,4 +1,4 @@
-class Member_Cage
+class Member_Control
   include Control_Base
     
   # ============= Member Actions ==========================          
@@ -47,5 +47,5 @@ class Member_Cage
     end
   end # === put :update
 
-end # === Member_Cage
+end # === Member_Control
 

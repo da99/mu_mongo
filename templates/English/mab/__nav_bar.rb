@@ -36,7 +36,7 @@ div( :id=>"nav_bar" ) {
     #   mustache 'not_logged_in?' do
     #     h4 'Non-Members'
     #     ul.non_members {
-    #       nav_bar_li :Member_Cage, 'sign-up', 'Create Account'
+    #       nav_bar_li :Member_Control, 'sign-up', 'Create Account'
     #     }
     #   end
 
@@ -44,11 +44,11 @@ div( :id=>"nav_bar" ) {
     #   ul.members {
     #     mustache 'logged_in?' do
     #       nav_bar_li :Member, 'account'
-    #       nav_bar_li :Session_Cage, 'log-out'
+    #       nav_bar_li :Session_Control, 'log-out'
     #     end
 
     #     mustache 'not_logged_in?' do
-    #       nav_bar_li :Session_Cage, 'log-in'
+    #       nav_bar_li :Session_Control, 'log-in'
     #     end
     #   }
 

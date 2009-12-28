@@ -75,18 +75,18 @@ require 'rest_client'
   
   %w{
     Hello
-    Session_Cage
-    Member_Cage   
+    Session_Control
+    Member_Control   
     Topic
-    Club_Cage
+    Club_Control
   }.each { |control|
 		require "controls/#{control}"
 		The_App.controls << Object.const_get(control)
 	}
 
   if The_App.development?
-    require "controls/Inspect_Cage"
-    The_App.controls << Inspect_Cage
+    require "controls/Inspect_Control"
+    The_App.controls << Inspect_Control
   end
  
   # ===============================================

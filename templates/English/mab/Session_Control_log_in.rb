@@ -1,6 +1,6 @@
-# ~/megauni/views/Session_Cage_log_in.rb
-# ~/megauni/templates/English/sass/Session_Cage_log_in.sass
-# Session_Cage_log_in
+# ~/megauni/views/Session_Control_log_in.rb
+# ~/megauni/templates/English/sass/Session_Control_log_in.sass
+# Session_Control_log_in
 
 
 div.content! { 

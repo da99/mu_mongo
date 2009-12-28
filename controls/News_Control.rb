@@ -8,7 +8,7 @@ class News_Mustache < Bunny_Mustache
 end # === News_Mustache
 
 
-class News_Cage
+class News_Control
   include Control_Base
 
 	def POST # CREATE 
@@ -151,11 +151,11 @@ class News_Cage
   private # ======== 
 
   def namespace_env key, val
-    env["News_Cage.#{key}"] = val
+    env["News_Control.#{key}"] = val
   end
 
   
   
-end # === News_Cage
+end # === News_Control
 
 

@@ -1,4 +1,4 @@
-class Inspect_Cage
+class Inspect_Control
   include Control_Base
 
   def GET_list 
