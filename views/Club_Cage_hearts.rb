@@ -9,11 +9,7 @@ class Club_Cage_hearts < Bunny_Mustache
   end
 
   def club
-    @vars[:club]
+    @app.env['bunny.club']
   end
 
-  def css_file
-    "/stylesheets/English/Club_Cage_#{club.data.filename}.css"
-  end
-	
 end # === Club_Cage_hearts 

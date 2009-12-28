@@ -10,6 +10,7 @@ begin
 		Serve_Public_Folder
 		Redirect_Mobile
 		Catch_Bad_Bunny
+    Strip_If_Head_Request
 	}.each { |middle|
 		require "middleware/#{middle}"
 	}
@@ -55,7 +56,7 @@ begin
 	# === Helpers
   use Rack::Session::Pool
 	use Find_The_Bunny
-
+  use Strip_If_Head_Request
 
 
 

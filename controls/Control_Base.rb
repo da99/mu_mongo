@@ -10,12 +10,23 @@ module Control_Base
   def initialize(new_env)
     @app      = self
     @env      = new_env
-    @env      = new_env
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
     @env['bunny.app'] = self
   end
 
+  def controller
+    self
+  end
+
+  def controller_name
+    @controller_name ||= self.to_s.sub('_Bunny', '').to_sym
+  end
+
+  def action_name
+    @action_name ||= env['the_bunny'][:action_name]
+  end
+  
   def clean_params 
     @clean_params ||= begin
                         data = {}
@@ -29,13 +40,8 @@ module Control_Base
                       end
   end
 
-  def controller= class_obj
-    @controller = class_obj
-    @controller_name = class_obj.to_s.sub('_Bunny', '').to_sym
-  end 
-
-  def action_name= new_name
-    @action_name = new_name.to_s.strip.to_sym
+  def lang
+    'English'
   end
   
   def environment 
@@ -83,14 +89,18 @@ module Control_Base
     set_header 'Pragma',           'no-cache'
   end
 
-
-  def render_html_template vals = {}
-    file_name        = "#{controller_name}_#{action_name}"
+  def process_mustache ext = 'html'
+    file_name = "#{controller_name}_#{action_name}"
     template_content = begin
-												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
+												 File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
 											 rescue Errno::ENOENT
 												 begin
-													 Mab_In_Disguise.mab_to_mustache( 'English', file_name )
+													 disguise = if ext == 'html'
+                             'Mab'
+                           else
+                            ext.capitalize
+                           end
+                           eval( %~ #{disguise}_In_Disguise.mab_to_mustache( lang, file_name ) ~ )
 												 rescue Errno::ENOENT
 													 nil
 												 end
@@ -103,33 +113,19 @@ module Control_Base
     require "views/#{file_name}.rb"
     view_class = Object.const_get(file_name)
     view_class.raise_on_context_miss = true
-    html       = view_class.new(self, vals).render( template_content )
-    
-    render_text_html(html)
+    html       = view_class.new(self).render( template_content )
+  end
+
+  def render_html_template
+    render_text_html(
+      process_mustache
+    )
   end
 
 	def render_xml_template
-    file_name        = "#{controller_name}_#{action_name}".to_sym
-    template_content = begin
-												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
-											 rescue Errno::ENOENT
-												 begin
-													 Xml_In_Disguise.xml_to_mustache( 'English', file_name )
-												 rescue Errno::ENOENT
-													 nil
-												 end
-											 end
-    
-    if not template_content
-      raise "Something went wrong. No template content found for: #{file_name.inspect}"
-    end
-
-    require "views/#{file_name}.rb"
-    view_class = Object.const_get(file_name)
-    view_class.raise_on_context_miss = true
-    xml       = view_class.new(self).render( template_content )
-    
-		render_application_xml xml
+		render_application_xml(
+      process_mustache('xml')
+    )
 	end
    
   def env_key raw_find_key

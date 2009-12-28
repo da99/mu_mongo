@@ -37,40 +37,24 @@ class The_Bunny_Farm
     ENV['RACK_ENV']
   end
 
-  def self.bunnies
-    @bunnies ||= []
+  def self.controls
+    @controls ||= []
   end
 
+  #
+  # NOTE: 
+  # For Thread safety in Rack, no instance variables should be changed.
+  # 
   def self.call(new_env)
-    
-    #
-    # NOTE: 
-    # For Thread safety in Rack, no instance variables should be changed.
-    # Therefore, use :dup and a different version of :call
-    # 
-      
 
-    the_app             = new_env['the_bunny'][:controller].new(new_env)
-    the_app.controller  = new_env['the_bunny'][:controller]
-    the_app.action_name = new_env['the_bunny'][:action_name]
+    the_app = new_env['the_bunny'][:controller].new(new_env)
     
     the_app.send( 
-      [new_env['REQUEST_METHOD'], the_app.action_name ].map(&:to_s).uniq.join('_'), 
+      new_env['the_bunny'][:action_method], 
       *new_env['the_bunny'][:args] 
     )
     
-    status, header, body = the_app.response.finish
-
-    # From The Sinatra Framework:
-    #   Never produce a body on HEAD requests. Do retain the Content-Length
-    #   unless it's "0", in which case we assume it was calculated erroneously
-    #   for a manual HEAD response and remove it entirely.
-    if new_env['REQUEST_METHOD'] == 'HEAD'
-      body = []
-      header.delete('Content-Length') if header['Content-Length'] == '0'
-    end
-
-    [status, header, body]
+    the_app.response.finish
     
   end
 

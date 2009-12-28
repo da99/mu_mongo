@@ -81,12 +81,12 @@ require 'rest_client'
     Club_Cage
   }.each { |control|
 		require "controls/#{control}"
-		The_Bunny_Farm.bunnies << Object.const_get(control)
+		The_Bunny_Farm.controls << Object.const_get(control)
 	}
 
   if The_Bunny_Farm.development?
     require "controls/Inspect_Cage"
-    The_Bunny_Farm.bunnies << Inspect_Cage
+    The_Bunny_Farm.controls << Inspect_Cage
   end
  
   # ===============================================
