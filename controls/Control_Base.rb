@@ -14,12 +14,12 @@ module Control_Base
     @response = Rack::Response.new
   end
 
-  def controller
+  def control
     self
   end
 
-  def controller_name
-    @controller_name ||= self.class.to_s.sub('_Bunny', '').to_sym
+  def control_name
+    @control_name ||= self.class.to_s.sub('_Bunny', '').to_sym
   end
 
   def action_name
@@ -89,7 +89,7 @@ module Control_Base
   end
 
   def process_mustache ext = 'html'
-    file_name = "#{controller_name}_#{action_name}"
+    file_name = "#{control_name}_#{action_name}"
     template_content = begin
 												 File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
 											 rescue Errno::ENOENT
@@ -203,7 +203,7 @@ module Control_Base
 
     ctrlr, a_name, args = if env_key(:PATH_INFO) === '/'
       
-      [ Bunny_DNA.controllers.first,  
+      [ Bunny_DNA.controls.first,  
         'list',
         []
       ]
@@ -249,9 +249,9 @@ module Control_Base
     end   
     
     if ctrlr && a_name && args
-      self.controller  = ctrlr
+      self.control  = ctrlr
       self.action_name = a_name
-      controller.new.send("#{http_meth}_#{action_name}", self, *args)
+      control.new.send("#{http_meth}_#{action_name}", self, *args)
       return true
     end
       

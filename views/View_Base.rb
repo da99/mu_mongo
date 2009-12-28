@@ -49,7 +49,7 @@ class View_Base < Mustache
 	end
 
 	def css_file
-		"/stylesheets/English/#{@app.controller_name}_#{@app.action_name}.css"
+		"/stylesheets/English/#{@app.control_name}_#{@app.action_name}.css"
 	end
 
 	def head_content

@@ -23,11 +23,7 @@ begin
   down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
   issue_client    = File.join( my_app_root, '/helpers/app/issue_client') 
   
-  # ===============================================
-  # Configurations
-  # ===============================================
-
-
+  
 	# === Protective
 	use Rack::ContentLength
   use Allow_Only_Roman_Uri
@@ -35,9 +31,6 @@ begin
   use Slashify_Path_Ending
   use Redirect_Mobile
 	
-
-	# === Modifiers
-
 
 	# === Content Generators
   use Always_Find_Favicon
@@ -53,88 +46,38 @@ begin
   use Strip_If_Head_Request
   
   # === Low-level Helpers 
-  # === (specifically designed for The_App).
+  # === (specifically designed to run before The_App).
 	use Catch_Bad_Bunny
 	use Find_The_Bunny
 
-
-  # ===============================================
-  # Helpers for Requests
-  # ===============================================
-  # require_these 'helpers/sinatra', %w{
-  #   sanitize_input
-  #   describe_action
-  #   urls_and_ssl
-  #   mobilize
-  #   flasher
-  #   old_apps
-  #   describe_action
-  #   auth_and_auth
-  #   resty
-  #   render_ajax_response
-  #   render_mab
-  #   html_props_for_models
-  #   swiss_clock
-  #   text_to_html
-  #   red_cloth
-  #   crud_dsl
-  #   controller_dsl
-  #   redirect_dsl
-  #   wash
-  # }
-
-
-
-  # ===============================================
-  # Require the actions.
-  # ===============================================
-  # require_these 'actions', %w{
-  #   errors 
-  #   main
-  #   old_app
-  #   member
-  #   session
-  #   news
-  #   resty
-  #   try_textile
-  # }
-    
-    
   # Finally, start the app.
   run The_App
 
 rescue Object => e
   
-  # require issue_client
-  # 
-  # IssueClient.create( 
-  #  {'PATH_INFO' => __FILE__.to_s, 'HTTP_USER_AGENT' => 'Rack', 'REMOTE_ADDR'=>'127.0.0.1' },
-  #  ENV['RACK_ENV'], 
-  #  $!
-  # ) 
 	if ['test', 'development'].include?(ENV['RACK_ENV'])
 		raise e
 	end
+  
   the_app = lambda { |env|
-    suffix = case ENV['RACK_ENV']
-             when 'development'
-               e.class.to_s + ': ' + e.message + "<br />#{e.backtrace.join("<br />")}"
-             else
-               ''
-             end
-    content = case env['REQUEST_METHOD']
-              when 'GET'
-                %~<html><body><h1>Server Error.</h1><p>Try again later.</p>#{suffix}</body></html>~
-              when 'PUT', 'POST', 'DELETE'
-                if @env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
-                  %~<div class="error">Server Error. Try again later.</div>~
-                else
-                  %~<html><body><h1>Server Error.</h1><p>Try again later.</p></body></html>~
-                end
-              when 'HEAD'
+    
+    content = if env['REQUEST_METHOD'] === 'HEAD'
                 ''
+              elsif @env["HTTP_X_REQUESTED_WITH"] === "XMLHttpRequest"
+                %~<div class="error">Server Error. Try again later.</div>~
+              else
+                %~
+                  <html>
+                    <body>
+                      <h1>Server Error.</h1>
+                      <p>Try again later.</p>
+                    </body>
+                  </html>
+                ~
               end
+    
     [500, {'Content-Type' => 'text/html', 'Content-Length'=>content.size.to_s}, content]
+    
   }
   
   run the_app

@@ -40,7 +40,7 @@ class The_App
   # 
   def self.call(new_env)
 
-    control, action_method, args = new_env['the.app.meta'].values_at(:controller, :action_method, :args)
+    control, action_method, args = new_env['the.app.meta'].values_at(:control, :action_method, :args)
     
     the_app = new_env['the.app'] = control.new(new_env)
     begin
