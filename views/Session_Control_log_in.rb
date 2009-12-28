@@ -2,7 +2,7 @@
 # ~/megauni/templates/English/sass/Session_Control_log_in.sass
 # Session_Control_log_in
 
-class Session_Control_log_in < Bunny_Mustache
+class Session_Control_log_in < View_Base
 
   def title 
     'Log In'

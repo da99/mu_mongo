@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_bubblegum.sass
 # NAME  Topic_bubblegum
 
-class Topic_bubblegum < Bunny_Mustache
+class Topic_bubblegum < View_Base
 
   def title 
    

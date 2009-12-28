@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_back_pain.sass
 # NAME  Topic_back_pain
 
-class Topic_back_pain < Bunny_Mustache
+class Topic_back_pain < View_Base
 
   def title
   "Back pain vitamins and supplements." 

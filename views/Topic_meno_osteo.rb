@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_meno_osteo.sass
 # NAME  Topic_meno_osteo
 
-class Topic_meno_osteo < Bunny_Mustache
+class Topic_meno_osteo < View_Base
 
   def title  
   "Prevent Osteoporosis and Menopause symptoms." 

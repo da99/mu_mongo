@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Hello_salud.sass
 # NAME  Hello_salud
 
-class Hello_salud < Bunny_Mustache
+class Hello_salud < View_Base
 
   def title 
     'Lista Para Salud'

@@ -1,4 +1,4 @@
-require 'views/Bunny_Mustache'
+require 'views/View_Base'
 
 module Control_Base
 
@@ -6,7 +6,6 @@ module Control_Base
   
   include Rack::Utils
   attr_accessor :app, :env, :request, :response, :params
-  attr_reader   :controller, :controller_name, :action_name 
   
   def initialize(new_env)
     @app      = self
@@ -101,7 +100,7 @@ module Control_Base
                             ext.capitalize
                            end
                            require( "middleware/#{disguise}_In_Disguise"  )
-                           eval( %~ #{disguise}_In_Disguise.mab_to_mustache( lang, file_name ) ~ )
+                           eval( %~ #{disguise}_In_Disguise.#{disguise.downcase}_to_mustache( lang, file_name ) ~ )
 												 rescue Errno::ENOENT
 													 nil
 												 end

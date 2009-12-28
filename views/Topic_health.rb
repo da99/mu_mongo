@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_health.sass
 # NAME  Topic_health
 
-class Topic_health < Bunny_Mustache
+class Topic_health < View_Base
 
   def title  
   "To Serve Man." 

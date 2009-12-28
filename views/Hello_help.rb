@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Hello_help.sass
 # NAME  Hello_help
 
-class Hello_help < Bunny_Mustache
+class Hello_help < View_Base
 
   def title 
     "To Serve Man."

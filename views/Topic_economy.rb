@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_economy.sass
 # NAME  Topic_economy
 
-class Topic_economy < Bunny_Mustache
+class Topic_economy < View_Base
 
   def title
   "To Serve Man." 

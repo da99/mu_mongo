@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_arthritis.sass
 # NAME  Topic_arthritis
 
-class Topic_arthritis < Bunny_Mustache
+class Topic_arthritis < View_Base
 
   def title 
     "Join-Pain from Arthritis" 

@@ -2,7 +2,7 @@
 # ~/megauni/templates/English/sass/Member_Control_sign_up.sass
 # Member_Control_sign_up
 
-class Member_Control_sign_up < Bunny_Mustache
+class Member_Control_sign_up < View_Base
 
   def title 
     'Sign-up'

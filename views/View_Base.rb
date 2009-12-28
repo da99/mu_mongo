@@ -1,6 +1,6 @@
 require 'mustache'
 
-class Bunny_Mustache < Mustache
+class View_Base < Mustache
 	
   attr_reader :not_prefix
   
@@ -131,4 +131,4 @@ class Bunny_Mustache < Mustache
    date.utc.strftime("%Y-%m-%dT%H:%M:%S+00:00")
   end
 
-end # === Bunny_Mustache
+end # === View_Base

@@ -21,7 +21,7 @@ class Find_The_Bunny
       
       pieces.dup.inject([]) do |a_name_arr, segment|
         
-        a_name_arr << pieces.shift
+        a_name_arr << pieces.shift.gsub(/[^a-zA-Z0-9]+/, '_')
         a_name = a_name_arr.join('_')
         
         if control.public_instance_methods.include?(a_name) &&

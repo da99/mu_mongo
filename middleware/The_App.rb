@@ -43,7 +43,10 @@ class The_App
     control, action_method, args = new_env['the.app.meta'].values_at(:controller, :action_method, :args)
     
     the_app = new_env['the.app'] = control.new(new_env)
-    the_app.send( action_method, *args )
+    begin
+      the_app.send( action_method, *args )
+    rescue The_App::Redirect
+    end
     the_app.response.finish
     
   end

@@ -8,14 +8,10 @@ class Catch_Bad_Bunny
   def call the_env
     begin
       begin
-        begin
-          @app.call the_env
-        rescue The_App::Redirect
-          the_env['the.app'].response.finish
-        end
+        @app.call the_env
       rescue The_App::HTTP_404
         the_env['the.app.error'] = $!
-        response             = the_env['the.app'].response
+        response             = Rack::Response.new
         response.status      = 404
         response.body        = begin
                                  the_env['the.app.404'] || File.read('public/404.html')

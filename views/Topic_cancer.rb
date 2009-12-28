@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_cancer.sass
 # NAME  Topic_cancer
 
-class Topic_cancer < Bunny_Mustache
+class Topic_cancer < View_Base
 
   def title 
     'To Serve Man.'

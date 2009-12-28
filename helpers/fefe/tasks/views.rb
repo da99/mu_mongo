@@ -38,7 +38,7 @@ partial('__nav_bar')
 # SASS  #{sass}
 # NAME  #{name}
 
-class #{name} < Bunny_Mustache
+class #{name} < View_Base
 
   def title 
     '...'

@@ -6,10 +6,6 @@ class Slashify_Path_Ending
   
   def call new_env
 
-    
-    # require 'rubygems'; require 'ruby-debug'; debugger
-    
-    
     ext = File.extname(new_env['PATH_INFO'])
     add_slash = (['HEAD', 'GET'].include?(new_env['REQUEST_METHOD']) && 
        new_env['PATH_INFO'][-1,1] != '/' && 

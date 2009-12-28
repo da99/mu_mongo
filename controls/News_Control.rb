@@ -1,5 +1,5 @@
 
-class News_Mustache < Bunny_Mustache
+class News_Mustache < View_Base 
 
   def news_tags
     @all_news_tags ||= News.tags

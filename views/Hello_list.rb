@@ -1,6 +1,6 @@
 # ~/megauni/templates/English/mab/Hello_list.rb
 
-class Hello_list < Bunny_Mustache
+class Hello_list < View_Base
 
   def title
     'Coming Soon...'

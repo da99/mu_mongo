@@ -33,7 +33,6 @@ begin
   use Allow_Only_Roman_Uri
 	use Squeeze_Uri_Dots
   use Slashify_Path_Ending
-	use Catch_Bad_Bunny
   use Redirect_Mobile
 	
 
@@ -51,8 +50,12 @@ begin
 
 	# === Helpers
   use Rack::Session::Pool
-	use Find_The_Bunny
   use Strip_If_Head_Request
+  
+  # === Low-level Helpers 
+  # === (specifically designed for The_App).
+	use Catch_Bad_Bunny
+	use Find_The_Bunny
 
 
   # ===============================================
