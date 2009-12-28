@@ -3,9 +3,10 @@ require 'mustache'
 class Bunny_Mustache < Mustache
 	
   attr_reader :not_prefix
-	def initialize new_app
+	def initialize new_app, vars
 		@app = new_app
     @not_prefix =  /^not?_/
+    @vars = vars
 	end
 
   def respond_to? raw_meth_name

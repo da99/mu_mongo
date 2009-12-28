@@ -46,12 +46,16 @@ class The_Bunny_Farm
         raise Bad_Bunny::HTTP_404, "Unable to process request: #{request.request_method} #{request.path}"
       end
 
-      the_app = vals[0].new(new_env)
+      the_app             = vals[0].new(new_env)
       the_app.controller  = the_app.class
-      the_app.action_name = vals[1]
+      the_app.action_name = if vals[1].empty?
+                              new_env['REQUEST_METHOD'].downcase
+                            else
+                              vals[1]
+                            end
       
       begin
-        the_app.send("#{new_env['REQUEST_METHOD']}_#{the_app.action_name}", *vals[2] )
+        the_app.send( [new_env['REQUEST_METHOD'] , the_app.action_name ].map(&:to_s).uniq.join('_'), *vals[2] )
       rescue Bad_Bunny::Redirect
       end  
       
@@ -151,7 +155,7 @@ module The_Bunny
   end 
 
   def action_name= new_name
-    @action_name = new_name.to_s.strip.sub('GET_','').to_sym
+    @action_name = new_name.to_s.strip.to_sym
   end
   
   def environment 
@@ -200,8 +204,8 @@ module The_Bunny
   end
 
 
-  def render_html_template 
-    file_name        = "#{controller_name}_#{action_name}".to_sym
+  def render_html_template control = nil, action = nil, vals = {}
+    file_name        = "#{control || controller_name}_#{action || action_name}"
     template_content = begin
 												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
 											 rescue Errno::ENOENT
@@ -219,7 +223,7 @@ module The_Bunny
     require "views/#{file_name}.rb"
     view_class = Object.const_get(file_name)
     view_class.raise_on_context_miss = true
-    html       = view_class.new(self).render( template_content )
+    html       = view_class.new(self, vals).render( template_content )
     
     render_text_html(html)
   end

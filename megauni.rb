@@ -78,6 +78,7 @@ require 'rest_client'
     Session_Cage
     Member_Cage   
     Topic
+    Club_Cage
   }.each { |control|
 		require "cages/#{control}"
 		The_Bunny_Farm.bunnies << Object.const_get(control)

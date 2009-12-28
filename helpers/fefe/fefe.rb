@@ -37,6 +37,7 @@ class FeFe_The_French_Maid
     MY_LIFE        = '~/MyLife'.directory.path
     MY_PREFS       = MY_LIFE.directory.down( 'prefs' )
     PRIMARY_APP    = 'megauni'
+    APP_NAME       = File.basename(File.expand_path('.'))
   end
 
   # ======== When FeFe is given a set of orders, they are 

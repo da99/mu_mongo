@@ -5,7 +5,7 @@ class Inspect_Cage
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")
     end_index     = file_contents.index('__' + 'END' + '__')
     
-    render_html_template self
+    render_html_template
   end
   
 	def GET_request 

@@ -20,16 +20,15 @@ class Db
     it "Migrate to version 0, then migrate up to latest version." 
 
     
-    steps {
-      conn = 'https://da01tv:isleparadise4vr@localhost/'
-    
-      db_name = 'megauni-test'
-      db_conn = "#{conn}#{db_name}/"
-      all_dbs = JSON.parse(RestClient.get "#{conn}_all_dbs/")
-
-      RestClient.delete db_conn if all_dbs.include?(db_name)
-      RestClient.put db_conn , {}
-      puts_white "Created: #{db_name}"
+    steps([:env, 'test']) { |env|
+      ENV['RACK_ENV'] = env
+      require FeFe_The_French_Maid::Prefs::APP_NAME
+      
+      RestClient.delete DB_CONN 
+      puts_white "Deleted: #{DB_NAME}"
+      
+      RestClient.put DB_CONN , {}
+      puts_white "Created: #{DB_NAME}"
     }
   end # ===
   

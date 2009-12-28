@@ -52,16 +52,21 @@ class Tests
     
     it "Reset the :test database"
     
-    steps do
-      fefe_run('db:reset!')
-
-      ENV['RACK_ENV'] = 'test'
-
-      require 'megauni'
+    steps([:env, 'test']) do |env|
+      fefe_run('db:reset!', :env=>env )
       
       Design_Doc.create_or_update
       puts_white 'Created: design doc.'
       
+      # === Create Clubs ==========================
+
+      Couch_Doc.PUT( 'club-hearts', {:filename=>'hearts', 
+        :title=>'The Hearts Club',
+        :lang => 'English',
+        :created_at => '2009-12-27 08:00:01',
+        :data_model => 'Club'
+      } )
+
       # === Create News ==========================
       
       Couch_Doc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
@@ -70,7 +75,8 @@ class Tests
         :tags     =>['surfer_hearts', 'hearts', 'pets'],
         :created_at   =>'2009-10-11 02:02:27',
         :published_at =>'2009-12-09 01:01:26',
-        :data_model   => 'News'
+        :data_model   => 'News', 
+        :club     => 'surfer-hearts'
       })
 
 

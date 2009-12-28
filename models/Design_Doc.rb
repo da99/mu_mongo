@@ -2,12 +2,9 @@
 
 class Design_Doc
 
-  Views = %w{
-    news_by_tag
-    news_by_published_at
-    news_tags
-    member_usernames
-  }.map(&:to_sym)
+  Views = Dir.glob('helpers/couchdb_views/*.js').map { |file|
+            File.basename(file).gsub('-reduce.js', '').gsub('.js', '')
+          }.uniq.map(&:to_sym)
 
   ID = '_design/megauni'
 

@@ -387,7 +387,7 @@ class Couch_Plastic_Validator
   end
 
   def validate blok
-    instance_eval &blok
+    instance_eval( &blok )
     if doc.errors.empty?
       doc.value_is_clean( field_name )
     end
