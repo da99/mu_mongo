@@ -6,10 +6,6 @@ class Inspect_Cage_list < Bunny_Mustache
     'Hello, World'
   end
 
-  def total_lines
-    The_Bunny_Farm.total_lines
-  end
-
   def path_info
     @app.request.path_info
   end
@@ -36,6 +32,5 @@ class Inspect_Cage_list < Bunny_Mustache
 
   def loading
   end
-
 
 end # === class Hello_Bunny_GET_list

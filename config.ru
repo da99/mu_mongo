@@ -18,7 +18,7 @@ begin
   require 'megauni'
   require 'mustache'
 
-  if The_Bunny_Farm.non_production?
+  if The_App.non_production?
     require( 'middleware/Xml_In_Disguise'  )
     require( 'middleware/Mab_In_Disguise'  )
   end
@@ -48,7 +48,7 @@ begin
   use Always_Find_Favicon
   use Serve_Public_Folder, ['/busy-noise/', '/my-egg-timer/', '/styles/', '/skins/']
   
-  if The_Bunny_Farm.non_production?
+  if The_App.non_production?
 		require 'middleware/Render_Css' 
 		use Render_Css
   end
@@ -121,7 +121,7 @@ begin
   # Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
     
   # Finally, start the app.
-  run The_Bunny_Farm
+  run The_App
 
 rescue Object => e
   

@@ -9,12 +9,12 @@ class Inspect_Cage
   end
   
 	def GET_request 
-		if The_Bunny_Farm.development?
+		if The_App.development?
 			render_text_html "<pre>" + request.env.keys.sort.map { |key| 
 				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + request.env[key].inspect 
 			}.join("<br />") + "</pre>"
 		else
-			raise Bad_Bunny::HTTP_404, "/request only allowed in :development environments."
+			raise The_App::HTTP_404, "/request only allowed in :development environments."
 		end
 	end
 	

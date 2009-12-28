@@ -7,11 +7,11 @@ class Hello_list < Bunny_Mustache
   end
 
   def meta_description
-    The_Bunny_Farm::Options::SITE_TAG_LINE
+    The_App::Options::SITE_TAG_LINE
   end
 
   def meta_keywords
-    The_Bunny_Farm::Options::SITE_KEYWORDS
+    The_App::Options::SITE_KEYWORDS
   end
    
 end # === Hello_Bunny_GET_list

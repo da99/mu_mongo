@@ -111,7 +111,7 @@ class Mab_In_Disguise
   
   def call new_env
 
-    if The_Bunny_Farm.production?
+    if The_App.production?
       raise("Can't be used in this environment: #{ENV['RACK_ENV']}") 
     end
 

@@ -9,7 +9,7 @@ class Find_The_Bunny
 		new_env['the_bunny'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
 		
-    results = The_Bunny_Farm.controls.detect { |control|
+    results = The_App.controls.detect { |control|
 
       raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')
 
@@ -50,7 +50,7 @@ class Find_The_Bunny
 															 "<h1>Not Found</h1>
 															 <p>Check spelling: #{new_env['PATH_INFO']}</p>"
 														 end
-			raise Bad_Bunny::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
+			raise The_App::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
 		end
 
 	end

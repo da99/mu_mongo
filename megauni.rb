@@ -32,9 +32,9 @@ require 'rest_client'
 
   DESIGN_DOC_ID      = '_design/megauni'
   
-  require 'middleware/The_Bunny_Farm'  
+  require 'middleware/The_App'  
 
-  class The_Bunny_Farm
+  class The_App
     
     module Options
       SITE_DOMAIN        = 'megaUni.com'
@@ -81,12 +81,12 @@ require 'rest_client'
     Club_Cage
   }.each { |control|
 		require "controls/#{control}"
-		The_Bunny_Farm.controls << Object.const_get(control)
+		The_App.controls << Object.const_get(control)
 	}
 
-  if The_Bunny_Farm.development?
+  if The_App.development?
     require "controls/Inspect_Cage"
-    The_Bunny_Farm.controls << Inspect_Cage
+    The_App.controls << Inspect_Cage
   end
  
   # ===============================================

@@ -3,17 +3,12 @@ require 'rack/utils'
 require 'views/Bunny_Mustache'
 require 'controls/Control_Base'
 
-module Good_Bunny
+
+
+class The_App
+  
   Redirect      = Class.new(StandardError)
-end
-
-
-module Bad_Bunny
   HTTP_404      = Class.new(StandardError)
-end # === Bad_Bunny
-
-
-class The_Bunny_Farm
   
   # ======== CLASS stuff ======== 
 
@@ -59,7 +54,7 @@ class The_Bunny_Farm
   end
 
 
-end # === The_Bunny_Farm
+end # === The_App
 
 
 

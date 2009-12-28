@@ -10,10 +10,10 @@ class Catch_Bad_Bunny
       begin
         begin
           @app.call the_env
-        rescue Good_Bunny::Redirect
+        rescue The_App::Redirect
           the_env['bunny.app'].response.finish
         end
-      rescue Bad_Bunny::HTTP_404
+      rescue The_App::HTTP_404
         the_env['bad.bunny'] = $!
         response             = the_env['bunny.app'].response
         response.status      = 404
@@ -22,7 +22,7 @@ class Catch_Bad_Bunny
       end
     rescue Object => e
 
-      if The_Bunny_Farm.development?
+      if The_App.development?
         raise $!
       end
       

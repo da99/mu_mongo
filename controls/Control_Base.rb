@@ -20,7 +20,7 @@ module Control_Base
   end
 
   def controller_name
-    @controller_name ||= self.to_s.sub('_Bunny', '').to_sym
+    @controller_name ||= self.class.to_s.sub('_Bunny', '').to_sym
   end
 
   def action_name
@@ -51,7 +51,7 @@ module Control_Base
   def redirect! *args
     render_text_plain ''
     response.redirect( *args )
-    raise Good_Bunny::Redirect
+    raise The_App::Redirect
   end
 
   def not_found! body
@@ -62,7 +62,7 @@ module Control_Base
   def error!(body, code = 500)
     response.status = code
     response.body   = body unless body.nil?
-    raise Bad_Bunny.const_get("Error_#{code}")
+    raise The_App.const_get("HTTP_#{code}")
   end
 
 	def render_application_xml txt
@@ -255,7 +255,7 @@ module Control_Base
       return true
     end
       
-    raise Bad_Bunny::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
+    raise The_App::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
   end
 
 end # === Control_Base
