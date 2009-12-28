@@ -1,5 +1,5 @@
 class Member_Cage
-  include The_Bunny
+  include Control_Base
     
   # ============= Member Actions ==========================          
 

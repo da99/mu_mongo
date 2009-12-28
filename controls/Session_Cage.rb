@@ -1,5 +1,5 @@
 class Session_Cage
-  include The_Bunny
+  include Control_Base
 
   def GET_log_in 
     render_html_template

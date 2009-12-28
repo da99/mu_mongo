@@ -32,7 +32,7 @@ require 'rest_client'
 
   DESIGN_DOC_ID      = '_design/megauni'
   
-  require 'middleware/the_bunny'  
+  require 'middleware/The_Bunny_Farm'  
 
   class The_Bunny_Farm
     
@@ -80,12 +80,12 @@ require 'rest_client'
     Topic
     Club_Cage
   }.each { |control|
-		require "cages/#{control}"
+		require "controls/#{control}"
 		The_Bunny_Farm.bunnies << Object.const_get(control)
 	}
 
   if The_Bunny_Farm.development?
-    require "cages/Inspect_Cage"
+    require "controls/Inspect_Cage"
     The_Bunny_Farm.bunnies << Inspect_Cage
   end
  

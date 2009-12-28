@@ -1,5 +1,5 @@
 class Inspect_Cage
-  include The_Bunny
+  include Control_Base
 
   def GET_list 
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")

@@ -1,5 +1,5 @@
 class Hello
-  include The_Bunny
+  include Control_Base
 
 	def GET_list 
 		render_html_template

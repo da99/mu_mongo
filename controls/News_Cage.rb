@@ -9,7 +9,7 @@ end # === News_Mustache
 
 
 class News_Cage
-  include The_Bunny
+  include Control_Base
 
 	def POST # CREATE 
 		success_msg  "Save: #{doc.data.title}" 

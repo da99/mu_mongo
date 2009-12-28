@@ -1,6 +1,6 @@
 
 class Topic
-  include The_Bunny
+  include Control_Base
 
   List = %w{
     arthritis
