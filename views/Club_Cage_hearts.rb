@@ -13,7 +13,7 @@ class Club_Cage_hearts < Bunny_Mustache
   end
 
   def css_file
-    "/stylesheets/English/Club_#{club.data.filename}.css"
+    "/stylesheets/English/Club_Cage_#{club.data.filename}.css"
   end
 	
 end # === Club_Cage_hearts 

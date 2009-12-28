@@ -204,8 +204,8 @@ module The_Bunny
   end
 
 
-  def render_html_template control = nil, action = nil, vals = {}
-    file_name        = "#{control || controller_name}_#{action || action_name}"
+  def render_html_template vals = {}
+    file_name        = "#{controller_name}_#{action_name}"
     template_content = begin
 												 File.read(File.expand_path('templates/English/mustache/' + file_name.to_s + '.html'))
 											 rescue Errno::ENOENT
