@@ -3,10 +3,6 @@ require 'helpers/app/json'
 
 class Couch_Doc
   
-  Views = Dir.glob('helpers/couchdb_views/*.js').map { |file|
-            File.basename(file).gsub('-reduce.js', '').gsub('.js', '')
-          }.uniq.map(&:to_sym)
-          
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
 	No_Record_Found                = Class.new(StandardError)
@@ -28,12 +24,12 @@ class Couch_Doc
   }.map(&:to_sym)
 
 
-	attr_reader :uri_base, :design_doc_id
+	attr_reader :uri_base, :design_id
 
 	def initialize host, db_name, new_design = nil
     default_design = ('_design/' + File.basename(File.expand_path('.')))
 		@url_base      = new_url
-		@design_doc_id = (new_design || default_design)
+		@design_id = (new_design || default_design)
 	end
 
 	def send_to_db http_meth, path, raw_data = nil, raw_headers = {}
@@ -116,20 +112,18 @@ class Couch_Doc
 
   def GET_by_view(view_name, params={})
 
-    if !Design_Doc.view_exists?(view_name)
-      raise ArgumentError, "Non-existent view name: #{view_name.inspect}"
-    end
+    view_must_exist! view_name
 
     # Check to see if :reduce option is needed.
     # :reduce parameter needs to be set by default 
     # since View may change in the future from 
     # 'map' to 'map/reduce'.
-    if Design_Doc.view_has_reduce?(view_name) && 
+    if view_has_reduce?(view_name) && 
        !params.has_key?(:reduce)
        params[:reduce] = false 
     end
 
-    path    = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)
+    path    = File.join(design_id, '_view', view_name.to_s)
     results = GET(path, params)
 
     return results if !params[:include_docs]
@@ -157,22 +151,29 @@ class Couch_Doc
     @cached_from_db ||= GET_design()
   end
 
-  def put_design?
-    old_doc = GET_design()
-    new_doc = design
-    return true if !old_doc
+  def create_design?
+    !!design
+  end
+
+  def update_design?
+    return true if create_design?
     
-    docs_match = begin
-      [true] == new_doc[:views].keys.map { |k|
-        old_doc[:views][k] == new_doc[:views][k]
-      }.uniq
+    old_doc = design
+    new_doc = design_on_file
+    
+    diff = begin
+      new_doc[:views].detect { |(k,v)|
+        old_doc[:views][k] != v
+      }
     end
 
-    !docs_match
+    !!diff
   end
   
   def create_or_update_design
-    return( GET_design() ? update_design : create_design )
+    return( create_design ) if create_design?
+    return( update_design ) if update_design?
+    false
   end
 
   def create_design
@@ -187,18 +188,22 @@ class Couch_Doc
   def view_exists? view_name
     design[:views].has_key? view_name
   end
+  
+  def view_must_exist! view_name
+    return true if view_exists?(view_name)
+    raise ArgumentError, "View not found: #{view_name.inspect}"
+  end
 
   def view_has_reduce?(view_name)
-    if !view_exists?(view_name)
-      raise ArgumentError, "View not found: #{view_name.inspect}"
-    end
+    view_must_exist! view_name
     design[:views][view_name].has_key?(:reduce)
   end
 
   def design_on_file
     doc = {:views=>{}}
 
-    Views.each { |v|
+    Dir.glob('helpers/couchdb_views/*.js').map { |file|
+      v = File.basename(file).gsub('.js').gsub('-reduce.js', '').to_sym
       doc[:views][v] ||= {}
       doc[:views][v][:map] = read_view_file(v)
 
@@ -211,8 +216,10 @@ class Couch_Doc
     doc
   end
 
+  
   private # ===================================================
 
+          
   # Parameters:
   #   view_name - Name of file w/o extension. E.g.: map-by_tag
   def read_view_file view_name

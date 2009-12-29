@@ -26,8 +26,6 @@ require_these 'helpers/app', %w{
 }
   
 
-DESIGN_DOC_ID      = '_design/megauni'
-
 require 'middleware/The_App'  
 
 class The_App
@@ -88,6 +86,6 @@ require_these 'models', %w{
 }     
 
 
-Design_Doc.create_or_update if Design_Doc.needs_push_to_db?
+CouchDB_CONN.create_or_update_design
 
 

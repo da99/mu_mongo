@@ -55,7 +55,7 @@ class Tests
     steps([:env, 'test']) do |env|
       fefe_run('db:reset!', :env=>env )
       
-      Design_Doc.create_or_update
+      CouchDB_CONN.create_or_update_design
       puts_white 'Created: design doc.'
       
       # === Create Clubs ==========================

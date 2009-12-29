@@ -13,7 +13,7 @@ class Bacon < Thor
     ENV['RACK_ENV'] = 'test'
     require File.expand_path('megauni')
 
-    Design_Doc.create_or_update
+    CouchDB_CONN.create_or_update_design
     whisper 'Created: design doc.'
 
     # === Create News ==========================

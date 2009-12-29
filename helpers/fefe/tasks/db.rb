@@ -9,7 +9,7 @@ class Db
     steps { 
       puts_white "Please wait..."
       db_connect!
-      results = Design_Doc.create_or_update
+      results = CouchDB_CONN.create_or_update_design
       puts_white "Done migrating up."
       results
     }
