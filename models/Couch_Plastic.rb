@@ -1,7 +1,8 @@
 
+
 module Couch_Plastic
   
-  include Demand_Arguments_Dsl
+  # include Demand_Arguments_Dsl
 
 	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
 	
@@ -51,73 +52,87 @@ module Couch_Plastic
   #           Miscellaneous Methods
   # ========================================================= 
   
-  def initialize *args
-    
-    if args.empty?
-      return super()
-    end
-    
-    super()
-    
-    self.set_manipulator args.first
-    self.set_raw_data( args[1] ) if args[1]
-
-    if !creator?(editor)
-      raise UnauthorizedNew.new(self,editor)
-    end
-    set_manipulator editor
-
-  end
-
-  def method_missing *args
-    meth_name = args.first.to_sym
-    if args.size == 1 && self.class.fields.include?(meth_name)
-      raise "Change API: #{args.inspect} --- LINE --- #{caller.first.inspect}" 
-      return original_data.send(meth_name)
-    end
-    super
-  end
+	attr_reader :original_data, :new_data, :raw_data, :clean_data, :assoc_cache
+  alias_method :data, :original_data
 
   def new?
-    original_data.as_hash.empty?
+    original_data.nil?
   end
  
   def human_field_name( col )
     col.to_s.gsub('_', ' ')
   end 
+  
+  def clear_assoc_cache
+    @assoc_cache = {}
+  end
+
+  def initialize *args
+    
+		@manipulator = nil
+		@raw_data    = @clean_data = @assoc_cache = {}
+    super()
+
+    return if args.empty?
+    
+		doc_id  = args.shift
+		editor  = args.shift
+		raw_raw = args.shift
+
+		@manipulator = editor if editor
+		@raw_data    = raw_raw if raw_raw
+		
+		if doc_id
+			
+			raw_doc = Couch_Doc.GET(doc_id)
+			
+			@original_data = Class.new {
+				def initialize( new_hash )
+					@vals = new_hash
+				end
+			
+				def as_hash
+					@vals
+				end
+			
+				def method_missing( raw_key, *args )
+					key = raw_key.to_symb
+					return(@vals[key]) if @vals.has_key?(key)
+					super(raw_key, *args)
+				end
+			}.new(raw_doc)
+			
+			@new_data = Class.new {
+					
+					def initialize( fields, hash )
+						@keys   = (hash.keys + fields).uniq.compact
+						@hash   = hash
+						@equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
+					end
+
+					def as_hash
+						@hash
+					end
+				
+					def method_missing( raw_key, *args )
+						key = raw_key.to_sym
+						if @keys.include?(key)
+							return @hash[key]
+						end
+						if @equals.has_key?(key)
+							return @hash[@equals[key]] = args.first
+						end
+						super(raw_key, *args)
+					end
+					
+			}.new(self.class.fields, raw_doc)
+		end
+
+  end
 
   # =========================================================
   #      Methods for handling Old/New Data
   # ========================================================= 
-
-  def has?(key)
-    original_data.as_hash.has_key? key
-  end
-
-
-  def original_data
-    @original_data ||= Data_Pouch.new(*(self.class.fields))
-  end
-  alias_method :data, :original_data
-
-  def set_original_data new_hash
-		@original_data = nil
-    new_hash.each { |k,v|
-      original_data.send "#{k}=", self.class.format_field(k, v)
-    }
-    original_data
-  end
-  
-  def new_data
-    @new_data ||= begin
-      dp = Data_Pouch.new(*(self.class.fields))
-      dp
-    end
-  end
-
-  def value_is_clean field_name
-    raise "implement"
-  end
 
   def set_cleanest_value field_name, val
     clean_data[field_name] = val
@@ -161,26 +176,6 @@ module Couch_Plastic
     end
   end
       
-  def raw_data 
-    @raw_data ||= {}
-  end
-
-  def set_raw_data  new_hash
-    @raw_data = new_hash
-  end
-
-  def clean_data 
-    @clean_data ||={}
-  end
-
-  def assoc_cache
-    @assoc_cache ||= {}
-  end
-
-  def clear_assoc_cache
-    @assoc_cache = {}
-  end
-
   # =========================================================
   #            Methods Related to Timestamps
   # ========================================================= 
@@ -205,15 +200,6 @@ module Couch_Plastic
   # =========================================================
   #            Methods Related to DSL for Editors
   # ========================================================= 
-
-  attr_reader :manipulator
-
-  def set_manipulator mem
-		if instance_variable_defined? :@manipulator
-			raise ArgumentError, "Method can only be used once." 
-		end
-    @manipulator = mem
-  end
 
   # =========================================================
   #               Save & Delete Methods
@@ -331,7 +317,13 @@ module Couch_Plastic
   def sanitize &blok
     field = validator_field_name
     val   = cleanest_value( field ) 
-    val.extend Couch_Plastic_Sanitizer_Methods
+		
+		if val.is_a?(String)
+			def val.with regexp, &blok
+				gsub regexp, &blok
+			end
+		end
+		
     set_cleanest_value(
       field, 
       raw_data[field].instance_eval(&blok)
@@ -358,15 +350,121 @@ module Couch_Plastic
 end # === module Couch_Plastic ================================================
 
 
-module Couch_Plastic_Sanitizer_Methods
 
-  def with regexp, &blok
-		if is_a?(String)
-			gsub regexp, &blok
-		end
+# =========================================================
+# === Module: Class Methods for Couch_Plastic 
+# ========================================================= 
+
+module Couch_Plastic_Class_Methods 
+
+  include Demand_Arguments_Dsl
+
+  # ===== DSL-icious ======
+
+  def fields 
+    @fields ||= [:_id, :data_model, :_rev]
   end
 
-end # === 
+  def formatters
+    @formatters ||= {}
+  end
+
+  def format_field k, v
+    raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
+    return v unless formatters.has_key?(k)
+
+    case formatters[k]
+      when Symbol
+        v.to_sym
+      when Proc
+        formatters[k].call v
+    end
+  end
+
+  def allow_fields *args
+    args.each { |fld|
+      case fld
+        when Array
+
+          case fld.last
+            when Symbol, Proc
+            else
+              raise "Unknown formatter class: #{fld.last.inspect}"
+          end
+          
+          fld_sym = fld.first.to_sym
+          fields << fld_sym
+          formatters[fld_sym] = fld.last
+          
+        else
+          fields << fld.to_sym
+      end
+    }
+    @fields.uniq!
+    @fields
+  end
+
+  def enable_timestamps
+    allow_fields :created_at, :updated_at
+  end
+
+  def timestamps_enabled?
+    allow_fields.include?(:created_at) &&
+      allow_fields.include?(:updated_at)
+  end
+
+
+  # ===== CRUD Methods ====================================
+
+  def by_id( id ) # READ
+		new( id )
+  end
+
+  def create editor, raw_raw_data # CREATE
+    d = new(nil, editor, raw_raw_data)
+    d.save_create 
+    d
+  end
+
+  def read id, mem # READ
+    d = by_id(id)
+    if !d.reader?(mem)
+      raise UnauthorizedReader.new(d,mem)
+    end
+    d
+  end
+
+  def edit id, mem # EDIT
+    d = new(id)
+    if !d.updator?(mem)
+      raise UnauthorizedEditor.new(d,mem)
+    end
+    d
+  end
+
+  def update id, editor, new_raw_data # UPDATE
+		doc = new(id, editor, new_raw_data)
+		if !doc.updator?(editor)
+			raise UnauthorizedUpdator.new(doc,editor)
+		end
+    doc.save_update 
+    doc
+  end
+
+  def delete! id, editor # DELETE
+		doc = new(id, editor)
+    if !doc.deletor?(editor)
+      raise UnauthorizedDeletor.new(doc, editor)
+    end
+    doc.delete!
+    doc
+  end
+
+
+end # === module ClassMethods ==============================================
+
+
+
 
 class Couch_Plastic_Validator
 
@@ -476,124 +574,5 @@ class Couch_Plastic_Validator
 end # === Couch_Plastic_Validator
 
 
-
-# =========================================================
-# === Module: Class Methods for Couch_Plastic 
-# ========================================================= 
-
-module Couch_Plastic_Class_Methods 
-
-  include Demand_Arguments_Dsl
-
-  # ===== DSL-icious ======
-
-  def fields 
-    @fields ||= [:_id, :data_model, :_rev]
-  end
-
-  def formatters
-    @formatters ||= {}
-  end
-
-  def format_field k, v
-    raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
-    return v unless formatters.has_key?(k)
-
-    case formatters[k]
-      when Symbol
-        v.to_sym
-      when Proc
-        formatters[k].call v
-    end
-  end
-
-  def allow_fields *args
-    args.each { |fld|
-      case fld
-        when Array
-
-          case fld.last
-            when Symbol, Proc
-            else
-              raise "Unknown formatter class: #{fld.last.inspect}"
-          end
-          
-          fld_sym = fld.first.to_sym
-          fields << fld_sym
-          formatters[fld_sym] = fld.last
-          
-        else
-          fields << fld.to_sym
-      end
-    }
-    @fields.uniq!
-    @fields
-  end
-
-  def enable_timestamps
-    allow_fields :created_at, :updated_at
-  end
-
-  def timestamps_enabled?
-    allow_fields.include?(:created_at) &&
-      allow_fields.include?(:updated_at)
-  end
-
-
-  # ===== CRUD Methods ====================================
-
-  def by_id( id ) # READ
-    Couch_Doc.GET_by_id id
-  end
-
-  def read mem, id # READ
-    d = Couch_Doc.GET_by_id(id)
-    if !d.reader?(mem)
-      raise UnauthorizedReader.new(d,mem)
-    end
-    d
-  end
-
-  def edit mem, id # EDIT
-    d = Couch_Doc.GET_by_id(id)
-    if !d.updator?(mem)
-      raise UnauthorizedEditor.new(d,mem)
-    end
-    d
-  end
-
-  def create editor, new_raw_data # CREATE
-    d = new
-    if !d.creator?(editor)
-      raise UnauthorizedCreator.new(d,editor)
-    end
-    d.set_manipulator editor
-    d.set_raw_data  new_raw_data
-    d.save_create 
-    d
-  end
-
-  def update editor, new_raw_data # UPDATE
-    d = Couch_Doc.GET_by_id(new_raw_data[:id])
-    if !d.updator?(editor)
-      raise UnauthorizedUpdator.new(d,editor)
-    end
-    d.set_manipulator editor
-    d.set_raw_data new_raw_data
-    d.save_update 
-    d
-  end
-
-  def delete! editor, new_raw_data # DELETE
-    d = Couch_Doc.GET_by_id(new_raw_data[:id])
-    if !d.deletor?(editor)
-      raise UnauthorizedDeletor.new(d, editor)
-    end
-    d.delete!
-    d
-  end
-
-
-end # === module ClassMethods ==============================================
 
 

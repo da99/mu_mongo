@@ -15,7 +15,7 @@ class News
   # ==== Getters =====================================================    
   
   def self.tags
-    rows = Couch_Doc.GET(:news_tags, :reduce=>true, :group=>true)[:rows]
+    rows = Couch_Doc.GET_by_view(:news_tags, :reduce=>true, :group=>true)[:rows]
     rows.map { |r| 
       r[:key]
     }
@@ -23,7 +23,7 @@ class News
 
   def self.by_tag tag, raw_params={}
     params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
-    Couch_Doc.GET(:news_by_tag, params)
+    Couch_Doc.GET_by_view(:news_by_tag, params)
   end
 
   def self.by_published_at raw_params={}
@@ -32,7 +32,7 @@ class News
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
     params = {:include_docs =>true}.update(raw_params)
-    Couch_Doc.GET(:news_by_published_at, params)
+    Couch_Doc.GET_by_view(:news_by_published_at, params)
   end
 
   # ==== Hooks =====================================================

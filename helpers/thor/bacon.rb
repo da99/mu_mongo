@@ -18,12 +18,11 @@ class Bacon < Thor
 
     # === Create News ==========================
     
-    n = News.new
-    n.set_raw_data( :title=>'Longevinex', 
+    n = News.new(nil, nil, :title=>'Longevinex', 
       :teaser=>'teaser', 
       :body=>'Test body.', 
       :tags=>['surfer_hearts', 'hearts', 'pets']
-                  )
+								)
     n.save_create
 
     # === Create Members ==========================

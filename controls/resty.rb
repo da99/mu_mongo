@@ -34,7 +34,7 @@ helpers {
     @model_instance ||= begin
       i = if clean_room[:id] 
         begin
-          Couch_Doc.GET_by_id(Integer(clean_room[:id]))
+          Couch_Doc.GET(Integer(clean_room[:id]))
         rescue model_class::NoRecordFound
           nil
         end

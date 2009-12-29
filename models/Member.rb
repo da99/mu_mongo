@@ -48,7 +48,7 @@ class Member
   
   def self.by_username raw_username
     username = demand_string_not_empty(raw_username)
-    Couch_Doc.GET( :member_usernames, 
+    Couch_Doc.GET_by_view( :member_usernames, 
                   :key=>username, 
                   :limit=>1, 
                   :include_docs=>true

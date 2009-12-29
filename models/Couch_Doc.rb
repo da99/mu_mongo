@@ -1,7 +1,12 @@
+require 'rest_client'
 require 'helpers/app/json'
 
 class Couch_Doc
   
+  Views = Dir.glob('helpers/couchdb_views/*.js').map { |file|
+            File.basename(file).gsub('-reduce.js', '').gsub('.js', '')
+          }.uniq.map(&:to_sym)
+          
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
 	No_Record_Found                = Class.new(StandardError)
@@ -23,44 +28,71 @@ class Couch_Doc
   }.map(&:to_sym)
 
 
-  def self.rest_call 
-    results = begin
-      yield
-    rescue RestClient::RequestFailed
-			err = case $!.http_code
-						when 409
-							if $!.http_body =~ /update conflict/ 
-								HTTP_Error_409_Update_Conflict
-							else
-								HTTP_Error
-							end
-						else
-							HTTP_Error
-						end
-			raise err, "#{$!.http_code} - #{$!.http_body}"
-    end
+	attr_reader :uri_base, :design_doc_id
 
-    json_parse results
-  end
+	def initialize host, db_name, new_design = nil
+    default_design = ('_design/' + File.basename(File.expand_path('.')))
+		@url_base      = new_url
+		@design_doc_id = (new_design || default_design)
+	end
 
-  def self.GET_uuid
-    results = rest_call {
-      RestClient.get( File.join( CouchDB_URI, '_uuids') )
-    }
-    results[:uuids].first
-  end
-
-  def self.GET_naked(path, params = {})
-
-    db_url = File.join( ::DB_CONN, path.to_s) 
+	def send_to_db http_meth, path, raw_data = nil, raw_headers = {}
+		
+    url     = File.join( url_base, path.to_s )
+    data    = raw_data ? raw_data.to_json : ''
+    headers = { 'Content-Type' => 'application/json' }.update(raw_headers)
     
-    if params.empty?
-      return( 
-        rest_call { 
-          RestClient.get( db_url ) 
-        } 
-      )
+    begin
+      json_parse case http_meth
+        when :GET
+          RestClient.get   url  
+        when :POST
+          RestClient.post  url, data, headers  
+        when :PUT
+          RestClient.put   url, data, headers  
+        when :DELETE
+          RestClient.delete  url, headers  
+        else
+          raise "Unknown HTTP method: #{http_meth.inspect}"
+      end
+
+    rescue RestClient::ResourceNotFound 
+      if http_meth === :GET
+        raise Couch_Doc::No_Record_Found, "No document found for: #{path}"
+      else
+        raise $!
+      end
+
+    rescue RestClient::RequestFailed
+      
+      msg = "#{$!.http_code} #{$!.http_message}: #{$!.http_body}"
+      err = if $!.http_code === 409 && $!.http_body =~ /update conflict/ 
+        HTTP_Error_409_Update_Conflict.new(msg)
+      else
+        HTTP_Error.new(msg)
+      end
+
+      raise err
+      
     end
+		
+	end
+
+
+  # === Main methods ===
+
+  # Used for both creation and updating.
+  def PUT( doc_id, obj)
+    send_to_db :PUT, doc_id, obj
+  end
+
+  def DELETE doc_id, rev
+    send_to_db :DELETE, doc_id, nil, {'If-Match' => rev}
+  end
+
+  def GET(path, params = {})
+
+    return(send_to_db(:GET, path)) if params.empty?
 
     invalid_options = params.keys - ValidQueryOptions
     if !invalid_options.empty?
@@ -71,28 +103,18 @@ class Couch_Doc
       "#{kv.first}=#{CGI.escape(kv.last.to_json)}"
     }.join('&')
     
-    rest_call {
-      RestClient.get(db_url + '?' + params_str)
-    }
+    send_to_db :GET, "#{path}?#{params_str}"
 
   end
 
-  def self.GET_by_id(id)
-    raise ArgumentError, "Invalid id: #{id.inspect}" if !id
-    begin
-      data = GET_naked( id )
-      return(data) if !data[:data_model]
-      doc = Object.const_get(data[:data_model]).new
-      doc.set_original_data data
-    rescue RestClient::ResourceNotFound 
-      raise Couch_Doc::No_Record_Found, "Document with id, #{id}, not found."
-    end
+  
+  # === GET specific methods ===
 
-    doc
-
+  def GET_uuid
+    GET( '_uuids' )[:uuids].first
   end
 
-  def self.GET(view_name, params={})
+  def GET_by_view(view_name, params={})
 
     if !Design_Doc.view_exists?(view_name)
       raise ArgumentError, "Non-existent view name: #{view_name.inspect}"
@@ -102,47 +124,103 @@ class Couch_Doc
     # :reduce parameter needs to be set by default 
     # since View may change in the future from 
     # 'map' to 'map/reduce'.
-    if !params.has_key?(:reduce)
-      if Design_Doc.view_has_reduce?(view_name)
-        params[:reduce] = false
-      end
+    if Design_Doc.view_has_reduce?(view_name) && 
+       !params.has_key?(:reduce)
+       params[:reduce] = false 
     end
 
     path    = File.join(DESIGN_DOC_ID, '_view', view_name.to_s)
-    results = GET_naked(path, params)
+    results = GET(path, params)
 
     return results if !params[:include_docs]
-
-    objs = results[:rows].inject([]) { |m,r|
-      doc = Object.const_get(r[:doc][:data_model]).new
-      doc.set_original_data r[:doc]
-			m << doc
-      m
-    }
-
+    
     if params[:limit] == 1
-      objs.first
+      results[:rows].first
     else
-      objs
+      results[:rows]
     end
 
   end
 
-  # Used for both creation and updating.
-  def self.PUT( doc_id, obj)
-    url = File.join(DB_CONN, doc_id.to_s)
-    rest_call { 
-      RestClient.put( url, obj.to_json, {'Content-Type' => 'application/json'} ) 
-    }
+  # =================== Design Doc methods ===================
+
+
+  def GET_design
+    begin
+      GET( design_id )
+    rescue Couch_Doc::No_Record_Found 
+      nil
+    end
   end
 
-  def self.DELETE doc_id, rev
-    rest_call {
-      RestClient.delete(
-        File.join(DB_CONN, doc_id.to_s), 
-        'If-Match' => rev 
-      )
+  def design
+    @cached_from_db ||= GET_design()
+  end
+
+  def put_design?
+    old_doc = GET_design()
+    new_doc = design
+    return true if !old_doc
+    
+    docs_match = begin
+      [true] == new_doc[:views].keys.map { |k|
+        old_doc[:views][k] == new_doc[:views][k]
+      }.uniq
+    end
+
+    !docs_match
+  end
+  
+  def create_or_update_design
+    return( GET_design() ? update_design : create_design )
+  end
+
+  def create_design
+    PUT( design_id, design_on_file )
+  end
+
+  def update_design
+    new_doc = GET_design().update(design_on_file)
+    PUT( design_id, new_doc )
+  end
+
+  def view_exists? view_name
+    design[:views].has_key? view_name
+  end
+
+  def view_has_reduce?(view_name)
+    if !view_exists?(view_name)
+      raise ArgumentError, "View not found: #{view_name.inspect}"
+    end
+    design[:views][view_name].has_key?(:reduce)
+  end
+
+  def design_on_file
+    doc = {:views=>{}}
+
+    Views.each { |v|
+      doc[:views][v] ||= {}
+      doc[:views][v][:map] = read_view_file(v)
+
+      begin
+        doc[:views][v][:reduce] = read_view_file("#{v}-reduce")
+      rescue Errno::ENOENT
+      end
     }
+        
+    doc
+  end
+
+  private # ===================================================
+
+  # Parameters:
+  #   view_name - Name of file w/o extension. E.g.: map-by_tag
+  def read_view_file view_name
+    File.read( 
+      File.expand_path( 
+        "helpers/couchdb_views/#{view_name}.js" 
+      )
+    ) 
   end
 
 

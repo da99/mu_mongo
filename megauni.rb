@@ -7,7 +7,6 @@ require 'jcode'
 # === Important Gems ===
 require 'multibyte'
 require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
-require 'rest_client'
 
 
 # === App Helpers ===
@@ -50,22 +49,26 @@ end # === class
 
 # === DB urls/connections ===
 
+
 case ENV['RACK_ENV']
   
   when 'test'
-      CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
-      DB_NAME     = 'megauni-test'
-      DB_CONN     = File.join(CouchDB_URI, DB_NAME)     
+    CouchDB_CONN = Couch_Doc.new(
+      "https://da01tv:isleparadise4vr@localhost",
+      'megauni-test' 
+    )
     
   when 'development'
-    CouchDB_URI = "https://da01tv:isleparadise4vr@localhost"
-    DB_NAME     = "megauni-dev"
-    DB_CONN     = File.join( CouchDB_URI, DB_NAME )
+    CouchDB_CONN = Couch_Doc.new(
+      "https://da01tv:isleparadise4vr@localhost",
+      'megauni-dev' 
+    )
 
   when 'production'
-    CouchDB_URI = "http://un**:pswd**@127.0.0.1:5984/"
-    DB_NAME     = 'megauni-production'
-    DB_CONN     = File.join(CouchDB_URI, DB_NAME)
+    CouchDB_CONN = Couch_Doc.new(
+      "http://un**:pswd**@127.0.0.1:5984/",
+      'megauni-production' 
+    )
 
   else
     raise ArgumentError, "Unknown RACK_ENV value: #{ENV['RACK_ENV'].inspect}"

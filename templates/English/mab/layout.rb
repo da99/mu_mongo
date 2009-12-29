@@ -56,6 +56,11 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       
     
 			mustache 'javascripts'
+			# NOTE: 
+			# Add the following to external scripts
+			#     charset="UTF-8"
+			# Don't use: "language" attribute, since that is deprecated for more than
+			# 10 years.
 
       # if @javascripts
       #   if @javascripts.eql?( 'default' )
