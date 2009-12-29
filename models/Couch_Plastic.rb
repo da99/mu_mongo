@@ -1,54 +1,10 @@
-#
-# {
-# 	on_api_change {
-# 		version_macro
-# 		update_key :date do |val|
-# 			if val == 'next tuesday'
-# 				change_to 'earliest tuesday'
-# 				add_key :datetime, 'earliest tuesday @ whenever'
-# 			end
-# 		end
-# 		remove_key :suffix
-# 		
-# 		mark_api_as_changed
-# 	}
-# }
-#
-
-module Couch_Plastic
-  
-  # =========================================================
-  #       Special class for use throughout app.
-  # ========================================================= 
-  class Helper
-
-    class << self
-
-      def time_string(time_or_str)
-        t = Time.parse(time_or_str.to_s)
-        t.strftime('%Y-%m-%d %H:%M:%S')
-      end
-
-      def utc_now
-        Time.now.utc
-      end
-
-      def utc_now_as_string
-        time_string(utc_now)
-      end
-
-    end
-
-  end # === class Helper
-
-end # ==== module Couch_Plastic
-
-
 
 module Couch_Plastic
   
   include Demand_Arguments_Dsl
 
+	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
+	
   # =========================================================
   #                  self.included
   # ========================================================= 
@@ -277,7 +233,7 @@ module Couch_Plastic
 
     data = new_data.as_hash.clone
     data[:data_model] = self.class.name
-    data[:created_at] = Helper.utc_now_as_string if self.class.fields.include?(:created_at)
+    data[:created_at] = Time.now.utc.strftime(Time_Format) if self.class.fields.include?(:created_at)
 
     new_id = data.delete(:_id) || Couch_Doc.GET_uuid
 
@@ -640,151 +596,4 @@ module Couch_Plastic_Class_Methods
 
 end # === module ClassMethods ==============================================
 
-
-
-
-
-__END__
-
-
-
-    # === TIME METHODS ====
-
-    def to_datetime(time_or_str)
-      @val = Couch_Plastic::Helper.time_string(time_or_str)
-    end
-
-    def to_datetime_or_now(nil_or_time_or_str = nil)
-      v = nil_or_time_or_str
-      @val = v ? to_datetime(v) : Couch_Plastic::Helper.utc_now_as_string
-    end
-
-
-
-    # Turns :val into a stripped string if it does not
-    # respond to :size.
-    def min_size( size, &blok )
-      strip if !@val.respond_to?(:jsize)
-      return true if @val.jsize >= size 
-
-      msg = "#{_cap_col_name_} needs to be at least #{size} characters in length."
-      _choose_and_add_error_msg_(msg, &blok)
-      false
-    end
-
-    # Turns :val into a stripped string if it does not
-    # respond to :size.
-    def between_size( min, max, str = nil, &blok ) 
-      strip if !@val.respond_to?(:jsize)
-      return true if @val.jsize.between?(min, max)
-
-      msg = "#{_cap_col_name_} needs to be between #{min} and #{max} characters in length."
-      _choose_and_add_error_msg_((str && str % [min, max]), msg, &blok)
-      false
-    end
-
-    def match(s_or_regex, err_msg = nil,  &err_msg_blok)
-
-      they_match = case s_or_regex
-        when String
-          msg = "#{_cap_col_name_} must match #{s_or_regex}."
-          @val == s_or_regex
-        when Regexp
-          msg = "#{_cap_col_name_} is invalid."
-          @val =~ s_or_regex
-      end
-
-      return true if they_match
-      _choose_and_add_error_msg_(err_msg, msg, &err_msg_blok)
-      false
-
-    end
-    
-
-  end # ==== class Validator
-
-
-
-
-
-
-
-================================================================
-  def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
-    error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
-    menu      = ( raw_menu || self.class.const_get("VALID_#{field_name.to_s.pluralize.upcase}") )
-    self.errors.add( field_name, error_msg ) unless menu.include?( self[field_name] )
-  end
-
-  def require_assoc! assoc_name, raw_error_msg  = nil
-    field_name = "#{assoc_name}_id".to_sym
-    self[field_name] = self[field_name].to_i
-    if self[field_name].zero?
-      self.errors.add( field_name , "No id for #{assoc_name} specified." ) 
-    end
-  end
-  
-  # Sets field to new value using :to_s and :strip
-  # Then, adds to :errors if new string is empty.
-  def require_string! field_name, raw_error_msg  = nil
-    clean = raw_data[field_name].to_s.strip
-    
-    if clean.empty?
-      error_msg  = ( raw_error_msg || "is required." ).strip
-      self.errors.add( field_name, error_msg )
-      return nil
-    else
-      self[field_name] = clean
-    end
-  end
-
-  def optional_string field_name
-    clean = raw_data[field_name].to_s.strip
-    if clean.empty?
-      self[field_name] = nil
-    else
-      self[field_name] = clean
-    end
-  end
-
-  # Accepts an unlimited number of field names as symbols.
-  # If the last item is a STRING, it will be used as the error msg.
-  # If a STRING is not used, then a default error message is used.
-  def require_at_least_one_string!( *raw_args )
-
-    field_names       = raw_args.select { |i| i.is_a?(Symbol) }
-    default_error_msg = raw_args.last.is_a?(String) ?
-                           "At least one of these is require: #{field_names.join(', ')}" :
-                           raw_args.pop
-
-    all_are_empty  =  field_names.size === field_names.select { |name| self[name].to_s.strip.eql?('') }.size
-
-    self.errors.add( field_names.first, default_error_msg ) if all_are_empty
-    
-  end 
-
-  def require_same_owner assoc_name
-    
-    return if self[:owner_id].to_i < 1
-    assoc_reflect = self.association_reflections[assoc_name]
-    m_class = Object.const_get( assoc_reflect[:class_name] )
-    m_id_int = raw_data[m_id].to_i
-    return if m_id_int < 1
-
-    m_obj = m_class[:id=>m_id_int ]
-
-    if !m_obj
-      self[assoc_reflect[:key]] = nil
-    else
-      if m_obj[:owner_id] != self[:owner_id]
-        raise %~
-        Potential security threat: #{self.class} owner, #{self[:owner_id]} 
-        not owner of #{m_class} #{m_obj[:owner_id]}
-        ~.strip.gsub("\n", ' ')
-      end
-      self[assoc_reflect[:key]] = m_id_int
-    end
-   
-  end
- 
 

@@ -298,7 +298,7 @@ class Member
       raise ArgumentError, "Only Hash object is allowed."
     end
 
-    hash[:timestamp] = self.class.utc_now 
+    hash[:timestamp] = Time.now.utc.strftime(Time_Format) 
 
     self.new_data.history ||= self.history
     self.history << hash

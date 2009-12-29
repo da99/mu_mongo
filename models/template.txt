@@ -2,23 +2,19 @@
 
 class #{model_class}
 
-  include CouchPlastic
+  include Couch_Plastic
 
 
   # =========================================================
-  #                     GET Methods (Class)
+  #                     Getters
   # =========================================================    
   
   # =========================================================
   #                     CRUD Methods.
   # =========================================================
 
-  enable :created_at, :updated_at
+  enable_timestamps
 
-  required_for_create  :title
-  optional_for_create  :tags 
-
-  optional_for_update :title
 
   # =========================================================
   #           Authorization Methods (Class + Instance)
@@ -39,7 +35,7 @@ class #{model_class}
 
 
   # =========================================================
-  #                     SETTERS/ACCESSORS (Instance)
+  #              SETTERS/ACCESSORS (Instance)
   # =========================================================
 
 
