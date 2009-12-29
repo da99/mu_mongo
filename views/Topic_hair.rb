@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_hair.sass
 # NAME  Topic_hair
 
-class Topic_hair < View_Base
+class Topic_hair < Base_View
 
   def title 
    "Skin & Hair." 

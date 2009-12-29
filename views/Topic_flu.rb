@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_flu.sass
 # NAME  Topic_flu
 
-class Topic_flu < View_Base
+class Topic_flu < Base_View
 
   def title 
   "Get Rid of Cold & Flur." 

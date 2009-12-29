@@ -1,5 +1,5 @@
 class Inspect_Control
-  include Control_Base
+  include Base_Control
 
   def GET_list 
     file_contents = File.read(File.expand_path(__FILE__)).split("\n")

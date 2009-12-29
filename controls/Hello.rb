@@ -1,5 +1,5 @@
 class Hello
-  include Control_Base
+  include Base_Control
 
 	def GET_list 
 		render_html_template

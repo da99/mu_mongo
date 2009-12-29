@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Club_Control_hearts.sass
 # NAME  Club_Control_hearts
 
-class Club_Control_hearts < View_Base
+class Club_Control_hearts < Base_View
 
   def title 
     'The Hearts Club'

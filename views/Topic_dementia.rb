@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_dementia.sass
 # NAME  Topic_dementia
 
-class Topic_dementia < View_Base
+class Topic_dementia < Base_View
 
   def title
     "Avoid Dementia or Alzheimer's" 

@@ -15,7 +15,35 @@
 # }
 #
 
-require_these 'models', [ :Couch_Plastic_Validator, :Couch_Plastic_Helper ]
+module Couch_Plastic
+  
+  # =========================================================
+  #       Special class for use throughout app.
+  # ========================================================= 
+  class Helper
+
+    class << self
+
+      def time_string(time_or_str)
+        t = Time.parse(time_or_str.to_s)
+        t.strftime('%Y-%m-%d %H:%M:%S')
+      end
+
+      def utc_now
+        Time.now.utc
+      end
+
+      def utc_now_as_string
+        time_string(utc_now)
+      end
+
+    end
+
+  end # === class Helper
+
+end # ==== module Couch_Plastic
+
+
 
 module Couch_Plastic
   
@@ -136,7 +164,12 @@ module Couch_Plastic
   end
 
   def set_cleanest_value field_name, val
-    raise "implement"
+    clean_data[field_name] = val
+		begin
+			new_data.send "#{field_name}=", val
+		rescue NoMethodError
+		end
+		val
   end
 
   def cleanest_value field_name
@@ -220,7 +253,9 @@ module Couch_Plastic
   attr_reader :manipulator
 
   def set_manipulator mem
-    raise ArgumentError, "Method can only be used once." if @manipulator
+		if instance_variable_defined? :@manipulator
+			raise ArgumentError, "Method can only be used once." 
+		end
     @manipulator = mem
   end
 
@@ -304,9 +339,29 @@ module Couch_Plastic
   # =========================================================
   #                  Validator Helpers
   # ========================================================= 
+
+  def errors
+    @errors ||= []
+  end
+
+  def raise_if_invalid
+    
+    if !errors.empty? 
+      raise Invalid.new( self, "Document has validation errors." )
+    end
+
+    if new_data.as_hash.empty?
+      raise NoNewValues, "No new data to save."
+    end
+
+    true
+
+  end 
   
   def validator_field_name
-     caller[2] =~ /`([^']*)'/ && $1.to_sym
+     line = caller[0,3].detect { |meth| meth['_validator']} 
+		 raise "Name of validator not found." unless line
+		 line =~ /`([^']*)_validator'/ && $1.to_sym
   end
 
   def accept_anything
@@ -319,7 +374,7 @@ module Couch_Plastic
 
   def sanitize &blok
     field = validator_field_name
-    val   = raw_data[field]
+    val   = cleanest_value( field ) 
     val.extend Couch_Plastic_Sanitizer_Methods
     set_cleanest_value(
       field, 
@@ -330,7 +385,7 @@ module Couch_Plastic
   def must_be &blok
     begin
       new_validator = Couch_Plastic_Validator.new(self, validator_field_name )
-      new_validator.validate blok
+      new_validator.instance_eval( &blok )
     rescue Couch_Plastic_Validator::Invalid
     end
   end
@@ -339,7 +394,7 @@ module Couch_Plastic
     begin
       new_vald = Couch_Plastic_Validator.new(self, validator_field_name)
       new_vald.use_runtime_error
-      new_vald.validate blok
+      new_vald.instance_eval( &blok )
     rescue Couch_Plastic_Validator::Invalid
     end
   end
@@ -350,7 +405,9 @@ end # === module Couch_Plastic ================================================
 module Couch_Plastic_Sanitizer_Methods
 
   def with regexp, &blok
-    gsub regexp, &blok
+		if is_a?(String)
+			gsub regexp, &blok
+		end
   end
 
 end # === 
@@ -364,7 +421,7 @@ class Couch_Plastic_Validator
   def initialize new_doc, new_field_name, &blok
     @doc                = new_doc
     @field_name         = new_field_name.to_sym
-    @english_field_name = @field_name.to_s.capitlize.gsub('_', ' ')
+    @english_field_name = @field_name.to_s.capitalize.gsub('_', ' ')
   end
 
   def use_runtime_error 
@@ -386,12 +443,6 @@ class Couch_Plastic_Validator
     doc.cleanest_value field_name
   end
 
-  def validate blok
-    instance_eval( &blok )
-    if doc.errors.empty?
-      doc.value_is_clean( field_name )
-    end
-  end
 
   # ======== Methods for validation.
 
@@ -402,47 +453,67 @@ class Couch_Plastic_Validator
 
   def not_empty
     if clean_val.nil? || clean_val.strip.empty?
-      record_error '% is required.'
+      record_error '%s is required.'
     end
   end
 
   def equal val, err_msg = nil
     if clean_val != val
-      record_error( err_msg || "% must be equal to #{val.inspect}" )
+      record_error( err_msg || "%s must be equal to #{val.inspect}" )
     end
   end
 
   def in_array arr, err_msg = nil
     unless arr.include?(clean_val)
-      default_err = "% is invalid. Must be either: #{arr.map(&:inspect).join(', ')}"
+      default_err = "%s is invalid. Must be either: #{arr.map(&:inspect).join(', ')}"
       record_error( err_msg || default_err )
     end
   end
 
   def match regexp, err_msg = nil
     if clean_val !~ regexp
-      record_error( err_msg || '% is invalid.')
+      record_error( err_msg || '%s is invalid.')
+    end
+  end
+
+	def not_match regexp, err_msg = nil
+		if clean_val =~ regexp
+			record_error( err_msg || '%s has invalid characters.' )
+		end
+	end
+
+	def between_size raw_start, raw_end, err_msg = nil
+		min_size raw_start, err_msg
+		max_size raw_end, err_msg
+	end
+
+  def max_size raw_int, err_msg = nil
+    if !clean_val.respond_to?(:jsize) ||
+       clean_val.jsize >= raw_int.to_i
+      
+      record_error( err_msg || "%s is too large. #{raw_int} characters is the maximum allowed." )
+      
     end
   end
 
   def min_size raw_int, err_msg = nil
-    if !clean_val.respond_to?(:size) ||
-       clean_val.size != raw_int.to_i
+    if !clean_val.respond_to?(:jsize) ||
+       clean_val.jsize <= raw_int.to_i
       
-      record_error( err_msg || "% must be at least #{raw_int} characters long." )
+      record_error( err_msg || "%s must be at least #{raw_int} characters long." )
       
     end
   end
 
   def not_in_array arr, err_msg = nil
     if arr.include?(clean_val)
-      record_error( err_msg || '% is already taken.' )
+      record_error( err_msg || '%s is already taken.' )
     end
   end
 
   def string err_msg = nil
     if not clean_val.is_a?(String)
-      record_error( err_msg || '% is invalid.' )
+      record_error( err_msg || '%s is invalid.' )
     end
   end
 
@@ -575,6 +646,70 @@ end # === module ClassMethods ==============================================
 
 __END__
 
+
+
+    # === TIME METHODS ====
+
+    def to_datetime(time_or_str)
+      @val = Couch_Plastic::Helper.time_string(time_or_str)
+    end
+
+    def to_datetime_or_now(nil_or_time_or_str = nil)
+      v = nil_or_time_or_str
+      @val = v ? to_datetime(v) : Couch_Plastic::Helper.utc_now_as_string
+    end
+
+
+
+    # Turns :val into a stripped string if it does not
+    # respond to :size.
+    def min_size( size, &blok )
+      strip if !@val.respond_to?(:jsize)
+      return true if @val.jsize >= size 
+
+      msg = "#{_cap_col_name_} needs to be at least #{size} characters in length."
+      _choose_and_add_error_msg_(msg, &blok)
+      false
+    end
+
+    # Turns :val into a stripped string if it does not
+    # respond to :size.
+    def between_size( min, max, str = nil, &blok ) 
+      strip if !@val.respond_to?(:jsize)
+      return true if @val.jsize.between?(min, max)
+
+      msg = "#{_cap_col_name_} needs to be between #{min} and #{max} characters in length."
+      _choose_and_add_error_msg_((str && str % [min, max]), msg, &blok)
+      false
+    end
+
+    def match(s_or_regex, err_msg = nil,  &err_msg_blok)
+
+      they_match = case s_or_regex
+        when String
+          msg = "#{_cap_col_name_} must match #{s_or_regex}."
+          @val == s_or_regex
+        when Regexp
+          msg = "#{_cap_col_name_} is invalid."
+          @val =~ s_or_regex
+      end
+
+      return true if they_match
+      _choose_and_add_error_msg_(err_msg, msg, &err_msg_blok)
+      false
+
+    end
+    
+
+  end # ==== class Validator
+
+
+
+
+
+
+
+================================================================
   def require_valid_menu_item!( field_name, raw_error_msg = nil, raw_menu = nil )
     error_msg = ( raw_error_msg || "Invalid menu choice. Contact support." )
     menu      = ( raw_menu || self.class.const_get("VALID_#{field_name.to_s.pluralize.upcase}") )

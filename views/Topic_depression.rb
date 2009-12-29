@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_depression.sass
 # NAME  Topic_depression
 
-class Topic_depression < View_Base
+class Topic_depression < Base_View
 
   def title  
   "Safe Supplements for Severe Depression." 

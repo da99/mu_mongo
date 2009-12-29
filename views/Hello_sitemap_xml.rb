@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Hello_sitemap_xml.sass
 # NAME  Hello_sitemap_xml
 
-class Hello_sitemap_xml < View_Base
+class Hello_sitemap_xml < Base_View
 
 	def last_modified_at
 		news.first[:last_modified_at ]

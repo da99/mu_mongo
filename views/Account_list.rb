@@ -1,5 +1,5 @@
 # /home/da01/megauni/templates/English/mab/Account_list.rb
-class Account_list < View_Base
+class Account_list < Base_View
 
   def title 
     'My Account'

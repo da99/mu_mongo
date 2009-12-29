@@ -30,16 +30,15 @@ begin
   use Slashify_Path_Ending
   use Redirect_Mobile
 	
-
-	# === Content Generators
-  use Always_Find_Favicon
-  use Serve_Public_Folder, ['/busy-noise/', '/my-egg-timer/', '/styles/', '/skins/']
-  
   if The_App.non_production?
 		require 'middleware/Render_Css' 
 		use Render_Css
   end
 
+	# === Content Generators
+  use Always_Find_Favicon
+  use Serve_Public_Folder, ['/busy-noise/', '/my-egg-timer/', '/styles/', '/skins/']
+  
 	# === Helpers
   use Rack::Session::Pool
   use Strip_If_Head_Request
@@ -49,7 +48,6 @@ begin
 	use Catch_Bad_Bunny
 	use Find_The_Bunny
 
-  
     
   # ===============================================
   # Require these controls.

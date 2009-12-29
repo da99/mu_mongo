@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_computer.sass
 # NAME  Topic_computer
 
-class Topic_computer < View_Base
+class Topic_computer < Base_View
 
   def title 
     "Buying and Using a Computer"

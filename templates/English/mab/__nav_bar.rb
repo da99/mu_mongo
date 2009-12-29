@@ -1,4 +1,4 @@
-# ~/megauni/views/View_Base.rb
+# ~/megauni/views/Base_View.rb
 # ~/megauni/templates/English/sass/layout.sass
 
 div( :id=>"nav_bar" ) { 

@@ -1,5 +1,5 @@
 class Member_Control
-  include Control_Base
+  include Base_Control
     
   # ============= Member Actions ==========================          
 

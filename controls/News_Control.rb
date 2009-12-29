@@ -1,5 +1,5 @@
 
-class News_Mustache < View_Base 
+class News_Mustache < Base_View 
 
   def news_tags
     @all_news_tags ||= News.tags
@@ -9,7 +9,7 @@ end # === News_Mustache
 
 
 class News_Control
-  include Control_Base
+  include Base_Control
 
 	def POST # CREATE 
 		success_msg  "Save: #{doc.data.title}" 

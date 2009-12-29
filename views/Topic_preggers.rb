@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_preggers.sass
 # NAME  Topic_preggers
 
-class Topic_preggers < View_Base
+class Topic_preggers < Base_View
 
   def title  
   "To Serve Man." 

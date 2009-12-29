@@ -1,6 +1,6 @@
 
 class Topic
-  include Control_Base
+  include Base_Control
 
   List = %w{
     arthritis

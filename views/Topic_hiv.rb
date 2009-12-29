@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_hiv.sass
 # NAME  Topic_hiv
 
-class Topic_hiv < View_Base
+class Topic_hiv < Base_View
 
   def title  
   "Vitamins for HIV/AIDS/STDs" 

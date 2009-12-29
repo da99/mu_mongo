@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_heart.sass
 # NAME  Topic_heart
 
-class Topic_heart < View_Base
+class Topic_heart < Base_View
 
   def title  
   "To Serve Man." 

@@ -1,6 +1,6 @@
 # /home/da01/megauni/templates/English/mab/Inspect_Control_list.rb
 
-class Inspect_Control_list < View_Base
+class Inspect_Control_list < Base_View
 
   def title
     'Hello, World'

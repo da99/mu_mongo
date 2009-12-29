@@ -1,5 +1,5 @@
 class Session_Control
-  include Control_Base
+  include Base_Control
 
   def GET_log_in 
     render_html_template

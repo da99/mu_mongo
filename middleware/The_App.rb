@@ -1,6 +1,6 @@
 require 'rack'
 require 'rack/utils'
-require 'controls/Control_Base'
+require 'controls/Base_Control'
 
 
 class The_App

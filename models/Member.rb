@@ -33,7 +33,7 @@ class Member
       :romance,
       :pet_owner,
       :celebrity
-  ]
+  ].map(&:to_s).freeze
 
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
@@ -170,11 +170,10 @@ class Member
   # ==== Validators =====================================================
 
   def password_validator
-                
     sanitize { strip }
 
     must_be {
-      equal raw_data[:confirm_password], 'Password and password confirmation do not match.'
+      equal doc.raw_data[:confirm_password], 'Password and password confirmation do not match.'
       min_size 5
       match( /[0-9]/, 'Password must have at least one number' )
     }
@@ -188,7 +187,7 @@ class Member
                       }
                     end
 
-    new_data.hashed_password = BCrypt::Password.create( password + new_data.salt ).to_s
+    new_data.hashed_password = BCrypt::Password.create( cleanest_value(:password) + new_data.salt ).to_s
     
   end
   
@@ -221,8 +220,6 @@ class Member
   
   def add_life_validator 
     
-    sanitize { to_sym }
-    
     must_be_or_raise! {
       in_array Member::LIVES
     }
@@ -234,7 +231,7 @@ class Member
     end
 
     new_data.lives = (original_data.lives || {})
-    new_data.lives[add_life] ||={}
+    new_data.lives[cleanest_value(:add_life)] ||={}
     
     add_life_username_validator
 
@@ -259,8 +256,12 @@ class Member
 
     must_be {
 
-      between_size 2, 20,  'Username must be between %d and %d characters.'
-      match( /[a-z0-9]/i,  'Username must have at least one letter or number.') 
+      min_size 2,  'Username is too small. It must be at least 2 characters long.'
+			max_size 20, 'Username is too large. The maximum limit is: 20 characters.'
+			
+			valid_chars    = "A-Z a-z 0-9 . _ -"
+			invalid_regexp = /[^a-zA-Z0-9\.\_\-]/
+      not_match( invalid_regexp, 'Username can only contain the follow characters: #{valid_chars}' ) 
 
     } 
 
@@ -268,7 +269,7 @@ class Member
     
     if errors.empty?
       begin
-        reserve_username( add_life_username )
+        reserve_username( cleanest_value(:add_life_username) )
       rescue Couch_Doc::HTTP_Error_409_Update_Conflict
         errors << "Username already taken: #{add_life_username}"
       end

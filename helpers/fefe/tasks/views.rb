@@ -38,7 +38,7 @@ partial('__nav_bar')
 # SASS  #{sass}
 # NAME  #{name}
 
-class #{name} < View_Base
+class #{name} < Base_View
 
   def title 
     '...'

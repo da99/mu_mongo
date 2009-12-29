@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_news.sass
 # NAME  Topic_news
 
-class Topic_news < View_Base
+class Topic_news < Base_View
 
   def title  
   "To Serve Man." 

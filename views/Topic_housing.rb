@@ -2,7 +2,7 @@
 # SASS  ~/megauni/templates/English/sass/Topic_housing.sass
 # NAME  Topic_housing
 
-class Topic_housing < View_Base
+class Topic_housing < Base_View
 
   def title  
   "Housekeeping and Cleanup" 

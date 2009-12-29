@@ -1,6 +1,6 @@
-require 'views/View_Base'
+require 'views/Base_View'
 
-module Control_Base
+module Base_Control
 
   # ======== INSTANCE stuff ======== 
   
@@ -258,4 +258,4 @@ module Control_Base
     raise The_App::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
   end
 
-end # === Control_Base
+end # === Base_Control
