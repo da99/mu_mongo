@@ -16,7 +16,7 @@ module Couch_Plastic
   #                  Error Constants
   # ========================================================= 
 
-  class NoRecordFound < StandardError; end
+  class No_Doc_Found < StandardError; end
   class NoNewValues < StandardError; end
   class HTTPError < StandardError; end
   

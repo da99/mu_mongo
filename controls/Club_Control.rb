@@ -8,7 +8,7 @@ class Club_Control
       env['the.app.club'] = club
       @action_name        = club_filename
       render_html_template 
-    rescue Couch_Doc::No_Record_Found
+    rescue Couch_Doc::No_Doc_Found
       raise The_App::HTTP_404, "No club with filename: #{club_filename.inspect}"
     end
   end

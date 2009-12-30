@@ -5,7 +5,7 @@ class Couch_Doc
   
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
-	No_Record_Found                = Class.new(StandardError)
+	No_Doc_Found                   = Class.new(StandardError)
 
   ValidQueryOptions = %w{ 
       key
@@ -54,7 +54,7 @@ class Couch_Doc
 
     rescue RestClient::ResourceNotFound 
       if http_meth === :GET
-        raise Couch_Doc::No_Record_Found, "No document found for: #{path}"
+        raise Couch_Doc::No_Doc_Found, "No document found for: #{path}"
       else
         raise $!
       end
@@ -142,7 +142,7 @@ class Couch_Doc
   def GET_design
     begin
       GET( design_id )
-    rescue Couch_Doc::No_Record_Found 
+    rescue Couch_Doc::No_Doc_Found 
       nil
     end
   end
