@@ -78,7 +78,6 @@ end # === case
 
 require_these 'models', %w{
   Couch_Doc
-  Design_Doc
   Couch_Plastic
   Club
   News

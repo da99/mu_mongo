@@ -134,7 +134,7 @@ module Couch_Plastic
   #      Methods for handling Old/New Data
   # ========================================================= 
 
-  def set_cleanest_value field_name, val
+  def new_clean_value field_name, val
     clean_data[field_name] = val
 		begin
 			new_data.send "#{field_name}=", val
@@ -143,7 +143,7 @@ module Couch_Plastic
 		val
   end
 
-  def cleanest_value field_name
+  def cleanest field_name
     if new_data.as_hash.has_key?(field_name) 
       new_data.send( field_name )
     elsif clean_data.has_key?(field_name)
@@ -308,7 +308,7 @@ module Couch_Plastic
 
   def accept_anything
     field = validator_field_name
-    set_cleanest_value(
+    new_clean_value(
       field,
       raw_data[field]
     )
@@ -316,7 +316,7 @@ module Couch_Plastic
 
   def sanitize &blok
     field = validator_field_name
-    val   = cleanest_value( field ) 
+    val   = cleanest( field ) 
 		
 		if val.is_a?(String)
 			def val.with regexp, &blok
@@ -324,7 +324,7 @@ module Couch_Plastic
 			end
 		end
 		
-    set_cleanest_value(
+    new_clean_value(
       field, 
       raw_data[field].instance_eval(&blok)
     )
@@ -338,10 +338,10 @@ module Couch_Plastic
     end
   end
 
-  def must_be_or_raise! &blok
+  def must_be! &blok
     begin
       new_vald = Couch_Plastic_Validator.new(self, validator_field_name)
-      new_vald.use_runtime_error
+      new_vald.no_errors_whatsoever
       new_vald.instance_eval( &blok )
     rescue Couch_Plastic_Validator::Invalid
     end
@@ -478,23 +478,23 @@ class Couch_Plastic_Validator
     @english_field_name = @field_name.to_s.capitalize.gsub('_', ' ')
   end
 
-  def use_runtime_error 
+  def no_errors_whatsoever 
     @raise_on_error = true
   end
 
-  def use_runtime_error?
+  def no_errors_whatsoever?
     !!@raise_on_error
   end
 
   def record_error new_msg
     msg = (new_msg % english_field_name)
-    raise msg if use_runtime_error?
+    raise msg if no_errors_whatsoever?
     doc.errors << msg
     raise Invalid, "Error found on #{field_name}"
   end
 
   def clean_val
-    doc.cleanest_value field_name
+    doc.cleanest field_name
   end
 
 

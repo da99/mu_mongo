@@ -12,7 +12,7 @@ class Club
   # ==== Hooks ====
 
   def before_create
-    set_cleanest_value :lang, 'English'
+    new_clean_value :lang, 'English'
     demand :title, :teaser
     ask_for :lang
   end
@@ -55,7 +55,7 @@ class Club
   end
 
   def lang_validator
-    must_be_or_raise! { 
+    must_be! { 
       in_array LANGS 
     }
   end

@@ -187,12 +187,12 @@ class Member
                       }
                     end
 
-    new_data.hashed_password = BCrypt::Password.create( cleanest_value(:password) + new_data.salt ).to_s
+    new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
     
   end
   
   def security_level_validator 
-    must_be_or_raise! { 
+    must_be! { 
       in_array Security_Levels 
     }
   end # === def set_security_level
@@ -220,18 +220,18 @@ class Member
   
   def add_life_validator 
     
-    must_be_or_raise! {
+    must_be! {
       in_array Member::LIVES
     }
       
     if !new?
-      must_be_or_raise! {
+      must_be! {
         not_in_array doc.data.lives.keys
       }
     end
 
     new_data.lives = (original_data.lives || {})
-    new_data.lives[cleanest_value(:add_life)] ||={}
+    new_data.lives[cleanest(:add_life)] ||={}
     
     add_life_username_validator
 
@@ -259,17 +259,18 @@ class Member
       min_size 2,  'Username is too small. It must be at least 2 characters long.'
 			max_size 20, 'Username is too large. The maximum limit is: 20 characters.'
 			
-			valid_chars    = "A-Z a-z 0-9 . _ -"
-			invalid_regexp = /[^a-zA-Z0-9\.\_\-]/
-      not_match( invalid_regexp, 'Username can only contain the follow characters: #{valid_chars}' ) 
+      not_match( 
+        /[^a-zA-Z0-9\.\_\-]/, 
+        'Username can only contain the follow characters: A-Z a-z 0-9 . _ -' 
+      ) 
 
     } 
 
-    new_data.lives[cleanest_value(:add_life)][:username] = cleanest_value(:add_life_username)
+    new_data.lives[cleanest(:add_life)][:username] = cleanest(:add_life_username)
     
     if errors.empty?
       begin
-        reserve_username( cleanest_value(:add_life_username) )
+        reserve_username( cleanest :add_life_username  )
       rescue Couch_Doc::HTTP_Error_409_Update_Conflict
         errors << "Username already taken: #{add_life_username}"
       end
