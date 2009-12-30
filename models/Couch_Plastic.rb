@@ -2,6 +2,8 @@
 
 module Couch_Plastic
   
+  include Comparable
+
   # include Demand_Arguments_Dsl
 
 	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
@@ -54,6 +56,13 @@ module Couch_Plastic
   
 	attr_reader :original_data, :new_data, :raw_data, :clean_data, :assoc_cache
   alias_method :data, :original_data
+
+  def == val
+    return false unless val.respond_to?(:original_data)
+    return true if equal?(val)
+    return false if original_data.nil? || val.original_data.nil?
+    original_data.as_hash == val.original_data.as_hash
+  end
 
   def new?
     original_data.nil?
@@ -341,7 +350,7 @@ module Couch_Plastic
   def must_be! &blok
     begin
       new_vald = Couch_Plastic_Validator.new(self, validator_field_name)
-      new_vald.no_errors_whatsoever
+      new_vald.must_be_perfect
       new_vald.instance_eval( &blok )
     rescue Couch_Plastic_Validator::Invalid
     end
@@ -469,6 +478,7 @@ end # === module ClassMethods ==============================================
 class Couch_Plastic_Validator
 
   Invalid = Class.new(StandardError)
+  Perfection_Required = Class.new(StandardError)
 
   attr_reader :doc, :field_name, :english_field_name
 
@@ -478,17 +488,17 @@ class Couch_Plastic_Validator
     @english_field_name = @field_name.to_s.capitalize.gsub('_', ' ')
   end
 
-  def no_errors_whatsoever 
-    @raise_on_error = true
+  def must_be_perfect 
+    @must_be_perfect = true
   end
 
-  def no_errors_whatsoever?
-    !!@raise_on_error
+  def must_be_perfect?
+    !!@must_be_perfect
   end
 
   def record_error new_msg
     msg = (new_msg % english_field_name)
-    raise msg if no_errors_whatsoever?
+    raise( Perfection_Required, msg ) if must_be_perfect?
     doc.errors << msg
     raise Invalid, "Error found on #{field_name}"
   end
