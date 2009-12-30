@@ -68,7 +68,7 @@ class Member
       password = demand_string_not_empty raw_vals[:password]
       mem      = Member.by_username( username )
 
-      correct_password = BCrypt::Password.new(mem.original_data.hashed_password) === (password + mem.data.salt)
+      correct_password = BCrypt::Password.new(mem.data.hashed_password) === (password + mem.data.salt)
       
       return mem if correct_password
 
@@ -133,7 +133,7 @@ class Member
   end
   
   def usernames
-    assoc_cache[:usernames] ||= original_data.lives.values.map { |l| l[:username]}
+    assoc_cache[:usernames] ||= data.lives.values.map { |l| l[:username]}
   end
 
   def has_power_of?(raw_level)
@@ -230,7 +230,7 @@ class Member
       }
     end
 
-    new_data.lives = (original_data.lives || {})
+    new_data.lives = (data.lives || {})
     new_data.lives[cleanest(:add_life)] ||={}
     
     add_life_username_validator

@@ -2,10 +2,6 @@
 
 module Couch_Plastic
   
-  include Comparable
-
-  # include Demand_Arguments_Dsl
-
 	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
 	
   # =========================================================
@@ -54,18 +50,17 @@ module Couch_Plastic
   #           Miscellaneous Methods
   # ========================================================= 
   
-	attr_reader :original_data, :new_data, :raw_data, :clean_data, :assoc_cache
-  alias_method :data, :original_data
+	attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache
 
   def == val
-    return false unless val.respond_to?(:original_data)
+    return false unless val.respond_to?(:data)
     return true if equal?(val)
-    return false if original_data.nil? || val.original_data.nil?
-    original_data.as_hash == val.original_data.as_hash
+    return false if data.nil? || val.data.nil?
+    data.as_hash == val.data.as_hash
   end
 
   def new?
-    original_data.nil?
+    data.nil?
   end
  
   def human_field_name( col )
@@ -95,7 +90,7 @@ module Couch_Plastic
 			
 			raw_doc = Couch_Doc.GET(doc_id)
 			
-			@original_data = Class.new {
+			@data = Class.new {
 				def initialize( new_hash )
 					@vals = new_hash
 				end
@@ -196,13 +191,13 @@ module Couch_Plastic
 
   def created_at
     return nil unless self.class.allow_fields.include?(:created_at)
-    original_data.created_at.to_time
+    data.created_at.to_time
   end
 
   def updated_at
     return nil unless self.class.allow_fields.include?(:updated_at)
-		return nil if original_data.updated_at.nil?
-    original_data.updated_at.to_time
+		return nil if data.updated_at.nil?
+    data.updated_at.to_time
   end
   
   
@@ -234,11 +229,11 @@ module Couch_Plastic
 
     begin
       results = Couch_Doc.PUT( new_id, data)
-      @original_data.as_hash.update(new_data.as_hash)
-      original_data._id        = new_id
-      original_data._rev       = results[:rev]
-      original_data.created_at = data[:created_at] if data.has_key?(:created_at)
-      original_data.data_model = data[:data_model]
+      @data.as_hash.update(new_data.as_hash)
+      data._id        = new_id
+      data._rev       = results[:rev]
+      data.created_at = data[:created_at] if data.has_key?(:created_at)
+      data.data_model = data[:data_model]
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -259,15 +254,15 @@ module Couch_Plastic
     before_update
     raise_if_invalid
 
-    data = original_data.as_hash.clone.update(new_data.as_hash)
-    data[:_rev] = original_data._rev
+    data = data.as_hash.clone.update(new_data.as_hash)
+    data[:_rev] = data._rev
     data[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
     
     begin
-      results = Couch_Doc.PUT( original_data._id, data )
-      original_data._rev = results[:rev]
-      original_data.updated_at = data[:updated_at] if data.has_key?(:updated_at)
-      original_data.as_hash.update(new_data.as_hash)
+      results = Couch_Doc.PUT( data._id, data )
+      data._rev = results[:rev]
+      data.updated_at = data[:updated_at] if data.has_key?(:updated_at)
+      data.as_hash.update(new_data.as_hash)
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -282,8 +277,8 @@ module Couch_Plastic
     
     clear_assoc_cache
 
-    results = Couch_Doc.delete( original_data.id, original_data._rev )
-    original_data.as_hash.clear # Mark document as new.
+    results = Couch_Doc.delete( data.id, data._rev )
+    @data = nil # Mark document as new.
 
   end
 

@@ -15,7 +15,7 @@ class Hello_sitemap_xml < Base_View
 	def news
 		@news ||= News.by_published_at(:limit=>5, :descending=>true).map { |post|
 			{:last_modified_at => w3c_date(post.last_modified_at),
-			 :url => File.join(site_url, 'news', post.original_data._id + '/' ) }
+			 :url => File.join(site_url, 'news', post.data._id + '/' ) }
 		}
 	end
 
