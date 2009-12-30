@@ -16,9 +16,7 @@ module Couch_Plastic
   #                  Error Constants
   # ========================================================= 
 
-  class No_Doc_Found < StandardError; end
-  class NoNewValues < StandardError; end
-  class HTTPError < StandardError; end
+  class Nothing_To_Update < StandardError; end
   
   class Invalid < StandardError
     attr_accessor :doc
@@ -296,8 +294,8 @@ module Couch_Plastic
       raise Invalid.new( self, "Document has validation errors." )
     end
 
-    if new_data.as_hash.empty?
-      raise NoNewValues, "No new data to save."
+    if new_data.as_hash.empty? || (new_data.as_hash == data.as_hash)
+      raise Nothing_To_Update, "No new data to save."
     end
 
     true
