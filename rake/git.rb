@@ -13,6 +13,18 @@ def check_this_url url, r_text
   end
 end
 
+def git_commit_pending?
+  output = `git status 2>&1`
+  case $?.exitstatus
+  when 0
+    true
+  when 1
+    false
+  else
+    raise "Unknown error: exitstatus: #{$?.exitstatus}  -  #{output}"
+  end
+end
+
 namespace 'git' do
   
 	desc 'Executes: git add . && git add -u && git status'
@@ -30,15 +42,12 @@ namespace 'git' do
 
     comment = assert_not_empty( raw_msg )
       
-    if false
+    if git_commit_pending?
       sh( 'git commit -m %s ' % comment.inspect )
       puts_white "COMMITTED: #{comment}"
-      true
     else
       puts_red "NO GO: Nothing to commit."
-      false
     end
-    
 
   end
 
