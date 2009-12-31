@@ -30,7 +30,8 @@ namespace 'git' do
 	desc 'Executes: git add . && git add -u && git status'
 	task :update => ['sass:compile'] do 
 		sass {
-      sh 'git add . && git add -u && git status'
+      sh 'git add . && git add -u'
+      system 'git status'
     }
 	end
   
