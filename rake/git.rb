@@ -1,53 +1,56 @@
-
 require 'launchy'
 require 'rest_client'
 
-class Git
 
-  include FeFe
-
-  describe :update do
-    it "Executes: git add . && git add -u && git status"
-    
-    steps do
-      fefe_run 'sass:compile'
-      puts_white( output = shell_out('git add . && git add -u && git status') )
-      fefe_run 'sass:delete'
-      output['Changes to be committed']
+def check_this_url url, r_text
+  begin
+    results = RestClient.get( url )
+    if results !~ r_text
+      puts_red "Could not find #{r_text.inspect} @ #{url}"
     end
+  rescue RestClient::ResourceNotFound, RestClient::RequestFailed, RestClient::RequestTimeout
+    puts_red "Homepage problem: #{url} - #{$!.message}"
   end
+end
 
-  describe :commit do
-    it 'Gathers comment and commits it. Example: git:commit message="My commit." '
+namespace 'git' do
+  
+	desc 'Executes: git add . && git add -u && git status'
+	task :update => ['sass:compile'] do 
+		sass {
+      sh 'git add . && git add -u && git status'
+    }
+	end
+  
+  
+  desc 'Gathers comment and commits it. Example: git:commit message="My commit." '
+  task :commit => [:update] do
     
-    steps([:msg]) do |msg|
+    raw_msg = ENV['msg']
 
-      comment = demand_string_not_empty msg
-        
-      if commit_pending?
-        puts_white shell_out( 'git commit -m %s ', comment)
-        puts_white "COMMITTED: #{comment}"
-        true
-      else
-        puts_red "NO GO: Nothing to commit."
-        false
-      end
+    comment = assert_not_empty( raw_msg )
       
+    if false
+      sh( 'git commit -m %s ' % comment.inspect )
+      puts_white "COMMITTED: #{comment}"
+      true
+    else
+      puts_red "NO GO: Nothing to commit."
+      false
     end
+    
 
   end
 
-  describe :dev_check do
-    it "Used to update and commit development checkpoint. Includes the commit comment for you."
-    steps do
-      run_task :commit, :msg=>'Development checkpoint.'
-    end 
+  
+  desc "Used to update and commit development checkpoint. Includes the commit comment for you."
+  task :dev_check do
+    run_task :commit, :msg=>'Development checkpoint.'
   end # === task
 
   
-  describe :push do 
-    it "Push code to Heroku. Options: migrate = false"
-    steps do
+  desc "Push code to Heroku. Options: migrate = false"
+  task :push do 
 
       puts_red "Not done."
       puts_red "First, update gems."
@@ -105,25 +108,7 @@ class Git
       Launchy.open( url )
 
       true
-    end
   end # === task
 
-
-  private # ===================================================
-
-  def commit_pending?
-    run_task(:update, {})
-  end
-
-  def check_this_url url, r_text
-    begin
-      results = RestClient.get( url )
-      if results !~ r_text
-        puts_red "Could not find #{r_text.inspect} @ #{url}"
-      end
-    rescue RestClient::ResourceNotFound, RestClient::RequestFailed, RestClient::RequestTimeout
-      puts_red "Homepage problem: #{url} - #{$!.message}"
-    end
-  end
-end # === Git
-
+  
+end # === namespace git
