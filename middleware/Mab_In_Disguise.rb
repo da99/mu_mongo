@@ -4,12 +4,12 @@ class Mab_In_Disguise
 	def self.compile file_name = nil
 		vals = {}
 		Dir.glob(file_name || "templates/*/mab/*.rb").each { |mab_file|
-			
+			next if mab_file['layout.rb']
 			mab_dir       = File.dirname(mab_file)
 			layout_file   = File.join(mab_dir, 'layout.rb')
 			file_basename = File.basename(mab_file)
 			is_partial    = file_basename[/^__/]
-			html_file     = mab_file.sub('mab/', 'mustache').sub('.rb', '.html')
+			html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
 			template_name = file_basename.sub('.rb', '')
 			
 			content       = if is_partial
