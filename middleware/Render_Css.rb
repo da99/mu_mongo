@@ -5,44 +5,67 @@ require 'ninesixty'
 
 class Render_Css
 
+  def self.compile file_name = nil
+    
+    vals = {} 
+    
+    Dir.glob(file_name || 'templates/*/sass/*.sass').each do |sass_file|
+      
+      sass_dir    = File.dirname(sass_file)
+      css_file    = File.join( 'public', sass_file.ext('css').sub('templates', 'styles').sub('sass/', '') )
+      css_content = Sass::Engine.new(
+        File.read(sass_file), 
+        :load_paths => [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
+      ).render
+
+      vals[sass_file] = [css_file, css_content]
+      
+    end
+
+    file_name ?
+      vals[file_name].last :
+      vals
+  end
+
+  def self.delete_css
+    Dir.glob('public/styles/*/*.css').each { |file|
+      puts file
+    }
+  end
 
 	def initialize new_app
 		@app = new_app
 		langs = The_App::Options::LANGUAGES.join('|')
-		@css_regexp = %r!/stylesheets/#{langs}/[a-zA-Z0-9\_]+\.css!
+		@css_regexp = %r!/stylesheets/(#{langs})/([a-zA-Z0-9\_]+)\.css!
 	end
 
 
 	def call new_env
 		
-		#require 'rubygems'; require 'ruby-debug'; debugger
-		
-		
 		if not (new_env['PATH_INFO'] =~ @css_regexp)
 			return( @app.call(new_env) ) 
 		end
 
-		lang, file_name = new_env['PATH_INFO'].split('/')[-2,2]
-
-		if not The_App::Options::LANGUAGES.include?(lang)
-			return @app.call(new_env)
-		end
-
-		sass_dir       = File.expand_path(File.join('templates', lang, 'sass'))
-		sass_file_name = file_name.sub('.css', '') + '.sass'
-		sass_file      = File.join(sass_dir, sass_file_name)
-		if not File.file?(sass_file)
-			return @app.call(new_env)
-		end
-		
-    css_content = ::Sass::Engine.new( 
-        File.read(sass_file), 
-        :load_paths=> [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
-    ).render 
-
+    lang, file_name = $1, $2
+    sass_file_name  = file_name.sub('.css', '') + '.sass'
+    css_content     = self.class.compile("templates/#{lang}/sass/#{sass_file_name}.sass")
 		[200, {'Content-Type' => 'text/css'}, css_content ]
 		
 	end
 
-
 end # === Render_Css
+
+
+
+
+
+
+    # output = `compass --dry-run --trace -r ninesixty -f 960 --sass-dir templates/English/sass --css-dir public/styles/English -s compressed 2>&1`
+    # puts output
+    # puts $?.exitstatus.to_s
+    #   clean_results   = results.split("\n").reject { |line| 
+    #     line =~ /^unchanged\ / ||
+    #       line.strip =~ /^(compile|exists|create)/
+    #   }.join("\n")
+
+    #   raise( clean_results ) if results['WARNING:'] || results['Error']

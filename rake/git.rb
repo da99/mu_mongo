@@ -28,7 +28,7 @@ end
 namespace 'git' do
   
 	desc 'Executes: git add . && git add -u && git status'
-	task :update => ['sass:compile'] do 
+	task :update do 
 		sass {
       sh 'git add . && git add -u'
       system 'git status'
@@ -55,7 +55,8 @@ namespace 'git' do
   
   desc "Used to update and commit development checkpoint. Includes the commit comment for you."
   task :dev_check do
-    run_task :commit, :msg=>'Development checkpoint.'
+    ENV['msg'] = 'Development checkpoint.'
+		Rake::Task['git:commit'].invoke
   end # === task
 
   
