@@ -58,7 +58,7 @@ namespace 'git' do
   end # === task
 
   
-  desc "Push code to Heroku. Options: migrate = false"
+  desc "Push code to Heroku."
   task :push do 
 
       puts_red "Not done."

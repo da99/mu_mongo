@@ -20,6 +20,19 @@ def assert_not_empty raw_val
   val
 end
 
+def compile_for_production
+	spaces = %w{ sass mab xml }
+	
+	spaces.each { |space|
+		Rake::Task["#{space}:compile"].invoke
+	}
+	
+	yield
+	
+	spaces.each { |space|
+		Rake::Task["#{space}:cleanup"].invoke
+	}
+end
 
 %w{ 
   git

@@ -1,12 +1,5 @@
 
 
-
-def sass 
-  Rake::Task['sass:compile'].invoke
-  yield
-  Rake::Task['sass:cleanup'].invoke
-end
-
 namespace 'sass' do
   
   desc "Turn all SASS files to CSS."
