@@ -24,6 +24,8 @@ end
 %w{ 
   git
   sass
+	mab
+	xml
 }.each { |lib|
   require "rake/#{lib}"
 }

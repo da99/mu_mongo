@@ -1,3 +1,44 @@
+
+class Mab_In_Disguise
+  
+	def self.compile file_name = nil
+		vals = {}
+		Dir.glob(file_name || "templates/*/mab/*.rb").each { |mab_file|
+			
+			mab_dir       = File.dirname(mab_file)
+			layout_file   = File.join(mab_dir, 'layout.rb')
+			file_basename = File.basename(mab_file)
+			is_partial    = file_basename[/^__/]
+			html_file     = mab_file.sub('mab/', 'mustache').sub('.rb', '.html')
+			template_name = file_basename.sub('.rb', '')
+			
+			content       = if is_partial
+												Markaby::Builder.new(:template_name=>template_name) { 
+													eval( File.read(mab_file), nil, mab_file , 1)
+												}
+											else
+												Markaby::Builder.new(:template_name=>template_name) { 
+													eval(
+														File.read(layout_file).sub("{{content_file}}", file_basename),
+														nil, 
+														layout_file, 
+														1
+													)
+												}
+											end
+			
+			vals[mab_file] = [html_file, content]
+		}
+
+		file_name ?
+			vals[file_name].last :
+			vals
+	end
+  
+end # === Mab_In_Disguise
+
+
+
 require 'markaby'
 
 class Ignore_Everything
@@ -102,112 +143,3 @@ class Markaby::Builder
 
 end # === Markaby::Builder
 
-class Mab_In_Disguise
-  
-  def initialize new_app
-		@m_times = {}
-    @app = new_app
-  end
-  
-  def call new_env
-
-    if The_App.production?
-      raise("Can't be used in this environment: #{ENV['RACK_ENV']}") 
-    end
-
-    template_dirs.each { |dir|
-      
-      mab_dir        = File.join(dir, 'mab')
-      mus_dir        = File.join(dir, 'mustache')
-      layout_content = File.read(layout_file(mab_dir))
-      
-      # Delete all Mustache files.
-      Dir.glob( File.join(mus_dir, '*.html') ).each do |html_file|
-        File.delete(html_file)
-      end
-
-    }
-    
-    @app.call(new_env)
-  end
-  
-  def template_dirs
-    Dir.glob('templates/*').map { |dir|
-      if File.directory?(dir)
-        File.expand_path(dir) 
-      else
-        nil
-      end
-    }.compact
-  end
-
-  def template_files dir
-    Dir.glob(File.join(dir, '*.rb')).map { |file_name|
-      if File.basename(file_name) != 'layout.rb'
-        File.expand_path(file_name) 
-      end
-    }.compact
-  end
-
-  def layout_file dir
-    File.join(dir, 'layout.rb')
-  end
-
-  def render_mab( file_name_or_opts = nil )
-
-    # =================================================================
-    # Determine if a layout is required.
-    if !use_layout 
-      return Markaby::Builder.new(ivs).capture { 
-        eval( the_content, nil, the_file_path, 1 ) 
-      }
-    else
-      #  =================================================================
-      # Grab & Render the Markaby content for current action.
-      dev_log_it "Rendering Markaby: #{template_file_name}"
-      dev_log_it "... with layout: #{layout_file_name}"
-
-      the_content = layout_file_content
-      the_file_path = layout_file_path
-
-      Markaby::Builder.new( ivs ) {
-        eval( the_content ,  nil,  the_file_path , 1  )
-      }.to_s                  
-
-
-    end
-
-  end # === render_mab   
-  
-  def self.mab_to_mustache lang, template_name
-    file_basename = template_name.to_s
-    
-    mab_dir       = File.join('templates', lang, 'mab')
-    mab_file      = File.join(mab_dir, file_basename.to_s + '.rb')
-    layout_file   = File.join(mab_dir, 'layout.rb')
-    
-    mus_dir       = File.join('templates', lang, 'mustache')
-    mus_file      = File.join(mus_dir, file_basename.to_s + '.html')
-      
-    return nil if file_basename[/Heart|News|textile|\.xml\./]
-    
-    is_partial    = file_basename[/^__/]
-
-    content = if is_partial
-      File.read(mab_file)
-    else
-      File.read(layout_file).sub("{{content_file}}", file_basename)
-    end
-
-    compiled = Markaby::Builder.new(:template_name=>template_name) { 
-      eval(content, nil, is_partial ? mab_file : layout_file, 1)
-    }
-
-    # File.open(mus_file, 'w') { |f_io| 
-    #   f_io.write compiled 
-    # }
-
-    compiled
-  end
-
-end # === Mab_In_Disguise

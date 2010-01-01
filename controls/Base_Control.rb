@@ -100,7 +100,7 @@ module Base_Control
                             ext.capitalize
                            end
                            require( "middleware/#{disguise}_In_Disguise"  )
-                           eval( %~ #{disguise}_In_Disguise.#{disguise.downcase}_to_mustache( lang, file_name ) ~ )
+                           eval( %~ #{disguise}_In_Disguise.compile( "templates/#{lang}/mustache/#{file_name}.xml" ) ~ )
 												 rescue Errno::ENOENT
 													 nil
 												 end
