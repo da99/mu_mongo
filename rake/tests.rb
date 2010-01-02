@@ -19,6 +19,24 @@ namespace :tests do
     sh(%~ ruby -w "tests/test_#{ENV['name']}.rb"~)
   end
   
+  desc "Creates a test file. Uses name=. Addes 'test_' and '.rb' automatically."
+  task :create do
+    name = ENV['name'].strip
+    raise "Must not be empty." if name.empty?
+
+    file_path = "tests/test_#{name}.rb"
+    if File.exists?(file_path)
+      raise "File may not be overwritten: #{file_path.inspect}"
+    end
+
+    content = File.read("tests/__template__.txt").gsub("{{name}}", name)
+    File.open(file_path, 'w') do |file|
+      file.puts content
+    end
+
+    puts_white "Created:"
+    puts file_path
+  end
   
   desc "Reset the :test database"
   task :db_reset! do

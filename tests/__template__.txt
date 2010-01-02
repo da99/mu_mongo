@@ -1,0 +1,9 @@
+require 'tests/__helper__'
+
+
+class {{name}} < Test::Unit::TestCase
+
+	must 'do_something' do
+	end
+
+end # === class {{name}}
