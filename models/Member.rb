@@ -129,7 +129,7 @@ class Member
   # sensitive information is not shown.
   #
   def inspect
-    assoc_cache[:inspect_string] ||= "#<#{self.class} id=#{self.data._id}>"
+    assoc_cache[:inspect_string] ||= "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
   end
   
   def usernames

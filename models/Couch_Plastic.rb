@@ -51,6 +51,10 @@ module Couch_Plastic
   
 	attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache
 
+  def inspect
+    "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
+  end
+
   def == val
     return false unless val.respond_to?(:data)
     return true if equal?(val)
@@ -94,7 +98,11 @@ module Couch_Plastic
 		doc_id       = args.shift
 		@manipulator = args.shift
 		@raw_data    = (args.shift || {})
-		@orig_doc    = Couch_Doc.GET(doc_id) if doc_id
+    @orig_doc    = if doc_id
+                     CouchDB_CONN.GET(doc_id) 
+                   else
+                     nil
+                   end
 			
     @data = Class.new {
       def initialize( doc )
@@ -238,23 +246,31 @@ module Couch_Plastic
     new_data.data_model = self.class.name
     new_data.created_at = Time.now.utc.strftime(Time_Format) if self.class.fields.include?(:created_at)
     new_id              = begin
-                            new_data.as_hash.delete(:_id) || Couch_Doc.GET_uuid
+                            new_data.as_hash.delete(:_id) || CouchDB_CONN.GET_uuid
                           end
     vals                = new_data.as_hash.clone
 
-    begin
+    err = begin
       results          = CouchDB_CONN.PUT( new_id, vals )
       @orig_doc        = vals
       @orig_doc[:_id]  = new_id
       @orig_doc[:_rev] = results[:rev]
-    rescue RestClient::RequestFailed
-      if block_given?
-        yield $!
-      else
-        raise
-      end
+      nil
+    rescue Object
+      $!
     end
 
+    return :ok unless err
+    
+    if block_given?
+      yield err
+    else
+      on_error_save_create err
+    end
+  end
+
+  def on_error_save_create err
+    raise err
   end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
@@ -495,6 +511,7 @@ class Couch_Plastic_Validator
     @doc                = new_doc
     @field_name         = new_field_name.to_sym
     @english_field_name = new_doc.human_field_name(@field_name).capitalize
+    @must_be_perfect = false
   end
 
   def must_be_perfect 
@@ -506,7 +523,11 @@ class Couch_Plastic_Validator
   end
 
   def record_error new_msg
-    msg = (new_msg % english_field_name)
+    msg = if new_msg['%']
+            (new_msg % english_field_name)
+          else
+            new_msg
+          end
     raise( Perfection_Required, msg ) if must_be_perfect?
     doc.errors << msg
     raise Invalid, "Error found on #{field_name}"

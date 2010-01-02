@@ -16,7 +16,7 @@ module Color_Puts
   }
 
   def colorize_and_print color, msg = nil, &blok
-    print(
+    puts(
       colorize color, msg, &blok
     )
   end

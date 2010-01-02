@@ -24,10 +24,11 @@ class Couch_Doc
   }.map(&:to_sym)
 
 
-	attr_reader :url_base, :design_id
+	attr_reader :url_base, :design_id, :host, :db_name
 
 	def initialize host, db_name, new_design = nil
     default_design = ('_design/' + File.basename(File.expand_path('.')))
+    @db_name       = db_name
     @host          = host
     @url_base      = File.join(host, db_name)
     @design_id     = (new_design || default_design)

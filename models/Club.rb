@@ -13,8 +13,17 @@ class Club
 
   def before_create
     new_clean_value :lang, 'English'
-    demand :title, :teaser
+    demand :filename, :title, :teaser
     ask_for :lang
+  end
+
+  def on_error_save_create excep
+    case excep
+    when Couch_Doc::HTTP_Error_409_Update_Conflict
+      errors << "Filename already taken: #{cleanest(:filename)}"
+    else
+      raise excep
+    end
   end
 
   def before_update
@@ -44,6 +53,7 @@ class Club
   
   def filename_validator
     must_be { not_empty }
+    new_clean_value :_id, "club-#{cleanest(:filename)}"
   end
 
   def title_validator
@@ -51,7 +61,7 @@ class Club
   end
 
   def teaser_validator
-    accept_anything
+    must_be { not_empty }
   end
 
   def lang_validator

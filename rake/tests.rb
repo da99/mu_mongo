@@ -1,133 +1,91 @@
-$LOAD_PATH.unshift File.expand_path('specs/fefe')
 
-class Tests
+namespace :tests do
   
-  include FeFe
-  include Color_Puts
 
-  describe :run do
+  desc %! Runs FeFe tests for your app in the fefe/ directory. !
+  task :all do
 
-    it %! Runs FeFe tests for your app in the fefe/ directory. !
-
-    steps([:file, nil], [:inspect, nil]) { |file, inspect_test|
-
-      puts_white " ===================================== "
-      rb_files = if file
-                   new_file = new_file_rb = File.expand_path(File.join('specs/fefe/',file))
-                   new_file_rb += '.rb' unless new_file[/\.rb$/]
-									 new_file = new_file.sub(/\.rb$/, '')
-                   demand_file_exists new_file_rb
-                   [new_file]
-                 else
-                  'specs/fefe/'.ruby_files_wo_rb
-                 end
-      
-      if inspect_test
-        FeFe_Test.inspect_test inspect_test
-      end
-
-      rb_files.each { |rb_file|
-        class_name = File.basename(rb_file).split('_').map(&:capitalize).join('_')
-        require rb_file
-        ft_class = Object.const_get(class_name)
-      }
-      
-      total, passed, failed = FeFe_Test.results # [total, passed, failed] == [ 5, 3, 2] 
-			puts ''
-			if total == passed
-				puts_green " * * * * * * * * * * * * * * * * * * * "
-				puts_green "      ALL TESTS PASSSED: #{total}"
-				puts_green " * * * * * * * * * * * * * * * * * * * "
-			else
-				puts_red   " * * * * * * * * * * * * * * * * * * * "
-				puts_multi :red, "  FAILED: #{failed}", :white, ', ', :green, " PASSED: #{passed}"
-				puts_red   " * * * * * * * * * * * * * * * * * * * "
-			end
-			puts ''
+    rb_files = Dir.glob('tests/test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}
+    
+    rb_files.each { |file|
+      require file 
     }
 
   end # ======== :run
+
+  desc "Run one test file. Uses: name=. 'tests/tests_' and '.rb' is automatically added."
+  task :file do
+    # require "tests/test_#{ENV['name']}"
+    sh(%~ ruby -w "tests/test_#{ENV['name']}.rb"~)
+  end
   
-  describe :db_reset! do
+  
+  desc "Reset the :test database"
+  task :db_reset! do
     
-    it "Reset the :test database"
-    
-    steps([:env, 'test']) do |env|
-      fefe_run('db:reset!', :env=>env )
-      
-      CouchDB_CONN.create_or_update_design
-      puts_white 'Created: design doc.'
-      
-      # === Create Clubs ==========================
+    ENV['RACK_ENV'] ||= 'test'
+    Rake::Task['db:reset!'].invoke
 
-      Couch_Doc.PUT( 'club-hearts', {:filename=>'hearts', 
-        :title=>'The Hearts Club',
-        :lang => 'English',
-        :created_at => '2009-12-27 08:00:01',
-        :data_model => 'Club'
-      } )
+    # === Create Clubs ==========================
 
-      # === Create News ==========================
-      
-      Couch_Doc.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
-        :teaser   =>'teaser', 
-        :body     =>'Test body.', 
-        :tags     =>['surfer_hearts', 'hearts', 'pets'],
-        :created_at   =>'2009-10-11 02:02:27',
-        :published_at =>'2009-12-09 01:01:26',
-        :data_model   => 'News', 
-        :club     => 'surfer-hearts'
-      })
+    CouchDB_CONN.PUT( 'club-hearts', {:filename=>'hearts', 
+                  :title=>'The Hearts Club',
+                  :lang => 'English',
+                  :created_at => '2009-12-27 08:00:01',
+                  :data_model => 'Club'
+    } )
+
+    # === Create News ==========================
+
+    CouchDB_CONN.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
+                  :teaser   =>'teaser', 
+                  :body     =>'Test body.', 
+                  :tags     =>['surfer_hearts', 'hearts', 'pets'],
+                  :created_at   =>'2009-10-11 02:02:27',
+                  :published_at =>'2009-12-09 01:01:26',
+                  :data_model   => 'News', 
+                  :club     => 'surfer-hearts'
+    })
 
 
-      # === Create Regular Member ==========================
-      
-      Couch_Doc.PUT("member-regular-member-1",
-        { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
-          :salt            => "yJ2OuJpdIy",
-          :data_model      => "Member",
-          :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "regular-member-1"} },
-          :security_level  => :MEMBER
-        }
-      )
-      
-      Couch_Doc.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
-      
-      # === Create Admin Member ==========================
+    # === Create Regular Member ==========================
 
-      Couch_Doc.PUT("member-admin-member-1",
-        { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
-          :salt            => "4LKK5YOOLX",
-          :data_model      => "Member",
-          :created_at      => "2009-12-09 08:31:36",
-          :lives           => { "friend" => {'username' => "admin-member-1"} },
-          :security_level  => :ADMIN
-        }
-      )
+    CouchDB_CONN.PUT("member-regular-member-1",
+                  { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
+                    :salt            => "yJ2OuJpdIy",
+                    :data_model      => "Member",
+                    :created_at      => "2009-12-09 08:31:36",
+                    :lives           => { "friend" => {'username' => "regular-member-1"} },
+                    :security_level  => :MEMBER
+    }
+                 )
 
-      Couch_Doc.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
+                 CouchDB_CONN.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
+
+                 # === Create Admin Member ==========================
+
+                 CouchDB_CONN.PUT("member-admin-member-1",
+                               { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
+                                 :salt            => "4LKK5YOOLX",
+                                 :data_model      => "Member",
+                                 :created_at      => "2009-12-09 08:31:36",
+                                 :lives           => { "friend" => {'username' => "admin-member-1"} },
+                                 :security_level  => :ADMIN
+                 }
+                              )
+
+                              CouchDB_CONN.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
       
-    end
   end # ======== :db_reset!
     
 end # ======== Tests
 
+
+
+__END__
 module FeFe_Test
   
-  include Demand_Arguments_Dsl
-	include Color_Puts
   
-  def on_assertion_exit 
-    lambda {
-			if FeFe_Test.inspect_test? && FeFe_Test.inspect_test == FeFe_Test.count
-				puts @assertion_call_back
-				puts @assertion_exit_msg
-				exit(1)
-			end
-			raise DemandFailed, assertion_exit_msg
-		}
-  end
 
 	def self.results
     @count ||= 0

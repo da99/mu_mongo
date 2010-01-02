@@ -1,12 +1,5 @@
 ENV['RACK_ENV'] = 'test'
 
-puts ''
-puts( ' * ' * 20)
-puts ''
-
-at_exit do
-  puts ''
-end
 
 require 'rubygems'
 require 'test/unit'
@@ -16,6 +9,12 @@ require 'helpers/app/Color_Puts'
 require 'megauni'
 
 include Color_Puts
+
+puts_white " ===================================== "
+
+at_exit do
+  puts ''
+end
 
 class Test::Unit::TestResult
   # Returns a string contain the recorded runs, assertions,

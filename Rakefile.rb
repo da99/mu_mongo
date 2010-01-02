@@ -29,6 +29,8 @@ end
   sass
 	mab
 	xml
+  tests
+  db
 }.each { |lib|
   require "rake/#{lib}"
 }
