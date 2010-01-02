@@ -33,6 +33,33 @@ class Couch_Plastic_Create < Test::Unit::TestCase
     new_doc = Cafe_Le_Roger.by_id(doc.data._id)
     assert_equal body, new_doc.data.body
   end
+
+  must 'not set fields to proto_fields' do
+    assert_not_equal Cafe_Le_Roger.fields, Cafe_Le_Roger.proto_fields
+  end
+
+  must 'not set proto field value' do
+    big_body = "   My body #{rand(1000)}   "
+    doc      = Cafe_Le_Roger.create( nil, 
+                { :title =>'My Title', 
+                  :teaser =>'My Teaser', 
+                  :body =>"Test body.", 
+                  :big_body =>big_body
+                })
+    new_doc  = Cafe_Le_Roger.by_id(doc.data._id)
+    assert_equal nil, new_doc.data.as_hash[:big_body]
+  end
+
+  must 'not save proto field value' do
+    big_body = "My body #{rand(1000)}"
+    values   = {:title=>'My Title', :teaser=>'My Teaser', :body => "The Body", :big_body => big_body}
+    doc      = Cafe_Le_Roger.create nil, values
+    new_doc  = CouchDB_CONN.GET(doc.data._id)
+    values.delete(:big_body)
+    values[:_id], values[:_rev], values[:data_model] = new_doc.values_at(:_id, :_rev, :data_model)
+    
+    assert_equal values, new_doc
+  end
   
 end # === class _create
 
@@ -45,8 +72,11 @@ class Cafe_Le_Roger
 
   allow_fields :title, :teaser, :body
 
+  allow_proto_fields :big_body
+
 	def before_create
 		demand :title, :teaser, :body
+    ask_for :big_body
 	end
 
 	def creator? editor
@@ -63,6 +93,10 @@ class Cafe_Le_Roger
 
   def body_validator
     must_be! { not_empty }
+  end
+
+  def big_body_validator
+    must_be { not_empty }
   end
 
 end # === Cafe_Le_Roger
