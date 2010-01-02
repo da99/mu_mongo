@@ -16,7 +16,7 @@ at_exit do
   puts ''
 end
 
-class Test::Unit::TestResult
+module Test_Result_Customizations
   # Returns a string contain the recorded runs, assertions,
   # failures and errors in this TestResult.
   def to_s
@@ -39,24 +39,24 @@ class Test::Unit::TestResult
   end
 end
 
-module Test::Unit
+Test::Unit::TestResult.send(:include, Test_Result_Customizations)
+
+class Test::Unit::TestCase
+  
   # Used to fix a minor minitest/unit incompatibility in flexmock
   # AssertionFailedError = Class.new(StandardError)
   
-  class TestCase
-   
-    def self.must(name, &block)
-      test_name = "test_#{name.gsub(/[^a-z0-9\_]+/i,'_')}".to_sym
-      defined = instance_method(test_name) rescue false
-      raise "#{test_name} is already defined in #{self}" if defined
-      if block_given?
-        define_method(test_name, &block)
-      else
-        define_method(test_name) do
-          flunk "No implementation provided for #{name}"
-        end
+  def self.must(name, &block)
+    test_name = "test_#{name.gsub(/[^a-z0-9\_]+/i,'_')}".to_sym
+    defined = instance_method(test_name) rescue false
+    raise "#{test_name} is already defined in #{self}" if defined
+    if block_given?
+      define_method(test_name, &block)
+    else
+      define_method(test_name) do
+        flunk "No implementation provided for #{name}"
       end
     end
- 
   end
+
 end

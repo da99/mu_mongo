@@ -109,6 +109,10 @@ module Couch_Plastic
         @doc    = doc
         @fields = doc.class.fields
       end
+
+      def include?(key)
+        as_hash.has_key?(key)
+      end
     
       def as_hash
         (@doc.instance_variable_get :@orig_doc ) || {}
@@ -130,6 +134,10 @@ module Couch_Plastic
           @hash   = (doc.instance_variable_get :@orig_doc ) || {}
 					@equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
 				end
+
+        def include?(key)
+          @hash.has_key?(key)
+        end
 
 				def as_hash
           @hash
@@ -156,20 +164,37 @@ module Couch_Plastic
   # ========================================================= 
 
   def new_clean_value field_name, val
+    
     clean_data[field_name] = val
+    
     if self.class.fields.include?(field_name)
       new_data.send "#{field_name}=", val
+    elsif self.class.proto_fields.include?(field_name)
+      # ignore
+    else
+      raise "Unknown field being set: #{field_name.inspect} (value: #{val.inspect})"
     end
+    
 		val
+    
   end
 
   def cleanest field_name
-    if new_data.as_hash.has_key?(field_name) 
+    
+    self.class.assert_field(field_name)
+    
+    if new_data.include?(field_name) 
       new_data.send( field_name )
     elsif clean_data.has_key?(field_name)
       clean_data[field_name]
-    else
+    elsif raw_data.has_key?(field_name)
       raw_data[field_name]
+    else
+      if self.class.fields.include?(field_name)
+        data.send( field_name )
+      else
+        nil
+      end
     end
   end
 
@@ -364,12 +389,10 @@ module Couch_Plastic
 
   def must_be perfect = false, &blok
     begin
-      new_vald = Couch_Plastic_Validator.new(self, validator_field_name )
-      new_vald.must_be_perfect if perfect
-      new_vald.instance_eval( &blok )
+      vald = Couch_Plastic_Validator.new( self, validator_field_name, perfect, &blok )
       new_clean_value(
-        validator_field_name, 
-        new_vald.clean_val
+        validator_field_name,
+        vald.clean_value
       )
     rescue Couch_Plastic_Validator::Invalid
     end
@@ -389,46 +412,31 @@ end # === module Couch_Plastic ================================================
 
 module Couch_Plastic_Class_Methods 
 
-  # ===== DSL-icious ======
+  def assert_field field
+    return true if fields.include?(field) || proto_fields.include?(field)
+  end
 
   def fields 
     @fields ||= [:_id, :data_model, :_rev]
   end
 
-  def formatters
-    @formatters ||= {}
+  def proto_fields
+    @proto_fields ||= []
   end
 
-  def format_field k, v
-    raise "Unknown field: #{k.inspect}" unless allow_fields.include?(k)
-    return v unless formatters.has_key?(k)
-
-    case formatters[k]
-      when Symbol
-        v.to_sym
-      when Proc
-        formatters[k].call v
-    end
+  # ===== DSL-icious ======
+    
+  def allow_proto_fields *args
+    args.flatten.each { |fld|
+      proto_fields << fld
+    }
+    @proto_fields.uniq!
+    @proto_fields
   end
 
   def allow_fields *args
     args.each { |fld|
-      case fld
-        when Array
-
-          case fld.last
-            when Symbol, Proc
-            else
-              raise "Unknown formatter class: #{fld.last.inspect}"
-          end
-          
-          fld_sym = fld.first.to_sym
-          fields << fld_sym
-          formatters[fld_sym] = fld.last
-          
-        else
-          fields << fld.to_sym
-      end
+      fields << fld
     }
     @fields.uniq!
     @fields
@@ -506,11 +514,13 @@ class Couch_Plastic_Validator
 
   attr_reader :doc, :field_name, :english_field_name
 
-  def initialize new_doc, new_field_name, &blok
+  def initialize new_doc, new_field_name, perfect, &blok
     @doc                = new_doc
     @field_name         = new_field_name.to_sym
     @english_field_name = new_doc.human_field_name(@field_name).capitalize
-    @must_be_perfect    = false
+    @must_be_perfect    = perfect
+    @clean_val          = @doc.cleanest(@field_name)
+    instance_eval(&blok)
   end
 
   def must_be_perfect 
@@ -532,15 +542,22 @@ class Couch_Plastic_Validator
     raise Invalid, "Error found on #{field_name}"
   end
 
-  def clean_val
-    doc.cleanest field_name
+  def clean_val *args
+    return @clean_val if args.empty?
+    return(@clean_val = args.first) if args.size === 1
+    raise "What?!"
   end
+  alias_method :clean_value, :clean_val
 
 
   # ======== Methods for validation.
 
   def stripped regexp = nil, &blok
-    not_empty
+    if clean_val.nil?
+      record_error '%s is required.'
+      return
+    end
+
     new_val = clean_val.strip
     if regexp 
       new_val = if block_given?
@@ -549,11 +566,13 @@ class Couch_Plastic_Validator
                   clean_val.gsub(regexp, '')
                 end
     end
-    doc.new_clean_value field_name, new_val
+    clean_val( new_val )
   end
 
   def not_empty
-    if clean_val.nil? || clean_val.strip.empty?
+    stripped if clean_val.is_a?(String)
+
+    if clean_val.nil? || clean_val.empty?
       record_error '%s is required.'
     end
   end

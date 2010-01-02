@@ -6,6 +6,10 @@ class Member
 
   enable_timestamps
   
+  allow_proto_fields :add_life, :add_life_username,
+                     :update_life, :update_life_username,
+                     :password, :confirm_password
+
   allow_fields :lives, 
                :data_model, 
                :hashed_password, 

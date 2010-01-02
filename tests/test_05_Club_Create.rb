@@ -98,7 +98,8 @@ class Club_Create < Test::Unit::TestCase
                admin_user, 
                { :filename=>random_filename, 
                  :title=>'Gaijin',
-                 :teaser=>''}
+                 :teaser=> nil
+                 }
              )
            rescue Club::Invalid => e
              e.doc
