@@ -157,10 +157,9 @@ module Couch_Plastic
 
   def new_clean_value field_name, val
     clean_data[field_name] = val
-		begin
-			new_data.send "#{field_name}=", val
-		rescue NoMethodError
-		end
+    if self.class.fields.include?(field_name)
+      new_data.send "#{field_name}=", val
+    end
 		val
   end
 
@@ -363,21 +362,21 @@ module Couch_Plastic
     )
   end
 
-  def must_be &blok
+  def must_be perfect = false, &blok
     begin
-      new_validator = Couch_Plastic_Validator.new(self, validator_field_name )
-      new_validator.instance_eval( &blok )
+      new_vald = Couch_Plastic_Validator.new(self, validator_field_name )
+      new_vald.must_be_perfect if perfect
+      new_vald.instance_eval( &blok )
+      new_clean_value(
+        validator_field_name, 
+        new_vald.clean_val
+      )
     rescue Couch_Plastic_Validator::Invalid
     end
   end
 
   def must_be! &blok
-    begin
-      new_vald = Couch_Plastic_Validator.new(self, validator_field_name)
-      new_vald.must_be_perfect
-      new_vald.instance_eval( &blok )
-    rescue Couch_Plastic_Validator::Invalid
-    end
+    must_be(true, &blok)
   end
 
 end # === module Couch_Plastic ================================================
@@ -511,7 +510,7 @@ class Couch_Plastic_Validator
     @doc                = new_doc
     @field_name         = new_field_name.to_sym
     @english_field_name = new_doc.human_field_name(@field_name).capitalize
-    @must_be_perfect = false
+    @must_be_perfect    = false
   end
 
   def must_be_perfect 

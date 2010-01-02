@@ -164,7 +164,7 @@ class Couch_Doc
   end
 
   def update_design?
-    return true if create_design?
+    return false if !design
     
     old_doc = design
     new_doc = design_on_file
