@@ -1,7 +1,21 @@
+ENV['RACK_ENV'] = 'test'
+
+puts ''
+puts( ' * ' * 20)
+puts ''
+
+at_exit do
+  puts ''
+end
+
 require 'rubygems'
 require 'test/unit'
 require 'test/unit/testresult'
 require 'term/ansicolor'
+require 'helpers/app/Color_Puts'
+require 'megauni'
+
+include Color_Puts
 
 class Test::Unit::TestResult
   # Returns a string contain the recorded runs, assertions,
@@ -11,17 +25,17 @@ class Test::Unit::TestResult
     str = []
     str << "#{run_count} tests, "
     str << "#{assertion_count} assertions, "
-    str << print_if_non_zero(failure_count, "#{failure_count} failures, ")
-    str << print_if_non_zero(error_count, "#{error_count} errors")
+    str << colorize_result(failure_count, "#{failure_count} failures, ")
+    str << colorize_result(error_count, "#{error_count} errors")
     
     str.join
   end
 
-  def print_if_non_zero count, msg
+  def colorize_result count, msg
     if count != 0
-      Term::ANSIColor.send(:red) { msg }
+      colorize_red msg
     else
-      msg
+      colorize_white msg
     end
   end
 end
@@ -33,7 +47,7 @@ module Test::Unit
   class TestCase
    
     def self.must(name, &block)
-      test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
+      test_name = "test_#{name.gsub(/[^a-z0-9\_]+/i,'_')}".to_sym
       defined = instance_method(test_name) rescue false
       raise "#{test_name} is already defined in #{self}" if defined
       if block_given?
@@ -46,12 +60,4 @@ module Test::Unit
     end
  
   end
-end
-
-class Model_Member_Test < Test::Unit::TestCase
-
-  must 'be_awesome' do
-    assert_equal true, false
-  end
-
 end

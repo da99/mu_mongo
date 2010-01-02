@@ -24,19 +24,20 @@ class Couch_Doc
   }.map(&:to_sym)
 
 
-	attr_reader :uri_base, :design_id
+	attr_reader :url_base, :design_id
 
 	def initialize host, db_name, new_design = nil
     default_design = ('_design/' + File.basename(File.expand_path('.')))
-		@url_base      = new_url
-		@design_id = (new_design || default_design)
+    @host          = host
+    @url_base      = File.join(host, db_name)
+    @design_id     = (new_design || default_design)
 	end
 
-	def send_to_db http_meth, path, raw_data = nil, raw_headers = {}
-		
-    url     = File.join( url_base, path.to_s )
+	def send_to_db http_meth, raw_path, raw_data = nil, raw_headers = {}
+    path    = raw_path.to_s
+    url     = path['_uuid'] ? File.join(@host, path) : File.join( url_base, path )
     data    = raw_data ? raw_data.to_json : ''
-    headers = { 'Content-Type' => 'application/json' }.update(raw_headers)
+    headers = { 'Content-Type'=>'application/json' }.update(raw_headers)
     
     begin
       json_parse case http_meth
@@ -54,14 +55,14 @@ class Couch_Doc
 
     rescue RestClient::ResourceNotFound 
       if http_meth === :GET
-        raise Couch_Doc::No_Doc_Found, "No document found for: #{path}"
+        raise Couch_Doc::No_Doc_Found, "No document found for: #{url}"
       else
         raise $!
       end
 
     rescue RestClient::RequestFailed
       
-      msg = "#{$!.http_code} #{$!.http_message}: #{$!.http_body}"
+      msg = "#{$!.message}: SENT: #{http_meth} #{url} #{headers.inspect} RESPONSE: #{$!.response.body} "
       err = if $!.http_code === 409 && $!.http_body =~ /update conflict/ 
         HTTP_Error_409_Update_Conflict.new(msg)
       else
@@ -150,9 +151,15 @@ class Couch_Doc
   def design
     @cached_from_db ||= GET_design()
   end
+  
+  def create_or_update_design
+    return( create_design ) if create_design?
+    return( update_design ) if update_design?
+    false
+  end
 
   def create_design?
-    !!design
+    !design # return true if no design exists
   end
 
   def update_design?
@@ -168,12 +175,6 @@ class Couch_Doc
     end
 
     !!diff
-  end
-  
-  def create_or_update_design
-    return( create_design ) if create_design?
-    return( update_design ) if update_design?
-    false
   end
 
   def create_design
@@ -203,7 +204,7 @@ class Couch_Doc
     doc = {:views=>{}}
 
     Dir.glob('helpers/couchdb_views/*.js').map { |file|
-      v = File.basename(file).gsub('.js').gsub('-reduce.js', '').to_sym
+      v = File.basename(file).gsub('.js', '').gsub('-reduce.js', '').to_sym
       doc[:views][v] ||= {}
       doc[:views][v][:map] = read_view_file(v)
 

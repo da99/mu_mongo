@@ -16,7 +16,8 @@ module Couch_Plastic
   #                  Error Constants
   # ========================================================= 
 
-  class Nothing_To_Update < StandardError; end
+  Nothing_To_Update       = Class.new(StandardError)
+  Raw_Data_Field_Required = Class.new(StandardError)
   
   class Invalid < StandardError
     attr_accessor :doc
@@ -31,18 +32,18 @@ module Couch_Plastic
       if doc.is_a?(String)
         return super(doc)
       end
-      title = self.class.to_s.gsub('Couch_Plastic::Unauthorized', '')
+      title = self.class.to_s.gsub('Couch_Plastic::Unauthorized_', '')
       msg = "#{doc.inspect}, #{title}: #{mem.inspect}"
       super(msg)
     end
   end
 
-  class UnauthorizedNew < Unauthorized; end
-  class UnauthorizedReader < Unauthorized; end
-  class UnauthorizedCreator < Unauthorized; end
-  class UnauthorizedEditor < Unauthorized; end
-  class UnauthorizedUpdator < Unauthorized; end
-  class UnauthorizedDeletor < Unauthorized; end
+  class Unauthorized_New < Unauthorized; end
+  class Unauthorized_Reader < Unauthorized; end
+  class Unauthorized_Creator < Unauthorized; end
+  class Unauthorized_Editor < Unauthorized; end
+  class Unauthorized_Updator < Unauthorized; end
+  class Unauthorized_Deletor < Unauthorized; end
 
   # =========================================================
   #           Miscellaneous Methods
@@ -53,12 +54,26 @@ module Couch_Plastic
   def == val
     return false unless val.respond_to?(:data)
     return true if equal?(val)
-    return false if data.nil? || val.data.nil?
+    return false if new? || val.new?
     data.as_hash == val.data.as_hash
   end
 
   def new?
-    data.nil?
+    !data?
+  end
+
+  def new_data?
+    !( new_data.as_hash.empty? || 
+       new_data.as_hash == data.as_hash 
+     )
+  end
+
+  def data?
+    @orig_doc && !@orig_doc.empty?
+  end
+
+  def raw_data?
+    raw_data && !raw_data.empty?
   end
  
   def human_field_name( col )
@@ -71,64 +86,60 @@ module Couch_Plastic
 
   def initialize *args
     
-		@manipulator = nil
-		@raw_data    = @clean_data = @assoc_cache = {}
     super()
-
-    return if args.empty?
     
-		doc_id  = args.shift
-		editor  = args.shift
-		raw_raw = args.shift
-
-		@manipulator = editor if editor
-		@raw_data    = raw_raw if raw_raw
-		
-		if doc_id
+		@manipulator = nil
+		@clean_data  = {}
+    @assoc_cache = {}
+		doc_id       = args.shift
+		@manipulator = args.shift
+		@raw_data    = (args.shift || {})
+		@orig_doc    = Couch_Doc.GET(doc_id) if doc_id
 			
-			raw_doc = Couch_Doc.GET(doc_id)
+    @data = Class.new {
+      def initialize( doc )
+        @doc    = doc
+        @fields = doc.class.fields
+      end
+    
+      def as_hash
+        (@doc.instance_variable_get :@orig_doc ) || {}
+      end
+    
+      def method_missing( raw_key, *args )
+        key = raw_key.to_sym
+        return(as_hash[key]) if @fields.include?(key)
+        raise NoMethodError, "#{raw_key.inspect} is not defined, nor is it a key."
+      end
+    }.new(self)
+      
 			
-			@data = Class.new {
-				def initialize( new_hash )
-					@vals = new_hash
+		@new_data = Class.new {
+				
+				def initialize( doc )
+          @doc    = doc
+          @keys   = doc.class.fields
+          @hash   = (doc.instance_variable_get :@orig_doc ) || {}
+					@equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
 				end
-			
+
 				def as_hash
-					@vals
+          @hash
 				end
 			
 				def method_missing( raw_key, *args )
-					key = raw_key.to_symb
-					return(@vals[key]) if @vals.has_key?(key)
-					super(raw_key, *args)
+					key = raw_key.to_sym
+          
+					return as_hash[key] if @keys.include?(key)
+          
+					if @equals.has_key?(key)
+						return( as_hash[@equals[key]] = args.first )
+					end
+          
+          raise NoMethodError, "#{raw_key.inspect} is not defined, nor is it a key."
 				end
-			}.new(raw_doc)
-			
-			@new_data = Class.new {
-					
-					def initialize( fields, hash )
-						@keys   = (hash.keys + fields).uniq.compact
-						@hash   = hash
-						@equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
-					end
-
-					def as_hash
-						@hash
-					end
 				
-					def method_missing( raw_key, *args )
-						key = raw_key.to_sym
-						if @keys.include?(key)
-							return @hash[key]
-						end
-						if @equals.has_key?(key)
-							return @hash[@equals[key]] = args.first
-						end
-						super(raw_key, *args)
-					end
-					
-			}.new(self.class.fields, raw_doc)
-		end
+		}.new(self)
 
   end
 
@@ -168,12 +179,17 @@ module Couch_Plastic
     if block_given?
       raise "not implemented"
     else
-      args.each { |raw_fld|
-        fld = raw_fld.to_sym
+      args.each { |fld|
+				
+				if not raw_data.has_key?(fld)
+					raise Raw_Data_Field_Required, fld.inspect
+				end
+				
         begin
           send("#{fld}_validator")
         rescue Invalid
         end
+				
       }
     end
   end
@@ -219,19 +235,18 @@ module Couch_Plastic
     before_create
     raise_if_invalid
 
-    data = new_data.as_hash.clone
-    data[:data_model] = self.class.name
-    data[:created_at] = Time.now.utc.strftime(Time_Format) if self.class.fields.include?(:created_at)
-
-    new_id = data.delete(:_id) || Couch_Doc.GET_uuid
+    new_data.data_model = self.class.name
+    new_data.created_at = Time.now.utc.strftime(Time_Format) if self.class.fields.include?(:created_at)
+    new_id              = begin
+                            new_data.as_hash.delete(:_id) || Couch_Doc.GET_uuid
+                          end
+    vals                = new_data.as_hash.clone
 
     begin
-      results = Couch_Doc.PUT( new_id, data)
-      @data.as_hash.update(new_data.as_hash)
-      data._id        = new_id
-      data._rev       = results[:rev]
-      data.created_at = data[:created_at] if data.has_key?(:created_at)
-      data.data_model = data[:data_model]
+      results          = CouchDB_CONN.PUT( new_id, vals )
+      @orig_doc        = vals
+      @orig_doc[:_id]  = new_id
+      @orig_doc[:_rev] = results[:rev]
     rescue RestClient::RequestFailed
       if block_given?
         yield $!
@@ -294,7 +309,7 @@ module Couch_Plastic
       raise Invalid.new( self, "Document has validation errors." )
     end
 
-    if new_data.as_hash.empty? || (new_data.as_hash == data.as_hash)
+    if not new_data?
       raise Nothing_To_Update, "No new data to save."
     end
 
@@ -359,8 +374,6 @@ end # === module Couch_Plastic ================================================
 
 module Couch_Plastic_Class_Methods 
 
-  include Demand_Arguments_Dsl
-
   # ===== DSL-icious ======
 
   def fields 
@@ -424,6 +437,9 @@ module Couch_Plastic_Class_Methods
 
   def create editor, raw_raw_data # CREATE
     d = new(nil, editor, raw_raw_data)
+    if !d.creator?(editor)
+      raise d.class::Unauthorized_Creator.new(d,editor)
+    end
     d.save_create 
     d
   end
@@ -431,7 +447,7 @@ module Couch_Plastic_Class_Methods
   def read id, mem # READ
     d = by_id(id)
     if !d.reader?(mem)
-      raise UnauthorizedReader.new(d,mem)
+      raise Unauthorized_Reader.new(d,mem)
     end
     d
   end
@@ -439,7 +455,7 @@ module Couch_Plastic_Class_Methods
   def edit id, mem # EDIT
     d = new(id)
     if !d.updator?(mem)
-      raise UnauthorizedEditor.new(d,mem)
+      raise Unauthorized_Editor.new(d,mem)
     end
     d
   end
@@ -447,7 +463,7 @@ module Couch_Plastic_Class_Methods
   def update id, editor, new_raw_data # UPDATE
 		doc = new(id, editor, new_raw_data)
 		if !doc.updator?(editor)
-			raise UnauthorizedUpdator.new(doc,editor)
+			raise Unauthorized_Updator.new(doc,editor)
 		end
     doc.save_update 
     doc
@@ -456,7 +472,7 @@ module Couch_Plastic_Class_Methods
   def delete! id, editor # DELETE
 		doc = new(id, editor)
     if !doc.deletor?(editor)
-      raise UnauthorizedDeletor.new(doc, editor)
+      raise Unauthorized_Deletor.new(doc, editor)
     end
     doc.delete!
     doc
@@ -478,7 +494,7 @@ class Couch_Plastic_Validator
   def initialize new_doc, new_field_name, &blok
     @doc                = new_doc
     @field_name         = new_field_name.to_sym
-    @english_field_name = @field_name.to_s.capitalize.gsub('_', ' ')
+    @english_field_name = new_doc.human_field_name(@field_name).capitalize
   end
 
   def must_be_perfect 
@@ -503,10 +519,18 @@ class Couch_Plastic_Validator
 
   # ======== Methods for validation.
 
-  # def error_msg new_msg = nil
-  #   return @error_msg unless new_msg
-  #   @error_msg = new_msg
-  # end
+  def stripped regexp = nil, &blok
+    not_empty
+    new_val = clean_val.strip
+    if regexp 
+      new_val = if block_given?
+                  clean_val.gsub(regexp, &blok)
+                else
+                  clean_val.gsub(regexp, '')
+                end
+    end
+    doc.new_clean_value field_name, new_val
+  end
 
   def not_empty
     if clean_val.nil? || clean_val.strip.empty?

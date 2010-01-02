@@ -37,7 +37,7 @@ helpers {
 
         begin
           doc model.new(current_member)
-        rescue model::UnauthorizedNew
+        rescue model::Unauthorized_New
           not_found
         end
 
@@ -46,7 +46,7 @@ helpers {
       when :show
         begin
           doc model.read current_member, clean_room[:id]
-        rescue model::No_Doc_Found, model::UnauthorizedReader
+        rescue model::No_Doc_Found, model::Unauthorized_Reader
           not_found
         end
         
@@ -55,7 +55,7 @@ helpers {
       when :edit
         begin
           doc model.edit current_member, clean_room[:id]
-        rescue model::No_Doc_Found, model::UnauthorizedEditor
+        rescue model::No_Doc_Found, model::Unauthorized_Editor
           not_found
         end
 
@@ -67,7 +67,7 @@ helpers {
           flash.success_msg = ( success_msg || 'Successfully saved data.')
           redirect(redirect_success ||  "/#{model_underscore}/#{doc.data._id}/" )
 
-        rescue model::UnauthorizedCreator
+        rescue model::Unauthorized_Creator
           halt(404, "Page Not Found.")
 
         rescue model::Invalid
@@ -81,7 +81,7 @@ helpers {
           flash.success_msg = ( success_msg  || "Updated data." )
           redirect( redirect_success || request.path_info )
 
-        rescue model::No_Doc_Found, model::UnauthorizedUpdator
+        rescue model::No_Doc_Found, model::Unauthorized_Updator
           not_found
 
         rescue model::Invalid
@@ -93,7 +93,7 @@ helpers {
         begin
           doc               model.delete!( current_member, clean_room[:id])
           flash.success_msg = ( success_msg ||  "Deleted." )
-        rescue model::No_Doc_Found, model::UnauthorizedDeletor
+        rescue model::No_Doc_Found, model::Unauthorized_Deletor
           flash.success_msg = "Deleted."
         end
 

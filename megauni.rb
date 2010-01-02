@@ -21,8 +21,6 @@ require_these 'helpers/app', %w{
     symbolize_keys
     json
     data_pouch
-    cleaner_dsl
-    demand_arguments_dsl
 }
   
 
@@ -47,6 +45,7 @@ end # === class
 
 # === DB urls/connections ===
 
+require 'models/Couch_Doc'
 
 case ENV['RACK_ENV']
   
@@ -77,7 +76,6 @@ end # === case
 # === Require models. ===
 
 require_these 'models', %w{
-  Couch_Doc
   Couch_Plastic
   Club
   News

@@ -16,7 +16,7 @@ class Member
   #                     CONSTANTS
   # =========================================================  
   
-  Incorrect_Password      = Class.new( StandardError )
+  Incorrect_Password     = Class.new( StandardError )
   Invalid_Security_Level = Class.new( StandardError )
 
   SECURITY_LEVELS        = %w{ NO_ACCESS STRANGER  MEMBER  EDITOR   ADMIN }
@@ -78,7 +78,7 @@ class Member
   # ==== Hooks =====================================================
 
   def before_create
-		new_data._id            = Couch_Doc.GET_uuid
+		new_data._id            = CouchDB_CONN.GET_uuid
 		new_data.security_level = Member::MEMBER
     ask_for :avatar_link, :email
     demand  :password, :add_life
@@ -136,11 +136,20 @@ class Member
     assoc_cache[:usernames] ||= data.lives.values.map { |l| l[:username]}
   end
 
+  def human_field_name col
+    case col
+      when :add_life_username, 'add_life_username'
+        "username"
+      else
+        super(col)
+    end
+  end
+
   def has_power_of?(raw_level)
 
     return true if raw_level == self
     
-    target_level = raw_level.is_a?(String) ? raw_level.to_sym : raw_level
+    target_level = raw_level.to_s
 
     if !SECURITY_LEVELS.include?(target_level)
       raise Invalid_Security_Level, raw_level.inspect
@@ -170,25 +179,26 @@ class Member
   # ==== Validators =====================================================
 
   def password_validator
-    sanitize { strip }
 
     must_be {
-      equal doc.raw_data[:confirm_password], 'Password and password confirmation do not match.'
+			stripped
       min_size 5
+      equal doc.raw_data[:confirm_password], 'Password and password confirmation do not match.'
       match( /[0-9]/, 'Password must have at least one number' )
     }
     
-    new_data.salt = begin
-                      # Salt and encrypt values.
-                      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                      (1..10).inject('') { |new_pass, i|  
-                        new_pass += chars[rand(chars.size-1)] 
-                        new_pass
-                      }
-                    end
+    if errors.empty?
+      new_data.salt = begin
+                        # Salt and encrypt values.
+                        chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                        (1..10).inject('') { |new_pass, i|  
+                          new_pass += chars[rand(chars.size-1)] 
+                          new_pass
+                        }
+                      end
 
-    new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
-    
+      new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
+    end
   end
   
   def security_level_validator 
@@ -204,13 +214,9 @@ class Member
     email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
     valid_email_format  = /\A#{email_finder}\z/
 
-    sanitize {
-      with(  /[^a-z0-9\.\-\_\+\@]/i  )
-    }
-
     must_be {
-      
       string
+      stripped(  /[^a-z0-9\.\-\_\+\@]/i  )
       min_size 6
       equal raw_data[:email], 'Email has invalid characters.'
       
@@ -224,13 +230,14 @@ class Member
       in_array Member::LIVES
     }
       
-    if !new?
+    if new?
+      new_data.lives = {}
+    else
       must_be! {
         not_in_array doc.data.lives.keys
       }
     end
-
-    new_data.lives = (data.lives || {})
+    
     new_data.lives[cleanest(:add_life)] ||={}
     
     add_life_username_validator
@@ -239,12 +246,12 @@ class Member
   
   def add_life_username_validator
 
-    sanitize {
-      
+    must_be {
+
       # Delete invalid characters and 
       # reduce any suspicious characters. 
       # '..*' becomes '.', '--' becomes '-'
-      with(/[^a-z0-9]{1,}/i) { |s|
+      stripped(/[^a-z0-9]{1,}/i) { |s|
         if ['_', '.', '-'].include?( s[0,1] )
           s[0,1]
         else
@@ -252,10 +259,6 @@ class Member
         end
       }
       
-    }
-
-    must_be {
-
       min_size 2,  'Username is too small. It must be at least 2 characters long.'
 			max_size 20, 'Username is too large. The maximum limit is: 20 characters.'
 			
@@ -272,7 +275,7 @@ class Member
       begin
         reserve_username( cleanest :add_life_username  )
       rescue Couch_Doc::HTTP_Error_409_Update_Conflict
-        errors << "Username already taken: #{add_life_username}"
+        errors << "Username already taken: #{cleanest(:add_life_username)}"
       end
     end
 
@@ -291,7 +294,7 @@ class Member
 								_id
 							end
 		doc_id = 'username-' + new_un
-		Couch_Doc.PUT( doc_id,  {:member_id=>this_id} )
+		CouchDB_CONN.PUT( doc_id,  {:member_id=>this_id} )
 	end
 
   def add_to_history(hash)
