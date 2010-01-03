@@ -26,7 +26,12 @@ class Test::Unit::TestResult
     str << "#{run_count} tests, "
     str << "#{assertion_count} assertions, "
     str << colorize_result(failure_count, "#{failure_count} failures, ")
-    str << colorize_result(error_count, "#{error_count} errors")
+    str << colorize_result(error_count, "#{error_count} errors, ")
+    
+    pass_count ||= run_count - failure_count - error_count
+    str << colorize_green(
+      run_count === pass_count ? 'ALL PASS :)' : "#{pass_count} passes"
+    )
     
     str.join
   end
@@ -111,6 +116,17 @@ class Test::Unit::TestCase
 
   def regular_user
     self.class.regular_user
+  end
+
+  def utc_string
+    Time.now.utc.strftime('%Y-%m-%d %H:%M:%S')
+  end
+
+  def chop_last_2(str)
+    if not str.is_a?(String)
+      raise ArgumentError, "#{str.inspect} needs to be a String."
+    end
+    str[0, str.size - 2]
   end
 
 end
