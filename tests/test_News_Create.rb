@@ -5,14 +5,14 @@ class News_Create < Test::Unit::TestCase
 
 	must 'only allow Admins as creators' do
     assert_raise(Couch_Plastic::Unauthorized_Creator) do
-      News.create(regular_user, {})
+      News.create(regular_mem_1, {})
     end
   end
 
   must 'require title' do
     doc = begin
             News.create( 
-              admin_user, 
+              admin_mem, 
               :club   =>'club-hearts',
               :title  => nil,
               :teaser => 'My Teaser.',
@@ -32,7 +32,7 @@ class News_Create < Test::Unit::TestCase
   must 'require body' do
     doc = begin
             News.create( 
-              admin_user, 
+              admin_mem, 
               :club   =>'club-hearts',
               :title  => 'My News',
               :teaser => 'My Teaser.',
@@ -51,7 +51,7 @@ class News_Create < Test::Unit::TestCase
 
   must 'set published_at to now as a default' do
     doc = News.create( 
-      admin_user, 
+      admin_mem, 
       :club   =>'club-hearts',
       :title  => 'My News',
       :teaser => 'My Teaser.',
@@ -67,7 +67,7 @@ class News_Create < Test::Unit::TestCase
 
   must 'split tag string on new lines' do
     doc = News.create( 
-      admin_user, 
+      admin_mem, 
       :club   =>'club-hearts',
       :title  => 'My News',
       :teaser => 'My Teaser.',
@@ -84,7 +84,7 @@ class News_Create < Test::Unit::TestCase
 
   must 'strip each tag' do 
     doc = News.create( 
-      admin_user, 
+      admin_mem, 
       :club   =>'club-hearts',
       :title  => 'My News',
       :teaser => 'My Teaser.',
@@ -98,7 +98,7 @@ class News_Create < Test::Unit::TestCase
 
   must 'reject any empty tag' do
     doc = News.create( 
-      admin_user, 
+      admin_mem, 
       :club   =>'club-hearts',
       :title  => 'My News',
       :teaser => 'My Teaser.',

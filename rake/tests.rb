@@ -66,33 +66,63 @@ namespace :tests do
     })
 
 
-    # === Create Regular Member ==========================
+    # === Create Regular Member 1 ==========================
 
-    CouchDB_CONN.PUT("member-regular-member-1",
-                  { :hashed_password => "$2a$10$QvMeyHgmdik6e0jUO3ceb.S1ezikJDobUkCy9xID/b4jL.WlMp2Rq",
+    CouchDB_CONN.PUT("member-regular-member-1", # password: regular-password
+                  { :hashed_password => "$2a$10$KEcTkN2c3pJeHeLczzupi.B67yQI3rH0evr8tb9gmdGnv686O9jfq",
                     :salt            => "yJ2OuJpdIy",
                     :data_model      => "Member",
                     :created_at      => "2009-12-09 08:31:36",
                     :lives           => { "friend" => {'username' => "regular-member-1"} },
                     :security_level  => :MEMBER
     }
-                 )
+    )
 
-                 CouchDB_CONN.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
+    CouchDB_CONN.PUT("username-regular-member-1",  {:member_id =>"member-regular-member-1"} )
+    
+    # === Create Regular Member 2 ==========================
 
-                 # === Create Admin Member ==========================
+    CouchDB_CONN.PUT("member-regular-member-2", # password: regular-password
+                  { :hashed_password => "$2a$10$KEcTkN2c3pJeHeLczzupi.B67yQI3rH0evr8tb9gmdGnv686O9jfq",
+                    :salt            => "yJ2OuJpdIy",
+                    :data_model      => "Member",
+                    :created_at      => "2009-12-09 08:35:36",
+                    :lives           => { "family" => {'username' => "regular-member-2"},
+                                          "work"   => {'username' => "regular-member-2-work"}},
+                    :security_level  => :MEMBER
+    }
+    )
 
-                 CouchDB_CONN.PUT("member-admin-member-1",
-                               { :hashed_password => "$2a$10$cTAyJogAm7zOe0XM2KOeJu4nsco2/uP7fKAVfLq0haGtDxEfC.gv.",
-                                 :salt            => "4LKK5YOOLX",
-                                 :data_model      => "Member",
-                                 :created_at      => "2009-12-09 08:31:36",
-                                 :lives           => { "friend" => {'username' => "admin-member-1"} },
-                                 :security_level  => :ADMIN
-                 }
-                              )
+    CouchDB_CONN.PUT("username-regular-member-2",  {:member_id =>"member-regular-member-2"} )
+    
+    # === Create Regular Member 3 ==========================
 
-                              CouchDB_CONN.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
+    CouchDB_CONN.PUT("member-regular-member-3", # password: regular-password
+                  { :hashed_password => "$2a$10$KEcTkN2c3pJeHeLczzupi.B67yQI3rH0evr8tb9gmdGnv686O9jfq",
+                    :salt            => "yJ2OuJpdIy",
+                    :data_model      => "Member",
+                    :created_at      => "2009-12-09 08:35:36",
+                    :lives           => { "work" => {'username' => "regular-member-3"} },
+                    :security_level  => :MEMBER
+    }
+    )
+
+    CouchDB_CONN.PUT("username-regular-member-3",  {:member_id =>"member-regular-member-3"} )
+
+
+    # === Create Admin Member ==========================
+
+    CouchDB_CONN.PUT("member-admin-member-1", # password: admin-password
+                     { :hashed_password => "$2a$10$56l0GJQM8/En5rarzBOzIOqHiaKt0SAuMCKwHlRE/HnYJ1pbpT2Lu",
+                       :salt            => "4LKK5YOOLX",
+                       :data_model      => "Member",
+                       :created_at      => "2009-12-09 08:31:36",
+                       :lives           => { "friend" => {'username' => "admin-member-1"} },
+                       :security_level  => :ADMIN
+    }
+    )
+
+    CouchDB_CONN.PUT("username-admin-member-1", {:member_id =>	"member-admin-member-1"}       )
       
   end # ======== :db_reset!
     

@@ -28,10 +28,20 @@ class Test::Unit::TestResult
     str << colorize_result(failure_count, "#{failure_count} failures, ")
     str << colorize_result(error_count, "#{error_count} errors, ")
     
-    pass_count ||= run_count - failure_count - error_count
-    str << colorize_green(
-      run_count === pass_count ? 'ALL PASS :)' : "#{pass_count} passes"
-    )
+    test_pass_count ||= run_count - failure_count - error_count
+
+    txt = case test_pass_count
+          when 0 
+            'None passed '
+          when 1
+            '1 pass '
+          when run_count
+            'All pass :) '
+          else
+            "#{test_pass_count} passes "
+          end
+
+    str << colorize_green( txt )
     
     str.join
   end
@@ -96,26 +106,38 @@ class Test::Unit::TestCase
   
   # === Custom Helpers ===
 
-  def self.admin_user
-    @admin ||= begin
-                 mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>1})[:rows].first[:value]
-                 Member.by_id(mem_id)
-               end
+  def self.admin_mem
+    @admin_mem ||= Member.by_id("member-admin-member-1")
   end
   
-  def self.regular_user
-    @regular_user ||= begin
-                        mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>2})[:rows].last[:value]
-                        Member.by_id(mem_id)
-                      end
+  def self.regular_mem
+    @regular_mem ||= [1,2,3].map { |i| Member.by_id("member-regular-member-#{i}") }
+  end
+  
+  3.times do |i|
+    eval %~
+      def regular_mem_#{i}
+        self.class.regular_members[#{i}-1]
+      end
+      def regular_username_#{i}
+        self.class.regular_members[#{i}-1].data.lives.first.last[:username]
+      end
+      def regular_password_#{i}
+        'regular-password'
+      end
+    ~
   end
 
-  def admin_user
-    self.class.admin_user
+  def admin_mem
+    self.class.admin_mem
   end
 
-  def regular_user
-    self.class.regular_user
+  def admin_username
+    self.class.admin_mem.data.lives.first.last[:username]
+  end
+
+  def admin_password
+    'member-admin-member-1'
   end
 
   def utc_string
