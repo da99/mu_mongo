@@ -66,21 +66,51 @@ class Test::Unit::TestCase
     end
   end
 
-end
+  # Since I am not smart enough to figure out how to right a 
+  # custom Test::Unit::UI to catch empty tests, the following 
+  # hack will do.
+  # The following will raise a RuntimeError if an empty test, ( do...end ),
+  # is found. If there was an error or failure, it will *not*
+  # raise a RuntimeError.
+  def run_and_raise_on_empty_test *args, &blok
+    
+    get_vals = lambda { |runner| [ runner.assertion_count, runner.error_count, runner.failure_count ] }
+    orig     = get_vals.call(args.first)
+    result   = run_wo_raise_on_empty_test(*args, &blok)
+    latest   = get_vals.call(args.first)
 
-class Test::Unit::TestCase  
-  def run_and_raise_on_empty_test runner, &blok
-    orig_count = runner.assertion_count
-    result     = run_wo_raise_on_empty_test(runner, &blok)
-    new_count  = runner.assertion_count
-
-    if orig_count === new_count
+    if orig == latest  
       msg = "Empty test: :#{method_name} in file: #{self.class.must_methods[method_name.to_sym]}"
-      raise msg 
-    else 
-      result 
+      raise msg
     end
+    
+    result 
   end
   alias_method :run_wo_raise_on_empty_test, :run
   alias_method :run, :run_and_raise_on_empty_test
+  
+  # === Custom Helpers ===
+
+  def self.admin_user
+    @admin ||= begin
+                 mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>1})[:rows].first[:value]
+                 Member.by_id(mem_id)
+               end
+  end
+  
+  def self.regular_user
+    @regular_user ||= begin
+                        mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>2})[:rows].last[:value]
+                        Member.by_id(mem_id)
+                      end
+  end
+
+  def admin_user
+    self.class.admin_user
+  end
+
+  def regular_user
+    self.class.regular_user
+  end
+
 end
