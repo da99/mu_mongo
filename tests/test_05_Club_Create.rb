@@ -4,28 +4,6 @@ require 'tests/__helper__'
 
 class Club_Create < Test::Unit::TestCase
 
-  def self.admin_user
-    @admin ||= begin
-                 mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>1})[:rows].first[:value]
-                 Member.by_id(mem_id)
-               end
-  end
-  
-  def self.regular_user
-    @regular_user ||= begin
-                        mem_id = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>2})[:rows].last[:value]
-                        Member.by_id(mem_id)
-                      end
-  end
-
-  def admin_user
-    self.class.admin_user
-  end
-
-  def regular_user
-    self.class.regular_user
-  end
-
   def random_filename
     "movie_#{rand(10000)}"
   end

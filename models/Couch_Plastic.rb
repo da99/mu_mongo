@@ -12,6 +12,15 @@ module Couch_Plastic
     target.extend Couch_Plastic_Class_Methods
   end
 
+	def self.utc_now
+		Time.now.utc.strftime(Time_Format)
+	end
+
+	def self.utc_string time_str
+		require 'time'
+		Time.parse(time_str).strftime(Time_Format)
+	end
+
   # =========================================================
   #                  Error Constants
   # ========================================================= 
@@ -268,7 +277,7 @@ module Couch_Plastic
     raise_if_invalid
 
     new_data.data_model = self.class.name
-    new_data.created_at = Time.now.utc.strftime(Time_Format) if self.class.fields.include?(:created_at)
+    new_data.created_at = Couch_Plastic.utc_now if self.class.fields.include?(:created_at)
     new_id              = begin
                             new_data.as_hash.delete(:_id) || CouchDB_CONN.GET_uuid
                           end
@@ -568,6 +577,14 @@ class Couch_Plastic_Validator
     end
     clean_val( new_val )
   end
+	
+	def datetime_or_now
+		if clean_val.nil?
+			clean_val( Couch_Plastic.utc_now )
+		else
+			clean_val( Couch_Plastic.utc_string( clean_val ) )
+		end
+	end
 
   def not_empty
     stripped if clean_val.is_a?(String)

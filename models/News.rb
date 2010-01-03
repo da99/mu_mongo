@@ -87,8 +87,8 @@ class News
   end # ===
 
   def published_at_validator
-    sanitize {
-      to_datetime_or_now
+    must_be {
+      datetime_or_now
     }
   end
 
