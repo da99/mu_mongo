@@ -35,7 +35,7 @@ helpers {
       i = if clean_room[:id] 
         begin
           Couch_Doc.GET(Integer(clean_room[:id]))
-        rescue model_class::No_Doc_Found
+        rescue model_class::Not_Found
           nil
         end
       end

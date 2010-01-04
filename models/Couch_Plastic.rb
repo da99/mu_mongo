@@ -16,9 +16,23 @@ module Couch_Plastic
 		Time.now.utc.strftime(Time_Format)
 	end
 
-	def self.utc_string time_str
-		require 'time'
-		Time.parse(time_str).strftime(Time_Format)
+  def self.utc_date_now
+    Time.now.utc.strftime(Time_Format.split(' ').first)
+  end
+  
+  def self.utc_time_now
+    Time.now.utc.strftime(Time_Format.split(' ').last)
+  end
+  
+	def self.utc_string time_or_str
+		time = case time_or_str
+      when Time 
+        time_or_str
+      when String
+        require 'time'
+        Time.parse(time_str)
+    end
+    time.strftime(Time_Format)
 	end
 
   # =========================================================
@@ -97,6 +111,13 @@ module Couch_Plastic
     @assoc_cache = {}
   end
 
+  # 
+  # Parameters:
+  #   doc_id_or_hash - Optional. If String, used as a doc ID to
+  #                    search. If Hash, used as original data.
+  #   manipulator    - Optional
+  #   raw_data       - Optional
+  #
   def initialize *args
     
     super()
@@ -104,15 +125,19 @@ module Couch_Plastic
 		@manipulator = nil
 		@clean_data  = {}
     @assoc_cache = {}
-		doc_id       = args.shift
+		doc_id_or_hash = args.shift
 		@manipulator = args.shift
 		@raw_data    = (args.shift || {})
-    @orig_doc    = if doc_id
-                     CouchDB_CONN.GET(doc_id) 
-                   else
-                     nil
+    @orig_doc    = case doc_id_or_hash
+                     when String
+                       CouchDB_CONN.GET(doc_id_or_hash)
+                     when Hash
+                       doc_id_or_hash
+                     when nil
+                     else
+                       raise ArgumentError, "Unknown type for first argument: #{doc_id_or_hash.inspect}"
                    end
-			
+      
     @data = Class.new {
       def initialize( doc )
         @doc    = doc

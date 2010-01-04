@@ -110,7 +110,7 @@ class Test::Unit::TestCase
     @admin_mem ||= Member.by_id("member-admin-member-1")
   end
   
-  def self.regular_mem
+  def self.regular_members
     @regular_mem ||= [1,2,3].map { |i| Member.by_id("member-regular-member-#{i}") }
   end
   
@@ -137,8 +137,21 @@ class Test::Unit::TestCase
   end
 
   def admin_password
-    'member-admin-member-1'
+    'admin-password'
   end
+
+	def generate_random_member
+		chars    = ('a'..'z').to_a + ('A'..'Z').to_a
+		username = (1..5).to_a.inject('') { |m,l| m << chars[rand(chars.size)]; m } + "#{rand(100)}"
+		password = "random-password-#{rand(1000)}"
+		mem = Member.create(nil,
+			:add_life => 'friend',
+			:add_life_username => username ,
+		  :password => password,
+			:confirm_password => password
+		)
+		[mem, username, password]
+	end
 
   def utc_string
     Time.now.utc.strftime('%Y-%m-%d %H:%M:%S')

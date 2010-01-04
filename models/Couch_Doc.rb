@@ -3,9 +3,9 @@ require 'helpers/app/json'
 
 class Couch_Doc
   
+	Not_Found                      = Class.new(StandardError)
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
-	No_Doc_Found                   = Class.new(StandardError)
 
   ValidQueryOptions = %w{ 
       key
@@ -56,14 +56,19 @@ class Couch_Doc
 
     rescue RestClient::ResourceNotFound 
       if http_meth === :GET
-        raise Couch_Doc::No_Doc_Found, "No document found for: #{url}"
+        raise Couch_Doc::Not_Found, "No document found for: #{url}"
       else
         raise $!
       end
 
     rescue RestClient::RequestFailed
       
-      msg = "#{$!.message}: SENT: #{http_meth} #{url} #{headers.inspect} RESPONSE: #{$!.response.body} "
+      msg = "
+        #{$!.message}: 
+        SENT: #{http_meth} #{url} #{headers.inspect} 
+        RESPONSE: #{$!.response.body} 
+        DATA: #{data.inspect}
+      ".strip.split("\n").map(&:strip).join(" ")
       err = if $!.http_code === 409 && $!.http_body =~ /update conflict/ 
         HTTP_Error_409_Update_Conflict.new(msg)
       else
@@ -80,12 +85,26 @@ class Couch_Doc
   # === Main methods ===
 
   # Used for both creation and updating.
-  def PUT( doc_id, obj)
+  def PUT doc_id, obj 
     send_to_db :PUT, doc_id, obj
+  end
+
+  def POST doc_id, obj
+    send_to_db :POST, doc_id, obj
   end
 
   def DELETE doc_id, rev
     send_to_db :DELETE, doc_id, nil, {'If-Match' => rev}
+  end
+
+  def bulk_DELETE doc_arr
+    data = doc_arr.map { |doc|
+      { :_id      => doc[:_id], 
+        :_rev     => doc[:_rev], 
+        :_deleted => true 
+      }
+    }
+    POST( '_bulk_docs', data)
   end
 
   def GET(path, params = {})
@@ -131,7 +150,11 @@ class Couch_Doc
     return results if !params[:include_docs]
     
     if params[:limit] == 1
-      results[:rows].first
+			first_row = results[:rows].first
+      if not first_row
+				raise Couch_Doc::Not_Found, "No Results for: VIEW: #{view_name.inspect}, PARAMS: #{params.inspect}"
+			end
+			first_row
     else
       results[:rows]
     end
@@ -144,7 +167,7 @@ class Couch_Doc
   def GET_design
     begin
       GET( design_id )
-    rescue Couch_Doc::No_Doc_Found 
+    rescue Couch_Doc::Not_Found 
       nil
     end
   end

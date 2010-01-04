@@ -46,7 +46,7 @@ helpers {
       when :show
         begin
           doc model.read current_member, clean_room[:id]
-        rescue model::No_Doc_Found, model::Unauthorized_Reader
+        rescue model::Not_Found, model::Unauthorized_Reader
           not_found
         end
         
@@ -55,7 +55,7 @@ helpers {
       when :edit
         begin
           doc model.edit current_member, clean_room[:id]
-        rescue model::No_Doc_Found, model::Unauthorized_Editor
+        rescue model::Not_Found, model::Unauthorized_Editor
           not_found
         end
 
@@ -81,7 +81,7 @@ helpers {
           flash.success_msg = ( success_msg  || "Updated data." )
           redirect( redirect_success || request.path_info )
 
-        rescue model::No_Doc_Found, model::Unauthorized_Updator
+        rescue model::Not_Found, model::Unauthorized_Updator
           not_found
 
         rescue model::Invalid
@@ -93,7 +93,7 @@ helpers {
         begin
           doc               model.delete!( current_member, clean_room[:id])
           flash.success_msg = ( success_msg ||  "Deleted." )
-        rescue model::No_Doc_Found, model::Unauthorized_Deletor
+        rescue model::Not_Found, model::Unauthorized_Deletor
           flash.success_msg = "Deleted."
         end
 

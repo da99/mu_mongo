@@ -22,7 +22,7 @@ class Model_Member
     
 		err = begin
 			Member.by_username(u_name)
-		rescue Couch_Doc::No_Doc_Found
+		rescue Couch_Doc::Not_Found
 			'not_found'
 		end
 

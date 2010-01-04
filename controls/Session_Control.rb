@@ -23,7 +23,7 @@ class Session_Control
       self.current_member = mem
       return_page = session.delete :return_page
       redirect!( return_page || '/my-work/' )
-    rescue Member::No_Doc_Found, Member::Incorrect_Password, LogInAttempt::TooManyFailedAttempts
+    rescue Member::Not_Found, Member::Wrong_Password, LogInAttempt::TooManyFailedAttempts
       begin
         LogInAttempt.log_failed_attempt(request.env['REMOTE_ADDR'])
         flash.error_msg = "Incorrect info. Try again."

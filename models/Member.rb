@@ -20,7 +20,8 @@ class Member
   #                     CONSTANTS
   # =========================================================  
   
-  Incorrect_Password     = Class.new( StandardError )
+  Wrong_Password     = Class.new( StandardError )
+  Password_Reset     = Class.new( StandardError )
   Invalid_Security_Level = Class.new( StandardError )
 
   SECURITY_LEVELS        = %w{ NO_ACCESS STRANGER  MEMBER  EDITOR   ADMIN }
@@ -51,32 +52,102 @@ class Member
   # ==== Getters =====================================================    
   
   def self.by_username raw_username
-    username = demand_string_not_empty(raw_username)
-    Couch_Doc.GET_by_view( :member_usernames, 
+    username = raw_username.to_s.strip
+    if username.empty?
+      raise Couch_Doc::Not_Found, "Member: #{raw_username.inspect}"
+    end
+    doc = CouchDB_CONN.GET_by_view( :member_usernames, 
                   :key=>username, 
                   :limit=>1, 
                   :include_docs=>true
     )
+    Member.new(doc[:doc])
   end
 
+  def self.GET_failed_attempts_for_today mem
+
+    CouchDB_CONN.GET_by_view(
+      :member_failed_attempts, 
+      {:startkey => [mem.data._id, Couch_Plastic.utc_date_now],
+       :endkey   => [mem.data._id, Couch_Plastic.utc_string(Time.now.utc + (60*60*24)).split(' ').first ]
+      }
+    )[:rows]
+      
+  end
+  
+  # def self.GET_old_failed_attempts mem
+
+  #   start_date = Couch_Plastic.utc_string(Time.now.utc - (60*60*24*2))
+  #   CouchDB_CONN.GET_by_view(
+  #     :member_failed_attempts, 
+  #     {:startkey => "#{Couch_Plastic.utc_string(Time.now.utc + (60*60*24*2))}-#{mem.data._id}",
+  #      :include_docs => true
+  #     }
+  #   ).map { |row| row[:doc] }
+  #     
+  # end
+  
   # Based on Sinatra-authentication (on github).
   # 
   # Parameters:
   #   raw_vals - Hash with at least 2 keys: :username, :password
   # 
   # Raises: 
-  #   Member::Incorrect_Password
+  #   Member::Wrong_Password
   #
   def self.authenticate( raw_vals )
-      username = demand_string_not_empty raw_vals[:username]
-      password = demand_string_not_empty raw_vals[:password]
-      mem      = Member.by_username( username )
 
-      correct_password = BCrypt::Password.new(mem.data.hashed_password) === (password + mem.data.salt)
-      
-      return mem if correct_password
+    username = raw_vals[:username].to_s.strip
+    password = raw_vals[:password].to_s.strip
+    ip_addr  = raw_vals[:ip_address].to_s.strip
+    if username.empty? || password.empty?
+      raise Wrong_Password, "#{raw_vals.inspect}"
+    end
 
-      raise Incorrect_Password, "Password is invalid for: #{username.inspect}"
+    mem = Member.by_username( username )
+
+    # Check for Password_Reset
+    pass_reset_id = "#{mem.data._id}-password-reset"
+    begin
+      CouchDB_CONN.GET(pass_reset_id)
+      raise Password_Reset, mem.inspect
+    rescue Couch_Doc::Not_Found
+      nil
+    end
+
+    correct_password = BCrypt::Password.new(mem.data.hashed_password) === (password + mem.data.salt)
+
+    return mem if correct_password
+
+    # Grab failed attempt count.
+    fail_count = Member.GET_failed_attempts_for_today(mem).size
+    new_count  = fail_count + 1
+    
+    # Insert failed password.
+    CouchDB_CONN.PUT(
+      "#{Couch_Plastic.utc_date_now}-#{mem.data._id}-failed-attempt-#{Time.now.utc.to_i}-#{new_count}", 
+      { :data_model => 'Member_Failed_Attempt',
+        :count      => new_count, 
+        :member_id  => mem.data._id, 
+        :date       => Couch_Plastic.utc_date_now, 
+        :time       => Couch_Plastic.utc_time_now,
+        :ip_address => ip_addr
+      }
+    )
+    
+    # Delete old failed attempts.
+    # old_docs = Member.GET_old_failed_attempts(mem)
+    # if not old_docs.empty?
+    #   CouchDB_CONN.bulk_DELETE( old_docs )
+    # end
+
+    # Raise Account::Reset if necessary.
+    if new_count > 2
+      CouchDB_CONN.PUT(pass_reset_id, {:time=>Couch_Plastic.utc_now})
+      raise Password_Reset, mem.inspect
+    end
+
+    raise Wrong_Password, "Password is invalid for: #{username.inspect}"
   end 
 
   # ==== Hooks =====================================================
