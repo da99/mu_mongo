@@ -100,7 +100,8 @@ module Base_Control
                             ext.capitalize
                            end
                            require( "middleware/#{disguise}_In_Disguise"  )
-                           eval( %~ #{disguise}_In_Disguise.compile( "templates/#{lang}/mustache/#{file_name}.xml" ) ~ )
+                           disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
+                           disguise_class.compile( "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb" ) 
 												 rescue Errno::ENOENT
 													 nil
 												 end
@@ -189,6 +190,66 @@ module Base_Control
   def set_attachment(filename)
     set_header 'Content-Disposition', 'attachment; filename="%s"' % File.basename(filename)
   end  
+
+  # === Session-related helpers ===
+
+  def session
+    env['rack.session'] ||= {}
+  end
+  
+  def flash_msg
+    env['flash.msg']
+  end
+
+  def require_log_in! *perm_levels
+
+    return true if perm_levels.empty? && logged_in?
+
+    if not logged_in? 
+      if request.get?
+        session[:return_page] = request.fullpath
+        redirect!('/log-in/')
+      else
+        render_error_msg( 200, "Not logged in. Log-in first and try again." )
+      end
+    end
+
+    if !current_member.any_of_these_powers?(perm_levels)
+      error(404, "Not found.")
+    end
+ 
+    true
+  end 
+  
+  def log_out!
+    #return_page = session[:return_page]
+    
+    # I hate this because it requires specific implementation knowledge
+    # about Rack::Flash. However, until I figure out a better solution,
+    # here goes:
+    #flash_session = session[:__FLASH__]
+    
+    session.clear
+    #session[:return_page] = return_page
+    # keep_flash
+
+    # session[:__FLASH__] = flash_session 
+  end 
+  
+  def logged_in?
+    session[:member_id] && current_member && !current_member.new?
+  end # === def      
+
+  def current_member=(mem)
+    raise "CURRENT MEMBER ALREADY SET" if logged_in?
+    session[:member_id] = mem.data._id
+  end    
+
+  def current_member
+    return nil if !session[:member_id]
+    @current_member ||= Member.by_id( session[:member_id] )
+  end # === def
+  
   
   # ------------------------------------------------------------------------------------
   private # ----------------------------------------------------------------------------

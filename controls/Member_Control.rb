@@ -3,6 +3,11 @@ class Member_Control
     
   # ============= Member Actions ==========================          
 
+  def GET_me
+    require_log_in!
+    render_text_plain "hello"
+  end
+
   def GET_sign_up 
     render_html_template
   end

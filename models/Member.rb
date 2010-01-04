@@ -97,9 +97,12 @@ class Member
   #
   def self.authenticate( raw_vals )
 
-    username = raw_vals[:username].to_s.strip
-    password = raw_vals[:password].to_s.strip
-    ip_addr  = raw_vals[:ip_address].to_s.strip
+    username, password = raw_vals.values_at(:username, :password).map(&:to_s).map(&:strip)
+    ip_addr, user_agent = raw_vals.values_at(:ip_address, :user_agent).map(&:to_s).map(&:strip)
+    
+    ip_addr    = nil if ip_addr.empty?
+    user_agent = nil if user_agent.empty?
+
     if username.empty? || password.empty?
       raise Wrong_Password, "#{raw_vals.inspect}"
     end
@@ -131,7 +134,8 @@ class Member
         :member_id  => mem.data._id, 
         :date       => Couch_Plastic.utc_date_now, 
         :time       => Couch_Plastic.utc_time_now,
-        :ip_address => ip_addr
+        :ip_address => ip_addr,
+        :user_agent => (user_agent.empty? ? nil : user_agent)
       }
     )
     

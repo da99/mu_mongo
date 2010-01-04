@@ -13,57 +13,8 @@ helpers do # ===============================
     @dont_require_log_in = true
   end
 
-  def require_log_in! *perm_levels
 
-    return true if perm_levels.empty? && logged_in?
 
-    if !logged_in? 
-      if request.get?
-        session[:return_page] = request.fullpath
-        redirect('/log-in/')
-      else
-        render_error_msg( 200, "Not logged in. Log-in first and try again." )
-      end
-    end
-
-    if !current_member.any_of_these_powers?(perm_levels)
-      error(404, "Not found.")
-    end
- 
-    true
-  end
-
-  def log_out!
-    #return_page = session[:return_page]
-    
-    # I hate this because it requires specific implementation knowledge
-    # about Rack::Flash. However, until I figure out a better solution,
-    # here goes:
-    #flash_session = session[:__FLASH__]
-    
-    session.clear
-    #session[:return_page] = return_page
-    keep_flash
-
-    # session[:__FLASH__] = flash_session 
-  end
-  
-  def logged_in?
-    session[:member_id] && current_member && !current_member.new?
-  end # === def      
-
-  def current_member=(mem)
-      raise "CURRENT MEMBER ALREADY SET" if logged_in?
-      session[:member_id] = mem.data._id
-  end    
-
-  def current_member
-    return nil if !session[:member_id]
-    @current_member ||= Member.by_id( session[:member_id] )
-    return nil if !@current_member
-    @current_member
-  end # === def
-  
       
   
   

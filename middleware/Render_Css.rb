@@ -12,7 +12,7 @@ class Render_Css
     Dir.glob(file_name || 'templates/*/sass/*.sass').each do |sass_file|
       
       sass_dir    = File.dirname(sass_file)
-      css_file    = File.join( 'public', sass_file.ext('css').sub('templates', 'styles').sub('sass/', '') )
+      css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'styles').sub('sass/', '') )
       css_content = Sass::Engine.new(
         File.read(sass_file), 
         :load_paths => [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
@@ -48,7 +48,7 @@ class Render_Css
 
     lang, file_name = $1, $2
     sass_file_name  = file_name.sub('.css', '') + '.sass'
-    css_content     = self.class.compile("templates/#{lang}/sass/#{sass_file_name}.sass")
+    css_content     = self.class.compile("templates/#{lang}/sass/#{sass_file_name}")
 		[200, {'Content-Type' => 'text/css'}, css_content ]
 		
 	end
