@@ -7,7 +7,7 @@ class Session_Control
 
   def GET_log_out 
     log_out!
-    flash.success_msg =  "You have been logged out." 
+    flash_msg.success =  "You have been logged out." 
     redirect! '/'
   end
 

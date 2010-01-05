@@ -18,6 +18,10 @@ module Base_Control
     (@env['HTTP_X_FORWARDED_PROTO'] || @env['rack.url_scheme']) == 'https'
   end
 
+  # NOTE:
+  # Returns original Hash from Rack::Request, without 
+  # symbolized keys.
+  #
   # From: Sinatra
   #   View original:
   #   http://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb
@@ -31,7 +35,7 @@ module Base_Control
 
   def clean_room
     @clean_params ||= begin
-                        params
+                        params.symbolize_keys
                       end
   end
   
