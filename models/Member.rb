@@ -31,14 +31,12 @@ class Member
   
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
-  LIVES = [
-      :friend,
-      :family,
-      :work,
-      :romance,
-      :pet_owner,
-      :celebrity
-  ].map(&:to_s).freeze
+  LIVES = %w{
+      friend
+      work
+      family
+      pet-owner
+  }.freeze
 
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
@@ -135,7 +133,7 @@ class Member
         :date       => Couch_Plastic.utc_date_now, 
         :time       => Couch_Plastic.utc_time_now,
         :ip_address => ip_addr,
-        :user_agent => (user_agent.empty? ? nil : user_agent)
+        :user_agent => user_agent
       }
     )
     

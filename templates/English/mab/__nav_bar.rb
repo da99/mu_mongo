@@ -22,8 +22,36 @@ div( :id=>"nav_bar" ) {
   }
 
   ul.help {
+		
     nav_bar_li :Hello, 'help'
+		
+		mustache 'logged_in?' do
+			nav_bar_li :Session_Control, 'log-out', 'Log-out'
+		end	
+	  
+	  mustache 'not_logged_in?' do
+			nav_bar_li :Session_Control, 'log-in', 'Log-in'
+		end
+		
   }
+
+	mustache 'logged_in?' do
+		h4 'Lives' 
+		ul.lives {
+			
+			nav_bar_li :Member, 'me', '[ Today ]'
+			
+			Member::LIVES.each do |life|
+				nav_bar_li :Member, "#{life}-life", life.capitalize
+			end
+		}
+	end
+	
+	# h4 'Members'
+	# ul.members {
+
+	# }
+
    
   h4 'Egg Timers'
   ul.to_dos {
@@ -33,24 +61,12 @@ div( :id=>"nav_bar" ) {
 
     # mustache 'development?' do
 
-    #   mustache 'not_logged_in?' do
-    #     h4 'Non-Members'
-    #     ul.non_members {
-    #       nav_bar_li :Member_Control, 'sign-up', 'Create Account'
-    #     }
-    #   end
-
-    #   h4 'Members'
-    #   ul.members {
-    #     mustache 'logged_in?' do
-    #       nav_bar_li :Member, 'account'
-    #       nav_bar_li :Session_Control, 'log-out'
-    #     end
-
-    #     mustache 'not_logged_in?' do
-    #       nav_bar_li :Session_Control, 'log-in'
-    #     end
-    #   }
+      # mustache 'not_logged_in?' do
+      #   h4 'Non-Members'
+      #   ul.non_members {
+      #     nav_bar_li :Member_Control, 'sign-up', 'Create Account'
+      #   }
+      # end
 
     #   h4 'Stuff To Do'
     #   ul.to_dos {

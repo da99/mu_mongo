@@ -92,7 +92,7 @@ class Base_View < Mustache
 	end
 
   def logged_in?
-    nil #@app.logged_in?
+    @app.logged_in?
   end
 
   # === FLASH MESSAGES ===
