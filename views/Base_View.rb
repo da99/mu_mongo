@@ -98,20 +98,28 @@ class Base_View < Mustache
   # === FLASH MESSAGES ===
 
   def flash_msg?
-    nil # !!(@app.flash.success_msg || @app.flash.error_msg)
+    !!flash_msg
   end
 
   def flash_msg
-    return nil if not flash_msg?
+    flash_success || flash_errors
+  end
 
-    if @app.flash.success_msg
-      {:class_name=>'success_msg', :title=>'Success', :msg=>@app.flass.success_msg}
-    else
-      title = @app.flash.error_msg.to_s["\n"] ?
-      'Errors' :
-      'Error'
-      {:class_name=>'error_msg', :title=>title, :msg=>@app.flass.error_msg}
-    end
+  def flash_success
+    return nil if !@app.flash_msg.success?
+    @flash_success ||= {:msg=>@app.flash_msg.success}
+  end
+
+  def flash_errors
+    return nil if !@app.flash_msg.errors?
+    errs = [@app.flash_msg.errors].flatten
+    @flash_errors ||= begin
+                        use_plural = errs.size > 1
+                        msg = "<ul><li>" + errs.join("</li><li>") + "</li></ul>"
+                        { :title  => (use_plural ? 'Errors' : 'Error'),
+                          :errors => errs.map {|err| {:err=>err}}
+                        }
+                      end
   end
 
   # === NAV BAR ===

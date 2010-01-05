@@ -11,6 +11,7 @@ begin
 		Redirect_Mobile
 		Catch_Bad_Bunny
     Strip_If_Head_Request
+    Flash_Msg
 	}.each { |middle|
 		require "middleware/#{middle}"
 	}
@@ -47,6 +48,7 @@ begin
   # === (specifically designed to run before The_App).
 	use Catch_Bad_Bunny
 	use Find_The_Bunny
+  use Flash_Msg
 
     
   # ===============================================

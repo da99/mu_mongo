@@ -16,19 +16,20 @@ class Session_Control
     log_out!
     
     begin 
-      mem = Member.authenticate(
-        :username=>clean_room[:username], 
-        :password=>clean_room[:password], 
-        :ip_address=>request.env['REMOTE_ADDR'],
-        :user_agent=>request.env['HTT_USER_AGENT']
+      self.current_member = Member.authenticate(
+        :username   => clean_room[:username], 
+        :password   => clean_room[:password], 
+        :ip_address => request.env['REMOTE_ADDR'],
+        :user_agent => request.env['HTT_USER_AGENT']
       )
-      self.current_member = mem
-      return_page = session.delete(:return_page)
-      redirect!( return_page || '/me/' )
-    rescue Member::Not_Found, Member::Wrong_Password
-      flash.error_msg = "Incorrect info. Try again."
+      redirect!( session.delete(:return_page) || '/me/' )
+      
+    rescue Couch_Doc::Not_Found, Member::Wrong_Password
+      flash_msg.errors = "Incorrect info. Try again."
+      
     rescue Member::Password_Reset
-      flash.error_msg = "Too many failed log-in attempts. Contact support." 
+      flash_msg.errors = "Too many failed log-in attempts. Contact support." 
+      
     end
 
     redirect! '/log-in/'

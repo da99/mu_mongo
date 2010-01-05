@@ -13,7 +13,28 @@ module Base_Control
     @request  = Rack::Request.new(@env)
     @response = Rack::Response.new
   end
+  
+  def secure?
+    (@env['HTTP_X_FORWARDED_PROTO'] || @env['rack.url_scheme']) == 'https'
+  end
 
+  # From: Sinatra
+  #   View original:
+  #   http://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb
+  def params
+    @orig_params ||= begin
+                       request.POST
+                     rescue EOFError, Errno::ESPIPE
+                       {}
+                     end
+  end
+
+  def clean_room
+    @clean_params ||= begin
+                        params
+                      end
+  end
+  
   def control
     self
   end
@@ -222,18 +243,9 @@ module Base_Control
   end 
   
   def log_out!
-    #return_page = session[:return_page]
-    
-    # I hate this because it requires specific implementation knowledge
-    # about Rack::Flash. However, until I figure out a better solution,
-    # here goes:
-    #flash_session = session[:__FLASH__]
-    
+    return_page = session.delete(:return_page)
     session.clear
-    #session[:return_page] = return_page
-    # keep_flash
-
-    # session[:__FLASH__] = flash_session 
+    session[:return_page] = return_page
   end 
   
   def logged_in?

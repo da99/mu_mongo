@@ -1,11 +1,12 @@
 
 class The_Flash_Msg
 
-  attr_reader :success, :error
+  attr_reader :success, :errors
 
-  def initialize hash = {}
+  def initialize hash 
+    hash   ||= {}
     @success = hash[:success]
-    @error   = hash[:error]
+    @errors  = hash[:errors]
     @keep    = {}
   end
 
@@ -13,11 +14,15 @@ class The_Flash_Msg
     @keep
   end
 
-  %{success error}.each { |meth|
+  %w{success errors}.each { |meth|
     eval %~
       def #{meth}= msg
         @keep[:#{meth}] = msg
         @#{meth} = msg
+      end
+
+      def #{meth}?
+        !!@#{meth}
       end
     ~
   }
