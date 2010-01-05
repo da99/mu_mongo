@@ -10,7 +10,7 @@ class Mab_In_Disguise
 			file_basename = File.basename(mab_file)
 			is_partial    = file_basename[/^__/]
 			html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
-			template_name = file_basename.sub('.rb', '')
+			template_name = file_basename.sub('.rb', '').to_sym
 			
 			content       = if is_partial
 												Markaby::Builder.new(:template_name=>template_name) { 
@@ -59,7 +59,7 @@ class Markaby::Builder
 		template_name = "#{controller}_#{shortcut}".to_sym
 		path          = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
     txt      ||= shortcut.to_s.capitalize
-    if self.template_name === template_name
+    if self.template_name.to_s === template_name.to_s
       text(capture {
         li.selected { span "< #{txt} >" }
       })

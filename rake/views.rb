@@ -1,24 +1,24 @@
-class Views
+namespace :views do
 
-	include FeFe
 
-	describe :create do
+  desc 'Uses name= and lang='
+	task :create do
 		
-		it 'Creates a template with corresponding view file.'
-		
-		steps([:name, nil], [:lang, 'English']) do |name, lang|
-			
-			demand_regex_match( /\A[a-zA-Z\-\_0-9]+\Z/, name)
-      wdir = '~/' + File.basename(Dir.getwd)
-			dir  = File.join(wdir,  'mab')
-			mab  = File.join(wdir, 'templates', lang, 'mab', name + '.rb')
-      sass = File.join(wdir, 'templates', lang, 'sass', name + '.sass')
-			view = File.join(wdir, 'views', name + '.rb')
-			created = []
-			already = []
+    lang      = ENV['lang'] || 'English'
+    name      = assert_not_empty( ENV['name'] )
+    
+    assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, name )
 
-			templates = {}
-			templates[mab] = %~
+    ldir      = assert_dir_exists("templates/#{lang}")
+    dir       = File.join( ldir, 'mab' )
+    mab       = File.join( ldir, 'mab',   name + '.rb'   )
+    sass      = File.join( ldir, 'sass',  name + '.sass' )
+    view      = File.join( 'views', name + '.rb'   )
+    created   = []
+    already   = []
+
+    templates = {}
+    templates[mab] = %~
 # VIEW #{view}
 # SASS #{sass}
 # NAME #{name}
@@ -59,8 +59,8 @@ end # === #{name} ~.lstrip
       end
 
 			templates.each do |file, content|
-			  full_path = file.expand_path	
-				if File.file?(full_path)
+			  full_path = File.expand_path(file)
+				if File.exists?(full_path)
 					puts_white 'Already existed:'
 				else
 					# Create file.
@@ -74,7 +74,6 @@ end # === #{name} ~.lstrip
 				
 			end
 
-		end # === steps
 	end # === describe
 
 end # === Views

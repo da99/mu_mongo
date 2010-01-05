@@ -39,11 +39,14 @@ div( :id=>"nav_bar" ) {
 		h4 'Lives' 
 		ul.lives {
 			
-			nav_bar_li :Member, 'me', '[ Today ]'
+			nav_bar_li :Member_Control, 'today', '[ Today ]'
 			
 			Member::LIVES.each do |life|
-				nav_bar_li :Member, "#{life}-life", life.capitalize
+				nav_bar_li :Member_Control, "#{life}-life", life.capitalize
 			end
+
+      nav_bar_li :Member_Control, 'account', '[ Account ]'
+      
 		}
 	end
 	

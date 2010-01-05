@@ -1,6 +1,11 @@
 # Rake.application.options.trace = true
 
-require 'helpers/app/Color_Puts'
+%w{
+	Color_Puts
+  kernel
+}.each do |name|
+	require "helpers/app/#{name}"
+end
 
 include Color_Puts
 
@@ -31,6 +36,7 @@ end
 	xml
   tests
   db
+  views
 }.each { |lib|
   require "rake/#{lib}"
 }

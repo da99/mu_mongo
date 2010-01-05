@@ -3,11 +3,6 @@ class Member_Control
     
   # ============= Member Actions ==========================          
 
-  def GET_me
-    require_log_in!
-    render_text_plain "hello"
-  end
-
   def GET_sign_up 
     render_html_template
   end
@@ -35,11 +30,15 @@ class Member_Control
 
   # =========================== MEMBER ONLY ==========================================
 
-  # Show account and HTML pages on same view.
-  def GET_account 
+  def GET_today
+    require_log_in!
     render_html_template
-  end # == get :show
+  end
 
+  def GET_account 
+    require_log_in!
+    render_html_template
+  end 
         
   def PUT 
     begin
