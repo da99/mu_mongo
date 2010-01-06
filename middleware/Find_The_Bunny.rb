@@ -9,7 +9,7 @@ class Find_The_Bunny
 		new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
 		
-    results = The_App.controls.detect { |control|
+    results   = The_App.controls.detect { |control|
 
       raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')
 
@@ -19,6 +19,17 @@ class Find_The_Bunny
                  [http_meth, raw_pieces].flatten
                end
       
+			# Check if first piece is part of a Control.
+			if pieces[1] 
+				c_name = pieces[1].split('_').map(&:capitalize).join('_') + '_Control'
+				if c_name === control.to_s
+					pieces.delete_at(1)
+				end
+			end
+
+			# Loop through pieces, combining them with an underscore 
+			# until the combination, matches a method name of the
+			# control, along with argument count.
       pieces.dup.inject([]) do |a_name_arr, segment|
         
         a_name_arr << pieces.shift.gsub(/[^a-zA-Z0-9]+/, '_')
@@ -27,7 +38,7 @@ class Find_The_Bunny
         if control.public_instance_methods.include?(a_name) &&
            control.instance_method(a_name).arity == pieces.size
           
-					new_env['the.app.meta'][:control]    = control
+					new_env['the.app.meta'][:control]       = control
 					new_env['the.app.meta'][:action_method] = a_name
 					new_env['the.app.meta'][:action_name]   = (a_name['_'] ? a_name.split('_')[1,10].join('_') : a_name)
 					new_env['the.app.meta'][:args]          = pieces

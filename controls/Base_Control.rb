@@ -239,7 +239,11 @@ module Base_Control
       end
     end
 
-    if !current_member.any_of_these_powers?(perm_levels)
+		power = perm_levels.detect { |level| 
+							current_member.has_power_of?(level) 
+						}
+						
+    if not power
       error(404, "Not found.")
     end
  

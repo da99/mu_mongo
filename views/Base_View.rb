@@ -5,34 +5,26 @@ class Base_View < Mustache
   attr_reader :not_prefix
   
 	def initialize new_app
-		@app = new_app
-    @not_prefix =  /^not?_/
+		@app        = new_app
+		@not_prefix = /^not?_/
 	end
 
-  def respond_to? raw_meth_name
+  def respond_to? raw_name
+    meth = raw_name.to_s
+    orig = super(meth)
+    (return orig) if orig || !meth[@not_prefix]
     
-    orig = super(raw_meth_name)
-    return( orig ) if orig
-
-    meth_name = raw_meth_name.to_s
-    return( orig ) if not meth_name[@not_prefix]
-
-    orig_meth        = meth_name.sub(@not_prefix, '')
-    orig_meth_exists = super(orig_meth)
-    return orig_meth_exists if not orig_meth_exists
-
-    true
-    
+    super( meth_s.sub(@not_prefix, '') )
   end
 
   def method_missing *args
     meth = args.shift.to_s
-    return(super(meth, *args)) unless meth =~ @not_prefix
     
-    orig_meth = meth.sub(@not_prefix, '')
-    return(super(meth, *args)) unless methods.include?(orig_meth)
-
-    !(send(orig_meth, *args))
+    if meth[@not_prefix]
+      return !send(meth.sub(@not_prefix, ''), *args) 
+    end
+    
+    raise(NoMethodError, "NAME: #{meth.inspect}, ARGS: #{args.inspect}")
   end
 
   def development?
