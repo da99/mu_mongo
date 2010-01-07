@@ -55,14 +55,14 @@ namespace :tests do
 
     # === Create News ==========================
 
-    CouchDB_CONN.PUT( 'i-luv-longevinex', {:title=>'Longevinex', 
+    CouchDB_CONN.PUT( 'hearts-news-i-luv-longevinex', {:title=>'Longevinex', 
                   :teaser   =>'teaser', 
                   :body     =>'Test body.', 
                   :tags     =>['surfer_hearts', 'hearts', 'pets'],
                   :created_at   =>'2009-10-11 02:02:27',
                   :published_at =>'2009-12-09 01:01:26',
                   :data_model   => 'News', 
-                  :club     => 'surfer-hearts'
+                  :club_id      => 'club-hearts'
     })
 
 

@@ -9,7 +9,12 @@ class Club_Control_edit < Club_Control_Base_View
   end
 
   def news
-    @news ||= News.by_published_at(:limit=>5)
+    @news ||= News.by_club_id_and_published_at(:club=>club.data._id, :limit=>5).map { |post|
+      post.update(
+        :href=>href_for(post),
+        :href_edit=>href_for(post, :edit)
+      )
+    }
   end
 	
 end # === Club_Control_edit 

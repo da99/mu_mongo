@@ -10,21 +10,33 @@ class Base_View < Mustache
 	end
 
   def respond_to? raw_name
-    meth = raw_name.to_s
-    orig = super(meth)
-    (return orig) if orig || !meth[@not_prefix]
+    meth         = raw_name.to_s
     
-    super( meth_s.sub(@not_prefix, '') )
+    orig         = super(meth)
+    (return orig) if orig 
+    
+    not_meth     = meth.sub(@not_prefix, '') 
+    (return super( not_meth )) if meth[@not_prefix] 
+    
+    orig
   end
 
   def method_missing *args
     meth = args.shift.to_s
     
     if meth[@not_prefix]
-      return !send(meth.sub(@not_prefix, ''), *args) 
+      result = send(meth.sub(@not_prefix, ''), *args) 
+      return result_empty?(result)
     end
     
     raise(NoMethodError, "NAME: #{meth.inspect}, ARGS: #{args.inspect}")
+  end
+
+  def result_empty? result
+    return result.empty? if result.respond_to?(:empty?)
+    return result.zero? if result.is_a?(Fixnum)
+    return result.strip.empty? if result.is_a?(String)
+    !result
   end
 
   def development?
@@ -34,6 +46,27 @@ class Base_View < Mustache
 	def url
 		@app.request.fullpath
 	end
+
+  def href_for obj, action = :read
+    data       = obj.is_a?(Hash) ? obj : obj.data.as_hash
+    case action
+      when :edit
+        File.join '/', data[:data_model].downcase, '/edit', data[:_id]
+      when :read
+        class_name = obj.is_a?(Hash) ? obj[:data_model] : obj
+        case class_name 
+          when News, 'News'
+            filename, obj_type, *rest = data[:_id].split('-')
+            File.join '/', filename, obj_type, rest.join('-'), '/' 
+          when Club, 'Club'
+            File.join '/', data[:filename]
+          else
+            raise "Unknown Class for Object: #{obj.inspect}"
+        end
+      else
+        raise "Unknown action: #{action.inspect}"
+    end
+  end
 
 	def mobile_request?
 		@app.request.cookies['use_mobile_version'] && 
