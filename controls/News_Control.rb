@@ -20,12 +20,15 @@ class News_Control
 	end
 
 	def GET id  # SHOW
-    namespace_env( 'news' , News.by_id(id) )
+    env['the.app.news'] = News.by_id(id) 
 		render_html_template
 	end
 
 	def GET_edit id # EDIT 
-	end
+    require_log_in! 'ADMIN'
+    env['the.app.news'] = News.by_id(id)
+    render_html_template
+  end
 
 	def PUT id  # UPDATE 
 		success_msg { "Update: #{doc.data.title}" }
@@ -61,6 +64,19 @@ class News_Control
     @news = News.by_published_at(:descending=>true, :startkey=>@next_month, :endkey=>@prev_month)
     render_html_template
   end # ===
+
+  
+end # === News_Control
+
+
+
+
+
+
+
+
+__END__
+
 
   get %r{/news/by_tag/([0-9]+)/} do |id|
     tags = { 167 => 'stuff_for_dudes', 
@@ -155,7 +171,4 @@ class News_Control
   end
 
   
-  
-end # === News_Control
-
 

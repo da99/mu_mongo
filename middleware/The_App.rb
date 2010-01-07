@@ -46,6 +46,8 @@ class The_App
     begin
       the_app.send( action_method, *args )
     rescue The_App::Redirect
+    rescue Couch_Doc::Not_Found
+      raise The_App::HTTP_404, new_env['PATH_INFO']
     end
     the_app.response.finish
     

@@ -151,6 +151,11 @@ module Couch_Plastic
       def as_hash
         (@doc.instance_variable_get :@orig_doc ) || {}
       end
+
+      def respond_to? raw_meth
+        meth = raw_meth.to_sym
+        @fields.include?(meth) || super(meth)
+      end
     
       def method_missing( raw_key, *args )
         key = raw_key.to_sym
@@ -176,6 +181,11 @@ module Couch_Plastic
 				def as_hash
           @hash
 				end
+
+        def respond_to? raw_meth
+          meth = raw_meth.to_sym
+          @keys.include?(meth) || super(meth)
+        end
 			
 				def method_missing( raw_key, *args )
 					key = raw_key.to_sym

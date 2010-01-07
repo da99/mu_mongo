@@ -21,8 +21,6 @@ class Club_Control
 	def save_club_to_env id
 		club_filename       = "club-#{id.sub('club-', '')}"
 		env['the.app.club'] = Club.by_id club_filename
-	rescue Couch_Doc::Not_Found
-		raise The_App::HTTP_404, "No club with filename: #{club_filename.inspect}"
 	end
 
 end # === Club_Control

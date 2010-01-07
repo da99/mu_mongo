@@ -61,6 +61,7 @@ begin
     Member_Control   
     Topic
     Club_Control
+    News_Control
   }.each { |control|
 		require "controls/#{control}"
 		The_App.controls << Object.const_get(control)

@@ -5,7 +5,7 @@ class News
 
   enable_timestamps
 
-  allow_fields :club,
+  allow_fields :club_id,
                :title, 
                :teaser,
                :body,
