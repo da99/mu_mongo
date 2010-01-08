@@ -42,6 +42,16 @@ module Kernel
     false
    end
 
+	 def assert_size obj, raw_target_size
+		 meth =  obj.respond_to?(:jsize) ? :jsize : :size 
+		 size = obj.send(meth)
+		 target = Integer(raw_target_size)
+		 if not (size === target)
+			 raise ArgumentError, "Object is wrong #{meth}: #{obj.inspect}, SIZE: #{size}"
+		 end
+		 size
+	 end
+
 	 def assert_not_empty obj
 		 empty, val = case obj
 						 when nil

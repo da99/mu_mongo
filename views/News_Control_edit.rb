@@ -28,15 +28,14 @@ class News_Control_edit < Base_View
   end
 
   def clubs
-    @clubs ||= Club.all.map { |val| 
-      selected = (news.data.club_id === val[:id])
-      val.update :selected => selected, :not_selected => !selected
+    @clubs ||= Club.all.map_html_menu { |club| 
+      news.data.club_id === club[:id]
     }
   end
 
   def news_tags
-    @news_tags ||= news.data.tags.map { |tag|
-      {:filename=>tag, :selected=>true, :not_selected=>false}
+    @news_tags ||= news.data.tags.map_html_menu { |tag|
+      [ true, {:filename=>tag} ]
     }
   end
 
