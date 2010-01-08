@@ -34,7 +34,7 @@ div.content! {
     fieldset {
       label 'Club'
       menu_for 'clubs', :name=>'club_id' do
-        option 'filename', :value=>'_id'
+        option 'title', :value=>'id'
       end
     }
 

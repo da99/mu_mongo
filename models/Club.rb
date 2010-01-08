@@ -44,6 +44,14 @@ class Club
 
   # ======== Accessors ======== 
 
+  def self.all params = {}
+    raw = CouchDB_CONN.GET_by_view :clubs, params
+    results = raw[:rows].map { |row|
+      row.delete :key
+      row.update row.delete(:value)
+    }
+  end
+
   def news raw_params = {}
     params = {:limit=>10, :descending=>true}.update(raw_params)
     News.by_club(self.data.filename, params )

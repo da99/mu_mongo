@@ -28,11 +28,16 @@ class News_Control_edit < Base_View
   end
 
   def clubs
-    [{:filename=>'Kit Kat', :selected=>false, :not_selected=>true}]
+    @clubs ||= Club.all.map { |val| 
+      selected = (news.data.club_id === val[:id])
+      val.update :selected => selected, :not_selected => !selected
+    }
   end
 
   def news_tags
-    [{:filename=>'fun', :selected=>true, :not_selected=>false}]
+    @news_tags ||= news.data.tags.map { |tag|
+      {:filename=>tag, :selected=>true, :not_selected=>false}
+    }
   end
 
   def news_href
