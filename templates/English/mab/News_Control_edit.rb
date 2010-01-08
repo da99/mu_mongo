@@ -27,23 +27,22 @@ div.content! {
       textarea('{{news_body}}', :id=>"news_body", :name=>"body")
     }
 
+    p 'Published: {{news_published_at}}'
+    p 'Created: {{news_created_at}}'
+    # p 'Updated: {{news_updated_at}}'
+
+    fieldset {
+      label 'Club'
+      menu_for 'clubs', :name=>'club_id' do
+        option 'filename', :value=>'_id'
+      end
+    }
+
     fieldset {
       label 'Tags'
       div.checkboxes {
-        mustache 'news_tags' do
-          mustache 'tag_included' do
-            div.box.selected {
-              checkbox true, :name=>"tags[]", :value=>'{{tag}}'
-              span '{{tag}}'
-            }
-          end
-
-          mustache 'tag_not_included' do
-            div.box {
-              checkbox false, :name=>"tags[]", :value=>'{{tag}}'
-              span '{{tag}}'
-            }
-          end
+        checkboxes_for 'news_tags', :name=>'tags[]' do
+          checkbox 'filename',  :value=>'filename'
         end
       } # === checkboxes
     } # === fieldset

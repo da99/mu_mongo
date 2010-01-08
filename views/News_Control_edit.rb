@@ -27,8 +27,12 @@ class News_Control_edit < Base_View
     @app.env['the.app.news']
   end
 
+  def clubs
+    [{:filename=>'Kit Kat', :selected=>false, :not_selected=>true}]
+  end
+
   def news_tags
-    []
+    [{:filename=>'fun', :selected=>true, :not_selected=>false}]
   end
 
   def news_href
