@@ -53,7 +53,70 @@ end
 class Markaby::Builder
   
   set(:indent, 1)
-  
+
+  def checkboxes_for coll, attrs, &blok
+    @checkbox ||= Class.new do 
+      attr_reader :results
+      def initialize &blok
+        @results = instance_eval &blok
+      end
+      def checkbox *args
+        @results =  args
+      end
+    end
+    
+    span_txt, attrs = @checkbox.new(&blok).results
+    attrs[:type] = 'checkbox'
+    
+    txt = capture {
+      mustache coll do
+        mustache 'selected' do
+          div.box.selected {
+            input( {:checked=>'checked'}.update attrs )
+            span "{{#{span_txt}}}"
+          }
+        end
+        mustache 'not_selected' do
+          div.box {
+            input attrs 
+            span "{{#{span_txt}}}"
+          }
+        end
+      end
+    }
+
+    text txt
+  end
+
+  def menu_for coll, select_attrs={}, &blok
+    @option_class = Class.new do
+      attr_reader :results
+      def initialize &blok
+        instance_eval &blok
+      end
+      def option *args
+        @results = args
+      end
+    end
+    
+    opt_txt, attrs = @option_class.new(&blok).results
+    attrs[:value] = "{{#{attrs[:value]}}}"
+    
+    txt = (capture { 
+      select(select_attrs) {
+        mustache coll do
+          mustache 'selected' do
+            option "{{#{opt_txt}}}", {:selected=>'selected'}.update(attrs)
+          end 
+          mustache 'not_selected' do
+            option "{{#{opt_txt}}}"
+          end
+        end
+      }
+    })
+    text txt
+  end
+
   def nav_bar_li controller, raw_shortcut, txt = nil
 		shortcut      = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
 		template_name = "#{controller}_#{shortcut}".to_sym
@@ -92,20 +155,6 @@ class Markaby::Builder
     @the_app = Ignore_Everything.new
   end
   alias_method :app_vars, :the_app
-
-  # def save_to(name,  &new_proc)
-  #   text "\nNot done: save_to #{name.inspect}\n"
-  #   return
-  #   instance_variable_set( :"@#{name}" , capture(&new_proc) )       
-  # end # === save_to
-
-  def checkbox selected, attrs
-    defaults = { :type=>'checkbox' }
-    if selected
-      defaults[:checked] = 'checked'
-    end
-    input attrs.update(defaults)     
-  end
 
   def mustache mus, &blok
     if block_given?
