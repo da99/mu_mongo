@@ -45,7 +45,7 @@ class News_Control_edit < Base_View
   end
 
   def news_href_update
-    File.join('/news', news.data.club_id, '/')
+    File.join('/news', news.data._id, '/')
   end
 	
 end # === News_Control_edit 

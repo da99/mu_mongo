@@ -55,9 +55,16 @@ module Base_Control
     @clean_params ||= begin
                         data = {}
                         request.params.each { |k,v| 
-                          data[k] = v ? v.strip : nil
-                          if data[k].empty?
-                            data[k] = nil
+                          data[k] = case v
+                          when String
+                            temp = v.strip
+                            temp.empty? ? nil : temp
+                          when Array
+                            v.map { |arr_v| 
+                              arr_v.strip
+                            }
+                          else
+                            raise "Unknown class: #{v.inspect}"
                           end
                         }
                         data

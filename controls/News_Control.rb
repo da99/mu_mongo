@@ -11,7 +11,8 @@ end # === News_Mustache
 class News_Control
   include Base_Control
 
-	def POST # CREATE 
+	def POST id # CREATE 
+    return render_text_plain(clean_params.inspect)
 		success_msg  "Save: #{doc.data.title}" 
 	end
 

@@ -54,7 +54,7 @@ class Markaby::Builder
   
   set(:indent, 1)
 
-  def checkboxes_for coll, attrs, &blok
+  def checkboxes_for coll, orig_attrs, &blok
     @checkbox ||= Class.new do 
       attr_reader :results
       def initialize &blok
@@ -66,7 +66,9 @@ class Markaby::Builder
     end
     
     span_txt, attrs = @checkbox.new(&blok).results
+    attrs.update orig_attrs
     attrs[:type] = 'checkbox'
+    attrs[:value] = "{{#{attrs[:value]}}}" if attrs[:value]
     
     txt = capture {
       mustache coll do
