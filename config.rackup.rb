@@ -1,1 +1,0 @@
-/home/da01tv/megauni/config.ru
