@@ -27,11 +27,11 @@ end
 
 namespace 'git' do
   
-	desc 'Executes: git add . && git add -u && git status'
-	task :update do 
-		sh 'git add . && git add -u'
-		system 'git status'
-	end
+  desc 'Executes: git add . && git add -u && git status'
+  task :update do 
+    sh 'git add . && git add -u'
+    system 'git status'
+  end
   
   
   desc 'Gathers comment and commits it. Example: git:commit message="My commit." '
@@ -54,7 +54,7 @@ namespace 'git' do
   desc "Used to update and commit development checkpoint. Includes the commit comment for you."
   task :dev_check do
     ENV['msg'] = 'Development checkpoint.'
-		Rake::Task['git:commit'].invoke
+    Rake::Task['git:commit'].invoke
   end # === task
 
   

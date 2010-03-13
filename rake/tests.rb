@@ -16,7 +16,8 @@ namespace :tests do
   desc "Run one test file. Uses: name=. 'tests/tests_' and '.rb' is automatically added."
   task :file do
     # require "tests/test_#{ENV['name']}"
-    sh(%~ ruby -w "tests/test_#{ENV['name']}.rb"~)
+    file_name = ENV['name'].sub(/\Atest_/, '')
+    sh(%~ ruby -w "tests/test_#{file_name}.rb"~)
   end
   
   desc "Creates a test file. Uses name=. Addes 'test_' and '.rb' automatically."

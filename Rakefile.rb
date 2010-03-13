@@ -1,10 +1,10 @@
 # Rake.application.options.trace = true
 
 %w{
-	Color_Puts
+  Color_Puts
   kernel
 }.each do |name|
-	require "helpers/app/#{name}"
+  require "helpers/app/#{name}"
 end
 
 include Color_Puts
@@ -16,24 +16,24 @@ def assert_not_empty raw_val
 end
 
 def compile_for_production
-	spaces = %w{ sass mab xml }
-	
-	spaces.each { |space|
-		Rake::Task["#{space}:compile"].invoke
-	}
-	
-	yield
-	
-	spaces.each { |space|
-		Rake::Task["#{space}:cleanup"].invoke
-	}
+  spaces = %w{ sass mab xml }
+  
+  spaces.each { |space|
+    Rake::Task["#{space}:compile"].invoke
+  }
+  
+  yield
+  
+  spaces.each { |space|
+    Rake::Task["#{space}:cleanup"].invoke
+  }
 end
 
 %w{ 
   git
   sass
-	mab
-	xml
+  mab
+  xml
   tests
   db
   views
@@ -44,7 +44,7 @@ end
 puts "\n\n"
 
 at_exit do
-	puts "\n\n"
+  puts "\n\n"
 end
 
 

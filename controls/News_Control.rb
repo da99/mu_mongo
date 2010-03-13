@@ -10,10 +10,18 @@ end # === News_Mustache
 
 class News_Control
   include Base_Control
-
-	def POST id # CREATE 
-    return render_text_plain(clean_params.inspect)
-		success_msg  "Save: #{doc.data.title}" 
+  
+  
+	def PUT id # UPDATE
+		success_msg lambda { |doc| "Update: #{doc.data.title}" }
+    params = clean_room.clone
+    params[:tags] = begin
+                      new_tags = []
+                      new_tags += clean_room[:new_tags].to_s.split("\n") 
+                      new_tags += clean_room[:tags]
+                      new_tags.uniq
+                    end
+    handle_rest :params=>params
 	end
 
 	def GET_list # 
@@ -30,10 +38,6 @@ class News_Control
     env['the.app.news'] = News.by_id(id)
     render_html_template
   end
-
-	def PUT id  # UPDATE 
-		success_msg { "Update: #{doc.data.title}" }
-	end
 
 	def DELETE id # DELETE
 		success_msg { "Delete: #{doc.data.title}"  }

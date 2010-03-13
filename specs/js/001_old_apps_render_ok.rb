@@ -13,8 +13,8 @@ test('/', "Homepage must have a link to MyEggTimer.") {
   click_on('a', '/my-egg-timer/');
 }
 
-test('/sign-up/', "Sign-up must have a working form to sign-up.") {
-  form('#form_sign_up') {
+test('/create-account/', "Sign-up must have a working form to create-account.") {
+  form('#form_create_account') {
     fill_in('input[@name="username"]', "da01#{rand(100000)}");
     fill_in('input[@name="password"]', "test123test123");
     fill_in('input[@name="confirm_password"]', "test123test123");

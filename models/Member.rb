@@ -20,8 +20,8 @@ class Member
   #                     CONSTANTS
   # =========================================================  
   
-  Wrong_Password     = Class.new( StandardError )
-  Password_Reset     = Class.new( StandardError )
+  Wrong_Password         = Class.new( StandardError )
+  Password_Reset         = Class.new( StandardError )
   Invalid_Security_Level = Class.new( StandardError )
 
   SECURITY_LEVELS        = %w{ NO_ACCESS STRANGER  MEMBER  EDITOR   ADMIN }
@@ -145,7 +145,7 @@ class Member
 
     # Raise Account::Reset if necessary.
     if new_count > 2
-      CouchDB_CONN.PUT(pass_reset_id, {:time=>Couch_Plastic.utc_now})
+      CouchDB_CONN.PUT(pass_reset_id,  :time=>Couch_Plastic.utc_now )
       raise Password_Reset, mem.inspect
     end
 
@@ -158,7 +158,24 @@ class Member
 		new_data._id            = CouchDB_CONN.GET_uuid
 		new_data.security_level = Member::MEMBER
     ask_for :avatar_link, :email
-    demand  :password, :add_life
+    demand  :usernamed, :password, :add_life
+  end
+
+  def valid_before_create
+    nl = Member_Life.new()
+    merge_errors(nl) {
+      nl.save_create
+    }
+  end
+
+  def after_create
+    CouchDB_CONN.PUT(
+      "member-life-friends-#{data._id}",
+      :data_model => 'Member_Life', 
+      :username   => clean_data[:username]  
+      :title      => 'Friends',
+      :category   => 'casual'
+    )
   end
     
   

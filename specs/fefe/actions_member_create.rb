@@ -8,7 +8,7 @@ class Actions_Member_Create
   context 'Member :new/:create action' 
 
   it 'redirects to SSL version of page' do
-    get '/sign-up/' 
+    get '/create-account/' 
     follow_redirect!
     demand_equal 'on', last_request.env['HTTPS']
   end 

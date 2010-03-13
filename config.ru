@@ -41,6 +41,7 @@ begin
   use Serve_Public_Folder, ['/busy-noise/', '/my-egg-timer/', '/styles/', '/skins/']
   
 	# === Helpers
+  use Rack::MethodOverride
   use Rack::Session::Pool
   use Strip_If_Head_Request
   

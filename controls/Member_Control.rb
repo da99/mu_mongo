@@ -3,7 +3,7 @@ class Member_Control
     
   # ============= Member Actions ==========================          
 
-  def GET_sign_up 
+  def GET_create_account 
     render_html_template
   end
             
@@ -22,7 +22,7 @@ class Member_Control
       flash.error_msg = $!.doc.errors 
       session[ :form_username  ] = clean_room[:username] 
                
-      redirect! '/sign-up/' 
+      redirect! '/create-account/' 
     end
       
   end # == post :create

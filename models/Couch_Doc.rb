@@ -6,6 +6,12 @@ class Couch_Doc
 	Not_Found                      = Class.new(StandardError)
 	HTTP_Error                     = Class.new(StandardError)
 	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
+  TIME_BASE = 1263487773
+  CHARS = ["a", "l", 2, "t", "j", "w", "r", "d", "t", "j", 4, "d", 
+          "z", "y", "w", "x", "m", "e", 1, "n", "s", "i", "g", "b", "b", "a", 
+          8, "m", "u", "p", "v", "g", 7, "c", 5, "f", "k", "h", "z", 3, "v", 
+          "o", "k", "h", "x", "y", 9, "i", "n", "l", "e", "q", "q", "u", "c", 
+          "f", "r", "p", "s", "o", 6].map(&:to_s)
 
   ValidQueryOptions = %w{ 
       key
@@ -129,6 +135,10 @@ class Couch_Doc
 
   def GET_uuid
     GET( '_uuids' )[:uuids].first
+  end
+
+  def GET_psuedo_uuid
+    (Time.now.utc.to_i - TIME_BASE).to_s(36) 
   end
 
   def GET_by_view(view_name, params={})

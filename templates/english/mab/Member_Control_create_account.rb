@@ -1,6 +1,6 @@
-# ~/megauni/views/Member_Control_sign_up.rb
-# ~/megauni/templates/English/sass/Member_Control_sign_up.sass
-# Member_Control_sign_up
+# ~/megauni/views/Member_Control_create_account.rb
+# ~/megauni/templates/English/sass/Member_Control_create_account.sass
+# Member_Control_create_account 
 
 div.content! { 
   
@@ -10,7 +10,7 @@ div.content! {
 
   h3 'Create a New Account'
   
-  form.sign_up_form!(:action=>"/member/", :method=>"post") {
+  form.create_account_form!(:action=>"/member/", :method=>"post") {
     
     fieldset {
       label 'Username'
@@ -28,10 +28,10 @@ div.content! {
     }
 
     div.buttons {
-      button.create 'Create My New Account', :onclick=>"document.getElementById('sign_up_form').submit(); return false;" 
+      button.create 'Create My New Account', :onclick=>"document.getElementById('create_account_form').submit(); return false;" 
     }
 
-  } # === form.sign_up_form!
+  } # === form.create_account_form!
 
   
 } # === div.content!

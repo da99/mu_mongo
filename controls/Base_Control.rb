@@ -5,7 +5,7 @@ module Base_Control
   # ======== INSTANCE stuff ======== 
   
   include Rack::Utils
-  attr_accessor :app, :env, :request, :response, :params
+  attr_accessor :app, :env, :request, :response
   
   def initialize(new_env)
     @app      = self
@@ -32,12 +32,6 @@ module Base_Control
                        {}
                      end
   end
-
-  def clean_room
-    @clean_params ||= begin
-                        params.symbolize_keys
-                      end
-  end
   
   def control
     self
@@ -51,8 +45,8 @@ module Base_Control
     @action_name ||= env['the.app.meta'][:action_name]
   end
   
-  def clean_params 
-    @clean_params ||= begin
+  def clean_room
+    @clean_room ||= begin
                         data = {}
                         request.params.each { |k,v| 
                           data[k] = case v
@@ -67,7 +61,7 @@ module Base_Control
                             raise "Unknown class: #{v.inspect}"
                           end
                         }
-                        data
+                        data.symbolize_keys
                       end
   end
 
@@ -344,6 +338,32 @@ module Base_Control
     end
       
     raise The_App::HTTP_404, "Unable to process request: #{response.request_method} #{response.path}"
+  end
+
+  def handle_rest args = {}
+    assert_valid_keys args, [:params, :action_name]
+    args[:params] ||= clean_room
+    args[:action_name] ||= action_name
+    return render_text_plain(args.inspect)
+
+    model_class = Object.const_get(self.class.sub('_control'))
+    case args[:action_name]
+      when :GET_new # new
+        raise "not done"
+      when :GET_edit # edit
+        raise "not done"
+      when :POST # create
+        raise "not done"
+      when :PUT # update
+        raise "not done"
+      when :DELETE
+        raise "not done"
+    end
+  end
+
+  def success_msg *args
+    return @success_msg if args.empty?
+    @success_msg = args.first
   end
 
 end # === Base_Control

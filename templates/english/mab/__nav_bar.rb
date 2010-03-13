@@ -67,7 +67,7 @@ div( :id=>"nav_bar" ) {
       # mustache 'not_logged_in?' do
       #   h4 'Non-Members'
       #   ul.non_members {
-      #     nav_bar_li :Member_Control, 'sign-up', 'Create Account'
+      #     nav_bar_li :Member_Control, 'create-account', 'Create Account'
       #   }
       # end
 
@@ -82,11 +82,15 @@ div( :id=>"nav_bar" ) {
     #   h4 'Lives'
     #   ul.lives {
     #      
-    #       nav_bar_li :Lives, 'friend'
-    #       nav_bar_li :Lives, 'family'
     #       nav_bar_li :Lives, 'work'
-    #       nav_bar_li :Lives, 'pet-owner', 'Pet Owner'
-    #       nav_bar_li :Lives, 'celebrity'
+    #       nav_bar_li :Lives, 'friend'
+    #       nav_bar_li :Lives, 'pets', 'Pet Owner'
+    #       nav_bar_li :Lives, 'fan'
+    #       nav_bar_li :Lives, 'relatives'
+    #       nav_bar_li :Lives, 'parenting'
+    #       nav_bar_li :Lives, 'education'
+    #       nav_bar_li :Lives, 'love'
+    #       nav_bar_li :Lives, 'secret', 'Secret Life'
     #   }
     # 
     # end # === if development?

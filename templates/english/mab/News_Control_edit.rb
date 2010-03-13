@@ -12,6 +12,8 @@ div.content! {
 
   form.form_news_edit!(:action=>'{{news_href_update}}', :method=>'post') {
 
+    _input_put_method
+    
     fieldset {
       label 'Title'
       input.text( :value=>'{{news_title}}', :id=>"news_title", :name=>"title", :type=>"text" )
@@ -51,7 +53,6 @@ div.content! {
       input :value=>'put', :name=>'_method', :type=>'hidden'
       button.update 'Update', :onclick=>"document.getElementById('form_news_edit').submit(); return false;"
     }
-
 
   } # === form
 

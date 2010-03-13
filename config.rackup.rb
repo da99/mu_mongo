@@ -1,1 +1,1 @@
-/home/da01/megauni/config.ru
+/home/da01tv/megauni/config.ru

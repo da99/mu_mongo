@@ -93,6 +93,12 @@ module Kernel
 		 File.expand_path(str)
 	 end
 
+   def assert_valid_keys hash, valid_keys
+     invalid = hash.keys - valid_keys
+     return true if invalid.empty?
+     raise ArgumentError, "Invalid keys: #{invalid.map(&:inspect).join(', ')}"
+   end
+
 end
 
 # class Object

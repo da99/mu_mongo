@@ -8,7 +8,7 @@ class Find_The_Bunny
 		
 		new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-		
+
     results   = The_App.controls.detect { |control|
 
       raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')

@@ -54,6 +54,12 @@ class Markaby::Builder
   
   set(:indent, 1)
 
+  def _input_put_method
+    text(capture { 
+      input :type=>'hidden', :name=>'method', :value=>'_put' 
+    })
+  end
+
   def checkboxes_for coll, orig_attrs, &blok
     @checkbox ||= Class.new do 
       attr_reader :results
