@@ -1,17 +1,46 @@
+require 'open3'
+require 'models/FiDi'
 
 MY_EMAIL = 'diego@miniuni.com'
 MY_NAME = 'da01'
 
-MY_LIFE  = File.expand_path('~/MyLife')
+HOME_MY_LIFE = '~/MyLife'
+MY_LIFE  = File.expand_path(HOME_MY_LIFE)
 MY_PREFS = File.join(MY_LIFE, 'prefs')
 DROPBOX  = File.expand_path('~/Dropbox')
-BACKUP_DIR = File.join(DROPBOX, 'BACKUP_MyLife')
+BACKUP_DIR = File.join(DROPBOX, 'Backup_MyLife')
 
 class String
   def one_line
-     split("\n").join(" ").strip
+     split("\n").map { |str| str.strip }.join(" ").strip
   end
 end
+
+def shell_out(*args, &blok)
+    stem          = args.shift
+    cmd           = stem % ( args.map { |s| s.to_s.inspect } )
+
+    results, errors = Open3.popen3( cmd ) { |stdin3, stdout3, stderr3|
+      [ stdout3.readlines, stderr3.readlines ]
+    }
+    
+    if !errors.empty?
+
+      if block_given?
+        return blok.call(results, errors)
+      end
+      
+      puts_red '========  Error from shell_out:  =========  '
+      errors.join("\n").each { |err|
+        puts_red err
+      }      
+      
+      exit(1)
+      
+    end
+    
+    results.join(" ")
+end  
 
 namespace 'my_computer' do 
 
@@ -21,7 +50,7 @@ namespace 'my_computer' do
       puts_white %~
          Optional: Flash fix for Ubuntu: 
          http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem 
-      ~
+      ~.one_line
 
       puts_white 'ruby-debug configuration file:'
       rdebug = File.join(MY_PREFS, 'ruby', 'rdebugrc.rb')
@@ -88,14 +117,11 @@ namespace 'my_computer' do
       end
 
       plugins = [ 
-          "Adblock Plus",
-          "Firebug", 
-          "Fission",
-          "Live HTTP headers"
+          "Adblock Plus"
       ]
 
       plugins.each do |plug|
-          results = shell_out("grep #{plug} -r /home/da01/.mozilla/firefox --include=extensions.rdf")
+          results = shell_out("grep #{plug} -r ~/.mozilla/firefox --include=extensions.rdf")
           if not results[plug]
             puts_red( "Install #{plug} for Firefox" )
           end
@@ -120,10 +146,10 @@ namespace 'my_computer' do
       puts_white 'Linking VIM dot directory.'
       FiDi.directory(MY_PREFS, 'vim', 'dotvim').create_alias '~/.vim'
 
-      puts_white 'Installing bash profile.'
-      bashrc = '~/.bashrc'
-      custom_bashrc = '~/MyLife/prefs/_bashrc_additions'
-      if not bashrc.file.read[". #{custom_bashrc}"]
+      puts_white 'Checking bashrc.'
+      bashrc = File.expand_path('~/.bashrc')
+      custom_bashrc = "#{HOME_MY_LIFE}/prefs/_bashrc_additions"
+      if not File.read(bashrc)[". #{custom_bashrc}"]
         puts_red %~ 
           Add the following to your #{bashrc}:
 # Custom additios for Diego

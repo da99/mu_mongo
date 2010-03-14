@@ -172,7 +172,7 @@ class Member
     CouchDB_CONN.PUT(
       "member-life-friends-#{data._id}",
       :data_model => 'Member_Life', 
-      :username   => clean_data[:username]  
+      :username   => clean_data[:username],  
       :title      => 'Friends',
       :category   => 'casual'
     )

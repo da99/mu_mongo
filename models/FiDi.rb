@@ -27,8 +27,8 @@ class FiDi
     FiDi_Directory.new(raw_name)
   end
 
-  def self.directory raw_name
-    FiDi_Directory.new raw_name
+  def self.directory *raw_name
+    FiDi_Directory.new *raw_name
   end
                           
   def self.file *raw_name
@@ -41,8 +41,8 @@ class FiDi_Directory
 
   attr_reader :path
   
-  def initialize raw_str
-    orig_path = File.expand_path(FiDi.validate_path(raw_str))
+  def initialize *raw_str
+    orig_path = File.expand_path(FiDi.validate_path(File.join(*raw_str)))
     if File.exists?(orig_path)
       if not File.directory?(orig_path)
         raise ArgumentError, "Directory path exists, but is not a directory: #{orig_path}"
@@ -64,14 +64,6 @@ class FiDi_Directory
     raise ArgumentError, "Path already exists, but is not a directory: #{path}"
   end
 
-  def self.new! raw_str
-    dir = FiDi_Directory.new(raw_str)
-    if not dir.exists?
-      raise ArgumentError, "Director does not exist: #{dir.path}" 
-    end
-    dir
-  end
-  
   def name 
     File.basename(path)
   end
@@ -138,7 +130,7 @@ class FiDi_File
   attr_reader :path
 
   def initialize *raw_name
-    orig_path = FiDi.validate_path(File.join(*raw_name))
+    orig_path = File.expand_path(FiDi.validate_path(File.join(*raw_name)))
     if File.directory?(orig_path)
       raise ArgumentError, "Already a directory: #{orig_path.inspect}"
     end
