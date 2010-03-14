@@ -37,6 +37,7 @@ end
   tests
   db
   views
+  my_computer
 }.each { |lib|
   require "rake/#{lib}"
 }

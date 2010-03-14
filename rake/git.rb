@@ -34,7 +34,7 @@ namespace 'git' do
   end
   
   
-  desc 'Gathers comment and commits it. Example: git:commit message="My commit." '
+  desc 'Gathers comment and commits it. Example: git:commit msg="My commit." '
   task :commit => [:update] do
     
     raw_msg = ENV['msg']
