@@ -23,7 +23,7 @@ namespace :tests do
   task :file do
     # require "tests/test_#{ENV['name']}"
     file_name = ENV['name'].sub(/\Atest_/, '')
-    sh(%~ ruby -w -r "tests/__helper__" "tests/test_#{file_name}.rb"~)
+    sh(%~ ruby -w -r "tests/__helper__" "tests/Test_#{file_name}.rb"~)
   end
   
   desc "Creates a test file. Uses: 

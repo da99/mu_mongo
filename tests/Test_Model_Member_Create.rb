@@ -1,10 +1,10 @@
 # models/Member.rb
 
-
 class Test_Model_Member_Create < Test::Unit::TestCase
 
+  RAND_NUMS = (1..100).to_a.map {|a| rand(10000)}.uniq
   def random_username
-    "da01_#{rand(10000)}"
+    "da01_#{RAND_NUMS.pop}"
   end
 
   must 'raise Perfection_Required if :add_life is invalid' do
@@ -27,7 +27,8 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = begin
             Member.create( nil, {
               :password => nil,
-              :add_life => 'friend'
+              :add_life => 'friend',
+              :add_life_username => random_username
             })
           rescue Member::Invalid => e
             e.doc
@@ -52,7 +53,8 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = begin
             Member.create(nil, {:password => 'pass132pass',
                                 :confirm_password=>'pass132pass',
-                                :add_life => 'friend', :add_life_username => username })
+                                :add_life => 'friend', 
+                                :add_life_username => username })
           rescue Member::Invalid => e
             e.doc
           end

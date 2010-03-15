@@ -56,10 +56,6 @@ namespace 'my_computer' do
       rdebug = File.join(MY_PREFS, 'ruby', 'rdebugrc.rb')
       FiDi.file(rdebug).create_alias '~/.rdebugrc'
 
-      puts_white 'gem configuration file:'
-      gemrc = File.join(MY_PREFS, 'ruby', 'gemrc.yaml')
-      FiDi.file(gemrc).create_alias '~/.gemrc'
-
       puts_white 'irb configuration file:'
       irbrc = File.join(MY_PREFS, 'ruby', 'irbrc.rb')
       FiDi.file(irbrc).create_alias '~/.irbrc'
@@ -150,15 +146,28 @@ namespace 'my_computer' do
       puts_white 'Creating VIM temp dir for .swp files.'
       FiDi.directory('~/.vim-temp-files').mkdir
 
-      puts_white 'Checking bashrc.'
-      bashrc = File.expand_path('~/.bashrc')
+      puts_white 'Checking .profile'
+      bashrc = File.expand_path('~/.profile')
       custom_bashrc = "#{HOME_MY_LIFE}/prefs/_bashrc_additions"
-      if not File.read(bashrc)[". #{custom_bashrc}"]
+      if not File.read(bashrc)[File.basename(custom_bashrc)]
         puts_red %~ 
           Add the following to your #{bashrc}:
 # Custom additios for Diego
   . #{custom_bashrc}
         ~
+      end
+
+      require 'yaml'
+      puts_white 'gem configuration file:'
+      gemrc                   = File.join(MY_PREFS, 'ruby', 'gemrc.yaml')
+      yaml                    = YAML::load(File.read(gemrc))
+      bashrc_content          = File.read(File.expand_path(custom_bashrc))
+      match_in_bash_additions = bashrc_content['GEM_HOME=' + yaml["gemhome"]] &&
+                                bashrc_content['GEM_PATH=' + yaml["gemhome"]]
+      if not match_in_bash_additions
+        puts_red "GEM_HOME and GEM_PATH are not set properly in #{custom_bashrc}"
+      else
+        FiDi.file(gemrc).create_alias '~/.gemrc'
       end
 
   end # task

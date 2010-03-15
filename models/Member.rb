@@ -158,7 +158,7 @@ class Member
 		new_data._id            = CouchDB_CONN.GET_uuid
 		new_data.security_level = Member::MEMBER
     ask_for :avatar_link, :email
-    demand  :username, :password, :add_life
+    demand  :add_life, :password
   end
 
   def valid_before_create
@@ -363,6 +363,8 @@ class Member
 
     } 
 
+    new_data.lives ||= {}
+    new_data.lives[cleanest(:add_life)] ||= {}
     new_data.lives[cleanest(:add_life)][:username] = cleanest(:add_life_username)
     
     if errors.empty?
@@ -388,7 +390,7 @@ class Member
 								_id
 							end
 		doc_id = 'username-' + new_un
-		CouchDB_CONN.PUT( doc_id,  {:member_id=>this_id} )
+		CouchDB_CONN.PUT( doc_id,  {:member_id => this_id, :username => new_un, :data_model => 'Reserved_Username'} )
 	end
 
   def add_to_history(hash)

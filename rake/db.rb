@@ -1,7 +1,7 @@
 
 namespace :db do
   
-  desc "Migrate to version 0, then migrate up to latest version." 
+  desc "Delete, then re-create database. Uses ENV['RACK_ENV']. Defaults to 'development'." 
   task :reset! do
     
     ENV['RACK_ENV'] ||= 'development'
