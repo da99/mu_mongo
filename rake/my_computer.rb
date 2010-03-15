@@ -94,6 +94,7 @@ namespace 'my_computer' do
           puts_red "Setup CRONT:"
           puts_red "crontab -e"
           puts_red "59 */3 * * * #{cron_task}"
+          puts_red "Don't use '--size-only' since that ignores bytes changes in files."
         end
       else
         puts_red 'Install rsync and run this task again.'
@@ -145,6 +146,9 @@ namespace 'my_computer' do
 
       puts_white 'Linking VIM dot directory.'
       FiDi.directory(MY_PREFS, 'vim', 'dotvim').create_alias '~/.vim'
+
+      puts_white 'Creating VIM temp dir for .swp files.'
+      FiDi.directory('~/.vim-temp-files').mkdir
 
       puts_white 'Checking bashrc.'
       bashrc = File.expand_path('~/.bashrc')
