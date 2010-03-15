@@ -1,5 +1,5 @@
 
-TEST_HELPER_FILES = %w{ tests/__helper__ }
+
 namespace :tests do
   
 
@@ -8,8 +8,12 @@ namespace :tests do
 
     rb_files = Dir.glob('tests/test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}
     
-    rb_files.each { |file|
-      TEST_HELPER_FILES.each { |file| require file }
+    order    = [ 'Helper', 'model_Couch_Doc',  'model_Couch_Plastic' ]
+    pre      = order.inject([]) { |m,pat| m + rb_files.select {|file| file =~ /_#{pat}/ }  }
+    ordered  = (rb_files - pre) + pre.reverse
+    
+    require "tests/__helper__"
+    ordered.each { |file|
       require file 
     }
 
@@ -19,21 +23,39 @@ namespace :tests do
   task :file do
     # require "tests/test_#{ENV['name']}"
     file_name = ENV['name'].sub(/\Atest_/, '')
-    helpers   = TEST_HELPER_FILES.inject("") { |m,v| m += " -r #{v.inspect} " }
-    sh(%~ ruby -w #{helpers} "tests/test_#{file_name}.rb"~)
+    sh(%~ ruby -w -r "tests/__helper__" "tests/test_#{file_name}.rb"~)
   end
   
-  desc "Creates a test file. Uses name=. Addes 'test_' and '.rb' automatically."
+  desc "Creates a test file. Uses: 
+    type=[control|model|...] 
+    name=[Ruby Object] 
+    action=[create|update|...]
+    file=[none|original file path|default]"
   task :create do
-    name = ENV['name'].strip
-    raise "Must not be empty." if name.empty?
+    model_type = ENV['type'].strip.capitalize
+    ruby_obj   = ENV['name'].strip.capitalize
+    action     = ENV['action'].strip.capitalize
+    name = "Test_#{model_type}_#{ruby_obj}_#{action}"
+    original_file = case ENV['file'] 
+                    when 'none'
+                      original_file = nil
+                    when nil 
+                      original_file = "#{model_type.downcase.sub(/s\Z/, '')}s/#{ruby_obj}.rb"
+                    else
+                      ENV['file'].strip
+                    end 
 
-    file_path = "tests/test_#{name}.rb"
+    original_file_paste = original_file ? "# #{original_file}" : ''
+
+    file_path = "tests/#{name}.rb"
     if File.exists?(file_path)
       raise "File may not be overwritten: #{file_path.inspect}"
     end
 
-    content = File.read("tests/__template__.txt").gsub("{{name}}", name)
+    content = File.read("tests/__template__.txt").
+                gsub("{{name}}", name).
+                gsub("{{file}}", original_file_paste)
+    
     File.open(file_path, 'w') do |file|
       file.puts content
     end

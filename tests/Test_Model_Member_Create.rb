@@ -1,7 +1,7 @@
 # models/Member.rb
 
 
-class Member_Create < Test::Unit::TestCase
+class Test_Model_Member_Create < Test::Unit::TestCase
 
   def random_username
     "da01_#{rand(10000)}"

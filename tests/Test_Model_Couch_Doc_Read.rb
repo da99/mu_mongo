@@ -1,5 +1,5 @@
 
-class Couch_Doc_Read < Test::Unit::TestCase
+class Test_Couch_Doc_Read < Test::Unit::TestCase
 
 	must 'retrieve a UUID' do
 		uuid = CouchDB_CONN.GET_uuid

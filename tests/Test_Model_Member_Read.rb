@@ -1,6 +1,6 @@
 
 
-class Member_Read < Test::Unit::TestCase
+class Test_Model_Member_Read < Test::Unit::TestCase
 
 
   must 'return user if username/password pass authentication' do

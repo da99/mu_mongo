@@ -1,5 +1,5 @@
 
-class Couch_Plastic_Create < Test::Unit::TestCase
+class Test_Couch_Plastic_Create < Test::Unit::TestCase
 
 	must 'raise Raw_Data_Required if missing required field' do
 		assert_raise Cafe_Le_Roger::Raw_Data_Field_Required do

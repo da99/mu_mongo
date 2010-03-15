@@ -158,7 +158,7 @@ class Member
 		new_data._id            = CouchDB_CONN.GET_uuid
 		new_data.security_level = Member::MEMBER
     ask_for :avatar_link, :email
-    demand  :usernamed, :password, :add_life
+    demand  :username, :password, :add_life
   end
 
   def valid_before_create

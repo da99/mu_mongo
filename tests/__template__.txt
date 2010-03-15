@@ -1,5 +1,4 @@
-require 'tests/__helper__'
-
+{{file}}
 
 class {{name}} < Test::Unit::TestCase
 
