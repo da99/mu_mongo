@@ -13,7 +13,7 @@ class News_Control
   
   
 	def PUT id # UPDATE
-		success_msg lambda { |doc| "Update: #{doc.data.title}" }
+		success_msg(lambda { |doc| "Update: #{doc.data.title}" })
     params = clean_room.clone
     params[:tags] = begin
                       new_tags = []

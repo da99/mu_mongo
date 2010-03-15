@@ -1,5 +1,4 @@
 # models/Member.rb
-require 'tests/__helper__'
 
 
 class Member_Create < Test::Unit::TestCase

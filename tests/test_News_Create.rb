@@ -1,4 +1,3 @@
-require 'tests/__helper__'
 
 
 class News_Create < Test::Unit::TestCase

@@ -1,4 +1,3 @@
-require 'tests/__helper__'
 
 
 class Member_Read < Test::Unit::TestCase

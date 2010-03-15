@@ -1,4 +1,4 @@
-require 'tests/__helper__'
+
 
 
 class Test_The_Helper < Test::Unit::TestCase

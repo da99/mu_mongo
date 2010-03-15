@@ -1,5 +1,3 @@
-require 'tests/__helper__'
-
 
 class Test_The_Helper_1 < Test::Unit::TestCase
 

@@ -34,11 +34,11 @@ class Test::Unit::TestResult
           when 0 
             'None passed '
           when 1
-            '1 pass '
+            test_pass_count == run_count ? 'It passes. ' : '1 test pass '
           when run_count
             'All pass :) '
           else
-            "#{test_pass_count} passes "
+            "#{test_pass_count} tests pass "
           end
 
     str << colorize_green( txt )

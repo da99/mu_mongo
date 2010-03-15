@@ -1,13 +1,15 @@
 
+TEST_HELPER_FILES = %w{ tests/__helper__ }
 namespace :tests do
   
 
-  desc %! Runs FeFe tests for your app in the fefe/ directory. !
+  desc %! Runs tests for your app using glob: tests/test_*.rb !
   task :all do
 
     rb_files = Dir.glob('tests/test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}
     
     rb_files.each { |file|
+      TEST_HELPER_FILES.each { |file| require file }
       require file 
     }
 
@@ -17,7 +19,8 @@ namespace :tests do
   task :file do
     # require "tests/test_#{ENV['name']}"
     file_name = ENV['name'].sub(/\Atest_/, '')
-    sh(%~ ruby -w "tests/test_#{file_name}.rb"~)
+    helpers   = TEST_HELPER_FILES.inject("") { |m,v| m += " -r #{v.inspect} " }
+    sh(%~ ruby -w #{helpers} "tests/test_#{file_name}.rb"~)
   end
   
   desc "Creates a test file. Uses name=. Addes 'test_' and '.rb' automatically."

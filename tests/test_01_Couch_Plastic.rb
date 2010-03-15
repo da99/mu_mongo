@@ -1,4 +1,3 @@
-require 'tests/__helper__'
 
 class Couch_Plastic_Create < Test::Unit::TestCase
 

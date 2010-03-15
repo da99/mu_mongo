@@ -1,7 +1,4 @@
 
-require 'tests/__helper__'
-
-
 class Couch_Doc_Read < Test::Unit::TestCase
 
 	must 'retrieve a UUID' do

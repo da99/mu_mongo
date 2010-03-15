@@ -1,5 +1,4 @@
 
-require 'tests/__helper__'
 
 
 class Club_Create < Test::Unit::TestCase

@@ -344,7 +344,6 @@ module Base_Control
     assert_valid_keys args, [:params, :action_name]
     args[:params] ||= clean_room
     args[:action_name] ||= action_name
-    return render_text_plain(args.inspect)
 
     model_class = Object.const_get(self.class.sub('_control'))
     case args[:action_name]
