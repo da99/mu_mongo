@@ -3,7 +3,7 @@ class Mab_In_Disguise
   
 	def self.compile file_name = nil
 		vals = {}
-		Dir.glob(file_name || "templates/*/mab/*.rb").each { |mab_file|
+		Dir.glob("templates/*/mab/*.rb").each { |mab_file|
 			next if mab_file['layout.rb']
 			mab_dir       = File.dirname(mab_file)
 			layout_file   = File.join(mab_dir, 'layout.rb')
@@ -30,9 +30,14 @@ class Mab_In_Disguise
 			vals[mab_file] = [html_file, content]
 		}
 
-		file_name ?
-			vals[file_name].last :
+		if file_name 
+			if !vals[file_name]
+        raise ArgumentError, "Template not found: #{file_name}. Available templates: #{vals.keys.join(', ')}"
+      end
+      vals[file_name].last
+    else
 			vals
+    end
 	end
   
 end # === Mab_In_Disguise

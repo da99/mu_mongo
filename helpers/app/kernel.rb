@@ -99,6 +99,11 @@ module Kernel
      raise ArgumentError, "Invalid keys: #{invalid.map(&:inspect).join(', ')}"
    end
 
+   def assert_included arr, val
+     return true if arr.include?(val)
+     raise ArgumentError, "Invalid value: #{val.inspect}. Allowed Values: #{arr.map(&:inspect).join(', ')}"
+   end
+
 end
 
 # class Object

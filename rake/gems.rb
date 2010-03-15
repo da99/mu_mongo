@@ -1,3 +1,4 @@
+PRIMARY_APP = 'megauni'
 GEM_MANIFEST           = File.expand_path(File.join('~/', PRIMARY_APP, '.gems'))
 GEM_MANIFEST_ARRAY     = File.read(GEM_MANIFEST).strip.split("\n")
 GEM_PRODUCTION_PAIR    = [GEM_MANIFEST, GEM_MANIFEST_ARRAY]

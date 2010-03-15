@@ -3,9 +3,9 @@ require 'helpers/app/json'
 
 class Couch_Doc
   
-	Not_Found                      = Class.new(StandardError)
-	HTTP_Error                     = Class.new(StandardError)
-	HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
+  Not_Found                      = Class.new(StandardError)
+  HTTP_Error                     = Class.new(StandardError)
+  HTTP_Error_409_Update_Conflict = Class.new(HTTP_Error)
   TIME_BASE = 1263487773
   CHARS = ["a", "l", 2, "t", "j", "w", "r", "d", "t", "j", 4, "d", 
           "z", "y", "w", "x", "m", "e", 1, "n", "s", "i", "g", "b", "b", "a", 
@@ -30,24 +30,24 @@ class Couch_Doc
   }.map(&:to_sym)
 
 
-	attr_reader :url_base, :design_id, :host, :db_name
+  attr_reader :url_base, :design_id, :host, :db_name
 
-	def initialize host, db_name, new_design = nil
+  def initialize host, db_name, new_design = nil
     default_design = ('_design/' + File.basename(File.expand_path('.')))
     @db_name       = db_name
     @host          = host
     @url_base      = File.join(host, db_name)
     @design_id     = (new_design || default_design)
-	end
+  end
 
-	def send_to_db http_meth, raw_path, raw_data = nil, raw_headers = {}
+  def send_to_db http_meth, raw_path, raw_data = nil, raw_headers = {}
     path    = raw_path.to_s
     url     = path['_uuid'] ? File.join(@host, path) : File.join( url_base, path )
     data    = raw_data ? raw_data.to_json : ''
     headers = { 'Content-Type'=>'application/json' }.update(raw_headers)
     
     begin
-      json_parse case http_meth
+      client_response = case http_meth
         when :GET
           RestClient.get   url  
         when :POST
@@ -59,6 +59,8 @@ class Couch_Doc
         else
           raise "Unknown HTTP method: #{http_meth.inspect}"
       end
+
+      json_parse client_response.body
 
     rescue RestClient::ResourceNotFound 
       if http_meth === :GET
@@ -84,8 +86,8 @@ class Couch_Doc
       raise err
       
     end
-		
-	end
+    
+  end
 
 
   # === Main methods ===
@@ -160,11 +162,11 @@ class Couch_Doc
     return results if !params[:include_docs]
     
     if params[:limit] == 1
-			first_row = results[:rows].first
+      first_row = results[:rows].first
       if not first_row
-				raise Couch_Doc::Not_Found, "No Results for: VIEW: #{view_name.inspect}, PARAMS: #{params.inspect}"
-			end
-			first_row
+        raise Couch_Doc::Not_Found, "No Results for: VIEW: #{view_name.inspect}, PARAMS: #{params.inspect}"
+      end
+      first_row
     else
       results[:rows]
     end

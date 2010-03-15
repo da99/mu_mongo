@@ -57,7 +57,8 @@ case ENV['RACK_ENV']
     
   when 'development'
     CouchDB_CONN = Couch_Doc.new(
-      "https://da01tv:isleparadise4vr@localhost",
+      # "https://da01tv:isleparadise4vr@localhost",
+      'http://localhost:5984',
       'megauni-dev' 
     )
 

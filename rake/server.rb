@@ -1,10 +1,9 @@
 # ====================================================================================
 # ====================================================================================
 
-class Server 
-  include FeFe
+namespace :server do
   
-  describe :nginx do
+  task :nginx do
     it 'Starts up Nginx, after invoking nginx_stop.'
     steps {
       require 'rush'
@@ -16,7 +15,7 @@ class Server
     }
   end
 
-  describe :nginx_stop do
+  task :nginx_stop do
     it 'Stops Nginx.'
     steps {
       exec 'sudo /etc/init.d/nginx stop'
@@ -25,7 +24,7 @@ class Server
 
   # These use 'exec', which replaces the current process (i.e. Rake)
   # More info: http://blog.jayfields.com/2006/06/ruby-kernel-system-exec-and-x.html
-  describe :light do
+  task :light do
     it "Runs the lighttpd server. (Uses :exec to replace current process.)"
     steps {
       require 'rush'
@@ -37,7 +36,7 @@ class Server
     }
   end
 
-  describe :dev do
+  task :dev do
     it "Runs Unicorn in :development mode. (Uses :exec.)"
     steps {
       fefe_run 'sass:delete'
@@ -45,7 +44,7 @@ class Server
     }
   end
 
-  describe :reload do
+  task :reload do
     it "Kill Unicorn worker, which will then be re-started."
     steps {
       puts_white 'Restarting...'
@@ -55,7 +54,22 @@ class Server
       output
     }
   end
+  
+  desc 'Start CouchDB server.'
+  task :db do 
+    exec("sudo -i -u couchdb couchdb -b")
+  end
+  
+  desc 'Shutdown background CouchDB server process.'
+  task :shutdown_db do
+    exec("sudo -i -u couchdb couchdb -d")
+  end
+  
+  desc 'Open CouchDB Futon in the Browser'
+  task :futon do
+    Launchy.open 'http://127.0.0.1:5984/_utils/index.html'
+  end
 
 
-end # === class Server
+end # === namespace :server
 
