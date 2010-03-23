@@ -6,13 +6,14 @@ namespace :tests do
   desc %! Runs tests for your app using glob: tests/test_*.rb !
   task :all do
 
-    rb_files = Dir.glob('tests/test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}
+    rb_files = Dir.glob('tests/Test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}
     
     order    = [ 'Helper', 'model_Couch_Doc',  'model_Couch_Plastic' ]
     pre      = order.inject([]) { |m,pat| m + rb_files.select {|file| file =~ /_#{pat}/ }  }
     ordered  = (rb_files - pre) + pre.reverse
     
     require "tests/__helper__"
+    puts ordered.join(", ")
     ordered.each { |file|
       require file 
     }
@@ -21,9 +22,10 @@ namespace :tests do
 
   desc "Run one test file. Uses: name=. 'tests/tests_' and '.rb' is automatically added."
   task :file do
-    # require "tests/test_#{ENV['name']}"
-    file_name = ENV['name'].sub(/\Atest_/, '')
-    sh(%~ ruby -w -r "tests/__helper__" "tests/Test_#{file_name}.rb"~)
+    file_name    = ENV['name'].sub(/\ATest_/, '')
+    use_debugger = ENV['debug']
+    exec_name    = use_debugger ? 'rdebug' : 'ruby'
+    sh(%~ #{exec_name} -w -r "tests/__helper__" "tests/Test_#{file_name}.rb"~)
   end
   
   desc "Creates a test file. Uses: 

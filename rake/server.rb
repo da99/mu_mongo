@@ -3,6 +3,11 @@
 
 namespace :server do
   
+	desc 'Start the server.'
+	task :http do
+		exec 'thin -p 4567 -R config.ru start'
+	end
+
   task :nginx do
     it 'Starts up Nginx, after invoking nginx_stop.'
     steps {
@@ -44,15 +49,13 @@ namespace :server do
     }
   end
 
+	desc "Kill Unicorn worker, which will then be re-started."
   task :reload do
-    it "Kill Unicorn worker, which will then be re-started."
-    steps {
-      puts_white 'Restarting...'
-      require 'rush'
-      output = Rush.processes.filter(:cmdline=>/unicorn worker/).kill
-      puts_white 'Done.'
-      output
-    }
+		puts_white 'Restarting...'
+		require 'rush'
+		output = Rush.processes.filter(:cmdline=>/unicorn worker/).kill
+		puts_white 'Done.'
+		output
   end
   
   desc 'Start CouchDB server.'

@@ -35,6 +35,7 @@ end
   my_computer
   server
   gems
+  models
 }.each { |lib|
   require "rake/#{lib}"
 }

@@ -3,6 +3,7 @@
 module Couch_Plastic
   
 	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
+  LANGS = eval(File.read(File.expand_path("./helpers/langs_hash.rb")))
 	
   # =========================================================
   #                  self.included
@@ -445,6 +446,15 @@ module Couch_Plastic
   def must_be! &blok
     must_be(true, &blok)
   end
+
+  # ==== Validator ====
+  
+  def lang_validator
+    must_be! { 
+      in_array LANGS.keys
+    }
+  end
+
 
 end # === module Couch_Plastic ================================================
 

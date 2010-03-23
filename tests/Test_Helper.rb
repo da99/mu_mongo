@@ -1,7 +1,7 @@
 
 
 
-class Test_The_Helper < Test::Unit::TestCase
+class Test_Helper < Test::Unit::TestCase
 
 	must 'raise a RuntimeError if a test is empty' do
 		msg    = ":in `run': Empty test: :test_be_an_empty_test in file: tests/__test_The_Helper__1.rb"

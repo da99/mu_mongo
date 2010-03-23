@@ -1,7 +1,7 @@
 
 
 
-class Club_Create < Test::Unit::TestCase
+class Test_Club_Create < Test::Unit::TestCase
 
   def random_filename
     "movie_#{rand(10000)}"

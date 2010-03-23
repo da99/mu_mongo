@@ -12,7 +12,7 @@ class Club
   # ==== Hooks ====
 
   def before_create
-    new_clean_value :lang, 'English'
+    new_clean_value :lang, 'en-us'
     demand :filename, :title, :teaser
     ask_for :lang
   end
@@ -35,11 +35,17 @@ class Club
   def creator? editor 
     editor.has_power_of? Member::ADMIN
   end
-  alias_method :updator?, :creator?
-  alias_method :deletor?, :creator?
 
   def reader? editor
     true
+  end
+
+  def updator? editor
+    creator? editor
+  end
+  
+  def deletor? editor
+    creator? editor
   end
 
   # ======== Accessors ======== 
@@ -72,10 +78,5 @@ class Club
     must_be { not_empty }
   end
 
-  def lang_validator
-    must_be! { 
-      in_array LANGS 
-    }
-  end
 
 end # === Club

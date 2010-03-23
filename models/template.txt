@@ -1,29 +1,26 @@
 
 
-class #{model_class}
+class {{model_name}}
 
   include Couch_Plastic
 
+  allow_fields :lang
 
-  # =========================================================
-  #                     Getters
-  # =========================================================    
-  
-  # =========================================================
-  #                     CRUD Methods.
-  # =========================================================
+  # ==== Hooks ====
 
   enable_timestamps
 
+  def before_create
+    new_clean_value :lang, 'en-us'
+  end
 
-  # =========================================================
-  #           Authorization Methods (Class + Instance)
-  # =========================================================
+
+  # ==== Authorizations ====
  
   def creator? editor # NEW, CREATE
   end
 
-  def viewer? editor # SHOW
+  def reader? editor # SHOW
   end
 
   def updator? editor # EDIT, UPDATE
@@ -32,11 +29,12 @@ class #{model_class}
   def deletor? editor # DELETE
   end
 
+  # ==== Accessors ====
 
+  
 
-  # =========================================================
-  #              SETTERS/ACCESSORS (Instance)
-  # =========================================================
+  # ==== Validators ====
 
+  
 
-end # === end #{model_class}
+end # === end {{model_name}}
