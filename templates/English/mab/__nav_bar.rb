@@ -31,7 +31,7 @@ div( :id=>"nav_bar" ) {
 	  
 	  mustache 'not_logged_in?' do
 			nav_bar_li :Session_Control, 'log-in', 'Log-in'
-      nav_bar_li :Member_Control, 'create-account', 'Create Account'
+      nav_bar_li :Member_Control, 'create-account', 'Join'
 		end
 		
   }
@@ -99,6 +99,19 @@ div( :id=>"nav_bar" ) {
   h4 'Clubs'
   ul.news {
      
+      # li "San Francisco" #  (Survival Tips + Marketplace)
+      # li "Tokyo" # (+ Translate Please)
+      # li "Vitamin Fanatics" #  (Harmless + Helpful)
+      # li "Vote For More Clubs"
+      # li "- How I Train My Boyfriend"
+      # li "- Introverts"
+      # li "- Obama-rific" #  (Politics + News)
+      # li "City Clubs "
+			# li "- Multiple Languages"
+			# li "- Carpooling"
+			# li "- Garbage Renting"
+    
+    
       nav_bar_li :Topic, 'salud',    'Salud (Español)'
       nav_bar_li :Topic, 'child-care', 'Child Care'
       nav_bar_li :Topic, 'computer', 'Computer Use'

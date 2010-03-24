@@ -142,6 +142,18 @@ class FiDi_File
     raise ArgumentError, "Path is not a file: #{path}"
   end
 
+  def must_not_exist
+    return true if not File.exists?(path)
+    raise ArgumentError, "Path already exists: #{path}"
+  end
+
+  def write content
+    must_not_exist
+    File.open(path, 'w') do |file|
+      file.write content
+    end
+  end
+
   def exists?
     File.exists?(path)
   end  

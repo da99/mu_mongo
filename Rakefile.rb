@@ -9,6 +9,7 @@ end
 
 include Color_Puts
 
+require 'models/FiDi'
 
 def compile_for_production
   spaces = %w{ sass mab xml }

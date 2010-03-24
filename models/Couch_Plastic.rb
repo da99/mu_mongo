@@ -2,9 +2,9 @@
 
 module Couch_Plastic
   
-	Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
+  Time_Format = '%Y-%m-%d %H:%M:%S'.freeze
   LANGS = eval(File.read(File.expand_path("./helpers/langs_hash.rb")))
-	
+  
   # =========================================================
   #                  self.included
   # ========================================================= 
@@ -13,9 +13,9 @@ module Couch_Plastic
     target.extend Couch_Plastic_Class_Methods
   end
 
-	def self.utc_now
-		Time.now.utc.strftime(Time_Format)
-	end
+  def self.utc_now
+    Time.now.utc.strftime(Time_Format)
+  end
 
   def self.utc_date_now
     Time.now.utc.strftime(Time_Format.split(' ').first)
@@ -25,8 +25,8 @@ module Couch_Plastic
     Time.now.utc.strftime(Time_Format.split(' ').last)
   end
   
-	def self.utc_string time_or_str
-		time = case time_or_str
+  def self.utc_string time_or_str
+    time = case time_or_str
       when Time 
         time_or_str
       when String
@@ -34,7 +34,7 @@ module Couch_Plastic
         Time.parse(time_str)
     end
     time.strftime(Time_Format)
-	end
+  end
 
   # =========================================================
   #                  Error Constants
@@ -73,7 +73,7 @@ module Couch_Plastic
   #           Miscellaneous Methods
   # ========================================================= 
   
-	attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache
+  attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache
 
   def inspect
     "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
@@ -119,16 +119,16 @@ module Couch_Plastic
   #   manipulator    - Optional
   #   raw_data       - Optional
   #
-  def initialize *args
+  def initialize *args, &blok
     
     super()
     
-		@manipulator = nil
-		@clean_data  = {}
+    @manipulator = nil
+    @clean_data  = {}
     @assoc_cache = {}
-		doc_id_or_hash = args.shift
-		@manipulator = args.shift
-		@raw_data    = (args.shift || {})
+    doc_id_or_hash = args.shift
+    @manipulator = args.shift
+    @raw_data    = (args.shift || {})
     @orig_doc    = case doc_id_or_hash
                      when String
                        CouchDB_CONN.GET(doc_id_or_hash)
@@ -165,42 +165,46 @@ module Couch_Plastic
       end
     }.new(self)
       
-			
-		@new_data = Class.new {
-				
-				def initialize( doc )
+      
+    @new_data = Class.new {
+        
+        def initialize( doc )
           @doc    = doc
           @keys   = doc.class.fields
           @hash   = (doc.instance_variable_get :@orig_doc ) || {}
-					@equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
-				end
+          @equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
+        end
 
         def include?(key)
           @hash.has_key?(key)
         end
 
-				def as_hash
+        def as_hash
           @hash
-				end
+        end
 
         def respond_to? raw_meth
           meth = raw_meth.to_sym
           @keys.include?(meth) || super(meth)
         end
-			
-				def method_missing( raw_key, *args )
-					key = raw_key.to_sym
+      
+        def method_missing( raw_key, *args )
+          key = raw_key.to_sym
           
-					return as_hash[key] if @keys.include?(key)
+          return as_hash[key] if @keys.include?(key)
           
-					if @equals.has_key?(key)
-						return( as_hash[@equals[key]] = args.first )
-					end
+          if @equals.has_key?(key)
+            return( as_hash[@equals[key]] = args.first )
+          end
           
           raise NoMethodError, "#{raw_key.inspect} is not defined, nor is it a key."
-				end
-				
-		}.new(self)
+        end
+        
+    }.new(self)
+
+    if block_given?
+      instance_eval &blok
+    end
 
   end
 
@@ -220,7 +224,7 @@ module Couch_Plastic
       raise "Unknown field being set: #{field_name.inspect} (value: #{val.inspect})"
     end
     
-		val
+    val
     
   end
 
@@ -252,21 +256,32 @@ module Couch_Plastic
     }
   end
 
+  def ask_for_or_default *args
+    args.each { |raw_fld|
+      fld = raw_fld.to_sym
+      if raw_data.has_key?(fld)
+        demand fld
+      else
+        send("#{fld}_default")
+      end
+    }
+  end
+
   def demand(*args, &blok)
     if block_given?
       raise "not implemented"
     else
       args.each { |fld|
-				
-				if not raw_data.has_key?(fld)
-					raise Raw_Data_Field_Required, fld.inspect
-				end
-				
+        
+        if not raw_data.has_key?(fld)
+          raise Raw_Data_Field_Required, fld.inspect
+        end
+        
         begin
           send("#{fld}_validator")
         rescue Invalid
         end
-				
+        
       }
     end
   end
@@ -287,7 +302,7 @@ module Couch_Plastic
 
   def updated_at
     return nil unless self.class.allow_fields.include?(:updated_at)
-		return nil if data.updated_at.nil?
+    return nil if data.updated_at.nil?
     data.updated_at.to_time
   end
   
@@ -309,7 +324,11 @@ module Couch_Plastic
     raise "This is not a new document." if !new?
 
     clear_assoc_cache
-    before_create
+    
+    if !(creator? manipulator)
+      raise Unauthorized_Creator.new(self , manipulator)
+    end
+    
     raise_if_invalid
 
     new_data.data_model = self.class.name
@@ -331,15 +350,12 @@ module Couch_Plastic
 
     return :ok unless err
     
-    if block_given?
+    results = if block_given?
       yield err
-    else
-      on_error_save_create err
     end
-  end
+    raise err if not results
 
-  def on_error_save_create err
-    raise err
+    self
   end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
@@ -349,7 +365,9 @@ module Couch_Plastic
   def save_update *opts
 
     clear_assoc_cache
-    before_update
+    if !updator?(manipulator)
+      raise Unauthorized_Updator.new(self,manipulator)
+    end
     raise_if_invalid
 
     data = data.as_hash.clone.update(new_data.as_hash)
@@ -384,6 +402,10 @@ module Couch_Plastic
   #                  Validator Helpers
   # ========================================================= 
 
+  def lang_default
+    new_clean_value :lang, editor.lang
+  end
+
   def errors
     @errors ||= []
   end
@@ -404,8 +426,8 @@ module Couch_Plastic
   
   def validator_field_name
      line = caller[0,3].detect { |meth| meth['_validator']} 
-		 raise "Name of validator not found." unless line
-		 line =~ /`([^']*)_validator'/ && $1.to_sym
+     raise "Name of validator not found." unless line
+     line =~ /`([^']*)_validator'/ && $1.to_sym
   end
 
   def accept_anything
@@ -419,13 +441,13 @@ module Couch_Plastic
   def sanitize &blok
     field = validator_field_name
     val   = cleanest( field ) 
-		
-		if val.is_a?(String)
-			def val.with regexp, &blok
-				gsub regexp, &blok
-			end
-		end
-		
+    
+    if val.is_a?(String)
+      def val.with regexp, &blok
+        gsub regexp, &blok
+      end
+    end
+    
     new_clean_value(
       field, 
       raw_data[field].instance_eval(&blok)
@@ -471,33 +493,41 @@ module Couch_Plastic_Class_Methods
   end
 
   def fields 
-    @fields ||= [:_id, :data_model, :_rev]
+    @fields ||= {:_id => {}, :data_model => {}, :_rev => {}, :lang => {} }
   end
 
   def proto_fields
-    @proto_fields ||= []
+    @proto_fields ||= {}
   end
 
   # ===== DSL-icious ======
     
   def allow_proto_fields *args
-    args.flatten.each { |fld|
-      proto_fields << fld
+    args.each { |fld|
+      allow_proto_field fld
     }
-    @proto_fields.uniq!
-    @proto_fields
+  end
+
+  def allow_proto_field title, default = nil, &validator
+    proto_fields[title] = {:default => default, :scrubber => validator }
   end
 
   def allow_fields *args
     args.each { |fld|
-      fields << fld
+      allow_field fld
     }
-    @fields.uniq!
-    @fields
+  end
+
+  def allow_field title, default = nil, &validator
+    fields[title] = {:default => default, :scrubber => validator}
   end
 
   def enable_timestamps
     allow_fields :created_at, :updated_at
+  end
+
+  def enable_created_at
+    allow_fields :created_at
   end
 
   def timestamps_enabled?
@@ -509,7 +539,7 @@ module Couch_Plastic_Class_Methods
   # ===== CRUD Methods ====================================
 
   def by_id( id ) # READ
-		new( id )
+    new( id )
   end
 
   def create editor, raw_raw_data # CREATE
@@ -538,16 +568,16 @@ module Couch_Plastic_Class_Methods
   end
 
   def update id, editor, new_raw_data # UPDATE
-		doc = new(id, editor, new_raw_data)
-		if !doc.updator?(editor)
-			raise Unauthorized_Updator.new(doc,editor)
-		end
+    doc = new(id, editor, new_raw_data)
+    if !doc.updator?(editor)
+      raise Unauthorized_Updator.new(doc,editor)
+    end
     doc.save_update 
     doc
   end
 
   def delete! id, editor # DELETE
-		doc = new(id, editor)
+    doc = new(id, editor)
     if !doc.deletor?(editor)
       raise Unauthorized_Deletor.new(doc, editor)
     end
@@ -606,6 +636,14 @@ class Couch_Plastic_Validator
 
   # ======== Methods for validation.
 
+  def strip_if_string
+    stripped if clean_val.respond_to?(:strip)
+  end
+
+  def downcase
+    clean_val(clean_val.downcase) if clean_val.respond_to?(:downcase)
+  end
+
   def stripped regexp = nil, &blok
     if clean_val.nil?
       record_error '%s is required.'
@@ -622,17 +660,27 @@ class Couch_Plastic_Validator
     end
     clean_val( new_val )
   end
-	
-	def datetime_or_now
-		if clean_val.nil?
-			clean_val( Couch_Plastic.utc_now )
-		else
-			clean_val( Couch_Plastic.utc_string( clean_val ) )
-		end
-	end
+
+  def nil_if_empty
+    if clean_val.respond_to?(:strip)
+      stripped
+    end
+
+    if clean_val.empty?
+      clean_val(nil)
+    end
+  end
+  
+  def datetime_or_now
+    if clean_val.nil?
+      clean_val( Couch_Plastic.utc_now )
+    else
+      clean_val( Couch_Plastic.utc_string( clean_val ) )
+    end
+  end
 
   def not_empty
-    stripped if clean_val.is_a?(String)
+    strip_if_string
 
     if clean_val.nil? || clean_val.empty?
       record_error '%s is required.'
@@ -658,16 +706,16 @@ class Couch_Plastic_Validator
     end
   end
 
-	def not_match regexp, err_msg = nil
-		if clean_val =~ regexp
-			record_error( err_msg || '%s has invalid characters.' )
-		end
-	end
+  def not_match regexp, err_msg = nil
+    if clean_val =~ regexp
+      record_error( err_msg || '%s has invalid characters.' )
+    end
+  end
 
-	def between_size raw_start, raw_end, err_msg = nil
-		min_size raw_start, err_msg
-		max_size raw_end, err_msg
-	end
+  def between_size raw_start, raw_end, err_msg = nil
+    min_size raw_start, err_msg
+    max_size raw_end, err_msg
+  end
 
   def max_size raw_int, err_msg = nil
     if !clean_val.respond_to?(:jsize) ||

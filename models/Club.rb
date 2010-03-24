@@ -3,37 +3,37 @@ class Club
 
   include Couch_Plastic
 
-  allow_fields :filename, 
-               :title, 
-               :teaser, 
-               :lang, 
-               :created_at
+  enable_created_at
 
-  # ==== Hooks ====
+  allow_field(:filename) {
+    must_be { not_empty }
+    new_clean_value :_id, "club-#{cleanest(:filename)}"
+  }
 
-  def before_create
-    new_clean_value :lang, 'en-us'
-    demand :filename, :title, :teaser
-    ask_for :lang
-  end
+  allow_field(:title) {
+    must_be { not_empty }
+  }
 
-  def on_error_save_create excep
-    case excep
-    when Couch_Doc::HTTP_Error_409_Update_Conflict
-      errors << "Filename already taken: #{cleanest(:filename)}"
-    else
-      raise excep
-    end
-  end
-
-  def before_update
-    ask_for :title
-  end
-
+  allow_field(:teaser) {
+    must_be { not_empty }
+  }
+  
   # ======== Authorizations ======== 
 
   def creator? editor 
     editor.has_power_of? Member::ADMIN
+  end
+
+  def self.create editor, raw_raw_data # CREATE
+    d = new(nil, editor, raw_raw_data) do
+      demand :filename, :title, :teaser
+      ask_for_or_default :lang
+      save_create { |err| 
+        if err.is_a? Couch_Doc::HTTP_Error_409_Update_Conflict
+          errors << "Filename already taken: #{cleanest(:filename)}"
+        end    
+      }
+    end
   end
 
   def reader? editor
@@ -42,6 +42,13 @@ class Club
 
   def updator? editor
     creator? editor
+  end
+
+  def self.update id, editor, new_raw_data # UPDATE
+    doc = new(id, editor, new_raw_data)
+    doc.ask_for :title
+    doc.save_update 
+    doc
   end
   
   def deletor? editor
@@ -62,21 +69,5 @@ class Club
     params = {:limit=>10, :descending=>true}.update(raw_params)
     News.by_club(self.data.filename, params )
   end
-
-  # ======== Validators ========= 
-  
-  def filename_validator
-    must_be { not_empty }
-    new_clean_value :_id, "club-#{cleanest(:filename)}"
-  end
-
-  def title_validator
-    must_be { not_empty }
-  end
-
-  def teaser_validator
-    must_be { not_empty }
-  end
-
 
 end # === Club

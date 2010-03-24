@@ -8,23 +8,8 @@ div.content! do
   partial '__flash_msg'
 
   div.block.coming_soon! {
-    h4 'Introduction'
-    p %^ 
-         MegaUni.com is a website made up of different online clubs.
-    ^
-    ul { 
-      li "San Francisco" #  (Survival Tips + Marketplace)
-      li "Tokyo" # (+ Translate Please)
-      li "Vitamin Fanatics" #  (Harmless + Helpful)
-      li "Vote For More Clubs"
-      li "- How I Train My Boyfriend"
-      li "- Introverts"
-      li "- Obama-rific" #  (Politics + News)
-      li "City Clubs "
-			li "- Multiple Languages"
-			li "- Carpooling"
-			li "- Garbage Renting"
-    } 
+    h4 '~~~ () ~~~'
+    p '?!@#$%~&*(*' 
 
   }
 

@@ -4,16 +4,9 @@ class {{model_name}}
 
   include Couch_Plastic
 
-  allow_fields :lang
-
-  # ==== Hooks ====
-
   enable_timestamps
-
-  def before_create
-    new_clean_value :lang, 'en-us'
-  end
-
+  
+  allow_fields :lang
 
   # ==== Authorizations ====
  
@@ -30,10 +23,6 @@ class {{model_name}}
   end
 
   # ==== Accessors ====
-
-  
-
-  # ==== Validators ====
 
   
 
