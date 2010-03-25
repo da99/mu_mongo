@@ -6,7 +6,10 @@ class Club
   enable_created_at
 
   allow_field(:filename) {
-    must_be { not_empty }
+    must_be { 
+      stripped( /[^a-zA-Z0-9\_\-\+]/ )
+      not_empty 
+    }
     new_clean_value :_id, "club-#{cleanest(:filename)}"
   }
 

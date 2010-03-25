@@ -7,9 +7,28 @@ div.content! do
   
   partial '__flash_msg'
 
-  div.block.coming_soon! {
-    h4 '~~~ () ~~~'
-    p '?!@#$%~&*(*' 
+  div.why_are_you_bored! {
+    
+    div.club_messages! do
+      h4 'The latest on this site:'
+      mustache 'club_messages' do
+        div.message {
+          div.body( mustache 'body' )
+          div.club_name {
+            a(:href=>"{{href}}") { mustache 'club_name'  }
+          }
+        }
+      end
+    end
+
+    # form.create_why_are_you_bored!( :action=> '/club/bored/messages', :method => 'post') {
+    #   fieldset {
+    #     textarea ''
+    #   }
+    #   div.buttons {
+    #     button.create 'Submit', :class => 'submit'
+    #   }
+    # }
 
   }
 

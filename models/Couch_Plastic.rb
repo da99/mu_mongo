@@ -73,7 +73,7 @@ module Couch_Plastic
   #           Miscellaneous Methods
   # ========================================================= 
   
-  attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache
+  attr_reader :data, :new_data, :raw_data, :clean_data, :assoc_cache, :manipulator
 
   def inspect
     "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
@@ -155,12 +155,12 @@ module Couch_Plastic
 
       def respond_to? raw_meth
         meth = raw_meth.to_sym
-        @fields.include?(meth) || super(meth)
+        @fields.keys.include?(meth) || super(meth)
       end
     
       def method_missing( raw_key, *args )
         key = raw_key.to_sym
-        return(as_hash[key]) if @fields.include?(key)
+        return(as_hash[key]) if @fields.keys.include?(key)
         raise NoMethodError, "#{raw_key.inspect} is not defined, nor is it a key."
       end
     }.new(self)
@@ -170,7 +170,7 @@ module Couch_Plastic
         
         def initialize( doc )
           @doc    = doc
-          @keys   = doc.class.fields
+          @keys   = doc.class.fields.keys
           @hash   = (doc.instance_variable_get :@orig_doc ) || {}
           @equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
         end
@@ -203,7 +203,7 @@ module Couch_Plastic
     }.new(self)
 
     if block_given?
-      instance_eval &blok
+      instance_eval(&blok)
     end
 
   end
@@ -296,12 +296,12 @@ module Couch_Plastic
   end
 
   def created_at
-    return nil unless self.class.allow_fields.include?(:created_at)
+    return nil unless self.class.fields.keys.include?(:created_at)
     data.created_at.to_time
   end
 
   def updated_at
-    return nil unless self.class.allow_fields.include?(:updated_at)
+    return nil unless self.class.fields.keys.include?(:updated_at)
     return nil if data.updated_at.nil?
     data.updated_at.to_time
   end
@@ -403,7 +403,7 @@ module Couch_Plastic
   # ========================================================= 
 
   def lang_default
-    new_clean_value :lang, editor.lang
+    new_clean_value :lang, (@manipulator && @manipulator.lang) || 'en-us'
   end
 
   def errors
@@ -496,6 +496,10 @@ module Couch_Plastic_Class_Methods
     @fields ||= {:_id => {}, :data_model => {}, :_rev => {}, :lang => {} }
   end
 
+  def allowed_field? fld
+    @fields.keys.include? fld
+  end
+
   def proto_fields
     @proto_fields ||= {}
   end
@@ -509,17 +513,19 @@ module Couch_Plastic_Class_Methods
   end
 
   def allow_proto_field title, default = nil, &validator
-    proto_fields[title] = {:default => default, :scrubber => validator }
+    define_method("#{title}_validator", &validator) if validator
+    proto_fields[title] = {:default => default}
   end
 
   def allow_fields *args
     args.each { |fld|
-      allow_field fld
+      allow_field(fld)
     }
   end
 
   def allow_field title, default = nil, &validator
-    fields[title] = {:default => default, :scrubber => validator}
+    define_method("#{title}_validator", &validator) if validator
+    fields[title] = {:default => default}
   end
 
   def enable_timestamps
@@ -531,8 +537,7 @@ module Couch_Plastic_Class_Methods
   end
 
   def timestamps_enabled?
-    allow_fields.include?(:created_at) &&
-      allow_fields.include?(:updated_at)
+    allowed_field?(:created_at) && allowed_field?(:updated_at)
   end
 
 

@@ -29,6 +29,7 @@ class Message
   # ==== Authorizations ====
  
   def creator? editor # NEW, CREATE
+    true
   end
 
   def self.create editor, raw_data
@@ -42,12 +43,15 @@ class Message
   end
 
   def reader? editor # SHOW
+    true
   end
 
   def updator? editor # EDIT, UPDATE
+    true
   end
 
   def deletor? editor # DELETE
+    true
   end
 
   # ==== Accessors ====

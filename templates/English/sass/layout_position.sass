@@ -1,0 +1,89 @@
+@import base.sass
+
+!ninesixty_columns = 16
+
+!nav_bar_border = 2px
+!nav_bar_width = 220px
+
+=dev_bg
+  #the_body
+    background: #F7F7F7 url("/16_col.gif") repeat-y center center
+  #container
+    border-top= 2px "solid" #000
+  #content
+    border-top: 1px solid red
+
+=input_text
+  font-size: 20px
+  font-weight: bold
+  font-family: helvetica, arial, sans-serif
+
+=single_form
+  #container
+    +grid-width(10)
+  #nav_bar
+    padding: 0 0 200px
+  #content
+    +grid-width(5)
+  form
+    padding: 0
+    fieldset
+      input.text
+        width: 240px
+      textarea
+        width: 240px
+        height: 300px
+
+  
+#container
+  +grid-container
+  +clearfix
+  
+
+=bottom_nav_bar
+  #nav_bar
+    +grid(16)
+    ul
+      text-align: left
+      li
+        span, a
+          padding: 5px 5px 5px 15px
+
+=left_nav_bar
+  #nav_bar
+    margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
+        
+=right_nav_bar
+  #nav_bar
+    margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
+        
+#nav_bar
+  +grid(4)
+
+#loading
+  +grid(12)
+  +grid-prefix(4)
+
+
+#content
+  +grid(12)
+
+form
+  fieldset
+    input.text, textarea
+      width: 600px
+
+#nav_bar
+  h4
+    margin: 0 0 3px 80px 
+  ul
+    margin: 0 0 0 80px
+  #logo
+    margin: 0 0 0 80px
+#footer
+  +grid-unit-base
+  +grid-width(12)
+  +grid-prefix(4)
+  display: none
+
+

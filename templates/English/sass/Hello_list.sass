@@ -1,8 +1,28 @@
 // ~/megauni/templates/English/mab/Hello_list.rb
 
-@import layout.sass
-+single_form
+@import base.sass
+@import layout_styles.sass
 
+body 
+  text-align: center
+
+#container
+  text-align: left
+  margin: 0 auto
+  width: 740px
+  +clearfix
+
+#content
+  width: 500px
+  float: left
+  textarea 
+    width: 480px
+
+#nav_bar
+  width: 200px
+  float: left
+  #logo p.english
+    padding-top: 10px
 #coming_soon
   ul
     padding-bottom: 10px

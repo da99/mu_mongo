@@ -31,7 +31,7 @@ class The_App
   module Options
     SITE_DOMAIN        = 'megaUni.com'
     SITE_TITLE         = 'Mega Uni'
-    SITE_TAG_LINE      = 'Conversate secretly with your friends.'
+    SITE_TAG_LINE      = 'A site for bored people.'
     SITE_HELP_EMAIL    = "helpme@#{SITE_DOMAIN}"
     SITE_URL           = "http://www.#{SITE_DOMAIN}/"
     SITE_SUPPORT_EMAIL = "helpme@#{SITE_DOMAIN}"

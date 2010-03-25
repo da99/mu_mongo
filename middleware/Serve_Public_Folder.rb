@@ -7,15 +7,15 @@ class Serve_Public_Folder
       @app = app
       @folders = folders
       @exts = %w{
-        css
-        swf
-        html
-        mp3
-        wav
-        js
-        gif
-        jpg
-        png
+        .css
+        .swf
+        .html
+        .mp3
+        .wav
+        .js
+        .gif
+        .jpg
+        .png
       }
       @files = %w{
         favicon.ico

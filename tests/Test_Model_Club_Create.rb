@@ -85,14 +85,14 @@ class Test_Club_Create < Test::Unit::TestCase
 
   end
 
-  must 'set "English" as the language.' do
+  must 'set "en-us" as the language.' do
     club = Club.create(
             admin_mem, 
             {:filename=>random_filename, 
              :title=>'Gaijin',
              :teaser=>'Relaxed'}
     )
-    assert_equal 'English', club.data.lang
+    assert_equal 'en-us', club.data.lang
   end
 
 

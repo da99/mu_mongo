@@ -1,0 +1,255 @@
+
+!red = #F00919
+!blue = #33CCFF
+!grey = #666666
+!pink = #FF477C
+!highlight = #ff9
+
+!dark_blue = #214D81
+!light_green = #E0FF92
+!dark_green = #133B00
+!light_grey = #EFEFEF
+!dark_grey = #333333
+!maroon_line = #E40051
+
+!bg_color = #fff
+
+!text_box_border = #BEBEBE
+!text_box_border_green = #38761B
+!text_box_bg = #EAEAF0
+!text_box_bg_dark = #D6D6D6
+
+!custom_sans_serif = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
+!custom_serif = "'Century Schoolbook L', 'Times New Roman', 'Times', serif"
+!custom_black_text = #242424
+!custom_orange = #FFE759
+
+!light_green = #DAE6B4
+
+
+
+
+=dev_bg
+  #the_body
+    background: #F7F7F7 url("/16_col.gif") repeat-y center center
+  #container
+    border-top= 2px "solid" #000
+  #content
+    border-top: 1px solid red
+
+=input_text
+  font-size: 20px
+  font-weight: bold
+  font-family: helvetica, arial, sans-serif
+
+  
+a:link, a:visited
+  color = !red
+  text-transform: uppercase
+  font:
+    family = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
+    weight: bold
+
+a:hover, a:active, a:focus
+  color: #fff
+  background: #f00919
+
+img.left
+  float: left
+  margin: 0 10px 0 0
+img.right
+  float: right
+  margin: 0 0 10px 0
+
+#timestamp
+  display: none
+
+
+#the_body
+  font= "13px/1.5" "Helvetica, 'Liberation Sans', FreeSans, serif"
+  background-color: #F1F1F1 
+  
+#flash_msg
+  padding: 5px
+  h4 
+    text-transform: uppercase
+    font-weight: bold
+  div.msg
+    font-size: 14px
+  &.error_msg
+    font-weight: bold
+    background= !red
+    color: #fff
+  &.success_msg
+    background= !highlight
+    h4
+      color= !dark_blue
+    div.msg
+      color= !dark_green
+
+#nav_bar
+  padding-bottom: 200px
+  h4
+    padding: 0
+    font-size: 13px
+    font-weight: bold
+    background-color: #005088 
+    text-transform: lowercase
+    color: #fff
+    text-align: center
+  ul
+    +no-bullets
+    border: 1px solid #f00919
+      width: 0
+    padding-bottom: 10px
+    text-align: center
+    background-color: #fff
+    li
+      padding: 0 0 2px 0
+      span
+        font-weight: bold
+        text-transform: uppercase      
+        color: #005088
+        padding: 3px 4px
+      a:link, a:visited
+        display: block
+        padding: 2px 0
+        font-weight: bold
+  ul.news
+    -moz-border-radius: 0 0 10px 10px
+    -webkit-border-radius: 0 0 10px 10px
+    border-bottom: 1px solid #f00919
+  #logo
+    text-align: center
+    color: #000
+    p.english 
+      color: #f00919
+      background-color: #fff
+      font-family= !custom_sans_serif
+      font-size: 20px 
+      font-weight: bold
+      padding: 140px 0 0 0
+      a:link, a:visited
+        font-size: 20px
+        display: block
+        text-transform: none
+        text-decoration: none
+    p.nippon
+      background-color: #fff 
+      color: #3A5970
+      border: 1px solid #f00919
+        width: 1px 0 0 0
+      font-size: 12px 
+      font-weight: bold
+      padding: 5px 0 20px 0
+      margin: 0 
+      
+
+#loading
+  +input_text
+  text-align: center
+
+
+#content
+  padding-bottom: 50px
+  padding-top: 20px
+  p
+    font-size: 16px
+  ul
+    font-size: 16px
+    padding: 0 0 0 15px
+    ul
+      padding-left: 18px
+    div.question
+      font-weight: bold
+      color: #005088
+    div.answer
+      padding: 0 0 10px 0
+
+h3 
+  font-size: 20px
+  font-weight: bold
+  padding-bottom: 10px
+
+h4 
+  text-transform: uppercase
+  font-weight: bold
+  color: #003860
+  display: block
+  font-size: 14px
+
+p
+  padding-bottom: 10px
+  margin-bottom: 0
+
+
+div.block
+  font-size: 16px
+  h4
+    font-size: 14px
+    color: #007382
+
+div.tab_selected
+  display: block
+
+div.tab_unselected
+  display: none
+
+ul.tabs
+  +horizontal-list
+  margin-bottom: -1px
+  padding-left: 15px
+  a:link, a:visited, a:hover, a:active, a:focus
+    padding: 5px 5px 8px 5px 
+  li
+    padding: 5px
+  li.tab_selected
+    background= !light_grey   
+    border= 1px "solid" #717171
+      bottom: 0
+    a:link, a:visited, a:hover, a:active, a:focus
+      background: transparent
+      color: #00233C
+      padding-bottom: 12px
+      text-decoration: none
+  
+div.form
+  background= !light_grey   
+  border= 1px "solid" #717171
+
+form  
+  label, div.title
+    text-transform: uppercase
+    font-weight: bold
+    color: #003860
+    display: block
+  fieldset
+    padding: 0 0 15px 0
+    input.text, select, option
+      +input_text
+    textarea
+      font-size: 18px
+      font-family: serif
+      height: 200px
+  div.group
+    +clearfix
+    fieldset
+      float: left
+  div.checkboxes
+    width: 50%
+    div.selected
+      span
+        background: #ff9
+  div.buttons
+    button
+      text-transform: uppercase
+
+
+      
+#footer
+  display: none
+
+
+
+
+

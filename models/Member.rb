@@ -218,6 +218,10 @@ class Member
 
   # ==== ACCESSORS =====================================================
 
+  def lang
+    'en-us'
+  end
+
   # 
   # By using a custom implementation, we cane make sure
   # sensitive information is not shown.

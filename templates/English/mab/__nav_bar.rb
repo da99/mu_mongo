@@ -13,7 +13,7 @@ div( :id=>"nav_bar" ) {
         end
       }
     end
-    p.nippon { 
+    p.nippon {
             "を単一化します" # Unify
             #"何とかしてよ" # Please do something
             # "私のユニ" # My Uni
@@ -22,39 +22,39 @@ div( :id=>"nav_bar" ) {
   }
 
   ul.help {
-		
+    
     nav_bar_li :Hello, 'help'
-		
-		mustache 'logged_in?' do
-			nav_bar_li :Session_Control, 'log-out', 'Log-out'
-		end	
-	  
-	  mustache 'not_logged_in?' do
-			nav_bar_li :Session_Control, 'log-in', 'Log-in'
+    
+    mustache 'logged_in?' do
+      nav_bar_li :Session_Control, 'log-out', 'Log-out'
+    end  
+    
+    mustache 'not_logged_in?' do
+      nav_bar_li :Session_Control, 'log-in', 'Log-in'
       nav_bar_li :Member_Control, 'create-account', 'Join'
-		end
-		
+    end
+    
   }
 
-	mustache 'logged_in?' do
-		h4 'Lives' 
-		ul.lives {
-			
-			nav_bar_li :Member_Control, 'today', '[ Today ]'
-			
-			Member::LIVES.each do |life|
-				nav_bar_li :Member_Control, "#{life}-life", life.capitalize
-			end
+  mustache 'logged_in?' do
+    h4 'Lives' 
+    ul.lives {
+      
+      nav_bar_li :Member_Control, 'today', '[ Today ]'
+      
+      Member::LIVES.each do |life|
+        nav_bar_li :Member_Control, "#{life}-life", life.capitalize
+      end
 
       nav_bar_li :Member_Control, 'account', '[ Account ]'
       
-		}
-	end
-	
-	# h4 'Members'
-	# ul.members {
+    }
+  end
+  
+  # h4 'Members'
+  # ul.members {
 
-	# }
+  # }
 
    
   h4 'Egg Timers'
@@ -107,9 +107,10 @@ div( :id=>"nav_bar" ) {
       # li "- Introverts"
       # li "- Obama-rific" #  (Politics + News)
       # li "City Clubs "
-			# li "- Multiple Languages"
-			# li "- Carpooling"
-			# li "- Garbage Renting"
+      # li "- Multiple Languages"
+      # li "- Carpooling"
+      # li "- Garage Renting"
+      # li "Tropical Physician Ratings" 
     
     
       nav_bar_li :Topic, 'salud',    'Salud (Español)'
