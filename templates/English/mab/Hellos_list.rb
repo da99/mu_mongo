@@ -1,5 +1,5 @@
-# ~/megauni/views/Hello_list.rb
-# ~/megauni/templates/English/sass/Hello_list.sass
+# ~/megauni/views/Hellos_list.rb
+# ~/megauni/templates/English/sass/Hellos_list.sass
 
 
 

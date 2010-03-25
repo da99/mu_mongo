@@ -1,4 +1,4 @@
-class Member_Control
+class Members
   include Base_Control
     
   # ============= Member Actions ==========================          

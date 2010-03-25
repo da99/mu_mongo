@@ -1,7 +1,9 @@
-div.success_msg {
-  div.title 'Success.'
-  div.msg( @success_msg )
-} # div.success_msg
+mustache 'success_msg' do
+  div.success_msg {
+    div.title 'Success.'
+    div.msg( "{{success_msg}}" )
+  } # div.success_msg
+end 
 
 
 if @partial

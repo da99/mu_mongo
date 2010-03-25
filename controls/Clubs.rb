@@ -1,6 +1,6 @@
 require 'views/Club_Control_Base_View'
 
-class Club_Control
+class Clubs
   
   include Base_Control
 

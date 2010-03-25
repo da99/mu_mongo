@@ -1,9 +1,11 @@
-class Hello
+# tests/Test_Control_Hellos.rb
+#
+class Hellos
   include Base_Control
 
-	def GET_list 
-		render_html_template
-	end
+  def GET_list 
+    render_html_template
+  end
 
   def GET_salud
     render_html_template

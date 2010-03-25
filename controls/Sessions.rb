@@ -1,4 +1,4 @@
-class Session_Control
+class Sessions
   include Base_Control
 
   def GET_log_in 

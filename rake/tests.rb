@@ -36,13 +36,15 @@ namespace :tests do
   task :create do
     model_type = ENV['type'].strip.capitalize
     ruby_obj   = ENV['name'].strip.capitalize
-    action     = ENV['action'].strip.capitalize
-    name = "Test_#{model_type}_#{ruby_obj}_#{action}"
+    action     = ENV['action'] && ENV['action'].strip.capitalize
+    
+    name = "Test_" + [model_type, ruby_obj, action].compact.join('_')
+
     original_file = case ENV['file'] 
-                    when 'none'
-                      original_file = nil
                     when nil 
-                      original_file = "#{model_type.downcase.sub(/s\Z/, '')}s/#{ruby_obj}.rb"
+                      if %w{ Control Model }.include?(model_type)
+                        original_file = "#{model_type.downcase.sub(/s\Z/, '')}s/#{ruby_obj}.rb"
+                      end
                     else
                       ENV['file'].strip
                     end 

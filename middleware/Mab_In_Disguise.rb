@@ -69,7 +69,7 @@ class Markaby::Builder
     @checkbox ||= Class.new do 
       attr_reader :results
       def initialize &blok
-        @results = instance_eval &blok
+        @results = instance_eval(&blok)
       end
       def checkbox *args
         @results =  args
@@ -105,7 +105,7 @@ class Markaby::Builder
     @option_class = Class.new do
       attr_reader :results
       def initialize &blok
-        instance_eval &blok
+        instance_eval(&blok)
       end
       def option *args
         @results = args

@@ -10,9 +10,9 @@ class The_App
   
   # ======== CLASS stuff ======== 
 
-	module Options
-		ENVIRONS = [:development, :production, :test]
-	end
+  module Options
+    ENVIRONS = [:development, :production, :test]
+  end
 
   Options::ENVIRONS.each { |envi|
     eval %~
@@ -24,6 +24,10 @@ class The_App
 
   def self.non_production?
     !['production', 'staging'].include?(ENV['RACK_ENV'])
+  end
+
+  def self.development_or_test?
+    %w{ development test }.include?(ENV['RACK_ENV']) 
   end
 
   def self.environment

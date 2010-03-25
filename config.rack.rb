@@ -58,11 +58,10 @@ begin
   # ===============================================
   
   %w{
-    Hello
-    Session_Control
-    Member_Control   
-    Topic
-    Club_Control
+    Hellos
+    Sessions
+    Members
+    Clubs
     News_Control
   }.each { |control|
     require "controls/#{control}"

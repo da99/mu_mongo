@@ -23,7 +23,7 @@ class Catch_Bad_Bunny
       end
     rescue Object => e
 
-      if The_App.development?
+      if The_App.development_or_test?
         raise $!
       end
       

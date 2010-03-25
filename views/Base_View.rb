@@ -70,6 +70,10 @@ class Base_View < Mustache
     The_App.development?
   end
 
+  def development_or_test?
+    The_App.development? || The_App.test?
+  end
+
 	def url
 		@app.request.fullpath
 	end
