@@ -752,6 +752,12 @@ class Couch_Plastic_Validator
     end
   end
 
+  def array err_msg = nil
+    if not clean_val.is_a?(Array)
+      record_error( err_msg || '%s is_invalid.' )
+    end
+  end
+
 end # === Couch_Plastic_Validator
 
 

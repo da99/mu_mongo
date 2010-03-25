@@ -7,10 +7,7 @@ class Message
   enable_timestamps
   
   allow_fields :rating,
-               :emotion,
-               :question, 
-               :privacy, 
-               :category
+               :privacy
                
 
   allow_field :owner_id do
@@ -18,10 +15,21 @@ class Message
   end
 
   allow_field :target_ids do
-    must_be { not_empty }
+    must_be { 
+      not_empty 
+      array
+    }
   end
 
   allow_field :body do
+    must_be { not_empty }
+  end
+
+  allow_field :emotion do 
+    must_be { not_empty }
+  end
+
+  allow_field :category do
     must_be { not_empty }
   end
 
@@ -36,7 +44,7 @@ class Message
     d = new(nil, editor, raw_data) do
       ask_for_or_default :lang
       demand :owner_id, :target_ids, :body
-      ask :category, :privacy, :labels,
+      ask_for :category, :privacy, :labels,
           :question, :emotion, :rating
       save_create
     end
