@@ -152,52 +152,28 @@ class Member
     raise Wrong_Password, "Password is invalid for: #{username.inspect}"
   end 
 
-  # ==== Hooks =====================================================
-
-  def before_create
-		new_data._id            = CouchDB_CONN.GET_uuid
-		new_data.security_level = Member::MEMBER
-    ask_for :avatar_link, :email
-    demand  :add_life, :password
-  end
-
-  def valid_before_create
-    nl = Member_Life.new()
-    merge_errors(nl) {
-      nl.save_create
-    }
-  end
-
-  def after_create
-    CouchDB_CONN.PUT(
-      "member-life-friends-#{data._id}",
-      :data_model => 'Member_Life', 
-      :username   => clean_data[:username],  
-      :title      => 'Friends',
-      :category   => 'casual'
-    )
-  end
-    
-  
-  def before_update 
-
-    ask_for :old_life, :add_life 
-
-    if manipulator == self
-      ask_for :password  
-    end
-
-    if manipulator.has_power_of? ADMIN
-      ask_for :security_level
-    end
-
-  end
-
-  # ==== Authorizations =====================================================
+  # ==== Authorizations ====
 
   def creator? editor # NEW, CREATE
     return true if !editor
     false
+  end
+
+  def self.create editor, raw_raw_data # CREATE
+    d = new(nil, editor, raw_raw_data) do
+      new_data._id            = CouchDB_CONN.GET_uuid
+      new_data.security_level = Member::MEMBER
+      ask_for :avatar_link, :email
+      demand  :add_life, :password
+      save_create 
+      CouchDB_CONN.PUT(
+        "member-life-friends-#{data._id}",
+        :data_model => 'Member_Life', 
+        :username   => clean_data[:username],  
+        :title      => 'Friends',
+        :category   => 'casual'
+      )
+    end
   end
 
   def reader? editor # SHOW
@@ -209,6 +185,24 @@ class Member
     return true if self.data._id == editor.data._id
     return true if editor.has_power_of?(:ADMIN)
     false
+  end
+
+  def self.update id, editor, new_raw_data # UPDATE
+
+    doc = new(id, editor, new_raw_data) do
+      ask_for :old_life, :add_life 
+
+      if manipulator == self
+        ask_for :password  
+      end
+
+      if manipulator.has_power_of? ADMIN
+        ask_for :security_level
+      end
+      
+      save_update 
+    end
+
   end
 
   def deletor? editor # DELETE

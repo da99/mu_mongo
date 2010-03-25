@@ -89,7 +89,7 @@ namespace 'my_computer' do
         if !shell_out('crontab -l')[cron_task]
           puts_red "Setup CRONT:"
           puts_red "crontab -e"
-          puts_red "59 */3 * * * #{cron_task}"
+          puts_red "59 */1 * * * #{cron_task}"
           puts_red "Don't use '--size-only' since that ignores bytes changes in files."
         end
       else
