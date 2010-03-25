@@ -1,8 +1,8 @@
-# MAB   ~/megauni/templates/English/mab/Hello_help.rb
-# SASS  ~/megauni/templates/English/sass/Hello_help.sass
-# NAME  Hello_help
+# MAB   ~/megauni/templates/English/mab/Hellos_help.rb
+# SASS  ~/megauni/templates/English/sass/Hellos_help.sass
+# NAME  Hellos_help
 
-class Hello_help < Base_View
+class Hellos_help < Base_View
 
   def title 
     "To Serve Man."

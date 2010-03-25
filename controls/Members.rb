@@ -14,12 +14,12 @@ class Members
 
       m = Member.create( current_member, clean_room )
       self.current_member = m
-      flash.success_msg = "Your account has been created."
+      flash_msg.success = "Your account has been created."
       redirect! '/account/' 
       
     rescue Member::Invalid
 
-      flash.error_msg = $!.doc.errors 
+      flash_msg.errors= $!.doc.errors 
       session[ :form_username  ] = clean_room[:username] 
                
       redirect! '/create-account/' 
@@ -43,10 +43,10 @@ class Members
   def PUT 
     begin
       m = Member.update( current_member, clean_room )
-      flash.success_msg = "Data has been updated and saved."
+      flash_msg.success = "Data has been updated and saved."
       redirect! '/account/' 
     rescue Member::Invalid
-      flash.error_msg = $!.doc.errors 
+      flash_msg.errors= $!.doc.errors 
       redirect! '/account/' 
     end
   end # === put :update

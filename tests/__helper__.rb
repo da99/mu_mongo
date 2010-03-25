@@ -1,3 +1,4 @@
+
 ENV['RACK_ENV'] = 'test'
 
 
@@ -8,6 +9,7 @@ require 'test/unit/testcase'
 require 'term/ansicolor'
 require 'helpers/app/Color_Puts'
 require 'megauni'
+raise '$KCODE not set to UTF8 in start file.' unless $KCODE == 'UTF8'
 
 include Color_Puts
 
@@ -164,4 +166,37 @@ class Test::Unit::TestCase
     str[0, str.size - 2]
   end
 
+  def ssl_hash
+    {'HTTP_X_FORWARDED_PROTO' => 'https', 'rack.url_scheme'  => 'https' }
+  end
+
+  def last_response_should_be_xml
+    last_response.headers['Content-Type'].should.be == 'application/xml;charset=utf-8'
+  end
+
+  def follow_ssl_redirect!
+    follow_redirect!
+    follow_redirect!
+  end
+
+  def log_in_member
+    mem = Member.by_username('regular-member-1')
+    mem.should.not.has_power_of :ADMIN
+    post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password-1'}, ssl_hash
+    follow_ssl_redirect!
+    last_request.fullpath.should =~ /my-work/
+  end
+
+  def log_in_admin
+    mem = Member.by_username('admin-member')
+    mem.should.has_power_of :ADMIN
+    post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password-1'}, ssl_hash
+    follow_ssl_redirect!
+    last_request.fullpath.should =~ /my-work/
+  end
+
+  
+  
+  
 end
+

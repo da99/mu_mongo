@@ -111,12 +111,13 @@ div( :id=>"nav_bar" ) {
       # li "- Carpooling"
       # li "- Garage Renting"
       # li "Tropical Physician Ratings" 
+      # li "Global Rant" # Vote for the most creative/smartest ranters.
     
     
       nav_bar_li :Topic, 'salud',    'Salud (Español)'
       nav_bar_li :Topic, 'child-care', 'Child Care'
       nav_bar_li :Topic, 'computer', 'Computer Use'
-      nav_bar_li :Topic, 'economy',  'Economy + War'
+      # nav_bar_li :Topic, 'economy',  'Economy + War'
       nav_bar_li :Topic, 'hair',     'Skin & Hair'
       nav_bar_li :Topic, 'housing',  'Housing & Apartments'
       nav_bar_li :Topic, 'health',   'Pain & Disease'

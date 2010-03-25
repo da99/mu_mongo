@@ -191,8 +191,15 @@ class Base_View < Mustache
 	private # ======== 
 
   # From: http://www.codeism.com/archive/show/578
-  def w3c_date(date)
-   date.utc.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+  def w3c_date(str_or_date)
+    date = case str_or_date
+    when String
+      require 'time'
+      Time.parse str_or_date
+    when Time
+      str_or_date
+    end
+    date.utc.strftime("%Y-%m-%dT%H:%M:%S+00:00")
   end
 
 end # === Base_View

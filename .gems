@@ -7,3 +7,4 @@ RedCloth
 pow --version '>=0.2.2'
 dejan-auto_html
 mustache
+rack-ssl-enforcer

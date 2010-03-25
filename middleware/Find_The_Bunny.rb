@@ -21,8 +21,8 @@ class Find_The_Bunny
       
       # Check if first piece is part of a Control.
       if pieces[1] 
-        c_name = pieces[1].split('_').map(&:capitalize).join('_') + '_Control'
-        if c_name === control.to_s
+        c_name = pieces[1].split('_').map(&:capitalize).join('_') 
+        if c_name === control.to_s || "#{c_name}s" === control.to_s
           pieces.delete_at(1)
         end
       end

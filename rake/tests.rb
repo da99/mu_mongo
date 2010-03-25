@@ -35,7 +35,7 @@ namespace :tests do
     file=[none|original file path|default]"
   task :create do
     model_type = ENV['type'].strip.capitalize
-    ruby_obj   = ENV['name'].strip.capitalize
+    ruby_obj   = ENV['name'].strip
     action     = ENV['action'] && ENV['action'].strip.capitalize
     
     name = "Test_" + [model_type, ruby_obj, action].compact.join('_')
@@ -50,6 +50,10 @@ namespace :tests do
                     end 
 
     original_file_paste = original_file ? "# #{original_file}" : ''
+
+    if model_type == 'Control'
+      original_file_paste += "\nrequire 'tests/__rack_helper__'"
+    end
 
     file_path = "tests/#{name}.rb"
     if File.exists?(file_path)

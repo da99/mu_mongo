@@ -1,6 +1,6 @@
-# ~/megauni/views/Member_Control_create_account.rb
-# ~/megauni/templates/English/sass/Member_Control_create_account.sass
-# Member_Control_create_account 
+# ~/megauni/views/Members_create_account.rb
+# ~/megauni/templates/English/sass/Members_create_account.sass
+# Members_create_account 
 
 div.content! { 
   

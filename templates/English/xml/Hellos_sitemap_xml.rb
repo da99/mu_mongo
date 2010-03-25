@@ -1,5 +1,5 @@
-# VIEW ~/megauni/views/Hello_sitemap_xml.rb
-# NAME Hello_sitemap_xml
+# VIEW ~/megauni/views/Hellos_sitemap_xml.rb
+# NAME Hellos_sitemap_xml
 
 instruct!
 urlset "xmlns" => "http://www.google.com/schemas/sitemap/0.84" do

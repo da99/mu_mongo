@@ -1,4 +1,5 @@
 
+$KCODE = 'utf8'
 
 begin
 
@@ -19,7 +20,6 @@ begin
 
   require 'megauni'
   
-  
   my_app_root     = File.expand_path( File.dirname(__FILE__) )
   down_time_file  = File.join( my_app_root, '/helpers/sinatra/maintain')
   issue_client    = File.join( my_app_root, '/helpers/app/issue_client') 
@@ -31,6 +31,7 @@ begin
   use Squeeze_Uri_Dots
   use Slashify_Path_Ending
   use Redirect_Mobile
+
   
   if The_App.non_production?
     require 'middleware/Render_Css' 
