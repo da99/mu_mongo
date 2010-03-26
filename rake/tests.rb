@@ -25,7 +25,8 @@ namespace :tests do
     file_name    = ENV['name'].sub(/\ATest_/, '')
     use_debugger = ENV['debug']
     exec_name    = use_debugger ? 'rdebug' : 'ruby'
-    sh(%~ #{exec_name} -w -r "tests/__helper__" "tests/Test_#{file_name}.rb"~)
+    warn         = !ENV['warn'] ? '-w' : ''
+    sh(%~ #{exec_name} #{warn} -r "tests/__helper__" "tests/Test_#{file_name}.rb"~)
   end
   
   desc "Creates a test file. Uses: 

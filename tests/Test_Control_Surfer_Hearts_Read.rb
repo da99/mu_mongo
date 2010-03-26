@@ -1,7 +1,12 @@
 # controls/Clubs.rb
 require 'tests/__rack_helper__'
 
-class Test_Control_Club_Hearts_Read < Test::Unit::TestCase
+# Originally, the Hearts Club used to be it's own
+# website at: SurferHearts.com
+# This test makes sure it handles the old urls
+# when SurferHearts.com redirects to the Hearts Club
+# on MegaUni.com
+class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
 
   must 'render /club/hearts/' do
     get '/club/hearts/'
@@ -11,19 +16,20 @@ class Test_Control_Club_Hearts_Read < Test::Unit::TestCase
   must 'redirects /hearts/ to /club/hearts/' do
     get "/hearts/"
     follow_redirect!
-    assert_equal( /\/club\/heart/, last_request.fullpath)
+    assert_equal( "/clubs/hearts/", last_request.fullpath)
   end
   
   must 'redirects /hearts/m/ to /clubs/hearts/' do 
     get '/hearts/m/'
-    follow_redirect!
+    follow_redirect! # to /hearts/
+    follow_redirect! # finally, to our destination.
     assert_equal '/clubs/hearts/', last_request.fullpath 
   end
 
-  must 'redirects /blog/ to /hearts/' do 
+  must 'redirects /blog/ to /clubs/hearts/' do 
     get '/blog/'
     follow_redirect!
-    assert_equal '/news/', last_request.fullpath
+    assert_equal '/clubs/hearts/', last_request.fullpath
     assert_equal 200, last_response.status
   end
 
@@ -34,27 +40,24 @@ class Test_Control_Club_Hearts_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
-  must 'redirects blog archives to news archives. ' +
-     '(E.g.: /blog/2007/8/)' do
+  must 'redirects blog archives (e.g. "/blog/2007/8/" ) to news archives. ' do
     get '/blog/2007/8/'
     follow_redirect!
-    assert_equal '/news/by_date/2007/8/', last_request.fullpath
-    assert_equal 200, last_response.status
+    assert_equal '/clubs/hearts/by_date/2007/8/', last_request.fullpath
   end
 
   must 'redirects archives by_category to news archives by_tag. ' +
      '(E.g.: /heart_links/by_category/16/)' do
       get '/heart_links/by_category/167/'
       follow_redirect!
-      assert_equal '/news/by_tag/167/', last_request.fullpath 
+      assert_equal '/clubs/hearts/by_tag/167/', last_request.fullpath 
   end
 
-  must 'redirects a "/heart_link/10/" to "/news/10/".' do
-    @news = News.by_published_at(:limit=>1)
-    get "/heart_link/#{@news.data._id}/"
+  must 'redirects a "/heart_link/10/" to "/mess/10/".' do
+    news_id = News.by_published_at(:limit=>1)[:doc][:_id]
+    get "/heart_link/#{news_id}/"
     follow_redirect!
-    assert_equal "/news/#{@news.data._id}/", last_request.fullpath 
-    assert_equal 200, last_response.status 
+    assert_equal "/mess/#{news_id}/", last_request.fullpath 
   end
 
   must 'responds with 404 for a heart link that does not exist.' do
@@ -67,8 +70,6 @@ class Test_Control_Club_Hearts_Read < Test::Unit::TestCase
     get '/rss/'
     follow_redirect!
     assert_equal '/rss.xml', last_request.fullpath 
-    assert_equal 200, last_response.status
-    last_response_should_be_xml
   end
 
 

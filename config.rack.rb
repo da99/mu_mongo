@@ -14,6 +14,7 @@ begin
     Catch_Bad_Bunny
     Strip_If_Head_Request
     Flash_Msg
+    Old_App_Redirect
   }.each { |middle|
     require "middleware/#{middle}"
   }
@@ -31,6 +32,7 @@ begin
   use Squeeze_Uri_Dots
   use Slashify_Path_Ending
   use Redirect_Mobile
+  use Old_App_Redirect
 
   
   if The_App.non_production?
@@ -63,7 +65,7 @@ begin
     Sessions
     Members
     Clubs
-    News_Control
+    Messages
   }.each { |control|
     require "controls/#{control}"
     The_App.controls << Object.const_get(control)
