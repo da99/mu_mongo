@@ -39,15 +39,15 @@ class Old_App_Redirect
     end # ===
 
     if new_env['PATH_INFO'] =~ %r{/heart_links?/by_category/(\d+)\.html?} 
-      return hearty_redirect("/clubs/hearts/by_tag/#{$1}/")
+      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
     end
 
     if new_env['PATH_INFO'] =~ %r{/heart_links/by_category/(\d+)/\Z} 
-      return hearty_redirect("/clubs/hearts/by_tag/#{$1}/")
+      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
     end
 
     if new_env['PATH_INFO'] =~ %r{/hearts/by_tag/(\d+)/\Z} 
-      return hearty_redirect("/clubs/hearts/by_tag/#{$1}/")
+      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
     end
 
     if new_env['PATH_INFO'] =~ %r{/hearts?_links?/(\d+)\.html?}  # /hearts/20.html
@@ -82,17 +82,17 @@ class Old_App_Redirect
         175 => 'art_design', 
         176 => 'surfer_hearts' 
       }
-      @news_tag = tags[ Integer($1) ]
+      news_tag = tags[ Integer($1) ]
       if !@news_tag
-        return hearty_redirect("/clubs/hearts/by_tag/unknown-tag/")
+        return hearty_redirect("/clubs/hearts/by_label/unknown-tag/")
       else
-        return hearty_redirect("/clubs/hearts/by_tag/#{@news_tag}/")
+        return hearty_redirect("/clubs/hearts/by_label/#{news_tag}/")
       end
     end
 
     if new_env['PATH_INFO'] =~ %r{/news/by_tag/([a-zA-Z0-9\-]+)\Z/} 
       tag_name = $1
-      return hearty_redirect("/clubs/hearts/by_tag/#{tag_name}/")
+      return hearty_redirect("/clubs/hearts/by_label/#{tag_name}/")
     end
 
     @app.call(new_env)

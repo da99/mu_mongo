@@ -1,9 +1,9 @@
 namespace :views do
 
 
-  desc 'Uses name= and lang='
-	task :create do
-		
+  desc 'Uses name= and lang= [English]'
+  task :create do
+    
     lang      = ENV['lang'] || 'English'
     name      = assert_not_empty( ENV['name'] )
     
@@ -33,7 +33,7 @@ partial('__nav_bar')
 
 ~.lstrip
 
-			templates[view] = %~
+      templates[view] = %~
 # MAB   #{mab}
 # SASS  #{sass}
 # NAME  #{name}
@@ -43,7 +43,7 @@ class #{name} < Base_View
   def title 
     '...'
   end
-	
+  
 end # === #{name} ~.lstrip
 
       if sass
@@ -58,23 +58,23 @@ end # === #{name} ~.lstrip
 ~.lstrip
       end
 
-			templates.each do |file, content|
-			  full_path = File.expand_path(file)
-				if File.exists?(full_path)
-					puts_white 'Already existed:'
-				else
-					# Create file.
-					File.open( full_path, 'w') do |file_io|
-						file_io.puts content
-					end
-					puts_white 'Created:'
-				end
-				
-				puts_white file
-				
-			end
+      templates.each do |file, content|
+        full_path = File.expand_path(file)
+        if File.exists?(full_path)
+          puts_white 'Already existed:'
+        else
+          # Create file.
+          File.open( full_path, 'w') do |file_io|
+            file_io.puts content
+          end
+          puts_white 'Created:'
+        end
+        
+        puts_white file
+        
+      end
 
-	end # === describe
+  end # === describe
 
 end # === Views
 

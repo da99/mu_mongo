@@ -548,12 +548,9 @@ module Couch_Plastic_Class_Methods
   end
 
   def create editor, raw_raw_data # CREATE
-    d = new(nil, editor, raw_raw_data)
-    if !d.creator?(editor)
-      raise d.class::Unauthorized_Creator.new(d,editor)
+    d = new(nil, editor, raw_raw_data) do
+      save_create 
     end
-    d.save_create 
-    d
   end
 
   def read id, mem # READ
@@ -573,12 +570,9 @@ module Couch_Plastic_Class_Methods
   end
 
   def update id, editor, new_raw_data # UPDATE
-    doc = new(id, editor, new_raw_data)
-    if !doc.updator?(editor)
-      raise Unauthorized_Updator.new(doc,editor)
+    doc = new(id, editor, new_raw_data) do
+      save_update 
     end
-    doc.save_update 
-    doc
   end
 
   def delete! id, editor # DELETE

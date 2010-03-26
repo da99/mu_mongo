@@ -3,8 +3,8 @@ class Messages
   
   include Base_Control
 
-  def GET id  # SHOW
-    env['the.app.news'] = News.by_id(id) 
+  def GET_by_id id  # SHOW
+    env['message_by_id'] = Message.by_id('message-' + id) 
     render_html_template
   end
 

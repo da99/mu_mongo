@@ -84,11 +84,14 @@ class Message
   end
 
   def updator? editor # EDIT, UPDATE
-    true
+    creator? editor
   end
 
-  def self.update editor, raw_data
-    ask_for :title, :body, :teaser, :published_at, :tags
+  def self.update id, editor, new_raw_data
+    doc = new(id, editor, new_raw_data) do
+      ask_for :title, :body, :teaser, :published_at, :tags
+      save_update
+    end
   end
 
   def deletor? editor # DELETE
@@ -97,16 +100,16 @@ class Message
 
   # ==== Accessors ====
 
-  def self.tags
-    rows = CouchDB_CONN.GET_by_view(:news_tags, :reduce=>true, :group=>true)[:rows]
+  def self.labels
+    rows = CouchDB_CONN.GET_by_view(:messages_public_labels, :reduce=>true, :group=>true)[:rows]
     rows.map { |r| 
       r[:key]
     }
   end
 
-  def self.by_tag tag, raw_params={}
-    params = {:include_docs=>true, :startkey=>[tag, nil], :endkey=>[tag, {}]}.update(raw_params)
-    Couch_Doc.GET_by_view(:news_by_tag, params)
+  def self.by_public_label label, raw_params={}
+    params = {:include_docs=>true, :startkey=>[label, nil], :endkey=>[label, {}]}.update(raw_params)
+    Couch_Doc.GET_by_view(:messages_by_public_label, params)
   end
 
   def self.by_published_at raw_params={}
@@ -115,7 +118,7 @@ class Message
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
     params = {:include_docs =>true}.update(raw_params)
-    CouchDB_CONN.GET_by_view(:news_by_published_at, params)
+    CouchDB_CONN.GET_by_view(:messages_by_published_at, params)
   end
 
   def self.by_club_id_and_published_at raw_params = {}
@@ -127,7 +130,7 @@ class Message
                :endkey   => [club, {}], 
                :include_docs => true
     }.update(raw_params)
-    CouchDB_CONN.GET_by_view( :news_by_club_id_and_published_at, params ).map { |post|
+    CouchDB_CONN.GET_by_view( :messages_by_club_id_and_published_at, params ).map { |post|
       post[:doc]
     }
   end
@@ -135,12 +138,12 @@ class Message
   # ==== Accessors =====================================================
 
   def published_at
-    data.published_at.to_time
+    Time.parse(data.published_at || data.created_at)
   end
 
 	def last_modified_at
 		latest = [data.created_at, data.updated_at, data.published_at].compact.sort.first
-		latest.to_time
+		Time.parse(latest)
 	end
 
 end # === end Message

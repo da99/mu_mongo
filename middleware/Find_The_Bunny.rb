@@ -2,14 +2,26 @@ class Find_The_Bunny
 
   def initialize new_app
     @app = new_app
+    @url_aliases = {
+      %r!/mess/(\d+)! => { :controller => Messages, :action_name => 'by_id' }
+    }
   end
 
   def call new_env
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
+  
+    results = @url_aliases.detect { |k,v| 
+      if new_env['PATH_INFO'] =~ k
+        new_env['the.app.meta'][:control]       = v[:controller]
+        new_env['the.app.meta'][:action_method] = v[:action_method] || http_meth
+        new_env['the.app.meta'][:action_name]   = v[:action_name] || http_meth
+        new_env['the.app.meta'][:args]          = $~.captures
+      end
+    }
 
-    results = The_App.controls.detect { |control|
+    results ||= The_App.controls.detect { |control|
 
       raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')
 

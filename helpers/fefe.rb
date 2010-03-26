@@ -116,9 +116,6 @@ class FeFe_The_French_Maid
     parse_order( *ARGV  )
     if !@orders[:global].empty?
       
-      # require 'rubygems'; require 'ruby-debug'; debugger
-      
-      
       @orders[:global].each { |k|
         case k.upcase
         when 'NO_COLOR_PUTS'

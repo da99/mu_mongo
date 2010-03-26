@@ -8,14 +8,14 @@ class Inspect_Control
     render_html_template
   end
   
-	def GET_request 
-		if The_App.development?
-			render_text_html "<pre>" + request.env.keys.sort.map { |key| 
-				key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + request.env[key].inspect 
-			}.join("<br />") + "</pre>"
-		else
-			raise The_App::HTTP_404, "/request only allowed in :development environments."
-		end
-	end
-	
+  def GET_request 
+    if The_App.development?
+      render_text_html "<pre>" + request.env.keys.sort.map { |key| 
+        key.inspect + (' ' * (30 - key.inspect.size).abs) + ': ' + request.env[key].inspect 
+      }.join("<br />") + "</pre>"
+    else
+      raise The_App::HTTP_404, "/request only allowed in :development environments."
+    end
+  end
+  
 end # === Request_Bunny

@@ -81,7 +81,6 @@ require_these 'models', %w{
   Couch_Plastic
   Club
   Message
-  News
 	Member
 }     
 

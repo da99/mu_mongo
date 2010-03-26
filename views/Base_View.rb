@@ -28,13 +28,13 @@ end # === class Array
 
 
 class Base_View < Mustache
-	
+  
   attr_reader :not_prefix
   
-	def initialize new_app
-		@app        = new_app
-		@not_prefix = /^not?_/
-	end
+  def initialize new_app
+    @app        = new_app
+    @not_prefix = /^not?_/
+  end
 
   def respond_to? raw_name
     meth         = raw_name.to_s
@@ -74,9 +74,9 @@ class Base_View < Mustache
     The_App.development? || The_App.test?
   end
 
-	def url
-		@app.request.fullpath
-	end
+  def url
+    @app.request.fullpath
+  end
 
   def href_for obj, action = :read
     data       = obj.is_a?(Hash) ? obj : obj.data.as_hash
@@ -99,53 +99,53 @@ class Base_View < Mustache
     end
   end
 
-	def mobile_request?
-		@app.request.cookies['use_mobile_version'] && 
-			@app.request.cookies['use_mobile_version'] != 'no'
-	end
+  def mobile_request?
+    @app.request.cookies['use_mobile_version'] && 
+      @app.request.cookies['use_mobile_version'] != 'no'
+  end
 
-	def css_file
-		"/stylesheets/English/#{@app.control_name}_#{@app.action_name}.css"
-	end
+  def css_file
+    "/stylesheets/English/#{@app.control_name}_#{@app.action_name}.css"
+  end
 
-	def head_content
-		''
-	end
+  def head_content
+    ''
+  end
 
-	def loading
-		nil
-	end
+  def loading
+    nil
+  end
 
-	def site_domain
-		The_App::Options::SITE_DOMAIN
-	end
+  def site_domain
+    The_App::Options::SITE_DOMAIN
+  end
 
-	def site_url
-		The_App::Options::SITE_URL
-	end
-	
-	def js_epoch_time raw_i = nil
-		i = raw_i ? raw_i.to_i : Time.now.utc.to_i
+  def site_url
+    The_App::Options::SITE_URL
+  end
+  
+  def js_epoch_time raw_i = nil
+    i = raw_i ? raw_i.to_i : Time.now.utc.to_i
     i * 1000
-	end
+  end
 
-	def copyright_year
-		[2009,Time.now.utc.year].uniq.join('-')
-	end
+  def copyright_year
+    [2009,Time.now.utc.year].uniq.join('-')
+  end
 
   # === META ====
 
-	def meta_description
-	end
+  def meta_description
+  end
 
-	def meta_keywords
-	end
+  def meta_keywords
+  end
 
   def meta_cache
   end
 
-	def javascripts
-	end
+  def javascripts
+  end
 
   def logged_in?
     @app.logged_in?
@@ -187,8 +187,8 @@ class Base_View < Mustache
     The_App::Options::SITE_TITLE
   end
 
-	
-	private # ======== 
+  
+  private # ======== 
 
   # From: http://www.codeism.com/archive/show/578
   def w3c_date(str_or_date)

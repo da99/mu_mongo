@@ -90,13 +90,13 @@ module Base_Control
     raise The_App.const_get("HTTP_#{code}")
   end
 
-	def render_application_xml txt
+  def render_application_xml txt
     response.body = txt
     set_header 'Content-Type', 'application/xml; charset=utf-8'
     set_header 'Accept-Charset',   'utf-8'
     set_header 'Cache-Control',    'no-cache'
     set_header 'Pragma',           'no-cache'
-	end
+  end
 
   def render_text_plain txt
     response.body = txt
@@ -117,10 +117,10 @@ module Base_Control
   def process_mustache ext = 'html'
     file_name = "#{control_name}_#{action_name}"
     template_content = begin
-												 File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
-											 rescue Errno::ENOENT
-												 begin
-													 disguise = if ext == 'html'
+                         File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
+                       rescue Errno::ENOENT
+                         begin
+                           disguise = if ext == 'html'
                              'Mab'
                            else
                             ext.capitalize
@@ -128,10 +128,10 @@ module Base_Control
                            require( "middleware/#{disguise}_In_Disguise"  )
                            disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
                            disguise_class.compile( "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb" ) 
-												 rescue Errno::ENOENT
-													 nil
-												 end
-											 end
+                         rescue Errno::ENOENT
+                           nil
+                         end
+                       end
     
     if not template_content
       raise "Something went wrong. No template content found for: #{file_name.inspect}"
@@ -149,11 +149,11 @@ module Base_Control
     )
   end
 
-	def render_xml_template
-		render_application_xml(
+  def render_xml_template
+    render_application_xml(
       process_mustache('xml')
     )
-	end
+  end
    
   def env_key raw_find_key
     find_key = raw_find_key.to_s.strip
@@ -240,10 +240,10 @@ module Base_Control
       end
     end
 
-		power = perm_levels.detect { |level| 
-							current_member.has_power_of?(level) 
-						}
-						
+    power = perm_levels.detect { |level| 
+              current_member.has_power_of?(level) 
+            }
+            
     if not power
       error(404, "Not found.")
     end

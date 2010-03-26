@@ -7,6 +7,9 @@
 //        
 
 function(doc) { 
-  if (doc.data_model == 'News' && doc.published_at)  
-    emit( doc.published_at, doc.created_at);
+  if (doc.data_model == 'Message' &&  data.message_model == 'news' ) {
+    var pub_at = (doc.published_at || doc.created_at);
+    if (pub_at)
+			emit( pub_at, null);
+  };
 };
