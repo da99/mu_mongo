@@ -4,10 +4,10 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Hellos < Test::Unit::TestCase
 
-	must 'show homepage: /' do
+  must 'show homepage: /' do
     get '/'
     assert_equal 200, last_response.status
-	end
+  end
 
   must "shows /busy-noise" do
     get '/busy-noise'

@@ -35,10 +35,10 @@ class Members
     render_html_template
   end
 
-  def GET_account 
-    require_log_in!
-    render_html_template
-  end 
+  # def GET_account 
+  #   require_log_in!
+  #   render_html_template
+  # end 
         
   def PUT 
     begin

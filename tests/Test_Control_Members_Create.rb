@@ -28,5 +28,29 @@ class Test_Control_Members_Create < Test::Unit::TestCase
     assert_match( /Username already taken\: admin\-member/, last_response.body )
   end
 
+  must( 'does not create itself + username if username is already taken.' ) do
+		
+		u_name = "da01-#{Time.now.to_i}"
+    begin
+			Member.create(nil, { 
+					:password=>'test123test',
+					:confirm_password => 'test123test',
+					:add_life_username => u_name,
+					:add_life => 'friend'
+			})
+    rescue Member::Invalid
+      assert_match( /^Username is already taken/i, $!.message.to_s )
+    end
+    
+		err = begin
+			Member.by_username(u_name)
+		rescue Couch_Doc::Not_Found
+			'not_found'
+		end
+
+		assert_equal err, 'not_found'
+		
+  end
+  
 
 end # === class Test_Control_Members_Create

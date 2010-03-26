@@ -171,7 +171,7 @@ class Test::Unit::TestCase
   end
 
   def last_response_should_be_xml
-    last_response.headers['Content-Type'].should.be == 'application/xml;charset=utf-8'
+    assert_equal last_response.headers['Content-Type'], 'application/xml;charset=utf-8'
   end
 
   def follow_ssl_redirect!
@@ -180,19 +180,19 @@ class Test::Unit::TestCase
   end
 
   def log_in_member
-    mem = Member.by_username('regular-member-1')
-    mem.should.not.has_power_of :ADMIN
-    post '/log-in/', {:username=>mem.usernames.first, :password=>'regular-password-1'}, ssl_hash
-    follow_ssl_redirect!
-    last_request.fullpath.should =~ /my-work/
+    mem = Member.by_username(regular_username_1)
+    assert_equal false, mem.has_power_of?( :ADMIN )
+    post '/log-in/', {:username=>mem.usernames.first, :password=>regular_password_1}, ssl_hash
+    follow_redirect!
+    assert_match( /today/, last_request.fullpath)
   end
 
   def log_in_admin
-    mem = Member.by_username('admin-member')
-    mem.should.has_power_of :ADMIN
-    post '/log-in/', {:username=>mem.usernames.first, :password=>'admin-password-1'}, ssl_hash
-    follow_ssl_redirect!
-    last_request.fullpath.should =~ /my-work/
+    mem = Member.by_username('admin-member-1')
+    assert mem.has_power_of?(:ADMIN)
+    post '/log-in/', {:username=>mem.usernames.first, :password=>admin_password}, ssl_hash
+    follow_redirect!
+    assert_match( /today/, last_request.fullpath )
   end
 
   

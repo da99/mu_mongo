@@ -2,9 +2,6 @@ require '__rack__'
 
 class Actions_News_Hearts_Compatibility
   
-  include FeFe_Test
-
-  
   context  'Hearts App Compatibility' 
   
   it 'renders :index' do
