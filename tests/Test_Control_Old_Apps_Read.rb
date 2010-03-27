@@ -19,40 +19,38 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
   must 'shows a moving message for www.myeggtimer.com' do
     domain = 'www.myeggtimer.com'
     get '/', {}, { 'HTTP_HOST'=> domain }
+    follow_redirect!
     assert_match( /over to the new address/, last_response.body )
   end 
 
-  must 'should redirect www.busynoise.com/ to /egg/' do
+  must 'should redirect www.busynoise.com/ to /busy-noise/moving.html' do
     domain = 'www.busynoise.com'
     get '/', {}, { 'HTTP_HOST' =>domain  }
     follow_redirect!
-    assert_equal '/egg', last_request.fullpath
+    assert_equal '/busy-noise/moving.html', last_request.fullpath
+  end
+
+  must 'should redirect www.busynoise.com/egg to /busy-noise/moving.html' do
+    domain = 'www.busynoise.com'
+    get '/egg', {}, { 'HTTP_HOST' =>domain  }
+    follow_redirect!
+    follow_redirect!
+    assert_equal '/busy-noise/moving.html', last_request.fullpath
   end
 
   must 'shows a moving message for www.busynoise.com/egg/' do
     domain =  'www.busynoise.com/'
     get '/egg/', {}, { 'HTTP_HOST'=> domain }
-    assert_equal domain, last_request.host
-    assert_equal '/egg/', last_request.fullpath
+    follow_redirect!
     assert_match( /This website has moved/, last_response.body )
   end
 
   must 'shows a moving message for www.busynoise.com/egg' do 
     domain =  'www.busynoise.com'
     get '/egg', {}, { 'HTTP_HOST'=> domain }
-    assert_equal last_request.host, domain 
-    assert_equal last_request.fullpath, '/egg'
+    follow_redirect!
+    follow_redirect!
     assert_match( /This website has moved/, last_response.body  )
-  end
-
-  must 'renders /bigstopwatch' do
-    get '/bigstopwatch'
-    assert_equal 200, last_response.status
-  end
-
-  must 'renders /bigstopwatch/' do
-    get '/bigstopwatch/'
-    assert_equal 200, last_response.status
   end
 
 

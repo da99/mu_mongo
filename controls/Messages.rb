@@ -8,6 +8,19 @@ class Messages
     render_html_template
   end
 
+  def GET_by_label club, label # LIST
+    env['message_label'] = label
+    env['messages_by_label'] = Message.by_public_label(label)
+    render_html_template
+  end
+  
+  def GET_by_date club, year = 2006, month = 1 # LIST
+    env['list.year'] = year
+    env['list.month'] = month
+    env['list.messages'] = Message.by_published_at(year, month)
+    render_html_template
+  end
+
   def PUT id # UPDATE
     success_msg(lambda { |doc| "Update: #{doc.data.title}" })
     params = clean_room.clone

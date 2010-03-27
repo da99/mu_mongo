@@ -10,8 +10,7 @@ div.content! {
     span ", over to this new site."
   }
   
-
-  div.heart_link {
+  div.heart_link.news_post {
    
    div.info {
     span.published_at '{{published_at}}'
@@ -23,6 +22,14 @@ div.content! {
    end
   }
   
+  div.news_post.archives! {
+    h4 'Archives:'
+    div.body {
+    
+      a('See all.', :href=>'/clubs/hearts/')
+      
+    }
+  }
 } # === div.content!
 
 partial('__nav_bar')

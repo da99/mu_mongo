@@ -8,8 +8,8 @@ require 'tests/__rack_helper__'
 # on MegaUni.com
 class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
 
-  must 'render /club/hearts/' do
-    get '/club/hearts/'
+  must 'render /clubs/hearts/' do
+    get '/clubs/hearts/'
     assert_equal 200, last_response.status
   end
 
@@ -46,24 +46,28 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
     assert_equal '/clubs/hearts/by_date/2007/8/', last_request.fullpath
   end
 
-  must 'redirects archives by_category to news archives by_tag. ' +
+  must 'redirects archives by_category to messages archives by_label. ' +
      '(E.g.: /heart_links/by_category/16/)' do
       get '/heart_links/by_category/167/'
       follow_redirect!
-      assert_equal '/clubs/hearts/by_tag/167/', last_request.fullpath 
+      assert_equal '/clubs/hearts/by_label/stuff_for_dudes/', last_request.fullpath 
   end
 
   must 'redirects a "/heart_link/10/" to "/mess/10/".' do
-    news_id = News.by_published_at(:limit=>1)[:doc][:_id]
+    news_id = Message.by_published_at(:limit=>1)[:doc][:_id].sub('message-', '')
     get "/heart_link/#{news_id}/"
     follow_redirect!
     assert_equal "/mess/#{news_id}/", last_request.fullpath 
   end
 
   must 'responds with 404 for a heart link that does not exist.' do
-    get "/heart_link/1000000/"
-    follow_redirect!
-    assert_equal 404, last_response.status 
+    err= begin
+      get "/heart_link/1000000/"
+      follow_redirect!
+    rescue Couch_Doc::Not_Found => e
+      e
+    end
+    assert_match( /No document found for.+message-1000000/, err.message )
   end
 
   must 'redirects "/rss/" to "/rss.xml".' do

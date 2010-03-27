@@ -10,15 +10,16 @@ div.content! do
   div.why_are_you_bored! {
     
     div.club_messages! do
-      h4 'The latest on this site:'
-      mustache 'club_messages' do
-        div.message {
-          div.body( mustache 'body' )
-          div.club_name {
-            a(:href=>"{{href}}") { mustache 'club_name'  }
-          }
-        }
-      end
+      h4 'Re-opening next week:'
+      p " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
+      # mustache 'club_messages' do
+      #   div.message {
+      #     div.body( mustache 'body' )
+      #     div.club_name {
+      #       a(:href=>"{{href}}") { mustache 'club_name'  }
+      #     }
+      #   }
+      # end
     end
 
     # form.create_why_are_you_bored!( :action=> '/club/bored/messages', :method => 'post') {

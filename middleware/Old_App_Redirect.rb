@@ -6,22 +6,33 @@ class Old_App_Redirect
   end
 
   def call new_env
-    if new_env['PATH_INFO'] === '/about/'
+
+    if (new_env['HTTP_HOST'] =~ /myeggtimer.com/ && new_env['PATH_INFO'] == '/')
+      return hearty_redirect('/my-egg-timer/moving.html')
+    end
+
+    if (new_env['HTTP_HOST'] =~ /busynoise.com/ && new_env['PATH_INFO'] == '/') ||
+       ['/egg', '/egg/'].include?(new_env['PATH_INFO'])
+      return hearty_redirect('/busy-noise/moving.html')
+    end
+
+    if new_env['PATH_INFO'] =~ %r!\A/(#{Find_The_Bunny::Old_Topics.join('|')})/\Z!
+      return hearty_redirect("/clubs/#{$1}/")
+    end
+
+    if ['/about.html', '/about/'].include?(new_env['PATH_INFO'])
       return hearty_redirect('/help/')
+    end
+
+    if ['/blog/', '/blog.html', '/archives.html', '/archives/', 
+        '/bubblegum/','/hearts/' ].include?(new_env['PATH_INFO'])
+      return hearty_redirect('/clubs/hearts/')
     end
 
     if new_env['PATH_INFO'] =~ %r!/media/heart_links/images(.+)!
       return hearty_redirect( File.join('http://surferhearts.s3.amazonaws.com/heart_links', $1))
     end
     
-    if new_env['PATH_INFO'] === '/hearts/'
-      return hearty_redirect('/clubs/hearts/')
-    end
-    
-    if new_env['PATH_INFO'] === '/blog/'
-      return hearty_redirect('/clubs/hearts/')
-    end
-
     if new_env['PATH_INFO'] =~ %r!/blog/(\d+)/\Z!
       return hearty_redirect("/clubs/hearts/by_date/#{$1}/")
     end
@@ -30,47 +41,29 @@ class Old_App_Redirect
       return hearty_redirect("/clubs/hearts/by_date/#{$1}/1" )
     end
 
-    if new_env['PATH_INFO'] =~ %r!/blog/(\d+)/(\d+)/\Z! 
-      return hearty_redirect("/clubs/hearts/by_date/#{$1}/#{$2}/" )
-    end
-
-    if new_env['PATH_INFO'] =~ %r!/hearts/by_date/(\d+)/(\d+)/\Z! 
+    if new_env['PATH_INFO'] =~ %r!\A/hearts/by_date/(\d+)/(\d+)/\Z! 
       return hearty_redirect("/clubs/hearts/by_date/#{$1}/#{$2}/")
     end # ===
 
-    if new_env['PATH_INFO'] =~ %r{/heart_links?/by_category/(\d+)\.html?} 
-      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
-    end
-
-    if new_env['PATH_INFO'] =~ %r{/heart_links/by_category/(\d+)/\Z} 
-      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
-    end
-
-    if new_env['PATH_INFO'] =~ %r{/hearts/by_tag/(\d+)/\Z} 
-      return hearty_redirect("/clubs/hearts/by_label/#{$1}/")
-    end
-
-    if new_env['PATH_INFO'] =~ %r{/hearts?_links?/(\d+)\.html?}  # /hearts/20.html
-      return hearty_redirect( "/mess/#{ $1  }/"  )
-    end
-
-    if new_env['PATH_INFO'] =~ %r{/hearts?_links/(\d+)/\Z}   #  /hearts_links/29/
-      return hearty_redirect( "/mess/#{ $1 }/"  )
-    end
-
-    if new_env['PATH_INFO'] =~ %r{/heart_link/([A-Za-z0-9\-]+)/\Z}  #  /heart_link/29/
-      return hearty_redirect("/mess/#{$1}/")
-    end
-
-    if new_env['PATH_INFO'] =~ %r{\A/hearts/m/\Z}
+    if new_env['PATH_INFO'] =~ %r!\A/hearts/m/\Z!
       return hearty_redirect("/clubs/hearts/")
     end
 
     if new_env['PATH_INFO'] === '/rss/'
       return hearty_redirect("/rss.xml")
     end
+
+    if new_env['PATH_INFO'] =~ %r!\A/hearts?_links?/(\d+)/\Z! || #  /hearts_links/29/
+       new_env['PATH_INFO'] =~ %r!\A/hearts?_links?/(\d+)\.html?!  # /hearts/20.html
+      return hearty_redirect( "/mess/#{ $1 }/"  )
+    end
+
+    if new_env['PATH_INFO'] =~ %r!/(heart_link|new)s?/([A-Za-z0-9\-]+)/\Z!  #  /heart_link/29/
+      return hearty_redirect("/mess/#{$2}/")
+    end
     
-    if new_env['PATH_INFO'] =~ %r{/news/by_tag/([0-9]+)/\Z} 
+    if new_env['PATH_INFO'] =~ %r!\A/(heart|new|heart_link)s?/by_(tag|category)/(\d+)/\Z! ||
+       new_env['PATH_INFO'] =~ %r!\A/(heart_link|new)s?/by_(category|tag)/(\d+)\.html?!
       tags = { 167 => 'stuff_for_dudes', 
         168 => 'stuff_for_dudettes', 
         169 => 'stuff_for_pets', 
@@ -82,17 +75,22 @@ class Old_App_Redirect
         175 => 'art_design', 
         176 => 'surfer_hearts' 
       }
-      news_tag = tags[ Integer($1) ]
-      if !@news_tag
-        return hearty_redirect("/clubs/hearts/by_label/unknown-tag/")
+      news_tag = tags[ Integer($3) ]
+      if !news_tag
+        return hearty_redirect("/clubs/hearts/by_label/unknown-label/")
       else
         return hearty_redirect("/clubs/hearts/by_label/#{news_tag}/")
       end
     end
 
-    if new_env['PATH_INFO'] =~ %r{/news/by_tag/([a-zA-Z0-9\-]+)\Z/} 
+    if new_env['PATH_INFO'] =~ %r!\A/(heart_link|heart|new)s/by_tag/([a-zA-Z0-9\-]+)/\Z! 
       tag_name = $1
       return hearty_redirect("/clubs/hearts/by_label/#{tag_name}/")
+    end
+
+    if new_env['PATH_INFO'] =~ %r!\A/news/by_date/(\d+)/(\d+)! ||
+       new_env['PATH_INFO'] =~ %r!\A/blog/(\d+)/(\d+)/\Z! 
+      return hearty_redirect("/clubs/hearts/by_date/#{$1}/#{$2}/")
     end
 
     @app.call(new_env)

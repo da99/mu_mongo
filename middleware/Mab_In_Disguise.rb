@@ -133,7 +133,8 @@ class Markaby::Builder
   def nav_bar_li controller, raw_shortcut, txt = nil
 		shortcut      = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
 		template_name = "#{controller}_#{shortcut}".to_sym
-		path          = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
+    prefix = controller == :Topic ? '/clubs' : ''
+		path          = shortcut == 'home' ? '/' : "#{prefix}/#{raw_shortcut}/"
     txt      ||= shortcut.to_s.capitalize
     if self.template_name.to_s === template_name.to_s
       text(capture {

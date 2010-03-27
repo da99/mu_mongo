@@ -4,12 +4,35 @@ class Clubs
   
   include Base_Control
 
-  def GET club_filename
-    save_club_to_env(club_filename)
-    @action_name = club_filename
-    render_html_template 
-  end
+  # def GET club_filename
+  #   save_club_to_env(club_filename)
+  #   @action_name = club_filename
+  #   render_html_template 
+  # end
 
+  def GET_by_id id
+    env['results.club'] = Club.by_id("club-#{id}")
+    render_html_template
+  end
+  
+  def GET_by_old_id id
+    env['results.club'] = id
+    return render_html_template("Topic_#{id}")
+    template = begin
+      File.read("templates/English/mustache/Topic_#{id}.html")
+    rescue Errno::ENOENT => e
+      require "middleware/Mab_In_Disguise"
+      Mab_In_Disguise.compile "templates/English/mab/Topic_#{id}.rb"
+    end
+
+    mustache_class = Class.new(Base_View) do
+      def title
+      end
+    end
+    mustache_class.raise_on_context_miss = true
+    mustache_class.new(self).render(template)
+  end
+  
   def GET_edit club_filename
     require_log_in! :ADMIN
     save_club_to_env(club_filename)

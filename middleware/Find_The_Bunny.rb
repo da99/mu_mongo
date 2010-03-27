@@ -1,17 +1,40 @@
 class Find_The_Bunny
-
+  Old_Topics = %w{
+    arthritis
+    back_pain
+    cancer
+    child_care
+    computer
+    dementia
+    depression
+    economy
+    flu
+    hair
+    health
+    heart
+    hiv
+    housing
+    meno_osteo
+    news
+    preggers
+  }
   def initialize new_app
     @app = new_app
-    @url_aliases = {
-      %r!/mess/(\d+)! => { :controller => Messages, :action_name => 'by_id' }
-    }
+    @url_aliases = [
+      [%r!\A/mess/([a-zA-Z\d]+)! , { :controller => Messages, :action_name => 'by_id' } ],
+      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
+      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/(\d+)/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/(#{Old_Topics.join('|')})/\Z! , {:controller=>Clubs, :action_name=>'by_old_id'}],
+      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/\Z! , {:controller=>Clubs, :action_name=>'by_id'}]
+    ]
   end
 
   def call new_env
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-  
     results = @url_aliases.detect { |k,v| 
       if new_env['PATH_INFO'] =~ k
         new_env['the.app.meta'][:control]       = v[:controller]

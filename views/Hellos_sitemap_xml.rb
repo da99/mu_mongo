@@ -11,13 +11,13 @@ class Hellos_sitemap_xml < Base_View
 	end
 
 	def news_url
-		File.join(site_url, 'news/')
+		File.join(site_url, 'mess/')
 	end
 
 	def news
-		@news ||= News.by_published_at(:limit=>5, :descending=>true).map { |post|
+		@news ||= Message.by_published_at(:limit=>5, :descending=>true).map { |post|
 			{:last_modified_at => w3c_date(post[:doc][:updated_at] || post[:doc][:created_at]),
-			 :url => File.join(site_url, 'news', post[:doc][:_id] + '/' ) }
+			 :url => File.join(site_url, 'mess', post[:doc][:_id] + '/' ) }
 		}
 	end
 

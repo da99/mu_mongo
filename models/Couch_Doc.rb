@@ -240,9 +240,10 @@ class Couch_Doc
     doc = {:views=>{}}
 
     Dir.glob('helpers/couchdb_views/*.js').map { |file|
-      v = File.basename(file).gsub('.js', '').gsub('-reduce.js', '').to_sym
+      v = File.basename(file).sub( %r!\.js\Z!, '').sub(%r!-reduce\Z!, '').to_sym
+
       doc[:views][v] ||= {}
-      doc[:views][v][:map] = read_view_file(v)
+      doc[:views][v][:map] = read_view_file("#{v}")
 
       begin
         doc[:views][v][:reduce] = read_view_file("#{v}-reduce")

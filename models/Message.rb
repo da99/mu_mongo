@@ -100,7 +100,7 @@ class Message
 
   # ==== Accessors ====
 
-  def self.labels
+  def self.public_labels
     rows = CouchDB_CONN.GET_by_view(:messages_public_labels, :reduce=>true, :group=>true)[:rows]
     rows.map { |r| 
       r[:key]
@@ -108,11 +108,38 @@ class Message
   end
 
   def self.by_public_label label, raw_params={}
-    params = {:include_docs=>true, :startkey=>[label, nil], :endkey=>[label, {}]}.update(raw_params)
-    Couch_Doc.GET_by_view(:messages_by_public_label, params)
+    params = {:include_docs=>true, :startkey=>label}.update(raw_params)
+    CouchDB_CONN.GET_by_view(:messages_by_public_label, params)
   end
 
-  def self.by_published_at raw_params={}
+  def self.by_published_at *args
+    if args.size === 1
+      raw_params=args.first
+    else
+      case args.size
+      when 2
+        start_year = args[0].to_i
+        start_month = args[1].to_i
+        case start_month
+        when 12
+          end_month = 1
+          end_year = (start_year + 1)
+        else
+          end_month = start_month + 1
+          end_year = start_year
+        end
+      when 4
+        start_year, start_month, end_year, end_month = args
+      else
+        raise ArgumentError, "Unknown argument list: #{args.inspect}"
+      end
+      time_format = '%Y-%m-%d %H:%M:%S'
+      raw_params = { 
+        :startkey => Time.utc(start_year, start_month).strftime(time_format), 
+        :endkey => Time.utc(end_year, end_month).strftime(time_format) 
+      }
+
+    end
     # time_format = '%Y-%m-%d %H:%M:%S'
     # dt = Time.now.utc
     # start_dt = dt.strftime(time_format)
@@ -141,9 +168,9 @@ class Message
     Time.parse(data.published_at || data.created_at)
   end
 
-	def last_modified_at
-		latest = [data.created_at, data.updated_at, data.published_at].compact.sort.first
-		Time.parse(latest)
-	end
+  def last_modified_at
+    latest = [data.created_at, data.updated_at, data.published_at].compact.sort.first
+    Time.parse(latest)
+  end
 
 end # === end Message

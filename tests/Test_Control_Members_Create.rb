@@ -31,24 +31,25 @@ class Test_Control_Members_Create < Test::Unit::TestCase
   must( 'does not create itself + username if username is already taken.' ) do
 		
 		u_name = "da01-#{Time.now.to_i}"
-    begin
+    total_rows = lambda { CouchDB_CONN.GET('_all_docs')[:rows].size }
+    old = total_rows.call
+    assert_raise(Member::Invalid) do
 			Member.create(nil, { 
 					:password=>'test123test',
 					:confirm_password => 'test123test',
-					:add_life_username => u_name,
+					:add_life_username => regular_username_1,
 					:add_life => 'friend'
 			})
-    rescue Member::Invalid
-      assert_match( /^Username is already taken/i, $!.message.to_s )
+    # rescue 
+    #   assert_match( /^Username is already taken/i, $!.message.to_s )
     end
     
-		err = begin
-			Member.by_username(u_name)
-		rescue Couch_Doc::Not_Found
-			'not_found'
-		end
-
-		assert_equal err, 'not_found'
+		# err = begin
+		# 	Member.by_username(u_name)
+		# rescue Couch_Doc::Not_Found
+		# 	'not_found'
+		# end
+		assert_equal old, total_rows.call
 		
   end
   

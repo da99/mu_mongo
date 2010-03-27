@@ -5,7 +5,9 @@ class Allow_Only_Roman_Uri
   end
   
   def call new_env
-    if new_env['REQUEST_URI'][/[^a-zA-Z0-9\_\-\/\.]+/]
+    invalid = new_env['REQUEST_URI'][/[^a-zA-Z0-9\_\-\/\.]+/] 
+    valid_static = new_env['REQUEST_URI'].split('?')
+    if invalid && !valid_static
       content = "<h1>Not Found</h1>"
       res = Rack::Response.new
       res.status = 404

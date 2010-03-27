@@ -28,7 +28,7 @@ class Club
   end
 
   def self.create editor, raw_raw_data # CREATE
-    d = new(nil, editor, raw_raw_data) do
+    new(nil, editor, raw_raw_data) do
       demand :filename, :title, :teaser
       ask_for_or_default :lang
       save_create { |err| 

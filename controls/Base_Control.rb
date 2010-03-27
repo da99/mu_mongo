@@ -58,7 +58,7 @@ module Base_Control
                               arr_v.strip
                             }
                           else
-                            raise "Unknown class: #{v.inspect}"
+                            raise "Unknown class: #{v.inspect} for #{k.inspect} in #{request.params.inspect}"
                           end
                         }
                         data.symbolize_keys
@@ -114,8 +114,8 @@ module Base_Control
     set_header 'Pragma',           'no-cache'
   end
 
-  def process_mustache ext = 'html'
-    file_name = "#{control_name}_#{action_name}"
+  def process_mustache ext = 'html', alt_file_name = nil
+    file_name = alt_file_name || "#{control_name}_#{action_name}"
     template_content = begin
                          File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
                        rescue Errno::ENOENT
@@ -134,7 +134,7 @@ module Base_Control
                        end
     
     if not template_content
-      raise "Something went wrong. No template content found for: #{file_name.inspect}"
+      raise "No template content found for: #{file_name.inspect}"
     end
 
     require "views/#{file_name}.rb"
@@ -143,9 +143,9 @@ module Base_Control
     html       = view_class.new(self).render( template_content )
   end
 
-  def render_html_template
+  def render_html_template *args
     render_text_html(
-      process_mustache
+      process_mustache('html', *args)
     )
   end
 

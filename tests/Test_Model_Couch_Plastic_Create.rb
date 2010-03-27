@@ -9,13 +9,13 @@ class Test_Couch_Plastic_Create < Test::Unit::TestCase
 
   must 'set new field value using :must_be' do
     teaser = "My Teaser: #{rand(1000)}"
-    doc = Cafe_Le_Roger.create nil, {:title=>'My Title', :teaser=>teaser, :body=>'My Body'}
+    doc = Cafe_Le_Roger.create(nil, {:title=>'My Title', :teaser=>teaser, :body=>'My Body'})
     assert_equal teaser, doc.data.teaser
   end
 
   must 'set new field value using :must_be!' do
     body = "My body #{rand(1000)}"
-    doc = Cafe_Le_Roger.create nil, {:title=>'My Title', :teaser=>'My Teaser', :body => body}
+    doc = Cafe_Le_Roger.create(nil, {:title=>'My Title', :teaser=>'My Teaser', :body => body})
     assert_equal body, doc.data.body
   end
 
@@ -73,10 +73,13 @@ class Cafe_Le_Roger
 
   allow_proto_fields :big_body
 
-	def before_create
-		demand :title, :teaser, :body
-    ask_for :big_body
-	end
+  def self.create editor, raw_data
+    new(nil, editor,raw_data) do
+      demand :title, :teaser, :body
+      ask_for :big_body
+      save_create
+    end
+  end
 
 	def creator? editor
 		true

@@ -114,7 +114,7 @@ div( :id=>"nav_bar" ) {
       # li "Global Rant" # Vote for the most creative/smartest ranters.
     
     
-      nav_bar_li :Topic, 'salud',    'Salud (Español)'
+      nav_bar_li nil, 'salud',    'Salud (Español)'
       nav_bar_li :Topic, 'child-care', 'Child Care'
       nav_bar_li :Topic, 'computer', 'Computer Use'
       # nav_bar_li :Topic, 'economy',  'Economy + War'
@@ -123,7 +123,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Topic, 'health',   'Pain & Disease'
       nav_bar_li :Topic, 'preggers', 'Pregnancy'
       nav_bar_li :Topic, 'news',     'Other Topics'
-      nav_bar_li :Topic, 'bubblegum', 'Bubblegum Pop'
+      nav_bar_li :Topic, 'hearts', 'Hearts'
   }
 
   # h4 'Pain & Disease'

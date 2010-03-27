@@ -1,4 +1,6 @@
 
+PRODUCTION_DB = File.read(File.expand_path '~/cloud.txt').strip
+DB_PRODUCTION = [ File.dirname(PRODUCTION_DB), File.basename(PRODUCTION_DB) ]
 namespace :db do
   
   desc "Delete, then re-create database. Uses ENV['RACK_ENV']. Defaults to 'development'." 
@@ -27,18 +29,32 @@ namespace :db do
     end
   end # ===
 
+  desc 'Uploades design doc to production database'
+  task :design_doc_upload do
+    require 'models/Couch_Doc'
+    conn = Couch_Doc.new( *DB_PRODUCTION )
+    conn.create_or_update_design
+    puts "Finished uploading design doc."
+  end
+
   desc 'Grab some sample data from production database'
   task :sample_data do
     require 'json'
     require File.basename(File.expand_path('.'))
     # Grab some sample data
-    base_url = File.read(File.expand_path '~/cloud.txt').strip
-    url      = File.join( base_url, "/_design/web/_view/messages_by_club_id" )
-    docs     = JSON.parse(RestClient.get(url + '?limit=5&include_docs=true').body)['rows']
-    docs.each { |d|
+    base_url = PRODUCTION_DB
+    
+    url      = File.join( base_url, "/_design/megauni/_view/messages_by_club_id" )
+    mess     = JSON.parse(RestClient.get(url + '?limit=5&include_docs=true').body)['rows']
+    
+    url   = File.join( base_url, "/_design/megauni/_view/clubs" )
+    clubs = JSON.parse(RestClient.get(url + '?limit=5&include_docs=true').body)['rows']
+    
+    (mess + clubs).each { |d|
       d['doc'].delete 'rev'
       CouchDB_CONN.PUT d['doc']['_id'], d['doc']
     }
+    
     puts_white "Inserted sample data."
   end
 
@@ -53,14 +69,14 @@ namespace :db do
   desc "Add in sample data for tests."
   task :test_sample_data do
     
-    # === Create Clubs ==========================
+    # # === Create Clubs ==========================
 
-    CouchDB_CONN.PUT( 'club-hearts', {:filename=>'hearts', 
-                  :title=>'The Hearts Club',
-                  :lang => 'English',
-                  :created_at => '2009-12-27 08:00:01',
-                  :data_model => 'Club'
-    } )
+    # CouchDB_CONN.PUT( 'club-hearts', {:filename=>'hearts', 
+    #               :title=>'The Hearts Club',
+    #               :lang => 'English',
+    #               :created_at => '2009-12-27 08:00:01',
+    #               :data_model => 'Club'
+    # } )
 
     # === Create News ==========================
 
