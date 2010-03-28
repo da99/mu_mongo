@@ -33,7 +33,7 @@ class Render_Css
     Dir.glob(file_name || 'templates/*/sass/*.sass').each do |sass_file|
       
       sass_dir    = File.dirname(sass_file)
-      css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'styles').sub('sass/', '') )
+      css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'stylesheets').sub('sass/', '') )
       css_content = Sass::Engine.new(
         File.read(sass_file), 
         :load_paths => [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
