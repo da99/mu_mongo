@@ -65,7 +65,7 @@ case ENV['RACK_ENV']
 
   when 'production'
     CouchDB_CONN = Couch_Doc.new(
-      "http://miniuni:gkz260cyxk@miniuni.cloudant.com:5984/megauni_stage",
+      "http://miniuni:gkz260cyxk@miniuni.cloudant.com:5984",
       'megauni_stage' 
     )
 
