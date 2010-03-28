@@ -1,10 +1,9 @@
 mattetti-multibyte --source gems.github.com/
 htmlentities
-rest-client
+rest-client --version '>= 1.4.2'
 loofah
 bcrypt-ruby
 RedCloth
 pow --version '>=0.2.2'
 dejan-auto_html --source gems.github.com/
-
 mustache
