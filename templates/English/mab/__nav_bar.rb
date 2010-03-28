@@ -29,10 +29,10 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Session_Control, 'log-out', 'Log-out'
     end  
     
-    mustache 'not_logged_in?' do
-      nav_bar_li :Session_Control, 'log-in', 'Log-in'
-      nav_bar_li :Member_Control, 'create-account', 'Join'
-    end
+    # mustache 'not_logged_in?' do
+    #   nav_bar_li :Session_Control, 'log-in', 'Log-in'
+    #   nav_bar_li :Member_Control, 'create-account', 'Join'
+    # end
     
   }
 
