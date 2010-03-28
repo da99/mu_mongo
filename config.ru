@@ -82,16 +82,16 @@ begin
 
   
 rescue Object => e
-#   
-#   if ['test', 'development'].include?(ENV['RACK_ENV'])
-#     raise e
-#   end
-#   
+  
+  if ['test', 'development'].include?(ENV['RACK_ENV'])
+    raise e
+  end
+  
   the_app = lambda { |env|
     
     content = if env['REQUEST_METHOD'] === 'HEAD'
                 ''
-              elsif @env["HTTP_X_REQUESTED_WITH"] === "XMLHttpRequest"
+              elsif env["HTTP_X_REQUESTED_WITH"] === "XMLHttpRequest"
                 %~<div class="error">Server Error. Try again later.</div>~
               else
                 %~

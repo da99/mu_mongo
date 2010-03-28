@@ -67,7 +67,7 @@ namespace 'git' do
     Render_Css.compile_all
     ENV['msg'] = 'Development checkpoint. Added mustache/css files.'
     Rake::Task['git:dev_check'].invoke
-    # puts_white `git push heroku`
+    puts_white `git push heroku`
 
 
       # puts_red "Not done."

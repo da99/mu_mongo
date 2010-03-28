@@ -49,13 +49,13 @@ class IssueClient
         when :production
           RestClient.post( 'https://miniuni.heroku.com/error', data)
         when :development, :test
-          error_file   = File.expand_path("~/Desktop/MEGAUNI_ERRORS_#{environ}.txt")
-          orig_content = File.file?(error_file) && environ.to_sym != :test ? 
-                          File.read(error_file) : 
-                          ''
-          error_file.create { |f|
-            f.puts( data.inspect + "\n\n" + orig_content )
-          }
+          # error_file   = File.expand_path("~/Desktop/MEGAUNI_ERRORS_#{environ}.txt")
+          # orig_content = File.file?(error_file) && environ.to_sym != :test ? 
+          #                 File.read(error_file) : 
+          #                 ''
+          # error_file.create { |f|
+          #   f.puts( data.inspect + "\n\n" + orig_content )
+          # }
         else
           raise ArgumentError, "Unknown environment: #{environ.inspect}"
       end
