@@ -20,6 +20,10 @@ class Old_App_Redirect
       return hearty_redirect('/busy-noise/moving.html')
     end
 
+    if new_env['PATH_INFO'] == '/child-care/' 
+      return hearty_redirect("/clubs/child_care")
+    end
+
     if new_env['PATH_INFO'] =~ %r!\A/(#{Find_The_Bunny::Old_Topics.join('|')})/\Z!
       return hearty_redirect("/clubs/#{$1}/")
     end

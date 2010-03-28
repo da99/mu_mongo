@@ -115,7 +115,8 @@ div( :id=>"nav_bar" ) {
     
     
       nav_bar_li nil, 'salud',    'Salud (Español)'
-      nav_bar_li :Topic, 'child-care', 'Child Care'
+      nav_bar_li :Topic, 'back_pain', 'Back Pain'
+      nav_bar_li :Topic, 'child_care', 'Child Care'
       nav_bar_li :Topic, 'computer', 'Computer Use'
       # nav_bar_li :Topic, 'economy',  'Economy + War'
       nav_bar_li :Topic, 'hair',     'Skin & Hair'

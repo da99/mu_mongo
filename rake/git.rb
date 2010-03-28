@@ -53,7 +53,7 @@ namespace 'git' do
   
   desc "Used to update and commit development checkpoint. Includes the commit comment for you."
   task :dev_check do
-    ENV['msg'] = 'Development checkpoint.'
+    ENV['msg'] ||= 'Development checkpoint.'
     Rake::Task['git:commit'].invoke
   end # === task
 
@@ -61,61 +61,70 @@ namespace 'git' do
   desc "Push code to Heroku."
   task :push do 
 
-      puts_red "Not done."
-      puts_red "First, update gems."
-      puts_red "Then, compile MAB to Mustache."
-      puts_red "Second, run tests."
-      puts_red "Third, if tests pass, update both .gems and .development_gems."
-      puts_red "Fourth, push if tests pass."
+    require 'middleware/Mab_In_Disguise'
+    require 'middleware/Render_Css'
+    Mab_In_Disguise.compile_all
+    Render_Css.compile_all
+    ENV['msg'] = 'Development checkpoint. Added mustache/css files.'
+    Rake::Task['git:dev_check'].invoke
+    # puts_white `git push heroku`
 
-      output = run_task(:update)
 
-      if commit_pending?(output)
-        puts_white output
-        puts_red "NO GO: You *can't* push, unless you commit."
-        return output
-      end
+      # puts_red "Not done."
+      # puts_red "First, update gems."
+      # puts_red "Then, compile MAB to Mustache."
+      # puts_red "Second, run tests."
+      # puts_red "Third, if tests pass, update both .gems and .development_gems."
+      # puts_red "Fourth, push if tests pass."
 
-      # Check if specs all pass.
-      total, passed, errors = run_task( 'fefe:tests' )
-      if total == passed
-        raise "#{failed} tests failed."
-      else
-        puts_white 'All specifications passed.'
-      end
+      # output = run_task(:update)
 
-      puts_white 'Please wait as code is being pushed to Heroku...'
+      # if commit_pending?(output)
+      #   puts_white output
+      #   puts_red "NO GO: You *can't* push, unless you commit."
+      #   return output
+      # end
 
-      push_results = shell_out( 'git push heroku master')
-      push_went_ok = push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
-      if !push_went_ok
-        puts_red push_results
-        return false
-      end
-      
-      puts_white push_results
+      # # Check if specs all pass.
+      # total, passed, errors = run_task( 'fefe:tests' )
+      # if total == passed
+      #   raise "#{failed} tests failed."
+      # else
+      #   puts_white 'All specifications passed.'
+      # end
 
-      app_name = File.basename(Dir.getwd)
-      case app_name
-        when 'miniuni'
-          url = "http://#{app_name}.heroku.com/"
-          check_this_url url, /mega/
-        when 'megauni'
-          url = "http://www.#{app_name}.com/"
-          check_this_url url, /megauni/i
-          check_this_url "http://www.busynoise.com/", /has moved/
-          check_this_url "http://www.busynoise.com/egg/", /has moved/
-          check_this_url "http://www.myeggtimer.com/", /new address/
-          check_this_url "#{url}busy-noise/", /create_countdown/
-          check_this_url "#{url}my-egg-timer/", /egg_template/
-        else
-          url = "http://www.#{app_name}.com/"
-          check_this_url url, /#{app_name}/
-      end
+      # puts_white 'Please wait as code is being pushed to Heroku...'
 
-      Launchy.open( url )
+      # push_results = shell_out( 'git push heroku master')
+      # push_went_ok = push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
+      # if !push_went_ok
+      #   puts_red push_results
+      #   return false
+      # end
+      # 
+      # puts_white push_results
 
-      true
+      # app_name = File.basename(Dir.getwd)
+      # case app_name
+      #   when 'miniuni'
+      #     url = "http://#{app_name}.heroku.com/"
+      #     check_this_url url, /mega/
+      #   when 'megauni'
+      #     url = "http://www.#{app_name}.com/"
+      #     check_this_url url, /megauni/i
+      #     check_this_url "http://www.busynoise.com/", /has moved/
+      #     check_this_url "http://www.busynoise.com/egg/", /has moved/
+      #     check_this_url "http://www.myeggtimer.com/", /new address/
+      #     check_this_url "#{url}busy-noise/", /create_countdown/
+      #     check_this_url "#{url}my-egg-timer/", /egg_template/
+      #   else
+      #     url = "http://www.#{app_name}.com/"
+      #     check_this_url url, /#{app_name}/
+      # end
+
+      # Launchy.open( url )
+
+      # true
   end # === task
 
   
