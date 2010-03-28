@@ -1,7 +1,7 @@
 
 $KCODE = 'utf8'
 
-begin
+# begin
 
   %w{
     Allow_Only_Roman_Uri
@@ -81,36 +81,36 @@ begin
   run The_App
 
   
-rescue Object => e
-  
-  if ['test', 'development'].include?(ENV['RACK_ENV'])
-    raise e
-  end
-  
-  the_app = lambda { |env|
-    
-    content = if env['REQUEST_METHOD'] === 'HEAD'
-                ''
-              elsif @env["HTTP_X_REQUESTED_WITH"] === "XMLHttpRequest"
-                %~<div class="error">Server Error. Try again later.</div>~
-              else
-                %~
-                  <html>
-                    <body>
-                      <h1>Server Error.</h1>
-                      <p>Try again later.</p>
-                    </body>
-                  </html>
-                ~
-              end
-    
-    [500, {'Content-Type' => 'text/html', 'Content-Length'=>content.size.to_s}, content]
-    
-  }
-  
-  run the_app
-  
-end # === begin
+# rescue Object => e
+#   
+#   if ['test', 'development'].include?(ENV['RACK_ENV'])
+#     raise e
+#   end
+#   
+#   the_app = lambda { |env|
+#     
+#     content = if env['REQUEST_METHOD'] === 'HEAD'
+#                 ''
+#               elsif @env["HTTP_X_REQUESTED_WITH"] === "XMLHttpRequest"
+#                 %~<div class="error">Server Error. Try again later.</div>~
+#               else
+#                 %~
+#                   <html>
+#                     <body>
+#                       <h1>Server Error.</h1>
+#                       <p>Try again later.</p>
+#                     </body>
+#                   </html>
+#                 ~
+#               end
+#     
+#     [500, {'Content-Type' => 'text/html', 'Content-Length'=>content.size.to_s}, content]
+#     
+#   }
+#   
+#   run the_app
+#   
+# end # === begin
 
 
 

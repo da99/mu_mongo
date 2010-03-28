@@ -68,7 +68,6 @@ namespace 'git' do
       puts_red "Third, if tests pass, update both .gems and .development_gems."
       puts_red "Fourth, push if tests pass."
 
-      raise "not done."
       output = run_task(:update)
 
       if commit_pending?(output)
