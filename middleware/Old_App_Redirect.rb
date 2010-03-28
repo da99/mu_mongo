@@ -7,6 +7,10 @@ class Old_App_Redirect
 
   def call new_env
 
+    if (new_env['HTTP_HOST'] =~ /megahtml.com/ && new_env['PATH_INFO'] == '/')
+      return hearty_redirect('/megahtml.html')
+    end
+    
     if (new_env['HTTP_HOST'] =~ /myeggtimer.com/ && new_env['PATH_INFO'] == '/')
       return hearty_redirect('/my-egg-timer/moving.html')
     end

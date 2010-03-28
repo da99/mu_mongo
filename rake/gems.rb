@@ -103,7 +103,7 @@ namespace :gem do
 
     gems_to_install = GEM_MANIFEST_ARRAY
 
-    dev_gems        = File.join('~/', PRIMARY_APP, '.development_gems' )
+    dev_gems        = File.expand_path(File.join('~/', PRIMARY_APP, '.development_gems' ))
     gems_to_install = gems_to_install + File.read(dev_gems).strip.split("\n")
 
     installed = `gem list`

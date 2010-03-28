@@ -42,9 +42,9 @@ div( :id=>"nav_bar" ) {
       
       nav_bar_li :Member_Control, 'today', '[ Today ]'
       
-      Member::LIVES.each do |life|
-        nav_bar_li :Member_Control, "#{life}-life", life.capitalize
-      end
+      # Member::LIVES.each do |life|
+      #   nav_bar_li :Member_Control, "#{life}-life", life.capitalize
+      # end
 
       nav_bar_li :Member_Control, 'account', '[ Account ]'
       

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+   <meta content="text/javascript" http-equiv="Content-Script-Type"/>
+   <meta content="text/css" http-equiv="Content-Style-Type"/>
+   <meta content="en-US" http-equiv="Content-Language"/>
+   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+   <meta content="en-US" http-equiv="Content-Language"/>
+
+{{#no_meta_cache}}
+
+   <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
+   <meta content="no-cache" http-equiv="pragma"/>
+
+{{/no_meta_cache}}
+
+   <meta content="{{meta_description}}" name="description"/>
+   <meta content="{{meta_keywords}}" name="keywords"/>
+   <title>{{title}}</title>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
+
+{{#not_mobile_request?}}
+
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
+
+{{/not_mobile_request?}}
+
+
+{{head_content}}
+
+  </head>
+  <body id="the_body">
+   <div id="container">
+    <div id="timestamp">{{js_epoch_time}}</div>
+
+{{#loading}}
+
+    <div id="loading">Loading...</div>
+
+{{/loading}}
+
+     <div id="content">
+      <ul class="faq">
+       <li>
+        <div class="question">Are there better alternatives to anti-depressants?</div>
+        <div class="answer">
+         <span>First, stop seeing the idiot doctor who prescribes useless, harmful anti-depressants. </span>
+         <span>Second, take </span>
+         <a href="http://www.google.com/search?q=methyl-b12+folic+acid+depression">Methyl-B12 and Folic acid.</a>
+         <span> (I learned this from </span>
+         <a href="http://www.naturalhealthlibrarian.com/">The Natural Health Librarian.</a>
+         <span> Buy their e-books. Great stuff. All true.) </span>
+         <span> Here is another article on the subject: </span>
+         <a href="http://www.lewrockwell.com/spl/b12-deficiency.html">Vitamin B12 Deficiency Is Easily Diagnosed and Corrected</a>
+        </div>
+       </li>
+       <li>
+        <div class="question">Methyl B-12 (Methylcobalamin) - 1,000 mcg or more</div>
+        <div class="answer">
+         <p>Most walk-in pharmacies sell the cheap/useless version of B-12. Buy the best form online.</p>
+         <p>It has to say 'methyl' on the 'Nutrition Facts' label on the back of the bottle.</p>
+         <p>
+          <span>$13 at </span>
+          <a href="http://www.luckyvitamin.com/item/itemKey/49044">http://www.luckyvitamin.com/item/itemKey/49044</a>
+         </p>
+        </div>
+       </li>
+       <li>
+        <div class="question">Folic Acid - 1,600 mcg</div>
+        <div class="answer">
+         <p>
+          <span>$6 at </span>
+          <a href="http://www.luckyvitamin.com/item/itemKey/67601">http://www.luckyvitamin.com/item/itemKey/67601</a>
+         </p>
+        </div>
+       </li>
+       <li>
+        <div class="question">Purity Products Perfect Multi Super Greens</div>
+        <div class="answer">
+         <p>The best multivitamin I could find. </p>
+         <p>
+          <span>$30 at </span>
+          <a href="http://www.lifespannutrition.com/products.asp?itemnumber=67">http://www.lifespannutrition.com/products.asp?itemnumber=67</a>
+         </p>
+        </div>
+       </li>
+      </ul>
+     </div>
+      <div id="nav_bar">
+       <div id="logo">
+
+{{#no_opening_msg}}
+
+        <p class="english">
+         <a href="/">{{site_title}}</a>
+        </p>
+
+{{/no_opening_msg}}
+
+        <p class="nippon">
+を単一化します        </p>
+       </div>
+       <ul class="help">
+         <li>
+          <a href="/help/">Help</a>
+         </li>
+
+{{#logged_in?}}
+
+         <li>
+          <a href="/log-out/">Log-out</a>
+         </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
+         <li>
+          <a href="/create-account/">Join</a>
+         </li>
+
+{{/not_logged_in?}}
+
+       </ul>
+
+{{#logged_in?}}
+
+       <h4>Lives</h4>
+       <ul class="lives">
+         <li>
+          <a href="/today/">[ Today ]</a>
+         </li>
+         <li>
+          <a href="/account/">[ Account ]</a>
+         </li>
+       </ul>
+
+{{/logged_in?}}
+
+       <h4>Egg Timers</h4>
+       <ul class="to_dos">
+         <li>
+          <a href="/my-egg-timer/">Old Timer</a>
+         </li>
+         <li>
+          <a href="/busy-noise/">New Timer</a>
+         </li>
+       </ul>
+       <h4>Clubs</h4>
+       <ul class="news">
+         <li>
+          <a href="/salud/">Salud (Espa&#241;ol)</a>
+         </li>
+         <li>
+          <a href="/clubs/child-care/">Child Care</a>
+         </li>
+         <li>
+          <a href="/clubs/computer/">Computer Use</a>
+         </li>
+         <li>
+          <a href="/clubs/hair/">Skin &amp; Hair</a>
+         </li>
+         <li>
+          <a href="/clubs/housing/">Housing &amp; Apartments</a>
+         </li>
+         <li>
+          <a href="/clubs/health/">Pain &amp; Disease</a>
+         </li>
+         <li>
+          <a href="/clubs/preggers/">Pregnancy</a>
+         </li>
+         <li>
+          <a href="/clubs/news/">Other Topics</a>
+         </li>
+         <li>
+          <a href="/clubs/hearts/">Hearts</a>
+         </li>
+       </ul>
+      </div>
+    <div id="footer">
+     <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
+    </div>
+
+{{javascripts}}
+
+   </div>
+  </body>
+ </html>

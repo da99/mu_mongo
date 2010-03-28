@@ -5,6 +5,27 @@ require 'ninesixty'
 
 class Render_Css
 
+  def self.compile_all
+    new_files = {}
+    Dir.glob('templates/*/sass/*.sass').each do |sass_file|
+      
+      sass_dir    = File.dirname(sass_file)
+      css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'styles').sub('sass/', '') )
+      css_content = Sass::Engine.new(
+        File.read(sass_file), 
+        :load_paths => [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
+      ).render
+
+      puts "Writing: #{css_file}"
+      File.open(File.expand_path(css_file), 'w' ) do |f|
+        f.write css_content
+      end
+    end
+
+    new_files
+    
+  end
+
   def self.compile file_name = nil
     
     vals = {} 

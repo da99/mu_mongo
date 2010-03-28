@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+   <meta content="text/javascript" http-equiv="Content-Script-Type"/>
+   <meta content="text/css" http-equiv="Content-Style-Type"/>
+   <meta content="en-US" http-equiv="Content-Language"/>
+   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+   <meta content="en-US" http-equiv="Content-Language"/>
+
+{{#no_meta_cache}}
+
+   <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
+   <meta content="no-cache" http-equiv="pragma"/>
+
+{{/no_meta_cache}}
+
+   <meta content="{{meta_description}}" name="description"/>
+   <meta content="{{meta_keywords}}" name="keywords"/>
+   <title>{{title}}</title>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
+
+{{#not_mobile_request?}}
+
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
+
+{{/not_mobile_request?}}
+
+
+{{head_content}}
+
+  </head>
+  <body id="the_body">
+   <div id="container">
+    <div id="timestamp">{{js_epoch_time}}</div>
+
+{{#loading}}
+
+    <div id="loading">Loading...</div>
+
+{{/loading}}
+
+     <div id="content">
+
+{{#flash_msg?}}
+
+       <div id="flash_msg">
+
+{{#flash_success}}
+
+        <div class="success">
+         <h4>Success</h4>
+         <div class="msg">{{msg}}</div>
+        </div>
+
+{{/flash_success}}
+
+
+{{#flash_errors}}
+
+        <div class="errors">
+         <h4>{{title}}</h4>
+         <div class="msg">
+          <ul>
+
+{{#errors}}
+
+           <li>{{err}}</li>
+
+{{/errors}}
+
+          </ul>
+         </div>
+        </div>
+
+{{/flash_errors}}
+
+       </div>
+
+{{/flash_msg?}}
+
+      <a href="{{news_href}}">View</a>
+      <h3>{{title}}</h3>
+      <form method="post" action="{{news_href_update}}" name="form_news_edit" id="form_news_edit">
+        <input type="hidden" value="_put" name="method"/>
+       <fieldset>
+        <label>Title</label>
+        <input type="text" class="text" value="{{news_title}}" name="title" id="news_title"/>
+       </fieldset>
+       <fieldset>
+        <label>Teaser</label>
+        <textarea name="teaser" id="news_teaser">{{news_teaser}}</textarea>
+       </fieldset>
+       <fieldset>
+        <label>body</label>
+        <textarea name="body" id="news_body">{{news_body}}</textarea>
+       </fieldset>
+       <p>Published: {{news_published_at}}</p>
+       <p>Created: {{news_created_at}}</p>
+       <fieldset>
+        <label>Club</label>
+         <select name="club_id">
+
+{{#clubs}}
+
+
+{{#selected}}
+
+          <option value="{{id}}" selected="selected">{{title}}</option>
+
+{{/selected}}
+
+
+{{#not_selected}}
+
+          <option>{{title}}</option>
+
+{{/not_selected}}
+
+
+{{/clubs}}
+
+         </select>
+       </fieldset>
+       <fieldset>
+        <label>Tags</label>
+        <div class="checkboxes">
+
+{{#news_tags}}
+
+
+{{#selected}}
+
+          <div class="box selected">
+           <input type="checkbox" checked="checked" value="{{filename}}" name="tags[]"/>
+           <span>{{filename}}</span>
+          </div>
+
+{{/selected}}
+
+
+{{#not_selected}}
+
+          <div class="box">
+           <input type="checkbox" value="{{filename}}" name="tags[]"/>
+           <span>{{filename}}</span>
+          </div>
+
+{{/not_selected}}
+
+
+{{/news_tags}}
+
+        </div>
+       </fieldset>
+       <div class="buttons">
+        <input type="hidden" value="put" name="_method"/>
+        <button class="update" onclick="document.getElementById('form_news_edit').submit(); return false;">Update</button>
+       </div>
+      </form>
+     </div>
+      <div id="nav_bar">
+       <div id="logo">
+
+{{#no_opening_msg}}
+
+        <p class="english">
+         <a href="/">{{site_title}}</a>
+        </p>
+
+{{/no_opening_msg}}
+
+        <p class="nippon">
+を単一化します        </p>
+       </div>
+       <ul class="help">
+         <li>
+          <a href="/help/">Help</a>
+         </li>
+
+{{#logged_in?}}
+
+         <li>
+          <a href="/log-out/">Log-out</a>
+         </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
+         <li>
+          <a href="/create-account/">Join</a>
+         </li>
+
+{{/not_logged_in?}}
+
+       </ul>
+
+{{#logged_in?}}
+
+       <h4>Lives</h4>
+       <ul class="lives">
+         <li>
+          <a href="/today/">[ Today ]</a>
+         </li>
+         <li>
+          <a href="/account/">[ Account ]</a>
+         </li>
+       </ul>
+
+{{/logged_in?}}
+
+       <h4>Egg Timers</h4>
+       <ul class="to_dos">
+         <li>
+          <a href="/my-egg-timer/">Old Timer</a>
+         </li>
+         <li>
+          <a href="/busy-noise/">New Timer</a>
+         </li>
+       </ul>
+       <h4>Clubs</h4>
+       <ul class="news">
+         <li>
+          <a href="/salud/">Salud (Espa&#241;ol)</a>
+         </li>
+         <li>
+          <a href="/clubs/child-care/">Child Care</a>
+         </li>
+         <li>
+          <a href="/clubs/computer/">Computer Use</a>
+         </li>
+         <li>
+          <a href="/clubs/hair/">Skin &amp; Hair</a>
+         </li>
+         <li>
+          <a href="/clubs/housing/">Housing &amp; Apartments</a>
+         </li>
+         <li>
+          <a href="/clubs/health/">Pain &amp; Disease</a>
+         </li>
+         <li>
+          <a href="/clubs/preggers/">Pregnancy</a>
+         </li>
+         <li>
+          <a href="/clubs/news/">Other Topics</a>
+         </li>
+         <li>
+          <a href="/clubs/hearts/">Hearts</a>
+         </li>
+       </ul>
+      </div>
+    <div id="footer">
+     <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
+    </div>
+
+{{javascripts}}
+
+   </div>
+  </body>
+ </html>
