@@ -13,7 +13,7 @@ namespace :tests do
     ordered  = (rb_files - pre) + pre.reverse
     
     require "tests/__helper__"
-    puts ordered.join(", ")
+
     ordered.each { |file|
       require file 
     }

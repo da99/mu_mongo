@@ -124,7 +124,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Topic, 'health',   'Pain & Disease'
       nav_bar_li :Topic, 'preggers', 'Pregnancy'
       nav_bar_li :Topic, 'news',     'Other Topics'
-      nav_bar_li :Topic, 'hearts', 'Hearts'
+      # nav_bar_li :Topic, 'hearts', 'Hearts'
   }
 
   # h4 'Pain & Disease'
