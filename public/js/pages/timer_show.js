@@ -23,7 +23,7 @@ var beeps_a3_options = {
 };
 var beeps_server_options = {
   id: 'the_beeps_server',
-  url: '/media/beeping.mp3',
+  url: 'http://megauni.s3.amazonaws.com/beeping.mp3',
   volume: 90, 
   onfinish: function() {  
     this.play();      
