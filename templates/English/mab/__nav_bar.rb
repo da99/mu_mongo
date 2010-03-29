@@ -27,6 +27,8 @@ div( :id=>"nav_bar" ) {
     
     mustache 'logged_in?' do
       nav_bar_li :Session_Control, 'log-out', 'Log-out'
+      nav_bar_li :Members, '/today/', '[ Today ]'
+      nav_bar_li :Members, '/account/', '[ Account ]'
     end  
     
     # mustache 'not_logged_in?' do
@@ -39,15 +41,9 @@ div( :id=>"nav_bar" ) {
   mustache 'logged_in?' do
     h4 'Lives' 
     ul.lives {
-      
-      nav_bar_li :Member_Control, 'today', '[ Today ]'
-      
-      # Member::LIVES.each do |life|
-      #   nav_bar_li :Member_Control, "#{life}-life", life.capitalize
-      # end
-
-      nav_bar_li :Member_Control, 'account', '[ Account ]'
-      
+      mustache 'current_member_lives' do
+        nav_bar_li :Members, :life, "/life/{{username}}/", "{{username}}"
+      end
     }
   end
   

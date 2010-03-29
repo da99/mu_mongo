@@ -2,77 +2,75 @@
 class Mab_In_Disguise
   
   def self.compile_all
-		Dir.glob("templates/*/mab/*.rb").each { |mab_file|
-			next if mab_file['layout.rb']
-			mab_dir       = File.dirname(mab_file)
-			layout_file   = File.join(mab_dir, 'layout.rb')
-			file_basename = File.basename(mab_file)
-			is_partial    = file_basename[/^__/]
-			html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
-			template_name = file_basename.sub('.rb', '').to_sym
-			
-			content       = if is_partial
-												Markaby::Builder.new(:template_name=>template_name) { 
-													eval( File.read(mab_file), nil, mab_file , 1)
-												}
-											else
-												Markaby::Builder.new(:template_name=>template_name) { 
-													eval(
-														File.read(layout_file).sub("{{content_file}}", file_basename),
-														nil, 
-														layout_file, 
-														1
-													)
-												}
-											end
-			
+    Dir.glob("templates/*/mab/*.rb").each { |mab_file|
+      next if mab_file['layout.rb']
+      mab_dir       = File.dirname(mab_file)
+      layout_file   = File.join(mab_dir, 'layout.rb')
+      file_basename = File.basename(mab_file)
+      is_partial    = file_basename[/^__/]
+      html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
+      template_name = file_basename.sub('.rb', '').to_sym
+      
+      content       = if is_partial
+                        Markaby::Builder.new(:template_name=>template_name) { 
+                          eval( File.read(mab_file), nil, mab_file , 1)
+                        }
+                      else
+                        Markaby::Builder.new(:template_name=>template_name) { 
+                          eval(
+                            File.read(layout_file).sub("{{content_file}}", file_basename),
+                            nil, 
+                            layout_file, 
+                            1
+                          )
+                        }
+                      end
+      
       puts "Writing: #{html_file}"
       File.open(html_file, 'w') do |f|
         f.write content
       end
-		}
+    }
   end
 
-	def self.compile file_name = nil
-		vals = {}
-		Dir.glob("templates/*/mab/*.rb").each { |mab_file|
-			next if mab_file['layout.rb']
-			mab_dir       = File.dirname(mab_file)
-			layout_file   = File.join(mab_dir, 'layout.rb')
-			file_basename = File.basename(mab_file)
-			is_partial    = file_basename[/^__/]
-			html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
-			template_name = file_basename.sub('.rb', '').to_sym
-			
-			content       = if is_partial
-												Markaby::Builder.new(:template_name=>template_name) { 
-													eval( File.read(mab_file), nil, mab_file , 1)
-												}
-											else
-												Markaby::Builder.new(:template_name=>template_name) { 
-													eval(
-														File.read(layout_file).sub("{{content_file}}", file_basename),
-														nil, 
-														layout_file, 
-														1
-													)
-												}
-											end
-			
-			vals[mab_file] = [html_file, content]
-		}
+  def self.compile file_name = nil
+    vals = {}
+    mab_file      = file_name
+    mab_dir       = File.dirname(mab_file)
+    layout_file   = File.join(mab_dir, 'layout.rb')
+    file_basename = File.basename(mab_file)
+    is_partial    = file_basename[/^__/]
+    html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
+    template_name = file_basename.sub('.rb', '').to_sym
 
-		if file_name 
-			if !vals[file_name]
+    content       = if is_partial
+                      Markaby::Builder.new(:template_name=>template_name) { 
+                        eval( File.read(mab_file), nil, mab_file , 1)
+                      }
+                    else
+                      Markaby::Builder.new(:template_name=>template_name) { 
+                        eval(
+                          File.read(layout_file).sub("{{content_file}}", file_basename),
+                          nil, 
+                          layout_file, 
+                          1
+                      )
+                      }
+                    end
+
+    vals[mab_file] = [html_file, content]
+
+    if file_name 
+      if !vals[file_name]
         raise ArgumentError, "Template not found: #{file_name}. Available templates: #{vals.keys.join(', ')}"
       end
       vals[file_name].last
     else
-			vals
+      vals
     end
-	end
+  end
   
-end # === Mab_In_Disguise
+end # === class Mab_In_Disguise
 
 
 
@@ -82,9 +80,9 @@ class Ignore_Everything
   def method_missing *args
     return self
   end
-	def to_s
-		''
-	end
+  def to_s
+    ''
+  end
 end
 
 class Markaby::Builder
@@ -162,12 +160,26 @@ class Markaby::Builder
     text txt
   end
 
-  def nav_bar_li controller, raw_shortcut, txt = nil
-		shortcut      = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
-		template_name = "#{controller}_#{shortcut}".to_sym
-    prefix = controller == :Topic ? '/clubs' : ''
-		path          = shortcut == 'home' ? '/' : "#{prefix}/#{raw_shortcut}/"
-    txt      ||= shortcut.to_s.capitalize
+  def nav_bar_li *args
+    case args.size
+    when 2, 3
+      controller, raw_shortcut, txt = args
+      shortcut      = raw_shortcut.gsub(%r!\A/|/\Z!,'').gsub(/[^a-zA-Z0-9\_]/, '_')
+      template_name = "#{controller}_#{shortcut}".to_sym
+      txt      ||= shortcut.to_s.capitalize
+    when 4
+      controller, action, raw_shortcut, txt = args
+      template_name = "#{controller}_#{action}".to_sym
+    end
+    puts template_name
+    prefix = case controller
+               when :Topic, :Topics
+                 '/clubs'
+               else
+                 ''
+               end
+                 
+    href     = shortcut == 'home' ? '/' : File.join('/', prefix, raw_shortcut)
     if self.template_name.to_s === template_name.to_s
       text(capture {
         li.selected { span "< #{txt} >" }
@@ -175,14 +187,14 @@ class Markaby::Builder
     else
       text(capture {
         li {
-          a txt, :href=>"#{path}"
+          a txt, :href=>"#{href}"
         }
       })
     end
   end
 
   def nav_bar raw_shortcut, txt = nil
-		shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
+    shortcut = raw_shortcut.gsub(/[^a-zA-Z0-9\_]/, '_')
     path = shortcut == 'home' ? '/' : "/#{raw_shortcut}/"
     txt ||= shortcut.to_s.capitalize
     text(capture {

@@ -41,7 +41,24 @@
 {{/loading}}
 
      <div id="content">
-      <p>Not done</p>
+      <h4>Create a Club</h4>
+      <form action="/clubs/" method="post" id="form_clubs_create">
+       <fieldset>
+        <label>Title:</label>
+        <input type="text" value="" name="title" id="create_club_title"/>
+       </fieldset>
+       <fieldset>
+        <label>Filename:</label>
+        <input type="text" value="" name="filename" id="create_club_filename"/>
+       </fieldset>
+       <fieldset>
+        <label>Description:</label>
+        <textarea name="teaser" id="create_club_teaser"></textarea>
+       </fieldset>
+       <div class="buttons">
+        <button>Save.</button>
+       </div>
+      </form>
      </div>
       <div id="nav_bar">
        <div id="logo">

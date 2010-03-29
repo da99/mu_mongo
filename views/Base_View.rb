@@ -34,6 +34,7 @@ class Base_View < Mustache
   def initialize new_app
     @app        = new_app
     @not_prefix = /^not?_/
+    @cache = {}
   end
 
   def respond_to? raw_name
@@ -115,6 +116,21 @@ class Base_View < Mustache
   def loading
     nil
   end
+
+  # === Members ===
+  
+  def current_member
+    @app.current_member
+  end
+
+  def current_member_lives
+    @cache[:current_member_lives] ||= @app.current_member.data.lives.inject([]) { |m, (k,v)| 
+      m << { :filename=> k, :username=>v[:username] }
+      m
+    }
+  end
+
+  # === Html ===
 
   def site_domain
     The_App::Options::SITE_DOMAIN

@@ -5,7 +5,7 @@
 class Members_today < Base_View
 
   def title 
-    '...'
+    'Today on '
   end
 	
 end # === Member_Control_today 
