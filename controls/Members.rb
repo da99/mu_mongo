@@ -11,11 +11,11 @@ class Members
     log_out! 
 
     begin
-
+      clean_room[:add_life] ||= 'friend'
       m = Member.create( current_member, clean_room )
       self.current_member = m
       flash_msg.success = "Your account has been created."
-      redirect! '/account/' 
+      redirect! '/today/' 
       
     rescue Member::Invalid
 

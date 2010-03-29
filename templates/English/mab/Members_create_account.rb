@@ -14,7 +14,7 @@ div.content! {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"username_name", :name=>"username", :type=>"text", :value=>'{{ session_form_username }}' )
+      input.text( :id=>"username_name", :name=>"add_life_username", :type=>"text", :value=>'{{ session_form_username }}' )
     }
     
     fieldset {

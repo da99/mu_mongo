@@ -61,11 +61,8 @@ namespace 'git' do
   desc "Push code to Heroku."
   task :push do 
 
-    require 'middleware/Mab_In_Disguise'
-    require 'middleware/Render_Css'
-    Mab_In_Disguise.compile_all
-    Render_Css.compile_all
-    ENV['msg'] = 'Development checkpoint. Added mustache/css files.'
+    Rake::Task['views:compile'].invoke
+    ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
     puts_white `git push heroku`
 
