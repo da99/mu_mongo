@@ -464,7 +464,7 @@ module Couch_Plastic
       end
       def val.split_and_flatten dividors = ["\n", ',']
         dividors.inject(self.split(dividors.shift)) { |m, div|
-          m.flatten.map { |piece| piece.split div}.flatten
+          m.flatten.map { |piece| piece.split div}.flatten.map(&:strip)
         }.reject(&:empty?)
       end
     end
