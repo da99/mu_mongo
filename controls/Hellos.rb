@@ -5,7 +5,7 @@ class Hellos
   include Base_Control
 
   def GET_list 
-		env['results.messages_public'] = Message.public(:descending=>true)
+		env['results.messages_public'] = Message.public(:limit=>1, :descending=>true)
     render_html_template
   end
 
