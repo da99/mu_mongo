@@ -1,4 +1,5 @@
 
+require 'loofah'
 
 module Couch_Plastic
   
@@ -315,6 +316,20 @@ module Couch_Plastic
   #               Save & Delete Methods
   # ========================================================= 
 
+  def clean_hash hsh
+    hsh.to_a.inject({}) { |m, (k, v)| 
+      m[k] = case v
+             when String
+               Loofah::Helpers.strip_tags(v)
+             when Array
+               v.map { |val| Loofah::Helpers.strip_tags(val) }
+             when Hash
+               clean_hash(v)
+             end
+      m
+    }
+  end
+
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
@@ -336,7 +351,7 @@ module Couch_Plastic
     new_id              = begin
                             new_data.as_hash.delete(:_id) || CouchDB_CONN.GET_uuid
                           end
-    vals                = new_data.as_hash.clone
+    vals                = clean_hash(new_data.as_hash.clone)
 
     err = begin
       results          = CouchDB_CONN.PUT( new_id, vals )
@@ -373,7 +388,8 @@ module Couch_Plastic
     data = data.as_hash.clone.update(new_data.as_hash)
     data[:_rev] = data._rev
     data[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
-    
+    data = clean_hash(data)
+
     begin
       results = Couch_Doc.PUT( data._id, data )
       data._rev = results[:rev]
@@ -446,11 +462,11 @@ module Couch_Plastic
       def val.with regexp, &blok
         gsub regexp, &blok
       end
-			def val.split_and_flatten dividors = ["\n", ',']
-				dividors.inject(self.split(dividors.shift)) { |m, div|
-					m.flatten.map { |piece| piece.split div}.flatten
-				}.reject(&:empty?)
-			end
+      def val.split_and_flatten dividors = ["\n", ',']
+        dividors.inject(self.split(dividors.shift)) { |m, div|
+          m.flatten.map { |piece| piece.split div}.flatten
+        }.reject(&:empty?)
+      end
     end
     
     new_clean_value(
@@ -493,9 +509,9 @@ end # === module Couch_Plastic ================================================
 
 module Couch_Plastic_Class_Methods 
 
-	def strip_class_name str
-		str.sub(self.name.downcase + '-', '')
-	end
+  def strip_class_name str
+    str.sub(self.name.downcase + '-', '')
+  end
 
   def assert_field field
     return true if fields.include?(field) || proto_fields.include?(field)

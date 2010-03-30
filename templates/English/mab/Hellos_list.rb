@@ -14,7 +14,7 @@ div.content! do
       p " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
       mustache 'messages_public' do
         div.message {
-          div.body( mustache 'body' )
+          div.body( '{{{compiled_body}}}' )
           div.club_name {
             a('Perma-link', :href=>"{{href}}")
           }
