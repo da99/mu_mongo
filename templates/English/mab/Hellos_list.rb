@@ -2,7 +2,6 @@
 # ~/megauni/templates/English/sass/Hellos_list.sass
 
 
-
 div.content! do
   
   partial '__flash_msg'

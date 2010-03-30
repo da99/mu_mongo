@@ -63,7 +63,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
 			# 10 years.
 
       mustache 'javascripts' do
-        script '', :src=>'{{src}}', :type=>'text/javascript'
+        script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
       # if @javascripts
       #   if @javascripts.eql?( 'default' )
       #     text [ the_app.script_tag('/js/vendor/jquery.1.3.2.min.js'),
