@@ -17,7 +17,11 @@ class Messages_by_id < Base_View
   end
 
   def message_data
-    message.data
+    @cache[:message_data] ||= begin
+                                v= message.data.as_hash
+                                v[:compiled_body] = RedCloth.new(v[:body]).to_html
+                                v
+                              end
   end
 
   

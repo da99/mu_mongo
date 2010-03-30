@@ -18,7 +18,7 @@ div.content! {
 
    mustache 'message_data' do
      h4 '{{title}}'
-     div.body { '{{{body}}}' }
+     div.body { '{{{compiled_body}}}' }
    end
   }
   
