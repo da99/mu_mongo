@@ -1,5 +1,6 @@
 require 'mustache'
 
+FIND_URLS = %r~\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.])(?:[^\s()<>]+|\([^\s()<>]+\))+(?:\([^\s()<>]+\)|[^`!()\[\]{};:'".,<>?«»“”‘’\s]))~
 
 class Array
   
@@ -144,6 +145,10 @@ class Base_View < Mustache
 	end
 
   # === Html ===
+
+  def auto_link str
+    str.gsub(FIND_URLS, "<a href=\"\\1\">\\1</a>")
+  end
 
   def default_javascripts
     [ {

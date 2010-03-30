@@ -26,7 +26,7 @@ class Hellos_list < Base_View
     @cache[:messages_public] = @app.env['results.messages_public'].map { |raw|
 			doc = raw[:doc]
 			doc[:href] = "/mess/#{Message.strip_class_name(doc[:_id])}/"
-      doc[:compiled_body] = doc[:body]
+      doc[:compiled_body] = auto_link(doc[:body])
 			doc
 		}
   end

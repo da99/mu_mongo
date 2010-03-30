@@ -4,8 +4,8 @@
 
 class Messages_by_id < Base_View
 
-  def javascripts
-    message_data[:created_at] < '2010-01-01 01:01:01' ? [] : default_javascripts
+  def from_old_app?
+    message_data[:created_at] < '2010-01-01 01:01:01'
   end
 
   def title 
@@ -23,7 +23,7 @@ class Messages_by_id < Base_View
   def message_data
     @cache[:message_data] ||= begin
                                 v= message.data.as_hash
-                                v[:compiled_body] = v[:body]
+                                v[:compiled_body] = from_old_app? ? v[:body] : auto_link(v[:body])
                                 v
                               end
   end
