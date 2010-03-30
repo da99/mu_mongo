@@ -1,5 +1,6 @@
 require 'mustache'
 
+
 class Array
   
   def map_html_menu &blok
