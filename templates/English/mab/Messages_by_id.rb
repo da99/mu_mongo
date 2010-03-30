@@ -24,14 +24,16 @@ div.content! {
    end
   }
   
-  div.news_post.archives! {
-    h4 'Archives:'
-    div.body {
-    
-      a('See all.', :href=>'/clubs/hearts/')
+  mustache 'from_surfer_hearts?' do
+    div.news_post.archives! {
+      h4 'Archives:'
+      div.body {
       
+        a('See all.', :href=>'/clubs/hearts/')
+        
+      }
     }
-  }
+  end
 } # === div.content!
 
 partial('__nav_bar')
