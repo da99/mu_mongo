@@ -110,7 +110,7 @@ class Base_View < Mustache
   end
 
   def time_i
-    Time.utc.now.to_i
+    Time.now.utc.to_i
   end
 
   def css_file
