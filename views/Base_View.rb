@@ -109,6 +109,10 @@ class Base_View < Mustache
     "#{@app.control_name}_#{@app.action_name}"
   end
 
+  def time_i
+    Time.utc.now.to_i
+  end
+
   def css_file
     "/stylesheets/English/#{base_filename}.css"
   end
