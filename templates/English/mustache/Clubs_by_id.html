@@ -41,51 +41,83 @@
 {{/loading}}
 
      <div id="content">
-      <div id="notice">
-       <span>I'm moving content from my old site, </span>
-       <a href="http://www.surferhearts.com/">SurferHearts.com</a>
-       <span>, over to this new site.</span>
-      </div>
+
+{{#flash_msg?}}
+
+       <div id="flash_msg">
+
+{{#flash_success}}
+
+        <div class="success">
+         <h4>Success</h4>
+         <div class="msg">{{msg}}</div>
+        </div>
+
+{{/flash_success}}
+
+
+{{#flash_errors}}
+
+        <div class="errors">
+         <h4>{{title}}</h4>
+         <div class="msg">
+          <ul>
+
+{{#errors}}
+
+           <li>{{err}}</li>
+
+{{/errors}}
+
+          </ul>
+         </div>
+        </div>
+
+{{/flash_errors}}
+
+       </div>
+
+{{/flash_msg?}}
+
+      <h3>{{club_title}}</h3>
 
 {{#logged_in?}}
 
-      <div>
-       <a href="/clubs/hearts/new/">Create</a>
+      <div id="club_message_create">
+       <h4>Post a message:</h4>
+       <form action="/messages/" method="POST" id="form_club_message_create">
+        <input type="hidden" value="{{club_filename}}" name="target_ids"/>
+        <fieldset>
+         <textarea name="body"></textarea>
+        </fieldset>
+        <div class="buttons">
+         <button class="create">Save</button>
+        </div>
+       </form>
       </div>
 
 {{/logged_in?}}
 
-      <div class="news_post" id="label_archives">
-       <h4>Archives By Label</h4>
-       <div class="body">
-        <ul>
+      <div id="club_messages">
 
-{{#public_labels}}
+{{#no_messages_latest}}
 
-         <li>
-          <a href="/clubs/hearts/by_label/{{filename}}/">{{filename}}</a>
-         </li>
+       <div class="empty_msg">No messages yet.</div>
 
-{{/public_labels}}
+{{/no_messages_latest}}
 
-        </ul>
+
+{{#messages_latest}}
+
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
        </div>
-      </div>
-      <div class="news_post" id="date_archives">
-       <h4>Archives By Date</h4>
-       <div class="body">
-        <ul>
 
-{{#months}}
+{{/messages_latest}}
 
-         <li>
-          <a href="{{href}}">{{text}}</a>
-         </li>
-
-{{/months}}
-
-        </ul>
-       </div>
       </div>
      </div>
       <div id="nav_bar">

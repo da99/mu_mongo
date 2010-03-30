@@ -11,8 +11,15 @@ class Clubs
   # end
 
   def GET_by_id id
-    env['results.club'] = Club.by_id("club-#{id}")
-    render_html_template
+    club_id = "club-#{id}"
+    env['results.club'] = Club.by_id(club_id)
+    env['results.messages_latest'] = Message.latest_by_club_id(club_id)
+    case id
+    when 'hearts'
+      render_html_template "Clubs_#{id}"
+    else
+      render_html_template
+    end
   end
   
   def GET_by_old_id id
@@ -32,7 +39,19 @@ class Clubs
     mustache_class.raise_on_context_miss = true
     mustache_class.new(self).render(template)
   end
-  
+
+  def POST
+    require_log_in!
+    begin
+      club = Club.create( current_member, clean_room )
+      flash_msg.success = "Club has been created: #{club.data.title}"
+      redirect! "/clubs/#{club.data.filename}/"
+    rescue Club::Invalid
+      flash_msg.errors = $!.doc.errors
+      redirect! "/today/"
+    end
+  end
+
   def GET_edit club_filename
     require_log_in! :ADMIN
     save_club_to_env(club_filename)

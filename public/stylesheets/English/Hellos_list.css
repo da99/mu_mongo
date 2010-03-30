@@ -305,6 +305,15 @@ div.news_post {
   padding-top: 10px;
   border-bottom: 1px dashed #003860; }
 
+div.message {
+  padding-bottom: 5px;
+  padding-top: 10px;
+  border-bottom: 1px dashed #003860;
+  margin-right: 20px; }
+  div.message div.permalink {
+    text-align: right;
+    font-size: 80%; }
+
 body {
   text-align: center; }
 
@@ -333,15 +342,6 @@ body {
   padding-bottom: 10px;
   padding-left: 25px;
   margin-top: -10px; }
-
-div.message {
-  padding-bottom: 5px;
-  padding-top: 10px;
-  border-bottom: 1px dashed #003860;
-  margin-right: 20px; }
-  div.message div.permalink {
-    text-align: right;
-    font-size: 80%; }
 
 p.waves {
   margin: 0 0 -20px 0; }

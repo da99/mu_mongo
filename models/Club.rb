@@ -24,7 +24,8 @@ class Club
   # ======== Authorizations ======== 
 
   def creator? editor 
-    editor.has_power_of? Member::ADMIN
+    return true if editor.has_power_of? :MEMBER
+    # editor.has_power_of? Member::ADMIN
   end
 
   def self.create editor, raw_raw_data # CREATE

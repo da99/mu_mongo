@@ -128,7 +128,7 @@ module Base_Control
     require "views/#{file_name}.rb"
     view_class = Object.const_get(file_name)
     view_class.raise_on_context_miss = true
-    html       = view_class.new(self).render( template_content )
+    html = view_class.new(self).render( template_content )
   end
 
   def render_html_template *args
@@ -220,11 +220,13 @@ module Base_Control
     return true if perm_levels.empty? && logged_in?
 
     if not logged_in? 
-      if request.get?
+      if request.get? || request.head? || (request.post? && !request.xhr?)
         session[:return_page] = request.fullpath
         redirect!('/log-in/')
+      elsif request.xhr?
+        error! %~<div class="errors"> Not logged in. Log-in first and try again. </div>~, 401
       else
-        render_error_msg( 200, "Not logged in. Log-in first and try again." )
+        raise "This part of the app not finished."   
       end
     end
 

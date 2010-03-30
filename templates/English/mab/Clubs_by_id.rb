@@ -3,48 +3,39 @@
 # NAME Clubs_by_id
 
 div.content! { 
-  div.notice! {
-    span "I'm moving content from my old site, "
-    a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
-    span ", over to this new site."
-  }
+  
+  partial '__flash_msg'
+
+  h3 '{{club_title}}'
   
   mustache 'logged_in?' do
-    div {
-      a('Create', :href=>'/clubs/hearts/new/')
-    }
+    div.club_message_create! do
+      h4 'Post a message:'  
+      form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
+        input :type=>'hidden', :name=>'target_ids', :value=>'{{club_filename}}'
+        fieldset {
+          textarea '', :name=>'body'
+        }
+        div.buttons {
+          button.create 'Save'
+        }
+      end
+    end
   end
 
-  div.news_post.label_archives! {
-    h4 'Archives By Label'
-    div.body {
-    
-      ul {
-        mustache 'public_labels' do 
-          li {
-            a( '{{filename}}', :href=>"/clubs/hearts/by_label/{{filename}}/")
-          }
-        end
-      } # === ul
-          
-    }
-  }
-
-  div.news_post.date_archives! {
-    h4 'Archives By Date'
-    div.body {
-    
-      ul {
-        mustache 'months' do
-          li {
-            a( '{{text}}', :href=>"{{href}}" )
-          }
-        end
-      } # === ul
-      
-    }
-  }
-  
+  div.club_messages! do
+    mustache 'no_messages_latest' do
+      div.empty_msg 'No messages yet.'
+    end
+    mustache 'messages_latest' do
+      div.message {
+        div.body( '{{{compiled_body}}}' )
+        div.permalink {
+          a('Permalink', :href=>"{{href}}")
+        }
+      }
+    end
+  end
   
 } # === div.content!
 

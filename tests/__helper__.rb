@@ -111,6 +111,10 @@ class Test::Unit::TestCase
   def self.admin_mem
     @admin_mem ||= Member.by_id("member-admin-member-1")
   end
+
+  def self.admin_member
+    admin_mem
+  end
   
   def self.regular_members
     @regular_mem ||= [1,2,3].map { |i| Member.by_id("member-regular-member-#{i}") }

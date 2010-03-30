@@ -69,7 +69,7 @@ class Message
  
   def creator? editor # NEW, CREATE
     # return false if !editor
-		return true
+    editor.has_power_of? :MEMBER
     # editor.has_power_of? :ADMIN
   end
 
@@ -107,6 +107,11 @@ class Message
   end
 
   # ==== Accessors ====
+
+  def self.latest_by_club_id club_id, raw_params = {}
+    params = {:include_docs=>true, :descending=>true, :limit=>10, :startkey=>[club_id, {}], :endkey=>[club_id]}.update(raw_params)
+    CouchDB_CONN.GET_by_view(:messages_latest_by_club_id, params)
+  end
 
 	def self.public raw_params = {}
 		params = {:include_docs=>true, :limit=>10}.update(raw_params)

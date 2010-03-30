@@ -40,6 +40,149 @@
 
 {{/loading}}
 
+     <div id="content">
+      <div id="notice">
+       <span>I'm moving content from my old site, </span>
+       <a href="http://www.surferhearts.com/">SurferHearts.com</a>
+       <span>, over to this new site.</span>
+      </div>
+      <div class="news_post" id="label_archives">
+       <h4>Archives By Label</h4>
+       <div class="body">
+        <ul>
+
+{{#public_labels}}
+
+         <li>
+          <a href="/clubs/hearts/by_label/{{filename}}/">{{filename}}</a>
+         </li>
+
+{{/public_labels}}
+
+        </ul>
+       </div>
+      </div>
+      <div class="news_post" id="date_archives">
+       <h4>Archives By Date</h4>
+       <div class="body">
+        <ul>
+
+{{#months}}
+
+         <li>
+          <a href="{{href}}">{{text}}</a>
+         </li>
+
+{{/months}}
+
+        </ul>
+       </div>
+      </div>
+     </div>
+      <div id="nav_bar">
+       <div id="logo">
+
+{{#no_opening_msg}}
+
+        <p class="english">
+         <a href="/">{{site_title}}</a>
+        </p>
+
+{{/no_opening_msg}}
+
+        <p class="nippon">
+を単一化します        </p>
+       </div>
+       <ul class="help">
+         <li>
+          <a href="/help/">Help</a>
+         </li>
+
+{{#logged_in?}}
+
+         <li>
+          <a href="/log-out/">Log-out</a>
+         </li>
+         <li>
+          <a href="/today/">[ Today ]</a>
+         </li>
+         <li>
+          <a href="/account/">[ Account ]</a>
+         </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
+
+{{/not_logged_in?}}
+
+       </ul>
+
+{{#logged_in?}}
+
+       <h4>Lives</h4>
+       <ul class="lives">
+
+{{#current_member_lives}}
+
+         <li>
+          <a href="/lives/{{username}}/">{{username}}</a>
+         </li>
+
+{{/current_member_lives}}
+
+         <li>
+          <a href="/create-life/">[ Create ]</a>
+         </li>
+       </ul>
+
+{{/logged_in?}}
+
+       <h4>Egg Timers</h4>
+       <ul class="to_dos">
+         <li>
+          <a href="/my-egg-timer/">Old Timer</a>
+         </li>
+         <li>
+          <a href="/busy-noise/">New Timer</a>
+         </li>
+       </ul>
+       <h4>Clubs</h4>
+       <ul class="news">
+         <li>
+          <a href="/salud/">Salud (Espa&#241;ol)</a>
+         </li>
+         <li>
+          <a href="/clubs/back_pain/">Back Pain</a>
+         </li>
+         <li>
+          <a href="/clubs/child_care/">Child Care</a>
+         </li>
+         <li>
+          <a href="/clubs/computer/">Computer Use</a>
+         </li>
+         <li>
+          <a href="/clubs/hair/">Skin &amp; Hair</a>
+         </li>
+         <li>
+          <a href="/clubs/housing/">Housing &amp; Apartments</a>
+         </li>
+         <li>
+          <a href="/clubs/health/">Pain &amp; Disease</a>
+         </li>
+         <li>
+          <a href="/clubs/preggers/">Pregnancy</a>
+         </li>
+         <li>
+          <a href="/clubs/news/">Other Topics</a>
+         </li>
+       </ul>
+      </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>
