@@ -27,7 +27,7 @@ class Messages_by_label < Base_View
   def messages
     @app.env['messages_by_label'].map { |doc|
       mess = doc[:doc]
-      { :published_at => Time.parse(mess[:published_at]).strftime(' %b  %d, %Y '),
+      { :published_at => Time.parse(mess[:published_at] || mess[:created_at]).strftime(' %b  %d, %Y '),
         :body => mess[:body],
         :title => mess[:title],
         :href => "/mess/#{mess[:_id].sub('message-','')}/"
