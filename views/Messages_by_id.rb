@@ -5,7 +5,7 @@
 class Messages_by_id < Base_View
 
   def from_old_app?
-    message_data[:created_at] < '2010-01-01 01:01:01'
+    message.data.created_at < '2010-01-01 01:01:01'
   end
 
   def title 
