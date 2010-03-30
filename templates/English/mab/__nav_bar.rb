@@ -33,7 +33,7 @@ div( :id=>"nav_bar" ) {
     
     mustache 'not_logged_in?' do
       nav_bar_li :Session_Control, 'log-in', 'Log-in'
-      nav_bar_li :Member_Control, 'create-account', 'Join'
+      # nav_bar_li :Member_Control, 'create-account', 'Join'
     end
     
   }
