@@ -10,13 +10,13 @@ div.content! do
   div.why_are_you_bored! {
     
     div.club_messages! do
-      h4 'Re-opening next week:'
-      p " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
+      h4 'Random News:'
+      p.waves " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
       mustache 'messages_public' do
         div.message {
           div.body( '{{{compiled_body}}}' )
-          div.club_name {
-            a('Perma-link', :href=>"{{href}}")
+          div.permalink {
+            a('Permalink', :href=>"{{href}}")
           }
         }
       end

@@ -55,13 +55,15 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       } # the_footer
       
     
-			mustache 'javascripts'
+			
 			# NOTE: 
 			# Add the following to external scripts
 			#     charset="UTF-8"
 			# Don't use: "language" attribute, since that is deprecated for more than
 			# 10 years.
 
+      mustache 'javascripts' do
+        script '', :src=>'{{src}}', :type=>'text/javascript'
       # if @javascripts
       #   if @javascripts.eql?( 'default' )
       #     text [ the_app.script_tag('/js/vendor/jquery.1.3.2.min.js'),
@@ -76,7 +78,7 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
       #     self << @javascripts
       #   end
 
-      # end
+      end
     } # === container
   } # the_body
 }

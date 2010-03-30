@@ -1,7 +1,10 @@
 # ~/megauni/templates/English/mab/Hellos_list.rb
 
-require 'RedCloth'
 class Hellos_list < Base_View
+
+  def javascripts
+    default_javascripts
+  end
 
   def title
     'Coming Soon...'
@@ -23,7 +26,7 @@ class Hellos_list < Base_View
     @cache[:messages_public] = @app.env['results.messages_public'].map { |raw|
 			doc = raw[:doc]
 			doc[:href] = "/mess/#{Message.strip_class_name(doc[:_id])}/"
-      doc[:compiled_body] = RedCloth.new(doc[:body]).to_html
+      doc[:compiled_body] = doc[:body]
 			doc
 		}
   end

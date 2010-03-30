@@ -81,15 +81,15 @@
 
       <div id="why_are_you_bored">
        <div id="club_messages">
-        <h4>Re-opening next week:</h4>
-        <p> ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</p>
+        <h4>Random News:</h4>
+        <p class="waves"> ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</p>
 
 {{#messages_public}}
 
         <div class="message">
          <div class="body">{{{compiled_body}}}</div>
-         <div class="club_name">
-          <a href="{{href}}">Perma-link</a>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
          </div>
         </div>
 
@@ -206,7 +206,11 @@
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
     </div>
 
-{{javascripts}}
+{{#javascripts}}
+
+    <script type="text/javascript" src="{{src}}"></script>
+
+{{/javascripts}}
 
    </div>
   </body>

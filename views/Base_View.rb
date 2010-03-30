@@ -1,5 +1,4 @@
 require 'mustache'
-require 'RedCloth'
 
 class Array
   
@@ -106,8 +105,12 @@ class Base_View < Mustache
       @app.request.cookies['use_mobile_version'] != 'no'
   end
 
+  def base_filename
+    "#{@app.control_name}_#{@app.action_name}"
+  end
+
   def css_file
-    "/stylesheets/English/#{@app.control_name}_#{@app.action_name}.css"
+    "/stylesheets/English/#{base_filename}.css"
   end
 
   def head_content
@@ -136,6 +139,13 @@ class Base_View < Mustache
 	end
 
   # === Html ===
+
+  def default_javascripts
+    [ {
+      :src=>'/js/vendor/jquery-1.4.2.min.js' 
+    },
+      {:src=>"/js/pages/#{base_filename}.js"}]
+  end
 
 	def languages
 		@cache[:languages] ||= begin

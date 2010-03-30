@@ -4,8 +4,12 @@
 
 class Messages_by_id < Base_View
 
+  def javascripts
+    message_data[:created_at] < '2010-01-01 01:01:01' ? [] : default_javascripts
+  end
+
   def title 
-    message.data.title
+    message.data.title || message.data._id.sub('message-', 'Message ID: ')
   end
 
   def published_at
@@ -19,7 +23,7 @@ class Messages_by_id < Base_View
   def message_data
     @cache[:message_data] ||= begin
                                 v= message.data.as_hash
-                                v[:compiled_body] = RedCloth.new(v[:body]).to_html
+                                v[:compiled_body] = v[:body]
                                 v
                               end
   end
