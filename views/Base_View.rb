@@ -1,4 +1,5 @@
 require 'mustache'
+require 'RedCloth'
 
 class Array
   
