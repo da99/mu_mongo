@@ -4,11 +4,13 @@
 
 div.content! { 
   
-  div.notice! {
-    span "I'm moving content from my old site, "
-    a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
-    span ", over to this new site."
-  }
+  mustache 'from_surfer_hearts?' do
+    div.notice! {
+      span "I'm moving content from my old site, "
+      a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
+      span ", over to this new site."
+    }
+  end
   
   div.heart_link.news_post {
    
