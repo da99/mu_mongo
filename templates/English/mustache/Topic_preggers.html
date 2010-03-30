@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
+   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
 
 {{/not_mobile_request?}}
 
@@ -104,8 +104,26 @@
          <li>
           <a href="/log-out/">Log-out</a>
          </li>
+         <li>
+          <a href="/today/">[ Today ]</a>
+         </li>
+         <li>
+          <a href="/account/">[ Account ]</a>
+         </li>
 
 {{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+         <li>
+          <a href="/log-in/">Log-in</a>
+         </li>
+         <li>
+          <a href="/create-account/">Join</a>
+         </li>
+
+{{/not_logged_in?}}
 
        </ul>
 
@@ -113,11 +131,17 @@
 
        <h4>Lives</h4>
        <ul class="lives">
+
+{{#current_member_lives}}
+
          <li>
-          <a href="/today/">[ Today ]</a>
+          <a href="/lives/{{username}}/">{{username}}</a>
          </li>
+
+{{/current_member_lives}}
+
          <li>
-          <a href="/account/">[ Account ]</a>
+          <a href="/create-life/">[ Create ]</a>
          </li>
        </ul>
 

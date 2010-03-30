@@ -130,7 +130,21 @@ class Base_View < Mustache
     }
   end
 
+	def current_member_lang
+		current_member.data.lang
+	end
+
   # === Html ===
+
+	def languages
+		@cache[:languages] ||= begin
+														 Couch_Plastic::LANGS.map { |k,v| 
+															{:name=>v, :filename=>k, :selected=>(k=='en-us'), :not_selected=> (k != 'en-us')}
+														 }.sort { |x,y| 
+															x[:name] <=> y[:name]
+														 }
+													 end
+	end
 
   def site_domain
     The_App::Options::SITE_DOMAIN

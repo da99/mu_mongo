@@ -62,9 +62,12 @@ namespace 'git' do
   task :push do 
 
     Rake::Task['views:compile'].invoke
+		tests = `rake tests:all`['All pass']
+		raise "Tests did not pass." if not tests
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
-    puts_white `git push heroku`
+		Rake::Task['db:design_doc_upload'].invoke
+    # puts_white `git push heroku`
 
 
       # puts_red "Not done."

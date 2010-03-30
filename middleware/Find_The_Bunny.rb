@@ -38,7 +38,7 @@ class Find_The_Bunny
     results = @url_aliases.detect { |k,v| 
       if new_env['PATH_INFO'] =~ k
         new_env['the.app.meta'][:control]       = v[:controller]
-        new_env['the.app.meta'][:action_method] = v[:action_method] || http_meth
+        new_env['the.app.meta'][:http_method] = v[:http_method] || http_meth
         new_env['the.app.meta'][:action_name]   = v[:action_name] || http_meth
         new_env['the.app.meta'][:args]          = $~.captures
       end
@@ -73,10 +73,10 @@ class Find_The_Bunny
         if control.public_instance_methods.include?(a_name) &&
            control.instance_method(a_name).arity == pieces.size
           
-          new_env['the.app.meta'][:control]       = control
-          new_env['the.app.meta'][:action_method] = a_name
-          new_env['the.app.meta'][:action_name]   = (a_name['_'] ? a_name.split('_')[1,10].join('_') : a_name)
-          new_env['the.app.meta'][:args]          = pieces
+          new_env['the.app.meta'][:control]     = control
+          new_env['the.app.meta'][:http_method] = new_env['REQUEST_METHOD'].to_s
+          new_env['the.app.meta'][:action_name] = a_name.sub(new_env['the.app.meta'][:http_method] + '_' , '')
+          new_env['the.app.meta'][:args]        = pieces
           break
         end
 

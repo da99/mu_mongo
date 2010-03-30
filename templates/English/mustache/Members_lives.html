@@ -41,6 +41,67 @@
 {{/loading}}
 
      <div id="content">
+
+{{#flash_msg?}}
+
+       <div id="flash_msg">
+
+{{#flash_success}}
+
+        <div class="success">
+         <h4>Success</h4>
+         <div class="msg">{{msg}}</div>
+        </div>
+
+{{/flash_success}}
+
+
+{{#flash_errors}}
+
+        <div class="errors">
+         <h4>{{title}}</h4>
+         <div class="msg">
+          <ul>
+
+{{#errors}}
+
+           <li>{{err}}</li>
+
+{{/errors}}
+
+          </ul>
+         </div>
+        </div>
+
+{{/flash_errors}}
+
+       </div>
+
+{{/flash_msg?}}
+
+      <h4>Post message</h4>
+      <form action="/messages/" method="POST" id="form_lives_create">
+       <input type="hidden" value="tweet" name="category"/>
+       <input type="hidden" value="{{current_member_username}}" name="username"/>
+       <fieldset>
+        <textarea name="body"></textarea>
+       </fieldset>
+       <fieldset>
+        <label>Privacy</label>
+        <select name="privacy">
+         <option value="friends" selected="selected">Friends Only.</option>
+         <option value="public">Public.</option>
+         <option value="private">Just for me.</option>
+        </select>
+       </fieldset>
+       <fieldset>
+        <label>Labels</label>
+        <input type="text" class="text" value="" name="public_labels"/>
+       </fieldset>
+       <div class="buttons">
+        <button>Save</button>
+       </div>
+      </form>
      </div>
       <div id="nav_bar">
        <div id="logo">
@@ -96,8 +157,8 @@
 
 {{#current_member_lives}}
 
-         <li>
-          <a href="/lives/{{username}}/">{{username}}</a>
+         <li class="selected">
+          <span>&lt; {{username}} &gt;</span>
          </li>
 
 {{/current_member_lives}}

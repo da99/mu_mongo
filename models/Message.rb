@@ -6,16 +6,21 @@ class Message
 
   enable_timestamps
   
-  allow_fields :rating,
-               :privacy
+  allow_fields :rating
+
+	allow_field :privacy do
+		must_be { in_array(['private', 'public', 'friends_only']) }
+	end
 
   allow_field :owner_id do
-    must_be { not_empty }
+    must_be { 
+			not_empty 
+			in_array( doc.manipulator.username_ids )
+		}
   end
 
   allow_field :target_ids do
     must_be { 
-      not_empty 
       array
     }
   end
@@ -33,15 +38,16 @@ class Message
   end
 
   allow_field :labels do
-    must_    sanitize {
-      split("\n").
-      map(&:strip).
-      reject(&:empty?)
+    sanitize {
+      split_and_flatten
     }
-    be { array }
+    must_be { array }
   end
 
   allow_field :public_labels do
+    sanitize {
+      split_and_flatten
+    }
     must_be { array }
   end
 
@@ -62,8 +68,9 @@ class Message
   # ==== Authorizations ====
  
   def creator? editor # NEW, CREATE
-    return false if !editor
-    editor.has_power_of? :ADMIN
+    # return false if !editor
+		return true
+    # editor.has_power_of? :ADMIN
   end
 
   def self.create editor, raw_data
@@ -75,6 +82,7 @@ class Message
       ask_for :category, :privacy, :labels,
           :question, :emotion, :rating,
           :labels, :public_labels
+			new_data._id = "message-#{CouchDB_CONN.GET_psuedo_uuid}"
       save_create
     end
   end
@@ -99,6 +107,11 @@ class Message
   end
 
   # ==== Accessors ====
+
+	def self.public raw_params = {}
+		params = {:include_docs=>true, :limit=>10}.update(raw_params)
+		rows = CouchDB_CONN.GET_by_view(:messages_public, params)
+	end
 
   def self.public_labels
     rows = CouchDB_CONN.GET_by_view(:messages_public_labels, :reduce=>true, :group=>true)[:rows]

@@ -31,10 +31,10 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Members, '/account/', '[ Account ]'
     end  
     
-    # mustache 'not_logged_in?' do
-    #   nav_bar_li :Session_Control, 'log-in', 'Log-in'
-    #   nav_bar_li :Member_Control, 'create-account', 'Join'
-    # end
+    mustache 'not_logged_in?' do
+      nav_bar_li :Session_Control, 'log-in', 'Log-in'
+      nav_bar_li :Member_Control, 'create-account', 'Join'
+    end
     
   }
 
@@ -42,8 +42,9 @@ div( :id=>"nav_bar" ) {
     h4 'Lives' 
     ul.lives {
       mustache 'current_member_lives' do
-        nav_bar_li :Members, :life, "/life/{{username}}/", "{{username}}"
+        nav_bar_li :Members, :lives, "/lives/{{username}}/", "{{username}}"
       end
+    nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
     }
   end
   

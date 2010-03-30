@@ -22,8 +22,26 @@
     <li>
      <a href="/log-out/">Log-out</a>
     </li>
+    <li>
+     <a href="/today/">[ Today ]</a>
+    </li>
+    <li>
+     <a href="/account/">[ Account ]</a>
+    </li>
 
 {{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+    <li>
+     <a href="/log-in/">Log-in</a>
+    </li>
+    <li>
+     <a href="/create-account/">Join</a>
+    </li>
+
+{{/not_logged_in?}}
 
   </ul>
 
@@ -31,11 +49,17 @@
 
   <h4>Lives</h4>
   <ul class="lives">
+
+{{#current_member_lives}}
+
     <li>
-     <a href="/today/">[ Today ]</a>
+     <a href="/lives/{{username}}/">{{username}}</a>
     </li>
+
+{{/current_member_lives}}
+
     <li>
-     <a href="/account/">[ Account ]</a>
+     <a href="/create-life/">[ Create ]</a>
     </li>
   </ul>
 

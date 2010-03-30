@@ -12,14 +12,14 @@ div.content! do
     div.club_messages! do
       h4 'Re-opening next week:'
       p " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
-      # mustache 'club_messages' do
-      #   div.message {
-      #     div.body( mustache 'body' )
-      #     div.club_name {
-      #       a(:href=>"{{href}}") { mustache 'club_name'  }
-      #     }
-      #   }
-      # end
+      mustache 'messages_public' do
+        div.message {
+          div.body( mustache 'body' )
+          div.club_name {
+            a('Perma-link', :href=>"{{href}}")
+          }
+        }
+      end
     end
 
     # form.create_why_are_you_bored!( :action=> '/club/bored/messages', :method => 'post') {

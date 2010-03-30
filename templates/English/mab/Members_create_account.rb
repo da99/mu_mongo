@@ -26,6 +26,20 @@ div.content! {
       label { span 'Confirm Password'  }
       input.text( :id=>"confirm_password", :name=>"confirm_password", :type=>"password", :value=>'' )
     }
+		
+		fieldset {
+			label 'Language'
+			select :name=>'lang' do
+				mustache 'languages' do
+					mustache 'selected' do
+						option '{{name}}', :value=>'filename', :selected=>'selected'
+					end
+					mustache 'not_selected' do
+						option '{{name}}', :value=>'filename'
+					end
+				end
+			end
+		}
 
     div.buttons {
       button.create 'Create My New Account', :onclick=>"document.getElementById('create_account_form').submit(); return false;" 

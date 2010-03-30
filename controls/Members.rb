@@ -35,6 +35,12 @@ class Members
     render_html_template
   end
 
+  def GET_lives username
+    env['results.username'] = username
+    require_log_in!
+    render_html_template
+  end
+
   # def GET_account 
   #   require_log_in!
   #   render_html_template
@@ -44,10 +50,10 @@ class Members
     begin
       m = Member.update( current_member, clean_room )
       flash_msg.success = "Data has been updated and saved."
-      redirect! '/account/' 
+      redirect! '/today/'
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
-      redirect! '/account/' 
+      redirect! '/today/' 
     end
   end # === put :update
 

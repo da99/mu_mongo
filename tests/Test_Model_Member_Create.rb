@@ -69,7 +69,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
       :add_life_username=>random_username
      }
     )
-    assert_match( /\A[a-z0-9]{10,}\Z/i, doc.data._id )
+    assert_match( /\A[a-z0-9\-]{10,}\Z/i, doc.data._id )
   end
 
   must 'return false for new?' do

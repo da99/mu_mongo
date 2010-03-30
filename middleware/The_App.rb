@@ -44,14 +44,14 @@ class The_App
   # 
   def self.call(new_env)
 
-    control, action_method, action_name, args = new_env['the.app.meta'].values_at(:control, :action_method, :action_name, :args)
+    control, http_method, action_name, args = new_env['the.app.meta'].values_at(:control, :http_method, :action_name, :args)
     the_app = new_env['the.app'] = control.new(new_env)
 
     begin
-      begin
-        the_app.send( action_method, *args )
-      rescue NoMethodError => e
-        the_app.send( "#{action_method}_#{action_name}", *args)
+      if http_method == action_name
+        the_app.send( http_method, *args )
+      else
+        the_app.send( "#{http_method}_#{action_name}", *args)
       end
     rescue The_App::Redirect
     rescue Couch_Doc::Not_Found
@@ -61,6 +61,7 @@ class The_App
         raise $!
       end
     end
+    
     the_app.response.finish
     
   end

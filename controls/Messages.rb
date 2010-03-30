@@ -21,6 +21,23 @@ class Messages
     render_html_template
   end
 
+  def POST # CREATE
+    begin
+      clean_room[:target_ids] = []
+      clean_room[:lang]       = self.current_member.lang
+      clean_room[:owner_id]   = "username-#{clean_room[:username]}"
+      
+      Message.create( current_member, clean_room )
+      
+      flash_msg.success = "Your message has been saved."
+      redirect! '/' 
+      
+    rescue Member::Invalid
+      flash_msg.errors= $!.doc.errors 
+      redirect! "/lives/#{clean_room[:username]}/"
+    end
+  end
+
   def PUT id # UPDATE
     success_msg(lambda { |doc| "Update: #{doc.data.title}" })
     params = clean_room.clone

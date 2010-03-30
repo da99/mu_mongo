@@ -14,7 +14,9 @@ class Member
                :data_model, 
                :hashed_password, 
                :salt,
-               :security_level
+               :security_level,
+							 :lang
+							 
 
   # =========================================================
   #                     CONSTANTS
@@ -161,7 +163,7 @@ class Member
 
   def self.create editor, raw_raw_data # CREATE
     d = new(nil, editor, raw_raw_data) do
-      new_data._id            = CouchDB_CONN.GET_uuid
+      new_data._id            = "member-#{CouchDB_CONN.GET_uuid}"
       new_data.security_level = Member::MEMBER
       ask_for :avatar_link, :email
       demand  :add_life, :password
@@ -227,6 +229,10 @@ class Member
   def usernames
     assoc_cache[:usernames] ||= data.lives.values.map { |l| l[:username]}
   end
+
+	def username_ids
+		assoc_cache[:username_ids] ||= usernames.map {|un| "username-#{un}"}
+	end
 
   def human_field_name col
     case col

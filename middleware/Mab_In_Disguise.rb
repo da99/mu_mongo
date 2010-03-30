@@ -171,7 +171,7 @@ class Markaby::Builder
       controller, action, raw_shortcut, txt = args
       template_name = "#{controller}_#{action}".to_sym
     end
-    puts template_name
+    
     prefix = case controller
                when :Topic, :Topics
                  '/clubs'
@@ -179,7 +179,7 @@ class Markaby::Builder
                  ''
                end
                  
-    href     = shortcut == 'home' ? '/' : File.join('/', prefix, raw_shortcut)
+    href     = shortcut == 'home' ? '/' : File.join('/', prefix, raw_shortcut, '/')
     if self.template_name.to_s === template_name.to_s
       text(capture {
         li.selected { span "< #{txt} >" }

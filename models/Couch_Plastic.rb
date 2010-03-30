@@ -440,17 +440,22 @@ module Couch_Plastic
 
   def sanitize &blok
     field = validator_field_name
-    val   = cleanest( field ) 
+    val   = raw_data[ field ] 
     
     if val.is_a?(String)
       def val.with regexp, &blok
         gsub regexp, &blok
       end
+			def val.split_and_flatten dividors = ["\n", ',']
+				dividors.inject(self.split(dividors.shift)) { |m, div|
+					m.flatten.map { |piece| piece.split div}.flatten
+				}.reject(&:empty?)
+			end
     end
     
     new_clean_value(
       field, 
-      raw_data[field].instance_eval(&blok)
+      val.instance_eval(&blok)
     )
   end
 
@@ -487,6 +492,10 @@ end # === module Couch_Plastic ================================================
 # ========================================================= 
 
 module Couch_Plastic_Class_Methods 
+
+	def strip_class_name str
+		str.sub(self.name.downcase + '-', '')
+	end
 
   def assert_field field
     return true if fields.include?(field) || proto_fields.include?(field)

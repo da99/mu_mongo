@@ -18,11 +18,12 @@ class Hellos_list < Base_View
     meta_description
   end
   
-  def club_messages 
-    [ 
-      {:body=> 'mess 1', :club_name=>'BA', :href=>'/club/BA/mes34/'}, 
-      {:body=> 'mess 2', :club_name=>'San Francisco', :href=>'/club/San+Francisco/mes67/'} 
-    ]
+  def messages_public 
+    @cache[:messages_public] = @app.env['results.messages_public'].map { |raw|
+			doc = raw[:doc]
+			doc[:href] = "/mess/#{Message.strip_class_name(doc[:_id])}/"
+			doc
+		}
   end
    
 end # === Hello_Bunny_GET_list
