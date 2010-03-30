@@ -126,8 +126,13 @@ class Message
   end
 
   def self.by_public_label label, raw_params={}
-    params = {:include_docs=>true, :startkey=>label}.update(raw_params)
+    params = {:include_docs=>true, :key=>label}.update(raw_params)
     CouchDB_CONN.GET_by_view(:messages_by_public_label, params)
+  end
+
+  def self.by_club_id_and_public_label club_id, label, raw_params = {}
+    params = {:include_docs=>true, :descending=>true, :startkey=>[club_id, label, {}], :endkey=>[club_id, label]}.update(raw_params)
+    CouchDB_CONN.GET_by_view(:messages_by_club_id_and_public_label, params)
   end
 
   def self.by_published_at *args

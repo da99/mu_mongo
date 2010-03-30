@@ -10,7 +10,7 @@ class Messages
 
   def GET_by_label club, label # LIST
     env['message_label'] = label
-    env['messages_by_label'] = Message.by_public_label(label)
+    env['messages_by_label'] = Message.by_club_id_and_public_label("club-" + club, label)
     render_html_template
   end
   

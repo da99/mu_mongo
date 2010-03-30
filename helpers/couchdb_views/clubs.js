@@ -5,6 +5,6 @@
 function(doc) {
 
   if (doc.data_model == 'Club')
-    emit( doc._id, doc );
+    emit( doc._id, 1 );
 
 };

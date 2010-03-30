@@ -7,7 +7,7 @@
 //        
 
 function(doc) { 
-  if (doc.data_model == 'Message' && doc.public_labels)
+  if (doc.data_model == 'Message' && doc.privacy == 'public' && doc.public_labels)
     for(var t in doc.public_labels) 
       emit( doc.public_labels[t], (doc.published_at || doc.created_at) );
 };

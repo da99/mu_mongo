@@ -1,5 +1,5 @@
 // Creates keys like: 
-//  [ 'message-3htjp', nil ]
+//  [ '2010-01-02 01:11:23', 1 ]
 //
 
 function(doc) {
