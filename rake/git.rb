@@ -62,7 +62,7 @@ namespace 'git' do
   task :prep_push do 
 
     Rake::Task['views:compile'].invoke
-		Rake::Task['tests:all']
+		Rake::Task['tests:all'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
 		
@@ -129,8 +129,8 @@ namespace 'git' do
   end # === task
 
   task :push do
-    `git push webfaction`
-    `scp da01@da01.webfactional.com "cd ~/megauni && rake unicorn:restart"`
+    puts `git push webfaction 2>&1`
+    puts `ssh da01@da01.webfactional.com "cd ~/megauni && git pull && rake unicorn:restart" 2>&1`
   end
 
   
