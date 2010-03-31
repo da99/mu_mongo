@@ -132,7 +132,7 @@ namespace 'git' do
 
   task :push do
     puts `git push webfaction 2>&1`
-    puts `ssh da01@da01.webfactional.com "cd ~/megauni && gem update && git pull && rake unicorn:restart" 2>&1`
+    puts `ssh da01@da01.webfactional.com "cd ~/megauni && git pull && rake unicorn:restart" 2>&1`
   end
 
   
