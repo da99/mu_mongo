@@ -78,6 +78,23 @@ namespace :server do
     Launchy.open 'http://127.0.0.1:5984/_utils/index.html'
   end
 
-
 end # === namespace :server
+
+namespace :unicorn do
+
+  desc 'Start unicorn'
+  task :start do
+    puts 'Starting unicorn...'
+    exec("unicorn -p 34735 -E production -D")
+  end
+
+  desc 'Stopping unicorn'
+  task :stop do
+    puts 'Stopping unicorn...'
+    require 'rush'
+    Rush.processes.filter(:cmdline=>/unicorn/).kill
+    puts "Unicorns have stopped."
+  end
+
+end
 
