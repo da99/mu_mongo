@@ -82,18 +82,28 @@ end # === namespace :server
 
 namespace :unicorn do
 
-  desc 'Start unicorn'
+  desc 'Start unicorn. Uses RACK_ENV (default: development)'
   task :start do
+    ENV['RACK_ENV'] ||= 'development'
     puts 'Starting unicorn...'
-    exec("unicorn -p 34735 -E production -D")
+    exec("unicorn -p 34735 -E #{ENV['RACK_ENV']} -D")
   end
 
   desc 'Stopping unicorn'
   task :stop do
-    puts 'Stopping unicorn...'
+    exec(%~ruby -e "require 'rubygems'; require 'rush'; Rush.processes.filter(:cmdline=>/unicorn/).kill"~)
+    # puts 'Stopping unicorn...'
+    # require 'rush'
+    # Rush.processes.filter(:cmdline=>/unicorn/).kill
+    # puts "Unicorns have stopped."
+  end
+  
+  desc 'Restart unicorns. (Kills worker processes, not the master process).'
+  task :restart do
+    puts 'Restarting...'
     require 'rush'
-    Rush.processes.filter(:cmdline=>/unicorn/).kill
-    puts "Unicorns have stopped."
+    Rush.processes.filter(:cmdline=>/unicorn worker/).kill
+    puts 'Done.'
   end
 
 end

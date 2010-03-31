@@ -9,7 +9,7 @@ div.content! do
   div.why_are_you_bored! {
     
     div.club_messages! do
-      h4 'More info. later this week.'
+      h4 'News:'
       p.waves " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
       mustache 'messages_public' do
         div.message {
