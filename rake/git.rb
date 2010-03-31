@@ -58,11 +58,11 @@ namespace 'git' do
   end # === task
 
   
-  desc "Push code to Heroku."
-  task :push do 
+  desc "Prep push code to Heroku."
+  task :prep_push do 
 
     Rake::Task['views:compile'].invoke
-		Rake::Task['tests:all'].invoke
+		Rake::Task['tests:all']
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
 		
@@ -127,6 +127,11 @@ namespace 'git' do
 
       # true
   end # === task
+
+  task :push do
+    `git push webfaction`
+    `scp da01@da01.webfactional.com "cd ~/megauni && rake unicorn:restart"`
+  end
 
   
 end # === namespace git
