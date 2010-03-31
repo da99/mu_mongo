@@ -131,6 +131,7 @@ namespace 'git' do
   end # === task
 
   task :push do
+    puts_white "NOTE: Check to see if all required gems are installed on server."
     puts `git push webfaction 2>&1`
     puts `ssh da01@da01.webfactional.com "cd ~/megauni && git pull && rake unicorn:restart" 2>&1`
   end
