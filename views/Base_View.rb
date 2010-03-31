@@ -1,6 +1,6 @@
 require 'mustache'
-
-FIND_URLS = %r~\b((?:[a-z][\w-]+:(?:\/{2})|www\d{0,3}[.])(?:[^\s()<>]+|\([^\s()<>]+\))+(?:\([^\s()<>]+\)|[^`!()\[\]{};:'".,<>?«»“”‘’\s]))~
+require 'loofah'
+FIND_URLS = %r~\b((?:http:\/\/)(?:www\d{0,3}[.])(?:[^\s()<>]+|\([^\s()<>]+\))+(?:\([^\s()<>]+\)|[^`!()\[\]{};:'".,<>?«»“”‘’\s]))~
 
 class Array
   
@@ -168,7 +168,7 @@ class Base_View < Mustache
   # === Html ===
 
   def auto_link str
-    str.gsub(FIND_URLS, "<a href=\"\\1\">\\1</a>")
+    Loofah::Helpers.sanitize(str.gsub(FIND_URLS, "<a href=\"\\1\">\\1</a>"))
   end
 
   def default_javascripts
