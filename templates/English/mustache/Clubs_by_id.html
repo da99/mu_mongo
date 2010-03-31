@@ -86,13 +86,39 @@
       <div id="club_message_create">
        <h4>Post a message:</h4>
        <form action="/messages/" method="POST" id="form_club_message_create">
-        <input type="hidden" value="{{club_filename}}" name="target_ids"/>
+        <input type="hidden" value="club-{{club_filename}}" name="target_ids"/>
+        <input type="hidden" value="public" name="privacy"/>
+
+{{#single_username?}}
+
+        <input type="hidden" value="{{single_username}}" name="username"/>
+
+{{/single_username?}}
+
         <fieldset>
          <textarea name="body"></textarea>
         </fieldset>
         <div class="buttons">
          <button class="create">Save</button>
         </div>
+
+{{#multiple_usernames?}}
+
+        <fieldset>
+         <label>Which life to use?</label>
+         <select name="owner_id">
+
+{{#multiple_usernames}}
+
+          <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+         </select>
+        </fieldset>
+
+{{/multiple_usernames?}}
+
        </form>
       </div>
 
@@ -222,6 +248,21 @@
          <li>
           <a href="/clubs/news/">Other Topics</a>
          </li>
+         <li>
+          <a href="/clubs/hearts/">Hearts</a>
+         </li>
+         <li>
+          <a href="/clubs/">[ View More ]</a>
+         </li>
+
+{{#logged_in?}}
+
+         <li>
+          <a href="/clubs/create/">[ Create ]</a>
+         </li>
+
+{{/logged_in?}}
+
        </ul>
       </div>
     <div id="footer">

@@ -23,7 +23,7 @@ class Messages
 
   def POST # CREATE
     begin
-      clean_room[:target_ids] = []
+      clean_room[:target_ids] ||= []
       clean_room[:lang]       = self.current_member.lang
       clean_room[:owner_id]   = "username-#{clean_room[:username]}"
       

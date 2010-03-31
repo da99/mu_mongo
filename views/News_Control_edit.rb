@@ -28,8 +28,8 @@ class News_Control_edit < Base_View
   end
 
   def clubs
-    @clubs ||= Club.all.map_html_menu { |club| 
-      news.data.club_id === club[:id]
+    @clubs ||= Club.all_filenames.map_html_menu { |club| 
+      news.data.club_id === club
     }
   end
 

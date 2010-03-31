@@ -144,6 +144,27 @@ class Base_View < Mustache
 		current_member.data.lang
 	end
 
+  def current_member_usernames
+    @cache[:current_member_usernames] ||= current_member.usernames
+  end
+
+  def single_username?
+    current_member_usernames.size == 1
+  end
+
+  def single_username
+    current_member_usernames.first
+  end
+
+  def multiple_usernames?
+    current_member_usernames.size > 1
+  end
+
+  def multiple_usernames
+    return [] if single_username?
+    current_member_usernames
+  end
+
   # === Html ===
 
   def auto_link str

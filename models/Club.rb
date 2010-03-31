@@ -61,12 +61,14 @@ class Club
 
   # ======== Accessors ======== 
 
-  def self.all params = {}
+  def self.all raw_params = {}
+    params = {:include_docs=>true}.update(raw_params)
     raw = CouchDB_CONN.GET_by_view :clubs, params
-    results = raw[:rows].map { |row|
-      row.delete :key
-      row.update row.delete(:value)
-    }
+    raw.map { |r| r[:doc] }
+  end
+
+  def self.all_filenames 
+    CouchDB_CONN.GET_by_view(:clubs).map { |r| r[:key] }
   end
 
   def news raw_params = {}

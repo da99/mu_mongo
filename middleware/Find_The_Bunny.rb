@@ -22,6 +22,8 @@ class Find_The_Bunny
     @app = new_app
     @url_aliases = [
       [%r!\A/mess/([a-zA-Z\d]+)! , { :controller => Messages, :action_name => 'by_id' } ],
+      ['/clubs/', {:controller=>Clubs, :action_name=>'list'}],
+      [%r!\A/clubs/create/\Z!, {:controller=>Clubs, :action_name=>'create'} ],
       [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
       [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
       [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
@@ -35,8 +37,14 @@ class Find_The_Bunny
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-    results = @url_aliases.detect { |k,v| 
-      if new_env['PATH_INFO'] =~ k
+    results = http_meth == 'GET' && @url_aliases.detect { |k,v| 
+      they_match = case k
+                   when String
+                     new_env['PATH_INFO'] =~ %r~\A#{k}\Z~
+                   when Regexp
+                     new_env['PATH_INFO'] =~ k
+                   end
+      if they_match
         new_env['the.app.meta'][:control]       = v[:controller]
         new_env['the.app.meta'][:http_method] = v[:http_method] || http_meth
         new_env['the.app.meta'][:action_name]   = v[:action_name] || http_meth
@@ -45,7 +53,6 @@ class Find_The_Bunny
     }
 
     results ||= The_App.controls.detect { |control|
-
       raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')
 
       pieces = if raw_pieces.empty?

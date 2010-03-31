@@ -20,6 +20,10 @@ class Message
   end
 
   allow_field :target_ids do
+    sanitize {
+      split_and_flatten if is_a?(String)
+      self
+    }
     must_be { 
       array
     }

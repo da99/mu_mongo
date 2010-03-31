@@ -41,24 +41,9 @@
 {{/loading}}
 
      <div id="content">
-      <h4>Create a Club</h4>
-      <form action="/clubs/" method="post" id="form_clubs_create">
-       <fieldset>
-        <label>Title:</label>
-        <input type="text" value="" name="title" id="create_club_title"/>
-       </fieldset>
-       <fieldset>
-        <label>Filename:</label>
-        <input type="text" value="" name="filename" id="create_club_filename"/>
-       </fieldset>
-       <fieldset>
-        <label>Description:</label>
-        <textarea name="teaser" id="create_club_teaser"></textarea>
-       </fieldset>
-       <div class="buttons">
-        <button>Save</button>
-       </div>
-      </form>
+      <p>
+    More features coming soon.
+  </p>
      </div>
       <div id="nav_bar">
        <div id="logo">
@@ -162,6 +147,21 @@
          <li>
           <a href="/clubs/news/">Other Topics</a>
          </li>
+         <li>
+          <a href="/clubs/hearts/">Hearts</a>
+         </li>
+         <li>
+          <a href="/clubs/">[ View More ]</a>
+         </li>
+
+{{#logged_in?}}
+
+         <li>
+          <a href="/clubs/create/">[ Create ]</a>
+         </li>
+
+{{/logged_in?}}
+
        </ul>
       </div>
     <div id="footer">

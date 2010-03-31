@@ -12,13 +12,32 @@ div.content! {
     div.club_message_create! do
       h4 'Post a message:'  
       form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
-        input :type=>'hidden', :name=>'target_ids', :value=>'{{club_filename}}'
+        
+        input :type=>'hidden', :name=>'target_ids', :value=>'club-{{club_filename}}'
+        input :type=>'hidden', :name=>'privacy', :value=>'public'
+        
+        mustache 'single_username?' do
+          input :type=>'hidden', :name=>'username', :value=>'{{single_username}}'
+        end
+        
         fieldset {
           textarea '', :name=>'body'
         }
+        
         div.buttons {
           button.create 'Save'
         }
+        
+        mustache 'multiple_usernames?' do
+          fieldset {
+            label 'Which life to use?'
+            select(:name=>'owner_id') {
+              mustache 'multiple_usernames' do
+                option '{{username}}', :value=>'{{username}}'
+              end
+            }
+          }
+        end
       end
     end
   end

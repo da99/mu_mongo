@@ -4,6 +4,16 @@ class Clubs
   
   include Base_Control
 
+  def GET_list
+    env['results.clubs'] = Club.all
+    render_html_template
+  end
+
+  def GET_create
+    require_log_in!
+    render_html_template
+  end
+
   # def GET club_filename
   #   save_club_to_env(club_filename)
   #   @action_name = club_filename
