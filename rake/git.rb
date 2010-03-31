@@ -61,13 +61,15 @@ namespace 'git' do
   desc "Prep push code to Heroku."
   task :prep_push do 
 
+    # puts_white 'Updating gems...'
+    # `gem update`
     Rake::Task['views:compile'].invoke
-		Rake::Task['tests:all'].invoke
+		# Rake::Task['tests:all'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
 		
-		puts_white "Uploading design document."
-		Rake::Task['db:design_doc_upload'].invoke
+		# puts_white "Uploading design document."
+		# Rake::Task['db:design_doc_upload'].invoke
     # puts_white `git push heroku`
 
 
@@ -130,7 +132,7 @@ namespace 'git' do
 
   task :push do
     puts `git push webfaction 2>&1`
-    puts `ssh da01@da01.webfactional.com "cd ~/megauni && git pull && rake unicorn:restart" 2>&1`
+    puts `ssh da01@da01.webfactional.com "cd ~/megauni && gem update && git pull && rake unicorn:restart" 2>&1`
   end
 
   

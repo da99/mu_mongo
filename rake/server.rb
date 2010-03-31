@@ -100,10 +100,15 @@ namespace :unicorn do
   
   desc 'Restart unicorns. (Kills worker processes, not the master process).'
   task :restart do
-    puts 'Restarting...'
-    require 'rush'
-    Rush.processes.filter(:cmdline=>/unicorn worker/).kill
-    puts 'Done.'
+    unicorn_off = ! `ps x`[/unicorn master -/]
+    if unicorn_off
+      Rake::Task['unicorn:start'].invoke
+    else
+      puts 'Restarting...'
+      require 'rush'
+      Rush.processes.filter(:cmdline=>/unicorn worker/).kill
+      puts 'Done.'
+    end
   end
 
 end

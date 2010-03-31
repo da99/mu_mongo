@@ -349,7 +349,7 @@ module Couch_Plastic
     new_data.data_model = self.class.name
     new_data.created_at = Couch_Plastic.utc_now if self.class.fields.include?(:created_at)
     new_id              = begin
-                            new_data.as_hash.delete(:_id) || CouchDB_CONN.GET_uuid
+                            new_data._id || CouchDB_CONN.GET_uuid
                           end
     vals                = clean_hash(new_data.as_hash.clone)
 
@@ -366,8 +366,8 @@ module Couch_Plastic
     return :ok unless err
     
     results = if block_given?
-      yield err
-    end
+                yield err
+              end
     raise err if not results
 
     self

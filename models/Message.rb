@@ -21,8 +21,11 @@ class Message
 
   allow_field :target_ids do
     sanitize {
-      split_and_flatten if is_a?(String)
-      self
+      if is_a?(String)
+        split_and_flatten 
+      else
+        self
+      end
     }
     must_be { 
       array
@@ -87,7 +90,23 @@ class Message
           :question, :emotion, :rating,
           :labels, :public_labels
 			new_data._id = "message-#{CouchDB_CONN.GET_psuedo_uuid}"
-      save_create
+      
+      save_create do |err|
+        case err
+        when Couch_Doc::HTTP_Error_409_Update_Conflict
+          psuedo = new_data._id
+          (0..99).to_a.detect { |i|
+            begin
+              new_data._id = "#{psuedo}-%02d" % i
+              save_create
+            rescue Couch_Doc::HTTP_Error_409_Update_Conflict
+              false
+            end
+          }
+        else
+          raise err
+        end
+      end
     end
   end
 
