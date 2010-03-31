@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -106,7 +106,7 @@
 
 {{#selected}}
 
-          <option selected="selected" value="{{id}}">{{title}}</option>
+          <option value="{{id}}" selected="selected">{{title}}</option>
 
 {{/selected}}
 
@@ -155,7 +155,7 @@
        </fieldset>
        <div class="buttons">
         <input type="hidden" value="put" name="_method"/>
-        <button class="update" onclick="document.getElementById('form_news_edit').submit(); return false;">Update</button>
+        <button onclick="document.getElementById('form_news_edit').submit(); return false;" class="update">Update</button>
        </div>
       </form>
      </div>

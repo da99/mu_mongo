@@ -3,6 +3,11 @@
 
 namespace :server do
   
+  desc 'SSH into WebFaction account'
+  task :ssh do
+    exec('ssh da01@174.121.79.154')
+  end
+
 	desc 'Start the server.'
 	task :http do
 		exec 'unicorn -p 4567'

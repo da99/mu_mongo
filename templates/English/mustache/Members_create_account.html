@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -121,7 +121,7 @@
         </select>
        </fieldset>
        <div class="buttons">
-        <button class="create" onclick="document.getElementById('create_account_form').submit(); return false;">Create My New Account</button>
+        <button onclick="document.getElementById('create_account_form').submit(); return false;" class="create">Create My New Account</button>
        </div>
       </form>
      </div>

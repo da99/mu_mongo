@@ -63,7 +63,6 @@ namespace 'git' do
 
     Rake::Task['views:compile'].invoke
 		Rake::Task['tests:all'].invoke
-		
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
 		

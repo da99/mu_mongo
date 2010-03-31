@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -91,7 +91,7 @@
          <input type="password" class="text" value="" name="password" id="member_password"/>
         </fieldset>
         <div class="buttons">
-         <button class="create" onclick="document.getElementById('log_in_form').submit(); return false;">Log-in</button>
+         <button onclick="document.getElementById('log_in_form').submit(); return false;" class="create">Log-in</button>
         </div>
        </form>
       </div>

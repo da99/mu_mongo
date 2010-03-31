@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
+   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -67,7 +67,7 @@
       <div class="news_post">
        <div class="info">
         <span class="published_at">{{published_at}}</span>
-        <a class="permalink" href="{{href}}">PermaLink</a>
+        <a href="{{href}}" class="permalink">PermaLink</a>
        </div>
        <h4>{{title}}</h4>
        <div class="body">
