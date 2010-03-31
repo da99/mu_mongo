@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}" media="screen" rel="stylesheet"/>
+   <link type="text/css" href="{{css_file}}" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -132,7 +132,7 @@
 {{#selected}}
 
           <div class="box selected">
-           <input type="checkbox" value="{{filename}}" checked="checked" name="tags[]"/>
+           <input type="checkbox" value="{{filename}}" name="tags[]" checked="checked"/>
            <span>{{filename}}</span>
           </div>
 
@@ -155,7 +155,7 @@
        </fieldset>
        <div class="buttons">
         <input type="hidden" value="put" name="_method"/>
-        <button onclick="document.getElementById('form_news_edit').submit(); return false;" class="update">Update</button>
+        <button class="update" onclick="document.getElementById('form_news_edit').submit(); return false;">Update</button>
        </div>
       </form>
      </div>
