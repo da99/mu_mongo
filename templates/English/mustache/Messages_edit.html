@@ -79,38 +79,27 @@
 
 {{/flash_msg?}}
 
-      <div id="why_are_you_bored">
-       <div id="clubs">
+      <form method="post" action="{{mess_href}}" id="form_messages_update">
+       <input type="hidden" value="put" name="_method"/>
 
-{{#clubs}}
+{{#mess_data}}
 
-        <div class="club">
-         <h4>{{title}}</h4>
-         <div class="teaser">{{teaser}}</div>
-         <div class="url">
-          <a href="{{href}}">Visit.</a>
-         </div>
-        </div>
+       <fieldset>
+        <label>Title:</label>
+        <input type="text" class="text" value="{{title}}" name="title"/>
+       </fieldset>
+       <fieldset>
+        <label>Body:</label>
+        <textarea name="body">{{body}}</textarea>
+       </fieldset>
 
-{{/clubs}}
+{{/mess_data}}
 
+       <div class="buttons">
+        <button>Save</button>
        </div>
-       <div class="messages">
-        <h4>Random News:</h4>
-
-{{#messages_public}}
-
-        <div class="message">
-         <div class="body">{{{compiled_body}}}</div>
-         <div class="permalink">
-          <a href="{{href}}">Permalink</a>
-         </div>
-        </div>
-
-{{/messages_public}}
-
-       </div>
-      </div>
+      </form>
+      <a href="{{mess_href}}">Cancel and go back to message.</a>
      </div>
       <div id="nav_bar">
        <div id="logo">
