@@ -19,10 +19,13 @@ class Find_The_Bunny
     preggers
   }
   def initialize new_app
+    ids = '[a-zA-Z\-\d]+'
     @app = new_app
     @url_aliases = [
-      [%r!\A/mess/([a-zA-Z\d]+)! , { :controller => Messages, :action_name => 'by_id' } ],
-      ['/clubs/', {:controller=>Clubs, :action_name=>'list'}],
+      [%r!\A/mess/(#{ids})/\Z! , { :controller => Messages, :http_method=>['GET', 'PUT'], :action_name => 'by_id' } ],
+      [%r!\A/mess/(#{ids})/edit/\Z! , { :controller => Messages, :action_name => 'edit' } ],
+      ['/clubs/', {:controller=>Clubs, :action_name=>'list', :http_method=>'GET'}],
+      ['/clubs/', {:controller=>Clubs, :action_name=>'POST', :http_method=>'POST'}],
       [%r!\A/clubs/create/\Z!, {:controller=>Clubs, :action_name=>'create'} ],
       [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
       [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
@@ -37,19 +40,31 @@ class Find_The_Bunny
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-    results = http_meth == 'GET' && @url_aliases.detect { |k,v| 
-      they_match = case k
-                   when String
-                     new_env['PATH_INFO'] =~ %r~\A#{k}\Z~
-                   when Regexp
-                     new_env['PATH_INFO'] =~ k
-                   end
-      if they_match
-        new_env['the.app.meta'][:control]       = v[:controller]
-        new_env['the.app.meta'][:http_method] = v[:http_method] || http_meth
-        new_env['the.app.meta'][:action_name]   = v[:action_name] || http_meth
-        new_env['the.app.meta'][:args]          = $~.captures
+    results = @url_aliases.detect { |k,v| 
+      
+      path_matches = case k
+                     when String
+                       new_env['PATH_INFO'] =~ %r~\A#{k}\Z~
+                     when Regexp
+                       new_env['PATH_INFO'] =~ k
+                     end
+
+      action_matches = case v[:http_method]
+                       when NilClass
+                         http_meth
+                       when Array
+                         v[:http_method].include?(http_meth) && http_meth
+                       else
+                         http_meth === v[:http_method] && http_meth
+                       end
+
+      if path_matches && action_matches
+        new_env['the.app.meta'][:control]     = v[:controller]
+        new_env['the.app.meta'][:http_method] = action_matches
+        new_env['the.app.meta'][:action_name] = v[:action_name] || http_meth
+        new_env['the.app.meta'][:args]        = $~.captures
       end
+      
     }
 
     results ||= The_App.controls.detect { |control|

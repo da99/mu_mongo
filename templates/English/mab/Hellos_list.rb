@@ -20,15 +20,15 @@ div.content! do
       end
     end 
     
-    div.club_messages! do
+    div.messages do
       h4 'Random News:'
       mustache 'messages_public' do
-        div.message {
+        div.message do
           div.body( '{{{compiled_body}}}' )
           div.permalink {
             a('Permalink', :href=>"{{href}}")
           }
-        }
+        end
       end
     end
 

@@ -144,6 +144,7 @@ module Couch_Plastic
       def initialize( doc )
         @doc    = doc
         @fields = doc.class.fields
+        @equals = @fields.keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
       end
 
       def include?(key)
@@ -161,6 +162,9 @@ module Couch_Plastic
     
       def method_missing( raw_key, *args )
         key = raw_key.to_sym
+        if @equals[key]
+          return(as_hash[@equals[key]] = args.first)
+        end
         return(as_hash[key]) if @fields.keys.include?(key)
         raise NoMethodError, "#{raw_key.inspect} is not defined, nor is it a key."
       end
@@ -172,7 +176,8 @@ module Couch_Plastic
         def initialize( doc )
           @doc    = doc
           @keys   = doc.class.fields.keys
-          @hash   = (doc.instance_variable_get :@orig_doc ) || {}
+          raw_hash   = (doc.instance_variable_get :@orig_doc ) || {}
+          @hash   = raw_hash.dup
           @equals = @keys.inject({}) { |m, k| m["#{k}=".to_sym] = k; m }
         end
 
@@ -194,7 +199,7 @@ module Couch_Plastic
           
           return as_hash[key] if @keys.include?(key)
           
-          if @equals.has_key?(key)
+          if @equals[key]
             return( as_hash[@equals[key]] = args.first )
           end
           
@@ -278,9 +283,25 @@ module Couch_Plastic
           raise Raw_Data_Field_Required, fld.inspect
         end
         
-        begin
-          send("#{fld}_validator")
-        rescue Invalid
+        val_method = "#{fld}_validator"
+        if respond_to?(val_method)
+          begin
+            send(val_method)
+          rescue Invalid
+          end
+        else
+          self.class.fields[fld][:require].each { |reg| 
+            case reg
+            when :not_empty
+              if !raw_data[fld] || raw_data[fld].empty?
+                self.errors << "#{fld.to_s.capitalize} is required."
+              else
+                self.new_clean_value(fld, raw_data[fld])
+              end
+            else
+              raise ArgumentError, "#{reg.inspect} is an invalid validation requirement."
+            end
+          }
         end
         
       }
@@ -385,15 +406,15 @@ module Couch_Plastic
     end
     raise_if_invalid
 
-    data = data.as_hash.clone.update(new_data.as_hash)
-    data[:_rev] = data._rev
-    data[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
-    data = clean_hash(data)
+    insert = self.data.as_hash.clone.update(new_data.as_hash)
+    insert[:_rev] = self.data._rev
+    insert[:updated_at] = Time.now.utc if self.class.fields.include?(:updated_at)
+    insert = clean_hash(insert)
 
     begin
-      results = Couch_Doc.PUT( data._id, data )
-      data._rev = results[:rev]
-      data.updated_at = data[:updated_at] if data.has_key?(:updated_at)
+      results = CouchDB_CONN.PUT( data._id, insert )
+      data.as_hash[:_rev] = results[:rev]
+      data.updated_at = insert[:updated_at] if insert.has_key?(:updated_at)
       data.as_hash.update(new_data.as_hash)
     rescue RestClient::RequestFailed
       if block_given?
@@ -553,6 +574,11 @@ module Couch_Plastic_Class_Methods
     fields[title] = {:default => default}
   end
 
+  def make name, *regs
+    allow_field name
+    fields[name][:require] = regs
+  end
+
   def enable_timestamps
     allow_fields :created_at, :updated_at
   end
@@ -627,7 +653,7 @@ class Couch_Plastic_Validator
     @field_name         = new_field_name.to_sym
     @english_field_name = new_doc.human_field_name(@field_name).capitalize
     @must_be_perfect    = perfect
-    @clean_val          = @doc.cleanest(@field_name)
+    @clean_val          = @doc.new? ? @doc.cleanest(@field_name) : @doc.raw_data[@field_name]
     instance_eval(&blok)
   end
 
@@ -777,8 +803,9 @@ class Couch_Plastic_Validator
     end
   end
 
+  def anything 
+  end
+
 end # === Couch_Plastic_Validator
-
-
 
 

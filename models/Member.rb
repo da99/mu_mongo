@@ -248,6 +248,7 @@ class Member
     return true if raw_level == self
     
     target_level = raw_level.to_s
+    return true if target_level['username-'] && usernames.include?(target_level.sub('username-',''))
 
     if !SECURITY_LEVELS.include?(target_level)
       raise Invalid_Security_Level, raw_level.inspect

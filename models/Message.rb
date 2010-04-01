@@ -32,9 +32,7 @@ class Message
     }
   end
 
-  allow_field :body do
-    must_be { not_empty }
-  end
+  make :body, :not_empty
 
   allow_field :emotion do 
     must_be { not_empty }
@@ -59,7 +57,7 @@ class Message
   end
 
   allow_field :title do
-    must_be { not_empty }
+    must_be { anything }
   end # === 
 
   allow_field :teaser do
@@ -120,7 +118,7 @@ class Message
 
   def self.update id, editor, new_raw_data
     doc = new(id, editor, new_raw_data) do
-      ask_for :title, :body, :teaser, :published_at, :tags
+      ask_for :title, :body, :teaser, :public_labels, :private_labels, :published_at, :tags
       save_update
     end
   end

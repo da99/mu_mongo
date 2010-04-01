@@ -202,7 +202,7 @@ module FeFe_Test
     @results = begin
       
       if FeFe_Test.inspection? && FeFe_Test.inspect_test?
-        require 'rubygems'; require 'ruby-debug'; debugger
+        
       end
 
       instance_eval( &body )

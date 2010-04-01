@@ -9,11 +9,11 @@ div.content! {
   form(:id=>'form_clubs_create', :action=>"/clubs/", :method=>"post") {
     fieldset {
       label 'Title:'
-      input :name=>'title', :id=>'create_club_title', :type=>'text', :value=>''
+      input.text :name=>'title', :id=>'create_club_title', :type=>'text', :value=>''
     }
     fieldset {
       label 'Filename:'
-      input :name=>'filename', :id=>'create_club_filename', :type=>'text', :value=>''
+      input.text :name=>'filename', :id=>'create_club_filename', :type=>'text', :value=>''
     }
     fieldset {
       label 'Description:'

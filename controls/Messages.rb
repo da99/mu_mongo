@@ -49,10 +49,24 @@ class Messages
                     end
     handle_rest :params=>params
   end
+
+  def PUT_by_id id
+    require_log_in!
+    mess_id = "message-#{id}"
+    begin
+      mess = Message.update( mess_id, current_member, clean_room )
+      flash_msg.success = "Message saved."
+      redirect! "/mess/#{id}/"
+    rescue Message::Invalid
+      flash_msg.errors = $!.doc.errors
+      redirect! "/mess/#{id}/edit/"
+    end
+  end
   
   def GET_edit id # EDIT 
-    require_log_in! 'ADMIN'
-    env['the.app.news'] = News.by_id(id)
+    mess_id = "message-#{id}"
+    mess = env['results.message'] = Message.by_id(mess_id)
+    require_log_in! 'ADMIN',  mess.data.owner_id
     render_html_template
   end
 
