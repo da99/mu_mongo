@@ -30,5 +30,12 @@ class Hellos_list < Base_View
 			doc
 		}
   end
-   
+  
+  def clubs
+    @cache[:clubs] ||= @app.env['results.clubs'].map { |r| 
+      r[:href] = "/clubs/#{r[:filename]}/"
+      r
+    }
+  end 
+  
 end # === Hello_Bunny_GET_list

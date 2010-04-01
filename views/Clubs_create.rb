@@ -5,7 +5,7 @@
 class Clubs_create < Base_View
 
   def title 
-    '...'
+    "Create a club."
   end
   
 end # === Clubs_create 

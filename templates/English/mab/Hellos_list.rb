@@ -8,9 +8,20 @@ div.content! do
 
   div.why_are_you_bored! {
     
+    div.clubs! do
+      mustache 'clubs' do 
+        div.club {
+          h4 '{{title}}'
+          div.teaser '{{teaser}}'
+          div.url {
+          a( 'Visit.' , :href=>'{{href}}')
+        }
+        }
+      end
+    end 
+    
     div.club_messages! do
-      h4 'News:'
-      p.waves " ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
+      h4 'Random News:'
       mustache 'messages_public' do
         div.message {
           div.body( '{{{compiled_body}}}' )

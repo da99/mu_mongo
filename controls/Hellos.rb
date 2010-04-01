@@ -6,6 +6,7 @@ class Hellos
 
   def GET_list 
 		env['results.messages_public'] = Message.public(:descending=>true)
+    env['results.clubs'] = Club.all
     render_html_template
   end
 

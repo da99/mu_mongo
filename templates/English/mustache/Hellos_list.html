@@ -80,9 +80,23 @@
 {{/flash_msg?}}
 
       <div id="why_are_you_bored">
+       <div id="clubs">
+
+{{#clubs}}
+
+        <div class="club">
+         <h4>{{title}}</h4>
+         <div class="teaser">{{teaser}}</div>
+         <div class="url">
+          <a href="{{href}}">Visit.</a>
+         </div>
+        </div>
+
+{{/clubs}}
+
+       </div>
        <div id="club_messages">
-        <h4>News:</h4>
-        <p class="waves"> ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~</p>
+        <h4>Random News:</h4>
 
 {{#messages_public}}
 
