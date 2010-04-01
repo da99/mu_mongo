@@ -25,4 +25,10 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     assert_equal original, result
   end
 
+  must 'turn any \r\n or \n into <br />' do
+    result = Base_View.new(Object.new).auto_link("hello \r\n goodbye \n hello")
+    assert_equal "hello <br /> goodbye <br /> hello", result
+  end
+
+
 end # === class Test_View_Base_View_Read
