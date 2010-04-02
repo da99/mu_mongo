@@ -13,6 +13,17 @@ class Catch_Bad_Bunny
     rescue Object => e
       IssueClient.create(the_env, ENV['RACK_ENV'], $!.message, the_env['HTTP_REFERER'], e)
       case e
+        when The_App::HTTP_403
+          the_env['the.app.error'] = $!
+          response             = Rack::Response.new
+          response.status      = 403
+          response.body        = begin
+                                   the_env['the.app.403'] || File.read('public/403.html')
+                                 rescue Object
+                                   "<h1>Not Authorized</h1>
+                                   <p>Check spelling: #{the_env['PATH_INFO']}</p>"
+                                 end
+          response.finish
         when The_App::HTTP_404
           the_env['the.app.error'] = $!
           response             = Rack::Response.new

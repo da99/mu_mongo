@@ -63,8 +63,8 @@ class Clubs
   end
 
   def GET_edit club_filename
-    require_log_in! :ADMIN
-    save_club_to_env(club_filename)
+    club = save_club_to_env(club_filename)
+    require_log_in! :ADMIN, club.data.username_id
     render_html_template
   end
 

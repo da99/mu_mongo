@@ -20,6 +20,7 @@ class Find_The_Bunny
   }
   def initialize new_app
     ids = '[a-zA-Z\-\d]+'
+    filename = '[a-zA-Z0-9\-\_\+]+'
     @app = new_app
     @url_aliases = [
       [%r!\A/mess/(#{ids})/\Z! , { :controller => Messages, :http_method=>['GET', 'PUT'], :action_name => 'by_id' } ],
@@ -27,12 +28,13 @@ class Find_The_Bunny
       ['/clubs/', {:controller=>Clubs, :action_name=>'list', :http_method=>'GET'}],
       ['/clubs/', {:controller=>Clubs, :action_name=>'POST', :http_method=>'POST'}],
       [%r!\A/clubs/create/\Z!, {:controller=>Clubs, :action_name=>'create'} ],
-      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
-      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
-      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
-      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/by_date/(\d+)/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/(#{filename})/edit/\Z!, {:controller=>Clubs, :action_name=>'edit'} ],
+      [%r!\A/clubs/(#{filename})/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
+      [%r!\A/clubs/(#{filename})/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/(#{filename})/by_date/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
+      [%r!\A/clubs/(#{filename})/by_date/(\d+)/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
       [%r!\A/clubs/(#{Old_Topics.join('|')})/\Z! , {:controller=>Clubs, :action_name=>'by_old_id'}],
-      [%r!\A/clubs/([a-zA-Z0-9\-\_\+]+)/\Z! , {:controller=>Clubs, :action_name=>'by_id'}]
+      [%r!\A/clubs/(#{filename})/\Z! , {:controller=>Clubs, :action_name=>'by_id'}]
     ]
   end
 

@@ -7,6 +7,7 @@ class The_App
   
   Redirect      = Class.new(StandardError)
   HTTP_404      = Class.new(StandardError)
+  HTTP_403      = Class.new(StandardError)
   
   # ======== CLASS stuff ======== 
 

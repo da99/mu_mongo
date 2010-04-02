@@ -1,6 +1,6 @@
 require 'mustache'
 require 'loofah'
-FIND_URLS = %r~(http://[^\/]{1}[A-Za-z0-9\/\-\_\?\=\.]+)~
+FIND_URLS = %r~(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.]+)~
 
 class Array
   

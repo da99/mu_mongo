@@ -29,7 +29,7 @@ class Test_Control_Messages_Edit < Test::Unit::TestCase
 
   must 'allow owner to view.' do
     log_in_member
-    mem = create_message(regular_mem_1)
+    mem = create_message(regular_member_1)
     get "/#{mem.data._id.sub('message-', 'mess/')}/edit/"
     assert last_response.ok?
   end

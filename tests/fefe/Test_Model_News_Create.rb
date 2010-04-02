@@ -4,7 +4,7 @@ class News_Create < Test::Unit::TestCase
 
 	must 'only allow Admins as creators' do
     assert_raise(Couch_Plastic::Unauthorized_Creator) do
-      News.create(regular_mem_1, {})
+      News.create(regular_member_1, {})
     end
   end
 

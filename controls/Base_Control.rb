@@ -235,7 +235,7 @@ module Base_Control
             }
             
     if not power
-      error(404, "Not found.")
+      error!( nil, 403)
     end
  
     true

@@ -122,14 +122,24 @@ class Test::Unit::TestCase
   
   3.times do |i|
     eval %~
-      def regular_mem_#{i}
+      def regular_member_#{i}
         self.class.regular_members[#{i}-1]
       end
+
       def regular_username_#{i}
         self.class.regular_members[#{i}-1].data.lives.first.last[:username]
       end
+      
       def regular_password_#{i}
         'regular-password'
+      end
+      
+      def log_in_regular_member_#{i}
+        mem = Member.by_username(regular_username_#{i})
+        assert_equal false, mem.has_power_of?( :ADMIN )
+        post '/log-in/', {:username=>mem.usernames.first, :password=>regular_password_#{i}}, ssl_hash
+        follow_redirect!
+        assert_match( /today/, last_request.fullpath)
       end
     ~
   end

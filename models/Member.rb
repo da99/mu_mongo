@@ -46,7 +46,9 @@ class Member
   # ==== Class Methods =====================================================    
 
   def self.valid_security_level?(perm_level)
-    SECURITY_LEVELS.include?(perm_level)
+    SECURITY_LEVELS.include?(perm_level) || 
+      perm_level.to_s['username-'] ||
+        perm_level.to_s['member-'] 
   end
 
   # ==== Getters =====================================================    
@@ -248,9 +250,17 @@ class Member
     return true if raw_level == self
     
     target_level = raw_level.to_s
-    return true if target_level['username-'] && usernames.include?(target_level.sub('username-',''))
+    if target_level['username-'] 
+      return true if usernames.include?(target_level.sub('username-',''))
+      return false
+    end
+    
+    if target_level['member-'] 
+      return true if data._id === target_level
+      return false
+    end
 
-    if !SECURITY_LEVELS.include?(target_level)
+    if !self.class.valid_security_level?(target_level)
       raise Invalid_Security_Level, raw_level.inspect
     end
     

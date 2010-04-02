@@ -5,6 +5,18 @@ class Club
 
   enable_created_at
 
+  allow_field(:owner_id) {
+    must_be {
+      not_empty
+    }
+  }
+
+  allow_field(:username_id) {
+    must_be {
+      in_array(doc.manipulator.usernames.map {|u| "username-#{u}"} )
+    }
+  }
+
   allow_field(:filename) {
     must_be { 
       stripped( /[^a-zA-Z0-9\_\-\+]/ )
@@ -30,7 +42,11 @@ class Club
 
   def self.create editor, raw_raw_data # CREATE
     new(nil, editor, raw_raw_data) do
-      demand :filename, :title, :teaser
+      raw_raw_data[:owner_id] = editor.data._id
+      if editor.usernames.size == 1 || !raw_raw_data[:username_id]
+        raw_raw_data[:username_id] ||= 'username-' + editor.usernames.first
+      end
+      demand :owner_id, :username_id, :filename, :title, :teaser
       ask_for_or_default :lang
       save_create { |err| 
         if err.is_a? Couch_Doc::HTTP_Error_409_Update_Conflict
@@ -74,6 +90,10 @@ class Club
   def news raw_params = {}
     params = {:limit=>10, :descending=>true}.update(raw_params)
     News.by_club(self.data.filename, params )
+  end
+
+  def href 
+    @assoc_cache[:href] = "/clubs/#{data._id.gsub('club-', '')}/"
   end
 
 end # === Club

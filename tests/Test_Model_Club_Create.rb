@@ -9,7 +9,7 @@ class Test_Club_Create < Test::Unit::TestCase
 
   # must 'allow any Member to create it' do
   #   assert_raise( Club::Unauthorized_Creator ) do
-  #     Club.create(regular_mem_1,  { 
+  #     Club.create(regular_member_1,  { 
   #       :filename => random_filename,
   #       :title=>'Gaijin', 
   #       :teaser=>'Gaijin'

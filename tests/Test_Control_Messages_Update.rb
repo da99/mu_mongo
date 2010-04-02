@@ -15,7 +15,7 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
     )
   end
 	must 'update if admin' do
-    mess = create_message(regular_mem_1)
+    mess = create_message(regular_member_1)
 		mess_id = mess.data._id.sub('message-', '')
 		new_body = 'http://new.com'
 		log_in_admin
@@ -25,7 +25,7 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
 		assert_equal new_body, reloaded.data.body
   end
   must 'update if owner' do
-    mess = create_message(regular_mem_1)
+    mess = create_message(regular_member_1)
 		mess_id = mess.data._id.sub('message-', '')
 		new_body = 'http://new.com'
 		log_in_member
