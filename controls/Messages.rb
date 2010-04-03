@@ -38,17 +38,17 @@ class Messages
     end
   end
 
-  def PUT id # UPDATE
-    success_msg(lambda { |doc| "Update: #{doc.data.title}" })
-    params = clean_room.clone
-    params[:tags] = begin
-                      new_tags = []
-                      new_tags += clean_room[:new_tags].to_s.split("\n") 
-                      new_tags += clean_room[:tags]
-                      new_tags.uniq
-                    end
-    handle_rest :params=>params
-  end
+  # def PUT id # UPDATE
+  #   success_msg(lambda { |doc| "Update: #{doc.data.title}" })
+  #   params = clean_room.clone
+  #   params[:tags] = begin
+  #                     new_tags = []
+  #                     new_tags += clean_room[:new_tags].to_s.split("\n") 
+  #                     new_tags += clean_room[:tags]
+  #                     new_tags.uniq
+  #                   end
+  #   handle_rest :params=>params
+  # end
 
   def PUT_by_id id
     require_log_in!

@@ -58,6 +58,34 @@ namespace :db do
     puts_white "Inserted sample data."
   end
 
+  desc 'Get all data from production database and store it as a JSON file on Desktop.'
+  task :save_all_docs do
+    require 'megauni'
+    # Grab some sample data
+    base_url = PRODUCTION_DB
+    
+    url      = File.join( base_url, "/_all_docs")
+    mess     = JSON.parse(RestClient.get(url + '?include_docs=true').body)['rows']
+    
+    
+    processed = mess.map { |d|
+      d['doc'].delete 'rev'
+      d['doc'].delete '_rev'
+      if d['doc']['_id'] =~ /_design/
+        nil
+      else
+        d['doc']
+      end
+    }.compact
+
+    File.open(File.expand_path('~/Desktop/all_data.json'), 'w') do |file|
+      file.puts JSON.pretty_generate(processed)
+    end
+    
+    puts_white "Finished writing data."
+    
+  end
+
   desc 'Update design document only. Uses ENV[\'RACK_ENV\']. Development by default.'
   task :reset_design_doc do
     ENV['RACK_ENV'] ||= 'development'

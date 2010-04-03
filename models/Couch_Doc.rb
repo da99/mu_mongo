@@ -237,18 +237,24 @@ class Couch_Doc
   end
 
   def design_on_file
-    doc = {:views=>{}}
+    doc = {:views=>{}, :filters=>{}}
 
-    Dir.glob('helpers/couchdb_views/*.js').map { |file|
-      v = File.basename(file).sub( %r!\.js\Z!, '').sub(%r!-reduce\Z!, '').to_sym
+    Dir.glob('helpers/couchdb_views/views/*.js').map { |file|
+      v = filename_to_sym(file)
 
       doc[:views][v] ||= {}
-      doc[:views][v][:map] = read_view_file("#{v}")
+      doc[:views][v][:map] = read_view_file("views/#{v}")
 
       begin
-        doc[:views][v][:reduce] = read_view_file("#{v}-reduce")
+        doc[:views][v][:reduce] = read_view_file("views/#{v}-reduce")
       rescue Errno::ENOENT
       end
+    }
+
+    Dir.glob('helpers/couchdb_views/filters/*.js').map { |file|
+      hash_index = File.basename(file)
+      v = filename_to_sym(file)
+      doc[:filters][v] = read_view_file("filters/#{v}")
     }
         
     doc
@@ -257,6 +263,9 @@ class Couch_Doc
   
   private # ===================================================
 
+  def filename_to_sym str
+    File.basename(str).sub( %r!\.js\Z!, '').sub(%r!-reduce\Z!, '').to_sym
+  end
           
   # Parameters:
   #   view_name - Name of file w/o extension. E.g.: map-by_tag

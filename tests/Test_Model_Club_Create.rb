@@ -20,7 +20,7 @@ class Test_Club_Create < Test::Unit::TestCase
   must 'set :_id to filename with "club-" prefixed' do
     fn = random_filename
     club = Club.create(
-      admin_mem, 
+      admin_member, 
       { :filename => fn,
         :title=>'Gaijin', 
         :teaser=>'Gaijin'}
@@ -32,7 +32,7 @@ class Test_Club_Create < Test::Unit::TestCase
     old      = CouchDB_CONN.GET_by_view(:clubs, {:limit =>1})[:rows].first[:key]
     filename = old.sub('club-', '')
     club = begin
-             Club.create( admin_mem,
+             Club.create( admin_member,
               {:filename=>filename, :title=>old, :teaser=>old} 
              )
            rescue Club::Invalid => e
@@ -44,7 +44,7 @@ class Test_Club_Create < Test::Unit::TestCase
   must 'require a filename' do
     club = begin
              Club.create(
-               admin_mem, 
+               admin_member, 
                { :filename=>nil,
                  :title=>'Gaijin', 
                  :teaser=>'Gaijin'}
@@ -58,7 +58,7 @@ class Test_Club_Create < Test::Unit::TestCase
   must 'require a title' do
     club = begin
              Club.create(
-               admin_mem, 
+               admin_member, 
                { :filename=>random_filename, 
                  :title => nil, 
                  :teaser=>'Gaijin'}
@@ -72,7 +72,7 @@ class Test_Club_Create < Test::Unit::TestCase
   must 'require a teaser' do
     club = begin
              Club.create(
-               admin_mem, 
+               admin_member, 
                { :filename=>random_filename, 
                  :title=>'Gaijin',
                  :teaser=> nil
@@ -87,7 +87,7 @@ class Test_Club_Create < Test::Unit::TestCase
 
   must 'set "en-us" as the language.' do
     club = Club.create(
-            admin_mem, 
+            admin_member, 
             {:filename=>random_filename, 
              :title=>'Gaijin',
              :teaser=>'Relaxed'}

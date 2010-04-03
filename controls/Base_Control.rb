@@ -220,7 +220,7 @@ module Base_Control
     return true if perm_levels.empty? && logged_in?
 
     if not logged_in? 
-      if request.get? || request.head? || (request.post? && !request.xhr?)
+      if request.get? || request.head? || !request.xhr?
         session[:return_page] = request.fullpath
         redirect!('/log-in/')
       elsif request.xhr?

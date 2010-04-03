@@ -4,7 +4,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
 
 	must 'be allowed to be created' do
     mem = Message.create(
-      admin_mem, {
+      admin_member, {
         :owner_id => 'username-admin-member-1',
         :target_ids => ["club-san-francisco"],
         :body => 'test body',
@@ -18,7 +18,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
   
   must 'be created even if :target_ids is a String' do
     mem = Message.create(
-      admin_mem, {
+      admin_member, {
         :owner_id => 'username-admin-member-1',
         :target_ids => "club-san-francisco",
         :body => 'test body',

@@ -62,6 +62,19 @@ class Clubs
     end
   end
 
+  def PUT_by_id filename
+    require_log_in! 
+    club_id = "club-#{filename}"
+    begin
+      club = Club.update(club_id, current_member, clean_room)
+      flash_msg.success = "Club has been updated."
+      redirect! club.href
+    rescue Club::Invalid
+      flash_msg.errors = $!.doc.errors
+      redirect! File.join(club.href, 'edit/')
+    end
+  end
+
   def GET_edit club_filename
     club = save_club_to_env(club_filename)
     require_log_in! :ADMIN, club.data.username_id

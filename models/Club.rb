@@ -61,14 +61,18 @@ class Club
   end
 
   def updator? editor
-    creator? editor
+    if editor.has_power_of?(:ADMIN) ||
+       editor.has_power_of?(data.owner_id)
+      return true
+    end
+    false
   end
 
   def self.update id, editor, new_raw_data # UPDATE
-    doc = new(id, editor, new_raw_data)
-    doc.ask_for :title
-    doc.save_update 
-    doc
+    doc = new(id, editor, new_raw_data) do
+      ask_for :title, :teaser
+      save_update 
+    end
   end
   
   def deletor? editor

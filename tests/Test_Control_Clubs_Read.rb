@@ -6,7 +6,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
   def create_club
     log_in_admin
     num=rand(1000)
-    Club.create(admin_mem, 
+    Club.create(admin_member, 
       :title=>"R2D2 #{num}", :filename=>"r2d2_#{num}", :teaser=>"Teaser for: R2D2 #{num}"
     )
   end

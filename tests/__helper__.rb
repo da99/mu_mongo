@@ -108,12 +108,12 @@ class Test::Unit::TestCase
   
   # === Custom Helpers ===
 
-  def self.admin_mem
-    @admin_mem ||= Member.by_id("member-admin-member-1")
+  def self.admin_member
+    @admin_member ||= Member.by_id("member-admin-member-1")
   end
 
   def self.admin_member
-    admin_mem
+    admin_member
   end
   
   def self.regular_members
@@ -144,12 +144,12 @@ class Test::Unit::TestCase
     ~
   end
 
-  def admin_mem
-    self.class.admin_mem
+  def admin_member
+    self.class.admin_member
   end
 
   def admin_username
-    self.class.admin_mem.data.lives.first.last[:username]
+    self.class.admin_member.data.lives.first.last[:username]
   end
 
   def admin_password
