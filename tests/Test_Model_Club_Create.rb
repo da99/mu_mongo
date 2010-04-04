@@ -29,11 +29,10 @@ class Test_Club_Create < Test::Unit::TestCase
   end
 
   must 'require a unique filename' do
-    old      = CouchDB_CONN.GET_by_view(:clubs, {:limit =>1})[:rows].first[:key]
-    filename = old.sub('club-', '')
+    filename = DB.collection('clubs').find({}, {:limit =>1})['_id']
     club = begin
              Club.create( admin_member,
-              {:filename=>filename, :title=>old, :teaser=>old} 
+              {:filename=>filename, :title=>'title', :teaser=>'teaser'} 
              )
            rescue Club::Invalid => e
              e.doc

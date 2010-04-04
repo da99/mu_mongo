@@ -49,7 +49,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
   end
 
   must 'require a unique username' do
-    username = CouchDB_CONN.GET_by_view(:member_usernames, {:limit=>1})[:rows].first[:key]
+    username = Member.db_collection.find_one!()['_id']
     doc = begin
             Member.create(nil, {:password => 'pass132pass',
                                 :confirm_password=>'pass132pass',

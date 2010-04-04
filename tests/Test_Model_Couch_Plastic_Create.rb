@@ -53,11 +53,13 @@ class Test_Couch_Plastic_Create < Test::Unit::TestCase
     big_body = "My body #{rand(1000)}"
     values   = {:title=>'My Title', :teaser=>'My Teaser', :body => "The Body", :big_body => big_body}
     doc      = Cafe_Le_Roger.create nil, values
-    new_doc  = CouchDB_CONN.GET(doc.data._id)
-    values.delete(:big_body)
-    values[:_id], values[:_rev], values[:data_model] = new_doc.values_at(:_id, :_rev, :data_model)
+    new_doc  = Cafe_Le_Roger.db_collection.find_one(:_id=>doc.data._id)
     
-    assert_equal values, new_doc
+    orig_keys = values.keys
+    orig_keys.delete(:big_body)
+    orig_keys = orig_keys + [:_id, :_rev, :data_model] 
+    
+    assert_equal orig_doc.keys.sort, new_doc.keys.sort
   end
   
 end # === class _create

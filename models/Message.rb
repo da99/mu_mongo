@@ -87,24 +87,7 @@ class Message
       ask_for :category, :privacy, :labels,
           :question, :emotion, :rating,
           :labels, :public_labels
-			new_data._id = "message-#{CouchDB_CONN.GET_psuedo_uuid}"
-      
-      save_create do |err|
-        case err
-        when Couch_Doc::HTTP_Error_409_Update_Conflict
-          psuedo = new_data._id
-          (0..99).to_a.detect { |i|
-            begin
-              new_data._id = "#{psuedo}-%02d" % i
-              save_create
-            rescue Couch_Doc::HTTP_Error_409_Update_Conflict
-              false
-            end
-          }
-        else
-          raise err
-        end
-      end
+      save_create 
     end
   end
 
@@ -129,31 +112,52 @@ class Message
 
   # ==== Accessors ====
 
-  def self.latest_by_club_id club_id, raw_params = {}
-    params = {:include_docs=>true, :descending=>true, :limit=>10, :startkey=>[club_id, {}], :endkey=>[club_id]}.update(raw_params)
-    CouchDB_CONN.GET_by_view(:messages_latest_by_club_id, params)
+  def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}
+    params = {:target_ids=>{:$id=>[club_id]}}
+    opts   = {:limit=>10, :sort=>[:_id=>:desc]}
+    db_collection.find params.update(raw_params), opts.update(raw_opts)
   end
 
-	def self.public raw_params = {}
-		params = {:include_docs=>true, :limit=>10}.update(raw_params)
-		rows = CouchDB_CONN.GET_by_view(:messages_public, params)
+	def self.public raw_params = {}, opts = {}
+		opts = {:limit=>10}
+		db_collection.find params.update(raw_params), opts.update(raw_params)
 	end
 
-  def self.public_labels
-    rows = CouchDB_CONN.GET_by_view(:messages_public_labels, :reduce=>true, :group=>true)[:rows]
-    rows.map { |r| 
-      r[:key]
-    }
+  def self.public_labels target_ids = nil
+    m = %~
+      function () {
+          for (var i in this.target_ids) {
+              emit(this.target_ids[i], {total:1});
+          }
+      }    
+    ~
+    r = %~
+      function (key, value) {
+          var sum = 0;
+          value.forEach(function (doc) {sum += doc.total;});
+          return {total:sum};
+      }
+    ~
+    opts = if target_ids
+             { :query => { :target_ids=> { :$in=>target_ids}} }
+           else
+             nil
+           end
+    db_collection.map_reduce(m, r,  :query=>query ).find_().to_a.keys
   end
 
   def self.by_public_label label, raw_params={}
-    params = {:include_docs=>true, :key=>label}.update(raw_params)
-    CouchDB_CONN.GET_by_view(:messages_by_public_label, params)
+    params = { :public_labels => {:$in=>[label]} }.update(raw_params)
+    db_collection.find params
   end
 
-  def self.by_club_id_and_public_label club_id, label, raw_params = {}
-    params = {:include_docs=>true, :descending=>true, :startkey=>[club_id, label, {}], :endkey=>[club_id, label]}.update(raw_params)
-    CouchDB_CONN.GET_by_view(:messages_by_club_id_and_public_label, params)
+  def self.by_club_id_and_public_label club_id, label, raw_params = {}, opts={}
+    params = Hash.new( 
+              :target_ids    => {:$in=>[club_id]},
+              :public_labels => {:$in=>[label].flatten}
+             ).update(raw_params)
+    opts = {:sort=>[:_id, :desc]}.update(raw_opts)
+    db_collection.find params
   end
 
   def self.by_published_at *args
@@ -178,32 +182,22 @@ class Message
         raise ArgumentError, "Unknown argument list: #{args.inspect}"
       end
       time_format = '%Y-%m-%d %H:%M:%S'
-      raw_params = { 
-        :startkey => Time.utc(start_year, start_month).strftime(time_format), 
-        :endkey => Time.utc(end_year, end_month).strftime(time_format) 
-      }
-
+      start_tm = Time.utc(start_year, start_month).strftime(time_format),
+      end_tm   = Time.utc(end_year, end_month).strftime(time_format)
     end
     # time_format = '%Y-%m-%d %H:%M:%S'
     # dt = Time.now.utc
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
-    params = {:include_docs =>true}.update(raw_params)
-    CouchDB_CONN.GET_by_view(:messages_by_published_at, params)
+    params = {:_id=>{'$gt'=>start_tm,'$lt'=>end_tm}}.update(raw_params)
+    db_collection.find(params).to_a
   end
 
-  def self.by_club_id_and_published_at raw_params = {}
-    club = raw_params.delete(:club) || {}
-    if club.is_a?(String)
-      club = "club-#{club.sub('club-', '')}"
-    end
-    params = { :startkey => [club],  
-               :endkey   => [club, {}], 
-               :include_docs => true
-    }.update(raw_params)
-    CouchDB_CONN.GET_by_view( :messages_by_club_id_and_published_at, params ).map { |post|
-      post[:doc]
-    }
+  def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}
+    db_collection.find(
+      :target_ids=>{'$in'=>[Club.filename_to_id(club_id)]},
+      opts
+    )
   end
 
   # ==== Accessors =====================================================

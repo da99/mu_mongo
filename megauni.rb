@@ -45,33 +45,21 @@ end # === class
 
 # === DB urls/connections ===
 
-require 'models/Couch_Doc'
+require 'models/Couch_Plastic'
 
 case ENV['RACK_ENV']
   
   when 'test'
-    CouchDB_CONN = Couch_Doc.new(
-      # "https://da01tv:isleparadise4vr@localhost",
-      'http://localhost:5984',
-      'megauni-test' 
-    )
+    DB_CONN = Mongo::Connection.new
+    DB = DB_CONN.db("megauni_test")
     
   when 'development'
-    CouchDB_CONN = Couch_Doc.new(
-      # "https://da01tv:isleparadise4vr@localhost",
-      'http://localhost:5984',
-      'megauni-dev' 
-    )
+    DB_CONN = Mongo::Connection.new
+    DB = DB_CONN.db("megauni_dev")
 
   when 'production'
-    # CouchDB_CONN = Couch_Doc.new(
-    #   "http://miniuni:gkz260cyxk@miniuni.cloudant.com:5984",
-    #   'megauni_stage' 
-    # )
-    CouchDB_CONN = Couch_Doc.new(
-      "http://127.0.0.1:5984",
-      'megauni_stage' 
-    )
+    DB_CONN = Mongo::Connection.new
+    DB = DB_CONN.db("megauni_stage")
 
   else
     raise ArgumentError, "Unknown RACK_ENV value: #{ENV['RACK_ENV'].inspect}"
@@ -89,6 +77,6 @@ require_these 'models', %w{
 }     
 
 
-CouchDB_CONN.create_or_update_design
+DB.ensure_indexes()
 
 

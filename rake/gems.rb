@@ -12,14 +12,14 @@ namespace :gem do
   desc 'Installs a gem for the development environment. Uses ENV["cmd"]'
   task :development_install do
     ENV['env'] = 'development'
-    Rake::Task['gem:install']
+    Rake::Task['gem:install'].invoke
   end
 
   
   desc 'It install a gem for the production environment. Uses ENV["cmd"]'
   task :production_install do
     ENV['env'] = 'production'
-    Rake::Task['gem:install']
+    Rake::Task['gem:install'].invoke
   end
 
     
@@ -29,7 +29,8 @@ namespace :gem do
     cmd = ENV['cmd']
     env = ENV['env']
     
-    assert_included %w{production development}, env
+    raise "Invalid environment: #{cmd}" unless %w{production development}.include?(env)
+    
     command = assert_not_empty(cmd)
 
     puts_white "Installing: #{command}"

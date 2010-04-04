@@ -2,6 +2,7 @@
 class Club
 
   include Couch_Plastic
+  DB_Coll = DB.collection('Clubs')
 
   enable_created_at
 
@@ -49,7 +50,7 @@ class Club
       demand :owner_id, :username_id, :filename, :title, :teaser
       ask_for_or_default :lang
       save_create { |err| 
-        if err.is_a? Couch_Doc::HTTP_Error_409_Update_Conflict
+        if err.is_a? Couch_Plastic::HTTP_Error_409_Update_Conflict
           errors << "Filename already taken: #{cleanest(:filename)}"
         end    
       }
@@ -82,18 +83,12 @@ class Club
   # ======== Accessors ======== 
 
   def self.all raw_params = {}
-    params = {:include_docs=>true}.update(raw_params)
-    raw = CouchDB_CONN.GET_by_view :clubs, params
-    raw.map { |r| r[:doc] }
+    defaults = {}
+    DB_Coll.find(defaults.update(raw_params)).to_a
   end
 
   def self.all_filenames 
-    CouchDB_CONN.GET_by_view(:clubs).map { |r| r[:key] }
-  end
-
-  def news raw_params = {}
-    params = {:limit=>10, :descending=>true}.update(raw_params)
-    News.by_club(self.data.filename, params )
+    DB_Coll.find().map {|r| r['filename']}
   end
 
   def href 

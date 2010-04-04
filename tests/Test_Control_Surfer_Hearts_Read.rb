@@ -64,7 +64,7 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
     err= begin
       get "/heart_link/1000000/"
       follow_redirect!
-    rescue Couch_Doc::Not_Found => e
+    rescue Couch_Plastic::Not_Found => e
       e
     end
     assert_match( /No document found for.+message-1000000/, err.message )

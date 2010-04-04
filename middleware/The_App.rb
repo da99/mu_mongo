@@ -55,7 +55,7 @@ class The_App
         the_app.send( "#{http_method}_#{action_name}", *args)
       end
     rescue The_App::Redirect
-    rescue Couch_Doc::Not_Found
+    rescue Couch_Plastic::Not_Found
       if The_App.production?
         raise The_App::HTTP_404, new_env['PATH_INFO']
       else

@@ -51,43 +51,47 @@ class Member
         perm_level.to_s['member-'] 
   end
 
+  def self.db_collection
+    DB.collection('Members')
+  end
+  
+  def self.db_collection_member_reserved_usernames
+    DB.collection('Member_Reserved_Usernames')
+  end
+
+  def self.db_collection_member_usernames
+    DB.collection('Member_Usernames')
+  end
+
+  def self.db_collection_member_failed_attempts
+    DB.collection('Member_Failed_Attempts')
+  end
+
+  def self.db_collection_member_password_resets
+    DB.collection('Member_Password_Resets')
+  end
+
   # ==== Getters =====================================================    
   
   def self.by_username raw_username
     username = raw_username.to_s.strip
     if username.empty?
-      raise Couch_Doc::Not_Found, "Member: #{raw_username.inspect}"
+      raise Couch_Plastic::Not_Found, "Member: #{raw_username.inspect}"
     end
-    doc = CouchDB_CONN.GET_by_view( :member_usernames, 
-                  :key=>username, 
-                  :limit=>1, 
-                  :include_docs=>true
-    )
-    Member.new(doc[:doc])
+    doc = db_collection_member_usernames.find_one( :_id =>"club-#{username}")
+    Member.new(doc)
   end
 
   def self.GET_failed_attempts_for_today mem
 
-    CouchDB_CONN.GET_by_view(
-      :member_failed_attempts, 
-      {:startkey => [mem.data._id, Couch_Plastic.utc_date_now],
-       :endkey   => [mem.data._id, Couch_Plastic.utc_string(Time.now.utc + (60*60*24)).split(' ').first ]
-      }
-    )[:rows]
+    db_collection_member_failed_attempts.find( 
+       :member_id => mem.data._id,  
+       :_id => { '<=' => Couch_Plastic.utc_date_now,
+                 '>=' => Couch_Plastic.utc_string(Time.now.utc + (60*60*24)).split(' ').first 
+       }
+    )
       
   end
-  
-  # def self.GET_old_failed_attempts mem
-
-  #   start_date = Couch_Plastic.utc_string(Time.now.utc - (60*60*24*2))
-  #   CouchDB_CONN.GET_by_view(
-  #     :member_failed_attempts, 
-  #     {:startkey => "#{Couch_Plastic.utc_string(Time.now.utc + (60*60*24*2))}-#{mem.data._id}",
-  #      :include_docs => true
-  #     }
-  #   ).map { |row| row[:doc] }
-  #     
-  # end
   
   # Based on Sinatra-authentication (on github).
   # 
@@ -114,9 +118,9 @@ class Member
     # Check for Password_Reset
     pass_reset_id = "#{mem.data._id}-password-reset"
     begin
-      CouchDB_CONN.GET(pass_reset_id)
+      db_collection_member_password_resets.find_one(:_id=>pass_reset_id)
       raise Password_Reset, mem.inspect
-    rescue Couch_Doc::Not_Found
+    rescue Couch_Plastic::Not_Found
       nil
     end
 
@@ -129,27 +133,20 @@ class Member
     new_count  = fail_count + 1
     
     # Insert failed password.
-    CouchDB_CONN.PUT(
-      "#{Couch_Plastic.utc_date_now}-#{mem.data._id}-failed-attempt-#{Time.now.utc.to_i}-#{new_count}", 
-      { :data_model => 'Member_Failed_Attempt',
-        :count      => new_count, 
-        :member_id  => mem.data._id, 
-        :date       => Couch_Plastic.utc_date_now, 
-        :time       => Couch_Plastic.utc_time_now,
-        :ip_address => ip_addr,
-        :user_agent => user_agent
-      }
+    db_collection_member_failed_attempts.insert(
+      :data_model => 'Member_Failed_Attempt',
+      :count      => new_count, 
+      :member_id  => mem.data._id, 
+      :date       => Couch_Plastic.utc_date_now, 
+      :time       => Couch_Plastic.utc_time_now,
+      :ip_address => ip_addr,
+      :user_agent => user_agent
+      :_id => "#{Couch_Plastic.utc_date_now}-#{mem.data._id}-failed-attempt-#{Time.now.utc.to_i}-#{new_count}" 
     )
-    
-    # Delete old failed attempts.
-    # old_docs = Member.GET_old_failed_attempts(mem)
-    # if not old_docs.empty?
-    #   CouchDB_CONN.bulk_DELETE( old_docs )
-    # end
 
     # Raise Account::Reset if necessary.
     if new_count > 2
-      CouchDB_CONN.PUT(pass_reset_id,  :time=>Couch_Plastic.utc_now )
+      db_collection_member_password_results(:_id=>pass_reset_id,  :time=>Couch_Plastic.utc_now )
       raise Password_Reset, mem.inspect
     end
 
@@ -165,17 +162,14 @@ class Member
 
   def self.create editor, raw_raw_data # CREATE
     d = new(nil, editor, raw_raw_data) do
-      new_data._id            = "member-#{CouchDB_CONN.GET_uuid}"
       new_data.security_level = Member::MEMBER
       ask_for :avatar_link, :email
       demand  :add_life, :password
       save_create 
-      CouchDB_CONN.PUT(
-        "member-life-friends-#{data._id}",
-        :data_model => 'Member_Life', 
+      db_collection_member_usernames.insert(
+        :data_model => 'Member_Username', 
         :username   => clean_data[:username],  
-        :title      => 'Friends',
-        :category   => 'casual'
+        :owner_id   => data._id
       )
     end
   end
@@ -385,7 +379,7 @@ class Member
     if errors.empty?
       begin
         reserve_username( cleanest :add_life_username  )
-      rescue Couch_Doc::HTTP_Error_409_Update_Conflict
+      rescue Couch_Plastic::HTTP_Error_409_Update_Conflict
         errors << "Username already taken: #{cleanest(:add_life_username)}"
       end
     end
@@ -395,17 +389,11 @@ class Member
   private # ==================================================
 
 	def reserve_username new_un
-		this_id = if new?
-								if new_data._id
-									new_data._id
-								else
-									new_data._id = Couch_Doc.GET_uuid
-								end
-							else
-								_id
-							end
-		doc_id = 'username-' + new_un
-		CouchDB_CONN.PUT( doc_id,  {:member_id => this_id, :username => new_un, :data_model => 'Reserved_Username'} )
+		id = new_un.to_s
+		db_collection_reserved_usernames( 
+        :_id => id, 
+        :data_model => 'Member_Reserved_Username' 
+    )
 	end
 
   def add_to_history(hash)

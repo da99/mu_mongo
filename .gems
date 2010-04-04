@@ -8,3 +8,5 @@ pow --version '>=0.2.2'
 dejan-auto_html --source http://gems.github.com/
 mustache
 json
+mongo
+mongo_ext
