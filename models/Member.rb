@@ -4,20 +4,68 @@ class Member
 
   include Couch_Plastic
 
+  def self.db_collection
+    @coll ||= DB.collection('Members')
+  end
+
   enable_timestamps
   
-  allow_proto_fields :add_life, :add_life_username,
-                     :update_life, :update_life_username,
-                     :password, :confirm_password
+  psuedo_fields :add_username,
+                :update_username,
+                :password, 
+                :confirm_password
 
-  allow_fields :lives, 
-               :data_model, 
-               :hashed_password, 
-               :salt,
-               :security_level,
-							 :lang
-							 
+  [ 
+    :data_model, 
+    :hashed_password, 
+    :salt,
+    :security_level,
+    :lang ].each { |f| make f, :not_empty}
+               
 
+  make :security_level, [:in_array, Security_Levels]
+  
+  make :email, 
+    :string, 
+    [:stripped, /[^a-z0-9\.\-\_\+\@]/i ],
+    [:match, /\A[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]\Z/ ],
+    [:min, 6],
+    [:equal, lambda { raw_data[:email] } ],
+    [:error_msg, 'Email has invalid characters.']
+
+  make :add_life_username, 
+    # Delete invalid characters and 
+    # reduce any suspicious characters. 
+    # '..*' becomes '.', '--' becomes '-'
+    [:stripped, /[^a-z0-9]{1,}/i, lambda { |s|
+        if ['_', '.', '-'].include?( s[0,1] )
+          s[0,1]
+        else
+          ''
+        end
+      }], 
+     [:min, 2, 'Username is too small. It must be at least 2 characters long.'],
+     [:max, 20, 'Username is too large. The maximum limit is: 20 characters.'],
+     [:not_match, /[^a-zA-Z0-9\.\_\-]/, 'Username can only contain the follow characters: A-Z a-z 0-9 . _ -']
+  
+  make :password, 
+      :stripped,
+      [:min, 5],
+      [:equal, lambda { doc.raw_data[:confirm_password] }, 'Password and password confirmation do not match.' ],
+      [:match, /[0-9]/, 'Password must have at least one number' ],
+      [:if_valid, lambda {
+          new_data.salt = begin
+                            # Salt and encrypt values.
+                            chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                            (1..10).inject('') { |new_pass, i|  
+                              new_pass += chars[rand(chars.size-1)] 
+                              new_pass
+                            }
+                          end
+
+          new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
+      }]
+      
   # =========================================================
   #                     CONSTANTS
   # =========================================================  
@@ -33,12 +81,6 @@ class Member
   
   EMAIL_FINDER        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
   VALID_EMAIL_FORMAT  = /\A#{EMAIL_FINDER}\z/
-  LIVES = %w{
-      friend
-      work
-      family
-      pet-owner
-  }.freeze
 
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
@@ -50,47 +92,40 @@ class Member
       perm_level.to_s['username-'] ||
         perm_level.to_s['member-'] 
   end
-
-  def self.db_collection
-    DB.collection('Members')
-  end
   
-  def self.db_collection_member_reserved_usernames
-    DB.collection('Member_Reserved_Usernames')
+  def self.db_collection_usernames
+    @coll_usernames ||= DB.collection('Member_Usernames')
   end
 
-  def self.db_collection_member_usernames
-    DB.collection('Member_Usernames')
+  def self.db_collection_failed_attempts
+    @coll_failed_attempts ||= DB.collection('Member_Failed_Attempts')
   end
 
-  def self.db_collection_member_failed_attempts
-    DB.collection('Member_Failed_Attempts')
-  end
-
-  def self.db_collection_member_password_resets
-    DB.collection('Member_Password_Resets')
+  def self.db_collection_password_resets
+    @coll_password_resets ||= DB.collection('Member_Password_Resets')
   end
 
   # ==== Getters =====================================================    
   
   def self.by_username raw_username
     username = raw_username.to_s.strip
-    if username.empty?
-      raise Couch_Plastic::Not_Found, "Member: #{raw_username.inspect}"
+    doc = db_collection_usernames.find_one( :_id => username )
+    if doc && !username.empty?
+      Member.new(doc['owner_id'])
+    else
+      raise Couch_Plastic::Not_Found, "Member Username: #{username.inspect}"
     end
-    doc = db_collection_member_usernames.find_one( :_id =>"club-#{username}")
-    Member.new(doc)
   end
 
-  def self.GET_failed_attempts_for_today mem
+  def self.failed_attempts_for_today mem, &blok
 
-    db_collection_member_failed_attempts.find( 
-       :member_id => mem.data._id,  
-       :_id => { '<=' => Couch_Plastic.utc_date_now,
-                 '>=' => Couch_Plastic.utc_string(Time.now.utc + (60*60*24)).split(' ').first 
-       }
+    db_collection_failed_attempts.find( 
+       :owner_id => mem.data._id,  
+       :_id => { :$lt => Couch_Plastic.utc_date_now,
+                 :$gte => Couch_Plastic.utc_string(Time.now.utc - (60*60*24))
+       },
+       &blok
     )
-      
   end
   
   # Based on Sinatra-authentication (on github).
@@ -118,7 +153,7 @@ class Member
     # Check for Password_Reset
     pass_reset_id = "#{mem.data._id}-password-reset"
     begin
-      db_collection_member_password_resets.find_one(:_id=>pass_reset_id)
+      db_collection_password_resets.find_one(:_id=>pass_reset_id)
       raise Password_Reset, mem.inspect
     rescue Couch_Plastic::Not_Found
       nil
@@ -129,24 +164,21 @@ class Member
     return mem if correct_password
 
     # Grab failed attempt count.
-    fail_count = Member.GET_failed_attempts_for_today(mem).size
+    fail_count = Member.failed_attempts_for_today(mem).count
     new_count  = fail_count + 1
     
     # Insert failed password.
-    db_collection_member_failed_attempts.insert(
+    db_collection_failed_attempts.insert(
       :data_model => 'Member_Failed_Attempt',
-      :count      => new_count, 
-      :member_id  => mem.data._id, 
+      :owner_id   => mem.data._id, 
       :date       => Couch_Plastic.utc_date_now, 
       :time       => Couch_Plastic.utc_time_now,
       :ip_address => ip_addr,
       :user_agent => user_agent
-      :_id => "#{Couch_Plastic.utc_date_now}-#{mem.data._id}-failed-attempt-#{Time.now.utc.to_i}-#{new_count}" 
     )
 
     # Raise Account::Reset if necessary.
     if new_count > 2
-      db_collection_member_password_results(:_id=>pass_reset_id,  :time=>Couch_Plastic.utc_now )
       raise Password_Reset, mem.inspect
     end
 
@@ -166,8 +198,7 @@ class Member
       ask_for :avatar_link, :email
       demand  :add_life, :password
       save_create 
-      db_collection_member_usernames.insert(
-        :data_model => 'Member_Username', 
+      db_collection_usernames.insert(
         :username   => clean_data[:username],  
         :owner_id   => data._id
       )
@@ -223,12 +254,20 @@ class Member
   end
   
   def usernames
-    assoc_cache[:usernames] ||= data.lives.values.map { |l| l[:username]}
+    assoc_cache[:usernames] ||= begin
+      self.db_collection_usernames.find(:owner_id=>data._id).map { |un|
+        un['username']
+      }
+    end
   end
 
-	def username_ids
-		assoc_cache[:username_ids] ||= usernames.map {|un| "username-#{un}"}
-	end
+  def username_ids
+    assoc_cache[:username_ids] ||= begin
+                                     self.db_collection_usernames.find(:owner_id=>data._id).map { |un|
+                                       un['_id']
+                                     }
+                                   end
+  end
 
   def human_field_name col
     case col
@@ -243,17 +282,13 @@ class Member
 
     return true if raw_level == self
     
-    target_level = raw_level.to_s
-    if target_level['username-'] 
-      return true if usernames.include?(target_level.sub('username-',''))
-      return false
-    end
-    
-    if target_level['member-'] 
-      return true if data._id === target_level
-      return false
+    if raw_level.is_a?(String)  
+      return true if usernames.include?(raw_level)
+      return true if data._id === raw_level
+      return true if username_ids.include?(raw_level)
     end
 
+    target_level = raw_level.to_s
     if !self.class.valid_security_level?(target_level)
       raise Invalid_Security_Level, raw_level.inspect
     end
@@ -281,132 +316,7 @@ class Member
   
   # ==== Validators =====================================================
 
-  def password_validator
-
-    must_be {
-			stripped
-      min_size 5
-      equal doc.raw_data[:confirm_password], 'Password and password confirmation do not match.'
-      match( /[0-9]/, 'Password must have at least one number' )
-    }
-    
-    if errors.empty?
-      new_data.salt = begin
-                        # Salt and encrypt values.
-                        chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                        (1..10).inject('') { |new_pass, i|  
-                          new_pass += chars[rand(chars.size-1)] 
-                          new_pass
-                        }
-                      end
-
-      new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
-    end
-  end
   
-  def security_level_validator 
-    must_be! { 
-      in_array Security_Levels 
-    }
-  end # === def set_security_level
-  
- 
-  def email_validator  
-
-    valid_email_chars   = /\A[a-zA-Z0-9\.\-\_\+\@]{8,}\z/
-    email_finder        = /[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]/
-    valid_email_format  = /\A#{email_finder}\z/
-
-    must_be {
-      string
-      stripped(  /[^a-z0-9\.\-\_\+\@]/i  )
-      min_size 6
-      equal raw_data[:email], 'Email has invalid characters.'
-      
-    }
-  
-  end # === def email=
-  
-  def add_life_validator 
-    
-    must_be! {
-      in_array Member::LIVES
-    }
-      
-    if new?
-      new_data.lives = {}
-    else
-      must_be! {
-        not_in_array doc.data.lives.keys
-      }
-    end
-    
-    new_data.lives[cleanest(:add_life)] ||={}
-    
-    add_life_username_validator
-
-  end # ======== validator :add_life
-  
-  def add_life_username_validator
-
-    must_be {
-
-      # Delete invalid characters and 
-      # reduce any suspicious characters. 
-      # '..*' becomes '.', '--' becomes '-'
-      stripped(/[^a-z0-9]{1,}/i) { |s|
-        if ['_', '.', '-'].include?( s[0,1] )
-          s[0,1]
-        else
-          ''
-        end
-      }
-      
-      min_size 2,  'Username is too small. It must be at least 2 characters long.'
-			max_size 20, 'Username is too large. The maximum limit is: 20 characters.'
-			
-      not_match( 
-        /[^a-zA-Z0-9\.\_\-]/, 
-        'Username can only contain the follow characters: A-Z a-z 0-9 . _ -' 
-      ) 
-
-    } 
-
-    new_data.lives ||= {}
-    new_data.lives[cleanest(:add_life)] ||= {}
-    new_data.lives[cleanest(:add_life)][:username] = cleanest(:add_life_username)
-    
-    if errors.empty?
-      begin
-        reserve_username( cleanest :add_life_username  )
-      rescue Couch_Plastic::HTTP_Error_409_Update_Conflict
-        errors << "Username already taken: #{cleanest(:add_life_username)}"
-      end
-    end
-
-  end # validator :add_life_username
-
-  private # ==================================================
-
-	def reserve_username new_un
-		id = new_un.to_s
-		db_collection_reserved_usernames( 
-        :_id => id, 
-        :data_model => 'Member_Reserved_Username' 
-    )
-	end
-
-  def add_to_history(hash)
-    if !hash.is_a?(Hash)
-      raise ArgumentError, "Only Hash object is allowed."
-    end
-
-    hash[:timestamp] = Time.now.utc.strftime(Time_Format) 
-
-    self.new_data.history ||= self.history
-    self.history << hash
-  end
-
 end # === model Member
 
 

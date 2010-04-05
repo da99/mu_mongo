@@ -11,11 +11,11 @@ class Hellos_list < Base_View
   end
 
   def meta_description
-    The_App::Options::SITE_TAG_LINE
+    The_App::SITE_TAG_LINE
   end
 
   def meta_keywords
-    The_App::Options::SITE_KEYWORDS
+    'lots of clubs'
   end
 
   def site_tag_line

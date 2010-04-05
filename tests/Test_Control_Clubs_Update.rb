@@ -19,9 +19,11 @@ class Test_Control_Clubs_Update < Test::Unit::TestCase
   must 'not allow non-owners' do
     club = create_club(regular_member_1)
     log_in_regular_member_2
-    assert_raise(Couch_Plastic::Unauthorized_Updator) do
+    err = assert_raise(Couch_Plastic::Unauthorized) do
       put club.href, :title=>'new-hearts'
     end
+
+    assert_match( /\ACreator: /, err.message )
   end
 
   must 'allow Admins' do

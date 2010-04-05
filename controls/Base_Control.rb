@@ -49,7 +49,7 @@ module Base_Control
     @clean_room ||= begin
                         data = {}
                         request.params.each { |k,v| 
-                          data[k] = case v
+                          data[k.to_sym] = case v
                           when String
                             temp = v.strip
                             temp.empty? ? nil : temp
@@ -61,7 +61,6 @@ module Base_Control
                             raise "Unknown class: #{v.inspect} for #{k.inspect} in #{request.params.inspect}"
                           end
                         }
-                        data.symbolize_keys
                       end
   end
 

@@ -191,11 +191,11 @@ class Base_View < Mustache
 	end
 
   def site_domain
-    The_App::Options::SITE_DOMAIN
+    The_App::SITE_DOMAIN
   end
 
   def site_url
-    The_App::Options::SITE_URL
+    The_App::SITE_URL
   end
   
   def js_epoch_time raw_i = nil
@@ -258,7 +258,7 @@ class Base_View < Mustache
   end
 
   def site_title
-    The_App::Options::SITE_TITLE
+    The_App::SITE_TITLE
   end
 
   

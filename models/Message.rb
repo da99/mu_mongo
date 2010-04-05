@@ -6,76 +6,23 @@ class Message
 
   enable_timestamps
   
-  allow_fields :rating
-
-	allow_field :privacy do
-		must_be { in_array(['private', 'public', 'friends_only']) }
-	end
-
-  allow_field :owner_id do
-    must_be { 
-			not_empty 
-			in_array( doc.manipulator.username_ids )
-		}
-  end
-
-  allow_field :target_ids do
-    sanitize {
-      if is_a?(String)
-        split_and_flatten 
-      else
-        self
-      end
-    }
-    must_be { 
-      array
-    }
-  end
-
+  make :rating, :not_empty
+	make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
+  make :owner_id, :not_empty, [:in_array, lambda {doc.manipulator.username_ids} ]
+  make :target_ids, :split_and_flatten, :array
   make :body, :not_empty
-
-  allow_field :emotion do 
-    must_be { not_empty }
-  end
-
-  allow_field :category do
-    must_be { not_empty }
-  end
-
-  allow_field :labels do
-    sanitize {
-      split_and_flatten
-    }
-    must_be { array }
-  end
-
-  allow_field :public_labels do
-    sanitize {
-      split_and_flatten
-    }
-    must_be { array }
-  end
-
-  allow_field :title do
-    must_be { anything }
-  end # === 
-
-  allow_field :teaser do
-    accept_anything
-  end # ===
-
-  allow_field :published_at do
-    must_be {
-      datetime_or_now
-    }
-  end
+  make :emotion, :not_empty
+  make :category, :not_empty
+  make :labels, :split_and_flatten, :array
+  make :public_labels, :split_and_flatten, :array
+  make :title, :anything
+  make :teaser, :anything
+  make :published_at, :datetime_or_now
 
   # ==== Authorizations ====
  
   def creator? editor # NEW, CREATE
-    # return false if !editor
     editor.has_power_of? :MEMBER
-    # editor.has_power_of? :ADMIN
   end
 
   def self.create editor, raw_data
@@ -101,7 +48,8 @@ class Message
 
   def self.update id, editor, new_raw_data
     doc = new(id, editor, new_raw_data) do
-      ask_for :title, :body, :teaser, :public_labels, :private_labels, :published_at, :tags
+      ask_for :title, :body, :teaser, :public_labels, 
+				:private_labels, :published_at, :tags
       save_update
     end
   end
@@ -112,15 +60,22 @@ class Message
 
   # ==== Accessors ====
 
-  def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}
+  def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
     params = {:target_ids=>{:$id=>[club_id]}}
     opts   = {:limit=>10, :sort=>[:_id=>:desc]}
-    db_collection.find params.update(raw_params), opts.update(raw_opts)
+    db_collection.find(
+			params.update(raw_params), 
+			opts.update(raw_opts),
+			&blok
+		)
   end
 
-	def self.public raw_params = {}, opts = {}
+	def self.public raw_params = {}, opts = {}, &blok
 		opts = {:limit=>10}
-		db_collection.find params.update(raw_params), opts.update(raw_params)
+		db_collection.find(
+			params.update(raw_params), opts.update(raw_params),
+			&blok
+		)
 	end
 
   def self.public_labels target_ids = nil
@@ -146,21 +101,21 @@ class Message
     db_collection.map_reduce(m, r,  :query=>query ).find_().to_a.keys
   end
 
-  def self.by_public_label label, raw_params={}
+  def self.by_public_label label, raw_params={}, &blok
     params = { :public_labels => {:$in=>[label]} }.update(raw_params)
-    db_collection.find params
+    db_collection.find( params, &blok )
   end
 
-  def self.by_club_id_and_public_label club_id, label, raw_params = {}, opts={}
+  def self.by_club_id_and_public_label club_id, label, raw_params = {}, opts={}, &blok
     params = Hash.new( 
               :target_ids    => {:$in=>[club_id]},
               :public_labels => {:$in=>[label].flatten}
              ).update(raw_params)
     opts = {:sort=>[:_id, :desc]}.update(raw_opts)
-    db_collection.find params
+    db_collection.find(params, &blok)
   end
 
-  def self.by_published_at *args
+  def self.by_published_at *args, &blok
     if args.size === 1
       raw_params=args.first
     else
@@ -190,13 +145,14 @@ class Message
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
     params = {:_id=>{'$gt'=>start_tm,'$lt'=>end_tm}}.update(raw_params)
-    db_collection.find(params).to_a
+    db_collection.find(params, &blok )
   end
 
-  def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}
+  def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}, &blok
     db_collection.find(
       :target_ids=>{'$in'=>[Club.filename_to_id(club_id)]},
-      opts
+      opts, 
+			&blok
     )
   end
 

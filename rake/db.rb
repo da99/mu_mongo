@@ -16,7 +16,7 @@ namespace :db do
     
     puts_white "Deleted: #{DB.name}"
 
-    Couch_Plastic.create_indexes
+    Couch_Plastic.ensure_indexes
     puts_white "Created indexes."
 
     # Grab some sample data
@@ -72,7 +72,7 @@ namespace :db do
   task :reset_design_doc do
     ENV['RACK_ENV'] ||= 'development'
     require File.basename(File.expand_path('.'))
-    Couch_Plastic.create_indexes
+    Couch_Plastic.ensure_indexes
     puts_white "Updated indexes."
   end
   

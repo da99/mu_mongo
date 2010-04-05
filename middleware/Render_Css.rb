@@ -56,8 +56,8 @@ class Render_Css
 
 	def initialize new_app
 		@app = new_app
-		langs = The_App::Options::LANGUAGES.join('|')
-		@css_regexp = %r!/stylesheets/(#{langs})/([a-zA-Z0-9\_]+)\.css!
+    @langs = eval(File.read(File.expand_path("./helpers/langs_hash.rb"))).keys
+		@css_regexp = %r!/stylesheets/(#{@langs.join('|')})/([a-zA-Z0-9\_]+)\.css!
 	end
 
 

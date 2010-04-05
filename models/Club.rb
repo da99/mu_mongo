@@ -2,37 +2,24 @@
 class Club
 
   include Couch_Plastic
-  DB_Coll = DB.collection('Clubs')
+
+	def self.db_collection
+		DB.collection('Clubs')
+	end
 
   enable_created_at
 
-  allow_field(:owner_id) {
-    must_be {
-      not_empty
-    }
-  }
+  make :owner_id, :not_empty
 
-  allow_field(:username_id) {
-    must_be {
-      in_array(doc.manipulator.usernames.map {|u| "username-#{u}"} )
-    }
-  }
+  make :username_id, [:in_array, lambda { doc.manipulator.username_ids }]
 
-  allow_field(:filename) {
-    must_be { 
-      stripped( /[^a-zA-Z0-9\_\-\+]/ )
-      not_empty 
-    }
-    new_clean_value :_id, "club-#{cleanest(:filename)}"
-  }
+  make :filename, 
+		   [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
+			 :not_empty
 
-  allow_field(:title) {
-    must_be { not_empty }
-  }
+  make :title, :not_empty
 
-  allow_field(:teaser) {
-    must_be { not_empty }
-  }
+  make :teaser, :not_empty
   
   # ======== Authorizations ======== 
 
@@ -82,17 +69,16 @@ class Club
 
   # ======== Accessors ======== 
 
-  def self.all raw_params = {}
-    defaults = {}
-    DB_Coll.find(defaults.update(raw_params)).to_a
+  def self.all raw_params = {}, &blok
+    db_collection.find( raw_params, &blok)
   end
 
   def self.all_filenames 
-    DB_Coll.find().map {|r| r['filename']}
+    db_collection.find().map {|r| r['filename']}
   end
 
   def href 
-    @assoc_cache[:href] = "/clubs/#{data._id.gsub('club-', '')}/"
+    cache[:href] = "/clubs/#{data.filename}/"
   end
 
 end # === Club

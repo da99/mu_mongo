@@ -60,7 +60,7 @@ class Test_Model_Member_Read < Test::Unit::TestCase
       rescue Member::Password_Reset
       end
 
-      assert_equal( i, Member.GET_failed_attempts_for_today(mem).size )
+      assert_equal( i, Member.failed_attempts_for_today(mem).count )
     end
   end
 
@@ -74,7 +74,7 @@ class Test_Model_Member_Read < Test::Unit::TestCase
       end
     end
 
-    assert_equal( 3, Member.GET_failed_attempts_for_today(mem).size )
+    assert_equal( 3, Member.failed_attempts_for_today(mem).size )
   end
 
 end # === class Member_Read

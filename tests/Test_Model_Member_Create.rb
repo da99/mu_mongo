@@ -13,14 +13,15 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     end
   end
 
-  must 'raise Unauthorized_Creator if editor is not nil' do
-    assert_raise( Member::Unauthorized_Creator ) do
+  must 'raise Unauthorized if editor is not nil' do
+    err = assert_raise( Member::Unauthorized ) do
       Member.create( 
         Member.new, 
         {:password=>'pass12pass', :confirm_password=>'pass12pass', 
          :add_life=>'friend', :add_life_username=>random_username}
       )
     end
+    assert_match( /\ACreator: /, err.message )
   end
 
   must 'require a password' do
@@ -49,7 +50,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
   end
 
   must 'require a unique username' do
-    username = Member.db_collection.find_one!()['_id']
+    username = Member.db_collection.find_one()['_id']
     doc = begin
             Member.create(nil, {:password => 'pass132pass',
                                 :confirm_password=>'pass132pass',

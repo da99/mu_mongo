@@ -1,3 +1,6 @@
+# === Important Gems ===
+# require 'multibyte'
+require 'cgi' # Don't use URI.escape because it does not escape all invalid characters.
 require 'htmlentities'
 require 'loofah'
 
