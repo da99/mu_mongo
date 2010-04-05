@@ -1,5 +1,19 @@
 require 'views/Base_View'
 
+
+Hash_Sym_Or_Str_Keys = Class.new(Hash) do
+													def [](k)
+														case k
+															when Symbol
+																super(k) || super(k.to_s)
+															when String
+																super(k) || super(k.to_sym)
+															else
+																super
+															end
+													end
+												end
+
 module Base_Control
 
   # ======== INSTANCE stuff ======== 
@@ -47,15 +61,15 @@ module Base_Control
   
   def clean_room
     @clean_room ||= begin
-                        data = {}
+                        data = Hash_Sym_Or_Str_Keys.new
                         request.params.each { |k,v| 
-                          data[k.to_sym] = case v
+                          data[k.to_s.strip] = case v
                           when String
-                            temp = v.strip
+                            temp = Loofah::Helpers.sanitize(v.strip)
                             temp.empty? ? nil : temp
                           when Array
                             v.map { |arr_v| 
-                              arr_v.strip
+                              Loofah::Helpers.sanitize(arr_v.strip)
                             }
                           else
                             raise "Unknown class: #{v.inspect} for #{k.inspect} in #{request.params.inspect}"

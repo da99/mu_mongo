@@ -8,63 +8,6 @@ class Member
     @coll ||= DB.collection('Members')
   end
 
-  enable_timestamps
-  
-  psuedo_fields :add_username,
-                :update_username,
-                :password, 
-                :confirm_password
-
-  [ 
-    :data_model, 
-    :hashed_password, 
-    :salt,
-    :security_level,
-    :lang ].each { |f| make f, :not_empty}
-               
-
-  make :security_level, [:in_array, Security_Levels]
-  
-  make :email, 
-    :string, 
-    [:stripped, /[^a-z0-9\.\-\_\+\@]/i ],
-    [:match, /\A[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]\Z/ ],
-    [:min, 6],
-    [:equal, lambda { raw_data[:email] } ],
-    [:error_msg, 'Email has invalid characters.']
-
-  make :add_life_username, 
-    # Delete invalid characters and 
-    # reduce any suspicious characters. 
-    # '..*' becomes '.', '--' becomes '-'
-    [:stripped, /[^a-z0-9]{1,}/i, lambda { |s|
-        if ['_', '.', '-'].include?( s[0,1] )
-          s[0,1]
-        else
-          ''
-        end
-      }], 
-     [:min, 2, 'Username is too small. It must be at least 2 characters long.'],
-     [:max, 20, 'Username is too large. The maximum limit is: 20 characters.'],
-     [:not_match, /[^a-zA-Z0-9\.\_\-]/, 'Username can only contain the follow characters: A-Z a-z 0-9 . _ -']
-  
-  make :password, 
-      :stripped,
-      [:min, 5],
-      [:equal, lambda { doc.raw_data[:confirm_password] }, 'Password and password confirmation do not match.' ],
-      [:match, /[0-9]/, 'Password must have at least one number' ],
-      [:if_valid, lambda {
-          new_data.salt = begin
-                            # Salt and encrypt values.
-                            chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-                            (1..10).inject('') { |new_pass, i|  
-                              new_pass += chars[rand(chars.size-1)] 
-                              new_pass
-                            }
-                          end
-
-          new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
-      }]
       
   # =========================================================
   #                     CONSTANTS
@@ -85,6 +28,62 @@ class Member
   #VALID_USERNAME_FORMAT = /\A[a-zA-Z0-9\-\_\.]{2,25}\z/
   #VALID_USERNAME_FORMAT_IN_WORDS = "letters, numbers, underscores, dashes and periods."
 
+  enable_timestamps
+  
+  %w{ 
+      update_username
+      confirm_password 
+  }.each { |fld|
+    make_psuedo fld, :not_empty
+  }
+
+  [ 
+    :hashed_password, 
+    :salt
+  ].each { |f| make f, :not_empty}
+               
+  make :security_level, [:in_array, SECURITY_LEVELS]
+  
+  make :email, 
+    :string,
+    [:stripped, /[^a-z0-9\.\-\_\+\@]/i ],
+    [:match, /\A[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]\Z/ ],
+    [:min, 6],
+    [:equal, lambda { raw_data[:email] } ],
+    [:error_msg, 'Email has invalid characters.']
+
+  make_psuedo :add_username, 
+    # Delete invalid characters and 
+    # reduce any suspicious characters. 
+    # '..*' becomes '.', '--' becomes '-'
+    [:stripped, /[^a-z0-9]{1,}/i, lambda { |s|
+        if ['_', '.', '-'].include?( s[0,1] )
+          s[0,1]
+        else
+          ''
+        end
+      }], 
+     [:min, 2, 'Username is too small. It must be at least 2 characters long.'],
+     [:max, 20, 'Username is too large. The maximum limit is: 20 characters.'],
+     [:not_match, /[^a-zA-Z0-9\.\_\-]/, 'Username can only contain the follow characters: A-Z a-z 0-9 . _ -']
+  
+  make_psuedo :password, 
+      :not_empty,
+      [:min, 5],
+      [:equal, lambda { self.raw_data.confirm_password }, 'Password and password confirmation do not match.' ],
+      # [:match, /[0-9]/, 'Password must have at least one number' ],
+      [:if_no_errors, lambda {
+          new_data.salt = begin
+                            # Salt and encrypt values.
+                            chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+                            (1..10).inject('') { |new_pass, i|  
+                              new_pass += chars[rand(chars.size-1)] 
+                              new_pass
+                            }
+                          end
+
+          new_data.hashed_password = BCrypt::Password.create( cleanest(:password) + new_data.salt ).to_s
+      }]
   # ==== Class Methods =====================================================    
 
   def self.valid_security_level?(perm_level)
@@ -193,13 +192,16 @@ class Member
   end
 
   def self.create editor, raw_raw_data # CREATE
-    d = new(nil, editor, raw_raw_data) do
+    d = new do
+      self.manipulator = editor
+      self.raw_data = raw_raw_data
+      
       new_data.security_level = Member::MEMBER
-      ask_for :avatar_link, :email
-      demand  :add_life, :password
+      ask_for :email
+      demand  :add_username, :password
       save_create 
-      db_collection_usernames.insert(
-        :username   => clean_data[:username],  
+      self.class.db_collection_usernames.insert(
+        :username   => clean_data.add_username,  
         :owner_id   => data._id
       )
     end
@@ -267,15 +269,6 @@ class Member
                                        un['_id']
                                      }
                                    end
-  end
-
-  def human_field_name col
-    case col
-      when :add_life_username, 'add_life_username'
-        "username"
-      else
-        super(col)
-    end
   end
 
   def has_power_of?(raw_level)

@@ -27,7 +27,7 @@ require 'models/Couch_Plastic'
   Club
   Message
 	Member
-}.each { |mod| require "models/#{mode}" }
+}.each { |mod| require "models/#{mod}" }
 
 
 Couch_Plastic.ensure_indexes()

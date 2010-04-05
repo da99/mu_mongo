@@ -1,12 +1,14 @@
 
 class Test_Couch_Plastic_Create < Test::Unit::TestCase
 
-	must 'raise Raw_Data_Required if missing required field' do
-		assert_raise Cafe_Le_Roger::Raw_Data_Field_Required do
+	must 'raise Invalid, with errors msg, if missing required field' do
+		err = assert_raise Cafe_Le_Roger::Invalid do
 			Cafe_Le_Roger.create nil, {}
 		end
-	end
 
+    assert_match( /is required/, err.message )
+	end
+  
   must 'set new field value using :must_be' do
     teaser = "My Teaser: #{rand(1000)}"
     doc = Cafe_Le_Roger.create(nil, {:title=>'My Title', :teaser=>teaser, :body=>'My Body'})
@@ -34,7 +36,7 @@ class Test_Couch_Plastic_Create < Test::Unit::TestCase
   end
 
   must 'not set fields to proto_fields' do
-    assert_not_equal Cafe_Le_Roger.fields, Cafe_Le_Roger.proto_fields
+    assert_not_equal Cafe_Le_Roger.fields, Cafe_Le_Roger.psuedo_fields
   end
 
   must 'not set proto field value' do
@@ -49,17 +51,17 @@ class Test_Couch_Plastic_Create < Test::Unit::TestCase
     assert_equal nil, new_doc.data.as_hash[:big_body]
   end
 
-  must 'not save proto field value' do
+  must 'not save psuedo field value' do
     big_body = "My body #{rand(1000)}"
     values   = {:title=>'My Title', :teaser=>'My Teaser', :body => "The Body", :big_body => big_body}
     doc      = Cafe_Le_Roger.create nil, values
-    new_doc  = Cafe_Le_Roger.db_collection.find_one(:_id=>doc.data._id)
+    new_doc  = Cafe_Le_Roger.by_id(doc.data._id)
     
     orig_keys = values.keys
     orig_keys.delete(:big_body)
     orig_keys = orig_keys + [:_id, :_rev, :data_model] 
     
-    assert_equal orig_doc.keys.sort, new_doc.keys.sort
+    assert_equal doc.data.as_hash.keys.sort, new_doc.data.as_hash.keys.sort
   end
   
 end # === class _create
@@ -71,12 +73,20 @@ end # === class _create
 class Cafe_Le_Roger
 	include Couch_Plastic
 
-  allow_fields :title, :teaser, :body
+  %w{ 
+    title
+    teaser
+    body
+  }.each do |field|
+    make field, :not_empty
+  end
 
-  allow_proto_fields :big_body
+  make_psuedo 'big_body', :not_empty
 
-  def self.create editor, raw_data
-    new(nil, editor,raw_data) do
+  def self.create editor, new_raw_data
+    new do
+      self.manipulator = editor
+      self.raw_data = new_raw_data
       demand :title, :teaser, :body
       ask_for :big_body
       save_create
@@ -86,22 +96,6 @@ class Cafe_Le_Roger
 	def creator? editor
 		true
 	end
-
-	def title_validator
-		sanitize { strip }
-	end
-
-  def teaser_validator
-    must_be { not_empty }
-  end
-
-  def body_validator
-    must_be! { not_empty }
-  end
-
-  def big_body_validator
-    must_be { not_empty }
-  end
 
 end # === Cafe_Le_Roger
 

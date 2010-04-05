@@ -1,3 +1,4 @@
+require 'json'
 
 # PRODUCTION_DB = File.read(File.expand_path '~/cloud.txt').strip
 # DB_PRODUCTION = [ File.dirname(PRODUCTION_DB), File.basename(PRODUCTION_DB) ]
@@ -31,10 +32,11 @@ namespace :db do
   task :sample_data do
     require File.basename(File.expand_path('.'))
     
-    data = JSON.parse(File.read(File.expand('tests/sample_data.json')))
+    data = JSON.parse(File.read(File.expand_path('rake/sample_data_for_dev.json')))
     
     data.each do |doc|
-      DB.collection(doc['data_model']).insert(doc)
+      raise ArgumentError, "No :data_model specified: #{doc.inspect}" if doc['data_model'].to_s.empty?
+      DB.collection(doc['data_model'] + 's').insert(doc)
     end
     
     puts_white "Inserted sample data."
@@ -79,17 +81,39 @@ namespace :db do
   desc "Add in sample data for tests."
   task :test_sample_data do
 
-    raise "Not done."
-
     # === Create Regular Member 1 ==========================
     # === Create Regular Member 2 ==========================
     # === Create Regular Member 3 ==========================
     # === Create Admin Member ==========================
-    "member-regular-member-1" # password: regular-password
-    "member-regular-member-2" # password: regular-password
-    "member-regular-member-3" # password: regular-password
-    "member-admin-member-1" # password: admin-password
+    "regular-member-1" # password: regular-password
+    "regular-member-2" # password: regular-password
+    "regular-member-3" # password: regular-password
+    "admin-member-1" # password: admin-password
 
+    (1..3).to_a.each do |i|
+      Member.create( 
+        nil, 
+        :add_username => "regular-member-#{i}", 
+        :password => 'regular-password',
+        :confirm_password => 'regular-password'
+      )
+    end
+
+    doc = Member.create(
+      nil, 
+      :add_username => "admin-member-1",
+      :password => 'admin-password',
+      :confirm_password => 'admin-password'
+    )
+
+    doc_data = doc.data.as_hash
+    doc_data['security_level'] = 'ADMIN'
+
+    Member.db_collection.update(
+      {'_id' => Mongo::ObjectID.from_string(doc_data['_id'])}, 
+      doc_data,
+      :safe=>true
+    )
 
     puts_white 'Inserted sample data just for tests.'
   end # ======== :db_reset!

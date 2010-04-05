@@ -36,10 +36,10 @@ class Clubs_by_id < Base_View
 
   def messages_latest
     @cache['results.messages_latest'] ||= begin
-                                              @app.env['results.messages_latest'].map { |row|
-                                                row[:doc][:compiled_body] = auto_link(row[:doc][:body])
-                                                row[:doc][:href] = "/mess/#{Message.strip_class_name(row[:doc][:_id])}/"
-                                                row[:doc]
+                                              @app.env['results.messages_latest'].map { |doc|
+                                                doc['compiled_body'] = auto_link(doc['body'])
+                                                doc['href'] = "/mess/#{doc['_id'])}/"
+                                                doc
                                               }
                                             end
   end

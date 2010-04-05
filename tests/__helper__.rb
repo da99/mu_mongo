@@ -109,15 +109,11 @@ class Test::Unit::TestCase
   # === Custom Helpers ===
 
   def self.admin_member
-    @admin_member ||= Member.by_id("member-admin-member-1")
+    @admin_member ||= Member.by_username("admin-member-1")
   end
 
-  def self.admin_member
-    admin_member
-  end
-  
   def self.regular_members
-    @regular_mem ||= [1,2,3].map { |i| Member.by_id("member-regular-member-#{i}") }
+    @regular_mem ||= [1,2,3].map { |i| Member.by_username("regular-member-#{i}") }
   end
   
   3.times do |i|

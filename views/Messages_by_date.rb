@@ -17,12 +17,11 @@ class Messages_by_date < Base_View
   end
   
   def messages
-    @app.env['list.messages'].map { |doc|
-      mess = doc[:doc]
-      { :published_at => Time.parse(mess[:published_at]).strftime(' %b  %d, %Y '),
-        :body => mess[:body],
-        :title => mess[:title],
-        :href => "/mess/#{mess[:_id].sub('message-', '')}/"
+    @app.env['list.messages'].map { |mess|
+      { 'published_at' => Time.parse(mess['published_at']).strftime(' %b  %d, %Y '),
+        'body' => mess['body'],
+        'title' => mess['title'],
+        'href' => "/mess/#{mess['_id'].sub('message-', '')}/"
       }
     }
   end

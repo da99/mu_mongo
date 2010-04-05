@@ -150,7 +150,7 @@ class Message
 
   def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}, &blok
     db_collection.find(
-      :target_ids=>{'$in'=>[Club.filename_to_id(club_id)]},
+			{:target_ids=>Club.filename_to_id(club_id)},
       opts, 
 			&blok
     )

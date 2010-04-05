@@ -36,11 +36,7 @@ class Club
       end
       demand :owner_id, :username_id, :filename, :title, :teaser
       ask_for_or_default :lang
-      save_create { |err| 
-        if err.is_a? Couch_Plastic::HTTP_Error_409_Update_Conflict
-          errors << "Filename already taken: #{cleanest(:filename)}"
-        end    
-      }
+      save_create 
     end
   end
 
