@@ -1,5 +1,5 @@
-# ====================================================================================
-# ====================================================================================
+require 'rush'
+
 
 namespace :server do
   
@@ -65,12 +65,26 @@ namespace :server do
   
   desc 'Start CouchDB server.'
   task :db do 
-    exec("sudo -i -u couchdb couchdb -b")
+    dir = "~/Desktop/mongodb"
+    exists = (Rush.processes.filter(:cmdline=>/mongod\ /).to_a.size > 0)
+    if not exists
+      exec("#{dir}/bin/mongod --dbpath #{dir}/data/db --fork --logpath #{dir}/data/log/log.txt")
+    else
+      puts_white "Mongodb already running."
+    end
+    # exec("sudo -i -u couchdb couchdb -b")
+  end
+
+  desc 'Start Mongo shell.'
+  task :mongo do
+    exec("~/Desktop/mongodb/bin/mongo")
   end
   
   desc 'Shutdown background CouchDB server process.'
   task :shutdown_db do
-    exec("sudo -i -u couchdb couchdb -d")
+    Rush.processes.filter(:cmdline=>/mongod\ /).kill.inspect
+    puts_white 'All mongodb processes have been killed.'
+    # exec("sudo -i -u couchdb couchdb -d")
   end
   
   desc 'Open CouchDB Futon in the Browser'

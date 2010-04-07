@@ -1,11 +1,11 @@
-# MAB   ~/megauni/templates/English/mab/Clubs_hearts.rb
-# SASS  ~/megauni/templates/English/sass/Clubs_hearts.sass
+# MAB   ~/megauni/templates/en-us/mab/Clubs_hearts.rb
+# SASS  ~/megauni/templates/en-us/sass/Clubs_hearts.sass
 # NAME  Clubs_hearts
 
 class Clubs_hearts < Base_View
 
   def css_file
-    "/stylesheets/English/Clubs_hearts.css"
+    "/stylesheets/#{lang}/Clubs_hearts.css"
   end
 
   def title 

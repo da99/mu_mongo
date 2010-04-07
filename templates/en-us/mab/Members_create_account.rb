@@ -1,5 +1,5 @@
 # ~/megauni/views/Members_create_account.rb
-# ~/megauni/templates/English/sass/Members_create_account.sass
+# ~/megauni/templates/en-us/sass/Members_create_account.sass
 # Members_create_account 
 
 div.content! { 

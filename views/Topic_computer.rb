@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_computer.rb
-# SASS  ~/megauni/templates/English/sass/Topic_computer.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_computer.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_computer.sass
 # NAME  Topic_computer
 
 class Topic_computer < Base_View

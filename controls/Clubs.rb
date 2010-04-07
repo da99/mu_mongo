@@ -20,13 +20,12 @@ class Clubs
   #   render_html_template 
   # end
 
-  def GET_by_id id
-    club_id = "club-#{id}"
-    env['results.club'] = Club.by_id(club_id)
-    env['results.messages_latest'] = Message.latest_by_club_id(club_id)
-    case id
+  def GET_by_id filename
+    env['results.club'] = club = Club.by_filename(filename)
+    env['results.messages_latest'] = Message.latest_by_club_id(club.data._id)
+    case filename
     when 'hearts'
-      render_html_template "Clubs_#{id}"
+      render_html_template "Clubs_#{filename}"
     else
       render_html_template
     end
@@ -35,19 +34,19 @@ class Clubs
   def GET_by_old_id id
     env['results.club'] = id
     return render_html_template("Topic_#{id}")
-    template = begin
-      File.read("templates/English/mustache/Topic_#{id}.html")
-    rescue Errno::ENOENT => e
-      require "middleware/Mab_In_Disguise"
-      Mab_In_Disguise.compile "templates/English/mab/Topic_#{id}.rb"
-    end
+    # template = begin
+    #   File.read("templates/#{lang}/mustache/Topic_#{id}.html")
+    # rescue Errno::ENOENT => e
+    #   require "middleware/Mab_In_Disguise"
+    #   Mab_In_Disguise.compile "templates/#{lang}/mab/Topic_#{id}.rb"
+    # end
 
-    mustache_class = Class.new(Base_View) do
-      def title
-      end
-    end
-    mustache_class.raise_on_context_miss = true
-    mustache_class.new(self).render(template)
+    # mustache_class = Class.new(Base_View) do
+    #   def title
+    #   end
+    # end
+    # mustache_class.raise_on_context_miss = true
+    # mustache_class.new(self).render(template)
   end
 
   def POST
@@ -64,7 +63,7 @@ class Clubs
 
   def PUT_by_id filename
     require_log_in! 
-    club_id = "club-#{filename}"
+    club_id = Club.by_filename(filename).data._id
     begin
       club = Club.update(club_id, current_member, clean_room)
       flash_msg.success = "Club has been updated."
@@ -84,8 +83,8 @@ class Clubs
   private # ======================================
 
   def save_club_to_env id
-    club_filename       = "club-#{id.sub('club-', '')}"
-    env['the.app.club'] = Club.by_id club_filename
+    club_filename       = "#{id.sub('club-', '')}"
+    env['the.app.club'] = Club.by_filename club_filename
   end
 
   # =========================================================

@@ -1,5 +1,5 @@
 # VIEW ~/megauni/views/Hellos_help.rb
-# SASS ~/megauni/templates/English/sass/Hellos_help.sass
+# SASS ~/megauni/templates/en-us/sass/Hellos_help.sass
 # NAME Hello_help
 
 div.content! { 

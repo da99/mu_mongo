@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_child_care.rb
-# SASS  ~/megauni/templates/English/sass/Topic_child_care.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_child_care.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_child_care.sass
 # NAME  Topic_child_care
 
 class Topic_child_care < Base_View

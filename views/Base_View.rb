@@ -114,9 +114,13 @@ class Base_View < Mustache
   def time_i
     Time.now.utc.to_i
   end
+  
+  def lang
+    'en-us'
+  end
 
   def css_file
-    "/stylesheets/English/#{base_filename}.css"
+    "/stylesheets/#{lang}/#{base_filename}.css"
   end
 
   def head_content
@@ -133,20 +137,16 @@ class Base_View < Mustache
     @app.current_member
   end
 
-  def current_member_lives
-    @cache[:current_member_lives] ||= @app.current_member.data.lives.inject([]) { |m, (k,v)| 
-      m << { :filename=> k, :username=>v[:username] }
-      m
-    }
-  end
-
 	def current_member_lang
 		current_member.data.lang
 	end
 
   def current_member_usernames
-    @cache[:current_member_usernames] ||= current_member.usernames
+    @cache[:current_member_usernames] ||= @app.current_member.usernames.map { |un| 
+      {:filename=>un, :username=>un}
+    }
   end
+
 
   def single_username?
     current_member_usernames.size == 1

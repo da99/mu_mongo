@@ -79,7 +79,7 @@ module Base_Control
   end
 
   def lang
-    'English'
+    'en-us'
   end
   
   def environment 

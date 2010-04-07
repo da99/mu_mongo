@@ -4,7 +4,12 @@ class Messages
   include Base_Control
 
   def GET_by_id id  # SHOW
-    env['message_by_id'] = Message.by_id('message-' + id) 
+    mess_id = if id.to_s.size < 4
+                "message-#{id}"
+              else
+                id
+              end
+    env['message_by_id'] = Message.by_id(mess_id) 
     render_html_template
   end
 
@@ -52,7 +57,11 @@ class Messages
 
   def PUT_by_id id
     require_log_in!
-    mess_id = "message-#{id}"
+    mess_id = if id.to_s.size < 8
+                "message-#{id}"
+              else
+                id
+              end
     begin
       mess = Message.update( mess_id, current_member, clean_room )
       flash_msg.success = "Message saved."
@@ -64,9 +73,13 @@ class Messages
   end
   
   def GET_edit id # EDIT 
-    mess_id = "message-#{id}"
+    mess_id = if id.to_s.size < 8
+                "message-#{id}"
+              else
+                id
+              end
     mess = env['results.message'] = Message.by_id(mess_id)
-    require_log_in! 'ADMIN',  mess.data.owner_id
+    require_log_in! 'ADMIN',  mess.data.username_id
     render_html_template
   end
 

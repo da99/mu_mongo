@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/English/mab/Messages_by_label.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/English/sass/Messages_by_label.sass
+# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Messages_by_label.rb
+# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_by_label.sass
 # NAME  Messages_by_label
 
 class Messages_by_label < Base_View
@@ -29,7 +29,7 @@ class Messages_by_label < Base_View
       { 'published_at' => Time.parse(mess['published_at'] || mess['created_at']).strftime(' %b  %d, %Y '),
         'body' => mess['body'],
         'title' => mess['title'],
-        'href' => "/mess/#{mess['_id'].sub('message-','')}/"
+        'href' => "/mess/#{mess['_id'].to_s.sub('message-','')}/"
       }
     }
   end

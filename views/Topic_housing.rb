@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_housing.rb
-# SASS  ~/megauni/templates/English/sass/Topic_housing.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_housing.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_housing.sass
 # NAME  Topic_housing
 
 class Topic_housing < Base_View

@@ -87,9 +87,13 @@ class Member
   # ==== Class Methods =====================================================    
 
   def self.valid_security_level?(perm_level)
-    SECURITY_LEVELS.include?(perm_level) || 
-      perm_level.to_s['username-'] ||
-        perm_level.to_s['member-'] 
+    return true if SECURITY_LEVELS.include?(perm_level)
+    case perm_level
+    when Mongo::ObjectID, Member, String, Symbol
+      true
+    else
+      false
+    end
   end
   
   def self.db_collection_usernames
@@ -108,23 +112,23 @@ class Member
   
   def self.by_username raw_username
     username = raw_username.to_s.strip
-    doc = db_collection_usernames.find_one( :_id => username )
+    doc = db_collection_usernames.find_one( :username => username )
     if doc && !username.empty?
-      Member.new(doc['owner_id'])
+      Member.by_id(doc['owner_id'])
     else
       raise Couch_Plastic::Not_Found, "Member Username: #{username.inspect}"
     end
   end
 
   def self.failed_attempts_for_today mem, &blok
-
+    require 'time'
     db_collection_failed_attempts.find( 
        :owner_id => mem.data._id,  
-       :_id => { :$lt => Couch_Plastic.utc_date_now,
+       :created_at => { :$lte => Couch_Plastic.utc_now,
                  :$gte => Couch_Plastic.utc_string(Time.now.utc - (60*60*24))
        },
        &blok
-    )
+    ).to_a
   end
   
   # Based on Sinatra-authentication (on github).
@@ -137,8 +141,10 @@ class Member
   #
   def self.authenticate( raw_vals )
 
-    username, password = raw_vals.values_at(:username, :password).map(&:to_s).map(&:strip)
-    ip_addr, user_agent = raw_vals.values_at(:ip_address, :user_agent).map(&:to_s).map(&:strip)
+    username   = (raw_vals[:username] || raw_vals['username']).to_s.strip
+    password   = (raw_vals[:password] || raw_vals['password']).to_s.strip
+    ip_addr    = (raw_vals[:ip_address] || raw_vals['ip_address']).to_s.strip
+    user_agent = (raw_vals[:user_agent] || raw_vals['user_agent']).to_s.strip
     
     ip_addr    = nil if ip_addr.empty?
     user_agent = nil if user_agent.empty?
@@ -151,15 +157,12 @@ class Member
 
     # Check for Password_Reset
     pass_reset_id = "#{mem.data._id}-password-reset"
-    begin
-      db_collection_password_resets.find_one(:_id=>pass_reset_id)
+    if db_collection_password_resets.find_one(:_id=>pass_reset_id)
       raise Password_Reset, mem.inspect
-    rescue Couch_Plastic::Not_Found
-      nil
     end
 
+    # See if password matches with correct password.
     correct_password = BCrypt::Password.new(mem.data.hashed_password) === (password + mem.data.salt)
-
     return mem if correct_password
 
     # Grab failed attempt count.
@@ -168,16 +171,24 @@ class Member
     
     # Insert failed password.
     db_collection_failed_attempts.insert(
-      :data_model => 'Member_Failed_Attempt',
+      { :data_model => 'Member_Failed_Attempt',
       :owner_id   => mem.data._id, 
       :date       => Couch_Plastic.utc_date_now, 
       :time       => Couch_Plastic.utc_time_now,
+      :created_at => Couch_Plastic.utc_now,
       :ip_address => ip_addr,
-      :user_agent => user_agent
+      :user_agent => user_agent },
+      :safe => false
     )
 
     # Raise Account::Reset if necessary.
     if new_count > 2
+      db_collection_password_resets.insert(
+        {:_id=>pass_reset_id, 
+        :created_at=>Couch_Plastic.utc_now, 
+        :owner_id=>mem.data._id},
+        :safe=>false
+      )
       raise Password_Reset, mem.inspect
     end
 
@@ -199,10 +210,18 @@ class Member
       new_data.security_level = Member::MEMBER
       ask_for :email
       demand  :add_username, :password
-      save_create 
-      self.class.db_collection_usernames.insert(
-        :username   => clean_data.add_username,  
-        :owner_id   => data._id
+      un_id = nil
+      save_create :if_valid => lambda { 
+        add_unique_key 'username', "Username, #{clean_data.add_username}, already taken."
+        un_id = self.class.db_collection_usernames.insert(
+          { :username   => clean_data.add_username,  
+          :owner_id   => nil}, {:safe=>true}
+        )
+      }
+      self.class.db_collection_usernames.update(
+        {'_id'=>un_id}, 
+        {:username=>clean_data.add_username, :owner_id=>data._id}, 
+        :safe=>true
       )
     end
   end
@@ -252,46 +271,53 @@ class Member
   # sensitive information is not shown.
   #
   def inspect
-    assoc_cache[:inspect_string] ||= "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
+    if new?
+      "#<#{self.class}:#{self.object_id} id=[NEW]>"
+    else
+      "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
+    end
   end
   
   def usernames
-    assoc_cache[:usernames] ||= begin
-      self.db_collection_usernames.find(:owner_id=>data._id).map { |un|
-        un['username']
-      }
-    end
+    cache[:usernames] ||= username_hash.values
   end
 
   def username_ids
-    assoc_cache[:username_ids] ||= begin
-                                     self.db_collection_usernames.find(:owner_id=>data._id).map { |un|
-                                       un['_id']
-                                     }
-                                   end
+    cache[:username_ids] ||= username_hash.keys
+  end
+
+  def username_hash
+    cache[:username_hash] = begin
+                                    hsh = {}
+                                    self.class.db_collection_usernames.find(:owner_id=>data._id).map { |un| 
+                                      hsh[un['_id']] = un['username']
+                                    }
+                                    hsh
+                                  end
   end
 
   def has_power_of?(raw_level)
 
     return true if raw_level == self
     
-    if raw_level.is_a?(String)  
+    if raw_level.is_a?(String) || raw_level.is_a?(Mongo::ObjectID)
       return true if usernames.include?(raw_level)
       return true if data._id === raw_level
       return true if username_ids.include?(raw_level)
     end
 
-    target_level = raw_level.to_s
-    if !self.class.valid_security_level?(target_level)
+    if !self.class.valid_security_level?(raw_level)
       raise Invalid_Security_Level, raw_level.inspect
     end
     
+    target_level = raw_level.to_s
     return false if target_level == NO_ACCESS
     return true if target_level == STRANGER
     return false if new? 
 
     member_index = SECURITY_LEVELS.index(self.data.security_level)
     target_index = SECURITY_LEVELS.index(target_level)
+    return false if not target_index
     return member_index >= target_index
 
   end # === def security_clearance?

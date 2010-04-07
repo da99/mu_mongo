@@ -1,5 +1,5 @@
 # VIEW views/News_Control_edit.rb
-# SASS /home/da01/MyLife/apps/megauni/templates/English/sass/News_Control_edit.sass
+# SASS /home/da01/MyLife/apps/megauni/templates/en-us/sass/News_Control_edit.sass
 # NAME News_Control_edit
 
 div.content! { 

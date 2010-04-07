@@ -1,5 +1,5 @@
-# mab   ~/megauni/templates/English/xml/Hellos_sitemap_xml.rb
-# SASS  ~/megauni/templates/English/sass/Hellos_sitemap_xml.sass
+# mab   ~/megauni/templates/en-us/xml/Hellos_sitemap_xml.rb
+# SASS  ~/megauni/templates/en-us/sass/Hellos_sitemap_xml.sass
 # NAME  Hellos_sitemap_xml
 
 class Hellos_sitemap_xml < Base_View
@@ -15,9 +15,9 @@ class Hellos_sitemap_xml < Base_View
 	end
 
 	def news
-		@news ||= Message.by_published_at(:limit=>5, :descending=>true).map { |post|
-			{:last_modified_at => w3c_date(post[:doc][:updated_at] || post[:doc][:created_at]),
-			 :url => File.join(site_url, 'mess', post[:doc][:_id] + '/' ) }
+		@news ||= Message.by_published_at(:limit=>5, :sort=>[:published_at, :desc]).map { |post|
+			{:last_modified_at => w3c_date(post['updated_at'] || post['created_at']),
+			 :url => File.join(site_url, 'mess', post['_id'].to_s + '/' ) }
 		}
 	end
 

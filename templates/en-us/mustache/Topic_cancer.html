@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-   <meta content="text/javascript" http-equiv="Content-Script-Type"/>
-   <meta content="text/css" http-equiv="Content-Style-Type"/>
-   <meta content="en-US" http-equiv="Content-Language"/>
-   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-   <meta content="en-US" http-equiv="Content-Language"/>
+   <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+   <meta http-equiv="Content-Style-Type" content="text/css"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
 
 {{#no_meta_cache}}
 
-   <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
-   <meta content="no-cache" http-equiv="pragma"/>
+   <meta http-equiv="expires" content="Thu, 12 Mar 2004 12:34:12 GMT"/>
+   <meta http-equiv="pragma" content="no-cache"/>
 
 {{/no_meta_cache}}
 
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" media="screen" rel="stylesheet" href="{{css_file}}"/>
+   <link type="text/css" media="screen" href="{{css_file}}" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -146,13 +146,13 @@ Of course you can. Don't expect your doctor to help.         </div>
        <h4>Lives</h4>
        <ul class="lives">
 
-{{#current_member_lives}}
+{{#current_member_usernames}}
 
          <li>
           <a href="/lives/{{username}}/">{{username}}</a>
          </li>
 
-{{/current_member_lives}}
+{{/current_member_usernames}}
 
          <li>
           <a href="/create-life/">[ Create ]</a>
@@ -195,9 +195,6 @@ Of course you can. Don't expect your doctor to help.         </div>
          </li>
          <li>
           <a href="/clubs/preggers/">Pregnancy</a>
-         </li>
-         <li>
-          <a href="/clubs/news/">Other Topics</a>
          </li>
          <li>
           <a href="/clubs/">[ View More ]</a>

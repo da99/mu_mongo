@@ -6,7 +6,7 @@ class Test_Control_Clubs_Update < Test::Unit::TestCase
   def create_club(mem)
     id = rand(20000)
     club = Club.create(mem, :filename=>"#{id}", :title=>"Club: #{id}", 
-                       :teaser=>"Teaser for: Club #{id}"
+                       :teaser=>"Teaser for: Club #{id}. Created by: #{mem.usernames.first}"
                       )
   end
   
@@ -23,7 +23,7 @@ class Test_Control_Clubs_Update < Test::Unit::TestCase
       put club.href, :title=>'new-hearts'
     end
 
-    assert_match( /\ACreator: /, err.message )
+    assert_match( /\AUpdator: /, err.message )
   end
 
   must 'allow Admins' do

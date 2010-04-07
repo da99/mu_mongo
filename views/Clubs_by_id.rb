@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/English/mab/Clubs_by_id.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/English/sass/Clubs_by_id.sass
+# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Clubs_by_id.rb
+# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_by_id.sass
 # MODEL models/Club.rb
 # CONTROL controls/Clubs.rb
 # NAME  Clubs_by_id
@@ -38,7 +38,7 @@ class Clubs_by_id < Base_View
     @cache['results.messages_latest'] ||= begin
                                               @app.env['results.messages_latest'].map { |doc|
                                                 doc['compiled_body'] = auto_link(doc['body'])
-                                                doc['href'] = "/mess/#{doc['_id'])}/"
+                                                doc['href'] = "/mess/#{doc['_id']}/"
                                                 doc
                                               }
                                             end

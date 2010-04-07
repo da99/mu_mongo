@@ -17,8 +17,8 @@ class Sessions
     
     begin 
       self.current_member = Member.authenticate(
-        :username   => clean_room[:username], 
-        :password   => clean_room[:password], 
+        :username   => clean_room['username'], 
+        :password   => clean_room['password'], 
         :ip_address => request.env['REMOTE_ADDR'],
         :user_agent => request.env['HTT_USER_AGENT']
       )

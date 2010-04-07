@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_hair.rb
-# SASS  ~/megauni/templates/English/sass/Topic_hair.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_hair.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_hair.sass
 # NAME  Topic_hair
 
 class Topic_hair < Base_View

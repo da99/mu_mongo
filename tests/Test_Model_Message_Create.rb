@@ -2,11 +2,16 @@
 
 class Test_Model_Message_Create < Test::Unit::TestCase
 
-	must 'be allowed to be created' do
+	def club
+		Club.db_collection.find_one()
+	end
+
+	must 'be allowed to be created by member' do
     mem = Message.create(
-      admin_member, {
-        :owner_id => 'username-admin-member-1',
-        :target_ids => ["club-san-francisco"],
+      regular_member_1, {
+        :owner_id => regular_member_1.data._id,
+				:username_id => regular_member_1.username_ids.last,
+        :target_ids =>  [ club['_id'] ],
         :body => 'test body',
         :emotion => 'poignant',
         :category => 'tweet',
@@ -19,8 +24,9 @@ class Test_Model_Message_Create < Test::Unit::TestCase
   must 'be created even if :target_ids is a String' do
     mem = Message.create(
       admin_member, {
-        :owner_id => 'username-admin-member-1',
-        :target_ids => "club-san-francisco",
+        :owner_id => admin_member.data._id,
+				:username_id => admin_member.username_ids.first,
+        :target_ids => club['_id'],
         :body => 'test body',
         :emotion => 'poignant',
         :category => 'tweet',

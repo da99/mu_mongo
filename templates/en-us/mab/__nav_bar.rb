@@ -1,5 +1,5 @@
 # ~/megauni/views/Base_View.rb
-# ~/megauni/templates/English/sass/layout.sass
+# ~/megauni/templates/en-us/sass/layout.sass
 
 div( :id=>"nav_bar" ) { 
 
@@ -41,7 +41,7 @@ div( :id=>"nav_bar" ) {
   mustache 'logged_in?' do
     h4 'Lives' 
     ul.lives {
-      mustache 'current_member_lives' do
+      mustache 'current_member_usernames' do
         nav_bar_li :Members, :lives, "/lives/{{username}}/", "{{username}}"
       end
     nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"

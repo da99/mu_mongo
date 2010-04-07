@@ -7,17 +7,7 @@ class Test_Club_Create < Test::Unit::TestCase
     "movie_#{rand(10000)}"
   end
 
-  # must 'allow any Member to create it' do
-  #   assert_raise( Club::Unauthorized_Creator ) do
-  #     Club.create(regular_member_1,  { 
-  #       :filename => random_filename,
-  #       :title=>'Gaijin', 
-  #       :teaser=>'Gaijin'
-  #     })
-  #   end
-  # end
-
-  must 'set :_id to filename with "club-" prefixed' do
+  must 'set :_id to Mongo::ObjectID' do
     fn = random_filename
     club = Club.create(
       admin_member, 
@@ -25,19 +15,7 @@ class Test_Club_Create < Test::Unit::TestCase
         :title=>'Gaijin', 
         :teaser=>'Gaijin'}
     )
-    assert_equal "club-#{fn}", club.data._id
-  end
-
-  must 'require a unique filename' do
-    filename = Club.db_collection.find_one()['_id']
-    club = begin
-             Club.create( admin_member,
-              {:filename=>filename, :title=>'title', :teaser=>'teaser'} 
-             )
-           rescue Club::Invalid => e
-             e.doc
-           end
-    assert_equal "Filename already taken: #{filename}", club.errors.first
+    assert_equal Mongo::ObjectID, club.data._id.class
   end
 
   must 'require a filename' do
@@ -54,6 +32,18 @@ class Test_Club_Create < Test::Unit::TestCase
     assert_equal 'Filename is required.', club.errors.first
   end
   
+  must 'require a unique filename' do
+    filename = Club.db_collection.find_one()['filename']
+    club = begin
+             Club.create( admin_member,
+              {:filename=>filename, :title=>'title', :teaser=>'teaser'} 
+             )
+           rescue Club::Invalid => e
+             e.doc
+           end
+    assert_equal "Filename, #{filename}, already taken. Please choose another.", club.errors.first
+  end
+
   must 'require a title' do
     club = begin
              Club.create(

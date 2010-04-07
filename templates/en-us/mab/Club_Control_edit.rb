@@ -1,5 +1,5 @@
 # VIEW views/Club_Control_edit.rb
-# SASS /home/da01/MyLife/apps/megauni/templates/English/sass/Club_Control_edit.sass
+# SASS /home/da01/MyLife/apps/megauni/templates/en-us/sass/Club_Control_edit.sass
 # NAME Club_Control_edit
 
 div.content! { 

@@ -1,5 +1,5 @@
 # VIEW views/Messages_by_date.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/English/sass/Messages_by_date.sass
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_by_date.sass
 # NAME Messages_by_date
 
 div.content! { 

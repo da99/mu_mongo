@@ -21,11 +21,10 @@ class Test_Control_Members_Create < Test::Unit::TestCase
   must 'redirects and shows username uniqueness errors' do
     vals = { :password=>'myuni4vr', 
              :confirm_password=>'myuni4vr', 
-             :add_life=>'friend', 
-             :add_life_username=>'admin-member-1'}
+             :add_username=>'admin-member-1'}
     post '/member/', vals, ssl_hash
     follow_redirect!
-    assert_match( /Username already taken\: admin\-member/, last_response.body )
+    assert_match( /Username, admin\-member\-1, already taken/, last_response.body )
   end
 
   must( 'does not create itself + username if username is already taken.' ) do

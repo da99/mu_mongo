@@ -81,7 +81,7 @@ end # === Render_Css
 
 
 
-    # output = `compass --dry-run --trace -r ninesixty -f 960 --sass-dir templates/English/sass --css-dir public/styles/English -s compressed 2>&1`
+    # output = `compass --dry-run --trace -r ninesixty -f 960 --sass-dir templates/en-us/sass --css-dir public/styles/en-us -s compressed 2>&1`
     # puts output
     # puts $?.exitstatus.to_s
     #   clean_results   = results.split("\n").reject { |line| 

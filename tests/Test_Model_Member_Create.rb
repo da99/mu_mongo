@@ -7,18 +7,13 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     "da01_#{RAND_NUMS.pop}"
   end
 
-  must 'raise Perfection_Required if :add_life is invalid' do
-    assert_raise Couch_Plastic_Validator::Perfection_Required do
-      Member.create( nil, {:password => 'pass123', :add_life=>'secret_agent'})
-    end
-  end
-
   must 'raise Unauthorized if editor is not nil' do
     err = assert_raise( Member::Unauthorized ) do
       Member.create( 
         Member.new, 
-        {:password=>'pass12pass', :confirm_password=>'pass12pass', 
-         :add_life=>'friend', :add_life_username=>random_username}
+        :password=>'pass12pass', 
+        :confirm_password=>'pass12pass', 
+        :add_username=>random_username
       )
     end
     assert_match( /\ACreator: /, err.message )
@@ -28,8 +23,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = begin
             Member.create( nil, {
               :password => nil,
-              :add_life => 'friend',
-              :add_life_username => random_username
+              :add_username => random_username
             })
           rescue Member::Invalid => e
             e.doc
@@ -37,48 +31,47 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     assert_equal "Password is required.", doc.errors.first
   end
 
-  must 'require :add_life_username' do
+  must 'require :add_username' do
     doc = begin
             Member.create(nil, {:password => 'pass123pass', 
                                 :confirm_password => 'pass123pass',
-                                :add_life => 'friend', 
-                                :add_life_username => nil })
+                                :add_username => nil })
           rescue Member::Invalid => e
             e.doc
           end
-    assert_equal "Username is required.", doc.errors.first
+    assert_equal "Username is too small. It must be at least 2 characters long.", doc.errors.first
   end
 
   must 'require a unique username' do
-    username = Member.db_collection.find_one()['_id']
+    old_mem_id = Member.db_collection.find_one()['_id']
+    mem = Member.by_id('_id'=>old_mem_id)
+    username = mem.usernames.first
     doc = begin
             Member.create(nil, {:password => 'pass132pass',
                                 :confirm_password=>'pass132pass',
-                                :add_life => 'friend', 
-                                :add_life_username => username })
+                                :add_username => username })
           rescue Member::Invalid => e
             e.doc
           end
-    assert_equal "Username already taken: #{username}", doc.errors.detect { |msg| msg =~ /Username/ }
+    assert_equal "Username, #{username}, already taken.", doc.errors.detect { |msg| msg =~ /Username/ }
   end
 
   must 'add a UUID to data._id' do
     doc = Member.create(nil, {
       :password => "pass123pass", 
       :confirm_password => "pass123pass",
-      :add_life => 'friend', 
-      :add_life_username=>random_username
+      :add_username=>random_username
      }
     )
-    assert_match( /\A[a-z0-9\-]{10,}\Z/i, doc.data._id )
+    # assert_match( /\A[a-z0-9\-]{10,}\Z/i, doc.data._id.to_s )
+    assert_equal(Mongo::ObjectID, doc.data._id.class)
   end
 
   must 'return false for new?' do
     doc = Member.create(nil, {
       :password => "pass123pass", 
       :confirm_password => "pass123pass",
-      :add_life => 'friend', 
-      :add_life_username=>random_username
+      :add_username=>random_username
      }
     )
     assert_equal( false, doc.new? )
@@ -88,8 +81,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = Member.create(nil, {
       :password => "pass123pass", 
       :confirm_password => "pass123pass",
-      :add_life => 'friend', 
-      :add_life_username=>random_username
+      :add_username=>random_username
      }
     )
     assert_equal( "MEMBER", doc.data.security_level )
@@ -99,8 +91,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = Member.create(nil, {
       :password => "pass123pass", 
       :confirm_password => "pass123pass",
-      :add_life => 'friend', 
-      :add_life_username=>random_username
+      :add_username=>random_username
      }
     )
     assert_equal( true, doc.has_power_of?("MEMBER") )
@@ -110,8 +101,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
     doc = Member.create(nil, {
       :password => "pass123pass", 
       :confirm_password => "pass123pass",
-      :add_life => 'friend', 
-      :add_life_username=>random_username
+      :add_username=>random_username
      }
     )
     assert_equal( false, doc.has_power_of?("ADMIN") )

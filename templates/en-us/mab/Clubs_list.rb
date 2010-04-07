@@ -1,5 +1,5 @@
 # VIEW views/Clubs_list.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/English/sass/Clubs_list.sass
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_list.sass
 # NAME Clubs_list
 
 div.content! { 

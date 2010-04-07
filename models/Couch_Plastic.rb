@@ -54,7 +54,46 @@ module Couch_Plastic
     target.extend Couch_Plastic_Class_Methods
   end
   
+  def self.reset_db!
+    valid_env = %w{ test development }.include?(ENV['RACK_ENV'])
+    if not valid_env
+      raise ArgumentError, "DB reseting only allowed in 'test' or 'development'."
+    end
+    DB.collection_names.each { |coll|
+      DB.collection(coll).remove()
+    }
+    ensure_indexes
+  end
+
   def self.ensure_indexes
+    new = {}
+    new['Clubs'] = [ 
+      { 'unique' => true, 'key' => {'filename' => 1} }
+    ]
+    new['Member_Usernames'] = [
+      { 'unique' => true, 'key' => {'username' => 1} }
+    ]
+
+    new.each { |coll, ixs| 
+      index_info      = DB.collection(coll).index_information()
+      index_info.delete '_id'
+      index_info_vals = index_info.values
+      slices          = index_info_vals.map { |i| { 'unique' => i['unique'], 'key'=> i['key'] } }
+
+      delete = slices.each_index { |i|
+        i_name = index_info_vals[i]['name']
+        if i_name !~ /\A_id/ && !new[coll].include?( slices[i] )
+          DB.collection(coll).drop_index(i_name)
+        end
+      }
+      
+      insert = new[coll].each_index { |i| 
+        if not slices.include?( new[coll][i] )
+          DB.collection(coll).create_index( new[coll][i]['key'].to_a, :unique=>new[coll][i]['unique'] )
+        end
+      } 
+
+    } 
   end
 
   def self.utc_now
@@ -80,7 +119,7 @@ module Couch_Plastic
   end
 
 
-  attr_reader :data, :cache 
+  attr_reader :data
   
   # 
   # Parameters:
@@ -90,18 +129,26 @@ module Couch_Plastic
   def initialize doc_id_or_hash = nil, &blok
     
     super()
+    @error_msg = nil # The efault error message for validation errors.
     @cache = {}
     doc   = case doc_id_or_hash
-            when String
-              result = if Mongo::ObjectID.legal?(doc_id_or_hash)
+            when String, Mongo::ObjectID
+
+              result = if doc_id_or_hash.is_a?(Mongo::ObjectID)
                          self.class.db_collection.find_one(
-                           '_id'=>Mongo::ObjectID.from_string(doc_id_or_hash)
+                           '_id'=>doc_id_or_hash
                          )
-                       else
-                         self.class.db_collection.find_one('old_id'=>doc_id_or_hash)
+                       else 
+                         if Mongo::ObjectID.legal?(doc_id_or_hash)
+                           self.class.db_collection.find_one(
+                             '_id'=>Mongo::ObjectID.from_string(doc_id_or_hash)
+                           )
+                         else
+                           self.class.db_collection.find_one('old_id'=>doc_id_or_hash)
+                         end
                        end
               if !result
-                raise Not_Found, "#{self.class} id: #{doc_id_or_hash}"
+                raise Not_Found, "Document not found for #{self.class} id: #{doc_id_or_hash.inspect}"
               end
               result
             when Hash
@@ -169,7 +216,7 @@ module Couch_Plastic
   end
 
   def inspect
-    "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
+    "#<#{self.class}:#{self.object_id} id=#{self.data._id.inspect}>"
   end
 
   def == val
@@ -227,6 +274,10 @@ module Couch_Plastic
     val
   end
 
+  def lang_default
+    (manipulator && manipulator.lang) || 'en-us'
+  end
+
   def ask_for(*args)
     args.each { |raw_fld|
       fld = raw_fld.to_s
@@ -240,10 +291,9 @@ module Couch_Plastic
     args.each { |raw_fld|
       fld = raw_fld.to_sym
       if raw_data.has_key?(fld)
-        demand fld
-      else
-        send("#{fld}_default")
+        raw_data.send("#{fld}=", send("#{fld}_default"))
       end
+      demand fld
     }
   end
 
@@ -306,11 +356,18 @@ module Couch_Plastic
             @error_msg = target_val
 
           when :if_no_errors
-            val = instance_eval(&target_val)
-            new_clean_value(fld, val)
+            if errors.empty?
+              instance_eval(&target_val)
+            end
             
           when :in_array
-            if target_val.include?(raw)
+            arr = case target_val
+                  when Proc
+                    instance_eval(&target_val)
+                  else
+                    target_val
+                  end
+            if arr.include?(raw)
               new_clean_value fld, raw
             else
               errors << ( err_msg || @error_msg || "#{fld.humanize} is invalid" )
@@ -324,21 +381,50 @@ module Couch_Plastic
             end
             
           when :max
-            if raw.length <= target_val
+            if (raw || raw.to_s).length <= target_val
               new_clean_value fld, raw
             else
               errors << (err_msg || @error_msg || "#{fld.humanize} can't be bigger than #{target_val} in size." )
             end
 
           when :min
-            if raw.length >= target_val
+            if (raw || raw.to_s).length >= target_val
               new_clean_value fld, raw
             else
-              errors << (err_msg || @error_msg || "#{fld.humanize} can't be smaller than #{target_val} in size." )
+              errors << (err_msg || @error_msg || "#{fld.humanize} must be at least #{target_val} characters long." )
             end
             
+          when :mongo_object_id
+            new_raw = if raw.is_a?(String) && Mongo::ObjectID.legal?(raw)
+                        Mongo::ObjectID.from_string(raw)
+                      else
+                        raw
+                      end
+            if new_raw.is_a?(Mongo::ObjectID)
+              raw_data.send("#{fld}=", new_raw)
+              new_clean_value fld, new_raw
+              raw = new_raw
+            else
+              errors << (err_msg || @error_msg || "#{fld.humanize} is not a valid id.")
+            end
+
+          when :mongo_object_id_array
+            is_array = raw.is_a?(Array)
+            all_legal = is_array && [true] == raw.map { |v| v.is_a?(Mongo::ObjectID) || Mongo::ObjectID.legal?(v.to_s) }.uniq
+            all_mongo = is_array && all_legal && raw.map { |v| 
+              v.is_a?(Mongo::ObjectID) ? v : Mongo::ObjectID.from_string(v)
+            }
+            if all_mongo
+              raw = all_mongo
+              raw_data.send("#{fld}=", all_mongo)
+              new_clean_value(fld, all_mongo)
+            else
+              self.errors << (err_msg || @error_msg || "#{fld.capitalize} has invalid values.")
+            end
+
+
           when :not_empty
-            if raw && !raw.empty?
+            if raw && (raw.is_a?(Mongo::ObjectID) || !raw.empty?)
               new_clean_value fld, raw
             else
               errors << "#{fld.humanize} is required."
@@ -368,9 +454,14 @@ module Couch_Plastic
             when String
               arr = raw.split("\n").map {|piece| piece.split(',')}.flatten.map(&:strip)
               raw_data.send("#{fld}=", arr)
+              raw = arr
               new_clean_value fld, arr
             when Array
-              new_clean_value fld, val
+              new_clean_value fld, raw
+            when Mongo::ObjectID
+              raw = [raw]
+              raw_data.send("#{fld}=", raw)
+              new_clean_value fld, raw
             else
               errors << ( err_msg || @error_msg || "#{fld.humanize} is invalid.")
             end
@@ -389,10 +480,14 @@ module Couch_Plastic
               s = raw.to_s.strip.gsub(target_val, &@error_msg)
               raw_data.send("#{fld}=", s)
               new_clean_value fld, s
+            when NilClass
+              nil
             else
               errors << (err_msg || @error_msg || "#{fld.humanize} is invalid." )
             end
             
+          when :unique
+            add_unique_key fld, (err_msg || @error_msg || "#{fld.humanize}, #{raw}, already taken. Please choose another.")
           else
             raise ArgumentError, "#{reg.inspect} is an invalid validation requirement."
           end
@@ -435,8 +530,8 @@ module Couch_Plastic
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
-  #   opts - Valid options: :set_created_at
-  def save_create *opts
+  #   opts - Valid options: :if_valid, :on_error
+  def save_create opts = {}
 
     raise "This is not a new document." if !new?
 
@@ -450,26 +545,45 @@ module Couch_Plastic
     demand 'created_at' if self.class.allowed_field?('created_at')
 
     new_data.data_model = self.class.name
-    vals                = new_data.as_hash.clone
+    doc                = new_data.as_hash.clone
 
-    err = begin
-      doc = vals
-      vals.delete('_id') unless vals['_id']
-      doc['_id'] = self.class.db_collection.insert( vals, :safe=>true )
+    err = nil
+    if opts[:if_valid]
+      begin
+        opts[:if_valid].call(self)
+      rescue Object
+        err = $!
+      end
+    end
+
+    err ||= begin
+      doc.delete('_id') unless doc['_id']
+      new_id = self.class.db_collection.insert( doc, :safe=>true )
+      doc['_id'] = if new_id.is_a?(String) && Mongo::ObjectID.legal?(new_id)
+        Mongo::ObjectID.from_string(new_id)
+      else
+        new_id
+      end
       @data = Data_Pouch.new(doc, self.class.fields.keys )
       nil
     rescue Object
       $!
     end
 
-    return :ok unless err
+    return self if not err
     
-    results = if block_given?
-                yield err
-              end
-    raise err if not results
-
-    self
+    # Check if keys need to be unique.
+    if err.message =~ /duplicate key error/
+      key, err_msg = unique_keys.detect { |k, v| 
+        err.message =~ /\.\$#{Regexp.escape(k)}_/ 
+      }
+      if key
+        errors << err_msg
+        raise_if_invalid
+      end
+    end
+    
+    raise err
   end
 
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
@@ -485,14 +599,14 @@ module Couch_Plastic
     raise_if_invalid
     demand 'updated_at' if self.class.allowed_field?('updated_at')
 
-    insert = self.data.as_hash.clone.update(new_data.as_hash)
+    hsh = self.data.as_hash.clone.update(new_data.as_hash)
 
     begin
       id = data._id.to_s
       doc_id = if Mongo::ObjectID.legal?(id)
-                 self.class.db_collection.update( {:_id=>Mongo::ObjectID(id)}, insert, :safe=>true )
+                 self.class.db_collection.update( {:_id=>Mongo::ObjectID.from_string(id)}, hsh, :safe=>true )
                else
-                 self.class.db_collection.update( {:_id=>id}, insert, :safe=>true)
+                 self.class.db_collection.update( {:_id=>id}, hsh, :safe=>true)
                end
 
       data.as_hash.update(new_data.as_hash)
@@ -519,12 +633,16 @@ module Couch_Plastic
   #                  Validator Helpers
   # ========================================================= 
 
-  def lang_default
-    new_clean_value :lang, (@manipulator && @manipulator.lang) || 'en-us'
-  end
-
   def errors
     @errors ||= []
+  end
+
+  def add_unique_key key_name, err_msg
+    unique_keys[key_name.to_s] = err_msg
+  end
+
+  def unique_keys
+    @unique_keys ||= {}
   end
 
   def raise_if_invalid
@@ -606,7 +724,7 @@ module Couch_Plastic_Class_Methods
   # ===== CRUD Methods ====================================
 
   def by_id( id ) # READ
-    new( id )
+    new(id)
   end
 
   def create editor, raw_raw_data # CREATE

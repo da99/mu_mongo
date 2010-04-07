@@ -70,7 +70,7 @@ class Find_The_Bunny
     }
 
     results ||= The_App.controls.detect { |control|
-      raw_pieces = new_env['PATH_INFO'].strip_slashes.split('/')
+      raw_pieces = new_env['PATH_INFO'].sub(/\A\//, '').sub(/\/\Z/, '').split('/')
 
       pieces = if raw_pieces.empty?
                  [http_meth, 'list']

@@ -1,5 +1,5 @@
-# MAB   /home/da01/MyLife/apps/megauni/templates/English/mab/News_Control_edit.rb
-# SASS  /home/da01/MyLife/apps/megauni/templates/English/sass/News_Control_edit.sass
+# MAB   /home/da01/MyLife/apps/megauni/templates/en-us/mab/News_Control_edit.rb
+# SASS  /home/da01/MyLife/apps/megauni/templates/en-us/sass/News_Control_edit.sass
 # NAME  News_Control_edit
 
 class News_Control_edit < Base_View

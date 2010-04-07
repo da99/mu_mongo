@@ -1,4 +1,4 @@
-# ~/megauni/templates/English/mab/Hellos_list.rb
+# ~/megauni/templates/en-us/mab/Hellos_list.rb
 
 class Hellos_list < Base_View
 

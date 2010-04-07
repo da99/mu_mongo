@@ -1,5 +1,5 @@
 # VIEW views/Clubs_by_id.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/English/sass/Clubs_by_id.sass
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_by_id.sass
 # NAME Clubs_by_id
 
 div.content! { 

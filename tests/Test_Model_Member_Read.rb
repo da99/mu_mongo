@@ -7,7 +7,7 @@ class Test_Model_Member_Read < Test::Unit::TestCase
     doc = Member.authenticate(:username=>regular_username_1, :password=>regular_password_1)
     assert_equal(
       regular_username_1,
-      doc.data.lives[:friend][:username]
+      doc.usernames.detect { |un| un == regular_username_1 }
     )
   end
 
@@ -59,7 +59,6 @@ class Test_Model_Member_Read < Test::Unit::TestCase
       rescue Member::Wrong_Password
       rescue Member::Password_Reset
       end
-
       assert_equal( i, Member.failed_attempts_for_today(mem).count )
     end
   end

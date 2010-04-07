@@ -8,17 +8,20 @@ namespace :db do
   task :reset! do
     
     ENV['RACK_ENV'] ||= 'development'
-    raise "Not allowed in environment: #{ENV['RACK_ENV']}" unless ['development', 'test'].include?(ENV['RACK_ENV'])
+    # raise "Not allowed in environment: #{ENV['RACK_ENV']}" unless ['development', 'test'].include?(ENV['RACK_ENV'])
 
     require File.basename(File.expand_path('.'))
 
-    conn = Mongo::Connection.new
-    conn.drop_database(DB.name)
-    
-    puts_white "Deleted: #{DB.name}"
+    Couch_Plastic.reset_db!
+    puts_white "Removed all records and added new indexes (if any)."
 
-    Couch_Plastic.ensure_indexes
-    puts_white "Created indexes."
+    # conn = Mongo::Connection.new
+    # conn.drop_database(DB.name)
+    # 
+    # puts_white "Deleted: #{DB.name}"
+
+    # Couch_Plastic.ensure_indexes
+    # puts_white "Created indexes."
 
     # Grab some sample data
     Rake::Task['db:sample_data'].invoke
@@ -108,9 +111,10 @@ namespace :db do
 
     doc_data = doc.data.as_hash
     doc_data['security_level'] = 'ADMIN'
+    
 
     Member.db_collection.update(
-      {'_id' => Mongo::ObjectID.from_string(doc_data['_id'])}, 
+      {'_id' =>doc_data['_id']}, 
       doc_data,
       :safe=>true
     )

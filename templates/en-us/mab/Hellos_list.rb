@@ -1,5 +1,5 @@
 # ~/megauni/views/Hellos_list.rb
-# ~/megauni/templates/English/sass/Hellos_list.sass
+# ~/megauni/templates/en-us/sass/Hellos_list.sass
 
 
 div.content! do

@@ -123,7 +123,7 @@ class Test::Unit::TestCase
       end
 
       def regular_username_#{i}
-        self.class.regular_members[#{i}-1].data.lives.first.last[:username]
+        self.class.regular_members[#{i}-1].usernames.first
       end
       
       def regular_password_#{i}
@@ -157,8 +157,7 @@ class Test::Unit::TestCase
 		username = (1..5).to_a.inject('') { |m,l| m << chars[rand(chars.size)]; m } + "#{rand(100)}"
 		password = "random-password-#{rand(1000)}"
 		mem = Member.create(nil,
-			:add_life => 'friend',
-			:add_life_username => username ,
+			:add_username => username ,
 		  :password => password,
 			:confirm_password => password
 		)

@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_heart.rb
-# SASS  ~/megauni/templates/English/sass/Topic_heart.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_heart.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_heart.sass
 # NAME  Topic_heart
 
 class Topic_heart < Base_View

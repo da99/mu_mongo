@@ -3,11 +3,15 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Messages_Edit < Test::Unit::TestCase
 
+  def club
+    Club.db_collection.find_one
+  end
+
   def create_message mem
     Message.create(
       mem, 
-      :owner_id=> "username-#{mem.usernames.first}",
-      :target_ids => ['club-san-francisco'],
+      :username_id=> mem.username_ids.first.to_s,
+      :target_ids => [club['_id']],
       :body => 'test body',
       :emotion => 'poignant',
       :category => 'tweet',
@@ -30,8 +34,8 @@ class Test_Control_Messages_Edit < Test::Unit::TestCase
   must 'allow owner to view.' do
     log_in_member
     mem = create_message(regular_member_1)
-    get "/#{mem.data._id.sub('message-', 'mess/')}/edit/"
-    assert last_response.ok?
+    get "/mess/#{mem.data._id}/edit/"
+    assert 200, last_response.status
   end
 
 end # === class Test_Control_Messages_Edit

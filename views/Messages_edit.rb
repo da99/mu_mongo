@@ -1,15 +1,15 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/English/mab/Messages_edit.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/English/sass/Messages_edit.sass
+# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Messages_edit.rb
+# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_edit.sass
 # NAME  Messages_edit
 
 class Messages_edit < Base_View
 
   def title 
-    'Edit: ' + (mess.data.title || mess.data._id)
+    'Edit: ' + (mess.data.title || mess.data._id.to_s)
   end
   
   def mess_href
-    @cache['mess_href'] ||= File.join('/', mess.data._id.sub('message-', 'mess/'), '/')
+    @cache['mess_href'] ||= File.join('/', mess.data._id.to_s.sub('message-', 'mess/'), '/')
   end
 
   def mess_data

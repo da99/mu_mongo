@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_cancer.rb
-# SASS  ~/megauni/templates/English/sass/Topic_cancer.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_cancer.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_cancer.sass
 # NAME  Topic_cancer
 
 class Topic_cancer < Base_View

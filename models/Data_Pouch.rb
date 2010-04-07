@@ -6,9 +6,15 @@ class Data_Pouch
     @doc          = {}
     
     # Fill @doc hash with only allowed fields.
-    @fields.each { |f| 
-      @doc[f] = Data_Pouch.clean(raw_doc[f] || raw_doc[f.to_sym])
-    }
+    if raw_doc
+      @fields.each { |f| 
+        if raw_doc.has_key?(f)
+          @doc[f] = Data_Pouch.clean(raw_doc[f])
+        elsif raw_doc.has_key?(f.to_sym)
+          @doc[f] = Data_Pouch.clean(raw_doc[f.to_sym])
+        end
+      }
+    end
   end
 
   def respond_to?(raw_meth)
@@ -47,7 +53,7 @@ class Data_Pouch
   def self.clean hsh
     case hsh
     when Array
-      hsh.map { |val| Loofah::Helpers.sanitize(val) }
+      hsh.map { |val| clean(val) }
     when Hash
       hsh.to_a.inject({}) { |m, (k, v)| 
         m[k] = clean(v)
@@ -57,6 +63,8 @@ class Data_Pouch
       hsh
     when NilClass
       nil
+    when Mongo::ObjectID
+      hsh
     else
       hsh && Loofah::Helpers.sanitize(hsh.to_s)
     end

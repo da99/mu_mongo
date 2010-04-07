@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_back_pain.rb
-# SASS  ~/megauni/templates/English/sass/Topic_back_pain.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_back_pain.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_back_pain.sass
 # NAME  Topic_back_pain
 
 class Topic_back_pain < Base_View

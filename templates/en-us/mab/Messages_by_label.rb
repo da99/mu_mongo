@@ -1,5 +1,5 @@
 # VIEW views/Messages_by_label.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/English/sass/Messages_by_label.sass
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_by_label.sass
 # NAME Messages_by_label
 
 div.content! { 

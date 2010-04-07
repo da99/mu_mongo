@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/English/mab/Members_lives.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/English/sass/Members_lives.sass
+# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Members_lives.rb
+# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Members_lives.sass
 # NAME  Members_lives
 
 class Members_lives < Base_View

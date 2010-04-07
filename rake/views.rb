@@ -8,10 +8,10 @@ namespace :views do
     Render_Css.compile_all
   end
 
-  desc 'Uses name= and lang= [English]'
+  desc 'Uses name= and lang= [en-us]'
   task :create do
     
-    lang      = ENV['lang'] || 'English'
+    lang      = ENV['lang'] || 'en-us'
     name      = assert_not_empty( ENV['name'] )
     
     assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, name )

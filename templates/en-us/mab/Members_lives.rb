@@ -1,5 +1,5 @@
 # VIEW views/Members_lives.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/English/sass/Members_lives.sass
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Members_lives.sass
 # NAME Members_lives
 
 div.content! { 

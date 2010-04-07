@@ -1,5 +1,5 @@
 # VIEW ~/megauni/views/Hello_salud.rb
-# SASS ~/megauni/templates/English/sass/Hello_salud.sass
+# SASS ~/megauni/templates/en-us/sass/Hello_salud.sass
 # NAME Hello_salud
 
 div(:id=>"about_me") {

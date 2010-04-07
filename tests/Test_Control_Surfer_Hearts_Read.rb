@@ -54,7 +54,7 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
   end
 
   must 'redirects a "/heart_link/10/" to "/mess/10/".' do
-    news_id = Message.by_published_at(:limit=>1)[:doc][:_id].sub('message-', '')
+    news_id = Message.by_published_at(:limit=>1).first['_id'].to_s.sub('message-', '')
     get "/heart_link/#{news_id}/"
     follow_redirect!
     assert_equal "/mess/#{news_id}/", last_request.fullpath 
@@ -67,7 +67,7 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
     rescue Couch_Plastic::Not_Found => e
       e
     end
-    assert_match( /No document found for.+message-1000000/, err.message )
+    assert_match( /Document not found for Message id: .1000000./, err.message )
   end
 
   must 'redirects "/rss/" to "/rss.xml".' do

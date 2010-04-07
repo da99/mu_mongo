@@ -1,5 +1,5 @@
-# MAB   ~/megauni/templates/English/mab/Topic_arthritis.rb
-# SASS  ~/megauni/templates/English/sass/Topic_arthritis.sass
+# MAB   ~/megauni/templates/en-us/mab/Topic_arthritis.rb
+# SASS  ~/megauni/templates/en-us/sass/Topic_arthritis.sass
 # NAME  Topic_arthritis
 
 class Topic_arthritis < Base_View
