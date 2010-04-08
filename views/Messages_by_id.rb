@@ -9,7 +9,9 @@ class Messages_by_id < Base_View
   end
 
   def title 
-    message.data.title || message.data._id.to_s.sub('message-', 'Message ID: ')
+    message.data.title || 
+      (message.data.as_hash.has_key?('old_id') && message.data._id.to_s.sub('message-', 'Message ID: ')) ||
+        ( "Message ID: #{message.data._id}" )
   end
 
   def published_at
