@@ -167,7 +167,8 @@ class Base_View < Mustache
 
   # === Html ===
 
-  def auto_link str
+  def auto_link raw_str
+    str = raw_str.to_s 
     Loofah::Helpers.sanitize(
       str.gsub(FIND_URLS, "<a href=\"\\1\">\\1</a>")
     ).gsub(/\r?\n/, "<br />")
