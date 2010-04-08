@@ -76,11 +76,12 @@ class Message
 		)
   end
 
-	def self.public raw_params = {}, opts = {}, &blok
-		opts = {:limit=>10}
-		params = {}
+	def self.public raw_params = {}, raw_opts = {}, &blok
+		opts = {:limit=>10}.update(raw_opts)
+		params = {}.update(raw_params)
     db_collection.find(
-			params.update(raw_params), opts.update(raw_params),
+			params, 
+      opts,
 			&blok
 		)
 	end

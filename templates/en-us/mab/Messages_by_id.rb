@@ -4,7 +4,7 @@
 
 div.content! { 
   
-  mustache 'from_surfer_hearts?' do
+  mustache 'show_moving_message?' do
     div.notice! {
       span "I'm moving content from my old site, "
       a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
@@ -24,7 +24,7 @@ div.content! {
    end
   }
   
-  mustache 'from_surfer_hearts?' do
+  mustache 'show_moving_message?' do
     div.news_post.archives! {
       h4 'Archives:'
       div.body {

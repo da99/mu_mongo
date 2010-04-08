@@ -4,8 +4,8 @@
 
 class Messages_by_id < Base_View
 
-  def from_surfer_hearts?
-    message.data.created_at < '2010-01-01 01:01:01'
+  def show_moving_message?
+    from_surfer_hearts?(message.data.as_hash)
   end
 
   def title 
@@ -25,7 +25,7 @@ class Messages_by_id < Base_View
   def message_data
     @cache[:message_data] ||= begin
                                 v= message.data.as_hash
-                                v[:compiled_body] = from_surfer_hearts? ? v['body'] : auto_link(v['body'])
+                                v[:compiled_body] = from_surfer_hearts?(v) ? v['body'] : auto_link(v['body'])
                                 v
                               end
   end
