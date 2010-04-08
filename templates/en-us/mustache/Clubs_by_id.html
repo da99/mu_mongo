@@ -86,12 +86,12 @@
       <div id="club_message_create">
        <h4>Post a message:</h4>
        <form method="POST" action="/messages/" id="form_club_message_create">
-        <input type="hidden" value="club-{{club_filename}}" name="target_ids"/>
+        <input type="hidden" value="{{club_filename}}" name="club_filename"/>
         <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
-        <input type="hidden" value="{{single_username}}" name="username"/>
+        <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 

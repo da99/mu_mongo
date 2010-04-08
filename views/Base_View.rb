@@ -152,6 +152,10 @@ class Base_View < Mustache
     current_member_usernames.size == 1
   end
 
+  def first_username
+    current_member.usernames.first
+  end
+
   def single_username
     current_member_usernames.first
   end

@@ -17,8 +17,14 @@ class Test_Control_Sessions_Create < Test::Unit::TestCase
     assert_match( /Log-in/, last_response.body )
   end
 
-  must 'redirects and displays errors' do
+  must 'redirects and displays errors if no information supplied.' do
     post '/log-in/', {}, ssl_hash
+    follow_redirect!
+    assert_match( /Incorrect info. Try again./, last_response.body)
+  end
+
+  must 'redirects and displays errors if user is not found.' do
+    post '/log-in/', {:username=>'da-unknown', :password=>'some_password'}, ssl_hash
     follow_redirect!
     assert_match( /Incorrect info. Try again./, last_response.body)
   end
@@ -30,7 +36,7 @@ class Test_Control_Sessions_Create < Test::Unit::TestCase
   end
 
   must 'won\'t accept any more log-in attempts (even with right creditials) ' +
-     'after limmust is reached' do
+     'after limit is reached' do
     10.times do |i|
       post '/log-in/', {:username=>'wrong', :password=>'wrong'}, ssl_hash
     end
@@ -38,6 +44,5 @@ class Test_Control_Sessions_Create < Test::Unit::TestCase
     follow_redirect!
     assert_equal '/log-in/', last_request.path_info
   end
-
 
 end # === class Test_Control_Sessions_Create

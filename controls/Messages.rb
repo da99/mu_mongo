@@ -4,7 +4,7 @@ class Messages
   include Base_Control
 
   def GET_by_id id  # SHOW
-    mess_id = if id.to_s.size < 4
+    mess_id = if id.to_s.size < 6
                 "message-#{id}"
               else
                 id
@@ -28,9 +28,17 @@ class Messages
 
   def POST # CREATE
     begin
-      clean_room[:target_ids] ||= []
+      if clean_room[:club_filename]
+        club = Club.by_filename(clean_room[:club_filename])
+        clean_room[:target_ids] = [club.data._id]
+      else
+        clean_room[:target_ids] = clean_room[:target_ids].to_s.split(',').map(&:to_s)
+      end
       clean_room[:lang]       = self.current_member.lang
-      clean_room[:owner_id]   = "username-#{clean_room[:username]}"
+      
+
+      clean_room[:owner_id]   = current_member.data._id
+      clean_room[:username_id] = current_member.username_to_username_id(clean_room[:username])
       
       Message.create( current_member, clean_room )
       
@@ -39,7 +47,11 @@ class Messages
       
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
-      redirect! "/lives/#{clean_room[:username]}/"
+      if clean_room[:club_filename]
+        redirect! club.href
+      else
+        redirect! "/today/"
+      end
     end
   end
 

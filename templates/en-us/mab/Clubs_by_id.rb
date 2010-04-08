@@ -13,11 +13,11 @@ div.content! {
       h4 'Post a message:'  
       form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
         
-        input :type=>'hidden', :name=>'target_ids', :value=>'club-{{club_filename}}'
+        input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
         input :type=>'hidden', :name=>'privacy', :value=>'public'
         
         mustache 'single_username?' do
-          input :type=>'hidden', :name=>'username', :value=>'{{single_username}}'
+          input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
         end
         
         fieldset {

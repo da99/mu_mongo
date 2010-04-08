@@ -41,6 +41,44 @@
 {{/loading}}
 
      <div id="content">
+
+{{#flash_msg?}}
+
+       <div id="flash_msg">
+
+{{#flash_success}}
+
+        <div class="success">
+         <h4>Success</h4>
+         <div class="msg">{{msg}}</div>
+        </div>
+
+{{/flash_success}}
+
+
+{{#flash_errors}}
+
+        <div class="errors">
+         <h4>{{title}}</h4>
+         <div class="msg">
+          <ul>
+
+{{#errors}}
+
+           <li>{{err}}</li>
+
+{{/errors}}
+
+          </ul>
+         </div>
+        </div>
+
+{{/flash_errors}}
+
+       </div>
+
+{{/flash_msg?}}
+
       <p>
     More features coming soon.
   </p>

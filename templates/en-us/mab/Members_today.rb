@@ -4,6 +4,8 @@
 
 div.content! { 
 
+  partial '__flash_msg'
+  
   p %~
     More features coming soon.
   ~

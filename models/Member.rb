@@ -296,6 +296,10 @@ class Member
                                   end
   end
 
+  def username_to_username_id str
+    username_hash.index(str)
+  end
+
   def has_power_of?(raw_level)
 
     return true if raw_level == self

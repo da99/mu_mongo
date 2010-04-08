@@ -75,6 +75,7 @@ module Base_Control
                             raise "Unknown class: #{v.inspect} for #{k.inspect} in #{request.params.inspect}"
                           end
                         }
+                        data
                       end
   end
 

@@ -22,6 +22,10 @@ class Clubs_by_id < Base_View
     }
   end
 
+  def club_id
+    club.data._id
+  end
+
   def club_title
     club.data.title
   end
