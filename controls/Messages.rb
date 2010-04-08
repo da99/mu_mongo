@@ -27,9 +27,11 @@ class Messages
   end
 
   def POST # CREATE
+    return_page = '/today/'
     begin
       if clean_room[:club_filename]
         club = Club.by_filename(clean_room[:club_filename])
+        return_page = club.href
         clean_room[:target_ids] = [club.data._id]
       else
         clean_room[:target_ids] = clean_room[:target_ids].to_s.split(',').map(&:to_s)
@@ -43,15 +45,11 @@ class Messages
       Message.create( current_member, clean_room )
       
       flash_msg.success = "Your message has been saved."
-      redirect! '/' 
+      redirect! return_page
       
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
-      if clean_room[:club_filename]
-        redirect! club.href
-      else
-        redirect! "/today/"
-      end
+      redirect! return_page
     end
   end
 

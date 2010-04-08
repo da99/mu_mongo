@@ -24,4 +24,16 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
     assert_equal [body], Message.db_collection.find(:body=>body).map { |m| m['body'] }
   end
 
+  must 'redirect to club if club_filename was specified.' do
+    club = create_club
+    log_in_regular_member_1
+    post "/messages/", :club_filename=>club.data.filename,
+      :privacy=>'public',
+      :username=> regular_member_1.usernames.last,
+      :body => rand(12000)
+    follow_redirect!
+
+    assert_equal club.href, last_request.fullpath
+  end
+
 end # === class Test_Control_Messages_Create
