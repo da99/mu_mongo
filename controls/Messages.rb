@@ -3,13 +3,13 @@ class Messages
   
   include Base_Control
 
-  def GET_by_id id  # SHOW
-    mess_id = if id.to_s.size < 6
-                "message-#{id}"
-              else
-                id
-              end
-    env['message_by_id'] = Message.by_id(mess_id) 
+  def GET_by_id raw_id  # SHOW
+    id = raw_id.to_s.strip
+    env['message_by_id'] = if id.size < 6
+                             Message.by_old_id(id)
+                           else
+                             Message.by_id(id)
+                           end
     render_html_template
   end
 

@@ -167,6 +167,17 @@ class Message
 			&blok
     )
   end
+  
+
+  def self.by_old_id id
+    old_id = "message-#{id}"
+    mess = db_collection.find_one(:old_id=>old_id)
+    if mess
+      by_id(mess['_id'])
+    else
+      by_id(old_id)
+    end
+  end
 
   # ==== Accessors =====================================================
 
