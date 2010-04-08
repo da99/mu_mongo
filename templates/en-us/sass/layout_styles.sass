@@ -71,6 +71,11 @@ img.right
   font= "13px/1.5" "Helvetica, 'Liberation Sans', FreeSans, serif"
   background-color: #F1F1F1 
   
+#notice
+  background-color= !highlight
+  padding: 5px 10px
+  margin-bottom: 10px
+
 #flash_msg
   padding: 5px
   h4 
@@ -78,11 +83,11 @@ img.right
     font-weight: bold
   div.msg
     font-size: 14px
-  &.error_msg
+  div.error_msg
     font-weight: bold
     background= !red
     color: #fff
-  &.success_msg
+  div.success_msg
     background= !highlight
     h4
       color= !dark_blue
@@ -251,13 +256,6 @@ form
 #footer
   display: none
 
-
-
-
-#notice
-  background-color= !highlight
-  padding: 5px 10px
-  margin-bottom: 10px
 
 div.body
   +clearfix

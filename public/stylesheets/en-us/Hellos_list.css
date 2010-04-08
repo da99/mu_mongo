@@ -88,6 +88,11 @@ img.right {
   font: 13px/1.5 Helvetica, 'Liberation Sans', FreeSans, serif;
   background-color: #F1F1F1; }
 
+#notice {
+  background-color: #ffff99;
+  padding: 5px 10px;
+  margin-bottom: 10px; }
+
 #flash_msg {
   padding: 5px; }
   #flash_msg h4 {
@@ -95,15 +100,15 @@ img.right {
     font-weight: bold; }
   #flash_msg div.msg {
     font-size: 14px; }
-  #flash_msg.error_msg {
+  #flash_msg div.error_msg {
     font-weight: bold;
     background: #f00919;
     color: #fff; }
-  #flash_msg.success_msg {
+  #flash_msg div.success_msg {
     background: #ffff99; }
-    #flash_msg.success_msg h4 {
+    #flash_msg div.success_msg h4 {
       color: #214d81; }
-    #flash_msg.success_msg div.msg {
+    #flash_msg div.success_msg div.msg {
       color: #133b00; }
 
 #nav_bar {
@@ -287,11 +292,6 @@ form div.buttons button {
 
 #footer {
   display: none; }
-
-#notice {
-  background-color: #ffff99;
-  padding: 5px 10px;
-  margin-bottom: 10px; }
 
 div.body {
   overflow: hidden;
