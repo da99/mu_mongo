@@ -762,6 +762,45 @@
     "old_rev": "1-37ffc9d46fcf106d7f89aea5a151612f",
     "club": "bubblegum-pop",
     "created_at": "2007-01-09 14:05:04",
+    "title": "Pet Stuff",
+    "body": "sample body for message-1",
+    "data_model": "Messages",
+    "public_labels": [
+      "stuff_for_pets"
+    ],
+    "updated_at": "2007-03-27 09:32:35",
+    "_id": {
+      "$oid": "4bbce6566191537a71000005"
+    },
+    "tags": [
+      "stuff_for_dudettes",
+      "art_design"
+    ],
+    "owner_id": {
+      "$oid": "4bbce6566191537a71000092"
+    },
+    "username_id": {
+      "$oid": "4bbce6566191537a71000002"
+    },
+    "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/john_schwegel_kindle.jpg\" alt=\"Preview of Kindle by John Schwegel\" class=\"left\" align=\"left\" />KINDLE - one of my favorites from the <a href=\"http://www.johnschwegel.com/wallpapers.htm\">John Schwegel</a> desktop collection.",
+    "privacy": "public",
+    "message_model": "news",
+    "published_at": "2007-01-15 06:00:00",
+    "labels": [
+      "stuff_for_dudettes",
+      "art_design"
+    ],
+    "target_ids": [
+      {
+        "$oid": "4bbce6556191537a71000001"
+      }
+    ],
+    "old_id": "message-1"
+  },
+  {
+    "old_rev": "1-37ffc9d46fcf106d7f89aea5a151612f",
+    "club": "bubblegum-pop",
+    "created_at": "2007-01-09 14:05:04",
     "title": "KINDLE by John Scwhegel",
     "body": "<img class=\"left\" alt=\"Preview of Kindle by John Schwegel\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/john_schwegel_kindle.jpg\"  />John Schwegel, freelance illustrator, has posted a collection of wallpapers from his gallary of characters where he combines the macabre with the cute.&nbsp; Pictured here is, KINDLE. View more <a href=\"http://www.johnschwegel.com/wallpapers.htm\">wallpapers</a> or check out some of his other <a href=\"http://www.johnschwegel.com/buystuff.htm\">merchandise</a>.",
     "data_model": "Messages",
