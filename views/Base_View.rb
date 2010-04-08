@@ -167,6 +167,10 @@ class Base_View < Mustache
 
   # === Html ===
 
+  def from_surfer_hearts?(doc)
+    doc['created_at'] < '2010-01-01 01:01:01'
+  end
+
   def auto_link raw_str
     str = raw_str.to_s 
     Loofah::Helpers.sanitize(

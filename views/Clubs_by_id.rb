@@ -37,7 +37,7 @@ class Clubs_by_id < Base_View
   def messages_latest
     @cache['results.messages_latest'] ||= begin
                                               @app.env['results.messages_latest'].map { |doc|
-                                                doc['compiled_body'] = auto_link(doc['body'])
+                                                doc['compiled_body'] = from_surfer_hearts?(doc) ? doc['body'] : auto_link(doc['body'])
                                                 doc['href'] = "/mess/#{doc['_id']}/"
                                                 doc
                                               }
