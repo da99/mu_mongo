@@ -92,6 +92,15 @@ namespace :server do
     Launchy.open 'http://127.0.0.1:5984/_utils/index.html'
   end
 
+  desc 'Install crontab for production.'
+  task :install_crontab do
+    puts_white %!
+*/15 * * * * cd /home/da01 && export LD_INCLUDE_PATH=/home/da01/include/smjs:/home/da01/include/layout:/home/da01/include/unicode:$LD_INCLUDE_PATH && export LD_LIBRARY_PATH=/home/da01/lib:$LD_LIBRARY_PATH &&  /home/da01/bin/couchdb -b
+*/16 * * * * cd /home/da01/megauni && /home/da01/.gem/ruby/1.8/bin/unicorn -p 34735 -E production -D
+*/15 * * * * cd /home/da01/my_apps/mongodb && ./bin/mongod --dbpath data/db --port 27017 --fork --logpath data/log.txt
+    !
+  end
+
 end # === namespace :server
 
 namespace :unicorn do

@@ -1,4 +1,24 @@
 require 'json'
+require 'mongo'
+
+def compile_with_mongo_ids hsh
+  case hsh
+  when Array
+    hsh.map { |v| compile_with_mongo_ids(v) }
+  when Hash
+    if hsh['$oid']
+      Mongo::ObjectID.from_string(hsh['$oid'])
+    else
+      new_hsh = {}
+      hsh.each { |k, v| 
+        new_hsh[k] = compile_with_mongo_ids(v)
+      }
+      new_hsh
+    end
+  else
+    hsh
+  end
+end
 
 # PRODUCTION_DB = File.read(File.expand_path '~/cloud.txt').strip
 # DB_PRODUCTION = [ File.dirname(PRODUCTION_DB), File.basename(PRODUCTION_DB) ]
@@ -37,9 +57,10 @@ namespace :db do
     
     data = JSON.parse(File.read(File.expand_path('rake/sample_data_for_dev.json')))
     
-    data.each do |doc|
+    data.each do |raw_doc|
+      doc = compile_with_mongo_ids(raw_doc)
       raise ArgumentError, "No :data_model specified: #{doc.inspect}" if doc['data_model'].to_s.empty?
-      DB.collection(doc['data_model'] + 's').insert(doc)
+      DB.collection(doc['data_model']).insert(doc)
     end
     
     puts_white "Inserted sample data."
