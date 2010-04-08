@@ -53,5 +53,16 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_match( /This website has moved/, last_response.body  )
   end
 
+  must 'should redirect /back-pain/ to /clubs/back_pain/' do
+    get '/back-pain/'
+    follow_redirect!
+    assert_equal '/clubs/back_pain/', last_request.fullpath
+  end
+
+  must 'redirect /salud/robots.txt to /robots.txt' do
+    get '/salud/robots.txt'
+    follow_redirect!
+    assert_equal '/robots.txt', last_request.fullpath
+  end
 
 end # === class Test_Control_Old_Apps_Read

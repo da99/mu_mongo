@@ -7,6 +7,14 @@ class Old_App_Redirect
 
   def call new_env
 
+    if ['/back-pain/', '/meno-osteo/'].include?(new_env['PATH_INFO'])
+      return hearty_redirect("/clubs#{new_env['PATH_INFO']}".sub('-', '_'))
+    end
+    
+    if ['/salud/robots.txt'].include?(new_env['PATH_INFO'])
+      return hearty_redirect("/robots.txt")
+    end
+
     if (new_env['HTTP_HOST'] =~ /megahtml.com/ && new_env['PATH_INFO'] == '/')
       return hearty_redirect('/megahtml.html')
     end
