@@ -83,6 +83,20 @@
 
 {{#logged_in?}}
 
+
+{{#follower?}}
+
+      <p>You are following this club.</p>
+
+{{/follower?}}
+
+
+{{#potential_follower?}}
+
+      <a href="{{follow_href}}">Follow this club.</a>
+
+{{/potential_follower?}}
+
       <div id="club_message_create">
        <h4>Post a message:</h4>
        <form method="POST" action="/messages/" id="form_club_message_create">

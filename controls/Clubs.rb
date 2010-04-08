@@ -14,11 +14,15 @@ class Clubs
     render_html_template
   end
 
-  # def GET club_filename
-  #   save_club_to_env(club_filename)
-  #   @action_name = club_filename
-  #   render_html_template 
-  # end
+  def GET_follow_by_id filename
+    club = Club.by_filename(filename)
+    begin
+      club.create_follower(current_member)
+    rescue Couch_Plastic::Invalid
+      flash_msg.errors = $!.doc.errors
+    end
+    redirect! club.href
+  end
 
   def GET_by_id filename
     env['results.club'] = club = Club.by_filename(filename)
@@ -54,7 +58,7 @@ class Clubs
     begin
       club = Club.create( current_member, clean_room )
       flash_msg.success = "Club has been created: #{club.data.title}"
-      redirect! "/clubs/#{club.data.filename}/"
+      redirect! club.href
     rescue Club::Invalid
       flash_msg.errors = $!.doc.errors
       redirect! "/today/"

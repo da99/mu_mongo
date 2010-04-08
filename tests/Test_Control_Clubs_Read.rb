@@ -53,4 +53,49 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal regular_member_1.usernames.first, un.attributes['value'].value
   end
 
+  must 'not show follow club link to strangers.' do
+    club = create_club
+    get club.href
+    
+    assert_equal nil, last_response.body[club.follow_href]
+  end
+
+  must 'not show follow club link to club creator' do
+    club = create_club(regular_member_1)
+
+    log_in_regular_member_1
+    get club.href
+    assert_equal nil, last_response.body[club.follow_href]
+  end
+
+  must 'not show "You are following" message to club creator' do
+    club = create_club(regular_member_1)
+
+    log_in_regular_member_1
+    get club.href
+    assert_equal nil, last_response.body['following']
+  end
+
+  must 'show follow club link to members.' do
+    club = create_club(regular_member_1)
+
+    log_in_regular_member_2
+    get club.href
+    
+    assert_equal club.follow_href, last_response.body[club.follow_href]
+  end
+
+  must 'allow members to follow someone else\'s club' do
+    club = create_club(regular_member_2)
+
+    log_in_regular_member_1
+    get File.join('/', club.href, 'follow/')
+    follows = Club.db_collection_followers.find(
+      :club_id=>club.data._id, 
+      :follower_id=>regular_member_1.data._id
+    ).to_a
+
+    assert_equal 1, follows.size
+  end
+
 end # === class Test_Control_Clubs_Read

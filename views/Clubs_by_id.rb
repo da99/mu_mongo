@@ -33,6 +33,18 @@ class Clubs_by_id < Base_View
   def club_filename
     club.data.filename
   end
+  
+  def potential_follower?
+    club.potential_follower?(current_member)
+  end
+
+  def follower?
+    club.follower?(current_member)
+  end
+
+  def follow_href
+    club.follow_href
+  end
 
   def public_labels
     @public_labels ||= Message.public_labels.map {|label| {:filename => label} }

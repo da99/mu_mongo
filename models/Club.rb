@@ -25,6 +25,7 @@ class Club
   # ======== Authorizations ======== 
 
   def creator? editor 
+    return false if not new?
     return true if editor.has_power_of? :MEMBER
     # editor.has_power_of? Member::ADMIN
   end
@@ -70,6 +71,10 @@ class Club
 
   # ======== Accessors ======== 
 
+  def self.db_collection_followers
+    DB.collection('Club_Followers')
+  end
+
   def self.all raw_params = {}, &blok
     db_collection.find( raw_params, &blok)
   end
@@ -86,8 +91,44 @@ class Club
     Club.new(club)
   end
 
+  def owner?(mem)
+    return false if not mem
+    data.owner_id.to_s == mem.data._id.to_s
+  end
+
   def href 
     cache[:href] = "/clubs/#{data.filename}/"
+  end
+
+  def follow_href
+    cache[:follow_href] = "/clubs/#{data.filename}/follow/"
+  end
+
+  def followers
+    cache[:followers] = self.class.db_collection_followers.find(:_id=>data._id).map { |doc|
+      doc['follower_id']
+    }
+  end
+
+  def potential_follower? mem
+    return false if !mem || owner?(mem) || follower?(mem)
+    true
+  end
+
+  def follower? mem
+    return false if not mem
+    return false if owner?(mem)
+    followers.include?(mem.data._id)
+  end
+
+  # === Other Instance Methods
+
+  def create_follower mem
+    self.class.db_collection_followers.insert(
+      '_id' => "#{data._id}#{mem.data._id}",
+      'club_id' => data._id, 
+      'follower_id' => mem.data._id
+    )
   end
 
 end # === Club

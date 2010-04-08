@@ -9,6 +9,15 @@ div.content! {
   h3 '{{club_title}}'
   
   mustache 'logged_in?' do
+  
+    mustache 'follower?' do
+      p "You are following this club."
+    end
+
+    mustache 'potential_follower?' do
+      a("Follow this club.", :href=>"{{follow_href}}")
+    end
+
     div.club_message_create! do
       h4 'Post a message:'  
       form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
