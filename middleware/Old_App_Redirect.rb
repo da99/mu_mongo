@@ -7,6 +7,10 @@ class Old_App_Redirect
 
   def call new_env
 
+    if new_env['PATH_INFO'] === "/help/"
+      return hearty_redirect("/clubs/megauni/")
+    end
+
     if ['/back-pain/', '/meno-osteo/'].include?(new_env['PATH_INFO'])
       return hearty_redirect("/clubs#{new_env['PATH_INFO']}".sub('-', '_'))
     end

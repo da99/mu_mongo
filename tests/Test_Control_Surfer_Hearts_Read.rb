@@ -37,7 +37,6 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
     get '/about/'
     follow_redirect!
     assert_equal '/help/', last_request.fullpath
-    assert_equal 200, last_response.status
   end
 
   must 'redirects blog archives (e.g. "/blog/2007/8/" ) to news archives. ' do
