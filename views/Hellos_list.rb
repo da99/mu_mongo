@@ -7,7 +7,7 @@ class Hellos_list < Base_View
   end
 
   def title
-    'Coming Soon...'
+    The_App::SITE_TAG_LINE
   end
 
   def meta_description
