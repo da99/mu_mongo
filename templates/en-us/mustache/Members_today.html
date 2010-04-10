@@ -79,9 +79,27 @@
 
 {{/flash_msg?}}
 
+
+{{#no_newspaper}}
+
       <p>
-    More features coming soon.
-  </p>
+       <a href="/clubs/">Check out some clubs to follow.</a>
+      </p>
+
+{{/no_newspaper}}
+
+
+{{#newspaper}}
+
+      <div class="message">
+       <div class="body">{{{compiled_body}}}</div>
+       <div class="permalink">
+        <a href="{{href}}">Permalink</a>
+       </div>
+      </div>
+
+{{/newspaper}}
+
      </div>
       <div id="nav_bar">
        <div id="logo">

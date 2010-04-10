@@ -22,6 +22,26 @@ div.content! {
      h4 '{{title}}'
      div.body { '{{{compiled_body}}}' }
    end
+
+   mustache 'product?' do
+     
+     div.wonderful {
+      p '---'
+     }
+
+     div.tips {
+       p '---'
+     }
+
+     div.questions {
+       p '---'
+     }
+
+     div.complain {
+       p '---'
+     }
+
+   end
   }
   
   mustache 'show_moving_message?' do

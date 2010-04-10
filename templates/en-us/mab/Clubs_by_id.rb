@@ -32,6 +32,11 @@ div.content! {
         fieldset {
           textarea '', :name=>'body'
         }
+
+        fieldset {
+          label "Labels (Separate each with a comma.)"
+          input.text :type=>'text', :name=>'public_labels', :value=>''
+        }
         
         div.buttons {
           button.create 'Save'

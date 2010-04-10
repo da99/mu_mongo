@@ -337,7 +337,23 @@ class Member
     @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
   end 
   
-  # ==== Validators =====================================================
+  def potential_clubs
+    cache[:potential_clubs] ||= begin
+                                  Club.all(:_id=>{:$in => potential_club_ids})
+                                end
+  end
+
+  def potential_club_ids
+    cache[:potential_club_ids] ||= begin
+                                  created   = Club.all_ids_for_owner( self.data._id )
+                                  following = Club.all_ids_for_follower( self.data._id )
+                                  Club.all_ids(:_id=>{:$nin => created+following})
+                                end
+  end
+
+  def newspaper
+    cache[:newspaper] ||= Message.db_collection.find(:target_ids=>{:$in=>potential_club_ids})
+  end
 
   
 end # === model Member

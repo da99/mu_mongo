@@ -181,6 +181,10 @@ class Message
 
   # ==== Accessors =====================================================
 
+  def product?
+    data.public_labels && data.public_labels.include?('product')
+  end
+
   def published_at
     Time.parse(data.published_at || data.created_at)
   end

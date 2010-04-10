@@ -118,6 +118,13 @@ module Couch_Plastic
     time.strftime(Time_Format)
   end
 
+  def self.mongofy_id raw_id
+    return raw_id if raw_id.is_a?(Mongo::ObjectID)
+    str = raw_id.to_s.strip
+    Mongo::ObjectID.legal?( str ) ?
+      Mongo::ObjectID.from_string(str) :
+      str
+  end
 
   attr_reader :data
   
@@ -725,6 +732,11 @@ module Couch_Plastic_Class_Methods
 
   def by_id( id ) # READ
     new(id)
+  end
+
+  def self.by_owner_id str, params = {}, opts = {}
+    id = Mongo::ObjectID.legal?(str) ? Mongo::ObjectID.from_string(str) : str
+    db_collection.find({:owner_id=>str}, params, opts)
   end
 
   def create editor, raw_raw_data # CREATE

@@ -23,11 +23,7 @@ class Hellos_list < Base_View
   end
   
   def messages_public 
-    @cache[:messages_public] ||= @app.env['results.messages_public'].map { |doc|
-			doc['href'] = "/mess/#{doc['_id']}/"
-      doc['compiled_body'] = from_surfer_hearts?(doc) ? doc['body'] : auto_link(doc['body'])
-			doc
-		}
+    @cache[:messages_public] ||= compile_messages(@app.env['results.messages_public'])
   end
   
   def clubs

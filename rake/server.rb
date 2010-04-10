@@ -65,7 +65,7 @@ namespace :server do
   
   desc 'Start CouchDB server.'
   task :db do 
-    dir = "~/Desktop/mongodb"
+    dir = "~/Apps/mongodb"
     exists = (Rush.processes.filter(:cmdline=>/mongod\ /).to_a.size > 0)
     if not exists
       exec("#{dir}/bin/mongod --dbpath #{dir}/data/db --fork --logpath #{dir}/data/log/log.txt")

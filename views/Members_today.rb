@@ -7,5 +7,13 @@ class Members_today < Base_View
   def title 
     'Today on '
   end
+
+  def newspaper
+    @cache[:newspaper] ||= compile_messages( current_member.newspaper )
+  end
 	
+  def clubs
+    @cache[:clubs] ||= current_member.potential_clubs
+  end
+
 end # === Member_Control_today 

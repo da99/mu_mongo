@@ -171,6 +171,14 @@ class Base_View < Mustache
 
   # === Html ===
 
+  def compile_messages( mess_arr )
+    mess_arr.map { |doc|
+			doc['href'] = "/mess/#{doc['_id']}/"
+      doc['compiled_body'] = from_surfer_hearts?(doc) ? doc['body'] : auto_link(doc['body'])
+			doc
+		}
+  end
+
   def from_surfer_hearts?(doc)
     doc['created_at'] < '2010-01-01 01:01:01'
   end

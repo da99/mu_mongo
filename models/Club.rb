@@ -79,6 +79,26 @@ class Club
     db_collection.find( raw_params, &blok)
   end
 
+  def self.all_ids params = {}, opts = {}
+    db_collection.find( params, {:fields=>['_id']}.update(opts) ).map { |doc|
+      doc['_id']
+    }
+  end
+  
+  def self.all_ids_for_owner( raw_id )
+    id = Couch_Plastic.mongofy_id( raw_id )
+    db_collection.find({:owner_id=>id}, {:fields=>'_id'}).map { |doc|
+      doc['_id']
+    }
+  end
+
+  def self.all_ids_for_follower( raw_id )
+    id = Couch_Plastic.mongofy_id( raw_id )
+    db_collection_followers.find({:follower_id=>id}, {:fields=>'_id'}).map { |doc|
+      doc['_id']
+    }
+  end
+
   def self.all_filenames 
     db_collection.find().map {|r| r['filename']}
   end

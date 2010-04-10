@@ -8,6 +8,10 @@ class Messages_by_id < Base_View
     from_surfer_hearts?(message.data.as_hash)
   end
 
+  def product?
+    message.product?
+  end
+
   def title 
     message.data.title || 
       (message.data.as_hash.has_key?('old_id') && message.data._id.to_s.sub('message-', 'Message ID: ')) ||
