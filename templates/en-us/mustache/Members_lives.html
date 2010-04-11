@@ -102,6 +102,36 @@
         <button>Save</button>
        </div>
       </form>
+
+{{#no_newspaper}}
+
+      <p>
+       <a href="/clubs/">Check out some clubs to follow.</a>
+      </p>
+
+{{/no_newspaper}}
+
+
+{{#newspaper?}}
+
+      <div id="newspaper">
+       <h4>The latest from clubs you follow:</h4>
+
+{{#newspaper}}
+
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
+       </div>
+
+{{/newspaper}}
+
+      </div>
+
+{{/newspaper?}}
+
      </div>
       <div id="nav_bar">
        <div id="logo">
