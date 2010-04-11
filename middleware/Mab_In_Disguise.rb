@@ -160,6 +160,20 @@ class Markaby::Builder
     text txt
   end
 
+  def nav_bar_li_selected txt
+    text(capture {
+      li.selected { span "< #{txt} >" }
+    })
+  end
+
+  def nav_bar_li_unselected txt, href
+    text(capture {
+      li {
+        a txt, :href=>href
+      }
+    })
+  end
+
   def nav_bar_li *args
     case args.size
     when 2, 3
@@ -181,15 +195,9 @@ class Markaby::Builder
                  
     href     = shortcut == 'home' ? '/' : File.join('/', prefix, raw_shortcut, '/')
     if self.template_name.to_s === template_name.to_s
-      text(capture {
-        li.selected { span "< #{txt} >" }
-      })
+      nav_bar_li_selected txt
     else
-      text(capture {
-        li {
-          a txt, :href=>"#{href}"
-        }
-      })
+      nav_bar_li_unselected txt, href
     end
   end
 

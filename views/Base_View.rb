@@ -171,6 +171,26 @@ class Base_View < Mustache
 
   # === Html ===
 
+	def current_member_username
+		@app.env['results.username']
+	end
+  
+  def username_nav
+    
+    c_name = @app.control_name
+    a_name = @app.action_name
+    life_page = c_name == :Members && a_name == 'lives'
+    
+
+    @cache[:username_nav] ||= current_member.usernames.map { |un|
+      { :selected=> (life_page && current_member_username == un), 
+        :username=>un, 
+        :href=>"/lives/#{un}/",
+        :not_selected=> !(life_page && current_member_username == un)
+      }
+    }
+  end
+
   def compile_messages( mess_arr )
     mess_arr.map { |doc|
 			doc['href'] = "/mess/#{doc['_id']}/"

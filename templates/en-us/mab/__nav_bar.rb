@@ -41,8 +41,13 @@ div( :id=>"nav_bar" ) {
   mustache 'logged_in?' do
     h4 'Lives' 
     ul.lives {
-      mustache 'current_member_usernames' do
-        nav_bar_li :Members, :lives, "/lives/{{username}}/", "{{username}}"
+      mustache 'username_nav' do
+        mustache 'selected' do
+          nav_bar_li_selected '{{username}}'
+        end
+        mustache 'not_selected' do
+          nav_bar_li_unselected '{{username}}', '{{href}}'
+        end
       end
     nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
     }
