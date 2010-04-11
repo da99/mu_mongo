@@ -45,5 +45,10 @@ class Test_Control_Members_Create < Test::Unit::TestCase
 		
   end
   
+	must 'show form with :add_username' do
+		get "/create-account/"
+    input = Nokogiri::HTML(last_response.body).css('form#form_member_create input[name=add_username]').first
+		assert input
+	end
 
 end # === class Test_Control_Members_Create

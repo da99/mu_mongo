@@ -10,11 +10,11 @@ div.content! {
 
   h3 'Create a New Account'
   
-  form.create_account_form!(:action=>"/member/", :method=>"post") {
+  form.form_member_create!(:action=>"/member/", :method=>"post") {
     
     fieldset {
       label 'Username'
-      input.text( :id=>"username_name", :name=>"add_life_username", :type=>"text", :value=>'{{ session_form_username }}' )
+      input.text( :id=>"username_name", :name=>"add_username", :type=>"text", :value=>'{{ session_form_username }}' )
     }
     
     fieldset {

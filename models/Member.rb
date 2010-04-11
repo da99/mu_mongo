@@ -346,13 +346,16 @@ class Member
   def potential_club_ids
     cache[:potential_club_ids] ||= begin
                                   created   = Club.all_ids_for_owner( self.data._id )
-                                  following = Club.all_ids_for_follower( self.data._id )
-                                  Club.all_ids(:_id=>{:$nin => created+following})
+                                  Club.all_ids(:_id=>{:$nin => created+following_club_ids})
                                 end
   end
 
+  def following_club_ids
+    cache[:following_club_ids] ||= Club.all_ids_for_follower(self.data._id)
+  end
+
   def newspaper
-    cache[:newspaper] ||= Message.db_collection.find(:target_ids=>{:$in=>potential_club_ids})
+    cache[:newspaper] ||= Message.db_collection.find(:target_ids=>{:$in=>following_club_ids})
   end
 
   

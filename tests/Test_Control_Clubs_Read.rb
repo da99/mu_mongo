@@ -1,6 +1,5 @@
 # controls/Clubs.rb
 require 'tests/__rack_helper__'
-require 'nokogiri'
 
 class Test_Control_Clubs_Read < Test::Unit::TestCase
 
@@ -84,6 +83,17 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     
     assert_equal club.follow_href, last_response.body[club.follow_href]
   end
+
+	must 'not show follow club link to followers.' do
+		club = create_club(regular_member_1)
+		club.create_follower( regular_member_2 )
+
+		log_in_regular_member_2
+		get club.href
+
+		assert_not_equal club.follow_href, last_response.body[club.follow_href]
+	end
+
 
   must 'allow members to follow someone else\'s club' do
     club = create_club(regular_member_2)

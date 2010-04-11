@@ -94,8 +94,8 @@ class Club
 
   def self.all_ids_for_follower( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
-    db_collection_followers.find({:follower_id=>id}, {:fields=>'_id'}).map { |doc|
-      doc['_id']
+    db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
+      doc['club_id']
     }
   end
 
@@ -121,11 +121,11 @@ class Club
   end
 
   def follow_href
-    cache[:follow_href] = "/clubs/#{data.filename}/follow/"
+    cache[:follow_href] ||= "/clubs/#{data.filename}/follow/"
   end
 
   def followers
-    cache[:followers] = self.class.db_collection_followers.find(:_id=>data._id).map { |doc|
+    cache[:followers] ||= self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
       doc['follower_id']
     }
   end

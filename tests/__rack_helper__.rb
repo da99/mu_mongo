@@ -2,6 +2,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'rack/test'
 require 'middleware/Fake_Server'
+require 'nokogiri'
 
 class Test::Unit::TestCase
 

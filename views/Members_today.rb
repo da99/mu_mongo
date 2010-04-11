@@ -5,7 +5,7 @@
 class Members_today < Base_View
 
   def title 
-    'Today on '
+    "Today on #{site_title}"
   end
 
   def newspaper
