@@ -100,15 +100,15 @@ img.right {
     font-weight: bold; }
   #flash_msg div.msg {
     font-size: 14px; }
-  #flash_msg div.error_msg {
+  #flash_msg div.error_msg, #flash_msg div.errors {
     font-weight: bold;
     background: #f00919;
     color: #fff; }
-  #flash_msg div.success_msg {
+  #flash_msg div.success_msg, #flash_msg div.success {
     background: #ffff99; }
-    #flash_msg div.success_msg h4 {
+    #flash_msg div.success_msg h4, #flash_msg div.success h4 {
       color: #214d81; }
-    #flash_msg div.success_msg div.msg {
+    #flash_msg div.success_msg div.msg, #flash_msg div.success div.msg {
       color: #133b00; }
 
 #nav_bar {

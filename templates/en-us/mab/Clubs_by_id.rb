@@ -20,13 +20,15 @@ div.content! {
 			end
 			mustache 'multiple_usernames?' do
 				form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
-					label 'Follow this club as: '
-					select {
-						mustache('current_member_usernames') {
-							option('{{username}}', :value=>'{{username}}')
-						}
-					}
-					button 'Follow.'
+          fieldset {
+            label 'Follow this club as: ' 
+            select(:name=>'username') {
+              mustache('current_member_usernames') {
+                option('{{username}}', :value=>'{{username}}')
+              }
+            }
+          }
+					div.buttons { button 'Follow.' }
 				end
 			end
     end

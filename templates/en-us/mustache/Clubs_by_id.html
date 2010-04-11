@@ -104,17 +104,21 @@
 {{#multiple_usernames?}}
 
       <form method="post" action="/clubs/follow/" name="form_follow_create" id="form_follow_create">
-       <label>Follow this club as: </label>
-       <select>
+       <fieldset>
+        <label>Follow this club as: </label>
+        <select name="username">
 
 {{#current_member_usernames}}
 
-        <option value="{{username}}">{{username}}</option>
+         <option value="{{username}}">{{username}}</option>
 
 {{/current_member_usernames}}
 
-       </select>
-       <button>Follow.</button>
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button>Follow.</button>
+       </div>
       </form>
 
 {{/multiple_usernames?}}
