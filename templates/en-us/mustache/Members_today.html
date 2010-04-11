@@ -89,16 +89,25 @@
 {{/no_newspaper}}
 
 
+{{#newspaper?}}
+
+      <div id="newspaper">
+       <h4>The latest from clubs you follow:</h4>
+
 {{#newspaper}}
 
-      <div class="message">
-       <div class="body">{{{compiled_body}}}</div>
-       <div class="permalink">
-        <a href="{{href}}">Permalink</a>
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
        </div>
-      </div>
 
 {{/newspaper}}
+
+      </div>
+
+{{/newspaper?}}
 
      </div>
       <div id="nav_bar">

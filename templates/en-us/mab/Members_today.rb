@@ -1,5 +1,5 @@
 # VIEW views/Members_today.rb
-# SASS /home/da01/MyLife/apps/megauni/templates/en-us/sass/Member_Control_today.sass
+# SASS templates/en-us/sass/Member_Control_today.sass
 # NAME Member_Control_today
 
 div.content! { 
@@ -13,14 +13,20 @@ div.content! {
     }
   end
 
-  mustache 'newspaper' do
-    div.message do
-      div.body( '{{{compiled_body}}}' )
-      div.permalink {
-        a('Permalink', :href=>"{{href}}")
-      }
+  mustache 'newspaper?' do  
+    div.newspaper! do
+      h4 'The latest from clubs you follow:'
+      mustache 'newspaper' do
+        div.message do
+          div.body( '{{{compiled_body}}}' )
+          div.permalink {
+            a('Permalink', :href=>"{{href}}")
+          }
+        end
+      end
     end
   end
+  
   
 } # === div.content!
 

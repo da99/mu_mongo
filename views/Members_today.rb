@@ -11,6 +11,10 @@ class Members_today < Base_View
   def newspaper
     @cache[:newspaper] ||= compile_messages( current_member.newspaper )
   end
+
+  def newspaper?
+    newspaper.size > 0
+  end
 	
   def clubs
     @cache[:clubs] ||= current_member.potential_clubs
