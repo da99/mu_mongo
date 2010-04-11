@@ -1,5 +1,5 @@
 # VIEW views/Members_today.rb
-# SASS templates/en-us/sass/Member_Control_today.sass
+# SASS templates/en-us/sass/Members_today.sass
 # NAME Member_Control_today
 
 div.content! { 

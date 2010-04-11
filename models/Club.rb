@@ -99,6 +99,13 @@ class Club
     }
   end
 
+  def self.all_ids_for_follower_username_id( raw_id )
+    id = Couch_Plastic.mongofy_id( raw_id )
+    db_collection_followers.find({:username_id=>id}, {:fields=>'club_id'}).map { |doc|
+      doc['club_id']
+    }
+  end
+
   def self.all_filenames 
     db_collection.find().map {|r| r['filename']}
   end

@@ -22,4 +22,19 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must 'show a msesage list from followed clubs at /lives/{username}/' do
+    
+    content          = create_club_content
+    club_1, club_2, rest = content[:clubs]
+    mess_1, mess_2, rest = content[:messages]
+    mem, uns, un_ids = add_username(regular_member_3)
+
+    club_1.create_follower(mem, un_ids.first)
+    club_2.create_follower(mem, un_ids.last)
+    log_in_regular_member_3
+    get "/lives/#{uns.last}/"
+    assert_equal nil, last_response.body[mess_1.data.body]
+    assert last_response.body[mess_2.data.body]
+  end
+
 end # === class Test_Control_Members_Read

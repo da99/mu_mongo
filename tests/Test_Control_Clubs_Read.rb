@@ -3,14 +3,6 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Clubs_Read < Test::Unit::TestCase
 
-  def create_club(mem = nil)
-    mem ||= regular_member_1
-    num=rand(10000)
-    Club.create(mem, 
-      :title=>"R2D2 #{num}", :filename=>"r2d2_#{num}", :teaser=>"Teaser for: R2D2 #{num}"
-    )
-  end
-
   must 'be viewable by non-members' do
     club = create_club
     get "/clubs/#{club.data.filename}/"

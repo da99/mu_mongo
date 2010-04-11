@@ -370,12 +370,25 @@ class Member
                                 end
   end
 
-  def following_club_ids
-    cache[:following_club_ids] ||= Club.all_ids_for_follower(self.data._id)
+  def following_club_ids un_id = nil
+    if un_id
+      cache["follwing_club_ids_#{un_id}"] ||= Club.all_ids_for_follower_username_id(un_id)
+    else
+      cache[:following_club_ids] ||= Club.all_ids_for_follower(self.data._id)
+    end
   end
 
-  def newspaper
-    cache[:newspaper] ||= Message.db_collection.find(:target_ids=>{:$in=>following_club_ids})
+  def newspaper username = nil
+    if username
+      cache["newspaper_#{username}"] ||= begin
+                                            un_id = username_to_username_id(username)
+                                            raise "Username does not belong to user: #{username.inspect}" unless un_id
+                                            club_ids = following_club_ids(un_id)
+                                            Message.db_collection.find( {:target_ids=>{:$in=>club_ids}}, { :limit => 10 })
+                                          end
+    else
+      cache[:newspaper] ||= Message.db_collection.find( {:target_ids=>{:$in=>following_club_ids}}, {:limit=>10})
+    end
   end
 
   

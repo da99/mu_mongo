@@ -204,8 +204,42 @@ class Test::Unit::TestCase
     assert_match( /today/, last_request.fullpath )
   end
 
-  
-  
+  def create_club(mem = nil)
+    mem ||= regular_member_1
+    num=rand(10000)
+    Club.create(mem, 
+      :title=>"R2D2 #{num}", :filename=>"r2d2_#{num}", :teaser=>"Teaser for: R2D2 #{num}"
+    )
+  end
+
+  def create_club_message( mem, club, un_id = nil )
+    Message.create( mem, 
+      :privacy => 'public',
+      :target_ids => [club.data._id],
+      :owner_id => mem.data._id,
+      :username_id => (un_id || mem.username_ids.first),
+      :body => "random body #{rand(4000)}"
+    )
+  end
+
+  def create_club_content
+    club_1 = create_club
+    club_2 = create_club
+    mess_1 = create_club_message(regular_member_1, club_1)
+    mess_2 = create_club_message(regular_member_2, club_2)
+    {:clubs => [club_1, club_2], :messages=>[mess_1, mess_2]}
+  end
+
+
+  def add_username mem = nil
+    mem ||= regular_member_1
+    un_2 = "rand_#{rand 3000}"
+    Member.update(mem.data._id, mem, :add_username=>un_2)
+    mem = Member.by_id(mem.data._id)
+    uns     = mem.usernames
+    un_ids  = uns.map { |u| mem.username_to_username_id(u) }
+    [mem, uns, un_ids]
+  end
   
 end
 
