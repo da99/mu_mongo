@@ -93,7 +93,32 @@
 
 {{#potential_follower?}}
 
+
+{{#single_username?}}
+
       <a href="{{follow_href}}">Follow this club.</a>
+
+{{/single_username?}}
+
+
+{{#multiple_usernames?}}
+
+      <form method="post" action="/clubs/follow/" name="form_follow_create" id="form_follow_create">
+       <label>Follow this club as: </label>
+       <select>
+
+{{#current_member_usernames}}
+
+        <option value="{{username}}">{{username}}</option>
+
+{{/current_member_usernames}}
+
+       </select>
+       <button>Follow.</button>
+      </form>
+
+{{/multiple_usernames?}}
+
 
 {{/potential_follower?}}
 
