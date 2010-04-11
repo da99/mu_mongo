@@ -7,6 +7,13 @@ class Old_App_Redirect
 
   def call new_env
 
+    if [
+     %r!\A/MSOffice/cltreq.asp!,
+     %r!\A/_vti_bin/owssvr.dll!
+    ].detect { |str| new_env['PATH_INFO'] =~ str }
+      return hearty_redirect("http://www.bing.com/")
+    end
+
     if new_env['PATH_INFO'] === "/help/"
       return hearty_redirect("/clubs/megauni/")
     end
