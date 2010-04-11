@@ -143,11 +143,12 @@ class Club
 
   # === Other Instance Methods
 
-  def create_follower mem
+  def create_follower mem, username_id
     self.class.db_collection_followers.insert(
       '_id' => "#{data._id}#{mem.data._id}",
       'club_id' => data._id, 
-      'follower_id' => mem.data._id
+      'follower_id' => mem.data._id,
+      'username_id' => Couch_Plastic.mongofy_id(username_id)
     )
   end
 

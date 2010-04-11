@@ -484,9 +484,14 @@ module Couch_Plastic
           when :stripped
             case raw
             when String
-              s = raw.to_s.strip.gsub(target_val, &@error_msg)
-              raw_data.send("#{fld}=", s)
-              new_clean_value fld, s
+              str = raw.to_s
+              str = if err_msg
+                      str.strip.gsub(target_val, &err_msg)
+                    else 
+                      str.strip.gsub(target_val, '')
+                    end
+              raw_data.send("#{fld}=", str)
+              new_clean_value fld, str
             when NilClass
               nil
             else
@@ -597,33 +602,41 @@ module Couch_Plastic
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
   #   opts - Valid options: :set_updated_at
-  def save_update *opts
+  def save_update opts = {}
 
     clear_cache
     if !updator?(manipulator)
       raise Unauthorized, "Updator: #{self.class} #{manipulator.inspect}"
     end
-    raise_if_invalid
+    no_data = begin
+                raise_if_invalid
+                false
+              rescue Couch_Plastic::Nothing_To_Update 
+                $!
+              end
+
     demand 'updated_at' if self.class.allowed_field?('updated_at')
+
+    if opts[:if_valid]
+      opts[:if_valid].call(self)
+    end
+
+    if no_data && opts[:if_valid]
+      return self
+    elsif no_data
+      raise no_data
+    end
 
     hsh = self.data.as_hash.clone.update(new_data.as_hash)
 
-    begin
-      id = data._id.to_s
-      doc_id = if Mongo::ObjectID.legal?(id)
-                 self.class.db_collection.update( {:_id=>Mongo::ObjectID.from_string(id)}, hsh, :safe=>true )
-               else
-                 self.class.db_collection.update( {:_id=>id}, hsh, :safe=>true)
-               end
+    id = data._id.to_s
+    doc_id = if Mongo::ObjectID.legal?(id)
+               self.class.db_collection.update( {:_id=>Mongo::ObjectID.from_string(id)}, hsh, :safe=>true )
+             else
+               self.class.db_collection.update( {:_id=>id}, hsh, :safe=>true)
+             end
 
-      data.as_hash.update(new_data.as_hash)
-    rescue RestClient::RequestFailed
-      if block_given?
-        yield $!
-      else
-        raise
-      end
-    end
+    data.as_hash.update(new_data.as_hash)
 
   end
 

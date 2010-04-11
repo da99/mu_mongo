@@ -14,10 +14,17 @@ class Clubs
     render_html_template
   end
 
-  def GET_follow_by_id filename
-    club = Club.by_filename(filename)
+  def GET_follow filename
+    clean_room['username'] = current_member.usernames.first
+    clean_room['filename'] = filename
+    POST_follow()
+  end
+
+  def POST_follow 
+    username_id = current_member.username_to_username_id(clean_room['username'])
+    club        = Club.by_filename(clean_room['filename'])
     begin
-      club.create_follower(current_member)
+      club.create_follower(current_member, username_id)
     rescue Couch_Plastic::Invalid
       flash_msg.errors = $!.doc.errors
     end

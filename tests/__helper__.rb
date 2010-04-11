@@ -116,7 +116,7 @@ class Test::Unit::TestCase
     @regular_mem ||= [1,2,3].map { |i| Member.by_username("regular-member-#{i}") }
   end
   
-  3.times do |i|
+	[1,2,3].each do |i|
     eval %~
       def regular_member_#{i}
         self.class.regular_members[#{i}-1]

@@ -55,9 +55,9 @@ class Member
   make_psuedo :add_username, 
     # Delete invalid characters and 
     # reduce any suspicious characters. 
-    # '..*' becomes '.', '--' becomes '-'
-    [:stripped, /[^a-z0-9]{1,}/i, lambda { |s|
-        if ['_', '.', '-'].include?( s[0,1] )
+    # '..*' becomes '.'
+    [:stripped, /[^a-z0-9_-]{1,}/i, lambda { |s|
+        if ['.'].include?( s[0,1] )
           s[0,1]
         else
           ''
@@ -212,18 +212,27 @@ class Member
       demand  :add_username, :password
       un_id = nil
       save_create :if_valid => lambda { 
-        add_unique_key 'username', "Username, #{clean_data.add_username}, already taken."
-        un_id = self.class.db_collection_usernames.insert(
-          { :username   => clean_data.add_username,  
-          :owner_id   => nil}, {:safe=>true}
-        )
+        un_id = __prep_new_username__
       }
-      self.class.db_collection_usernames.update(
-        {'_id'=>un_id}, 
-        {:username=>clean_data.add_username, :owner_id=>data._id}, 
-        :safe=>true
-      )
+      __complete_new_username__ un_id
     end
+  end
+
+  def __prep_new_username__
+    add_unique_key 'username', "Username, #{clean_data.add_username}, already taken."
+    self.class.db_collection_usernames.insert(
+      { :username   => clean_data.add_username,  
+        :owner_id   => nil}, 
+        :safe=>true
+    )
+  end
+
+  def __complete_new_username__ un_id
+    self.class.db_collection_usernames.update(
+      {'_id'=>un_id}, 
+      {:username=>clean_data.add_username, :owner_id=>data._id}, 
+      :safe=>true
+    )
   end
 
   def reader? editor # SHOW
@@ -239,8 +248,11 @@ class Member
 
   def self.update id, editor, new_raw_data # UPDATE
 
-    doc = new(id, editor, new_raw_data) do
-      ask_for :old_life, :add_life 
+    doc = new(id) do
+      self.manipulator = editor
+      self.raw_data    = new_raw_data
+      
+      ask_for :add_username 
 
       if manipulator == self
         ask_for :password  
@@ -249,8 +261,16 @@ class Member
       if manipulator.has_power_of? ADMIN
         ask_for :security_level
       end
+      un_id = nil
       
-      save_update 
+      save_update :if_valid => lambda {
+        if raw_data.add_username
+          un_id = __prep_new_username__
+        end
+      }
+      if un_id
+        __complete_new_username__ un_id
+      end
     end
 
   end

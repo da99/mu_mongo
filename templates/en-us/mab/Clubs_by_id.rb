@@ -15,7 +15,20 @@ div.content! {
     end
 
     mustache 'potential_follower?' do
-      a("Follow this club.", :href=>"{{follow_href}}")
+			mustache 'single_username?' do
+				a("Follow this club.", :href=>"{{follow_href}}")
+			end
+			mustache 'multiple_usernames?' do
+				form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+					label 'Follow this club as: '
+					select {
+						mustache('current_member_usernames') {
+							option('{{username}}', :value=>'{{username}}')
+						}
+					}
+					button 'Follow.'
+				end
+			end
     end
 
     div.club_message_create! do

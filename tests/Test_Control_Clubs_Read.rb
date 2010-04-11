@@ -84,15 +84,15 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal club.follow_href, last_response.body[club.follow_href]
   end
 
-	must 'not show follow club link to followers.' do
-		club = create_club(regular_member_1)
-		club.create_follower( regular_member_2 )
+  must 'not show follow club link to followers.' do
+    club = create_club(regular_member_1)
+    club.create_follower( regular_member_2, regular_member_2.username_ids.first )
 
-		log_in_regular_member_2
-		get club.href
+    log_in_regular_member_2
+    get club.href
 
-		assert_not_equal club.follow_href, last_response.body[club.follow_href]
-	end
+    assert_not_equal club.follow_href, last_response.body[club.follow_href]
+  end
 
 
   must 'allow members to follow someone else\'s club' do
@@ -107,5 +107,22 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     assert_equal 1, follows.size
   end
+
+  must 'show a form if user has multiple usernames' do
+    if regular_member_3.usernames.size == 1
+      Member.update(
+        regular_member_3.data._id, 
+        regular_member_3, 
+        :add_username=>"username-#{rand(2000)}"
+      )
+    end
+
+    club = create_club(regular_member_1)
+		log_in_regular_member_3
+    get club.href
+
+    assert Nokogiri::HTML(last_response.body).css('form#form_follow_create').first
+  end
+
 
 end # === class Test_Control_Clubs_Read

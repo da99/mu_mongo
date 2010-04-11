@@ -36,8 +36,7 @@ class Test_Control_Members_Create < Test::Unit::TestCase
 			Member.create(nil, { 
 					:password=>'test123test',
 					:confirm_password => 'test123test',
-					:add_life_username => regular_username_1,
-					:add_life => 'friend'
+					:add_username => regular_username_1
 			})
     end
     

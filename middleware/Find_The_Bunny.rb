@@ -35,7 +35,8 @@ class Find_The_Bunny
       [%r!\A/clubs/(#{filename})/by_date/(\d+)/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
       [%r!\A/clubs/(#{Old_Topics.join('|')})/\Z! , {:controller=>Clubs, :action_name=>'by_old_id'}],
       [%r!\A/clubs/(#{filename})/\Z! , {:controller=>Clubs, :action_name=>'by_id'}],
-      [%r!\A/clubs/(#{filename})/follow/\Z!, {:controller=>Clubs, :action_name=>'follow_by_id'}]
+      [%r!\A/clubs/(#{filename})/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'GET'}],
+      [%r!\A/clubs/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'POST'}]
     ]
   end
 
