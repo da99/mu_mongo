@@ -6,6 +6,11 @@ class Members
   def GET_create_account 
     render_html_template
   end
+
+  def GET_create_life
+    require_log_in!
+    render_html_template
+  end
             
   def POST 
     log_out! 
@@ -48,11 +53,16 @@ class Members
         
   def PUT 
     begin
-      m = Member.update( current_member, clean_room )
+      m = Member.update( current_member.data._id, current_member, clean_room )
       flash_msg.success = "Data has been updated and saved."
-      redirect! '/today/'
+      if clean_room['add_username']
+        redirect! "/lives/#{m.clean_data.add_username}/"
+      else
+        redirect! '/today/'
+      end
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
+      session[:add_username] = clean_room['add_username']
       redirect! '/today/' 
     end
   end # === put :update
