@@ -57,7 +57,7 @@ div.content! {
   mustache 'logged_in?' do
     div.club_message_create! do
       h4 'Post a message:'  
-      form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
+      form.form_club_message_create! :method=>'POST', :action=>"/messages/" do
 
         input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
         input :type=>'hidden', :name=>'privacy', :value=>'public'

@@ -4,6 +4,10 @@
 
 class Messages_by_id < Base_View
 
+  def show_form_create_message?
+    logged_in?
+  end
+
   def show_moving_message?
     from_surfer_hearts?(message.data.as_hash)
   end

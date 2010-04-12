@@ -95,6 +95,64 @@ class Markaby::Builder
     })
   end
 
+  def form_create_message mess_mod_arr
+    mustache 'show_form_create_message?' do
+      form.form_message_create!(:action=>'/messages/', :method=>'post') {
+        
+        input :type=>'hidden', :name=>'message_id', :value=>'{{message_id}}'
+        input :type=>'hidden', :name=>'privacy', :value=>'public'
+        mustache 'single_username?' do
+          input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
+        end
+        
+        fieldset {
+          select(:name=>'message_model') {
+            mess_mod_arr.each do |mod|
+              case mod
+              when 'comment'
+                option 'Comment', :value=>'comment'
+              when 'regular_comment'
+                option 'Regular Comment', :value=>'comment'
+              when 'fulfill'
+                option 'Fulfill Request', :value=>'fulfill'
+              when 'tip'
+                option 'Tips/Advice', :value=>'tip'
+              when 'question'
+                option 'Question?', :value=>'question'
+              when 'praise'
+                option 'Praise', :value=>'praise'
+              when 'complain'
+                option 'Complaint', :value=>'complain'
+              else
+                raise "Unknown message model: #{mod.inspect}"
+            end
+            end
+          }
+        }
+
+        fieldset {
+          textarea('', :name=>'body')
+        }
+
+        mustache 'multiple_usernames?' do
+          fieldset {
+            label 'Post as:'
+            select(:name=>'owner_id') {
+              mustache 'multiple_usernames' do
+              option '{{username}}', :value=>'{{username}}'
+              end
+            }
+          }
+        end
+        
+        div.buttons {
+          button.create 'Save'
+        }
+
+      } # === form
+    end
+  end
+
   def checkboxes_for coll, orig_attrs, &blok
     @checkbox ||= Class.new do 
       attr_reader :results
