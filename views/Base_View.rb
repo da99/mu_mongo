@@ -185,19 +185,20 @@ class Base_View < Mustache
   end
 
   def username_nav
-    
-    c_name = @app.control_name
-    a_name = @app.action_name
-    life_page = c_name == :Members && a_name == 'lives'
-    
 
-    @cache[:username_nav] ||= current_member_usernames.map { |un|
-      { :selected=> (life_page && current_member_username == un), 
-        :username=>un, 
-        :href=>"/lives/#{un}/",
-        :not_selected=> !(life_page && current_member_username == un)
-      }
-    }
+    @cache[:username_nav] ||= begin
+                                c_name = @app.control_name
+                                a_name = @app.action_name
+                                life_page = (c_name == :Members && a_name == 'lives')
+                                current_member_usernames.map { |raw_un|
+                                  un = raw_un[:username]
+                                  { :selected=> (life_page && current_member_username == un), 
+                                    :username=>un, 
+                                    :href=>"/lives/#{un}/",
+                                  :not_selected=> !(life_page && current_member_username == un)
+                                  }
+                                }
+                              end
   end
 
   def compile_messages( mess_arr )
