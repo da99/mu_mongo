@@ -117,19 +117,19 @@
        </div>
        <ul class="help">
          <li>
-          <a href="/help/">Help</a>
+          <a href="/help/"> Help </a>
          </li>
 
 {{#logged_in?}}
 
          <li>
-          <a href="/log-out/">Log-out</a>
+          <a href="/log-out/"> Log-out </a>
          </li>
          <li>
-          <a href="/today/">[ Today ]</a>
+          <a href="/today/"> [ Today ] </a>
          </li>
          <li>
-          <a href="/account/">[ Account ]</a>
+          <a href="/account/"> [ Account ] </a>
          </li>
 
 {{/logged_in?}}
@@ -138,7 +138,7 @@
 {{#not_logged_in?}}
 
          <li>
-          <a href="/log-in/">Log-in</a>
+          <a href="/log-in/"> Log-in </a>
          </li>
 
 {{/not_logged_in?}}
@@ -147,7 +147,13 @@
 
 {{#logged_in?}}
 
+
+{{#no_mini_nav_bar?}}
+
        <h4>Lives</h4>
+
+{{/no_mini_nav_bar?}}
+
        <ul class="lives">
 
 {{#username_nav}}
@@ -165,7 +171,7 @@
 {{#not_selected}}
 
          <li>
-          <a href="{{href}}">{{username}}</a>
+          <a href="{{href}}"> {{username}} </a>
          </li>
 
 {{/not_selected}}
@@ -173,61 +179,92 @@
 
 {{/username_nav}}
 
+
+{{#no_mini_nav_bar?}}
+
          <li>
-          <a href="/create-life/">[ Create ]</a>
+          <a href="/create-life/"> [ Create ] </a>
          </li>
+
+{{/no_mini_nav_bar?}}
+
        </ul>
 
 {{/logged_in?}}
 
+
+{{#no_mini_nav_bar?}}
+
        <h4>Egg Timers</h4>
        <ul class="to_dos">
          <li>
-          <a href="/my-egg-timer/">Old Timer</a>
+          <a href="/my-egg-timer/"> Old Timer </a>
          </li>
          <li>
-          <a href="/busy-noise/">New Timer</a>
+          <a href="/busy-noise/"> New Timer </a>
          </li>
        </ul>
+
+{{/no_mini_nav_bar?}}
+
+
+{{#no_mini_nav_bar?}}
+
        <h4>Clubs</h4>
        <ul class="news">
          <li>
-          <a href="/salud/">Salud (Espa&#241;ol)</a>
+          <a href="/salud/"> Salud (Espa&#241;ol) </a>
          </li>
          <li>
-          <a href="/clubs/back_pain/">Back Pain</a>
+          <a href="/clubs/back_pain/"> Back Pain </a>
          </li>
          <li>
-          <a href="/clubs/child_care/">Child Care</a>
+          <a href="/clubs/child_care/"> Child Care </a>
          </li>
          <li>
-          <a href="/clubs/computer/">Computer Use</a>
+          <a href="/clubs/computer/"> Computer Use </a>
          </li>
          <li>
-          <a href="/clubs/hair/">Skin &amp; Hair</a>
+          <a href="/clubs/hair/"> Skin &amp; Hair </a>
          </li>
          <li>
-          <a href="/clubs/housing/">Housing &amp; Apartments</a>
+          <a href="/clubs/housing/"> Housing &amp; Apartments </a>
          </li>
          <li>
-          <a href="/clubs/health/">Pain &amp; Disease</a>
+          <a href="/clubs/health/"> Pain &amp; Disease </a>
          </li>
          <li>
-          <a href="/clubs/preggers/">Pregnancy</a>
+          <a href="/clubs/preggers/"> Pregnancy </a>
          </li>
          <li>
-          <a href="/clubs/">[ View More ]</a>
+          <a href="/clubs/"> [ View More ] </a>
          </li>
 
 {{#logged_in?}}
 
          <li>
-          <a href="/clubs/create/">[ Create ]</a>
+          <a href="/clubs/create/"> [ Create ] </a>
          </li>
 
 {{/logged_in?}}
 
        </ul>
+
+{{/no_mini_nav_bar?}}
+
+
+{{#mini_nav_bar?}}
+
+       <ul>
+        <li>
+          <li>
+           <a href="/clubs/"> Clubs </a>
+          </li>
+        </li>
+       </ul>
+
+{{/mini_nav_bar?}}
+
       </div>
     <div id="footer">
      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>

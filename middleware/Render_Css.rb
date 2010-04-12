@@ -11,10 +11,17 @@ class Render_Css
       
       sass_dir    = File.dirname(sass_file)
       css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'stylesheets').sub('sass/', '') )
-      css_content = Sass::Engine.new(
+      eng = Sass::Engine.new(
         File.read(sass_file), 
         :load_paths => [ sass_dir ] + Compass.sass_engine_options[:load_paths] 
-      ).render
+      )
+			
+			begin
+				css_content = eng.render
+			rescue Sass::SyntaxError
+				puts "#{$!.class} - #{$!.message}"
+				next
+			end
 
       puts "Writing: #{css_file}"
       File.open(File.expand_path(css_file), 'w' ) do |f|

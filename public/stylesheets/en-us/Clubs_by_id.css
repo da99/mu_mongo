@@ -63,56 +63,6 @@ table {
 a img {
   border: none; }
 
-#container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 960px;
-  overflow: hidden;
-  display: inline-block; }
-  #container {
-    display: block; }
-
-#nav_bar {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 220px; }
-
-#loading {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px;
-  padding-left: 240px; }
-
-#content {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px; }
-
-form fieldset input.text, form fieldset textarea {
-  width: 600px; }
-
-#nav_bar h4 {
-  margin: 0 0 3px 80px; }
-#nav_bar ul {
-  margin: 0 0 0 80px; }
-#nav_bar #logo {
-  margin: 0 0 0 80px; }
-
-#footer {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px;
-  padding-left: 240px;
-  display: none; }
-
 a:link, a:visited {
   color: #f00919;
   text-transform: uppercase;
@@ -187,7 +137,7 @@ img.right {
         text-transform: uppercase;
         color: #005088;
         padding: 3px 4px; }
-      #nav_bar ul li a:link, #nav_bar ul li a:visited {
+      #nav_bar ul li a {
         display: block;
         padding: 2px 0;
         font-weight: bold; }
@@ -364,8 +314,53 @@ div.message, div.club {
     text-align: right;
     font-size: 80%; }
 
+#nav_bar {
+  margin: 0 20px;
+  text-align: right;
+  padding-bottom: 20px; }
+  #nav_bar #logo {
+    text-align: right; }
+    #nav_bar #logo p.english {
+      padding-top: 10px;
+      background-color: transparent;
+      border-bottom: 1px solid #fff;
+      border-bottom-color: #f00919; }
+      #nav_bar #logo p.english a:link, #nav_bar #logo p.english a:visited {
+        display: inline;
+        padding: 2px 5px; }
+    #nav_bar #logo p.nippon {
+      display: none; }
+  #nav_bar ul {
+    background-color: transparent;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline; }
+    #nav_bar ul li {
+      margin: 0px;
+      padding: 0px;
+      display: inline; }
+    #nav_bar ul li a {
+      display: inline;
+      padding: 2px 5px; }
+
 #club_messages {
   border-top: 1px dashed #003860; }
 
 #club_message_create {
   padding-bottom: 15px; }
+
+#content {
+  padding-left: 20px;
+  overflow: hidden;
+  display: inline-block; }
+  #content {
+    display: block; }
+
+#club_intro {
+  width: 400px;
+  float: left; }
+
+#club_message_create {
+  float: left;
+  width: 400px; }

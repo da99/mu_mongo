@@ -187,7 +187,7 @@ img.right {
         text-transform: uppercase;
         color: #005088;
         padding: 3px 4px; }
-      #nav_bar ul li a:link, #nav_bar ul li a:visited {
+      #nav_bar ul li a {
         display: block;
         padding: 2px 0;
         font-weight: bold; }
@@ -655,7 +655,7 @@ img.right {
         text-transform: uppercase;
         color: #005088;
         padding: 3px 4px; }
-      #nav_bar ul li a:link, #nav_bar ul li a:visited {
+      #nav_bar ul li a {
         display: block;
         padding: 2px 0;
         font-weight: bold; }
