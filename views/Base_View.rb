@@ -142,11 +142,16 @@ class Base_View < Mustache
 	end
 
   def current_member_usernames
-    @cache[:current_member_usernames] ||= @app.current_member.usernames.map { |un| 
-      {:filename=>un, :username=>un}
-    }
+    @cache[:current_member_usernames] ||= begin
+                                            if @app.current_member
+                                              @app.current_member.usernames.map { |un| 
+                                                {:filename=>un, :username=>un}
+                                              }
+                                            else
+                                              []
+                                            end
+                                          end
   end
-
 
   def single_username?
     current_member_usernames.size == 1
@@ -186,7 +191,7 @@ class Base_View < Mustache
     life_page = c_name == :Members && a_name == 'lives'
     
 
-    @cache[:username_nav] ||= current_member.usernames.map { |un|
+    @cache[:username_nav] ||= current_member_usernames.map { |un|
       { :selected=> (life_page && current_member_username == un), 
         :username=>un, 
         :href=>"/lives/#{un}/",
