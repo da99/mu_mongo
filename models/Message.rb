@@ -10,6 +10,8 @@ class Message
     joke
     complaint
     product
+    event
+    story
   }
   include Couch_Plastic
 

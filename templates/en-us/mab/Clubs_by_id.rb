@@ -69,10 +69,12 @@ div.content! {
         fieldset {
           select(:name=>'message_model') {
             option "Comment",     :value=>'comment'
+            option "Story",       :value=>'story'
+            option "Humorous ;)", :value=>'joke'
             option "Question?",   :value=>'question'
             option "Request",     :value=>'plea'
             option "Brainstorm",  :value=>'brainstorm'
-            option "Humorous ;)", :value=>'joke'
+            option "Event",       :value=>'event'
             option "Complain!",   :value=>'complaint'
             option "Product",     :value=>'product'
           }
@@ -101,7 +103,7 @@ div.content! {
         fieldset {
           label 'Important?'
           select(:name=>'important') {
-            option "No. I can wait.", :value=>''
+            option "No. It can wait.", :value=>''
             option "Yes", :value=>'true'
           }
         } 
