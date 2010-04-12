@@ -18,6 +18,10 @@ class Render_Css
 			
 			begin
 				css_content = eng.render
+				puts "Writing: #{css_file}"
+				File.open(File.expand_path(css_file), 'w' ) do |f|
+					f.write css_content
+				end
 			rescue Sass::SyntaxError
 				if File.read(sass_file)['IGNORE UNDEFINED'] && $!.message =~ /Undefined variable/
 					puts "IGNORING: #{sass_file}: #{$!.class} - #{$!.message}"
@@ -27,10 +31,6 @@ class Render_Css
 				end
 			end
 
-      puts "Writing: #{css_file}"
-      File.open(File.expand_path(css_file), 'w' ) do |f|
-        f.write css_content
-      end
     end
 
     new_files
