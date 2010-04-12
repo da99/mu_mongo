@@ -36,6 +36,10 @@ div.content! {
 
     end
 
+    div.teaser {
+      '{{club_teaser}}'
+    }
+
     div.club_messages! do
       mustache 'no_messages_latest' do
         div.empty_msg 'No messages yet.'

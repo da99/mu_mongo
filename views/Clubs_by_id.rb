@@ -38,6 +38,10 @@ class Clubs_by_id < Base_View
     club.data.filename
   end
   
+  def club_teaser
+    club.data.teaser
+  end
+
   def potential_follower?
     club.potential_follower?(current_member)
   end
