@@ -39,7 +39,9 @@ div( :id=>"nav_bar" ) {
   }
 
   mustache 'logged_in?' do
-    h4 'Lives' 
+    mustache 'no_mini_nav_bar?' do
+      h4 'Lives' 
+    end
     ul.lives {
       mustache 'username_nav' do
         mustache 'selected' do
@@ -49,21 +51,19 @@ div( :id=>"nav_bar" ) {
           nav_bar_li_unselected '{{username}}', '{{href}}'
         end
       end
-    nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
+    mustache 'no_mini_nav_bar?' do
+      nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
+    end
     }
   end
   
-  # h4 'Members'
-  # ul.members {
-
-  # }
-
-   
-  h4 'Egg Timers'
-  ul.to_dos {
-    nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
-    nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
-  }
+  mustache 'no_mini_nav_bar?' do
+    h4 'Egg Timers'
+    ul.to_dos {
+      nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
+      nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
+    }
+  end
 
     # mustache 'development?' do
 
@@ -98,12 +98,12 @@ div( :id=>"nav_bar" ) {
     # 
     # end # === if development?
 
-  h4 'Clubs'
-  ul.news {
-     
+  mustache 'no_mini_nav_bar?' do
+    h4 'Clubs'
+    ul.news {
+
       # li "San Francisco" #  (Survival Tips + Marketplace)
       # li "Tokyo" # (+ Translate Please)
-      # li "Vitamin Fanatics" #  (Harmless + Helpful)
       # li "Vote For More Clubs"
       # li "- How I Train My Boyfriend"
       # li "- Introverts"
@@ -114,8 +114,7 @@ div( :id=>"nav_bar" ) {
       # li "- Garage Renting"
       # li "Tropical Physician Ratings" 
       # li "Global Rant" # Vote for the most creative/smartest ranters.
-    
-    
+
       nav_bar_li nil, 'salud',    'Salud (Español)'
       nav_bar_li :Topic, 'back_pain', 'Back Pain'
       nav_bar_li :Topic, 'child_care', 'Child Care'
@@ -131,7 +130,16 @@ div( :id=>"nav_bar" ) {
       mustache 'logged_in?' do
         nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create ]'
       end
-  }
+    }
+  end
+
+  mustache 'mini_nav_bar?' do
+    ul {
+      li {
+        nav_bar_li :Clubs, :list, '/clubs/', 'Clubs'
+      }
+    }
+  end
 
   # h4 'Pain & Disease'
   # ul.human_body { 

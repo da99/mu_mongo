@@ -175,6 +175,10 @@ class Base_View < Mustache
 		@app.env['results.username']
 	end
   
+	def mini_nav_bar?
+    false
+  end
+
   def username_nav
     
     c_name = @app.control_name

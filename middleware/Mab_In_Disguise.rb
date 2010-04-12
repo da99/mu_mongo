@@ -169,7 +169,7 @@ class Markaby::Builder
   def nav_bar_li_unselected txt, href
     text(capture {
       li {
-        a txt, :href=>href
+        a " #{txt} ", :href=>href
       }
     })
   end

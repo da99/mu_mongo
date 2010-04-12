@@ -6,84 +6,102 @@ div.content! {
   
   partial '__flash_msg'
 
-  h3 '{{club_title}}'
-  
-  mustache 'logged_in?' do
-  
-    mustache 'follower?' do
-      p "You are following this club."
-    end
+  div.club_intro! do
+    h3 '{{club_title}}'
+    
+    mustache 'logged_in?' do
+    
+      mustache 'follower?' do
+        p "You are following this club."
+      end
 
-    mustache 'potential_follower?' do
-			mustache 'single_username?' do
-				a("Follow this club.", :href=>"{{follow_href}}")
-			end
-			mustache 'multiple_usernames?' do
-				form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
-          fieldset {
-            label 'Follow this club as: ' 
-            select(:name=>'username') {
-              mustache('current_member_usernames') {
-                option('{{username}}', :value=>'{{username}}')
+      mustache 'potential_follower?' do
+        mustache 'single_username?' do
+          a("Follow this club.", :href=>"{{follow_href}}")
+        end
+        mustache 'multiple_usernames?' do
+          form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+            fieldset {
+              label 'Follow this club as: ' 
+              select(:name=>'username') {
+                mustache('current_member_usernames') {
+                  option('{{username}}', :value=>'{{username}}')
+                }
               }
             }
-          }
-					div.buttons { button 'Follow.' }
-				end
-			end
-    end
-
-    div.club_message_create! do
-      h4 'Post a message:'  
-      form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
-        
-        input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
-        input :type=>'hidden', :name=>'privacy', :value=>'public'
-        
-        mustache 'single_username?' do
-          input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
-        end
-        
-        fieldset {
-          textarea '', :name=>'body'
-        }
-
-        fieldset {
-          label "Labels (Separate each with a comma.)"
-          input.text :type=>'text', :name=>'public_labels', :value=>''
-        }
-        
-        div.buttons {
-          button.create 'Save'
-        }
-        
-        mustache 'multiple_usernames?' do
-          fieldset {
-            label 'Which life to use?'
-            select(:name=>'owner_id') {
-              mustache 'multiple_usernames' do
-                option '{{username}}', :value=>'{{username}}'
-              end
-            }
-          }
+            div.buttons { button 'Follow.' }
+          end
         end
       end
-    end
-  end
 
-  div.club_messages! do
-    mustache 'no_messages_latest' do
-      div.empty_msg 'No messages yet.'
     end
-    mustache 'messages_latest' do
-      div.message {
-        div.body( '{{{compiled_body}}}' )
-        div.permalink {
-          a('Permalink', :href=>"{{href}}")
+
+    div.club_messages! do
+      mustache 'no_messages_latest' do
+        div.empty_msg 'No messages yet.'
+      end
+      mustache 'messages_latest' do
+        div.message {
+          div.body( '{{{compiled_body}}}' )
+          div.permalink {
+            a('Permalink', :href=>"{{href}}")
+          }
         }
+      end
+    end
+
+  end # div.intro!
+
+
+
+  div.club_message_create! do
+    h4 'Post a message:'  
+    form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
+
+      input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
+      input :type=>'hidden', :name=>'privacy', :value=>'public'
+
+      mustache 'single_username?' do
+        input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
+      end
+
+      fieldset {
+        select(:name=>'message_model') {
+        option "Comment", :value=>'comment'
+        option "Question?", :value=>'question'
+        option "Important News :-|", :value=>'important'
+        option "Humorous ;)", :value=> 'joke'
+        option "Complain!", :value=>'complaint'
+      }
+      } 
+
+      fieldset {
+        textarea '', :name=>'body'
+      }
+
+      fieldset {
+        label "Labels (Separate each with a comma.)"
+        input.text :type=>'text', :name=>'public_labels', :value=>''
+      }
+
+      mustache 'multiple_usernames?' do
+        fieldset {
+          label 'Post as:'
+          select(:name=>'owner_id') {
+          mustache 'multiple_usernames' do
+          option '{{username}}', :value=>'{{username}}'
+          end
+        }
+        }
+      end
+
+      div.buttons {
+        button.create 'Save'
       }
     end
   end
+  # div.club_message_create! 
+
   
 } # === div.content!
 

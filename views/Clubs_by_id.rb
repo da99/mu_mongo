@@ -6,6 +6,10 @@
 
 class Clubs_by_id < Base_View
 
+	def mini_nav_bar?
+		true
+	end
+
   def title 
     @app.env['results.club'].data.title
   end
