@@ -2,16 +2,24 @@
 
 class Message
 
+  MODELS = %w{
+    comment
+    question
+    plea  
+    joke
+    complaint
+  }
   include Couch_Plastic
 
   enable_timestamps
   
+  make :message_model, [:in_array, MODELS]
+  make :important, :not_empty
   make :rating, :not_empty
 	make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
   make :username_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
   make :target_ids, :split_and_flatten, :mongo_object_id_array
   make :body, :not_empty
-  make :question, :not_empty
   make :emotion, :not_empty
   make :category, :not_empty
   make :labels, :split_and_flatten, :array
@@ -36,8 +44,9 @@ class Message
       ask_for_or_default :lang
       demand :username_id, :target_ids, :body
       ask_for :category, :privacy, :labels,
-          :question, :emotion, :rating,
-          :labels, :public_labels
+          :emotion, :rating,
+          :labels, :public_labels,
+          :message_model, :important
       save_create 
     end
   end
@@ -55,7 +64,8 @@ class Message
       self.manipulator = editor
       self.raw_data    = new_raw_data
       ask_for :title, :body, :teaser, :public_labels, 
-				:private_labels, :published_at
+				:private_labels, :published_at,
+        :message_model, :important
       save_update
     end
   end
