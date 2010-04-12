@@ -20,11 +20,12 @@ end
 div.clubs! do
   mustache 'clubs' do 
     div.club {
-      h4 '{{title}}'
-      div.teaser '{{teaser}}'
-      div.url {
-      a( 'Visit.' , :href=>'{{href}}')
-    }
+      h4 {
+        a('{{title}}', :href=>'{{href}}')
+      }
+      mustache 'teaser' do
+        div.teaser '{{teaser}}'
+      end
     }
   end
 end 
@@ -34,7 +35,7 @@ div.mini_nav_bar! {
 
   div( :id=>"logo" ) { 
     p.site_title '{{site_title}}' 
-    p.site_tag_line "{{site_tag_line}}" 
+    p.divider "{{site_tag_line}}" 
   }
 
   ul.help {
@@ -48,10 +49,10 @@ div.mini_nav_bar! {
         a 'Log-out', :href=>'log-out' 
       }
       li {
-        a '[ Today ]', '/today/'
+        a '[ Today ]', :href=>'/today/'
       }
       li {
-        a '[ Account ]', '/account/'
+        a '[ Account ]', :href=>'/account/'
       }
     end  
     
@@ -59,9 +60,9 @@ div.mini_nav_bar! {
       li {
         a 'Log-in', :href=>'/log-in/'
       }
-      li {
-        a 'Create Account', :href=>'/create-account/'
-      }
+      # li {
+      #   a 'Create Account', :href=>'/create-account/'
+      # }
     end
     
   }
@@ -86,7 +87,7 @@ div.mini_nav_bar! {
   end
   
   mustache 'no_mini_nav_bar?' do
-    h4 'Egg Timers'
+    p.divider 'Egg Timers'
     ul.to_dos {
       nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
       nav_bar_li :Timer_new, 'busy-noise', 'New'
