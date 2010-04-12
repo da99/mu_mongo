@@ -171,7 +171,7 @@
          <select name="message_model">
           <option value="comment">Comment</option>
           <option value="question">Question?</option>
-          <option value="important">Important News :-|</option>
+          <option value="plea">Request</option>
           <option value="joke">Humorous ;)</option>
           <option value="complaint">Complain!</option>
          </select>
@@ -201,6 +201,13 @@
 
 {{/multiple_usernames?}}
 
+        <fieldset>
+         <label>Important?</label>
+         <select name="important">
+          <option value="">No. I can wait.</option>
+          <option value="true">Yes</option>
+         </select>
+        </fieldset>
         <div class="buttons">
          <button class="create">Save</button>
         </div>
