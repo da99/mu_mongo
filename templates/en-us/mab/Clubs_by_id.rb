@@ -54,54 +54,55 @@ div.content! {
 
 
 
-  div.club_message_create! do
-    h4 'Post a message:'  
-    form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
+  mustache 'logged_in?' do
+    div.club_message_create! do
+      h4 'Post a message:'  
+      form :id=>"form_club_message_create", :method=>'POST', :action=>"/messages/" do
 
-      input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
-      input :type=>'hidden', :name=>'privacy', :value=>'public'
+        input :type=>'hidden', :name=>'club_filename', :value=>'{{club_filename}}'
+        input :type=>'hidden', :name=>'privacy', :value=>'public'
 
-      mustache 'single_username?' do
-        input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
-      end
+        mustache 'single_username?' do
+          input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
+        end
 
-      fieldset {
-        select(:name=>'message_model') {
-        option "Comment", :value=>'comment'
-        option "Question?", :value=>'question'
-        option "Important News :-|", :value=>'important'
-        option "Humorous ;)", :value=> 'joke'
-        option "Complain!", :value=>'complaint'
-      }
-      } 
-
-      fieldset {
-        textarea '', :name=>'body'
-      }
-
-      fieldset {
-        label "Labels (Separate each with a comma.)"
-        input.text :type=>'text', :name=>'public_labels', :value=>''
-      }
-
-      mustache 'multiple_usernames?' do
         fieldset {
-          label 'Post as:'
-          select(:name=>'owner_id') {
-          mustache 'multiple_usernames' do
-          option '{{username}}', :value=>'{{username}}'
-          end
+          select(:name=>'message_model') {
+          option "Comment", :value=>'comment'
+          option "Question?", :value=>'question'
+          option "Important News :-|", :value=>'important'
+          option "Humorous ;)", :value=> 'joke'
+          option "Complain!", :value=>'complaint'
         }
+        } 
+
+        fieldset {
+          textarea '', :name=>'body'
+        }
+
+        fieldset {
+          label "Labels (Separate each with a comma.)"
+          input.text :type=>'text', :name=>'public_labels', :value=>''
+        }
+
+        mustache 'multiple_usernames?' do
+          fieldset {
+            label 'Post as:'
+            select(:name=>'owner_id') {
+            mustache 'multiple_usernames' do
+            option '{{username}}', :value=>'{{username}}'
+            end
+          }
+          }
+        end
+
+        div.buttons {
+          button.create 'Save'
         }
       end
-
-      div.buttons {
-        button.create 'Save'
-      }
     end
-  end
-  # div.club_message_create! 
-
+    # div.club_message_create! 
+  end # logged_in?
   
 } # === div.content!
 
