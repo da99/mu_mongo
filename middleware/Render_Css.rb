@@ -20,7 +20,7 @@ class Render_Css
 				css_content = eng.render
 			rescue Sass::SyntaxError
 				if File.read(sass_file)['IGNORE UNDEFINED'] && $!.message =~ /Undefined variable/
-					puts "File: #{sass_file}: #{$!.class} - #{$!.message}"
+					puts "IGNORING: #{sass_file}: #{$!.class} - #{$!.message}"
 					next
 				else
 					raise $!
