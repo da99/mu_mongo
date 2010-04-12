@@ -6,8 +6,10 @@ class Message
     comment
     question
     plea  
+    brainstorm
     joke
     complaint
+    product
   }
   include Couch_Plastic
 

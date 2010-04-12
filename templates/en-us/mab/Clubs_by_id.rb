@@ -68,11 +68,13 @@ div.content! {
 
         fieldset {
           select(:name=>'message_model') {
-            option "Comment", :value=>'comment'
-            option "Question?", :value=>'question'
-            option "Request", :value=>'plea'
-            option "Humorous ;)", :value=> 'joke'
-            option "Complain!", :value=>'complaint'
+            option "Comment",     :value=>'comment'
+            option "Question?",   :value=>'question'
+            option "Request",     :value=>'plea'
+            option "Brainstorm",  :value=>'brainstorm'
+            option "Humorous ;)", :value=>'joke'
+            option "Complain!",   :value=>'complaint'
+            option "Product",     :value=>'product'
           }
         } 
 
