@@ -25,8 +25,8 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
 		
     mustache("not_mobile_request?") {
-      link( :rel=>"stylesheet",    :href=>"{{css_file}}", :media=>"screen", :type=>"text/css" )
-      # link( :rel=>"stylesheet",    :href=>"/skins/{{skin_name}}/css/{{page_name}}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+      link( :rel=>"stylesheet",  :href=>"{{css_file}}?time=#{Time.now.utc.to_i}", :media=>"screen", :type=>"text/css" )
+      # link( :rel=>"stylesheet", :href=>"/skins/{{skin_name}}/css/{{page_name}}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
 		}
     
 		mustache "head_content"
