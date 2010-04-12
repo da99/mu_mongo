@@ -152,6 +152,9 @@
 
        </div>
       </div>
+
+{{#logged_in?}}
+
       <div id="club_message_create">
        <h4>Post a message:</h4>
        <form method="POST" action="/messages/" id="form_club_message_create">
@@ -203,6 +206,9 @@
         </div>
        </form>
       </div>
+
+{{/logged_in?}}
+
      </div>
       <div id="nav_bar">
        <div id="logo">
