@@ -19,7 +19,7 @@ class Render_Css
 			begin
 				css_content = eng.render
 			rescue Sass::SyntaxError
-				puts "#{$!.class} - #{$!.message}"
+				puts "File: #{sass_file}: #{$!.class} - #{$!.message}"
 				next
 			end
 
