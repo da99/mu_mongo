@@ -22,7 +22,7 @@ div.content! {
 
   } # === div.message
   
-  form_message_create %w{
+  form_create_message %w{
     regular_comment
     praise
     tip

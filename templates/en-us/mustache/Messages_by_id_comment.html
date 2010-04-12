@@ -41,7 +41,108 @@
 {{/loading}}
 
      <div id="content">
-      <p>Not done</p>
+
+{{#show_moving_message?}}
+
+      <div id="notice">
+       <span>I'm moving content from my old site, </span>
+       <a href="http://www.surferhearts.com/">SurferHearts.com</a>
+       <span>, over to this new site.</span>
+      </div>
+
+{{/show_moving_message?}}
+
+      <div class="message">
+       <div class="info">
+        <span class="published_at">{{published_at}}</span>
+       </div>
+
+{{#message_data}}
+
+       <h4>{{title}}</h4>
+       <div class="body">
+{{{compiled_body}}}       </div>
+
+{{/message_data}}
+
+      </div>
+
+{{#show_form_create_message?}}
+
+      <form method="post" action="/messages/" name="form_message_create" id="form_message_create">
+       <input type="hidden" value="{{message_id}}" name="message_id"/>
+       <input type="hidden" value="public" name="privacy"/>
+
+{{#single_username?}}
+
+       <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+       <fieldset>
+        <select name="message_model">
+         <option value="comment">Regular Comment</option>
+         <option value="praise">Praise</option>
+         <option value="complain">Complaint</option>
+         <option value="tip">Tips/Advice</option>
+         <option value="question">Question?</option>
+        </select>
+       </fieldset>
+       <fieldset>
+        <textarea name="body"></textarea>
+       </fieldset>
+
+{{#multiple_usernames?}}
+
+       <fieldset>
+        <label>Post as:</label>
+        <select name="owner_id">
+
+{{#multiple_usernames}}
+
+         <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+        </select>
+       </fieldset>
+
+{{/multiple_usernames?}}
+
+       <div class="buttons">
+        <button class="create">Save</button>
+       </div>
+      </form>
+
+{{/show_form_create_message?}}
+
+      <div class="praise">
+       <p>praise goes here</p>
+      </div>
+      <div class="complain">
+       <p>complaints go here</p>
+      </div>
+      <div class="tips">
+       <p>tips go here</p>
+      </div>
+      <div class="questions">
+       <p>questions go here</p>
+      </div>
+      <div class="comments">
+       <p>comments go here</p>
+      </div>
+
+{{#show_moving_message?}}
+
+      <div class="news_post" id="archives">
+       <h4>Archives:</h4>
+       <div class="body">
+        <a href="/clubs/hearts/">See all.</a>
+       </div>
+      </div>
+
+{{/show_moving_message?}}
+
      </div>
       <div id="nav_bar">
        <div id="logo">

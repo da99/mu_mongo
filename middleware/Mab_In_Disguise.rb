@@ -123,6 +123,10 @@ class Markaby::Builder
                 option 'Praise', :value=>'praise'
               when 'complain'
                 option 'Complaint', :value=>'complain'
+              when 'idea'
+                option 'Idea', :value=>'idea'
+              when 'answer'
+                option 'Answer', :value=>'answer'
               else
                 raise "Unknown message model: #{mod.inspect}"
             end

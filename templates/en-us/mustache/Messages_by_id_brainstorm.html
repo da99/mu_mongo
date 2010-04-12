@@ -41,7 +41,77 @@
 {{/loading}}
 
      <div id="content">
-      <p>Not done</p>
+      <div class="message">
+       <div class="info">
+        <span class="published_at">{{published_at}}</span>
+       </div>
+
+{{#message}}
+
+       <h4>{{title}}</h4>
+       <div class="body">
+{{{compiled_body}}}       </div>
+
+{{/message}}
+
+      </div>
+
+{{#show_form_create_message?}}
+
+      <form method="post" action="/messages/" name="form_message_create" id="form_message_create">
+       <input type="hidden" value="{{message_id}}" name="message_id"/>
+       <input type="hidden" value="public" name="privacy"/>
+
+{{#single_username?}}
+
+       <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+       <fieldset>
+        <select name="message_model">
+         <option value="comment">Regular Comment</option>
+         <option value="idea">Idea</option>
+         <option value="question">Question?</option>
+        </select>
+       </fieldset>
+       <fieldset>
+        <textarea name="body"></textarea>
+       </fieldset>
+
+{{#multiple_usernames?}}
+
+       <fieldset>
+        <label>Post as:</label>
+        <select name="owner_id">
+
+{{#multiple_usernames}}
+
+         <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+        </select>
+       </fieldset>
+
+{{/multiple_usernames?}}
+
+       <div class="buttons">
+        <button class="create">Save</button>
+       </div>
+      </form>
+
+{{/show_form_create_message?}}
+
+      <div class="ideas">
+       <p>ideas go here</p>
+      </div>
+      <div class="comments">
+       <p>comments go here</p>
+      </div>
+      <div class="questions">
+       <p>No questions yet.</p>
+      </div>
      </div>
       <div id="nav_bar">
        <div id="logo">
