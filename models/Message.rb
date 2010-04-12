@@ -12,7 +12,12 @@ class Message
     product
     event
     story
-  }
+
+    fulfill
+    tip
+    praise
+    answer
+  }.uniq
   include Couch_Plastic
 
   enable_timestamps
