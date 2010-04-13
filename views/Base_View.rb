@@ -176,6 +176,10 @@ class Base_View < Mustache
 
   # === Html ===
 
+  def include_tracking?
+    @app.env['HTTP_HOST'] =~ /megauni/
+  end
+
 	def current_member_username
 		@app.env['results.username']
 	end
