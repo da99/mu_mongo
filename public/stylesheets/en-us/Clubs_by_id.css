@@ -111,64 +111,36 @@ img.right {
     #flash_msg div.success_msg div.msg, #flash_msg div.success div.msg {
       color: #133b00; }
 
-#nav_bar {
-  padding-bottom: 200px; }
-  #nav_bar h4 {
-    padding: 0;
-    font-size: 13px;
+#mini_nav_bar, #nav_bar {
+  width: 200px;
+  float: left;
+  text-align: left; }
+  #mini_nav_bar p, #nav_bar p {
+    color: #f00919;
+    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
     font-weight: bold;
-    background-color: #005088;
-    text-transform: lowercase;
-    color: #fff;
-    text-align: center; }
-  #nav_bar ul {
-    border: 1px solid #f00919;
-    border-width: 0;
-    padding-bottom: 10px;
-    text-align: center;
-    background-color: #fff; }
-    #nav_bar ul li {
-      list-style-type: none;
-      margin-left: 0px; }
-    #nav_bar ul li {
-      padding: 0 0 2px 0; }
-      #nav_bar ul li span {
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #005088;
-        padding: 3px 4px; }
-      #nav_bar ul li a {
-        display: block;
-        padding: 2px 0;
-        font-weight: bold; }
-  #nav_bar ul.news {
-    -moz-border-radius: 0 0 10px 10px;
-    -webkit-border-radius: 0 0 10px 10px;
-    border-bottom: 1px solid #f00919; }
-  #nav_bar #logo {
-    text-align: center;
-    color: #000; }
-    #nav_bar #logo p.english {
-      color: #f00919;
-      background-color: #fff;
-      font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+    padding: 0;
+    margin: 0; }
+    #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
       font-size: 20px;
-      font-weight: bold;
-      padding: 5px 0 0 0; }
-      #nav_bar #logo p.english a:link, #nav_bar #logo p.english a:visited {
-        font-size: 20px;
-        display: block;
-        text-transform: none;
-        text-decoration: none; }
-    #nav_bar #logo p.nippon {
-      background-color: #fff;
-      color: #3A5970;
-      border: 1px solid #f00919;
-      border-width: 1px 0 0 0;
-      font-size: 12px;
-      font-weight: bold;
-      padding: 5px 0 20px 0;
-      margin: 0; }
+      text-transform: none;
+      text-decoration: none; }
+  #mini_nav_bar p.site_title, #nav_bar p.site_title {
+    font-size: 20px; }
+  #mini_nav_bar p.divider, #nav_bar p.divider {
+    font-size: 12px;
+    color: #003860;
+    text-transform: uppercase; }
+  #mini_nav_bar ul, #nav_bar ul {
+    list-style: none;
+    padding: 0 0 10px 0; }
+    #mini_nav_bar ul li, #nav_bar ul li {
+      list-style: none;
+      padding: 2px 0 0 0; }
+      #mini_nav_bar ul li.selected, #nav_bar ul li.selected {
+        text-transform: lowercase; }
+      #mini_nav_bar ul li a, #nav_bar ul li a {
+        padding: 2px 2px 3px 2px; }
 
 #loading {
   font-size: 20px;
@@ -178,7 +150,11 @@ img.right {
 
 #content {
   padding-bottom: 50px;
-  padding-top: 20px; }
+  padding-top: 20px;
+  overflow: hidden;
+  display: inline-block; }
+  #content {
+    display: block; }
   #content p {
     font-size: 16px; }
   #content ul {
@@ -316,7 +292,9 @@ div.message, div.club {
 #nav_bar {
   margin: 0 20px;
   text-align: right;
-  padding-bottom: 20px; }
+  padding-bottom: 20px;
+  width: auto;
+  float: none; }
   #nav_bar #logo {
     text-align: right; }
     #nav_bar #logo p.english {
@@ -327,7 +305,7 @@ div.message, div.club {
       #nav_bar #logo p.english a:link, #nav_bar #logo p.english a:visited {
         display: inline;
         padding: 2px 5px; }
-    #nav_bar #logo p.nippon {
+    #nav_bar #logo p.nippon, #nav_bar #logo p.site_tag_line {
       display: none; }
   #nav_bar ul {
     background-color: transparent;

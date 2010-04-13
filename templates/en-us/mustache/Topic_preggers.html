@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}?time=1271119307" media="screen" rel="stylesheet"/>
+   <link type="text/css" href="{{css_file}}?time=1271122905" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -82,17 +82,11 @@
      </div>
       <div id="nav_bar">
        <div id="logo">
-
-{{#no_opening_msg}}
-
         <p class="english">
          <a href="/">{{site_title}}</a>
         </p>
-
-{{/no_opening_msg}}
-
-        <p class="nippon">
-を単一化します        </p>
+        <p class="divider site_tag_line">
+{{site_tag_line}}        </p>
        </div>
        <ul class="help">
          <li>
@@ -129,7 +123,7 @@
 
 {{#no_mini_nav_bar?}}
 
-       <h4>Lives</h4>
+       <p class="divider">Lives</p>
 
 {{/no_mini_nav_bar?}}
 
@@ -174,7 +168,7 @@
 
 {{#no_mini_nav_bar?}}
 
-       <h4>Clubs</h4>
+       <p class="divider">Clubs</p>
        <ul class="news">
          <li>
           <a href="/clubs/"> [ View All ] </a>
