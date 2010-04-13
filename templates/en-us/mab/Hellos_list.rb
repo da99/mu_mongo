@@ -69,7 +69,7 @@ div.mini_nav_bar! {
 
   mustache 'logged_in?' do
     
-    h4 'Lives' 
+    p.divider 'Lives' 
     
     ul.lives {
       mustache 'username_nav' do
@@ -95,7 +95,7 @@ div.mini_nav_bar! {
   end
 
   mustache 'logged_in?' do
-    h4 'Clubs'
+    p.divider 'Clubs'
     ul.news {
       nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create Club ]'
     }

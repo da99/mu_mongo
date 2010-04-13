@@ -57,13 +57,13 @@ div( :id=>"nav_bar" ) {
     }
   end
   
-  mustache 'no_mini_nav_bar?' do
-    h4 'Egg Timers'
-    ul.to_dos {
-      nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
-      nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
-    }
-  end
+  # mustache 'no_mini_nav_bar?' do
+  #   h4 'Egg Timers'
+  #   ul.to_dos {
+  #     nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
+  #     nav_bar_li :Timer_new, 'busy-noise', 'New Timer'
+  #   }
+  # end
 
     # mustache 'development?' do
 
@@ -113,23 +113,25 @@ div( :id=>"nav_bar" ) {
       # li "- Carpooling"
       # li "- Garage Renting"
       # li "Tropical Physician Ratings" 
-      # li "Global Rant" # Vote for the most creative/smartest ranters.
+      
 
-      nav_bar_li nil, 'salud',    'Salud (Español)'
-      nav_bar_li :Topic, 'back_pain', 'Back Pain'
-      nav_bar_li :Topic, 'child_care', 'Child Care'
-      nav_bar_li :Topic, 'computer', 'Computer Use'
-      # nav_bar_li :Topic, 'economy',  'Economy + War'
-      nav_bar_li :Topic, 'hair',     'Skin & Hair'
-      nav_bar_li :Topic, 'housing',  'Housing & Apartments'
-      nav_bar_li :Topic, 'health',   'Pain & Disease'
-      nav_bar_li :Topic, 'preggers', 'Pregnancy'
-      # nav_bar_li :Topic, 'news',     'Other Topics'
-      # nav_bar_li :Topic, 'hearts', 'Hearts'
-      nav_bar_li :Clubs, :list, '/clubs/', '[ View More ]'
+      # nav_bar_li nil, 'salud',    'Salud (Español)'
+      # nav_bar_li :Topic, 'back_pain', 'Back Pain'
+      # nav_bar_li :Topic, 'child_care', 'Child Care'
+      # nav_bar_li :Topic, 'computer', 'Computer Use'
+      # 
+      # nav_bar_li :Topic, 'hair',     'Skin & Hair'
+      # nav_bar_li :Topic, 'housing',  'Housing & Apartments'
+      # nav_bar_li :Topic, 'health',   'Pain & Disease'
+      # nav_bar_li :Topic, 'preggers', 'Pregnancy'
+      
+      
+      nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
+      
       mustache 'logged_in?' do
         nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create ]'
       end
+    
     }
   end
 

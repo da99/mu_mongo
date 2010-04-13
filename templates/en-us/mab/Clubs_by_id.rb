@@ -78,7 +78,7 @@ div.content! {
             option "Question?",   :value=>'question'
             option "Request",     :value=>'plea'
             option "Brainstorm",  :value=>'brainstorm'
-            option "Event",       :value=>'event'
+            # option "Event",       :value=>'event'
             option "Complain!",   :value=>'complaint'
             option "Product",     :value=>'product'
           }

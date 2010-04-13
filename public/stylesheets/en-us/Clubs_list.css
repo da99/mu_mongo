@@ -63,56 +63,6 @@ table {
 a img {
   border: none; }
 
-#container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 960px;
-  overflow: hidden;
-  display: inline-block; }
-  #container {
-    display: block; }
-
-#nav_bar {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 220px; }
-
-#loading {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px;
-  padding-left: 240px; }
-
-#content {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px; }
-
-form fieldset input.text, form fieldset textarea {
-  width: 600px; }
-
-#nav_bar h4 {
-  margin: 0 0 3px 80px; }
-#nav_bar ul {
-  margin: 0 0 0 80px; }
-#nav_bar #logo {
-  margin: 0 0 0 80px; }
-
-#footer {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px;
-  padding-left: 240px;
-  display: none; }
-
 a:link, a:visited {
   color: #f00919;
   text-transform: uppercase;
@@ -362,3 +312,26 @@ div.message, div.club {
   div.message div.permalink, div.club div.permalink {
     text-align: right;
     font-size: 80%; }
+
+#the_body {
+  padding: 10px  20px; }
+
+#content {
+  overflow: hidden;
+  display: inline-block; }
+  #content {
+    display: block; }
+
+#nav_bar {
+  width: 180px;
+  float: left; }
+  #nav_bar #logo p.nippon {
+    border-top-width: 0; }
+
+#clubs {
+  width: 400px;
+  float: left; }
+
+#my_clubs {
+  width: 300px;
+  float: left; }

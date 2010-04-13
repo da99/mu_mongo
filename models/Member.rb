@@ -391,6 +391,9 @@ class Member
     end
   end
 
+  def clubs
+    []
+  end
   
 end # === model Member
 

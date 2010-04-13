@@ -1,18 +1,12 @@
  <div id="nav_bar">
   <div id="logo">
-
-{{#no_opening_msg}}
-
    <p class="english">
     <a href="/">{{site_title}}</a>
    </p>
-
-{{/no_opening_msg}}
-
    <p class="nippon">
 を単一化します   </p>
   </div>
-  <ul class="help">
+  <ul>
     <li>
      <a href="/help/"> Help </a>
     </li>
@@ -37,21 +31,18 @@
     <li>
      <a href="/log-in/"> Log-in </a>
     </li>
+    <li>
+     <a href="/create-account/"> Join </a>
+    </li>
 
 {{/not_logged_in?}}
 
   </ul>
+  <h4>Lives</h4>
+  <ul>
 
 {{#logged_in?}}
 
-
-{{#no_mini_nav_bar?}}
-
-  <h4>Lives</h4>
-
-{{/no_mini_nav_bar?}}
-
-  <ul class="lives">
 
 {{#username_nav}}
 
@@ -76,27 +67,20 @@
 
 {{/username_nav}}
 
-
-{{#no_mini_nav_bar?}}
-
     <li>
-     <a href="/create-life/"> [ Create ] </a>
+     <a href="/create-life/"> [ Create Life ] </a>
     </li>
-
-{{/no_mini_nav_bar?}}
-
-  </ul>
 
 {{/logged_in?}}
 
-
-{{#no_mini_nav_bar?}}
-
+  </ul>
   <h4>Clubs</h4>
-  <ul class="news">
-    <li>
-     <a href="/clubs/"> [ View All ] </a>
-    </li>
+  <ul>
+   <li>
+     <li>
+      <a href="/clubs/"> [ View All ] </a>
+     </li>
+   </li>
 
 {{#logged_in?}}
 
@@ -107,20 +91,4 @@
 {{/logged_in?}}
 
   </ul>
-
-{{/no_mini_nav_bar?}}
-
-
-{{#mini_nav_bar?}}
-
-  <ul>
-   <li>
-     <li>
-      <a href="/clubs/"> Clubs </a>
-     </li>
-   </li>
-  </ul>
-
-{{/mini_nav_bar?}}
-
  </div>
