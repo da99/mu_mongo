@@ -1,2 +1,35 @@
-@import layout_position.sass
+// @import layout_position.sass
+@import base.sass
+@import compass/utilities/general/clearfix.sass
+
+#the_body
+  padding: 10px 20px
+#container
+  +clearfix
+#content
+  float: left
+#nav_bar
+  float: left
+  width: 200px
+
+=single_form
+  #container
+    width: 600px
+    margin: 0 auto
+  #the_form
+    float: left
+    text-align: right
+    padding-right: 10px
+    padding-bottom: 100px
+    margin-right: 10px
+    border-right: 1px dashed #fff
+      color= !dashed_border
+    form
+      padding: 0
+      fieldset
+        input.text
+          width: 290px
+        textarea
+          width: 290px
+          height: 300px
 @import layout_styles.sass

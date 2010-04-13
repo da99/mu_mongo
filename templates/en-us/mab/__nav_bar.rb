@@ -4,20 +4,15 @@
 div( :id=>"nav_bar" ) { 
 
   div( :id=>"logo" ) { 
-    mustache 'no_opening_msg' do
-      p.english { 
-        if template_name == :Hello_list
-          '{{site_title}}' 
-        else
-          a '{{site_title}}', :href=>'/'
-        end
-      }
-    end
-    p.nippon {
-            "を単一化します" # Unify
-            #"何とかしてよ" # Please do something
-            # "私のユニ" # My Uni
-            # "幸せな、脂肪の <br /> ウェブサイト"
+    p.english { 
+      if template_name == :Hello_list
+              '{{site_title}}' 
+      else
+        a '{{site_title}}', :href=>'/'
+      end
+    }
+    p.divider.site_tag_line {
+       "{{site_tag_line}}" # Unify
     } 
   }
 
@@ -26,13 +21,13 @@ div( :id=>"nav_bar" ) {
     nav_bar_li :Hello, 'help'
     
     mustache 'logged_in?' do
-      nav_bar_li :Session_Control, 'log-out', 'Log-out'
+      nav_bar_li :Sessions, 'log-out', 'Log-out'
       nav_bar_li :Members, '/today/', '[ Today ]'
       nav_bar_li :Members, '/account/', '[ Account ]'
     end  
     
     mustache 'not_logged_in?' do
-      nav_bar_li :Session_Control, 'log-in', 'Log-in'
+      nav_bar_li :Sessions, 'log-in', 'Log-in'
       # nav_bar_li :Member_Control, 'create-account', 'Join'
     end
     
@@ -40,7 +35,7 @@ div( :id=>"nav_bar" ) {
 
   mustache 'logged_in?' do
     mustache 'no_mini_nav_bar?' do
-      h4 'Lives' 
+      p.divider 'Lives' 
     end
     ul.lives {
       mustache 'username_nav' do
@@ -99,7 +94,7 @@ div( :id=>"nav_bar" ) {
     # end # === if development?
 
   mustache 'no_mini_nav_bar?' do
-    h4 'Clubs'
+    p.divider 'Clubs'
     ul.news {
 
       # li "San Francisco" #  (Survival Tips + Marketplace)

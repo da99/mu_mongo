@@ -2,13 +2,12 @@
 # ~/megauni/templates/en-us/sass/Session_Control_log_in.sass
 # Session_Control_log_in
 
+partial '__flash_msg'
 
-div.content! { 
+div.the_form! { 
   
   # ================= div.flash_msg =============================
-  partial '__flash_msg'
 
-  div.block do 
     h3 'Log-in'
     
     form.log_in_form!( :action=>"/log-in/", :method=>"post" ) {
@@ -28,7 +27,6 @@ div.content! {
       }
       
     } # === form.log_in_form!
-  end
 
 } # === div.content!
 

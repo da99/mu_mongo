@@ -95,63 +95,37 @@ img.right
     div.msg
       color= !dark_green
 
-#nav_bar
-  padding-bottom: 200px
-  h4
-    padding: 0
-    font-size: 13px
-    font-weight: bold
-    background-color: #005088 
-    text-transform: lowercase
-    color: #fff
-    text-align: center
-  ul
-    +no-bullets
-    border: 1px solid #f00919
-      width: 0
-    padding-bottom: 10px
-    text-align: center
-    background-color: #fff
-    li
-      padding: 0 0 2px 0
-      span
-        font-weight: bold
-        text-transform: uppercase      
-        color: #005088
-        padding: 3px 4px
-      a
-        display: block
-        padding: 2px 0
-        font-weight: bold
-  ul.news
-    -moz-border-radius: 0 0 10px 10px
-    -webkit-border-radius: 0 0 10px 10px
-    border-bottom: 1px solid #f00919
-  #logo
-    text-align: center
-    color: #000
-    p.english 
-      color: #f00919
-      background-color: #fff
-      font-family= !custom_sans_serif
-      font-size: 20px 
-      font-weight: bold
-      padding: 5px 0 0 0
-      a:link, a:visited
-        font-size: 20px
-        display: block
-        text-transform: none
-        text-decoration: none
-    p.nippon
-      background-color: #fff 
-      color: #3A5970
-      border: 1px solid #f00919
-        width: 1px 0 0 0
-      font-size: 12px 
-      font-weight: bold
-      padding: 5px 0 20px 0
-      margin: 0 
       
+#mini_nav_bar, #nav_bar
+  width: 200px
+  float: left
+  text-align: left
+  p 
+    color: #f00919
+    font-family= !custom_sans_serif
+    font-weight: bold
+    padding: 0
+    margin: 0
+    a:link, a:visited
+      font-size: 20px
+      text-transform: none
+      text-decoration: none
+  p.site_title
+    font-size: 20px
+  p.divider
+    font-size: 12px
+    color= !dashed_border
+    text-transform: uppercase
+  ul
+    list-style: none
+    padding: 0 0 10px 0
+    li
+      list-style: none
+      padding: 2px 0 0 0
+      &.selected
+        text-transform: lowercase
+      a
+        padding: 2px 2px 3px 2px
 
 #loading
   +input_text
@@ -161,6 +135,7 @@ img.right
 #content
   padding-bottom: 50px
   padding-top: 20px
+  +clearfix
   p
     font-size: 16px
   ul

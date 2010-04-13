@@ -4,11 +4,11 @@
 div( :id=>"nav_bar" ) { 
 
   div( :id=>"logo" ) { 
-    p.english { 
+    p.site_title { 
       a '{{site_title}}', :href=>'/'
     }
-    p.nippon {
-      "を単一化します" # Unify
+    p.divider {
+      "{{site_tag_line}}" # Unify
     } 
   }
 
@@ -30,7 +30,7 @@ div( :id=>"nav_bar" ) {
   }
 
   mustache 'logged_in?' do
-    h4 'Lives'
+    p.divider 'Lives'
     ul {
       mustache 'username_nav' do
       mustache 'selected' do
@@ -44,7 +44,7 @@ div( :id=>"nav_bar" ) {
     }
   end
 
-  h4 'Clubs'
+  p.divider 'Clubs'
   ul {
     li {
       nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'

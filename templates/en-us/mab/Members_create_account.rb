@@ -2,10 +2,10 @@
 # ~/megauni/templates/en-us/sass/Members_create_account.sass
 # Members_create_account 
 
-div.content! { 
+partial '__flash_msg' 
+div.the_form! { 
   
   # ================= div.flash_msg =============================
-	partial '__flash_msg' 
 
 
   h3 'Create a New Account'
