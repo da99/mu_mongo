@@ -29,20 +29,20 @@ div( :id=>"nav_bar" ) {
     
   }
 
-  h4 'Lives'
-  ul {
-    mustache 'logged_in?' do
-        mustache 'username_nav' do
-          mustache 'selected' do
-            nav_bar_li_selected '{{username}}'
-          end
-          mustache 'not_selected' do
-            nav_bar_li_unselected '{{username}}', '{{href}}'
-          end
-        end
-        nav_bar_li :Members, :create_life, "/create-life/", "[ Create Life ]"
-    end
-  }
+  mustache 'logged_in?' do
+    h4 'Lives'
+    ul {
+      mustache 'username_nav' do
+      mustache 'selected' do
+        nav_bar_li_selected '{{username}}'
+      end
+      mustache 'not_selected' do
+        nav_bar_li_unselected '{{username}}', '{{href}}'
+      end
+      end
+      nav_bar_li :Members, :create_life, "/create-life/", "[ Create Life ]"
+    }
+  end
 
   h4 'Clubs'
   ul {
