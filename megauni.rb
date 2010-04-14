@@ -10,7 +10,7 @@ class The_App
   
   SITE_DOMAIN        = 'megaUni.com'
   SITE_TITLE         = 'Mega Uni'
-  SITE_TAG_LINE      = 'A site full of clubs.'
+  SITE_TAG_LINE      = '?~!@#*^+!'
   SITE_HELP_EMAIL    = "help@#{SITE_DOMAIN}"
   SITE_URL           = "http://www.#{SITE_DOMAIN}/"
   
