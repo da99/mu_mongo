@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}?time=1271204388" media="screen" rel="stylesheet"/>
+   <link type="text/css" href="{{css_file}}?time=1271372280" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -40,73 +40,82 @@
 
 {{/loading}}
 
-     <div id="content">
 
 {{#flash_msg?}}
 
-       <div id="flash_msg">
+      <div id="flash_msg">
 
 {{#flash_success}}
 
-        <div class="success">
-         <h4>Success</h4>
-         <div class="msg">{{msg}}</div>
-        </div>
+       <div class="success">
+        <h4>Success</h4>
+        <div class="msg">{{msg}}</div>
+       </div>
 
 {{/flash_success}}
 
 
 {{#flash_errors}}
 
-        <div class="errors">
-         <h4>{{title}}</h4>
-         <div class="msg">
-          <ul>
+       <div class="errors">
+        <h4>{{title}}</h4>
+        <div class="msg">
+         <ul>
 
 {{#errors}}
 
-           <li>{{err}}</li>
+          <li>{{err}}</li>
 
 {{/errors}}
 
-          </ul>
-         </div>
+         </ul>
         </div>
+       </div>
 
 {{/flash_errors}}
 
-       </div>
+      </div>
 
 {{/flash_msg?}}
 
-      <h4>Post message</h4>
-      <form method="POST" action="/messages/" id="form_lives_create">
-       <input type="hidden" value="tweet" name="category"/>
-       <input type="hidden" value="{{current_member_username}}" name="username"/>
-       <fieldset>
-        <textarea name="body"></textarea>
-       </fieldset>
-       <fieldset>
-        <label>Privacy</label>
-        <select name="privacy">
-         <option value="friends" selected="selected">Friends Only.</option>
-         <option value="public">Public.</option>
-         <option value="private">Just for me.</option>
-        </select>
-       </fieldset>
-       <fieldset>
-        <label>Labels</label>
-        <input type="text" class="text" value="" name="public_labels"/>
-       </fieldset>
-       <div class="buttons">
-        <button>Save</button>
-       </div>
-      </form>
+     <div id="content">
+      <div id="lives_create">
+       <h4>Post message</h4>
+       <form method="POST" action="/messages/" id="form_lives_create">
+        <input type="hidden" value="tweet" name="category"/>
+        <input type="hidden" value="{{current_member_username}}" name="username"/>
+        <fieldset>
+         <textarea name="body"></textarea>
+        </fieldset>
+        <fieldset>
+         <label>Privacy</label>
+         <select name="privacy">
+          <option value="friends" selected="selected">Friends Only.</option>
+          <option value="public">Public.</option>
+          <option value="private">Just for me.</option>
+         </select>
+        </fieldset>
+        <fieldset>
+         <label>Labels</label>
+         <input type="text" class="text" value="" name="private_labels"/>
+        </fieldset>
+        <div class="buttons">
+         <button>Save</button>
+        </div>
+       </form>
+      </div>
+      <div id="newspaper">
+
+{{#no_newspaper?}}
+
+       <a>You have not subscribed to anyone's life.</a>
+
+{{/no_newspaper?}}
+
 
 {{#newspaper?}}
 
-      <div id="newspaper">
-       <h4>The latest from clubs you follow:</h4>
+       <h4>The latest from your subscriptions:</h4>
 
 {{#newspaper}}
 
@@ -119,10 +128,10 @@
 
 {{/newspaper}}
 
-      </div>
 
 {{/newspaper?}}
 
+      </div>
      </div>
       <div id="nav_bar">
        <div id="logo">

@@ -130,7 +130,11 @@ img.right {
 #mini_nav_bar, #nav_bar {
   width: 200px;
   float: left;
-  text-align: left; }
+  text-align: left;
+  margin-left: 10px;
+  padding: 0 0 100px 10px;
+  border-left: 1px dashed #fff;
+  border-left-color: #003860; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
     font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
@@ -536,7 +540,11 @@ img.right {
 #mini_nav_bar, #nav_bar {
   width: 200px;
   float: left;
-  text-align: left; }
+  text-align: left;
+  margin-left: 10px;
+  padding: 0 0 100px 10px;
+  border-left: 1px dashed #fff;
+  border-left-color: #003860; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
     font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;

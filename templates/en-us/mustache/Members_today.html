@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}?time=1271204385" media="screen" rel="stylesheet"/>
+   <link type="text/css" href="{{css_file}}?time=1271372277" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -40,72 +40,68 @@
 
 {{/loading}}
 
-     <div id="content">
 
 {{#flash_msg?}}
 
-       <div id="flash_msg">
+      <div id="flash_msg">
 
 {{#flash_success}}
 
-        <div class="success">
-         <h4>Success</h4>
-         <div class="msg">{{msg}}</div>
-        </div>
+       <div class="success">
+        <h4>Success</h4>
+        <div class="msg">{{msg}}</div>
+       </div>
 
 {{/flash_success}}
 
 
 {{#flash_errors}}
 
-        <div class="errors">
-         <h4>{{title}}</h4>
-         <div class="msg">
-          <ul>
+       <div class="errors">
+        <h4>{{title}}</h4>
+        <div class="msg">
+         <ul>
 
 {{#errors}}
 
-           <li>{{err}}</li>
+          <li>{{err}}</li>
 
 {{/errors}}
 
-          </ul>
-         </div>
+         </ul>
         </div>
+       </div>
 
 {{/flash_errors}}
 
-       </div>
+      </div>
 
 {{/flash_msg?}}
 
+     <div id="newspaper">
 
 {{#no_newspaper}}
 
-      <p>
-       <a href="/clubs/">Check out some clubs to follow.</a>
-      </p>
+      <a href="/clubs/">Check out some clubs to follow.</a>
 
 {{/no_newspaper}}
 
 
 {{#newspaper?}}
 
-      <div id="newspaper">
-       <h4>The latest from clubs you follow:</h4>
+      <h4>The latest from clubs you follow:</h4>
 
 {{#newspaper}}
 
-       <div class="message">
-        <div class="body">{{{compiled_body}}}</div>
-        <div class="permalink">
-         <a href="{{href}}">Permalink</a>
-        </div>
+      <div class="message">
+       <div class="body">{{{compiled_body}}}</div>
+       <div class="permalink">
+        <a href="{{href}}">Permalink</a>
        </div>
+      </div>
 
 {{/newspaper}}
 
-      </div>
 
 {{/newspaper?}}
 

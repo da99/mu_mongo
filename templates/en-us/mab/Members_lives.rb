@@ -2,54 +2,52 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Members_lives.sass
 # NAME Members_lives
 
+  
+partial '__flash_msg' 
+	
 div.content! { 
-  
-	partial '__flash_msg' 
-	
-	h4 'Post message'
 
-	form :id=>'form_lives_create', :action=>'/messages/', :method=>'POST' do
-	
-		input :type=>'hidden', :name=>'category', :value=>'tweet'
-		input :type=>'hidden', :name=>'username', :value=>'{{current_member_username}}'
+  div.lives_create! { 
+    h4 'Post message'
 
-		fieldset {
-			textarea '', :name=>'body'
-		}
+    form :id=>'form_lives_create', :action=>'/messages/', :method=>'POST' do
+    
+      input :type=>'hidden', :name=>'category', :value=>'tweet'
+      input :type=>'hidden', :name=>'username', :value=>'{{current_member_username}}'
 
-		fieldset {
-			label 'Privacy'
-			select :name=> 'privacy' do
-				option 'Friends Only.', :value=>'friends', :selected=>'selected'
-				option 'Public.', :value=>'public'
-				option 'Just for me.', :value=>'private'
-			end
-		}
+      fieldset {
+        textarea '', :name=>'body'
+      }
 
-		# fieldset {
-		# 	label 'Emotions'
+      fieldset {
+        label 'Privacy'
+        select :name=> 'privacy' do
+          option 'Friends Only.', :value=>'friends', :selected=>'selected'
+          option 'Public.', :value=>'public'
+          option 'Just for me.', :value=>'private'
+        end
+      }
 
-		# }
+      fieldset {
+        label 'Labels'
+        input.text :name=>'private_labels', :value=>'', :type=>'text'
+      }
 
-		# fieldset {
-		# 	label 'Private Labels'
-		# 	textarea :name=>'private_labels'
-		# }
+      div.buttons {
+        button 'Save'
+      }
 
-		fieldset {
-			label 'Labels'
-			input.text :name=>'public_labels', :value=>'', :type=>'text'
-		}
+    end
+    
+  } # === div.lives_create!
 
-		div.buttons {
-			button 'Save'
-		}
 
-	end
-  
-  mustache 'newspaper?' do  
-    div.newspaper! do
-      h4 'The latest from clubs you follow:'
+  div.newspaper! {
+    mustache('no_newspaper?') {
+      a('You have not subscribed to anyone\'s life.')
+    }
+    mustache 'newspaper?' do  
+      h4 'The latest from your subscriptions:'
       mustache 'newspaper' do
         div.message do
           div.body( '{{{compiled_body}}}' )
@@ -59,9 +57,9 @@ div.content! {
         end
       end
     end
-  end
+  } # === div.newspaper!
 	
-} # === div.content!
+} # === div.content! 
 
 partial('__nav_bar')
 

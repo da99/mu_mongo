@@ -45,6 +45,13 @@
   font-weight: bold
   font-family: helvetica, arial, sans-serif
 
+=dashed_border_bottom
+  border-bottom= 1px dashed !dashed_border
+=dashed_border_left
+  border-left= 1px dashed !dashed_border
+=dashed_border_right
+  border-right= 1px dashed !dashed_border
+
   
 a:link, a:visited
   color = !red
@@ -100,6 +107,10 @@ img.right
   width: 200px
   float: left
   text-align: left
+  margin-left: 10px
+  padding: 0 0 100px 10px
+  border-left: 1px dashed #fff
+    color= !dashed_border
   p 
     color: #f00919
     font-family= !custom_sans_serif
