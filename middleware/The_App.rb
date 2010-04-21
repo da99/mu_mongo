@@ -52,7 +52,12 @@ class The_App
       if http_method == action_name
         the_app.send( http_method, *args )
       else
-        the_app.send( "#{http_method}_#{action_name}", *args)
+        meth_name = "#{http_method}_#{action_name}"
+        if !the_app.respond_to?(meth_name) && http_method === 'HEAD'
+          the_app.send( "GET_#{action_name}", *args)
+        else
+          the_app.send(meth_name, *args)
+        end
       end
     rescue The_App::Redirect
     rescue Couch_Plastic::Not_Found

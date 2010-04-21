@@ -5,7 +5,7 @@
 class Topic_sports < Base_View
 
   def title 
-    '...'
+    'Sports'
   end
   
 end # === Topic_sports 

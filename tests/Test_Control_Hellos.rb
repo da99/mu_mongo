@@ -9,6 +9,16 @@ class Test_Control_Hellos < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must 'respond to HEAD /' do
+    head '/'
+    assert_equal 200, last_response.status
+  end
+
+  must 'respond to HEAD /salud/' do
+    head '/salud/'
+    assert_equal 200, last_response.status
+  end
+
   must "shows /busy-noise" do
     get '/busy-noise'
     follow_redirect!

@@ -24,6 +24,8 @@ class Find_The_Bunny
     filename = '[a-zA-Z0-9\-\_\+]+'
     @app = new_app
     @url_aliases = [
+      ['/', {:controller=>Hellos, :http_method=>['GET'], :action_name=>'list'}],
+      ['/salud/', {:controller=>Hellos, :http_method=>['GET'], :action_name=>'salud'}],
       [%r!\A/mess/(#{ids})/\Z! , { :controller => Messages, :http_method=>['GET', 'PUT'], :action_name => 'by_id' } ],
       [%r!\A/mess/(#{ids})/edit/\Z! , { :controller => Messages, :action_name => 'edit' } ],
       ['/clubs/', {:controller=>Clubs, :action_name=>'list', :http_method=>'GET'}],
@@ -58,9 +60,18 @@ class Find_The_Bunny
                        when NilClass
                          http_meth
                        when Array
-                         v[:http_method].include?(http_meth) && http_meth
+                         allowed_meths = if v[:http_method].include?('GET')
+                                            ['HEAD'] + v[:http_method]
+                                         else
+                                           v[:http_method]
+                                         end
+                         allowed_meths.include?(http_meth) && http_meth
                        else
-                         http_meth === v[:http_method] && http_meth
+                         if v[:http_method] === 'GET'
+                           ['GET', 'HEAD'].include?(http_meth) && http_meth
+                         else
+                           (http_meth === v[:http_method]) && http_meth
+                         end
                        end
 
       if path_matches && action_matches

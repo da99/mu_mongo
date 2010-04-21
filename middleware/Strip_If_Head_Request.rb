@@ -16,7 +16,7 @@ class Strip_If_Head_Request
     #   for a manual HEAD response and remove it entirely.
     
     body = []
-    header.delete('Content-Length') if header['Content-Length'] == '0'
+    headers.delete('Content-Length') if headers['Content-Length'] == '0'
 
     [ status, headers, body ]
   end
