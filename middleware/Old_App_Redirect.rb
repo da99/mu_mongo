@@ -14,6 +14,14 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
+    if new_env['PATH_INFO'] === "/child_care/clubs/child_care/"
+      return hearty_redirect("/clubs/child_care/")
+    end
+
+    if new_env['PATH_INFO'] === "/back_pain/clubs/back_pain/"
+      return hearty_redirect("/clubs/back_pain/")
+    end
+    
     if new_env['PATH_INFO'] === "/help/"
       return hearty_redirect("/clubs/megauni/")
     end

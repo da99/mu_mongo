@@ -65,4 +65,16 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_equal '/robots.txt', last_request.fullpath
   end
 
+  must 'redirect /child_care/clubs/child_care/ to /clubs/child_care/' do
+    get '/child_care/clubs/child_care/'
+    follow_redirect!
+    assert_equal '/clubs/child_care/', last_request.fullpath
+  end
+
+  must 'redirect /back_pain/clubs/back_pain/ to /clubs/back_pain/' do
+    get '/back_pain/clubs/back_pain/'
+    follow_redirect!
+    assert_equal '/clubs/back_pain/', last_request.fullpath
+  end
+
 end # === class Test_Control_Old_Apps_Read
