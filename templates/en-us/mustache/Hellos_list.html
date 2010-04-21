@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}?time=1271880392" media="screen" rel="stylesheet"/>
+   <link type="text/css" href="{{css_file}}?time=1271891472" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -86,6 +86,14 @@
       <div class="message">
        <div class="body">{{{compiled_body}}}</div>
        <div class="permalink">
+
+{{#owner_username}}
+
+        <span>by:</span>
+        <a href="/life/{{owner_username}}/">{{owner_username}}</a>
+
+{{/owner_username}}
+
         <a href="{{href}}">Permalink</a>
        </div>
       </div>
