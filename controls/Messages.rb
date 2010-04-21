@@ -54,8 +54,7 @@ class Messages
       clean_room[:lang]       = self.current_member.lang
       
 
-      clean_room[:owner_id]   = current_member.data._id
-      clean_room[:username_id] = current_member.username_to_username_id(clean_room[:username])
+      clean_room[:owner_id]   = current_member.username_to_username_id(clean_room[:username])
       
       Message.create( current_member, clean_room )
       
@@ -104,7 +103,7 @@ class Messages
                 id
               end
     mess = env['results.message'] = Message.by_id(mess_id)
-    require_log_in! 'ADMIN',  mess.data.username_id
+    require_log_in! 'ADMIN',  mess.data.owner_id
     render_html_template
   end
 

@@ -10,7 +10,7 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
   def create_message mem
     Message.create(
       mem, 
-      :username_id=> mem.username_ids.first,
+      :owner_id=> mem.username_ids.first,
       :target_ids => [club['_id']],
       :body => 'test body',
       :emotion => 'poignant',

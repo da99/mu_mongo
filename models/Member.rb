@@ -372,7 +372,7 @@ class Member
 
   def following_club_ids un_id = nil
     if un_id
-      cache["follwing_club_ids_#{un_id}"] ||= Club.all_ids_for_follower_username_id(un_id)
+      cache["follwing_club_ids_#{un_id}"] ||= Club.all_ids_for_follower_id(un_id)
     else
       cache[:following_club_ids] ||= Club.all_ids_for_follower(self.data._id)
     end

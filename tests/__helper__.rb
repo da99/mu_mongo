@@ -216,8 +216,8 @@ class Test::Unit::TestCase
     Message.create( mem, 
       :privacy => 'public',
       :target_ids => [club.data._id],
-      :owner_id => mem.data._id,
-      :username_id => (un_id || mem.username_ids.first),
+      :owner_id => (un_id || mem.username_ids.first),
+      
       :body => "random body #{rand(4000)}"
     )
   end

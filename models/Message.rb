@@ -26,7 +26,7 @@ class Message
   make :important, :not_empty
   make :rating, :not_empty
 	make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
-  make :username_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
+  make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
   make :target_ids, :split_and_flatten, :mongo_object_id_array
   make :body, :not_empty
   make :emotion, :not_empty
@@ -51,7 +51,7 @@ class Message
       new_data.labels = []
       new_data.public_labels = []
       ask_for_or_default :lang
-      demand :username_id, :target_ids, :body
+      demand :owner_id, :target_ids, :body
       ask_for :category, :privacy, :labels,
           :emotion, :rating,
           :labels, :public_labels,

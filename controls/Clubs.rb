@@ -74,7 +74,7 @@ class Clubs
 
   def GET_edit club_filename
     club = save_club_to_env(club_filename)
-    require_log_in! :ADMIN, club.data.username_id
+    require_log_in! :ADMIN, club.data.owner_id
     render_html_template
   end
 

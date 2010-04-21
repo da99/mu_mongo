@@ -9,9 +9,7 @@ class Club
 
   enable_created_at
 
-  make :owner_id, :mongo_object_id
-
-  make :username_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids }]
+  make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids }]
 
   make :filename, 
 		   [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
@@ -32,13 +30,13 @@ class Club
 
   def self.create editor, raw_raw_data # CREATE
     new do
-      raw_raw_data['owner_id'] = editor.data._id
+      
       if editor.usernames.size == 1 || !raw_raw_data['username_id']
-        raw_raw_data['username_id'] ||= editor.username_ids.first
+        raw_raw_data['owner_id'] ||= editor.username_ids.first
       end
       self.manipulator = editor
       self.raw_data = raw_raw_data
-      demand :owner_id, :username_id, :filename, :title, :teaser
+      demand :owner_id, :filename, :title, :teaser
       ask_for_or_default :lang
       save_create 
     end
@@ -99,9 +97,9 @@ class Club
     }
   end
 
-  def self.all_ids_for_follower_username_id( raw_id )
+  def self.all_ids_for_follower_id( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
-    db_collection_followers.find({:username_id=>id}, {:fields=>'club_id'}).map { |doc|
+    db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
       doc['club_id']
     }
   end
@@ -120,7 +118,7 @@ class Club
 
   def owner?(mem)
     return false if not mem
-    data.owner_id.to_s == mem.data._id.to_s
+    mem.username_ids.include?(data.owner_id)
   end
 
   def href 
@@ -145,7 +143,9 @@ class Club
   def follower? mem
     return false if not mem
     return false if owner?(mem)
-    followers.include?(mem.data._id)
+    mem.username_ids.detect { |un| 
+      followers.include?(un)
+    }
   end
 
   # === Other Instance Methods
@@ -154,8 +154,7 @@ class Club
     self.class.db_collection_followers.insert(
       '_id' => "#{data._id}#{mem.data._id}",
       'club_id' => data._id, 
-      'follower_id' => mem.data._id,
-      'username_id' => Couch_Plastic.mongofy_id(username_id)
+      'follower_id' => Couch_Plastic.mongofy_id(username_id)
     )
   end
 

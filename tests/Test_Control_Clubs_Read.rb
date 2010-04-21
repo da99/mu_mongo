@@ -106,7 +106,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     get File.join('/', club.href, 'follow/')
     follows = Club.db_collection_followers.find(
       :club_id=>club.data._id, 
-      :follower_id=>regular_member_1.data._id
+      :follower_id=>regular_member_1.username_ids.first
     ).to_a
 
     assert_equal 1, follows.size
