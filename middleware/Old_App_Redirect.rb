@@ -7,11 +7,27 @@ class Old_App_Redirect
 
   def call new_env
 
+    # =========== BAD AGENTS ==============================
     if [
      %r!\A/MSOffice/cltreq.asp!,
+     %r!\.(asp|php)\Z!,
      %r!\A/_vti_bin/owssvr.dll!
     ].detect { |str| new_env['PATH_INFO'] =~ str }
       return hearty_redirect("http://www.bing.com/")
+    end
+
+    # =====================================================
+
+    if new_env['PATH_INFO'] === "/skins/jinx/css/main_show.css"
+      return hearty_redirect("/stylesheets/en-us/Hellos_list.css")
+    end
+
+    if new_env['PATH_INFO'] === "/skins/jinx/css/news_show.css"
+      return hearty_redirect("/stylesheets/en-us/Hellos_list.css")
+    end
+
+    if new_env['PATH_INFO'] === "/child_care/clubs/child_care/"
+      return hearty_redirect("/clubs/child_care/")
     end
 
     if new_env['PATH_INFO'] === "/child_care/clubs/child_care/"

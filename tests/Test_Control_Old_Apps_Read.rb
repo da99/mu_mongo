@@ -77,4 +77,16 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_equal '/clubs/back_pain/', last_request.fullpath
   end
 
+  must 'redirect /skins/jinx/css/main_show.css to /stylesheets/en-us/Hellos_list.css' do
+    get '/skins/jinx/css/main_show.css'
+    follow_redirect!
+    assert_equal "/stylesheets/en-us/Hellos_list.css", last_request.fullpath
+  end
+
+  must 'redirect /skins/jinx/css/news_show.css to /stylesheets/en-us/Hellos_list.css' do
+    get '/skins/jinx/css/news_show.css'
+    follow_redirect!
+    assert_equal "/stylesheets/en-us/Hellos_list.css", last_request.fullpath
+  end
+
 end # === class Test_Control_Old_Apps_Read
