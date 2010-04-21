@@ -2,22 +2,6 @@
 require 'tests/__rack_helper__'
 
 class Test_Control_Messages_Update < Test::Unit::TestCase
-
-  def club
-    Club.db_collection.find_one()
-  end
-
-  def create_message mem
-    Message.create(
-      mem, 
-      :owner_id=> mem.username_ids.first,
-      :target_ids => [club['_id']],
-      :body => 'test body',
-      :emotion => 'poignant',
-      :category => 'tweet',
-      :privacy => 'public'
-    )
-  end
   
 	must 'update if admin' do
     mess = create_message(regular_member_1)

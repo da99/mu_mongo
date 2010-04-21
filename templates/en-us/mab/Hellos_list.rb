@@ -10,7 +10,11 @@ div.messages.messages! do
     div.message do
       div.body( '{{{compiled_body}}}' )
       div.permalink {
-        a('Permalink', :href=>"{{href}}")
+				mustache 'owner_username' do
+					span 'by:'
+					a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
+				end
+				a('Permalink', :href=>"{{href}}")
       }
     end
   end

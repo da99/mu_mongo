@@ -97,12 +97,18 @@ class Message
 
 	def self.public raw_params = {}, raw_opts = {}, &blok
 		opts = {:limit=>10}.update(raw_opts)
+    include_mods = [opts.delete(:include)].flatten.compact
 		params = {}.update(raw_params)
-    db_collection.find(
+    cursor = db_collection.find(
 			params, 
       opts,
 			&blok
 		)
+    if include_mods.empty?
+      cursor
+    else
+      Member.add_owner_usernames_to_collection(cursor)
+    end
 	end
 
   def self.public_labels target_ids = nil

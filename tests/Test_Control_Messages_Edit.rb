@@ -3,22 +3,6 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Messages_Edit < Test::Unit::TestCase
 
-  def club
-    Club.db_collection.find_one
-  end
-
-  def create_message mem
-    Message.create(
-      mem, 
-      :owner_id=> mem.username_ids.first.to_s,
-      :target_ids => [club['_id']],
-      :body => 'test body',
-      :emotion => 'poignant',
-      :category => 'tweet',
-      :privacy => 'public'
-    )
-  end
-
   must 'not allow stranger to view.' do
     get '/mess/1/edit/'
     follow_redirect!

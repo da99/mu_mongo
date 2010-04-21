@@ -230,7 +230,6 @@ class Test::Unit::TestCase
     {:clubs => [club_1, club_2], :messages=>[mess_1, mess_2]}
   end
 
-
   def add_username mem = nil
     mem ||= regular_member_1
     un_2 = "rand_#{rand 3000}"
@@ -240,6 +239,23 @@ class Test::Unit::TestCase
     un_ids  = uns.map { |u| mem.username_to_username_id(u) }
     [mem, uns, un_ids]
   end
+
+  def club
+    Club.db_collection.find_one()
+  end
+
+  def create_message mem
+    Message.create(
+      mem, 
+      :owner_id=> mem.username_ids.first.to_s,
+      :target_ids => [club['_id']],
+      :body => 'test body',
+      :emotion => 'poignant',
+      :category => 'tweet',
+      :privacy => 'public'
+    )
+  end
+
   
 end
 

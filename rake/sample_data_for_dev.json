@@ -6,8 +6,8 @@
     "_id": {
       "$oid": "4bbce6556191537a71000001"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -23,8 +23,8 @@
     "_id": {
       "$oid": "4bbce6566191537a71000094"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Living well with just vitamins, lean meats, sea food, vegetables, fruits, and nuts.",
@@ -40,8 +40,8 @@
     "_id": {
       "$oid": "4bbce6566191537a71000097"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "A list of links for people who love The Factor Programming Language. (Most links are not about the language though.)",
@@ -57,8 +57,8 @@
     "_id": {
       "$oid": "4bbce6566191537a71000099"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "For all questions and complaints about this website.",
@@ -74,8 +74,8 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009c"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Keep track of the accomplishments of our dear Leader.",
@@ -91,8 +91,8 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a0"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Liberty through complete private property rights.",
@@ -108,8 +108,8 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a5"
     },
-    "owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
-    "username_id": {
+    "old_owner_id": "member-4753bc7ccd593d17e9ce4779b0e97db2",
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Tips for foreigners who want to visit Tokyo.",
@@ -141,10 +141,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a8"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -178,10 +178,10 @@
       "techie_wonders",
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<a href=\"http://www.xs4all.nl/%7Eorcl0606/Oracle/NWG/NeedAPainter.html\">What modern architects don't want you to see. </a>",
@@ -218,10 +218,10 @@
       "stuff_for_dudes",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Mike Rogers gives <a href=\"http://www.lewrockwell.com/rogers/rogers143.html\">some advice to men</a> on preventing a divorce.",
@@ -253,10 +253,10 @@
     "_id": {
       "$oid": "4bbce6566191537a71000093"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -288,10 +288,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/kid_pirate-adventure_time_necklace.jpg\" alt=\"Preview of Kid Pirate Adventure Time Necklace.\" class=\"left\" align=\"left\" />The <a href=\"http://www.kidpirate.com/shop/product/adventuretimeneck\">Adventure Time! necklace</a> designed by the Kid Pirate team.",
@@ -325,10 +325,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/perpetual_kid_punching_bag.jpg\" alt=\"Preview of the Perpetual Kid Ex-Boyfriend Punching Bag.\" class=\"left\" align=\"left\" />A <a href=\"http://www.perpetualkid.com/index.asp?PageAction=VIEWPROD&amp;ProdID=1110\">punching bag</a> where you can place a picture of any guy you love to hate.",
@@ -364,10 +364,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Crazy About Cupcakes.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-crazy-about-cupcakes.jpg\" align=\"left\" />Champagne cupcakes?&nbsp; It's possible with <a href=\"http://www.crazyaboutcupcakes.com/\">Crazy About Cupcakes</a>.",
@@ -402,10 +402,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/beautiful-decay-vs-to-die-for.jpg\" alt=\"Preview of B/D vs To Die For.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Available in several different sizes and colors @ <a href=\"http://www.merchline.com/beautifuldecay/category.100.c.php\">Beautiful Decay</a>.",
@@ -439,10 +439,10 @@
     "tags": [
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "The Go! Team's song, Huddle Formation, used in the <a href=\"http://www.youtube.com/watch?v=DZudvRM-Tnw\">Honda Civic commercial</a>.&nbsp; You can also hear <a href=\"http://www.thegoteam.co.uk/flash/Music.html\">the complete song</a> on their website under the album, \"Thunder, Lightning, Strike\".",
@@ -476,10 +476,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Gardenia Bonsai with Chocolate Truffles\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/harry_david-gardenia_bonsai_truffles.jpg\" align=\"left\" />How can she not love candy + a small, cute tree?&nbsp; <a href=\"http://www.harryanddavid.com/\">Learn more @ Harry &amp; David.com</a>. ($60 + shipping.)",
@@ -513,10 +513,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sterling_truffle_bar.jpg\" alt=\"Preview of Sterling Truffle Bar.\" class=\"left\" align=\"left\" />Each <a href=\"http://www.sterlingtrufflebar.com/\">Sterling Truffle Bar</a> combines different flavors with a beautiful design.",
@@ -550,10 +550,10 @@
     "tags": [
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "The laughs just don't stop on the <a href=\"http://www.hellokittyhell.com/\">anti-Hello Kitty site</a>.&nbsp;",
@@ -587,10 +587,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/trixie_peanut_best_friends_charm.jpg\" alt=\"Preview of Best Friends Charm.\" class=\"left\" align=\"left\" />A cute charm for pets over @ <a href=\"http://www.trixieandpeanut.com/access/136112.html\">trixie+peanut</a>.&nbsp;",
@@ -624,10 +624,10 @@
     "tags": [
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Don't worry.&nbsp; Only one picture in the article and it's a statue with a strategically placed fig leaf.&nbsp; <a href=\"http://www.msnbc.msn.com/id/16948773/\">Go and read it if you're an art fan!</a>",
@@ -661,10 +661,10 @@
     "tags": [
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "The creator of The Ren &amp; Stimpy Show gives people <a href=\"http://johnkstuff.blogspot.com/2007/01/crackpot-executive-beliefs-1.html\">a peek inside the animation industry</a>.",
@@ -695,13 +695,13 @@
     "_id": {
       "$oid": "4bbce6566191537a71000089"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
     "tags": [
       "stuff_for_dudes"
     ],
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/adorevintage-outback-necklace.jpg\" alt=\"Preview of Outback Necklace from AdoreVintage.com\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Saber tooth with cross for men @ <a href=\"http://shop.adorevintage.com/index.php?main_page=product_info&amp;cPath=21&amp;products_id=209\">AdoreVintage.com</a>",
@@ -737,10 +737,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of DEVILESS at Shufflesome\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/deviless_shufflesome.jpg\" align=\"left\" />Shufflesome produces outfits for the latest iPods.",
@@ -776,10 +776,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/john_schwegel_kindle.jpg\" alt=\"Preview of Kindle by John Schwegel\" class=\"left\" align=\"left\" />KINDLE - one of my favorites from the <a href=\"http://www.johnschwegel.com/wallpapers.htm\">John Schwegel</a> desktop collection.",
@@ -816,10 +816,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/john_schwegel_kindle.jpg\" alt=\"Preview of Kindle by John Schwegel\" class=\"left\" align=\"left\" />KINDLE - one of my favorites from the <a href=\"http://www.johnschwegel.com/wallpapers.htm\">John Schwegel</a> desktop collection.",
@@ -858,10 +858,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of It's A Mad World\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/martin_abel_its_a_mad_world.jpg\" align=\"left\" />See how freelance illustrator, <a href=\"http://www.martinabel.com\">Martin Abel</a>, combines romance, sex appeal, and imagination for each of his creations.",
@@ -897,10 +897,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Pink Stripe Sweetsticks.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plumparty-pink-stripe-sweetsticks.jpg\" align=\"left\" height=\"64\" width=\"64\" />Another cool way to decorate the tabletop for your guests who simply need sugar in their tea or coffee @ <a href=\"http://www.plumparty.com/partysupplies/19121.html\">PlumParty.com</a>.",
@@ -936,10 +936,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/twinkies_cookbook.jpg\" alt=\"Preview of Twinkies Cookbook\" class=\"left\" align=\"left\" /><a href=\"http://www.amazon.com/gp/product/1580087566/qid=1142611002/sr=2-1/ref=pd_bbs_b_2_1/104-3472901-3135930?s=books&amp;v=glance&amp;n=283155\">The Twinkies Cookbook</a> is already out and getting rave reviews.&nbsp;",
@@ -976,10 +976,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "You don't have to buy <a href=\"http://www.amazon.com/gp/product/1580087566/qid=1142611002/sr=2-1/ref=pd_bbs_b_2_1/104-3472901-3135930?s=books&amp;v=glance&amp;n=283155\">The Twinkies Recipe Cookbook</a> to begin being creative.&nbsp; Head on over to the <a href=\"http://www.twinkies.com/recipes.asp\">Hostess website</a> for recipes using their products.",
@@ -1014,10 +1014,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/karmaloop-charcoal-eagle-mountain-t-shirt.jpg\" alt=\"Preview of the Obey Eagle Mountain t-shirt.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /> <a href=\"http://www.karmaloop.com/products.asp?ProductID=14002&amp;VendorCode=OBE\"><em>\"Up on Eagle Mountain, everyone obeys the propaganda.\" </em></a>",
@@ -1051,10 +1051,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/funky_food_shop_astro_ice.jpg\" alt=\"Preview of The Funky Food Shop and its Astronaut Foods.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://www.funkyfoodshop.com/\">The Funky Food Shop</a> has some pretty good prices when it comes to astronaut foods like freeze dried ice cream and strawberries.",
@@ -1088,10 +1088,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Wrought Iron Jewelry Holders.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/subastral-jewelry-holders-iron.jpg\" align=\"left\" height=\"128\" width=\"75\" />Useful and decorative wrought iron jewelry displays for your business and your home @ <a href=\"http://www.subastralinc.com/\">Subastral, Inc.</a>",
@@ -1127,10 +1127,10 @@
       "books_articles",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/lost_art_towel_origami.jpg\" alt=\"Preview of Lost Art of Towel Origami\" class=\"left\" align=\"left\" />Learn how to create towel animals with&nbsp; \"<a href=\"http://www.amazon.com/Lost-Art-Towel-Origami/dp/0740755633/ref=pd_sxp_grid_pt_1_1/104-3919605-5181533\">The Lost Art of Towel Origami</a>\".",
@@ -1165,10 +1165,10 @@
     "tags": [
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/schizophrenic-in-japan.jpg\" alt=\"Preview of Schizophrenic in Japan.\" class=\"left\" align=\"left\" />You'll laugh, shed a tear, sneer, and laugh again with <a href=\"http://www.amazon.com/Schizophrenic-Japan-American-Japanese-Politics/dp/0595346626/ref=dp_return_1/104-3919605-5181533?ie=UTF8&amp;n=283155&amp;s=books\"><strong>Schizophrenic in Japan</strong>: An American Ex-Pat's Guide to Japanese and American Society/Politics &amp; Humor</a>.",
@@ -1204,10 +1204,10 @@
       "techie_wonders",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of a fish mouse.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/elecom-m-gfur.jpg\" align=\"left\" />AudioCubes has this <a href=\"http://www.audiocubes.com/product/Elecom_M-GFUR_Fish_Mouse_%28for_kids%29.html\">fish-shaped mouse for PCs and laptops</a>. Will you give it to your kids or keep it for yourself?",
@@ -1242,10 +1242,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/shevongantceramics-mini-jewelry-tray-blue.jpg\" alt=\"Preview of Mini Jewelry Tray in blue.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />A good addition to your night stand @ <a href=\"http://www.shevongantceramics.com/index.php?main_page=product_info&amp;cPath=6&amp;products_id=17&amp;zenid=d17336bbbed52d4e84be7086540e2a43\">Shevon Grant Ceramics</a>.",
@@ -1279,10 +1279,10 @@
     "tags": [
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/taminsea1_apple_of_my_eye.jpg\" alt=\"Preview of apple of my eye.\" class=\"left\" align=\"left\" />Tamela Wolff shares some of <a href=\"http://www.flickr.com/photos/cheftami/238826339/in/set-72157594464632634/\">the beauty in her backyard</a>.",
@@ -1316,10 +1316,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/taminsea1_blue_purple.jpg\" alt=\"Preview of Purple and Blue cupcakes\" class=\"left\" align=\"left\" /><a href=\"http://cupcaketami.blogspot.com/\">A Cupcake Life!</a> has a collection of cupcake recipes and photos that are hard to resist.",
@@ -1353,10 +1353,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Decandent Skull Canvas Sling Bag.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plasticland-decadent-skull-canvas-sling-bag.jpg\" align=\"left\" height=\"64\" width=\"64\" />Right amount of edge and heart in this messenger bag @ <a href=\"http://www.shopplasticland.com/store/merchant.mvc?Screen=PROD&amp;Store_Code=P&amp;Product_Code=P61023403&amp;Category_Code=Gifts\">ShopPLASTICLAND.com</a>.",
@@ -1390,10 +1390,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/too-faced-gloss-hearts-brooch-charms.jpg\" alt=\"Preview of Beauty Brooch.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /><em>\"Just a little bit punky-goth and a whole lotta glam...\"</em> @ <a href=\"http://www.toofaced.com/product.asp?cat_id=105&amp;dept_id=1\">TooFaced.com</a>.",
@@ -1427,10 +1427,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Night Time Blue and Purple Moon Clock Necklace.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/formulaexo-night-time-blue-and-purple-moon-clock-necklace.jpg\" align=\"left\" height=\"64\" width=\"64\" />One of a kind necklace with clock and small pendants @ <a href=\"http://www.formulaexo.com/index.php?main_page=product_info&amp;cPath=67&amp;products_id=1561\">Formulaexo.com</a>.",
@@ -1464,10 +1464,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Oski Coconut Bars.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/oski-coconut-bars.jpg\" align=\"left\" height=\"64\" width=\"64\" />Very little artificial ingredients in this bar @ <a href=\"https://www.oskri.com/catalog.asp?item=951&amp;Type=Box\">Oski.com</a>.",
@@ -1505,10 +1505,10 @@
       "books_articles",
       "techie_wonders"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of lab made diamonds.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cnet-lab-made-diamonds.jpg\" align=\"left\" height=\"64\" width=\"64\" />A photo report on new lab made diamonds to go on sale @ <a href=\"http://news.com.com/2300-11395_3-6159190-12.html?tag=ne.gall.pg\">News.com</a>.",
@@ -1544,10 +1544,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/bombalurina-shop-necklaces.jpg\" alt=\"Preview of Necklaces at Bombalurina's Shop.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Vintage necklace designs @ <a href=\"http://www.etsy.com/shop.php?user_id=89352\">Bombalurina's Shop</a>.",
@@ -1583,10 +1583,10 @@
       "stuff_for_mommies_and_dads",
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "\"<em><a href=\"http://www.flickr.com/photos/cheftami/sets/72157594211107948/\">I Love Baby Ducks!</a></em>\" -&gt; a nice little photostream of.. well you know..",
@@ -1621,10 +1621,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<a href=\"http://www.kidpoop.com/\">KidPoop.com</a> is cataloging everything fun and cool for kids and parents.&nbsp; It really is family friendly.",
@@ -1658,10 +1658,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/karmaloop-its-like-a-jungle-shirt.jpg\" alt=\"Preview of It's Like A Jungle Sometimes Shirt\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />\"It's Like A Jungle Sometimes\" (shirt) @ <a href=\"http://www.karmaloop.com/products.asp?ProductID=14493&amp;VendorCode=SPO\">Karmaloop.com</a>.",
@@ -1695,10 +1695,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cutxpaste_dottyspeck_broken_heart_necklace.jpg\" alt=\"Preview of Broken Heart necklace.\" class=\"left\" align=\"left\" /><a href=\"http://www.cutxpaste.com/catalog/product_info.php?cPath=54&amp;products_id=2934\">Sterling silver necklace</a> for the occasionally broken hearted @ CUT + PASTE.",
@@ -1732,10 +1732,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of cool Guitar Straps.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cutxpaste_guitar_straps.jpg\" align=\"left\" />Accessorize your Fender with <a href=\"http://www.cutxpaste.com/catalog/product_info.php?cPath=3&amp;products_id=3231\">some courduroy and suede.</a>",
@@ -1769,10 +1769,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/amypetersstudio-identity-bracelets.jpg\" alt=\"Preview of Identity Bracelets.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />A great way to tell people what you believe in @ <a href=\"http://www.amypetersstudio.com/index.php?c=showsection&amp;id=122\">Amy Peters' Studio</a>.",
@@ -1806,10 +1806,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of the Shot Sheriff Cuff.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cutxpaste_shot_sheriff_cuff.jpg\" align=\"left\" />CUT+PASTE has the <a href=\"http://www.cutxpaste.com/catalog/product_info.php?cPath=1&amp;products_id=3041\">Shot Sheriff</a> wristcuff and the <a href=\"http://www.cutxpaste.com/catalog/product_info.php?cPath=1&amp;products_id=3042\">Summer wristcuff</a>.",
@@ -1843,10 +1843,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of CUT+PASTE watches.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cutxpaste_watches.jpg\" align=\"left\" />CUT+PASTE has <a href=\"http://www.cutxpaste.com/catalog/index.php?manufacturers_id=469\">watches from the Ladies Auxiliary Club</a>.",
@@ -1880,10 +1880,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/krispy_kreme_free_vals_2007.gif\" alt=\"Preview of Krispy Kreme Valentine's.\" class=\"left\" align=\"left\" />Slashfood previews the <a href=\"http://www.slashfood.com/2007/01/19/krispy-kreme-loves-valentines/\">new Krispy Kreme Valentine's Day deals</a>.",
@@ -1917,10 +1917,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/streamline_heart_clocks.jpg\" alt=\"Preview of Tick Tock Pop Clocks.\" class=\"left\" align=\"left\" /><a href=\"http://www.karmakiss.com/detail.php?product_cat_id=5&amp;product_sub_cat_id=157\">Karma Kiss</a> has all of Tick Tock Pop Clocks for sale.",
@@ -1954,10 +1954,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of cool raingear boots.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/dianeslittlelambs_boots_blue.jpg\" align=\"left\" /><a href=\"http://www.dianeslittlelambs.com/\">Diane's Little Lambs</a> has plenty of raingear to choose from - including coats, boots, and umbrellas.",
@@ -1993,10 +1993,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of the pink sandy spike watch.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/tokidoki_pink_sandy_spike_watch.jpg\" align=\"left\" />Design boutique, tokidoki, has done it again with their <a href=\"http://shop.tokidoki.it/details.asp?Action=update&amp;CtgID=304&amp;ProdID=1230&amp;VariantID=7165&amp;sblid=&amp;FormColor=&amp;COLOR=black&amp;SIZE=&amp;GENDER=3&amp;Qty=&amp;subscriberemail=enter+your+email+address&amp;SizeNone=one_size&amp;QtyNone=1&amp;ColorNone=\">Pink Sandy Spike Watch</a> at the low, low price of $115.",
@@ -2031,10 +2031,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/topps_vertigo_pops.jpg\" alt=\"Preview of Vertigo Pops.\" class=\"left\" align=\"left\" /><a href=\"http://candyaddict.com/blog/2007/01/01/candy-review-vertigo-candy-chocolate-flavored-pops/\">CandyAddict.com</a> raves about the new Vertigo Pops (new chocolate lollipops).&nbsp; <a href=\"http://search.ebay.com/search/search.dll?sofocus=bs&amp;sbrftog=1&amp;catref=C6&amp;from=R10&amp;satitle=vertigo+topps&amp;sacat=-1%26catref%3DC6&amp;sargn=-1%26saslc%3D2&amp;sadis=200&amp;fpos=ZIP%2FPostal&amp;ftrt=1&amp;ftrv=1&amp;saprclo=&amp;saprchi=&amp;fsop=1&amp;fsoo=1\">eBay has a few boxes left</a>.",
@@ -2068,10 +2068,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left no_border\" alt=\"Preview of 3 Musketeers candy bar.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/3_musketeers.gif\" align=\"left\" /><a href=\"http://www.amazon.com/gp/offer-listing/B0007WEP8O/ref=dp_olp_2/104-3919605-5181533\">Amazon.com merchants</a> are selling 3 Musketeers boxes for under $30 after shipping.&nbsp; Each box comes with 36 bars (~$0.75 per bar).",
@@ -2105,10 +2105,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/hershey_kiss_of_the_month_jan2007.jpg\" alt=\"Preview of Hershey's KISS OF THE MONTH.\" class=\"left\" align=\"left\" /><a href=\"http://www.slashfood.com/2006/12/10/kiss-of-the-month-club/\">Slashfood.com reviews</a> Hershey's new month plan for <a href=\"http://www.hersheygifts.com/\">true chocolate lovers</a>.",
@@ -2142,10 +2142,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Weight Watchers by Whitman.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/weight_watchers_whitman.jpg\" align=\"left\" />The new <a href=\"http://www.russellstover.com/jump.jsp?itemType=CATEGORY&amp;itemID=7\">Weight Watchers by Whitman chocolate</a> candies. (Via <a href=\"http://candyaddict.com/blog/2005/11/17/diet-candy-that-tastes-good/\">CandyAddict.com</a>)",
@@ -2181,10 +2181,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-vegan_cupcakes_takeover.jpg\" alt=\"Preview of Vegan Cupcakes Takeover the World.\" class=\"left\" align=\"left\" />Another <a href=\"http://www.amazon.com/Vegan-Cupcakes-Take-Over-World/dp/1569242739?tag2=bakingsheet-20\">cupcake recipe book</a> that is getting rave reviews.&nbsp; This time without using any dairy products.",
@@ -2219,10 +2219,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Shock-A-Lot coffe candy\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/shocks-a-lot-chocolcate.jpg\" align=\"left\" />The <a href=\"http://www.thinkgeek.com/caffeine/candy/7753/\">punks over @ Thinkgeek.com</a> say: \"They taste phenomenal and they do precisely what they are supposed to do - they introduce a caffeinated shock to your system.\"",
@@ -2258,10 +2258,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-sweet_and_natural_baking.jpg\" alt=\"Preview of Sweet and Natural Baking.\" class=\"left\" align=\"left\" />The book title says it all.&nbsp; <a href=\"http://www.amazon.com/exec/obidos/ASIN/0811810496/\">It also is highly rated by readers.</a>",
@@ -2296,10 +2296,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Kaleidoscope Collection Ice Cream Malt Ball.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/dylans-candy-bar-kaleidoscope-collection-ice-cream-malt-ball-mix-tin.jpg\" align=\"left\" height=\"64\" width=\"64\" />Mint Chocolate Chip, Rocky Road, &amp; Neopolitan <a href=\"http://www.dylanscandybar.com/jump.jsp?itemID=1189&amp;itemType=PRODUCT&amp;path=1%2C2%2C222%2C350&amp;iProductID=1189\">flavored malt balls</a> from Dylan's Candy Bar.",
@@ -2337,10 +2337,10 @@
       "stuff_for_mommies_and_dads",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Petit Pan Kite.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/rose-radish-petit-pan-dragonfly-kites.jpg\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://store.roseandradish.com/category-exec/category_id/50/nm/Random\">Petit Pan kites</a> with bamboo frames and beautiful designs.",
@@ -2380,10 +2380,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Translations products.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/translations_japanese_newspaper.jpg\" align=\"left\" />(Via <a href=\"http://www.stylehive.com/bookmark/40970\">StyleHive</a>.) Translations has a couple of products that look like they were recycled from <a href=\"http://www.stylehive.com/bookmark/40970\">Japanese newspapers</a>.",
@@ -2421,10 +2421,10 @@
       "stuff_for_dudes",
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Schtickers.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/schtickers_favorite.jpg\" align=\"left\" />(Via <a href=\"http://www.stylehive.com/bookmark/41090\">StyleHive</a>.) Schtickers growing inventory also includes designs you can customize on <a href=\"http://www.schtickers.com/\">their website</a>.",
@@ -2459,10 +2459,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/lindsay_key_fobs.jpg\" alt=\"Preview of Key Fobs by Lidsay Designs.\" class=\"left\" align=\"left\" /><a href=\"http://www.lindsaydesigns.com/category.php?category_id=50\">Cute, bright, and bold</a> designs for your keys.",
@@ -2496,10 +2496,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirlshop-rhino-blaster-bag.jpg\" alt=\"Preview of Rhino Blaster Messenger Bag.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />A new <a href=\"http://shanalogic.com/item.php?item_id=1064&amp;manufacturer_id=156\">messenger bag for purchase</a> designed by the Resist Today art collective.",
@@ -2533,10 +2533,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirlshop_emotibuds.jpg\" alt=\"Preview of Emotibuds.\" class=\"left\" align=\"left\" /><a href=\"http://shanalogic.com/item.php?item_id=974&amp;category_id=52\">Get them</a> before the Boing Boing crowd buy them all.",
@@ -2570,10 +2570,10 @@
     "tags": [
       "techie_wonders"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/acp-ep_surfdrive.jpg\" alt=\"Preview of the SurfDrive by ACP-EP.\" class=\"left\" align=\"left\" />A <a href=\"http://www.walmart.com/catalog/product.do?product_id=4664269\">USB drive shaped like a little surf board</a> with Hawaiian inspired designs. ($20-$25 for 1GB).",
@@ -2607,10 +2607,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/edible_arrangements.jpg\" alt=\"Preview of Edible Arrangements (r).\" class=\"left\" align=\"left\" /><a href=\"http://www.ediblearrangements.com/\">Edible Arrangements</a>\u00c2\u00ae has a wide selection of fruit bouquets and chocolate covered delights.",
@@ -2646,10 +2646,10 @@
       "edible_delicious",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-chocolatechocolate.jpg\" alt=\"Preview of ChocolateChocolate.\" class=\"left\" align=\"left\" />Recommend by Amazon.com and ThisNext.com readers, <a href=\"http://www.amazon.com/ChocolateChocolate-Lisa-Yockelson/dp/0471428078/\">this book is filled with easy chocolate recipes.</a>",
@@ -2684,10 +2684,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/panicdoll_skull_necklace.jpg\" alt=\"Preview of Panicdoll Skull Necklace.\" class=\"left\" align=\"left\" />A nice skull necklace found over @ <a href=\"http://www.panicdoll.com/zencart/index.php?main_page=index&amp;cPath=3_13\">PanicDoll.com</a>.",
@@ -2723,10 +2723,10 @@
       "stuff_for_dudes",
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sumajin_smartwrap.jpg\" alt=\"Preview of Sumajin Headphone Cords.\" class=\"left\" align=\"left\" />Available at <a href=\"http://www.amazon.com/Sumajin-5611-bgosdrb-SUMAJIN-Smartwrap/dp/B0009NV9AI/sr=8-3/qid=1170040201/ref=pd_bbs_sr_3/104-3919605-5181533?ie=UTF8&amp;s=electronics\">Amazon.com</a> or <a href=\"http://www.jr.com/JRSectionView.process?InSearch=t&amp;N=0&amp;Ntt=smartwrap&amp;Ntk=All_Record_Search&amp;lastSearch=tetran%2Bcable%2Bwinder&amp;search.x=0&amp;search.y=0&amp;search=GO\">JR.com</a>.",
@@ -2763,10 +2763,10 @@
       "stuff_for_dudes",
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/tetran_cable_winder_1.jpg\" alt=\"Preview of Tetran Cable Winder.\" class=\"left\" align=\"left\" /><a href=\"http://www.amazon.com/s/ref=nb_ss_gw/104-3919605-5181533?url=search-alias%3Daps&amp;field-keywords=tetran+cable+winder&amp;Go.x=0&amp;Go.y=0&amp;Go=Go\">Cute and fun way</a> to keep your headphone cables packed without tangles.",
@@ -2803,10 +2803,10 @@
       "techie_wonders",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Light Pick (tm) Light Show.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sclw_lightpick_green.jpg\" align=\"left\" />Developed by a musician, the <a href=\"http://www.lightpicks.net/\">Light Pick\u00e2\u201e\u00a2</a> series gives you LED lights, better sound, and a better feel when playing a guitar.",
@@ -2843,10 +2843,10 @@
       "stuff_for_mommies_and_dads",
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of the Cupcake Courier.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cupcakecourier.jpg\" align=\"left\" />Invented by a real mom:&nbsp; <a href=\"http://www.cupcakecourier.com/\">The Cupcake Courier</a>",
@@ -2881,10 +2881,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Found this over @ Flickr. The Pinky:St (Pinky Street) plastic figure collection come alive.&nbsp; The scenes are just plain adorable.&nbsp; <a href=\"http://www.flickr.com/photos/zannah/sets/216195/\">See the photoset @ Flickr</a>.",
@@ -2918,10 +2918,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/two_hands_workshop-snuggle_bunny.jpg\" alt=\"Preview of Snuggle Bunnies.\" class=\"left\" align=\"left\" />Great price and five different colors to choose from.&nbsp; <a href=\"http://www.twohandsworldshop.com/snuggle-bunny-p-205.html\">Give one</a> to your child or your sweetheart.",
@@ -2957,10 +2957,10 @@
       "stuff_for_pets",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<a href=\"http://www.trixieandpeanut.com/\">Trixie + Peanut,</a> a designer pet products company, is featured on <a href=\"http://www.apple.com/business/profiles/trixie/\">Apple's Small Business Profiles</a>.&nbsp;",
@@ -2995,10 +2995,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Stay tune for more info. on <a href=\"http://www.modernpooch.com/\">Modern Pooch</a>, <a href=\"http://www.sportyk9.com/\">Sporty K9</a>, <a href=\"http://couturepup.blogsome.com/\">Couture Pup</a>,  and <a href=\"http://chorizodog.blogspot.com/\">Chorizo: A Dog with a Blog</a>.",
@@ -3034,10 +3034,10 @@
       "stuff_for_dudettes",
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/modern_tails-puppy_love_carrier.jpg\" alt=\"Preview of The Puppy Love Carrier.\" class=\"left\" align=\"left\" />A puppy carrier with a cool logo design @ <a href=\"http://www.moderntails.com/product.php?productid=18476&amp;cat=0&amp;page=1\">Modern Tails</a>.",
@@ -3072,10 +3072,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cyberoptix-exlibris.jpg\" alt=\"Preview of ExLibris tie from CYBEROPTIX.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />A new take on an old design @ <a href=\"http://cyberoptix.com/exlibris.php\">CYBEROPTIX</a>.",
@@ -3109,10 +3109,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/trixie-peanut-being-stubborn-charm.jpg\" alt=\"Preview of Stubborn Dog Collar Charm.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />\"I believe in being Stubborn\" @ <a href=\"http://www.trixieandpeanut.com/access/m10660.html\">trixie+peanut</a>.",
@@ -3146,10 +3146,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sock-dreams-dsks.jpg\" alt=\"Preview of Sock Dream Double Striped Knee Socks.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Available in 3 different color schemes @ <a href=\"http://www.sock-dreams.com/_shop/pages/socks_latest.php\">Sock-Dreams.com</a>.",
@@ -3183,10 +3183,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Flight of Fancy Truckie Cap.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plasticland-flight-of-fancy-truckie-cap.jpg\" align=\"left\" height=\"64\" width=\"64\" />Watercolor \"Flight of Fancy\" illustration on this cap @ <a href=\"http://www.shopplasticland.com/fashion/p/P60403106.html\">The Plastic Land Shop</a>.",
@@ -3220,10 +3220,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/moderntails-hibiscus-hawaiian-shirt.jpg\" alt=\"Preview of Moderntails Hibiscus Hawaiian Shirt.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Awwww....&nbsp; Hawaiian shirts for your dogs @ <a href=\"http://www.moderntails.com/product.php?productid=20240&amp;cat=349&amp;page=6\">ModernTails.com</a>.",
@@ -3257,10 +3257,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/surfride-mauna-kai-hawaii-large-surfboard-key-chain.jpg\" alt=\"Preview Surfboard Keychain from SurfRide.com\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Large surfboard keychain @ <a href=\"http://www.surfride.com/product_info.php?cPath=1_44_48&amp;products_id=17181\">SurfRide.com</a>",
@@ -3294,10 +3294,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Tri-color Shaista Bracelet.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/two_hands_workshop-tri-color-shaista-bracelet.jpg\" align=\"left\" height=\"64\" width=\"64\" />Available in 2 different color schemes, direct from India @ <a href=\"http://twohandsworldshop.com/tricolor-bracelet-p-48.html?osCsid=3d481c68c37d6dee192d88aa9f843e75\">Two Hands Worldshop</a>.",
@@ -3331,10 +3331,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/shanalogic_nervous_robot_plushies.jpg\" alt=\"Nervous Little Robot by Dog Bone Art.\" align=\"left\" height=\"64\" width=\"64\" />Robot design plushies at <a href=\"http://shanalogic.com/item.php?item_id=1257\">ShanaLogic.com</a>.</img>",
@@ -3362,10 +3362,10 @@
     "_id": {
       "$oid": "4bbce6566191537a71000095"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3391,10 +3391,10 @@
     "_id": {
       "$oid": "4bbce6566191537a71000096"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3422,10 +3422,10 @@
     "_id": {
       "$oid": "4bbce6566191537a71000098"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3451,10 +3451,10 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009a"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3480,10 +3480,10 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009b"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3509,10 +3509,10 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009d"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3538,10 +3538,10 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009e"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3567,10 +3567,10 @@
     "_id": {
       "$oid": "4bbce6566191537a7100009f"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3596,10 +3596,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a1"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3625,10 +3625,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a2"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3654,10 +3654,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a3"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3683,10 +3683,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a4"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3712,10 +3712,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a6"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3741,10 +3741,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a7"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3770,10 +3770,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000a9"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3799,10 +3799,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000aa"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3828,10 +3828,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000ab"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3857,10 +3857,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000ac"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3886,10 +3886,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000ad"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3915,10 +3915,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000ae"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3944,10 +3944,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000af"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -3973,10 +3973,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000b0"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -4002,10 +4002,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000b1"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -4031,10 +4031,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000b3"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -4060,10 +4060,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000b4"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -4089,10 +4089,10 @@
     "_id": {
       "$oid": "4bbce6566191537a710000b5"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "lang": "en-us",
@@ -4126,10 +4126,10 @@
       "stuff_for_mommies_and_dads",
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of June 29, 1999.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-june_29_1999.jpg\" align=\"left\" />This is an old favorite.&nbsp; <a href=\"http://www.amazon.com/June-29-1999-David-Wiesner/dp/0395727677/\">Great book</a> for the young reader or if you just like cool pictures.",
@@ -4166,10 +4166,10 @@
       "stuff_for_mommies_and_dads",
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/wil_son-hearts_xs_os_baking.jpg\" alt=\"Preview of cake baking mold.\" class=\"left\" align=\"left\" />For St. Valentine's Day: <a href=\"http://www.williams-sonoma.com/products/sku8512402/index.cfm\">Hearts, X's &amp; O's Silicone Cake Mold</a>",
@@ -4206,10 +4206,10 @@
       "stuff_for_dudettes",
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Stay tune for info. on a funny Disney concert review, apple and pear necklaces, astronaut ice cream, and other stuff like that!",
@@ -4244,10 +4244,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirl-shop-sweethart-choker-marty-flint.jpg\" alt=\"Preview of Sweetheart Choker by Marty Flint.\" class=\"left\" align=\"left\" />Stay tuned for more info. on this limited edition <a href=\"http://shanalogic.com/item.php?item_id=942&amp;manufacturer_id=100\">handmade choker</a>.",
@@ -4281,10 +4281,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirlshop-dble-rhinestone-choker.jpg\" alt=\"Preview of the Double Rhinestone Padlock Choker.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Another limited edition choker @ <a href=\"http://shanalogic.com/item.php?item_id=1058&amp;manufacturer_id=100\">Shana Logic</a>. Handmade by its designer, Marty Flint.",
@@ -4318,10 +4318,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Ahoy Mateys Necklace.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/formulaexo-ahoy-mateys-necklaces.jpg\" align=\"left\" />The Ahoy Mateys necklace @ <a href=\"http://www.formulaexo.com/index.php?main_page=product_info&amp;cPath=67&amp;products_id=1119\">FormulaExo.com</a>.",
@@ -4355,10 +4355,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/proflowers-pink-bonsai.jpg\" alt=\"Preview of St. Valentine's Day Azalea Bonsai.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />The Azalea Bonsai is still available @ <a href=\"http://products.proflowers.com/bonsai/valentinesdayazaleabonsai-2575?catID=ProductSearch\">ProFlowers.com</a> in case you forgot St. Valentine's Day ;-)",
@@ -4394,10 +4394,10 @@
       "stuff_for_dudes",
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plumparty-surferboard-keychains.jpg\" alt=\"Preview of Surfboard Key Rings.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Party planning website, <a href=\"http://www.plumparty.com/partysupplies/20008.html\">PlumParty.com</a>, has 12 of these colorful surfboard key rings all for $18.",
@@ -4434,10 +4434,10 @@
       "stuff_for_dudettes",
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/modern-nursery-coink.jpg\" alt=\"Preview of Coink Piggy Bank\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />A modern take on the classic piggy bank @ <a href=\"http://www.modernnursery.com/itemsDetail.cfm/CoinkPiggyBank/0/item_num/MNT-CK/pcid/13/cid/41\">Modern Nursery</a>.",
@@ -4472,10 +4472,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/elsewares-stroke-socks.jpg\" alt=\"Preview of Stroke Socks.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://www.elsewares.com/commerce/Stroke-Socks_MPD71.html\">Elsewares.com</a> has 8 different color designs for these stroke socks.",
@@ -4511,10 +4511,10 @@
       "stuff_for_dudettes",
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/modern-nursery-moncalin-melon-pig.jpg\" alt=\"Preview of Moncalin Melon Pig.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />An ultra-soft little pig ready to give to your kids @ <a href=\"http://www.modernnursery.com/itemsDetail.cfm/MoncalinMelonPig/0/item_num/MN-PP/pcid/13/cid/41\">The Modern Nursery</a>.",
@@ -4549,10 +4549,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Sparkly Metallic Cord.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/paper-source-sparkly-metallic-cord.jpg\" align=\"left\" height=\"64\" width=\"64\" />21 yards of sparkly string/cord for your projects @ <a href=\"http://paper-source.com/cgi-bin/paper/giftwrap/sparkly_metallic_cord.html\">paper-source.com</a>.",
@@ -4588,10 +4588,10 @@
       "stuff_for_mommies_and_dads",
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Robot Gift Wrap.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/paper-source-robot-gift-wrap.jpg\" align=\"left\" height=\"64\" width=\"64\" />Robot gift wrap available <a href=\"http://paper-source.com/cgi-bin/paper/464736.html?cm_id=3650.080\">as a roll</a> or <a href=\"http://paper-source.com/cgi-bin/paper/44352550.html?cm_id=3650.070\">as sheet wrap</a>.",
@@ -4626,10 +4626,10 @@
     "tags": [
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Handmade Faerie Wings.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/willowtechhouse-faerie-wings.jpg\" align=\"left\" height=\"64\" width=\"64\" />At $95 to $250 and handmade, these could become a collector's item in a short time.&nbsp; Available only by special order @ <a href=\"http://www.willowtechhouse.com/wings.html\">WillowTechHouse.com</a>.",
@@ -4663,10 +4663,10 @@
     "tags": [
       "techie_wonders"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/fascinations-floating-globe.jpg\" alt=\"Preview of Levitating Globe.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Levitating globes that actually work!!! @ <a href=\"http://www.fatbraintoys.com/toy_companies/fascinations/blue_globe_with_silver_base.cfm\">Fat Brain Toys</a> and <a href=\"http://www.amazon.com/Fascinations-Titan-8-Inch-Levitating-Metalic/dp/B00092ZXMY/sr=8-3/qid=1171811622/ref=pd_bbs_sr_3/104-3919605-5181533?ie=UTF8&amp;s=toys-and-games\">Amazon.com</a>.&nbsp; Cool stuff to keep adults amazed.&nbsp; These are just too cool to share with your kids!",
@@ -4700,10 +4700,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Crystal Heart Necklace.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/delias-crystal-heart-necklace-purplish.jpg\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://store.delias.com/item.do?categoryID=419&amp;itemID=47035\">dELiAs.com</a> has this metallic heart necklace with crystals.",
@@ -4739,10 +4739,10 @@
       "techie_wonders",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/allsop-firefly-2.jpg\" alt=\"Preview of Allsop Firefly Solar Garden Art\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://www.allsopgarden.com/garden/firefly/model-29028/firefly-solar-garden-art/\">Allsop Firefly lights</a> are getting pretty good reviews for lighting up your garden using solar energy.&nbsp; Just don't expect really bright lights.",
@@ -4777,10 +4777,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/ivy-lambs-hampers.jpg\" alt=\"Preview of Lambs and Ivy Hampers.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Not only are they <a href=\"http://www.amazon.com/s/ref=sr_nr_p_4_2/104-3919605-5181533?ie=UTF8&amp;keywords=hamper&amp;rh=n%3A165796011%2Ck%3Ahamper%2Cp%5F4%3ALambs%20%26%20Ivy&amp;page=1\">precious and adorable</a>, but they are easy to empty.",
@@ -4814,10 +4814,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plumparty-sweetbox-sugar-packs.jpg\" alt=\"Preview of 100% Sweet Box of Sugar Packs.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Pure cane sugar in <a href=\"http://www.plumparty.com/partysupplies/19608.html\">color packets with sweet sayings</a>.&nbsp; What more could you ask for out of life?",
@@ -4848,13 +4848,13 @@
     "_id": {
       "$oid": "4bbce6566191537a71000060"
     },
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
     "tags": [
       "edible_delicious"
     ],
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plumparty-sweetbox-sugar-packs.jpg\" alt=\"Preview of 100% Sweet Box of Sugar Packs.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Pure cane sugar in <a href=\"http://www.plumparty.com/partysupplies/19608.html\">color packets with sweet sayings</a>.&nbsp; What more could you ask for out of life?",
@@ -4884,10 +4884,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of The NPC Platinum High.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/karmaloop-npc-platinum-high.jpg\" align=\"left\" height=\"64\" width=\"64\" />A pair of sneakers with an allover graffiti print and suede + canvas uppers @ <a href=\"http://www.karmaloop.com/products.asp?ProductID=10995&amp;VendorCode=REE\">KarmaLoop.com</a>.",
@@ -4921,10 +4921,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/plumparty-pink-stripe-matches.jpg\" alt=\"Preview of Pink Stripe matches.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Stylish matches for your tabletop @ <a href=\"http://www.plumparty.com/partysupplies/19116.html\">PlumParty.com</a>.",
@@ -4958,10 +4958,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/everlastingglassart-sweet-heart-pendants.jpg\" alt=\"Preview of Ribbon Sweetheart Pendents.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Pink and red available for these detailed handcrafted pieces @ <a href=\"http://www.everlastingglassart.com/gallery/Pendants/4036\">everlastingglassart.com</a>.",
@@ -4995,10 +4995,10 @@
     "tags": [
       "edible_delicious"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/the-republic-of-tea-rose-petal-tea.jpg\" alt=\"Preview of Rose Petal Tea.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />This limited edition tea is still available @ <a href=\"http://www.republicoftea.com/templates/detail.asp?navID=53\">The Republic of Tea</a>.",
@@ -5032,10 +5032,10 @@
     "tags": [
 
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "Theme for this blog is changing... for the better.",
@@ -5069,10 +5069,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/cutxpaste-st-christopher-necklace.jpg\" alt=\"Preview of St. Christopher Necklace.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Designed and handmade by Mollie Dash.&nbsp; Available @ <a href=\"http://www.cutxpaste.com/catalog/product_info.php?cPath=28&amp;products_id=3101\">CUTxPASTE.com</a>.",
@@ -5106,10 +5106,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/tokidoki-logo-necklaces.jpg\" alt=\"Preview of tokidoki logo necklace.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Available in pink and black @ <a href=\"http://shop.tokidoki.it/details.asp?prodID=1291&amp;CtgID=311&amp;sblid=1291\">Shop Tokidoki</a> and <a href=\"http://www.azaleaonline.com/toje.html?page=0\">Azalea Online</a>.",
@@ -5145,10 +5145,10 @@
       "stuff_for_dudettes",
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/luxury-lab-linens-bed-coverings.jpg\" alt=\"Preview of Luxury Lab Linens.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Add some wickedly cool or heavenly cute designs to your beds @ <a href=\"http://www.luxurylablinens.com/\">Luxury Lab Linens</a>.",
@@ -5183,10 +5183,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Protozoan Necklaces.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/starving-artist-bazaar-glass-pendants.jpg\" align=\"left\" height=\"64\" width=\"64\" />Beautiful glass pendants @ <a href=\"http://www.starvingartistbazaar.com/\">Starving Artist Bazaar</a>.",
@@ -5220,10 +5220,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/aplanet4creation-dragon-pendant.jpg\" alt=\"Preview of Dragon Pendant and Necklace.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Yay for dragons! @ <a href=\"http://www.aplanet4creation.com/new-dragon-p-201.html\">A Planet 4 Creation</a>.",
@@ -5257,10 +5257,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/resist-today-king-rhino-t-shirt.jpg\" alt=\"Preview of King Rhino t-shirt.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />\"Remember the glorious days when great kings ruled the earth?\" @ <a href=\"http://www.resisttoday.com/viewclothing.php?item=167&amp;type=mens\">ResistToday.com</a>.",
@@ -5294,10 +5294,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/lucky-accessories-little-reminders-necklace.jpg\" alt=\"Preview of Little Reminders by Luck Accessories.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Pendant necklaces to help you remember @ <a href=\"http://www.luckyaccessories.com/\">Lucky Accessories</a>.",
@@ -5331,10 +5331,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/hanger3-token-necklaces.jpg\" alt=\"Preview of Token Necklaces from Hanger 3.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Subway tokens turned into fun &amp; chic apparel @ <a href=\"http://hanger3.com/shop/\">Hanger 3</a>.",
@@ -5368,10 +5368,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sweet-thunder-grid-necklace.jpg\" alt=\"Preview of Grid Necklace from Sweet Thunder.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Iridescent necklace @ <a href=\"http://www.sweetthunder.com/necklaces/507a.html\">Sweet Thunder</a>.",
@@ -5405,10 +5405,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/justkatiedesigns-paisley-necklace.jpg\" alt=\"Preview of Paisley Necklace.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Necklace reminiscent of the paisley pattern @ <a href=\"http://justkatiedesigns.com/item.php?item_id=300&amp;category_id=49\">Just Katie Designs</a>.",
@@ -5442,10 +5442,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sweet-thunder-seven-swords-necklace.jpg\" alt=\"Preview of Seven Swords Necklace by Just Katie Designs.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Another stunning necklace over @ <a href=\"http://www.sweetthunder.com/necklaces/664b.html\">Sweet Thunder</a>.",
@@ -5479,10 +5479,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/beloved-by-sophie-love-bracelet-blue.jpg\" alt=\"Preview of Love Bracelet (Blue) by Beloved by Sophie.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Blue and brass bracelet @ <a href=\"http://www.belovedbysophie.ecrater.com/product.php?pid=545096\">Beloved by Sophie</a>.",
@@ -5516,10 +5516,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sailor-jerry-belt-buckles.jpg\" alt=\"Preview of Belt Buckles at Sailor Jerry.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />You'll be sure to find something fun and adventurous over @ <a href=\"http://www.sailorjerry.com/storeall.php?page=accessories\">Sailor Jerry's online shop</a>.",
@@ -5553,10 +5553,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of MyMomShops.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/my-mom-shops-site-intro.jpg\" align=\"left\" height=\"64\" width=\"64\" />Cool online baby gift finds from a proud shopper and mom @ <a href=\"http://mymomshops.blogspot.com\">mymomshops.blogspot.com</a>.",
@@ -5590,10 +5590,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sock-dreams-pom-pom-cuffed-baby-booties.jpg\" alt=\"Preview of Sock Dreams' Pom Pom Cuffed Baby Booties.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Socks for people of all ages, including your baby cousins and nieces @ <a href=\"http://www.sock-dreams.com/\">Sock-Dreams.com</a>.",
@@ -5627,10 +5627,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sweet-tooth-designs.jpg\" alt=\"Preview of The Smiley Collection of emoticon jewelry from Sweet Tooth Designs.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Emoticons and more emoticons for your outfits @ <a href=\"http://www.sweettoothdesigns.com/\">Sweet Tooth Designs</a>.",
@@ -5666,10 +5666,10 @@
       "stuff_for_dudettes",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/shuushuu-buttons.jpg\" alt=\"Preview of shuushuu buttons.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Great button selection @ <a href=\"http://shuushuubuttons.com/buttons2.html\">shuushuu.com</a>.",
@@ -5706,10 +5706,10 @@
       "stuff_for_dudes",
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/kidpirate-zombie-boy-messenger-bag.jpg\" alt=\"Preview of Zombie Boy Messenger Bag.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Zombie Boy, attention hog, gets his own messenger bag @ <a href=\"http://www.kidpirate.com/shop/product/zbmess\">KidPirate.com</a>.",
@@ -5744,10 +5744,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/opulent-oddities-necklaces.jpg\" alt=\"Preview of Opulent Oddities.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Old world style necklaces, bracelets and earrings @ <a href=\"http://www.etsy.com/shop.php?user_id=91456\">Opulent Oddities</a>.",
@@ -5781,10 +5781,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirlshop-skull-resist-wallet.jpg\" alt=\"Preview of Flying Skull Wallet by Resist Today.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Back in stock @ <a href=\"http://shanalogic.com/item.php?item_id=986\">Shana Logic</a> and <a href=\"http://www.resisttoday.com/viewbags.php?item=207&amp;type=wallets\">Resist Today</a>.",
@@ -5818,10 +5818,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/squidlicks-celestial-toxicity-collage-necklace.jpg\" alt=\"Preview of Celestial Toxicity Collage Necklace.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Lovely set of new pieces + vintage in this necklace @ <a href=\"http://www.etsy.com/view_listing.php?listing_id=5401945\">Squidlicks' Shop</a>.",
@@ -5855,10 +5855,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of Sea Horse Charm at Femme Metale.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/femme-metale-charms.jpg\" align=\"left\" height=\"64\" width=\"64\" />Beautiful selection of charms @ world famous <a href=\"http://femmemetale.net/displayroom/category.nhtml?catuid=10234\">Femme Metale</a>.",
@@ -5892,10 +5892,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/doggles-k9-optix.jpg\" alt=\"Preview of K9 Optix Sunglasses by Doggles.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Keep your precious doggie's eyes safe and in style with the help of <a href=\"http://doggles.com/k9optix.html\">Doggles</a>.",
@@ -5929,10 +5929,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/baby-loopies-lil-jock.jpg\" alt=\"Preview of Baby Loopies.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Socks for your littles ones designed by <a href=\"http://www.amazon.com/s?ie=UTF8&amp;rh=n%3A239226011%2Cp_4%3ABaby%20Loopies&amp;page=1\">Baby Loopies</a>.",
@@ -5966,10 +5966,10 @@
     "tags": [
       "stuff_for_dudettes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/athenas-grove-suncatcher-framed-raven.jpg\" alt=\"Preview of Suncatcher Pendant.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Find some magic @ <a href=\"http://athenasgrove.com/store/product_info.php?products_id=460&amp;osCsid=ab94bcd49b2d7e9858eeb6e2d76fb5bc\">Athena's Grove</a>.",
@@ -6003,10 +6003,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/pixelgirlshop-ukiyo5-skull-ties.jpg\" alt=\"Preview of Unkiyo5 Skull Ties.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Skull with hearts on their minds @ <a href=\"http://shanalogic.com/wordpress/?p=223\">Shana Logic</a>.",
@@ -6040,10 +6040,10 @@
     "tags": [
       "stuff_for_pets"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/rex-in-the-city-rivington-metallic-leather-collars.jpg\" alt=\"Preview of Rivington Metallic Leather Collars.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Six colors to choose from for your loving pet @ <a href=\"http://www.rexinthecity.com/CommerceConnect/Product/ProductDetailPage.aspx?root_cat_id=10&amp;cat_id=47&amp;sub_cat_id=48&amp;prod_id=38\">Rex in the City</a>.",
@@ -6077,10 +6077,10 @@
     "tags": [
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/uncommon-goods-garden-turtle-sculpture.jpg\" alt=\"Preview of Garden Sculptures from Uncommon Goods.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" /><a href=\"http://www.uncommongoods.com/item/item.jsp?source=family&amp;itemId=14243\">Ladybugs</a> and <a href=\"http://www.uncommongoods.com/item/item.jsp?source=family&amp;itemId=14244\">turtles</a> for your garden! @ Uncommon goods.",
@@ -6114,10 +6114,10 @@
     "tags": [
       "stuff_for_mommies_and_dads"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/sherri-blum-designs-boys-wall-art.jpg\" alt=\"Preview of Boys Room Nursery Art by Sherri Blum Designs.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Help give your little ones sweet dreams with these decorative wall hangings @ <a href=\"http://www.sherriblumdesigns.com/boys-wall-art.htm\">Sherri Blum Designs</a>.",
@@ -6155,10 +6155,10 @@
       "miscellaneous",
       "art_design"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of CoolRockets.com\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/coolrockets-rocketships.jpg\" align=\"left\" height=\"64\" width=\"64\" />Fun retro rockets for your desk and living room @ <a href=\"http://www.coolrockets.com/\">CoolRockets.com.</a>",
@@ -6194,10 +6194,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "More info. on what's coming... and fun facts about shampoo!",
@@ -6231,10 +6231,10 @@
     "tags": [
       "books_articles"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img class=\"left\" alt=\"Preview of stress and heart attack article.\" src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/article-dying-broken-heart.jpg\" align=\"left\" height=\"64\" width=\"64\" />The Telegraph reports on new findings of how <a href=\"http://www.telegraph.co.uk/news/main.jhtml?xml=/news/2007/04/10/nheart10.xml\">emotion can affect the physical body</a>.</img>",
@@ -6270,10 +6270,10 @@
       "stuff_for_mommies_and_dads",
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/book-4hourworkweek-lifestyle-outsourcing.jpg\" alt=\"Preview of The 4 Hour Workweek.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Can outsourcing really improve your marriage? Esquire editor A.J. Jacobs tells you how in this excerpt from <a href=\"http://www.4hourworkweek.com/ferriss-book-outsourcing.htm\">The 4 Hour Workweek</a>.",
@@ -6308,10 +6308,10 @@
     "tags": [
       "miscellaneous"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/elsewares-resource-revival-bottle-opener.jpg\" alt=\"Preview of Bike Chain Bottle Opener.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Bottle opener with a flexible, recycled bike chain handle @ <a href=\"http://www.elsewares.com/commerce/RESOURCE-REVIVAL_MCA135_360.html\">Elsewares</a>.",
@@ -6345,10 +6345,10 @@
     "tags": [
       "stuff_for_dudes"
     ],
-    "owner_id": {
+    "old_owner_id": {
       "$oid": "4bbce6566191537a71000092"
     },
-    "username_id": {
+    "owner_id": {
       "$oid": "4bbce6566191537a71000002"
     },
     "teaser": "<img src=\"http://surferhearts.s3.amazonaws.com/heart_links/previews/insanely_great_tees.jpg\" alt=\"Insanely Great Tees.\" class=\"left\" align=\"left\" height=\"64\" width=\"64\" />Simple. Beautiful. Elegant.&nbsp; Just like the Mac!&nbsp; Go and check out some <a href=\"http://www.insanelygreattees.com/\">Insanely Great Tees</a>.</img>",

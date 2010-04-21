@@ -120,6 +120,16 @@ class Member
     end
   end
 
+  def self.by_username_id raw_id
+    id = Couch_Plastic.mongofy_id(raw_id)
+    doc = db_collection_usernames.find_one(:_id=>id)
+    if doc
+      Member.by_id(doc['owner_id'])
+    else
+      raise Couch_Plastic::Not_Found, "Member Username id: #{raw_id.inspect}"
+    end
+  end
+
   def self.failed_attempts_for_today mem, &blok
     require 'time'
     db_collection_failed_attempts.find( 
@@ -194,6 +204,26 @@ class Member
 
     raise Wrong_Password, "Password is invalid for: #{username.inspect}"
   end 
+
+  def self.add_owner_usernames_to_collection raw_coll
+    
+    coll = raw_coll.is_a?(Array) ? raw_coll : raw_coll.to_a
+
+    un_ids = coll.map { |c| c['owner_id'] }.uniq.compact
+    usernames = db_collection_usernames.find(:_id=>{ :$in => un_ids }).inject({}) { |m, doc|
+      m[doc['_id']] = doc
+      m
+    }
+    coll.map { |c|
+      target = usernames[c['owner_id']]
+      if target
+        c['owner_username'] = target['username']
+      else
+        c['owner_username'] = nil
+      end
+      c
+    }
+  end
 
   # ==== Authorizations ====
 
