@@ -10,6 +10,12 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_match(/#{club.data.title}/, last_response.body)
   end
 
+  must 'render /sports/' do
+    get "/sports/"
+    follow_redirect!
+    assert_equal 200, last_response.status
+  end
+
   must 'present a create message form for logged-in members' do
     club = create_club
     

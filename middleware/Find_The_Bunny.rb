@@ -17,6 +17,7 @@ class Find_The_Bunny
     meno_osteo
     news
     preggers
+    sports
   }
   def initialize new_app
     ids = '[a-zA-Z\-\d]+'

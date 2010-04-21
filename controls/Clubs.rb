@@ -44,20 +44,7 @@ class Clubs
   
   def GET_by_old_id id
     env['results.club'] = id
-    return render_html_template("Topic_#{id}")
-    # template = begin
-    #   File.read("templates/#{lang}/mustache/Topic_#{id}.html")
-    # rescue Errno::ENOENT => e
-    #   require "middleware/Mab_In_Disguise"
-    #   Mab_In_Disguise.compile "templates/#{lang}/mab/Topic_#{id}.rb"
-    # end
-
-    # mustache_class = Class.new(Base_View) do
-    #   def title
-    #   end
-    # end
-    # mustache_class.raise_on_context_miss = true
-    # mustache_class.new(self).render(template)
+    render_html_template("Topic_#{id}")
   end
 
   def POST
