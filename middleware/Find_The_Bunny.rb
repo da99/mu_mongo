@@ -14,6 +14,7 @@ class Find_The_Bunny
     heart
     hiv
     housing
+    music
     meno_osteo
     news
     preggers

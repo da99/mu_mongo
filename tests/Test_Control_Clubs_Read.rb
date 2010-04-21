@@ -16,6 +16,12 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must 'render /music/' do
+    get "/music/"
+    follow_redirect!
+    assert_equal 200, last_response.status
+  end
+
   must 'present a create message form for logged-in members' do
     club = create_club
     
