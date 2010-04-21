@@ -13,6 +13,7 @@ div.messages.messages! do
 				mustache 'owner_username' do
 					span 'by:'
 					a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
+					br
 				end
 				a('Permalink', :href=>"{{href}}")
       }
