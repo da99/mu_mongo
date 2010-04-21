@@ -37,4 +37,10 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     assert last_response.body[mess_2.data.body]
   end
 
+  must 'show profile: /life/{username}/' do
+    un = regular_member_3.usernames.first
+    get "/life/#{un}/"
+    assert_equal 200, last_response.status
+  end
+
 end # === class Test_Control_Members_Read

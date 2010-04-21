@@ -45,6 +45,12 @@ class Members
     require_log_in!
     render_html_template
   end
+
+  def GET_life un
+    env['results.username'] = un
+    env['results.member'] = Member.by_username(un)
+    render_html_template
+  end
         
   def PUT 
     begin
