@@ -107,7 +107,14 @@ class Message
     if include_mods.empty?
       cursor
     else
-      Member.add_owner_usernames_to_collection(cursor)
+      docs = cursor
+      if include_mods.include?(Member)
+        docs = Member.add_owner_usernames_to_collection(docs)
+      end
+      if include_mods.include?(Club)
+        docs = Club.add_clubs_to_collection(docs)
+      end
+      docs
     end
 	end
 

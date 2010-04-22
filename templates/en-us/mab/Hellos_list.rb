@@ -15,6 +15,10 @@ div.messages.messages! do
 					a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
 					br
 				end
+				mustache 'club_title' do
+					span 'in:'
+					a('{{club_title}}', :href=>"/clubs/{{club_filename}}/")
+				end
 				a('Permalink', :href=>"{{href}}")
       }
     end

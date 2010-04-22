@@ -108,6 +108,24 @@ class Club
     db_collection.find().map {|r| r['filename']}
   end
 
+  def self.add_clubs_to_collection raw_coll
+    coll     = (raw_coll.is_a?(Array)) ? raw_coll : raw_coll.to_a
+    club_ids = coll.map { |doc| doc['target_ids'] }.compact.flatten.uniq
+    clubs    = Club.db_collection.find({ :_id=>{:$in=>club_ids}}).inject({}) { | m, club| 
+      m[club['_id']] = club
+      m
+    } 
+    
+    coll.map { |doc|
+      target = clubs[doc['target_ids'].first]
+      doc['club_title'], doc['club_filename'] = if target
+                                                  [target['title'], target['filename']]
+                                                end
+
+      doc
+    }
+  end
+
   def self.by_filename filename
     club = db_collection.find_one('filename'=>filename)
     if not club

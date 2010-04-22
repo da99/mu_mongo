@@ -5,7 +5,7 @@ class Hellos
   include Base_Control
 
   def GET_list 
-		env['results.messages_public'] = Message.public({}, :sort =>['created_at', :desc], :limit =>10, :include=>[Member])
+		env['results.messages_public'] = Message.public({}, :sort =>['created_at', :desc], :limit =>10, :include=>[Member, Club])
 		env['results.clubs']           = Club.all
     render_html_template
   end
