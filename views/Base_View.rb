@@ -176,6 +176,10 @@ class Base_View < Mustache
 
   # === Html ===
 
+  def http_referer
+    @app.env['HTTP_REFERER'].to_s.gsub("'", " ")
+  end
+
   def include_tracking?
     @app.env['HTTP_HOST'] =~ /megauni/
   end
