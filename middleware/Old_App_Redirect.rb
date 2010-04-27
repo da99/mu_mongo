@@ -16,6 +16,10 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
+    if new_env['HTTP_USER_AGENT'] == 'panscient.com'
+      return hearty_redirect("http://www.bing.com/")
+    end
+
     # =====================================================
 
     if new_env['PATH_INFO'] === "/skins/jinx/css/main_show.css"
