@@ -131,9 +131,13 @@ namespace 'git' do
   end # === task
 
   task :push do
+    ssh_into   = "ssh da01@da01.webfactional.com"
+    cd_megauni = "cd ~/megauni"
+    err_cap    = '2>&1'
     puts_white "NOTE: Check to see if all required gems are installed on server."
-    puts `git push webfaction 2>&1`
-    puts `ssh da01@da01.webfactional.com "cd ~/megauni && git pull && rake unicorn:restart" 2>&1`
+    puts `git push webfaction #{err_cap}`
+    puts `#{ssh_into} "#{cd_megauni} && git pull" #{err_cap}`
+    puts `#{ssh_into} "#{cd_megauni} && rake unicorn:restart" #{err_cap}`
   end
 
   
