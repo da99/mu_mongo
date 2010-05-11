@@ -130,10 +130,11 @@ module Base_Control
 
   def process_mustache ext = 'html', alt_file_name = nil
     file_name = alt_file_name || "#{control_name}_#{action_name}"
-    template_content = if The_App.production?
+    
+    template_content = if The_App.production? 
                          File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
                        else
-                         disguise = ext == 'html' ? 'Mab' : ext.capitalize
+                         disguise = (ext == 'html' ? 'mab' : ext).capitalize
                          require( "middleware/#{disguise}_In_Disguise"  )
                          disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
                          disguise_class.compile( "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb" ) 

@@ -2,6 +2,10 @@ require 'builder'
 
 class Xml_In_Disguise
   
+  def self.compile_all *args
+    compile *args
+  end
+
   def self.compile file_name = nil
 		
 		vals = {}
