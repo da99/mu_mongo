@@ -11,7 +11,7 @@ rss :version => "2.0" do
         self.link  '{{url}}'
         description '{{body}}'
         pubDate "{{published_at_rfc822}}"
-        guid "{{url}}}"
+        guid "{{url}}"
       }
     self << '{{/posts}}'
   end
