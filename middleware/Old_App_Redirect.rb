@@ -16,6 +16,14 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
+    wrong_path = %w{
+      /SWF/main.swf
+      /(null)/
+    }.detect { |str| new_env['PATH_INFO'] == str }
+    if wrong_path
+      return hearty_redirect("http://www.bing.com#{wrong_path}")
+    end
+
     if new_env['HTTP_USER_AGENT'] == 'panscient.com'
       return hearty_redirect("http://www.bing.com/")
     end
