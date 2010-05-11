@@ -10,10 +10,6 @@ class Hellos_sitemap_xml < Base_View
     news.first[:last_modified_at]
 	end
 
-	def news_url
-		File.join(site_url, 'mess/')
-	end
-
 	def news
 		@news ||= Message.by_published_at(:limit=>5, :sort=>[:published_at, :desc]).map { |post|
 			{:last_modified_at => w3c_date(post['updated_at'] || post['created_at']),
