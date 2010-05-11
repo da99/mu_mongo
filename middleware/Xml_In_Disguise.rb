@@ -3,7 +3,13 @@ require 'builder'
 class Xml_In_Disguise
   
   def self.compile_all *args
-    compile *args
+    vals = compile
+    vals.each do |xml_file_name, v|
+      puts "Writing: #{v.first}"
+      File.open(v.first, 'w') { |f| 
+        f.write v.last 
+      }
+    end
   end
 
   def self.compile file_name = nil

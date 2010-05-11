@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>{{site_title}}</title><description>{{site_tag_line}}</description><link>{{site_url}}</link>{{# posts }}<item><title>{{title}}</title><link>{{link}}</link><description>{{body}}</description><pubDate>{{published_at_rfc822}}</pubDate><guid>{{guid}}}</guid></item>{{/posts}}</channel></rss>
