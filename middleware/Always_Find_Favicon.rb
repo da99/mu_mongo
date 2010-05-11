@@ -16,6 +16,7 @@ class Always_Find_Favicon
       response = Rack::Response.new
       full_uri = request.url.split('/')[0,3]
 
+      # Redirec to http[s]://domain.com/favicon.ico
       response.redirect "#{full_uri.first}//#{full_uri.last}/favicon.ico", 301 # Permanent
       response.finish
     else
