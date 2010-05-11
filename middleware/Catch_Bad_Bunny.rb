@@ -11,7 +11,6 @@ class Catch_Bad_Bunny
     begin
       @app.call the_env
     rescue Object => e
-      IssueClient.create(the_env, ENV['RACK_ENV'], $!.message, the_env['HTTP_REFERER'], e)
       case e
         when The_App::HTTP_403
           the_env['the.app.error'] = $!

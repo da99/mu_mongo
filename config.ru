@@ -12,6 +12,7 @@ begin
     Serve_Public_Folder
     Redirect_Mobile
     Catch_Bad_Bunny
+    Email_Exception
     Strip_If_Head_Request
     Flash_Msg
     Old_App_Redirect
@@ -51,6 +52,7 @@ begin
   
   # === Low-level Helpers 
   # === (specifically designed to run before The_App).
+  use Email_Exception
   use Catch_Bad_Bunny
   use Find_The_Bunny
   use Flash_Msg
