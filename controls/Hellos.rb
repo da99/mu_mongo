@@ -22,4 +22,8 @@ class Hellos
     render_xml_template
   end
 
+  def GET_rss_xml
+    render_xml_template
+  end
+
 end # === Hello

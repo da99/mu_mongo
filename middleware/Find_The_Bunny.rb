@@ -40,7 +40,8 @@ class Find_The_Bunny
       [%r!\A/clubs/(#{Old_Topics.join('|')})/\Z! , {:controller=>Clubs, :action_name=>'by_old_id'}],
       [%r!\A/clubs/(#{filename})/\Z! , {:controller=>Clubs, :action_name=>'by_id'}],
       [%r!\A/clubs/(#{filename})/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'GET'}],
-      [%r!\A/clubs/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'POST'}]
+      [%r!\A/clubs/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'POST'}],
+      [%r!\A/rss.xml\Z!, {:controller=>Hellos, :action_name=>'rss_xml', :http_method=>['GET']}]
     ]
   end
 

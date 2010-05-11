@@ -59,4 +59,9 @@ class Test_Control_Hellos < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must 'render /rss.xml' do
+    get '/rss.xml'
+    assert_equal 200, last_response.status
+  end
+
 end # === class Test_Control_Hellos

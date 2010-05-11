@@ -323,6 +323,17 @@ class Base_View < Mustache
   
   private # ======== 
 
+  def rfc822_date(str_or_date)
+    date = case str_or_date
+    when String
+      require 'time'
+      Time.parse str_or_date
+    when Time
+      str_or_date
+    end
+    date.utc.rfc2822
+  end
+
   # From: http://www.codeism.com/archive/show/578
   def w3c_date(str_or_date)
     date = case str_or_date
