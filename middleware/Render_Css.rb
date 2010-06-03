@@ -5,9 +5,13 @@ require 'ninesixty'
 
 class Render_Css
 
+  def self.sass_files
+    Dir.glob('templates/*/sass/*.sass')
+  end
+
   def self.compile_all
     new_files = {}
-    Dir.glob('templates/*/sass/*.sass').each do |sass_file|
+    sass_files.each do |sass_file|
       
       sass_dir    = File.dirname(sass_file)
       css_file    = File.join( 'public', sass_file.gsub('.sass', '.css').sub('templates', 'stylesheets').sub('sass/', '') )
