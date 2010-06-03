@@ -40,6 +40,8 @@ div.content! {
       '{{club_teaser}}'
     }
 
+    club_nav_bar(__FILE__)
+
     div.club_messages! do
       mustache 'no_messages_latest' do
         div.empty_msg 'No messages yet.'

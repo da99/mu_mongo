@@ -17,6 +17,22 @@ class Clubs_by_id < Base_View
   def club
     @app.env['results.club']
   end
+
+  def club_href
+    "/clubs/#{club.data.filename}/"
+  end
+
+  def club_href_e
+    File.join(club_href, 'e/')
+  end
+
+  def club_href_qa
+    File.join(club_href, 'qa/')
+  end
+
+  def club_href_news
+    File.join(club_href, 'news/')
+  end
   
   def months
     %w{ 8 4 3 2 1 }.map { |month|

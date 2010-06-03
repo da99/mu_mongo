@@ -95,6 +95,29 @@ class Markaby::Builder
     })
   end
 
+  def club_nav_bar filename
+    file     = File.basename(filename).sub('.rb', '')
+    li_span  = lambda { |txt| li.selected { span txt } }
+    li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
+    vals = [ 
+      [/_id\Z/ , 'Home', ''],
+      [/_e\Z/  , 'Encyclopedia', 'e'],
+      [/_qa\Z/ , 'Q & A', 'qa'],
+      [/_news\Z/ , 'News', 'news']
+    ]
+    text(capture {
+      ul.club_nav_bar! {
+        vals.each { |trip|
+          if file =~ trip[0]
+            li.selected { span trip[1] }
+          else
+            li { a(trip[1], :href=>trip[2]) }
+          end
+        }
+      }
+    })
+  end
+
   def form_create_message mess_mod_arr
     mustache 'show_form_create_message?' do
       form.form_message_create!(:action=>'/messages/', :method=>'post') {

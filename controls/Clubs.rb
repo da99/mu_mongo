@@ -47,6 +47,21 @@ class Clubs
     render_html_template("Topic_#{id}")
   end
 
+  def GET_read_news filename
+    env['results.club'] = Club.by_filename(filename)
+    render_html_template
+  end
+
+  def GET_read_qa filename
+    env['results.club'] = Club.by_filename(filename)
+    render_html_template
+  end
+
+  def GET_read_e filename
+    env['results.club'] = Club.by_filename(filename)
+    render_html_template
+  end
+
   def POST
     require_log_in!
     begin

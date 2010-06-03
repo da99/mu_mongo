@@ -41,7 +41,10 @@ class Find_The_Bunny
       [%r!\A/clubs/(#{filename})/\Z! , {:controller=>Clubs, :action_name=>'by_id'}],
       [%r!\A/clubs/(#{filename})/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'GET'}],
       [%r!\A/clubs/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'POST'}],
-      [%r!\A/rss.xml\Z!, {:controller=>Hellos, :action_name=>'rss_xml', :http_method=>['GET']}]
+      [%r!\A/rss.xml\Z!, {:controller=>Hellos, :action_name=>'rss_xml', :http_method=>['GET']}],
+      [%r!\A/clubs/(#{filename})/e/\Z!, {:controller=>Clubs, :action_name=>'read_e', :http_method=>['GET']}],
+      [%r!\A/clubs/(#{filename})/qa/\Z!, {:controller=>Clubs, :action_name=>'read_qa', :http_method=>['GET']}],
+      [%r!\A/clubs/(#{filename})/news/\Z!, {:controller=>Clubs, :action_name=>'read_news', :http_method=>['GET']}]
     ]
   end
 
