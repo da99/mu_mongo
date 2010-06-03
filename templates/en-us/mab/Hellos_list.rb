@@ -1,9 +1,6 @@
 # ~/megauni/views/Hellos_list.rb
 # ~/megauni/templates/en-us/sass/Hellos_list.sass
 
-partial '__flash_msg'
-
-
 div.messages.messages! do
   h4 'Random News:'
   mustache 'messages_public' do
@@ -41,11 +38,11 @@ div.clubs! do
 end 
 
 
-div.mini_nav_bar! { 
+div.nav_bar! { 
 
   div( :id=>"logo" ) { 
-    p.site_title '{{site_title}}' 
-    p.divider "{{site_tag_line}}" 
+    p.title '{{site_title}}' 
+    p.tag_line "{{site_tag_line}}" 
   }
 
   ul.help {
@@ -96,13 +93,11 @@ div.mini_nav_bar! {
     }
   end
   
-  mustache 'no_mini_nav_bar?' do
-    p.divider 'Egg Timers'
-    ul.to_dos {
-      nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
-      nav_bar_li :Timer_new, 'busy-noise', 'New'
-    }
-  end
+  p.divider 'Egg Timers'
+  ul.to_dos {
+    nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
+    nav_bar_li :Timer_new, 'busy-noise', 'New'
+  }
 
   mustache 'logged_in?' do
     p.divider 'Clubs'
@@ -114,7 +109,8 @@ div.mini_nav_bar! {
 } # === div.nav_bar!
 
 
-
-
+div.footer! {
+  span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
+} # the_footer
 
 

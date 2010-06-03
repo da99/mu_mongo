@@ -3,7 +3,6 @@
 # NAME Members_lives
 
   
-partial '__flash_msg' 
 	
 div.content! { 
 

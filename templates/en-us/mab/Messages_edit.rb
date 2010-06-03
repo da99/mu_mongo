@@ -4,7 +4,6 @@
 
 div.content! { 
   
-  partial '__flash_msg'
   
   form(:id=>'form_messages_update', :action=>"{{mess_href}}", :method=>'post' ) do
     input :type=>'hidden', :name=>'_method', :value=>'put'

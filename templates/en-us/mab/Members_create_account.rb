@@ -2,7 +2,6 @@
 # ~/megauni/templates/en-us/sass/Members_create_account.sass
 # Members_create_account 
 
-partial '__flash_msg' 
 div.the_form! { 
   
   # ================= div.flash_msg =============================

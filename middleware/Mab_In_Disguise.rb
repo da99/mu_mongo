@@ -106,6 +106,7 @@ class Markaby::Builder
       [/_news\Z/ , 'News', 'news']
     ]
     text(capture {
+
       ul.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
@@ -114,7 +115,48 @@ class Markaby::Builder
             li { a(trip[1], :href=>trip[2]) }
           end
         }
+
+        mustache 'logged_in?' do
+          li { a('Log-out', :href=>'/log-out/') }
+        end
+
+        mustache 'not_logged_in?' do
+          li { a('Log-in', :href=>'/log-in/') }
+        end
+      } # ul
+      
+ 
+      mustache('logged_in?') {
+
+        mustache 'follower?' do
+          p "You are following this club."
+        end
+
+        mustache 'potential_follower?' do
+          mustache 'single_username?' do
+            p {
+              a("Follow this club.", :href=>"{{follow_href}}")
+            }
+          end
+          mustache 'multiple_usernames?' do
+            form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+              fieldset {
+                label 'Follow this club as: ' 
+                select(:name=>'username') {
+                  mustache('current_member_usernames') {
+                  option('{{username}}', :value=>'{{username}}')
+                }
+                }
+              }
+              div.buttons { button 'Follow.' }
+            end
+          end
+        end
+
       }
+
+      
+      
     })
   end
 

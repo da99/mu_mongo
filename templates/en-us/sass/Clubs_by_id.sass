@@ -1,25 +1,41 @@
-// MAB  /home/da01tv/MyLife/apps/megauni/templates/English/mab/Clubs_by_id.rb
-// VIEW views/Clubs_by_id.rb
+// MAB  ~/megauni/templates/en-us/mab/Clubs_by_id.rb
+// VIEW ~/megauni/views/Clubs_by_id.rb
 // NAME Clubs_by_id
 
 @import base.sass
 @import layout_styles.sass
 @import mini_nav_bar.sass
 
+#the_content
+  padding: 10px
+  +clearfix
+
+#club_nav_bar 
+  +inline-list
+  display: block
+  margin-bottom: -1px
+  li
+    padding: 2px 3px
+    a
+      padding: 2px 3px
+  li.selected
+    margin-right: 5px
+    text-align: center
+    background-color: #fff
+    border: 1px solid black
+      bottom: 0
+
 #club_messages
   border-top: 1px dashed #003860
+  float: left
+  width: 550px
 
 #club_message_create
   padding-bottom: 15px
-
-#content
-  padding-left: 20px
-  +clearfix
+  width: 300px
+  float: left
 
 #club_intro
   width: 400px
   float: left
 
-#club_message_create
-  float: left
-  width: 400px

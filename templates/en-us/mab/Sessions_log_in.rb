@@ -2,7 +2,6 @@
 # ~/megauni/templates/en-us/sass/Session_Control_log_in.sass
 # Session_Control_log_in
 
-partial '__flash_msg'
 
 div.the_form! { 
   

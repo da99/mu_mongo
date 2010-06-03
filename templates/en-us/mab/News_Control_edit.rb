@@ -4,7 +4,6 @@
 
 div.content! { 
   
-  partial '__flash_msg' 
 
   a("View", :href=>"{{news_href}}")
   

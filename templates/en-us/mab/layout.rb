@@ -1,6 +1,7 @@
-# instruct!
 text(%~<?xml version="1.0" encoding="UTF-8"?>~)
+
 declare!(:DOCTYPE, :html, :PUBLIC, "-//W3C//DTD XHTML 1.0 Strict//EN", "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd")
+
 tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" ) {
 
   head {
@@ -34,61 +35,26 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
   } # head
 
   body.the_body! {
-    div.container! { 
     
-      div.timestamp! '{{js_epoch_time}}'
-
-      mustache 'loading' do
-        div.loading! 'Loading...'
-			end
-
-      # ================= the_content ================================
-
-
-			partial( "{{content_file}}" )
-
- 
-
-      # ================= the_footer ================================
-      div.footer! {
-				span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-      } # the_footer
-      
+    partial '__flash_msg'
     
-			
-			# NOTE: 
-			# Add the following to external scripts
-			#     charset="UTF-8"
-			# Don't use: "language" attribute, since that is deprecated for more than
-			# 10 years.
+    # ================= the_content ================================
+    div.the_content! {
+      partial( "{{content_file}}" )
+    }
+    # ==============================================================
 
-      mustache 'javascripts' do
-        script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
-      # if @javascripts
-      #   if @javascripts.eql?( 'default' )
-      #     text [ the_app.script_tag('/js/vendor/jquery.1.3.2.min.js'),
-      #               the_app.script_tag('/js/vendor/jquery.cookie.js') ,
-      #               the_app.script_tag('/js/swiss.js'),
-      #             ''
-      #           ].join("\n")
-      #    
-      #     self << "\n"      
-      #     self <<  the_app.script_tag("#{page_name}.js")
-      #   else
-      #     self << @javascripts
-      #   end
+    mustache 'javascripts' do
+      script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
+    end
 
-      end
-
-      mustache 'include_tracking?' do
-        text %~
-          <script type="text/javascript"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E')); </script> 
-          <script type="text/javascript"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>
-          <script type="text/javascript">mpmetrics.track("eveything", { 'referer' : '{{http_referer}}' });</script>
-        ~
-      end
-
-    } # === container
+    mustache 'include_tracking?' do
+      text %~
+        <script type="text/javascript"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E')); </script> 
+        <script type="text/javascript"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>
+        <script type="text/javascript">mpmetrics.track("eveything", { 'referer' : '{{http_referer}}' });</script>
+      ~
+    end
   } # the_body
 }
 

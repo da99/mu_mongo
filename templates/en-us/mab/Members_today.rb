@@ -2,7 +2,6 @@
 # SASS templates/en-us/sass/Members_today.sass
 # NAME Member_Control_today
 
-partial '__flash_msg'
 
 div.newspaper! {
   mustache 'no_newspaper' do
