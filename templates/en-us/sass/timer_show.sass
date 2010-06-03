@@ -1,22 +1,20 @@
 @import layout.sass
 
-
-
 #big_clock
   padding: 0 15px 10px 0
-  p 
+  p
     padding: 0
     text-transform: uppercase
     font-weight: bold
   p.day
     font-size: 12px
-    color= !grey
+    color: $grey
   p.date
     font-size: 15px
-    color= !dark_grey
+    color: $dark_grey
   p.time
     font-size: 25px
-    color= !red
+    color: $red
     font-family: monospace
   p.seconds
     font-size: 12px
@@ -26,11 +24,11 @@
 #work
   div.job
     +clearfix
-    background: #D4EBF1 url("/eggs/images/blue_sky_bg.jpg") repeat-x
+    background: #d4ebf1 url("/eggs/images/blue_sky_bg.jpg") repeat-x
     margin-bottom: 20px
     div.undo
       display: none
-    ul.control_panel      
+    ul.control_panel
       li
         display: inline
         float: none
@@ -51,12 +49,12 @@
       a.pause
         display: none
       a.contine
-        display: none        
+        display: none
       a.start_over
         display: none
     div.time_status
       text-align: center
-      color: #073D6F      
+      color: #073d6f
       span.number
         font-size: 30px
       span.unit
@@ -72,7 +70,7 @@
         padding: 0
         margin: 0
         line-height: 1em
-        color: #073D6F
+        color: #073d6f
       div.setting
         font-style: italic
         font-family: serif
@@ -80,7 +78,6 @@
       div.details
         font-size: 18px
         font-family: serif
-
   div.running
     div.status
       a.play
@@ -88,13 +85,11 @@
       a.pause
         display: inline
       a.contine
-        display: none        
+        display: none
       a.start_over
         display: none
     div.time_status
-      color= !red
-
-  
+      color: $red
   div.paused
     div.status
       a.play
@@ -102,9 +97,10 @@
       a.pause
         display: none
       a.contine
-        display: inline        
+        display: inline
       a.start_over
         display: inline
+
 #instructions
   ol
     font-weight: bold
@@ -112,19 +108,19 @@
     margin-left: 0
     padding: 20px
     #stop_test
-      display: none    
+      display: none
     li
       margin: 0
       list-style-type: none
       padding: 0 0 35px 35px
       line-height: 1em
-        font-size: 20px   
+        font-size: 20px
       background: transparent url("/skins/jinx/images/i_one.jpg") no-repeat
       div.body
         font-size: 18px
         font-weight: bold
-        text-transform: none  
-        color= #000
+        text-transform: none
+        color: black
         a
           font-size: 18px
           text-transform: none
@@ -133,29 +129,25 @@
       background-position: 3px 0
     li.two
       background-image: url("/skins/jinx/images/i_two.jpg")
-
-
     li.three
-      background-image: url("/skins/jinx/images/i_three.jpg")  
+      background-image: url("/skins/jinx/images/i_three.jpg")
       background-position: 3px 0
 
 #create_countdown
-  
   div.time_units_block
     fieldset
       padding-right: 20px
       input.text
         width: 50px
-      
-    
+
 div.template
   display: none
 
 div.editor
   display: none
-  
+
 #loading
   display: block
-  
+
 #content
-  display: none  
+  display: none

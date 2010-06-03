@@ -1,16 +1,16 @@
 @import base.sass
 @import compass/utilities/general/clearfix.sass
 
-!ninesixty_columns = 16
+$ninesixty_columns: 16
 
-!nav_bar_border = 2px
-!nav_bar_width = 220px
+$nav_bar_border: 2px
+$nav_bar_width: 220px
 
 =dev_bg
   #the_body
-    background: #F7F7F7 url("/16_col.gif") repeat-y center center
+    background: #f7f7f7 url("/16_col.gif") repeat-y center center
   #container
-    border-top= 2px "solid" #000
+    border-top: 2px solid black
   #content
     border-top: 1px solid red
 
@@ -29,11 +29,9 @@
         width: 240px
         height: 300px
 
-  
 #container
   +grid-container
   +clearfix
-  
 
 =bottom_nav_bar
   #nav_bar
@@ -46,19 +44,18 @@
 
 =left_nav_bar
   #nav_bar
-    margin-right= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
-        
+    margin-right: $ninesixty_gutter_width / 2 - $nav_bar_border
+
 =right_nav_bar
   #nav_bar
-    margin-left= ( !ninesixty_gutter_width / 2 ) - !nav_bar_border 
-        
+    margin-left: $ninesixty_gutter_width / 2 - $nav_bar_border
+
 #nav_bar
   +grid(4)
 
 #loading
   +grid(12)
   +grid-prefix(4)
-
 
 #content
   +grid(12)
@@ -70,15 +67,14 @@ form
 
 #nav_bar
   h4
-    margin: 0 0 3px 80px 
+    margin: 0 0 3px 80px
   ul
     margin: 0 0 0 80px
   #logo
     margin: 0 0 0 80px
+
 #footer
   +grid-unit-base
   +grid-width(12)
   +grid-prefix(4)
   display: none
-
-

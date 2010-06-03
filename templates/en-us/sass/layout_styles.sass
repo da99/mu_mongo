@@ -1,42 +1,39 @@
 @import compass/utilities/lists/horizontal_list.sass
 @import compass/utilities/lists/bullets.sass
 
-!red = #F00919
-!blue = #33CCFF
-!grey = #666666
-!pink = #FF477C
-!highlight = #ff9
-!dashed_border = #003860
+$red: #f00919
+$blue: #33ccff
+$grey: #666666
+$pink: #ff477c
+$highlight: #ffff99
+$dashed_border: #003860
 
-!dark_blue = #214D81
-!light_green = #E0FF92
-!dark_green = #133B00
-!light_grey = #EFEFEF
-!dark_grey = #333333
-!maroon_line = #E40051
+$dark_blue: #214d81
+$light_green: #e0ff92
+$dark_green: #133b00
+$light_grey: #efefef
+$dark_grey: #333333
+$maroon_line: #e40051
 
-!bg_color = #fff
+$bg_color: white
 
-!text_box_border = #BEBEBE
-!text_box_border_green = #38761B
-!text_box_bg = #EAEAF0
-!text_box_bg_dark = #D6D6D6
+$text_box_border: #bebebe
+$text_box_border_green: #38761b
+$text_box_bg: #eaeaf0
+$text_box_bg_dark: #d6d6d6
 
-!custom_sans_serif = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
-!custom_serif = "'Century Schoolbook L', 'Times New Roman', 'Times', serif"
-!custom_black_text = #242424
-!custom_orange = #FFE759
+$custom_sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
+$custom_serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
+$custom_black_text: #242424
+$custom_orange: #ffe759
 
-!light_green = #DAE6B4
-
-
-
+$light_green: #dae6b4
 
 =dev_bg
   #the_body
-    background: #F7F7F7 url("/16_col.gif") repeat-y center center
+    background: #f7f7f7 url("/16_col.gif") repeat-y center center
   #container
-    border-top= 2px "solid" #000
+    border-top: 2px solid black
   #content
     border-top: 1px solid red
 
@@ -46,27 +43,29 @@
   font-family: helvetica, arial, sans-serif
 
 =dashed_border_bottom
-  border-bottom= 1px "dashed" !dashed_border
-=dashed_border_left
-  border-left= 1px "dashed" !dashed_border
-=dashed_border_right
-  border-right= 1px "dashed" !dashed_border
+  border-bottom: 1px dashed $dashed_border
 
-  
+=dashed_border_left
+  border-left: 1px dashed $dashed_border
+
+=dashed_border_right
+  border-right: 1px dashed $dashed_border
+
 a:link, a:visited
-  color = !red
+  color: $red
   text-transform: uppercase
   font:
-    family = "'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif"
+    family: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
     weight: bold
 
 a:hover, a:active, a:focus
-  color: #fff
+  color: white
   background: #f00919
 
 img.left
   float: left
   margin: 0 10px 0 0
+
 img.right
   float: right
   margin: 0 0 10px 0
@@ -74,46 +73,44 @@ img.right
 #timestamp
   display: none
 
-
 #the_body
-  font= "13px/1.5" "Helvetica, 'Liberation Sans', FreeSans, serif"
-  background-color: #fff 
-  
+  font: unquote("13px/1.5") unquote("Helvetica, 'Liberation Sans', FreeSans, serif")
+  background-color: white
+
 #notice
-  background-color= !highlight
+  background-color: $highlight
   padding: 5px 10px
   margin-bottom: 10px
 
 #flash_msg
   padding: 5px
-  h4 
+  h4
     text-transform: uppercase
     font-weight: bold
   div.msg
     font-size: 14px
   div.error_msg, div.errors
     font-weight: bold
-    background= !red
-    color: #fff
+    background: $red
+    color: white
   div.success_msg, div.success
-    background= !highlight
+    background: $highlight
     h4
-      color= !dark_blue
+      color: $dark_blue
     div.msg
-      color= !dark_green
+      color: $dark_green
 
-      
 #mini_nav_bar, #nav_bar
   width: 200px
   float: left
   text-align: left
   margin-left: 10px
   padding: 0 0 100px 10px
-  border-left: 1px dashed #fff
-    color= !dashed_border
-  p 
+  border-left: 1px dashed white
+    color: $dashed_border
+  p
     color: #f00919
-    font-family= !custom_sans_serif
+    font-family: $custom_sans_serif
     font-weight: bold
     padding: 0
     margin: 0
@@ -125,7 +122,7 @@ img.right
     font-size: 20px
   p.divider
     font-size: 12px
-    color= !dashed_border
+    color: $dashed_border
     text-transform: uppercase
   ul
     list-style: none
@@ -141,7 +138,6 @@ img.right
 #loading
   +input_text
   text-align: center
-
 
 #content
   padding-bottom: 50px
@@ -160,11 +156,11 @@ img.right
     div.answer
       padding: 0 0 10px 0
 
-h3 
+h3
   font-size: 20px
   font-weight: bold
 
-h4 
+h4
   text-transform: uppercase
   font-weight: bold
   color: #003860
@@ -174,7 +170,6 @@ h4
 p
   padding-bottom: 10px
   margin-bottom: 0
-
 
 div.block
   font-size: 16px
@@ -193,24 +188,24 @@ ul.tabs
   margin-bottom: -1px
   padding-left: 15px
   a:link, a:visited, a:hover, a:active, a:focus
-    padding: 5px 5px 8px 5px 
+    padding: 5px 5px 8px 5px
   li
     padding: 5px
   li.tab_selected
-    background= !light_grey   
-    border= 1px "solid" #717171
+    background: $light_grey
+    border: 1px solid #717171
       bottom: 0
     a:link, a:visited, a:hover, a:active, a:focus
       background: transparent
-      color: #00233C
+      color: #00233c
       padding-bottom: 12px
       text-decoration: none
-  
-div.form
-  background= !light_grey   
-  border= 1px "solid" #717171
 
-form  
+div.form
+  background: $light_grey
+  border: 1px solid #717171
+
+form
   label, div.title
     text-transform: uppercase
     font-weight: bold
@@ -232,22 +227,19 @@ form
     width: 50%
     div.selected
       span
-        background: #ff9
+        background: #ffff99
   div.buttons
     button
       text-transform: uppercase
 
-
-      
 #footer
   display: none
-
 
 div.body
   +clearfix
   font-size: 110%
 
-div.news_post 
+div.news_post
   padding-bottom: 10px
   padding-top: 10px
   border-bottom: 1px dashed #003860
@@ -260,4 +252,4 @@ div.message, div.club
   div.permalink
     padding: 5px 0 0 0
     text-align: right
-    font-size: 80%  
+    font-size: 80%
