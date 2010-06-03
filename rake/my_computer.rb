@@ -9,6 +9,7 @@ MY_LIFE  = File.expand_path(HOME_MY_LIFE)
 MY_PREFS = File.join(MY_LIFE, 'prefs')
 DROPBOX  = File.expand_path('~/Dropbox')
 BACKUP_DIR = File.join(DROPBOX, 'Backup_MyLife')
+BACKUP_MY_LIFE = File.join(BACKUP_DIR, 'MyLife')
 
 class String
   def one_line
@@ -47,6 +48,24 @@ namespace 'my_computer' do
   desc 'Sets up your new computer.'
   task :setup do 
 
+      # Create a symlink to primary app directory.
+      app_alias = FiDi.directory('~/', PRIMARY_APP)
+      if not File.symlink?(app_alias.path)
+        puts_white "Creating sym_link: #{app_alias.path}"
+        FiDi.directory(MY_LIFE, 'apps', PRIMARY_APP).create_alias( app_alias.path )
+      end
+ 
+      # Check we are not running in the backup directory.
+      if File.expand_path(__FILE__)[BACKUP_MY_LIFE]
+        if not File.exists?(MY_LIFE)
+	  puts_white "Copying #{BACKUP_MY_LIFE} to #{MY_LIFE}"
+	  FiDi.directory(BACKUP_MY_LIFE).copy_to(MY_LIFE) 
+	end
+
+        puts_red "Change directory to: #{app_alias.path}"
+        exit
+      end
+
       puts_white %~
          Optional: Flash fix for Ubuntu: 
          http://ubuntuforums.org/showthread.php?t=1130582&highlight=flash+problem 
@@ -66,8 +85,7 @@ namespace 'my_computer' do
       '.one_line
 
       gconf = File.expand_path('~/.gconf/desktop/gnome/file_views/%gconf.xml')
-      FiDi.file(gconf).must_exist 
-      if !( File.read(gconf)['show_hidden_files'] )
+      if !File.exists?(gconf) || !( File.read(gconf)['show_hidden_files'] && File.read(gconf)['show_backup_files'] )
           puts_red %~
             Always show hidden files in  Nautilus:
             http://www.watchingthenet.com/always-show-hidden-files-in-ubuntu-nautilus-file-browser.html

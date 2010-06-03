@@ -3,10 +3,14 @@ launchy
 darkfish-rdoc
 unicorn
 haml
-chriseppstein-compass
-chriseppstein-compass-960-plugin
-# ruby-debug # http://pivots.pivotallabs.com/users/chad/blog/articles/366-ruby-debug-in-30-seconds-we-don-t-need-no-stinkin-gui-
+chriseppstein-compass --source=http://gems.github.com
+chriseppstein-compass-960-plugin --source=http://gems.github.com
+# ruby-debug 
+# http://pivots.pivotallabs.com/users/chad/blog/articles/366-ruby-debug-in-30-seconds-we-don-t-need-no-stinkin-gui-
 wirble
 markaby
 rack-test
 capistrano
+term-ansicolor
+rest-client
+rush

@@ -64,6 +64,24 @@ class FiDi_Directory
     raise ArgumentError, "Path already exists, but is not a directory: #{path}"
   end
 
+  def copy_to(raw_path)
+
+    # Rsync creates the folder of the original into the target folder.
+    # Example: /BACKUP -> /TARGET ==> /TARGET/BACKUP
+    # To get around this, we use the parent folder of the target.
+    target = FiDi.directory(raw_path).up 
+    final_path = File.join(target.path, File.basename(path))
+    final_path_exists = File.exists?(final_path)
+    raise ArgumentError, "Path already exists: #{target.path}" if final_path_exists
+
+    rsync_installed = `which rsync`['rsync']
+    if !rsync_installed 
+      raise ArgumentError, "Rsync is not installed."
+    end
+    puts `rsync -av #{path} #{target.path}`
+    target
+  end
+
   def name 
     File.basename(path)
   end
@@ -92,12 +110,16 @@ class FiDi_Directory
   
   def create_alias *args
     new_dir = File.expand_path(File.join(*args))
-    return new_dir if File.exists?(new_dir) && File.identical?(path, new_dir)
+    is_symlink = File.symlink?(new_dir)
+    identical = (File.exists?(new_dir) && File.identical?(path, new_dir)) ||
+                (is_symlink && File.readlink(new_dir) === path)
+    return new_dir if identical
+
     if File.exists?(new_dir)
       raise ArgumentError, "Already exists: #{new_dir.inspect}"
     end
     File.symlink(path, new_dir)
-    new_dir
+    FiDi.directory(new_dir)
   end
 
   def ruby_files_wo_rb

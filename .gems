@@ -10,3 +10,4 @@ mustache
 json
 mongo
 mongo_ext
+bson_ext
