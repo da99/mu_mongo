@@ -7,7 +7,7 @@ def compile_with_mongo_ids hsh
     hsh.map { |v| compile_with_mongo_ids(v) }
   when Hash
     if hsh['$oid']
-      Mongo::ObjectID.from_string(hsh['$oid'])
+      BSON::ObjectID.from_string(hsh['$oid'])
     else
       new_hsh = {}
       hsh.each { |k, v| 

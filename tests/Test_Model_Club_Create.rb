@@ -7,7 +7,7 @@ class Test_Club_Create < Test::Unit::TestCase
     "movie_#{rand(10000)}"
   end
 
-  must 'set :_id to Mongo::ObjectID' do
+  must 'set :_id to BSON::ObjectID' do
     fn = random_filename
     club = Club.create(
       admin_member, 
@@ -15,7 +15,7 @@ class Test_Club_Create < Test::Unit::TestCase
         :title=>'Gaijin', 
         :teaser=>'Gaijin'}
     )
-    assert_equal Mongo::ObjectID, club.data._id.class
+    assert_equal BSON::ObjectID, club.data._id.class
   end
 
   must 'require a filename' do

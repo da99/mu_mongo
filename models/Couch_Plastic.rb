@@ -119,10 +119,10 @@ module Couch_Plastic
   end
 
   def self.mongofy_id raw_id
-    return raw_id if raw_id.is_a?(Mongo::ObjectID)
+    return raw_id if raw_id.is_a?(BSON::ObjectID)
     str = raw_id.to_s.strip
-    Mongo::ObjectID.legal?( str ) ?
-      Mongo::ObjectID.from_string(str) :
+    BSON::ObjectID.legal?( str ) ?
+      BSON::ObjectID.from_string(str) :
       str
   end
 
@@ -139,16 +139,16 @@ module Couch_Plastic
     @error_msg = nil # The efault error message for validation errors.
     @cache = {}
     doc   = case doc_id_or_hash
-            when String, Mongo::ObjectID
+            when String, BSON::ObjectID
 
-              result = if doc_id_or_hash.is_a?(Mongo::ObjectID)
+              result = if doc_id_or_hash.is_a?(BSON::ObjectID)
                          self.class.db_collection.find_one(
                            '_id'=>doc_id_or_hash
                          )
                        else 
-                         if Mongo::ObjectID.legal?(doc_id_or_hash)
+                         if BSON::ObjectID.legal?(doc_id_or_hash)
                            self.class.db_collection.find_one(
-                             '_id'=>Mongo::ObjectID.from_string(doc_id_or_hash)
+                             '_id'=>BSON::ObjectID.from_string(doc_id_or_hash)
                            )
                          else
                            self.class.db_collection.find_one('old_id'=>doc_id_or_hash)
@@ -402,12 +402,12 @@ module Couch_Plastic
             end
             
           when :mongo_object_id
-            new_raw = if raw.is_a?(String) && Mongo::ObjectID.legal?(raw)
-                        Mongo::ObjectID.from_string(raw)
+            new_raw = if raw.is_a?(String) && BSON::ObjectID.legal?(raw)
+                        BSON::ObjectID.from_string(raw)
                       else
                         raw
                       end
-            if new_raw.is_a?(Mongo::ObjectID)
+            if new_raw.is_a?(BSON::ObjectID)
               raw_data.send("#{fld}=", new_raw)
               new_clean_value fld, new_raw
               raw = new_raw
@@ -417,9 +417,9 @@ module Couch_Plastic
 
           when :mongo_object_id_array
             is_array = raw.is_a?(Array)
-            all_legal = is_array && [true] == raw.map { |v| v.is_a?(Mongo::ObjectID) || Mongo::ObjectID.legal?(v.to_s) }.uniq
+            all_legal = is_array && [true] == raw.map { |v| v.is_a?(BSON::ObjectID) || BSON::ObjectID.legal?(v.to_s) }.uniq
             all_mongo = is_array && all_legal && raw.map { |v| 
-              v.is_a?(Mongo::ObjectID) ? v : Mongo::ObjectID.from_string(v)
+              v.is_a?(BSON::ObjectID) ? v : BSON::ObjectID.from_string(v)
             }
             if all_mongo
               raw = all_mongo
@@ -431,7 +431,7 @@ module Couch_Plastic
 
 
           when :not_empty
-            if raw && (raw.is_a?(Mongo::ObjectID) || !raw.empty?)
+            if raw && (raw.is_a?(BSON::ObjectID) || !raw.empty?)
               new_clean_value fld, raw
             else
               errors << "#{fld.humanize} is required."
@@ -465,7 +465,7 @@ module Couch_Plastic
               new_clean_value fld, arr
             when Array
               new_clean_value fld, raw
-            when Mongo::ObjectID
+            when BSON::ObjectID
               raw = [raw]
               raw_data.send("#{fld}=", raw)
               new_clean_value fld, raw
@@ -571,8 +571,8 @@ module Couch_Plastic
     err ||= begin
       doc.delete('_id') unless doc['_id']
       new_id = self.class.db_collection.insert( doc, :safe=>true )
-      doc['_id'] = if new_id.is_a?(String) && Mongo::ObjectID.legal?(new_id)
-        Mongo::ObjectID.from_string(new_id)
+      doc['_id'] = if new_id.is_a?(String) && BSON::ObjectID.legal?(new_id)
+        BSON::ObjectID.from_string(new_id)
       else
         new_id
       end
@@ -630,8 +630,8 @@ module Couch_Plastic
     hsh = self.data.as_hash.clone.update(new_data.as_hash)
 
     id = data._id.to_s
-    doc_id = if Mongo::ObjectID.legal?(id)
-               self.class.db_collection.update( {:_id=>Mongo::ObjectID.from_string(id)}, hsh, :safe=>true )
+    doc_id = if BSON::ObjectID.legal?(id)
+               self.class.db_collection.update( {:_id=>BSON::ObjectID.from_string(id)}, hsh, :safe=>true )
              else
                self.class.db_collection.update( {:_id=>id}, hsh, :safe=>true)
              end
@@ -748,7 +748,7 @@ module Couch_Plastic_Class_Methods
   end
 
   def self.by_owner_id str, params = {}, opts = {}
-    id = Mongo::ObjectID.legal?(str) ? Mongo::ObjectID.from_string(str) : str
+    id = BSON::ObjectID.legal?(str) ? BSON::ObjectID.from_string(str) : str
     db_collection.find({:owner_id=>str}, params, opts)
   end
 

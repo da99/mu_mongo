@@ -63,7 +63,7 @@ class Data_Pouch
       hsh
     when NilClass
       nil
-    when Mongo::ObjectID
+    when BSON::ObjectID
       hsh
     else
       hsh && Loofah::Helpers.sanitize(hsh.to_s)

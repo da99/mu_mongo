@@ -16,7 +16,7 @@ if ARGV === %w{ install all}
   puts `#{cmd}`
 
 
-  # Install each gem is not already installed
+  # Install each gem if not already installed
   file_contents = File.read('.gems') + "\n" + File.read(".development_gems")
 
   cmds = file_contents.split("\n").compact.uniq.reject { |line|

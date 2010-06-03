@@ -17,6 +17,10 @@ class String
   end
 end
 
+def installed?(name)
+    shell_out("which #{name}")[name]
+end
+
 def shell_out(*args, &blok)
     stem          = args.shift
     cmd           = stem % ( args.map { |s| s.to_s.inspect } )
@@ -58,9 +62,9 @@ namespace 'my_computer' do
       # Check we are not running in the backup directory.
       if File.expand_path(__FILE__)[BACKUP_MY_LIFE]
         if not File.exists?(MY_LIFE)
-	  puts_white "Copying #{BACKUP_MY_LIFE} to #{MY_LIFE}"
-	  FiDi.directory(BACKUP_MY_LIFE).copy_to(MY_LIFE) 
-	end
+    puts_white "Copying #{BACKUP_MY_LIFE} to #{MY_LIFE}"
+    FiDi.directory(BACKUP_MY_LIFE).copy_to(MY_LIFE) 
+  end
 
         puts_red "Change directory to: #{app_alias.path}"
         exit
@@ -142,17 +146,31 @@ namespace 'my_computer' do
           end
       end
 
-      puts_white 'Checks for git.'
-
       if not shell_out('which git')['git']
         puts_red 'Install git with PPA.'
       else
+        puts_white 'Git is installed.'
         results = shell_out('git config --global user.name %s' % MY_NAME.inspect)
         results += shell_out('git config --global user.email %s' % MY_EMAIL)
         if not results.strip.empty?
           puts_red( results )
         end
       end
+
+      mongo_dir = "~/apps/mongodb"
+      mongo_data = File.join(mongo_dir, 'data/db')
+      mongo_log = File.join(mongo_dir, 'data/log')
+      if installed?('mongod')
+          puts_white "MongoDB is installed."
+      else
+          puts_red "Install MongoDB in #{mongo_dir}."
+      end
+
+      [ mongo_data, mongo_log].each { |dir|
+          if not File.exists?(dir)
+              `mkdir -p #{File.expand_path dir}`
+          end
+      }
 
       puts_white 'Linking VIM configuration file.'
       
@@ -165,15 +183,20 @@ namespace 'my_computer' do
       FiDi.directory('~/.vim-temp-files').mkdir
 
       puts_white 'Checking .profile'
-      bashrc = File.expand_path('~/.profile')
+      dot_profile = File.expand_path('~/.profile')
+      bashrc = File.expand_path('~/.bashrc')
+
       custom_bashrc = "#{HOME_MY_LIFE}/prefs/_bashrc_additions"
-      if not File.read(bashrc)[File.basename(custom_bashrc)]
-        puts_red %~ 
-          Add the following to your #{bashrc}:
+
+      [dot_profile, bashrc].each { |file|
+          if not File.read(file)[File.basename(custom_bashrc)]
+            puts_red %~ 
+              Add the following to your #{file}:
 # Custom additios for Diego
-  . #{custom_bashrc}
-        ~
-      end
+. #{custom_bashrc}
+            ~
+          end
+      }
 
       require 'yaml'
       puts_white 'gem configuration file:'

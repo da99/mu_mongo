@@ -89,7 +89,7 @@ class Member
   def self.valid_security_level?(perm_level)
     return true if SECURITY_LEVELS.include?(perm_level)
     case perm_level
-    when Mongo::ObjectID, Member, String, Symbol
+    when BSON::ObjectID, Member, String, Symbol
       true
     else
       false
@@ -354,7 +354,7 @@ class Member
 
     return true if raw_level == self
     
-    if raw_level.is_a?(String) || raw_level.is_a?(Mongo::ObjectID)
+    if raw_level.is_a?(String) || raw_level.is_a?(BSON::ObjectID)
       return true if usernames.include?(raw_level)
       return true if data._id === raw_level
       return true if username_ids.include?(raw_level)

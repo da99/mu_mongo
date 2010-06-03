@@ -1,4 +1,4 @@
-#!/home/da01/rubyee/bin/ruby
+#!/home/da01/ruby-ee/bin/ruby
 $KCODE = 'u' 
 
 require File.expand_path('~/megauni/helpers/app/kernel')

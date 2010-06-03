@@ -1,4 +1,4 @@
-#!/home/da01/Documents/rubyee/bin/ruby -w
+#!/home/da01/Documents/ruby-ee/bin/ruby -w
 # -*- ruby -*-
 
 #

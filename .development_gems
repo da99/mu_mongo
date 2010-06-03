@@ -12,5 +12,4 @@ markaby
 rack-test
 capistrano
 term-ansicolor
-rest-client
 rush
