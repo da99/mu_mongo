@@ -54,13 +54,16 @@ namespace :server do
     }
   end
 
-	desc "Kill Unicorn worker, which will then be re-started."
+	desc "Sends HUP signal to Unicorn master, which will restart all workers."
   task :reload do
 		puts_white 'Restarting...'
 		require 'rush'
-		output = Rush.processes.filter(:cmdline=>/unicorn worker/).kill
+		Rush.processes.filter(:cmdline=>/unicorn master/).each { |process|
+      puts_white "Sending HUP signal to unicorn master pid: #{process.pid}"
+      Process.kill('HUP', process.pid)
+    }
 		puts_white 'Done.'
-		output
+		true
   end
   
   desc 'Start MongoDB server.'
