@@ -133,13 +133,11 @@ namespace 'git' do
     cd_megauni = "cd ~/megauni"
     err_cap    = '2>&1'
     
+    puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
     puts `git push webfaction #{err_cap}`
-    puts `#{ssh_into} "#{cd_megauni} && git pull" #{err_cap}`
+    puts `#{ssh_into} "#{cd_megauni} && git pull && gem update && rake unicorn:restart" #{err_cap}`
     
-    puts_white 'Updating gems on server'
-    puts `#{ssh_into} "#{cd_megauni} && gem update" #{err_cap}`
 
-    puts `#{ssh_into} "#{cd_megauni} && rake unicorn:restart" #{err_cap}`
   end
 
   
