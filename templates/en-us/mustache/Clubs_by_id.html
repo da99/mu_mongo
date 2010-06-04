@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" href="{{css_file}}?time=1273622848" rel="stylesheet" media="screen"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275618422"/>
 
 {{/not_mobile_request?}}
 
@@ -31,63 +31,89 @@
 
   </head>
   <body id="the_body">
-   <div id="container">
-    <div id="timestamp">{{js_epoch_time}}</div>
-
-{{#loading}}
-
-    <div id="loading">Loading...</div>
-
-{{/loading}}
-
-     <div id="content">
 
 {{#flash_msg?}}
 
-       <div id="flash_msg">
+    <div id="flash_msg">
 
 {{#flash_success}}
 
-        <div class="success">
-         <h4>Success</h4>
-         <div class="msg">{{msg}}</div>
-        </div>
+     <div class="success">
+      <h4>Success</h4>
+      <div class="msg">{{msg}}</div>
+     </div>
 
 {{/flash_success}}
 
 
 {{#flash_errors}}
 
-        <div class="errors">
-         <h4>{{title}}</h4>
-         <div class="msg">
-          <ul>
+     <div class="errors">
+      <h4>{{title}}</h4>
+      <div class="msg">
+       <ul>
 
 {{#errors}}
 
-           <li>{{err}}</li>
+        <li>{{err}}</li>
 
 {{/errors}}
 
-          </ul>
-         </div>
-        </div>
+       </ul>
+      </div>
+     </div>
 
 {{/flash_errors}}
 
-       </div>
+    </div>
 
 {{/flash_msg?}}
 
-      <div id="club_intro">
-       <h3>{{club_title}}</h3>
+   <div id="the_content">
+     <h3>{{club_title}}</h3>
+     <div class="teaser">{{club_teaser}}</div>
+      <ul id="club_nav_bar">
+       <li class="selected">
+        <span>Home</span>
+       </li>
+       <li>
+        <a href="e">Encyclopedia</a>
+       </li>
+       <li>
+        <a href="qa">Q &amp; A</a>
+       </li>
+       <li>
+        <a href="news">News</a>
+       </li>
+
+{{#logged_in?}}
+
+       <li>
+        <a href="/log-out/">Log-out</a>
+       </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+       <li>
+        <a href="/log-in/">Log-in</a>
+       </li>
+
+{{/not_logged_in?}}
+
+       <li>
+        <a href="/">Megauni</a>
+       </li>
+      </ul>
 
 {{#logged_in?}}
 
 
 {{#follower?}}
 
-       <p>You are following this club.</p>
+      <p>You are following this club.</p>
 
 {{/follower?}}
 
@@ -97,30 +123,32 @@
 
 {{#single_username?}}
 
+      <p>
        <a href="{{follow_href}}">Follow this club.</a>
+      </p>
 
 {{/single_username?}}
 
 
 {{#multiple_usernames?}}
 
-       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
-        <fieldset>
-         <label>Follow this club as: </label>
-         <select name="username">
+      <form method="post" name="form_follow_create" id="form_follow_create" action="/clubs/follow/">
+       <fieldset>
+        <label>Follow this club as: </label>
+        <select name="username">
 
 {{#current_member_usernames}}
 
-          <option value="{{username}}">{{username}}</option>
+         <option value="{{username}}">{{username}}</option>
 
 {{/current_member_usernames}}
 
-         </select>
-        </fieldset>
-        <div class="buttons">
-         <button>Follow.</button>
-        </div>
-       </form>
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button>Follow.</button>
+       </div>
+      </form>
 
 {{/multiple_usernames?}}
 
@@ -130,225 +158,99 @@
 
 {{/logged_in?}}
 
-       <div class="teaser">
-{{club_teaser}}       </div>
-       <div id="club_messages">
+
+{{#logged_in?}}
+
+     <div id="club_message_create">
+      <h4>Post a message:</h4>
+      <form method="POST" name="form_club_message_create" id="form_club_message_create" action="/messages/">
+       <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+       <input type="hidden" value="public" name="privacy"/>
+
+{{#single_username?}}
+
+       <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+       <fieldset>
+        <select name="message_model">
+         <option value="comment">Comment</option>
+         <option value="story">Story</option>
+         <option value="joke">Humorous ;)</option>
+         <option value="question">Question?</option>
+         <option value="plea">Request</option>
+         <option value="brainstorm">Brainstorm</option>
+         <option value="complaint">Complain!</option>
+         <option value="product">Product</option>
+        </select>
+       </fieldset>
+       <fieldset>
+        <textarea name="body"></textarea>
+       </fieldset>
+       <fieldset>
+        <label>Labels (Separate each with a comma.)</label>
+        <input type="text" class="text" value="" name="public_labels"/>
+       </fieldset>
+
+{{#multiple_usernames?}}
+
+       <fieldset>
+        <label>Post as:</label>
+        <select name="owner_id">
+
+{{#multiple_usernames}}
+
+         <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+        </select>
+       </fieldset>
+
+{{/multiple_usernames?}}
+
+       <fieldset>
+        <label>Important?</label>
+        <select name="important">
+         <option value="">No. It can wait.</option>
+         <option value="true">Yes</option>
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button class="create">Save</button>
+       </div>
+      </form>
+     </div>
+
+{{/logged_in?}}
+
+     <div id="club_messages">
 
 {{#no_messages_latest}}
 
-        <div class="empty_msg">No messages yet.</div>
+      <div class="empty_msg">No messages yet.</div>
 
 {{/no_messages_latest}}
 
 
 {{#messages_latest}}
 
-        <div class="message">
-         <div class="body">{{{compiled_body}}}</div>
-         <div class="permalink">
-          <a href="{{href}}">Permalink</a>
-         </div>
-        </div>
+      <div class="message">
+       <div class="body">{{{compiled_body}}}</div>
+       <div class="permalink">
+        <a href="{{href}}">Permalink</a>
+       </div>
+      </div>
 
 {{/messages_latest}}
 
-       </div>
-      </div>
-
-{{#logged_in?}}
-
-      <div id="club_message_create">
-       <h4>Post a message:</h4>
-       <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
-        <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-        <input type="hidden" value="public" name="privacy"/>
-
-{{#single_username?}}
-
-        <input type="hidden" value="{{first_username}}" name="username"/>
-
-{{/single_username?}}
-
-        <fieldset>
-         <select name="message_model">
-          <option value="comment">Comment</option>
-          <option value="story">Story</option>
-          <option value="joke">Humorous ;)</option>
-          <option value="question">Question?</option>
-          <option value="plea">Request</option>
-          <option value="brainstorm">Brainstorm</option>
-          <option value="complaint">Complain!</option>
-          <option value="product">Product</option>
-         </select>
-        </fieldset>
-        <fieldset>
-         <textarea name="body"></textarea>
-        </fieldset>
-        <fieldset>
-         <label>Labels (Separate each with a comma.)</label>
-         <input type="text" class="text" value="" name="public_labels"/>
-        </fieldset>
-
-{{#multiple_usernames?}}
-
-        <fieldset>
-         <label>Post as:</label>
-         <select name="owner_id">
-
-{{#multiple_usernames}}
-
-          <option value="{{username}}">{{username}}</option>
-
-{{/multiple_usernames}}
-
-         </select>
-        </fieldset>
-
-{{/multiple_usernames?}}
-
-        <fieldset>
-         <label>Important?</label>
-         <select name="important">
-          <option value="">No. It can wait.</option>
-          <option value="true">Yes</option>
-         </select>
-        </fieldset>
-        <div class="buttons">
-         <button class="create">Save</button>
-        </div>
-       </form>
-      </div>
-
-{{/logged_in?}}
-
      </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
-       </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
-
-{{#logged_in?}}
-
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
-
-{{/not_logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-
-{{#no_mini_nav_bar?}}
-
-       <p class="divider">Lives</p>
-
-{{/no_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
-
-
-{{#selected}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected}}
-
-
-{{#not_selected}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected}}
-
-
-{{/username_nav}}
-
-
-{{#no_mini_nav_bar?}}
-
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
-
-{{/no_mini_nav_bar?}}
-
-       </ul>
-
-{{/logged_in?}}
-
-
-{{#no_mini_nav_bar?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="news">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
-
-{{#logged_in?}}
-
-         <li>
-          <a href="/clubs/create/"> [ Create ] </a>
-         </li>
-
-{{/logged_in?}}
-
-       </ul>
-
-{{/no_mini_nav_bar?}}
-
-
-{{#mini_nav_bar?}}
-
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
-        </li>
-       </ul>
-
-{{/mini_nav_bar?}}
-
-      </div>
-    <div id="footer">
-     <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
-    </div>
+   </div>
 
 {{#javascripts}}
 
-    <script type="text/javascript" src="{{src}}?{{time_i}}"></script>
+   <script type="text/javascript" src="{{src}}?{{time_i}}"></script>
 
 {{/javascripts}}
 
@@ -356,12 +258,11 @@
 {{#include_tracking?}}
 
 
-          <script type="text/javascript"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E')); </script> 
-          <script type="text/javascript"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>
-          <script type="text/javascript">mpmetrics.track("eveything", { 'referer' : '{{http_referer}}' });</script>
-        
+        <script type="text/javascript"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E')); </script> 
+        <script type="text/javascript"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>
+        <script type="text/javascript">mpmetrics.track("eveything", { 'referer' : '{{http_referer}}' });</script>
+      
 {{/include_tracking?}}
 
-   </div>
   </body>
  </html>

@@ -21,7 +21,7 @@ div.revols {
 
 div.revols h2 {
   font-size: 16px;
-  background: #ff9;
+  background: #ffff99;
   text-align: center;
   padding: 5px 0; }
 
@@ -46,5 +46,5 @@ a:link, a:visited, a:hover, a:active {
   padding: 0 4px; }
 
 a:hover, a:active, a:focus {
-  background: #D50015;
-  color: #fff; }
+  background: #d50015;
+  color: white; }

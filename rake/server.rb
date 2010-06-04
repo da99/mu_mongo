@@ -63,7 +63,7 @@ namespace :server do
 		output
   end
   
-  desc 'Start CouchDB server.'
+  desc 'Start MongoDB server.'
   task :db do 
     dir = "~/apps/mongodb"
     exists = (Rush.processes.filter(:cmdline=>/mongod\ /).to_a.size > 0)
@@ -80,7 +80,7 @@ namespace :server do
     exec("~/Desktop/mongodb/bin/mongo")
   end
   
-  desc 'Shutdown background CouchDB server process.'
+  desc 'Shutdown background MongoDB server process.'
   task :shutdown_db do
     Rush.processes.filter(:cmdline=>/mongod\ /).kill.inspect
     puts_white 'All mongodb processes have been killed.'

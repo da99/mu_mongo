@@ -5,6 +5,10 @@ namespace :tests do
 
   desc %! Runs tests for your app using glob: tests/test_*.rb !
   task :all do
+    
+    puts_white 'Updating gems...'
+    puts_white shell_out('gem update')
+    
     ENV['RACK_ENV'] ||= 'test'
     Rake::Task['db:reset!'].invoke
     rb_files = Dir.glob('tests/Test_*.rb').sort.reverse.map { |file| file.sub('.rb', '')}

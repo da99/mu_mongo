@@ -61,8 +61,6 @@ namespace 'git' do
   desc "Prep push code to Heroku."
   task :prep_push do 
 
-    # puts_white 'Updating gems...'
-    # `gem update`
     Rake::Task['views:compile'].invoke
 		# Rake::Task['tests:all'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
@@ -134,9 +132,13 @@ namespace 'git' do
     ssh_into   = "ssh da01@da01.webfactional.com"
     cd_megauni = "cd ~/megauni"
     err_cap    = '2>&1'
-    puts_white "NOTE: Check to see if all required gems are installed on server."
+    
     puts `git push webfaction #{err_cap}`
     puts `#{ssh_into} "#{cd_megauni} && git pull" #{err_cap}`
+    
+    puts_white 'Updating gems on server'
+    puts `#{ssh_into} "#{cd_megauni} && gem update" #{err_cap}`
+
     puts `#{ssh_into} "#{cd_megauni} && rake unicorn:restart" #{err_cap}`
   end
 
