@@ -123,6 +123,8 @@ class Markaby::Builder
         mustache 'not_logged_in?' do
           li { a('Log-in', :href=>'/log-in/') }
         end
+        
+        li { a('Megauni', :href=>'/') }
       } # ul
       
  

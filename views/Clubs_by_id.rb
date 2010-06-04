@@ -4,35 +4,16 @@
 # CONTROL controls/Clubs.rb
 # NAME  Clubs_by_id
 
+require 'views/__Base_View_Club'
+
 class Clubs_by_id < Base_View
+ 
+  include Base_View_Club
 
 	def mini_nav_bar?
 		true
 	end
 
-  def title 
-    @app.env['results.club'].data.title
-  end
-
-  def club
-    @app.env['results.club']
-  end
-
-  def club_href
-    "/clubs/#{club.data.filename}/"
-  end
-
-  def club_href_e
-    File.join(club_href, 'e/')
-  end
-
-  def club_href_qa
-    File.join(club_href, 'qa/')
-  end
-
-  def club_href_news
-    File.join(club_href, 'news/')
-  end
   
   def months
     %w{ 8 4 3 2 1 }.map { |month|
@@ -40,34 +21,6 @@ class Clubs_by_id < Base_View
         :href=>"/clubs/hearts/by_date/2007/#{month}/" 
       }
     }
-  end
-
-  def club_id
-    club.data._id
-  end
-
-  def club_title
-    club.data.title
-  end
-
-  def club_filename
-    club.data.filename
-  end
-  
-  def club_teaser
-    club.data.teaser
-  end
-
-  def potential_follower?
-    club.potential_follower?(current_member)
-  end
-
-  def follower?
-    club.follower?(current_member)
-  end
-
-  def follow_href
-    club.follow_href
   end
 
   def public_labels

@@ -5,6 +5,10 @@
 div.content! { 
   
   p 'This feature has not been implemented yet.'
+
+  p {
+    a("Go back to {{club_title}}", :href=>'{{club_href}}')
+  }
   
 } # === div.content!
 
