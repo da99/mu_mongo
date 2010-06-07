@@ -1,7 +1,7 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Clubs_by_id.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_by_id.sass
-# MODEL models/Club.rb
-# CONTROL controls/Clubs.rb
+# MAB   ~/megauni/templates/en-us/mab/Clubs_by_id.rb
+# SASS  ~/megauni/templates/en-us/sass/Clubs_by_id.sass
+# MODEL ~/megauni/models/Club.rb
+# CONTROL ~/megauni/controls/Clubs.rb
 # NAME  Clubs_by_id
 
 require 'views/__Base_View_Club'
