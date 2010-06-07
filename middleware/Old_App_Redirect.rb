@@ -7,11 +7,22 @@ class Old_App_Redirect
 
   def call new_env
 
+		if new_env['PATH_INFO'] === '/' && new_env['HTTP_METHOD'] === 'POST'
+			return hearty_redirect( new_env['HTTP_REFERER'] || '/my-egg-timer/' )
+		end
+
+		if new_env['PATH_INFO'] == '/member/'
+			return hearty_redirect('/')
+		end
+
     # =========== BAD AGENTS ==============================
     if [
      %r!\A/MSOffice/cltreq.asp!,
      %r!\.(asp|php)\Z!,
-     %r!\A/_vti_bin/owssvr.dll!
+     %r!\A/_vti_bin/owssvr.dll!,
+		 %r!\A/sitemap.xml.gz!,
+		 %r!awstats.pl\Z!,
+		 %r!/my-egg-timer/stylesheets/!
     ].detect { |str| new_env['PATH_INFO'] =~ str }
       return hearty_redirect("http://www.bing.com/")
     end
@@ -24,7 +35,10 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com#{wrong_path}")
     end
 
-    if new_env['HTTP_USER_AGENT'] == 'panscient.com'
+		ua = new_env['HTTP_USER_AGENT']
+    if ua && [ 'panscient', 'aiHitBot' , "WebSurfer text" ].detect { |ua_s|  
+			ua[ua_s]
+		}
       return hearty_redirect("http://www.bing.com/")
     end
 
