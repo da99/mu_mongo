@@ -1,3 +1,4 @@
+require 'loofah'
 
 class Data_Pouch
 

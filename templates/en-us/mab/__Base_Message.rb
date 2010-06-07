@@ -1,3 +1,4 @@
+require 'models/Data_Pouch'
 
 module Base_Message
 

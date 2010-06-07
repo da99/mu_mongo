@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-   <meta content="text/javascript" http-equiv="Content-Script-Type"/>
-   <meta content="text/css" http-equiv="Content-Style-Type"/>
-   <meta content="en-US" http-equiv="Content-Language"/>
-   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-   <meta content="en-US" http-equiv="Content-Language"/>
+   <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+   <meta http-equiv="Content-Style-Type" content="text/css"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <meta http-equiv="Content-Language" content="en-US"/>
 
 {{#no_meta_cache}}
 
-   <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
-   <meta content="no-cache" http-equiv="pragma"/>
+   <meta http-equiv="expires" content="Thu, 12 Mar 2004 12:34:12 GMT"/>
+   <meta http-equiv="pragma" content="no-cache"/>
 
 {{/no_meta_cache}}
 
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275618422"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275875018"/>
 
 {{/not_mobile_request?}}
 
@@ -161,67 +161,67 @@
 
 {{#logged_in?}}
 
-     <div id="club_message_create">
-      <h4>Post a message:</h4>
-      <form method="POST" name="form_club_message_create" id="form_club_message_create" action="/messages/">
-       <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-       <input type="hidden" value="public" name="privacy"/>
+      <div id="club_message_create">
+       <h4>Post a message:</h4>
+       <form method="POST" name="form_club_message_create" id="form_club_message_create" action="/messages/">
+        <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+        <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
-       <input type="hidden" value="{{first_username}}" name="username"/>
+        <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-       <fieldset>
-        <select name="message_model">
-         <option value="comment">Comment</option>
-         <option value="story">Story</option>
-         <option value="joke">Humorous ;)</option>
-         <option value="question">Question?</option>
-         <option value="plea">Request</option>
-         <option value="brainstorm">Brainstorm</option>
-         <option value="complaint">Complain!</option>
-         <option value="product">Product</option>
-        </select>
-       </fieldset>
-       <fieldset>
-        <textarea name="body"></textarea>
-       </fieldset>
-       <fieldset>
-        <label>Labels (Separate each with a comma.)</label>
-        <input type="text" class="text" value="" name="public_labels"/>
-       </fieldset>
+        <fieldset>
+         <select name="message_model">
+          <option value="comment">Comment</option>
+          <option value="story">Story</option>
+          <option value="joke">Humorous ;)</option>
+          <option value="question">Question?</option>
+          <option value="plea">Request</option>
+          <option value="brainstorm">Brainstorm</option>
+          <option value="complaint">Complain!</option>
+          <option value="product">Product</option>
+         </select>
+        </fieldset>
+        <fieldset>
+         <textarea name="body"></textarea>
+        </fieldset>
+        <fieldset>
+         <label>Labels (Separate each with a comma.)</label>
+         <input type="text" class="text" value="" name="public_labels"/>
+        </fieldset>
 
 {{#multiple_usernames?}}
 
-       <fieldset>
-        <label>Post as:</label>
-        <select name="owner_id">
+        <fieldset>
+         <label>Post as:</label>
+         <select name="owner_id">
 
 {{#multiple_usernames}}
 
-         <option value="{{username}}">{{username}}</option>
+          <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-        </select>
-       </fieldset>
+         </select>
+        </fieldset>
 
 {{/multiple_usernames?}}
 
-       <fieldset>
-        <label>Important?</label>
-        <select name="important">
-         <option value="">No. It can wait.</option>
-         <option value="true">Yes</option>
-        </select>
-       </fieldset>
-       <div class="buttons">
-        <button class="create">Save</button>
-       </div>
-      </form>
-     </div>
+        <fieldset>
+         <label>Important?</label>
+         <select name="important">
+          <option value="">No. It can wait.</option>
+          <option value="true">Yes</option>
+         </select>
+        </fieldset>
+        <div class="buttons">
+         <button class="create">Save</button>
+        </div>
+       </form>
+      </div>
 
 {{/logged_in?}}
 
@@ -236,12 +236,12 @@
 
 {{#messages_latest}}
 
-      <div class="message">
-       <div class="body">{{{compiled_body}}}</div>
-       <div class="permalink">
-        <a href="{{href}}">Permalink</a>
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
        </div>
-      </div>
 
 {{/messages_latest}}
 
