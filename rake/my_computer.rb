@@ -125,8 +125,9 @@ namespace 'my_computer' do
 
       vals = {}
       vals[:"browser.history_expire_days.mirror"] = 3
-      vals[:"browser.history_expire_days"] = 3
-      vals[:"browser.history_expire_sites"] = 1000
+      vals[:"browser.history_expire_days"]        = 3
+      vals[:"browser.history_expire_sites"]       = 1000
+      vals[:"network.cookie.cookieBehavior"]      = 1 # 1 = Accept cookies, except from third parties.
       grep_vals = shell_out("grep history -r ~/.mozilla/firefox --include=prefs.js")
 
       vals.each do |k,v|

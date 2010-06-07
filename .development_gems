@@ -13,3 +13,4 @@ rack-test
 capistrano
 term-ansicolor
 rush
+rack-debug

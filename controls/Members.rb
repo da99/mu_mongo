@@ -12,7 +12,7 @@ class Members
     render_html_template
   end
             
-  def POST 
+  def POST_create
     log_out! 
 
     begin
@@ -52,7 +52,7 @@ class Members
     render_html_template
   end
         
-  def PUT 
+  def PUT_update
     begin
       m = Member.update( current_member.data._id, current_member, clean_room )
       flash_msg.success = "Data has been updated and saved."

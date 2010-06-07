@@ -4,13 +4,13 @@ PRIMARY_APP = 'megauni'
 
 
 if Rake.application.top_level_tasks.detect { |t| t['gem:'] }
-GEM_MANIFEST           = File.expand_path(File.join('~/', PRIMARY_APP, '.gems'))
-GEM_MANIFEST_ARRAY     = File.read(GEM_MANIFEST).strip.split("\n")
-GEM_PRODUCTION_PAIR    = [GEM_MANIFEST, GEM_MANIFEST_ARRAY]
+  GEM_MANIFEST           = File.expand_path(File.join('~/', PRIMARY_APP, '.gems'))
+  GEM_MANIFEST_ARRAY     = File.read(GEM_MANIFEST).strip.split("\n")
+  GEM_PRODUCTION_PAIR    = [GEM_MANIFEST, GEM_MANIFEST_ARRAY]
 
-GEM_MANIFEST_DEV       = GEM_MANIFEST.sub('.gems', '.development_gems')
-GEM_MANIFEST_DEV_ARRAY = File.read(GEM_MANIFEST_DEV).strip.split("\n")
-GEM_DEVELOPMENT_PAIR   = [GEM_MANIFEST_DEV, GEM_MANIFEST_DEV_ARRAY]
+  GEM_MANIFEST_DEV       = GEM_MANIFEST.sub('.gems', '.development_gems')
+  GEM_MANIFEST_DEV_ARRAY = File.read(GEM_MANIFEST_DEV).strip.split("\n")
+  GEM_DEVELOPMENT_PAIR   = [GEM_MANIFEST_DEV, GEM_MANIFEST_DEV_ARRAY]
 end
 
 namespace :gem do 

@@ -1,4 +1,6 @@
 class Find_The_Bunny
+
+  VALID_HTTP_VERBS = %w{ HEAD GET POST PUT DELETE }
   Old_Topics = %w{
     arthritis
     back_pain
@@ -20,31 +22,51 @@ class Find_The_Bunny
     preggers
     sports
   }
+  URL_REGEX = Hash[
+    :id       => '[a-zA-Z\-\d]+',
+    :filename => '[a-zA-Z0-9\-\_\+]+',
+    :digits   => '[0-9]+',
+    :old_topics => "#{Old_Topics.join('|')}"
+  ]
   def initialize new_app
-    ids = '[a-zA-Z\-\d]+'
-    filename = '[a-zA-Z0-9\-\_\+]+'
     @app = new_app
     @url_aliases = [
-      ['/', {:controller=>Hellos, :http_method=>['GET'], :action_name=>'list'}],
-      ['/salud/', {:controller=>Hellos, :http_method=>['GET'], :action_name=>'salud'}],
-      [%r!\A/mess/(#{ids})/\Z! , { :controller => Messages, :http_method=>['GET', 'PUT'], :action_name => 'by_id' } ],
-      [%r!\A/mess/(#{ids})/edit/\Z! , { :controller => Messages, :action_name => 'edit' } ],
-      ['/clubs/', {:controller=>Clubs, :action_name=>'list', :http_method=>'GET'}],
-      ['/clubs/', {:controller=>Clubs, :action_name=>'POST', :http_method=>'POST'}],
-      [%r!\A/clubs/create/\Z!, {:controller=>Clubs, :action_name=>'create'} ],
-      [%r!\A/clubs/(#{filename})/edit/\Z!, {:controller=>Clubs, :action_name=>'edit'} ],
-      [%r!\A/clubs/(#{filename})/by_label/([a-zA-Z0-9\-\+\_]+)! , {:controller=>Messages, :action_name=>'by_label'}],
-      [%r!\A/clubs/(#{filename})/by_date/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
-      [%r!\A/clubs/(#{filename})/by_date/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
-      [%r!\A/clubs/(#{filename})/by_date/(\d+)/(\d+)/\Z! , {:controller=>Messages, :action_name=>'by_date'}],
-      [%r!\A/clubs/(#{Old_Topics.join('|')})/\Z! , {:controller=>Clubs, :action_name=>'by_old_id'}],
-      [%r!\A/clubs/(#{filename})/\Z! , {:controller=>Clubs, :action_name=>'by_id'}],
-      [%r!\A/clubs/(#{filename})/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'GET'}],
-      [%r!\A/clubs/follow/\Z!, {:controller=>Clubs, :action_name=>'follow', :http_method=>'POST'}],
-      [%r!\A/rss.xml\Z!, {:controller=>Hellos, :action_name=>'rss_xml', :http_method=>['GET']}],
-      [%r!\A/clubs/(#{filename})/e/\Z!, {:controller=>Clubs, :action_name=>'read_e', :http_method=>['GET']}],
-      [%r!\A/clubs/(#{filename})/qa/\Z!, {:controller=>Clubs, :action_name=>'read_qa', :http_method=>['GET']}],
-      [%r!\A/clubs/(#{filename})/news/\Z!, {:controller=>Clubs, :action_name=>'read_news', :http_method=>['GET']}]
+      ['/'                                           , Hellos  , 'list'        , 'GET'       ]  ,
+      ['/salud/'                                     , Hellos  , 'salud'       , 'GET'       ]  ,
+      ['/rss.xml'                                    , Hellos  , 'rss_xml']    ,
+      ['/sitemap.xml'                                , Hellos  , 'sitemap_xml'],
+      
+      ['/mess/{id}/'                                 , Messages, 'by_id'       , %w{ GET PUT } ],
+      ['/mess/{id}/edit/'                            , Messages, 'edit'  ]     ,
+      ['/clubs/{filename}/by_label/{filename}/'      , Messages, 'by_label']   ,
+      ['/clubs/{filename}/by_date/'                  , Messages, 'by_date']    ,
+      ['/clubs/{filename}/by_date/{digits}/'         , Messages, 'by_date']    ,
+      ['/clubs/{filename}/by_date/{digits}/{digits}/', Messages, 'by_date']    ,
+      ['/messages/'                                  , Messages, 'create'      , 'POST']        ,
+      
+      ['/clubs/'                                     , Clubs   , 'list'        , 'GET']         ,
+      ['/clubs/'                                     , Clubs   , 'create'      , 'POST']        ,
+      ['/clubs/create/'                              , Clubs   , 'create' ]    ,
+      ['/clubs/{filename}/edit/'                     , Clubs   , 'edit' ]      ,
+      ['/clubs/{old_topics}/'                        , Clubs   , 'by_old_id']  ,
+      ['/clubs/{filename}/'                          , Clubs   , 'by_id']      ,
+      ['/clubs/{filename}/'                          , Clubs   , 'update'      , 'PUT']         ,
+      ['/clubs/{filename}/follow/'                   , Clubs   , 'follow'      , 'GET']         ,
+      ['/clubs/follow/'                              , Clubs   , 'follow'      , 'POST']        ,
+      ['/clubs/{filename}/e/'                        , Clubs   , 'read_e'      , 'GET']         ,
+      ['/clubs/{filename}/qa/'                       , Clubs   , 'read_qa'     , 'GET']         ,
+      ['/clubs/{filename}/news/'                     , Clubs   , 'read_news'   , 'GET']         ,
+      
+      ['/log-in/'                                    , Sessions, 'log_in'      , %w{GET POST} ] ,
+      ['/log-out/'                                   , Sessions, 'log_out']    ,
+      
+      ['/member/'                                   , Members , 'create'      , 'POST']        ,
+      ['/members/'                                   , Members , 'update'      , 'PUT'],
+      ['/life/{filename}/'                           , Members , 'life' ],
+      ['/lives/{filename}/'                           , Members , 'lives' ],
+      ['/create-account/'                           , Members , 'create_account' ],
+      ['/create-life/'                           , Members , 'create_life' ],
+      ['/today/'                           , Members , 'today' ]
     ]
   end
 
@@ -52,82 +74,51 @@ class Find_The_Bunny
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-    results = @url_aliases.detect { |k,v| 
+    results = @url_aliases.detect { |path, control, action_name, raw_http_verbs| 
+
+      # === Validate HTTP verbs
+      http_verbs = [ raw_http_verbs || 'GET' ].flatten
+      if http_verbs.empty?
+        http_verbs << 'GET'
+      end
+      if http_verbs.include?('GET')
+        http_verbs << 'HEAD'
+      end
+      http_verbs = http_verbs.compact
+
+      invalid = http_verbs - VALID_HTTP_VERBS
+      unless invalid.empty?
+        raise ArgumentError, "Invalid http verbs, #{invalid.inspect} for #{control.inspect}, #{action_name.inspect}, #{raw_http_verbs.inspect}"
+      end
       
-      path_matches = case k
+      # === Does the URL match that target?
+      path_matches = case path
                      when String
-                       new_env['PATH_INFO'] =~ %r~\A#{k}\Z~
+                       k_finale = URL_REGEX.to_a.inject(path) { |m, kv| 
+                         m.gsub("{#{kv.first}}", "(#{kv.last})")
+                       }
+      # if new_env['PATH_INFO'] == "/clubs/hearts/" && http_meth == 'GET'
+      #   
+      #   require 'rubygems'; require 'ruby-debug'; debugger
+      # end
+        
+                      
+                       new_env['PATH_INFO'] =~ %r~\A#{k_finale}\Z~
                      when Regexp
-                       new_env['PATH_INFO'] =~ k
+                       new_env['PATH_INFO'] =~ path
                      end
 
-      action_matches = case v[:http_method]
-                       when NilClass
-                         http_meth
-                       when Array
-                         allowed_meths = if v[:http_method].include?('GET')
-                                            ['HEAD'] + v[:http_method]
-                                         else
-                                           v[:http_method]
-                                         end
-                         allowed_meths.include?(http_meth) && http_meth
-                       else
-                         if v[:http_method] === 'GET'
-                           ['GET', 'HEAD'].include?(http_meth) && http_meth
-                         else
-                           (http_meth === v[:http_method]) && http_meth
-                         end
-                       end
+      # === Action found?
+      action_matches = http_verbs.include?(http_meth)
 
+      # === Store everything into the ENV.
       if path_matches && action_matches
-        new_env['the.app.meta'][:control]     = v[:controller]
-        new_env['the.app.meta'][:http_method] = action_matches
-        new_env['the.app.meta'][:action_name] = v[:action_name] || http_meth
+        new_env['the.app.meta'][:control]     = control
+        new_env['the.app.meta'][:http_method] = http_meth
+        new_env['the.app.meta'][:action_name] = action_name || http_meth
         new_env['the.app.meta'][:args]        = $~.captures
       end
       
-    }
-
-    results ||= The_App.controls.detect { |control|
-      raw_pieces = new_env['PATH_INFO'].sub(/\A\//, '').sub(/\/\Z/, '').split('/')
-
-      pieces = if raw_pieces.empty?
-                 [http_meth, 'list']
-               else
-                 [http_meth, raw_pieces].flatten
-               end
-      
-      # Check if first piece is part of a Control.
-      if pieces[1] 
-        c_name = pieces[1].split('_').map(&:capitalize).join('_') 
-        if c_name === control.to_s || "#{c_name}s" === control.to_s
-          pieces.delete_at(1)
-        end
-      end
-
-      # Loop through pieces, combining them with an underscore 
-      # until the combination, matches a method name of the
-      # control, along with argument count.
-      pieces.dup.inject([]) do |a_name_arr, segment|
-        
-        a_name_arr << pieces.shift.gsub(/[^a-zA-Z0-9]+/, '_')
-        a_name = a_name_arr.join('_')
-        
-        if control.public_instance_methods.include?(a_name) &&
-           control.instance_method(a_name).arity == pieces.size
-          
-          new_env['the.app.meta'][:control]     = control
-          new_env['the.app.meta'][:http_method] = new_env['REQUEST_METHOD'].to_s
-          new_env['the.app.meta'][:action_name] = a_name.sub(new_env['the.app.meta'][:http_method] + '_' , '')
-          new_env['the.app.meta'][:args]        = pieces
-          break
-        end
-
-        a_name_arr
-
-      end
-
-      new_env['the.app.meta'][:control]
     }
 
     if results

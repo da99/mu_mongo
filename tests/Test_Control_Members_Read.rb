@@ -22,7 +22,7 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
-  must 'show a msesage list from followed clubs at /lives/{username}/' do
+  must 'show a message list from followed clubs at /lives/{username}/' do
     
     content          = create_club_content
     club_1, club_2, rest = content[:clubs]

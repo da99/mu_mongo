@@ -6,8 +6,10 @@ namespace :tests do
   desc %! Runs tests for your app using glob: tests/test_*.rb !
   task :all do
     
-    puts_white 'Updating gems...'
-    puts_white shell_out('gem update')
+    unless ENV['SKIP_GEM_UPDATE']
+      puts_white 'Updating gems...'
+      puts_white shell_out('gem update')
+    end
     
     ENV['RACK_ENV'] ||= 'test'
     Rake::Task['db:reset!'].invoke

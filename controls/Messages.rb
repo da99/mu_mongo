@@ -41,7 +41,7 @@ class Messages
     render_html_template
   end
 
-  def POST # CREATE
+  def POST_create # CREATE
     return_page = '/today/'
     begin
       if clean_room[:club_filename]

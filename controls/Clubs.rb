@@ -62,7 +62,7 @@ class Clubs
     render_html_template
   end
 
-  def POST
+  def POST_create
     require_log_in!
     begin
       club = Club.create( current_member, clean_room )
@@ -74,7 +74,7 @@ class Clubs
     end
   end
 
-  def PUT_by_id filename
+  def PUT_update filename
     require_log_in! 
     club_id = Club.by_filename(filename).data._id
     begin
