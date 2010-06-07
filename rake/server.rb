@@ -134,6 +134,9 @@ namespace :unicorn do
       require 'rush'
       old_master = Rush.processes.filter(:cmdline=>/unicorn master/).first
       Process.kill('HUP', old_master.pid)
+			
+			# The following isn't working on the server.
+			# It shutdowns Unicorn, but won't restart the new process.
       # Process.kill('USR2', old_master.pid)
       # Process.kill('WINCH', old_master.pid)
       # Process.kill('QUIT', old_master.pid)

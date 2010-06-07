@@ -11,7 +11,7 @@ class Old_App_Redirect
 			return hearty_redirect( new_env['HTTP_REFERER'] || '/my-egg-timer/' )
 		end
 
-		if new_env['PATH_INFO'] == '/member/'
+		if new_env['PATH_INFO'] == '/member/' && %w{HEAD GET}.include?(new_env['HTTP_METHOD'])
 			return hearty_redirect('/')
 		end
 
