@@ -133,9 +133,10 @@ namespace :unicorn do
       puts 'Restarting unicorn...'
       require 'rush'
       old_master = Rush.processes.filter(:cmdline=>/unicorn master/).first
-      Process.kill('USR2', old_master.pid)
-      Process.kill('WINCH', old_master.pid)
-      Process.kill('QUIT', old_master.pid)
+      Process.kill('HUP', old_master.pid)
+      # Process.kill('USR2', old_master.pid)
+      # Process.kill('WINCH', old_master.pid)
+      # Process.kill('QUIT', old_master.pid)
       puts 'Done.'
     end
   end
