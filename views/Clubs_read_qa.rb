@@ -11,5 +11,9 @@ class Clubs_read_qa < Base_View
   def title 
     "Q & A: #{super}"
   end
+
+  def messages
+    nil
+  end
   
 end # === Clubs_read_qa 

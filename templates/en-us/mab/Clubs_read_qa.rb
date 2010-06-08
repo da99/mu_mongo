@@ -2,15 +2,33 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-div.content! { 
-  
-  p 'This feature has not been implemented yet.'
+h3 'Q&A: {{club_title}}' 
 
-  p {
-    a("Go back to {{club_title}}", :href=>'{{club_href}}')
+div.teaser '{{club_teaser}}'
+
+club_nav_bar(__FILE__)
+
+show_if 'logged_in?' do
+  
+  form_message_create(
+    :title => 'Ask a question:',
+    :hidden_input => Hash.new[
+                      :message_model => 'question',
+                      :club_filename => '{{club_filename}}',
+                      :privacy       => 'public'
+                     ]
+  )
+  
+end # logged_in?
+
+
+div.club_messages! do
+  
+  show_if('no_messages'){
+    div.empty_msg 'No questions have been asked.'
   }
   
-} # === div.content!
-
-partial('__nav_bar')
+  loop_messages 'messages'
+  
+end
 

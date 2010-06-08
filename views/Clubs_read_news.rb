@@ -12,4 +12,8 @@ class Clubs_read_news < Base_View
     "News: #{super}"
   end
   
+  def messages
+    nil
+  end
+  
 end # === Clubs_read_news 

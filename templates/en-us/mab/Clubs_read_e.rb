@@ -1,16 +1,34 @@
-# VIEW views/Clubs_read_e.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_e.sass
+# VIEW ~/megauni/views/Clubs_read_e.rb
+# SASS ~/megauni/templates/en-us/sass/Clubs_read_e.sass
 # NAME Clubs_read_e
 
-div.content! { 
-  
-  p 'This feature has not been implemented yet.'
+h3 'Encyclopedia: {{club_title}}' 
 
-  p {
-    a("Go back to {{club_title}}", :href=>'{{club_href}}')
+div.teaser '{{club_teaser}}'
+
+club_nav_bar(__FILE__)
+
+show_if 'logged_in?' do
+  
+  form_message_create(
+    :title => 'Post a new section:',
+    :hidden_input => Hash.new[
+                      :message_model => 'encyclopedia',
+                      :club_filename => '{{club_filename}}',
+                      :privacy       => 'public'
+                     ]
+  )
+  
+end # logged_in?
+
+
+div.club_messages! do
+  
+  show_if('no_messages'){
+    div.empty_msg 'Nothing has been posted yet.'
   }
   
-} # === div.content!
-
-partial('__nav_bar')
+  loop_messages 'messages'
+  
+end
 

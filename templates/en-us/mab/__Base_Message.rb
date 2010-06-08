@@ -16,11 +16,15 @@ module Base_Message
   end
 
   def form_message_create raw_opts = {}
-    opts = Data_Pouch.new(raw_opts, :hidden_input)
+    opts = Data_Pouch.new(raw_opts, :hidden_input, :title)
     opts.hidden_input ||= {} 
+    opts.title ||= 'Post a message:'
+    message_model = opts.hidden_input[:message_model]
     text(capture {
     div.club_message_create! do
-      h4 'Post a message:'  
+      
+      h4 opts.title
+      
       form.form_club_message_create! :method=>'POST', :action=>"/messages/" do
 
         opts.hidden_input.each { |k,v|
@@ -31,19 +35,23 @@ module Base_Message
           input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
         end
 
-        fieldset {
-          select(:name=>'message_model') {
-            option "Comment",     :value=>'comment'
-            option "Story",       :value=>'story'
-            option "Humorous ;)", :value=>'joke'
-            option "Question?",   :value=>'question'
-            option "Request",     :value=>'plea'
-            option "Brainstorm",  :value=>'brainstorm'
-            # option "Event",       :value=>'event'
-            option "Complain!",   :value=>'complaint'
-            option "Product",     :value=>'product'
-          }
-        } 
+        if message_model
+          input :type=>'hidden', :name=>'message_model', :value=>message_model
+        else
+          fieldset {
+            select(:name=>'message_model') {
+              option "Comment",     :value=>'comment'
+              option "Story",       :value=>'story'
+              option "Humorous ;)", :value=>'joke'
+              option "Question?",   :value=>'question'
+              option "Request",     :value=>'plea'
+              option "Brainstorm",  :value=>'brainstorm'
+              # option "Event",       :value=>'event'
+              option "Complain!",   :value=>'complaint'
+              option "Product",     :value=>'product'
+            }
+          } 
+        end
 
         fieldset {
           textarea '', :name=>'body'

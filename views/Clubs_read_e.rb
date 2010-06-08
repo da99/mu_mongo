@@ -11,5 +11,9 @@ class Clubs_read_e < Base_View
   def title 
     "Encyclopedia: #{super}"
   end
+
+  def messages
+    nil
+  end
   
 end # === Clubs_read_e 
