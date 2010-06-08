@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275875018"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275963129"/>
 
 {{/not_mobile_request?}}
 
@@ -70,132 +70,180 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="content">
-      <p>This feature has not been implemented yet.</p>
-      <p>
-       <a href="{{club_href}}">Go back to {{club_title}}</a>
-      </p>
-     </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
-       </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
+     <h3>Encyclopedia: {{club_title}}</h3>
+     <div class="teaser">{{club_teaser}}</div>
+      <ul id="club_nav_bar">
+       <li>
+        <a href="">Home</a>
+       </li>
+       <li class="selected">
+        <span>Encyclopedia</span>
+       </li>
+       <li>
+        <a href="qa">Q &amp; A</a>
+       </li>
+       <li>
+        <a href="news">News</a>
+       </li>
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
+       <li>
+        <a href="/log-out/">Log-out</a>
+       </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
+       <li>
+        <a href="/log-in/">Log-in</a>
+       </li>
 
 {{/not_logged_in?}}
 
-       </ul>
+       <li>
+        <a href="/">Megauni</a>
+       </li>
+      </ul>
 
 {{#logged_in?}}
 
 
-{{#no_mini_nav_bar?}}
+{{#follower?}}
 
-       <p class="divider">Lives</p>
+      <p>You are following this club.</p>
 
-{{/no_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
+{{/follower?}}
 
 
-{{#selected}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected}}
+{{#potential_follower?}}
 
 
-{{#not_selected}}
+{{#single_username?}}
 
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
+      <p>
+       <a href="{{follow_href}}">Follow this club.</a>
+      </p>
 
-{{/not_selected}}
-
-
-{{/username_nav}}
+{{/single_username?}}
 
 
-{{#no_mini_nav_bar?}}
+{{#multiple_usernames?}}
 
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
+      <form method="post" name="form_follow_create" id="form_follow_create" action="/clubs/follow/">
+       <fieldset>
+        <label>Follow this club as: </label>
+        <select name="username">
 
-{{/no_mini_nav_bar?}}
+{{#current_member_usernames}}
 
-       </ul>
+         <option value="{{username}}">{{username}}</option>
+
+{{/current_member_usernames}}
+
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button>Follow.</button>
+       </div>
+      </form>
+
+{{/multiple_usernames?}}
+
+
+{{/potential_follower?}}
+
 
 {{/logged_in?}}
 
-
-{{#no_mini_nav_bar?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="news">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/clubs/create/"> [ Create ] </a>
-         </li>
+      <div id="club_message_create">
+       <h4>Post a new section:</h4>
+       <form method="POST" name="form_club_message_create" id="form_club_message_create" action="/messages/">
 
-{{/logged_in?}}
+{{#single_username?}}
 
-       </ul>
+        <input type="hidden" value="{{first_username}}" name="username"/>
 
-{{/no_mini_nav_bar?}}
+{{/single_username?}}
 
+        <fieldset>
+         <select name="message_model">
+          <option value="comment">Comment</option>
+          <option value="story">Story</option>
+          <option value="joke">Humorous ;)</option>
+          <option value="question">Question?</option>
+          <option value="plea">Request</option>
+          <option value="brainstorm">Brainstorm</option>
+          <option value="complaint">Complain!</option>
+          <option value="product">Product</option>
+         </select>
+        </fieldset>
+        <fieldset>
+         <textarea name="body"></textarea>
+        </fieldset>
+        <fieldset>
+         <label>Labels (Separate each with a comma.)</label>
+         <input type="text" class="text" value="" name="public_labels"/>
+        </fieldset>
 
-{{#mini_nav_bar?}}
+{{#multiple_usernames?}}
 
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
-        </li>
-       </ul>
+        <fieldset>
+         <label>Post as:</label>
+         <select name="owner_id">
 
-{{/mini_nav_bar?}}
+{{#multiple_usernames}}
 
+          <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+         </select>
+        </fieldset>
+
+{{/multiple_usernames?}}
+
+        <fieldset>
+         <label>Important?</label>
+         <select name="important">
+          <option value="">No. It can wait.</option>
+          <option value="true">Yes</option>
+         </select>
+        </fieldset>
+        <div class="buttons">
+         <button class="create">Save</button>
+        </div>
+       </form>
       </div>
+
+{{/logged_in?}}
+
+     <div id="club_messages">
+
+{{#no_messages}}
+
+      <div class="empty_msg">Nothing has been posted yet.</div>
+
+{{/no_messages}}
+
+
+{{#messages}}
+
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
+       </div>
+
+{{/messages}}
+
+     </div>
    </div>
 
 {{#javascripts}}
