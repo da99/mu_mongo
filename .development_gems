@@ -14,3 +14,4 @@ capistrano
 term-ansicolor
 rush
 rack-debug
+mocha

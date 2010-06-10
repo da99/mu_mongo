@@ -105,13 +105,15 @@ namespace :gem do
   end
 
   
-  desc "Installs and updates all gems from manifest (.gems, .development_gems)" 
+  desc "Installs and updates all gems from manifest (.gems, .development_gems).
+		Use PRODUCTION=true to limit to just .gems.
+	" 
   task :update  do
 
-    gems_to_install = GEM_MANIFEST_ARRAY
-
-    dev_gems        = File.expand_path(File.join('~/', PRIMARY_APP, '.development_gems' ))
-    gems_to_install = gems_to_install + File.read(dev_gems).strip.split("\n")
+    gems_to_install = GEM_MANIFEST_ARRAY 
+		unless ENV['PRODUCTION']
+			gems_to_install += GEM_MANIFEST_DEV_ARRAY
+		end
 
     installed = `gem list`
     if gems_to_install.empty?

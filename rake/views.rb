@@ -18,7 +18,7 @@ namespace :views do
     
     assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, name )
 
-    ldir      = assert_dir_exists("templates/#{lang}")
+    ldir      = ("~/megauni/templates/#{lang}")
     dir       = File.join( ldir, 'mab' )
     mab       = File.join( ldir, 'mab',   name + '.rb'   )
     sass      = File.join( ldir, 'sass',  name + '.sass' )
@@ -73,7 +73,7 @@ end # === #{name} ~.lstrip
           puts_white 'Already existed:'
         else
           # Create file.
-          File.open( full_path, 'w') do |file_io|
+          File.open( File.expand_path(full_path), 'w') do |file_io|
             file_io.puts content
           end
           puts_white 'Created:'

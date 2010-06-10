@@ -135,7 +135,7 @@ namespace 'git' do
     
     puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
     puts `git push webfaction #{err_cap}`
-    puts `#{ssh_into} "#{cd_megauni} && git pull && gem update && rake unicorn:restart" #{err_cap}`
+    puts `#{ssh_into} "#{cd_megauni} && git pull && rake gem:update PRODUCTION=true && rake unicorn:restart" #{err_cap}`
     
 
   end

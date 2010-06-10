@@ -16,6 +16,14 @@ class The_App
   
 end # === class
 
+begin
+	require File.expand_path('~/.megauni_conf')
+rescue LoadError
+	class The_App
+		SMTP_USER_NAME = 'unknown'
+		SMTP_PASSWORD = 'unknown'
+	end
+end
 
 # === DB urls/connections ===
 require 'models/Couch_Plastic'
