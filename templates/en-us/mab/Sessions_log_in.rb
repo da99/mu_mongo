@@ -27,7 +27,19 @@ div.the_form! {
       
     } # === form.log_in_form!
 
-} # === div.content!
+		h3 "Forgot your password?"
+
+		form.reset_password_form!(:action=>'/reset-password/', :method=>"post") {
+			fieldset {
+				label 'Email'
+				input.text( :id=>"member_email", :name=>"email", :type=>"text", :value=>'')
+			}
+      div.buttons {
+        button.create 'Get My Password', :onclick=>"document.getElementById('reset_password_form!').submit(); return false;" 
+      }
+		}
+
+} # === div.the_form!
 
 
 partial('__nav_bar')

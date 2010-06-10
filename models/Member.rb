@@ -52,7 +52,7 @@ class Member
     [:stripped, /[^a-z0-9\.\-\_\+\@]/i ],
     [:match, /\A[a-zA-Z0-9\.\-\_\+]{1,}@[a-zA-Z0-9\-\_]{1,}[\.]{1}[a-zA-Z0-9\.\-\_]{1,}[a-zA-Z0-9]\Z/ ],
     [:min, 6],
-    [:equal, lambda { raw_data[:email] } ],
+    [:equal, lambda { raw_data.email } ],
     [:error_msg, 'Email has invalid characters.']
 
   make_psuedo :add_username, 
@@ -113,13 +113,21 @@ class Member
 
   # ==== Getters =====================================================    
   
+  def self.by_email email
+    mem = Member.db_collection.find_one(:email=>email)
+    if email.empty? || !mem
+      raise Not_Found, "Member email: #{email.inspect}"
+    end
+    Member.by_id(mem['_id'])
+  end
+
   def self.by_username raw_username
     username = raw_username.to_s.strip
     doc = db_collection_usernames.find_one( :username => username )
     if doc && !username.empty?
       Member.by_id(doc['owner_id'])
     else
-      raise Couch_Plastic::Not_Found, "Member Username: #{username.inspect}"
+      raise Not_Found, "Member username: #{username.inspect}"
     end
   end
 

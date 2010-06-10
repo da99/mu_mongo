@@ -205,7 +205,7 @@ class Test::Unit::TestCase
   end
 
 	def create_member raw_opts = {}
-		opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username)
+		opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username, :email)
 		if !opts.password && !opts.confirm_password
 			new_pwrd              = "pass#{rand(100000)}"
 			opts.password         = new_pwrd
@@ -213,6 +213,9 @@ class Test::Unit::TestCase
 		end
 		if !opts.add_username
 			opts.add_username = "name#{rand(1000000)}"
+		end
+		if !opts.email
+			opts.email = "test-#{rand(10000)}@megauni.com"
 		end
 
 		Member.create nil, opts.as_hash

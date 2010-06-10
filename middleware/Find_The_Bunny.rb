@@ -31,10 +31,10 @@ class Find_The_Bunny
   def initialize new_app
     @app = new_app
     @url_aliases = [
-      ['/'                                           , Hellos  , 'list'        , 'GET'       ]  ,
-      ['/salud/'                                     , Hellos  , 'salud'       , 'GET'       ]  ,
-      ['/rss.xml'                                    , Hellos  , 'rss_xml']    ,
-      ['/sitemap.xml'                                , Hellos  , 'sitemap_xml'],
+      ['/'           , Hellos, 'list'        , 'GET'       ],
+      ['/salud/'     , Hellos, 'salud'       , 'GET'       ],
+      ['/rss.xml'    , Hellos, 'rss_xml']    ,
+      ['/sitemap.xml', Hellos, 'sitemap_xml'],
       
       ['/mess/{id}/'                                 , Messages, 'by_id'       , %w{ GET PUT } ],
       ['/mess/{id}/edit/'                            , Messages, 'edit'  ]     ,
@@ -44,29 +44,30 @@ class Find_The_Bunny
       ['/clubs/{filename}/by_date/{digits}/{digits}/', Messages, 'by_date']    ,
       ['/messages/'                                  , Messages, 'create'      , 'POST']        ,
       
-      ['/clubs/'                                     , Clubs   , 'list'        , 'GET']         ,
-      ['/clubs/'                                     , Clubs   , 'create'      , 'POST']        ,
-      ['/clubs/create/'                              , Clubs   , 'create' ]    ,
-      ['/clubs/{filename}/edit/'                     , Clubs   , 'edit' ]      ,
-      ['/clubs/{old_topics}/'                        , Clubs   , 'by_old_id']  ,
-      ['/clubs/{filename}/'                          , Clubs   , 'by_id']      ,
-      ['/clubs/{filename}/'                          , Clubs   , 'update'      , 'PUT']         ,
-      ['/clubs/{filename}/follow/'                   , Clubs   , 'follow'      , 'GET']         ,
-      ['/clubs/follow/'                              , Clubs   , 'follow'      , 'POST']        ,
-      ['/clubs/{filename}/e/'                        , Clubs   , 'read_e'      , 'GET']         ,
-      ['/clubs/{filename}/qa/'                       , Clubs   , 'read_qa'     , 'GET']         ,
-      ['/clubs/{filename}/news/'                     , Clubs   , 'read_news'   , 'GET']         ,
+      ['/clubs/'                  , Clubs, 'list'      , 'GET'] ,
+      ['/clubs/'                  , Clubs, 'create'    , 'POST'],
+      ['/clubs/create/'           , Clubs, 'create' ]  ,
+      ['/clubs/{filename}/edit/'  , Clubs, 'edit' ]    ,
+      ['/clubs/{old_topics}/'     , Clubs, 'by_old_id'],
+      ['/clubs/{filename}/'       , Clubs, 'by_id']    ,
+      ['/clubs/{filename}/'       , Clubs, 'update'    , 'PUT'] ,
+      ['/clubs/{filename}/follow/', Clubs, 'follow'    , 'GET'] ,
+      ['/clubs/follow/'           , Clubs, 'follow'    , 'POST'],
+      ['/clubs/{filename}/e/'     , Clubs, 'read_e'    , 'GET'] ,
+      ['/clubs/{filename}/qa/'    , Clubs, 'read_qa'   , 'GET'] ,
+      ['/clubs/{filename}/news/'  , Clubs, 'read_news' , 'GET'] ,
       
-      ['/log-in/'                                    , Sessions, 'log_in'      , %w{GET POST} ] ,
-      ['/log-out/'                                   , Sessions, 'log_out']    ,
+      ['/log-in/' , Sessions, 'log_in'  , %w{GET POST} ],
+      ['/log-out/', Sessions, 'log_out'],
       
-      ['/member/'                                   , Members , 'create'      , 'POST']        ,
-      ['/members/'                                   , Members , 'update'      , 'PUT'],
-      ['/life/{filename}/'                           , Members , 'life' ],
-      ['/lives/{filename}/'                           , Members , 'lives' ],
-      ['/create-account/'                           , Members , 'create_account' ],
-      ['/create-life/'                           , Members , 'create_life' ],
-      ['/today/'                           , Members , 'today' ]
+      ['/member/'          , Members, 'create'          , 'POST'],
+      ['/members/'         , Members, 'update'          , 'PUT'] ,
+      ['/life/{filename}/' , Members, 'life' ]          ,
+      ['/lives/{filename}/', Members, 'lives' ]         ,
+      ['/create-account/'  , Members, 'create_account' ],
+      ['/create-life/'     , Members, 'create_life' ]   ,
+      ['/today/'           , Members, 'today' ]         ,
+      ['/reset-password/'  , Members, 'reset_password', 'POST' ]
     ]
   end
 

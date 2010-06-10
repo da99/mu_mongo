@@ -1,3 +1,5 @@
+require 'pony'
+
 class Members
   include Base_Control
     
@@ -51,6 +53,32 @@ class Members
     env['results.member'] = Member.by_username(un)
     render_html_template
   end
+	
+	def POST_reset_password
+		env['results.email'] = clean_room['email']
+		
+		begin
+			mem       = Member.by_email( clean_room['email'] )
+			code      = mem.reset_password
+			env['results.reset'] = true
+			reset_url = File.join(The_App::SITE_URL, "reset-password", code)
+			Pony.mail(
+				:to=>clean_room['email'], 
+				:from=>The_App::SITE_HELP_EMAIL, 
+				:subject=>"#{The_App::SITE_DOMAIN}: Lost Password",
+				:body=>"To change your old password, go to: #{reset_url}",
+				:via      => :smtp,
+			  :via_options => { 
+					:address   => 'smtp.webfaction.com',
+				  :user_name => The_App::SMTP_USER_NAME,
+					:password => The_App::SMTP_PASSWORD
+				}
+			)
+		rescue Member::Not_Found
+		end
+			
+    render_html_template
+	end
         
   def PUT_update
     begin
