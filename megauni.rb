@@ -17,7 +17,7 @@ class The_App
 end # === class
 
 begin
-	require File.expand_path('~/.megauni_conf')
+	require File.expand_path('~/.megauni_conf.rb')
 rescue LoadError
 	class The_App
 		SMTP_USER_NAME = 'unknown'

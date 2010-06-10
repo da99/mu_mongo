@@ -123,7 +123,7 @@ namespace 'git' do
       #     check_this_url url, /#{app_name}/
       # end
 
-      # Launchy.open( url )
+      # 
 
       # true
   end # === task
@@ -136,8 +136,7 @@ namespace 'git' do
     puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
     puts `git push webfaction #{err_cap}`
     puts `#{ssh_into} "#{cd_megauni} && git pull && rake gem:update PRODUCTION=true && rake unicorn:restart" #{err_cap}`
-    
-
+    Launchy.open( 'http://www.megauni.com/' )
   end
 
   
