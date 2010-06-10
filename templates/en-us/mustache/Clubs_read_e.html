@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1275963129"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276193415"/>
 
 {{/not_mobile_request?}}
 
@@ -225,14 +225,14 @@
 
      <div id="club_messages">
 
-{{#no_messages}}
+{{#no_facts}}
 
       <div class="empty_msg">Nothing has been posted yet.</div>
 
-{{/no_messages}}
+{{/no_facts}}
 
 
-{{#messages}}
+{{#facts}}
 
        <div class="message">
         <div class="body">{{{compiled_body}}}</div>
@@ -241,7 +241,7 @@
         </div>
        </div>
 
-{{/messages}}
+{{/facts}}
 
      </div>
    </div>
