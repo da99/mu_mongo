@@ -22,7 +22,7 @@ class Old_App_Redirect
      %r!\A/_vti_bin/owssvr.dll!,
 		 %r!\A/sitemap.xml.gz!,
 		 %r!awstats.pl\Z!,
-		 %r!/my-egg-timer/stylesheets/!
+		 %r!\A/my-egg-timer/stylesheets/\Z!
     ].detect { |str| new_env['PATH_INFO'] =~ str }
       return hearty_redirect("http://www.bing.com/")
     end

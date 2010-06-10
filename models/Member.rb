@@ -193,7 +193,7 @@ class Member
 
     # Raise Account::Reset if necessary.
     if new_count > 2
-      reset_password
+      mem.reset_password
 			raise Password_Reset, mem.inspect
     end
 
