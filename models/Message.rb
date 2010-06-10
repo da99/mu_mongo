@@ -4,7 +4,6 @@ class Message
 
   MODELS = %w{
     comment
-    question
     plea  
     brainstorm
     joke
@@ -13,6 +12,8 @@ class Message
     event
     story
     fact
+    question
+    news
 
     fulfill
     tip

@@ -204,6 +204,20 @@ class Test::Unit::TestCase
     assert_match( /today/, last_request.fullpath )
   end
 
+	def create_member raw_opts = {}
+		opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username)
+		if !opts.password && !opts.confirm_password
+			new_pwrd              = "pass#{rand(100000)}"
+			opts.password         = new_pwrd
+			opts.confirm_password = new_pwrd
+		end
+		if !opts.add_username
+			opts.add_username = "name#{rand(1000000)}"
+		end
+
+		Member.create nil, opts.as_hash
+	end
+
   def create_club(mem = nil)
     mem ||= regular_member_1
     num=rand(10000)

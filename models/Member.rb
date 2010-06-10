@@ -2,6 +2,7 @@ require 'bcrypt'
 
 class Member 
 
+	attr_reader :password_reset_code
   include Couch_Plastic
 
   def self.db_collection
@@ -13,9 +14,11 @@ class Member
   #                     CONSTANTS
   # =========================================================  
   
-  Wrong_Password         = Class.new( StandardError )
-  Password_Reset         = Class.new( StandardError )
-  Invalid_Security_Level = Class.new( StandardError )
+  Wrong_Password              = Class.new( StandardError )
+  Password_Reset              = Class.new( StandardError )
+  Password_Not_In_Reset       = Class.new( StandardError )
+  Invalid_Password_Reset_Code = Class.new( StandardError )
+  Invalid_Security_Level      = Class.new( StandardError )
 
   SECURITY_LEVELS        = %w{ NO_ACCESS STRANGER  MEMBER  EDITOR   ADMIN }
   SECURITY_LEVELS.each do |k|
@@ -166,10 +169,7 @@ class Member
     mem = Member.by_username( username )
 
     # Check for Password_Reset
-    pass_reset_id = "#{mem.data._id}-password-reset"
-    if db_collection_password_resets.find_one(:_id=>pass_reset_id)
-      raise Password_Reset, mem.inspect
-    end
+    raise Password_Reset, mem.inspect if mem.password_in_reset?
 
     # See if password matches with correct password.
     correct_password = BCrypt::Password.new(mem.data.hashed_password) === (password + mem.data.salt)
@@ -193,13 +193,8 @@ class Member
 
     # Raise Account::Reset if necessary.
     if new_count > 2
-      db_collection_password_resets.insert(
-        {:_id=>pass_reset_id, 
-        :created_at=>Couch_Plastic.utc_now, 
-        :owner_id=>mem.data._id},
-        :safe=>false
-      )
-      raise Password_Reset, mem.inspect
+      reset_password
+			raise Password_Reset, mem.inspect
     end
 
     raise Wrong_Password, "Password is invalid for: #{username.inspect}"
@@ -309,6 +304,72 @@ class Member
     updator? editor
   end
 
+  # ==== UPDATORS ======================================================
+	
+	def pass_reset_id 
+		"#{data._id}-password-reset"
+	end
+
+  def password_reset_doc
+    self.class.db_collection_password_resets.find_one(:_id=>pass_reset_id)
+  end
+
+	def password_in_reset?
+    !!password_reset_doc
+	end
+  
+  def change_password_through_reset raw_opts 
+    if not password_in_reset?
+      raise Password_Not_In_Reset, "Can't reset password when account has not been reset."
+    end
+    
+    opts                = Data_Pouch.new(raw_opts, :code, :password, :confirm_password)
+    all_values_included = opts.code && opts.password && opts.confirm_password
+    raise ArgumentError, "Missing values: #{opts.as_hash.inspect}" if not all_values_included
+
+    reset_doc = password_reset_doc
+    
+    if BCrypt::Password.new(reset_doc['hashed_code']) === (opts.code + reset_doc['salt']) 
+      results = Member.update( data._id, self, opts.as_hash ) 
+      self.class.db_collection_password_resets.remove(:_id=>pass_reset_id)
+      results
+    else
+      raise Invalid_Password_Reset_Code, "Member: #{data._id}, Code: #{opts.code}"
+    end
+  end
+
+	def reset_password 
+
+    code = begin
+             # Salt and encrypt values.
+             chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+             (1..10).inject('') { |new_pass, i|  
+               new_pass += chars[rand(chars.size-1)] 
+               new_pass
+             }
+           end
+    salt = begin
+             # Salt and encrypt values.
+             chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+             (1..10).inject('') { |new_pass, i|  
+               new_pass += chars[rand(chars.size-1)] 
+               new_pass
+             }
+           end
+
+    hashed_code = BCrypt::Password.create( code + salt ).to_s
+    self.class.db_collection_password_resets.insert(
+      {:_id       => pass_reset_id, 
+      :created_at => Couch_Plastic.utc_now, 
+      :owner_id   => data._id,
+      :salt       => salt,
+      :hashed_code => hashed_code
+      },
+      :safe       => false
+    )
+    @password_reset_code = code
+  
+	end
 
   # ==== ACCESSORS =====================================================
 
