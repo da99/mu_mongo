@@ -1,5 +1,5 @@
-# VIEW views/Clubs_read_qa.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_qa.sass
+# VIEW ~/megauni/views/Clubs_read_qa.rb
+# SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
 h3 'Q&A: {{club_title}}' 
@@ -24,11 +24,11 @@ end # logged_in?
 
 div.club_messages! do
   
-  show_if('no_messages'){
+  show_if('no_questions'){
     div.empty_msg 'No questions have been asked.'
   }
   
-  loop_messages 'messages'
+  loop_messages 'questions'
   
 end
 

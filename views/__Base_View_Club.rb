@@ -45,6 +45,10 @@ module Base_View_Club
     club.data.teaser
   end
 
+  def messages
+    app.env['results.messages']
+  end
+
   def potential_follower?
     club.potential_follower?(current_member)
   end

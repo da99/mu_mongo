@@ -13,7 +13,7 @@ show_if 'logged_in?' do
   form_message_create(
     :title => 'Post a new section:',
     :hidden_input => Hash.new[
-                      :message_model => 'encyclopedia',
+                      :message_model => 'fact',
                       :club_filename => '{{club_filename}}',
                       :privacy       => 'public'
                      ]
@@ -24,11 +24,11 @@ end # logged_in?
 
 div.club_messages! do
   
-  show_if('no_messages'){
+  show_if('no_facts'){
     div.empty_msg 'Nothing has been posted yet.'
   }
   
-  loop_messages 'messages'
+  loop_messages 'facts'
   
 end
 

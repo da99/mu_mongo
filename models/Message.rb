@@ -12,6 +12,7 @@ class Message
     product
     event
     story
+    fact
 
     fulfill
     tip
@@ -86,10 +87,10 @@ class Message
   # ==== Accessors ====
 
   def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
-    params = {:target_ids=>club_id}
+    params = {:target_ids=>club_id}.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}
     db_collection.find(
-			params.update(raw_params), 
+			params,
 			opts.update(raw_opts),
 			&blok
 		)

@@ -12,8 +12,8 @@ class Clubs_read_e < Base_View
     "Encyclopedia: #{super}"
   end
 
-  def messages
-    nil
+  def facts
+    @cache['results.facts'] ||= compile_messages( app.env['results.facts'] )
   end
   
 end # === Clubs_read_e 

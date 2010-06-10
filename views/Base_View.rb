@@ -31,7 +31,7 @@ end # === class Array
 
 class Base_View < Mustache
   
-  attr_reader :not_prefix
+  attr_reader :not_prefix, :app
   
   def initialize new_app
     @app        = new_app

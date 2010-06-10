@@ -48,17 +48,20 @@ class Clubs
   end
 
   def GET_read_news filename
-    env['results.club'] = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename(filename)
+    env['results.news'] = Message.latest_by_club_id(club.data._id, :message_model=>'news')
     render_html_template
   end
 
   def GET_read_qa filename
-    env['results.club'] = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename(filename)
+    env['results.questions'] = Message.latest_by_club_id(club.data._id, :message_model=>'questions')
     render_html_template
   end
 
   def GET_read_e filename
-    env['results.club'] = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename(filename)
+    env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>'fact')
     render_html_template
   end
 

@@ -12,8 +12,8 @@ class Clubs_read_qa < Base_View
     "Q & A: #{super}"
   end
 
-  def messages
-    nil
+  def questions
+    @cache['results.questions'] ||= compile_messages(app.env['results.questions'])
   end
   
 end # === Clubs_read_qa 
