@@ -34,6 +34,15 @@ class Test_Control_Members_Update < Test::Unit::TestCase
     assert_equal true, mem.password_in_reset?
   end
 
+  must 'send an email with a URL to change password' do
+    mem = create_member
+    Pony.expects(:mail).returns(true).with { |hsh|
+      hsh[:body]['/change-password/']
+    }
+    post "/reset-password/", :email=>mem.data.email
+    assert_equal true, mem.password_in_reset?
+  end
+
   must 'allow multiple password resets' do
     mem = create_member
     

@@ -61,7 +61,7 @@ class Members
 			mem       = Member.by_email( clean_room['email'] )
 			code      = mem.reset_password
 			env['results.reset'] = true
-			reset_url = File.join(The_App::SITE_URL, "reset-password", code, CGI.escape(mem.data.email))
+			reset_url = File.join(The_App::SITE_URL, "change-password", code, CGI.escape(mem.data.email), '/')
 			Pony.mail(
 				:to=>clean_room['email'], 
 				:from=>The_App::SITE_HELP_EMAIL, 
