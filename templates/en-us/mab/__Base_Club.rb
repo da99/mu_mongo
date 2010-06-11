@@ -18,7 +18,7 @@ module Base_Club
           if file =~ trip[0]
             li.selected { span trip[1] }
           else
-            li { a(trip[1], :href=>trip[2]) }
+            li { a(trip[1], :href=>'{{club_href}}' + trip[2] + '/') }
           end
         }
 

@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276219261"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276220869"/>
 
 {{/not_mobile_request?}}
 
@@ -74,16 +74,16 @@
      <div class="teaser">{{club_teaser}}</div>
       <ul id="club_nav_bar">
        <li>
-        <a href="">Home</a>
+        <a href="{{club_href}}/">Home</a>
        </li>
        <li class="selected">
         <span>Encyclopedia</span>
        </li>
        <li>
-        <a href="qa">Q &amp; A</a>
+        <a href="{{club_href}}qa/">Q &amp; A</a>
        </li>
        <li>
-        <a href="news">News</a>
+        <a href="{{club_href}}news/">News</a>
        </li>
 
 {{#logged_in?}}
