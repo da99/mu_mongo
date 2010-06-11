@@ -87,6 +87,24 @@ rescue Object => e
   
   if ['test', 'development'].include?(ENV['RACK_ENV'])
     raise e
+	else
+		begin
+			require 'cgi'
+			load File.expand_path('~/.megauni_conf')
+			Pony.mail(
+				:to=>'diego@miniuni.com', 
+				:from=>'help@megauni.com',
+				:subject => CGI.escapeHTML(e.class.to_s),
+				:body    => CGI.escapeHTML(e.message.to_s),
+				:via      => :smtp,
+			  :via_options => { 
+					:address   => 'smtp.webfaction.com',
+				  :user_name => The_App::SMTP_USER_NAME,
+					:password => The_App::SMTP_PASSWORD
+				}
+			)
+		rescue Object => x
+		end
   end
   
   the_app = lambda { |env|
