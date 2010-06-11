@@ -23,6 +23,16 @@ class Test_Model_Member_Update < Test::Unit::TestCase
     assert_equal true, (code.size > 6)
   end
 
+  must 'allow multiple password resets' do
+    mem = create_member
+    old_code = nil
+    6.times { |i|
+      code = mem.reset_password
+      assert_not_equal code, old_code
+      old_code = code
+    }
+  end
+
   must 'allow allow authentication with new password after reset' do
     pwrd = 'test12345t6'
     new_pwrd = "12345test"

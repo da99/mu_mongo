@@ -34,6 +34,16 @@ class Test_Control_Members_Update < Test::Unit::TestCase
     assert_equal true, mem.password_in_reset?
   end
 
+  must 'allow multiple password resets' do
+    mem = create_member
+    
+    3.times do |i|
+      Pony.expects(:mail).returns(true)
+      post "/reset-password/", :email=>mem.data.email
+      assert_equal true, mem.password_in_reset?
+    end
+  end
+
   must 'present a message account not found' do
     email = "tests@something.com"
     post '/reset-password/', :email=>email
