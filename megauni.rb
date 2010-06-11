@@ -13,12 +13,15 @@ class The_App
   SITE_TAG_LINE      = '?~!@#*^+!'
   SITE_HELP_EMAIL    = "help@#{SITE_DOMAIN}"
   SITE_URL           = "http://www.#{SITE_DOMAIN}/"
-  
+  ON_HEROKU          = ENV.keys.grep(/heroku/i).size > 0
 end # === class
 
-begin
-	require File.expand_path('~/.megauni_conf.rb')
-rescue LoadError
+if The_App::ON_HEROKU
+	class The_App
+		SMTP_USER_NAME = 'unknown'
+		SMTP_PASSWORD = 'unknown'
+	end
+else
 	class The_App
 		SMTP_USER_NAME = 'unknown'
 		SMTP_PASSWORD = 'unknown'
