@@ -129,14 +129,22 @@ namespace 'git' do
   end # === task
 
   task :push do
-    ssh_into   = "ssh da01@da01.webfactional.com"
-    cd_megauni = "cd ~/megauni"
-    err_cap    = '2>&1'
-    
-    puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
-    puts `git push webfaction #{err_cap}`
-    puts `#{ssh_into} "#{cd_megauni} && git pull && rake gem:update PRODUCTION=true && rake unicorn:restart" #{err_cap}`
-    Launchy.open( 'http://www.megauni.com/' )
+    db_size = `mongo flame.mongohq.com:27024/mu01 -u da01 -p isle569vxwo103  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
+    if db_size > 12.0
+      puts_red "DB Size too big: #{db_size} MB"
+    else
+      puts_white "DB Size is ok: #{db_size} MB"
+      puts_white `git push heroku master 2>&1`
+      `heroku open`
+    end
+    # ssh_into   = "ssh da01@da01.webfactional.com"
+    # cd_megauni = "cd ~/megauni"
+    # err_cap    = '2>&1'
+    # 
+    # puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
+    # puts `git push webfaction #{err_cap}`
+    # puts `#{ssh_into} "#{cd_megauni} && git pull && rake gem:update PRODUCTION=true && rake unicorn:restart" #{err_cap}`
+    # Launchy.open( 'http://www.megauni.com/' )
   end
 
   

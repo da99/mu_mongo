@@ -17,14 +17,20 @@ class The_App
 end # === class
 
 if The_App::ON_HEROKU
-	class The_App
-		SMTP_USER_NAME = 'unknown'
-		SMTP_PASSWORD = 'unknown'
-	end
+  class The_App
+    SMTP_AUTHENTICATION = :plain 
+    SMTP_ADDRESS   = 'smtp.sendgrid.net'
+    SMTP_USER_NAME = ENV['SENDGRID_USERNAME']
+    SMTP_PASSWORD  = ENV['SENDGRID_PASSWORD']
+    SMTP_DOMAIN    = ENV['SENDGRID_DOMAIN']
+  end
 else
 	class The_App
-		SMTP_USER_NAME = 'unknown'
-		SMTP_PASSWORD = 'unknown'
+    SMTP_AUTHENTICATION = :plain 
+    SMTP_ADDRESS   = 'unknown'
+    SMTP_USER_NAME = 'username'
+    SMTP_PASSWORD  = 'password'
+    SMTP_DOMAIN    = 'unknown'
 	end
 end
 

@@ -69,9 +69,11 @@ class Members
 				:body=>"To change your old password, go to: #{reset_url}",
 				:via      => :smtp,
 			  :via_options => { 
-					:address   => 'smtp.webfaction.com',
+          :authentication => The_App::SMTP_AUTHENTICATION,
+					:address   => The_App::SMTP_ADDRESS,
 				  :user_name => The_App::SMTP_USER_NAME,
-					:password => The_App::SMTP_PASSWORD
+					:password  => The_App::SMTP_PASSWORD,
+          :domain    => The_App::SMTP_DOMAIN
 				}
 			)
 		rescue Member::Not_Found
