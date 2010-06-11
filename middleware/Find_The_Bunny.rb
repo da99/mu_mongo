@@ -25,6 +25,7 @@ class Find_The_Bunny
   URL_REGEX = Hash[
     :id       => '[a-zA-Z\-\d]+',
     :filename => '[a-zA-Z0-9\-\_\+]+',
+		:cgi_escaped => '[^/]{1,90}',
     :digits   => '[0-9]+',
     :old_topics => "#{Old_Topics.join('|')}"
   ]
@@ -67,7 +68,8 @@ class Find_The_Bunny
       ['/create-account/'  , Members, 'create_account' ],
       ['/create-life/'     , Members, 'create_life' ]   ,
       ['/today/'           , Members, 'today' ]         ,
-      ['/reset-password/'  , Members, 'reset_password', 'POST' ]
+      ['/reset-password/'  , Members, 'reset_password', 'POST' ],
+			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ]
     ]
   end
 

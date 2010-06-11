@@ -61,7 +61,7 @@ class Members
 			mem       = Member.by_email( clean_room['email'] )
 			code      = mem.reset_password
 			env['results.reset'] = true
-			reset_url = File.join(The_App::SITE_URL, "reset-password", code)
+			reset_url = File.join(The_App::SITE_URL, "reset-password", code, CGI.escape(mem.data.email))
 			Pony.mail(
 				:to=>clean_room['email'], 
 				:from=>The_App::SITE_HELP_EMAIL, 
@@ -78,6 +78,29 @@ class Members
 		end
 			
     render_html_template
+	end
+
+	def GET_change_password code, email
+		env['results.member'] = Member.by_email(CGI.unescape(email))
+		env['results.code']   = code
+		env['results.email']  = email
+		render_html_template
+	end
+
+	def POST_change_password code, email
+		mem = Member.by_email(CGI.unescape(email))
+		begin
+			mem.change_password_through_reset(
+				:code=>code, 
+				:password=>clean_room[:password], 
+				:confirm_password=>clean_room[:confirm_password]
+			)
+			flash_msg.success = "Your password has been updated."
+			redirect! '/log-in/'
+		rescue Member::Invalid
+			flash_msg.errors = $!.doc.errors
+			redirect! "/change-password/#{code}/#{email}/"
+		end
 	end
         
   def PUT_update

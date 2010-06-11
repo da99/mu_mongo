@@ -40,4 +40,30 @@ class Test_Control_Members_Update < Test::Unit::TestCase
     assert last_response.body["No account found with email: #{email}"]
   end
 
+  must 'redirect to /log-in/ after password is changed through reset.' do
+    mem = create_member
+    new_pswd = 'random1245'
+    code = mem.reset_password
+    post "/change-password/#{code}/#{mem.data.email}/", :password=>new_pswd, :confirm_password=>new_pswd
+    follow_redirect!
+    assert_equal "/log-in/", last_request.path_info
+  end
+
+  must "flash message on /log-in/ confirming password has been changed." do
+    mem = create_member
+    new_pswd = 'random1245'
+    code = mem.reset_password
+    post "/change-password/#{code}/#{mem.data.email}/", :password=>new_pswd, :confirm_password=>new_pswd
+    follow_redirect!
+    assert last_response.body['Your password has been updated']
+  end
+
+  must 'flash message showing password and password confirmation do not match' do
+    mem = create_member
+    code = mem.reset_password
+    post "/change-password/#{code}/#{mem.data.email}/", :password=>rand(1000).to_s, :confirm_password=>rand(100000).to_s
+    follow_redirect!
+    assert last_response.body['Password and password confirmation do not match.']
+  end
+
 end # === class Test_Control_Members_Update
