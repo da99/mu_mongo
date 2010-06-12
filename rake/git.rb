@@ -62,89 +62,42 @@ namespace 'git' do
   task :prep_push do 
 
     Rake::Task['views:compile'].invoke
-		# Rake::Task['tests:all'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
 		
-		# puts_white "Uploading design document."
-		# Rake::Task['db:design_doc_upload'].invoke
-    # puts_white `git push heroku`
 
+    # # Check if specs all pass.
+    # total, passed, errors = run_task( 'fefe:tests' )
+    # if total == passed
+    #   raise "#{failed} tests failed."
+    # else
+    #   puts_white 'All specifications passed.'
+    # end
 
-      # puts_red "Not done."
-      # puts_red "First, update gems."
-      # puts_red "Then, compile MAB to Mustache."
-      # puts_red "Second, run tests."
-      # puts_red "Third, if tests pass, update both .gems and .development_gems."
-      # puts_red "Fourth, push if tests pass."
-
-      # output = run_task(:update)
-
-      # if commit_pending?(output)
-      #   puts_white output
-      #   puts_red "NO GO: You *can't* push, unless you commit."
-      #   return output
-      # end
-
-      # # Check if specs all pass.
-      # total, passed, errors = run_task( 'fefe:tests' )
-      # if total == passed
-      #   raise "#{failed} tests failed."
-      # else
-      #   puts_white 'All specifications passed.'
-      # end
-
-      # puts_white 'Please wait as code is being pushed to Heroku...'
-
-      # push_results = shell_out( 'git push heroku master')
-      # push_went_ok = push_results[ /deployed to Heroku/i ] && !push_results[ /(error|fail)/i ]
-      # if !push_went_ok
-      #   puts_red push_results
-      #   return false
-      # end
-      # 
-      # puts_white push_results
-
-      # app_name = File.basename(Dir.getwd)
-      # case app_name
-      #   when 'miniuni'
-      #     url = "http://#{app_name}.heroku.com/"
-      #     check_this_url url, /mega/
-      #   when 'megauni'
-      #     url = "http://www.#{app_name}.com/"
-      #     check_this_url url, /megauni/i
-      #     check_this_url "http://www.busynoise.com/", /has moved/
-      #     check_this_url "http://www.busynoise.com/egg/", /has moved/
-      #     check_this_url "http://www.myeggtimer.com/", /new address/
-      #     check_this_url "#{url}busy-noise/", /create_countdown/
-      #     check_this_url "#{url}my-egg-timer/", /egg_template/
-      #   else
-      #     url = "http://www.#{app_name}.com/"
-      #     check_this_url url, /#{app_name}/
-      # end
-
-      # 
-
-      # true
   end # === task
 
   task :push do
+    Rake::Task['git:prep_push'].invoke
+    
+    puts_white "Checking size of MongoDB account..."
     db_size = `mongo flame.mongohq.com:27024/mu01 -u da01 -p isle569vxwo103  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
     if db_size > 12.0
       puts_red "DB Size too big: #{db_size} MB"
     else
       puts_white "DB Size is ok: #{db_size} MB"
+      
+      puts_white "Updating gems on Heroku..."
+      results = sh(%~heroku console "IO.popen('gem update 2>&1') { |io| io.gets }"~)
+      if results['ERROR']
+        puts_red results
+      else
+        puts_white results
+      end
+
+      puts_white "Pushing code to Heroku..."
       puts_white `git push heroku master 2>&1`
       `heroku open`
     end
-    # ssh_into   = "ssh da01@da01.webfactional.com"
-    # cd_megauni = "cd ~/megauni"
-    # err_cap    = '2>&1'
-    # 
-    # puts_white 'Pushing code, pulling, updating gems on server, and restarting unicorn.'
-    # puts `git push webfaction #{err_cap}`
-    # puts `#{ssh_into} "#{cd_megauni} && git pull && rake gem:update PRODUCTION=true && rake unicorn:restart" #{err_cap}`
-    # Launchy.open( 'http://www.megauni.com/' )
   end
 
   
