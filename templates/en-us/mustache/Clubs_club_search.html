@@ -71,27 +71,28 @@
 
    <div id="the_content">
      <div id="content">
-      <form action="{{mess_href}}" method="post" name="form_messages_update" id="form_messages_update">
-       <input type="hidden" value="put" name="_method"/>
+      <p>
+       <span class="not_found">Club not found:</span>
+       <span class="filename">{{club_filename}}</span>
+      </p>
 
-{{#mess_data}}
+{{#clubs}}
 
-       <fieldset>
-        <label>Title:</label>
-        <input type="text" class="text" value="{{title}}" name="title"/>
-       </fieldset>
-       <fieldset>
-        <label>Body:</label>
-        <textarea name="body">{{body}}</textarea>
-       </fieldset>
+       <div class="club">
+        <h4>
+         <a href="{{href}}">{{title}}</a>
+        </h4>
 
-{{/mess_data}}
+{{#teaser}}
 
-       <div class="buttons">
-        <button>Save</button>
+        <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
        </div>
-      </form>
-      <a href="{{mess_href}}">Cancel and go back to message.</a>
+
+{{/clubs}}
+
      </div>
       <div id="nav_bar">
        <div id="logo">

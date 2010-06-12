@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276313135"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276381029" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -132,7 +132,7 @@
 
 {{#multiple_usernames?}}
 
-      <form method="post" action="/clubs/follow/" name="form_follow_create" id="form_follow_create">
+      <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
        <fieldset>
         <label>Follow this club as: </label>
         <select name="username">
@@ -163,7 +163,7 @@
 
       <div id="club_message_create">
        <h4>Ask a question:</h4>
-       <form method="POST" action="/messages/" name="form_club_message_create" id="form_club_message_create">
+       <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
 
 {{#single_username?}}
 

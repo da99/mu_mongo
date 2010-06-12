@@ -19,8 +19,8 @@ img.right {
 #timestamp {
   display: none; }
 
-#the_body {
-  font: 13px/1.5 Helvetica, 'Liberation Sans', FreeSans, serif;
+body {
+  font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
   background-color: white; }
 
 #notice {
@@ -75,7 +75,7 @@ img.right {
     padding: 0 0 10px 0; }
     #mini_nav_bar ul li, #nav_bar ul li {
       list-style: none;
-      padding: 2px 0 0 0; }
+      padding: 2px 0; }
       #mini_nav_bar ul li.selected, #nav_bar ul li.selected {
         text-transform: lowercase; }
       #mini_nav_bar ul li a, #nav_bar ul li a {
@@ -84,7 +84,7 @@ img.right {
 #loading {
   font-size: 20px;
   font-weight: bold;
-  font-family: helvetica, arial, sans-serif;
+  font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
   text-align: center; }
 
 #content {
@@ -185,7 +185,7 @@ form fieldset {
   form fieldset input.text, form fieldset select, form fieldset option {
     font-size: 20px;
     font-weight: bold;
-    font-family: helvetica, arial, sans-serif; }
+    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif; }
   form fieldset textarea {
     font-size: 18px;
     font-family: serif;
@@ -203,9 +203,6 @@ form div.checkboxes {
     background: #ffff99; }
 form div.buttons button {
   text-transform: uppercase; }
-
-#footer {
-  display: none; }
 
 div.body {
   overflow: hidden;

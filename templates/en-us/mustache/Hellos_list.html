@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276313135"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276381030" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,64 +70,23 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="messages" id="messages">
-      <h4>Random News:</h4>
-
-{{#messages_public}}
-
-      <div class="message">
-       <div class="body">{{{compiled_body}}}</div>
-       <div class="permalink">
-
-{{#owner_username}}
-
-        <span> by: </span>
-        <a href="/life/{{owner_username}}/">{{owner_username}}</a>
-        <br/>
-
-{{/owner_username}}
-
-
-{{#club_title}}
-
-        <span> in: </span>
-        <a href="/clubs/{{club_filename}}/">{{club_title}}</a>
-        <br/>
-
-{{/club_title}}
-
-        <a href="{{href}}">Permalink</a>
+     <div class="col" id="intro">
+      <h1>{{site_title}}</h1>
+      <h2>{{site_tag_line}}</h2>
+      <form action="/club-search/" method="post" name="search_club_form" id="search_club_form">
+       <fieldset>
+        <label>Find a club by keyword:</label>
+        <input type="text" class="text" value="" name="keyword" id="club_keyword"/>
+       </fieldset>
+       <div class="buttons">
+        <button class="create" onclick="document.getElementById('search_club_form').submit(); return false;">Go</button>
        </div>
+      </form>
+      <div id="footer">
+       <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
       </div>
-
-{{/messages_public}}
-
      </div>
-     <div id="clubs">
-
-{{#clubs}}
-
-      <div class="club">
-       <h4>
-        <a href="{{href}}">{{title}}</a>
-       </h4>
-
-{{#teaser}}
-
-       <div class="teaser">{{teaser}}</div>
-
-{{/teaser}}
-
-      </div>
-
-{{/clubs}}
-
-     </div>
-     <div id="nav_bar">
-      <div id="logo">
-       <p class="title">{{site_title}}</p>
-       <p class="tag_line">{{site_tag_line}}</p>
-      </div>
+     <div class="col" id="nav_bar">
       <ul class="help">
        <li>
         <a href="/help/">Help</a>
@@ -152,6 +111,9 @@
 
        <li>
         <a href="/log-in/">Log-in</a>
+       </li>
+       <li>
+        <a href="/create-account/">Create Account</a>
        </li>
 
 {{/not_logged_in?}}
@@ -221,9 +183,109 @@
 {{/logged_in?}}
 
      </div>
-     <div id="footer">
-      <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
+
+{{#city_clubs?}}
+
+     <div class="col" id="city_clubs">
+      <h3>Cities</h3>
+
+{{#city_clubs}}
+
+       <div class="club">
+        <h4>
+         <a href="{{href}}">{{title}}</a>
+        </h4>
+
+{{#teaser}}
+
+        <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
+       </div>
+
+{{/city_clubs}}
+
      </div>
+
+{{/city_clubs?}}
+
+
+{{#political_beauty?}}
+
+     <div class="col" id="political_beauty">
+      <h3>Beauty</h3>
+      <div id="beauty_clubs">
+
+{{#beauty_clubs}}
+
+        <div class="club">
+         <h4>
+          <a href="{{href}}">{{title}}</a>
+         </h4>
+
+{{#teaser}}
+
+         <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
+        </div>
+
+{{/beauty_clubs}}
+
+      </div>
+      <div id="political_clubs">
+
+{{#political_clubs}}
+
+        <div class="club">
+         <h4>
+          <a href="{{href}}">{{title}}</a>
+         </h4>
+
+{{#teaser}}
+
+         <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
+        </div>
+
+{{/political_clubs}}
+
+      </div>
+     </div>
+
+{{/political_beauty?}}
+
+
+{{#joy_clubs?}}
+
+     <div class="col" id="joy_clubs">
+      <h3>Pure Joy</h3>
+
+{{#joy_clubs}}
+
+       <div class="club">
+        <h4>
+         <a href="{{href}}">{{title}}</a>
+        </h4>
+
+{{#teaser}}
+
+        <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
+       </div>
+
+{{/joy_clubs}}
+
+     </div>
+
+{{/joy_clubs?}}
+
    </div>
 
 {{#javascripts}}
