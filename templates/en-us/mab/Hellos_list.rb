@@ -52,9 +52,9 @@ div.col.nav_bar! {
       li {
         a 'Log-in', :href=>'/log-in/'
       }
-      li {
-        a 'Create Account', :href=>'/create-account/'
-      }
+      # li {
+      #   a 'Create Account', :href=>'/create-account/'
+      # }
     end
     
   }
