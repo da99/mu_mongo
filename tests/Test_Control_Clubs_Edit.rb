@@ -3,13 +3,6 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Clubs_Edit < Test::Unit::TestCase
 
-  def create_club(mem)
-    id = rand(20000)
-    club = Club.create(mem, :filename=>"#{id}", :title=>"Club: #{id}", 
-                       :teaser=>"Teaser for: Club #{id}"
-                      )
-  end
-
   must 'require log-in' do
     get "/clubs/hearts/edit/"
     follow_redirect!

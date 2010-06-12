@@ -3,13 +3,6 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Clubs_Update < Test::Unit::TestCase
 
-  def create_club(mem)
-    id = rand(20000)
-    club = Club.create(mem, :filename=>"#{id}", :title=>"Club: #{id}", 
-                       :teaser=>"Teaser for: Club #{id}. Created by: #{mem.usernames.first}"
-                      )
-  end
-  
   must 'not allow strangers' do
     put "/clubs/hearts/", :title=>'new-hearts'
     follow_redirect!

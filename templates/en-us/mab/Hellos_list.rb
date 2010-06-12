@@ -7,7 +7,7 @@ div.col.intro! {
   h1 '{{site_title}}'
   h2 '{{site_tag_line}}'
 
-  form.search_club_form!(:action=>"/search-clubs/", :method=>"post") {
+  form.search_club_form!(:action=>"/club-search/", :method=>"post") {
     fieldset {
       label 'Find a club by keyword:'
       input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
@@ -94,25 +94,31 @@ div.col.nav_bar! {
 } # === div.nav_bar!
 
 
-div.col.city_clubs! {
-  h3 'Cities'
-  loop_clubs "city_clubs"
-}
-
-div.col.political_beauty! {
-  h3 'Beauty'
-  div.beauty_clubs! {
-    loop_clubs "beauty_clubs"
+show_if 'city_clubs?' do
+  div.col.city_clubs! {
+    h3 'Cities'
+    loop_clubs "city_clubs"
   }
-  div.political_clubs! {
-    loop_clubs "political_clubs"
-  }
-} # div.clubs
+end
 
-div.col.joy_clubs! { 
-  h3 'Pure Joy'
-  loop_clubs "joy_clubs"
-}
+show_if 'political_beauty?' do
+  div.col.political_beauty! {
+    h3 'Beauty'
+    div.beauty_clubs! {
+      loop_clubs "beauty_clubs"
+    }
+    div.political_clubs! {
+      loop_clubs "political_clubs"
+    }
+  } # div.clubs
+end
+
+show_if 'joy_clubs?' do
+  div.col.joy_clubs! { 
+    h3 'Pure Joy'
+    loop_clubs "joy_clubs"
+  }
+end
 
 
 # div.messages.messages! do

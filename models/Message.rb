@@ -150,13 +150,13 @@ class Message
   end
 
   def self.by_club_id_and_public_label club_id, label, raw_params = {}, raw_opts={}, &blok
-    params = Hash.new( 
+    params = { 
               :target_ids    => {:$in=>[club_id]},
               :public_labels => {:$in=>[label].flatten}
-             ).update(raw_params)
+              }.update(raw_params)
     opts = {:sort=>[:_id, :desc]}.update(raw_opts)
     db_collection.find(params, &blok)
-  end
+    end
 
   def self.by_published_at *args, &blok
     if args.size === 1

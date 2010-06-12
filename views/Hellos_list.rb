@@ -65,5 +65,22 @@ class Hellos_list < Base_View
   def joy_clubs
     @cache['joy'] ||= compile_clubs(Club.by_club_model(['joy', 'fun']))
   end
+
+  %w{ city joy }.each { |club|
+    eval(%~
+      def #{club}_clubs?     
+       @cache['not_empty_#{club}'] ||= begin
+         arr = #{club}_clubs
+         arr && !arr.empty?
+       end
+      end
+    ~)
+  }
+
+  def political_beauty?
+    @cache['not_empty_pb'] ||= begin
+                                 !(beauty_clubs.empty? && political_clubs.empty?)
+                               end
+  end
   
 end # === Hello_Bunny_GET_list

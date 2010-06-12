@@ -57,6 +57,8 @@ class Find_The_Bunny
       ['/clubs/{filename}/e/'     , Clubs, 'read_e'    , 'GET'] ,
       ['/clubs/{filename}/qa/'    , Clubs, 'read_qa'   , 'GET'] ,
       ['/clubs/{filename}/news/'  , Clubs, 'read_news' , 'GET'] ,
+			['/club-search/'            , Clubs, 'club_search', 'POST'],
+			['/club-search/{filename}/'  , Clubs, 'club_search', 'GET'],
       
       ['/log-in/' , Sessions, 'log_in'  , %w{GET POST} ],
       ['/log-out/', Sessions, 'log_out'],

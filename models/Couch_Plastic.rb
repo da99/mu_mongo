@@ -8,10 +8,11 @@ DB_USER = 'da01'
 DB_PASSWORD = "isle569vxwo103"
 DB_CONN = if The_App::ON_HEROKU
             Mongo::Connection.from_uri(
-              "mongodb://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}"
+              "mongodb://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}",
+              :timeout=>3
             ) 
           else
-            Mongo::Connection.new
+            Mongo::Connection.new(nil, nil, :timeout=>1)
           end
 
 at_exit do

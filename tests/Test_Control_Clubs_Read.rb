@@ -128,6 +128,30 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert Nokogiri::HTML(last_response.body).css('form#form_follow_create').first
   end
 
+  # ================ Club Search ===========================
+
+  must 'redirect to /club-search/{filename}/ if more no club found' do
+    keyword = 'factor' + rand(1000).to_s
+    post "/club-search/", :keyword=>keyword
+    follow_redirect!
+    assert_equal "/club-search/#{keyword}/", last_request.path_info
+  end
+
+  must 'CGI.escape the filename in /club-search/{filename}/' do
+    keyword = 'factor@factor' + rand(10000).to_s
+    post "/club-search/", :keyword=>keyword
+    follow_redirect!
+    escaped = CGI.escape(keyword)
+    assert_equal "/club-search/#{escaped}/", last_request.path_info
+  end
+
+  must 'redirect to club profile page if only one club found' do
+    club = create_club(regular_member_1, :filename=>"sf_#{rand(10000)}")
+    post "/club-search/", :keyword=>club.data.filename
+    follow_redirect!
+    assert_equal "/clubs/#{club.data.filename}/", last_request.fullpath
+  end
+
   # ================= Club Parts ===========================
 
   must 'render /clubs/filename/e/' do

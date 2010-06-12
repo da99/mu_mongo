@@ -95,6 +95,27 @@ class Clubs
     require_log_in! :ADMIN, club.data.owner_id
     render_html_template
   end
+	
+	def GET_club_search filename
+		env['club_filename'] = filename
+		begin
+			club = Club.by_filename(filename)
+			redirect!("/clubs/#{club.data.filename}/")
+		rescue Club::Not_Found
+		end
+		render_html_template
+	end
+
+	def POST_club_search
+		filename = clean_room['keyword'].to_s
+		begin
+			club = Club.by_filename(filename)
+			redirect!("/clubs/#{club.data.filename}/")
+		rescue Club::Not_Found
+			cgi_filename = CGI.escape(filename)
+			redirect!("/club-search/#{cgi_filename}/")
+		end
+	end
 
   private # ======================================
 

@@ -221,12 +221,13 @@ class Test::Unit::TestCase
 		Member.create nil, opts.as_hash
 	end
 
-  def create_club(mem = nil)
+  def create_club(mem = nil, raw_club_opts = {})
     mem ||= regular_member_1
-    num=rand(10000)
-    Club.create(mem, 
-      :title=>"R2D2 #{num}", :filename=>"r2d2_#{num}", :teaser=>"Teaser for: R2D2 #{num}"
-    )
+    id        = rand(20000)
+    defaults  = {:filename=>"#{id}", :title=>"Club: #{id}", 
+                       :teaser=>"Teaser for: Club #{id}"}
+    club_opts = defaults.update(raw_club_opts)
+    club      = Club.create(mem, club_opts )
   end
 
   def create_club_message( mem, club, un_id = nil )

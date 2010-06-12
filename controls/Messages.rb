@@ -28,9 +28,11 @@ class Messages
 		end
   end
 
-  def GET_by_label club, label # LIST
+  def GET_by_label club_filename, raw_label # LIST
+		club = Club.by_filename(club_filename.to_s.strip)
+		label = raw_label.to_s.strip
     env['message_label'] = label
-    env['messages_by_label'] = Message.by_club_id_and_public_label("club-" + club, label)
+    env['messages_by_label'] = Message.by_club_id_and_public_label(club.data._id, label)
     render_html_template
   end
   
