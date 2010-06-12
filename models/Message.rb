@@ -126,14 +126,14 @@ class Message
           for (var i in this.tags) {
               emit(this.tags[i], {total:1});
           }
-      }    
+      };
     ~
     reduce = %~
       function (key, value) {
           var sum = 0;
           value.forEach(function (doc) {sum += doc.total;});
           return {total:sum};
-      }
+      };
     ~
     opts = if target_ids
              { :query => { :target_ids=> { :$in=>target_ids}} }
@@ -141,25 +141,7 @@ class Message
              {}
            end
     
-    return db_collection.map_reduce(map, reduce, opts).find().map { |doc| doc['_id'] }
-    map = %~
-      function (x) {
-          var list = {};
-          for (var i in x.tags) {
-              list[x.tags[i]] = 1;
-          };
-          return list;
-      }    
-    ~
-    reduce = %~
-      function (key, value) {
-      }
-    ~
-    
-    require 'rubygems'; require 'ruby-debug'; debugger
-    
-    
-    db_collection.group( map, {}, {}, reduce ).map { |doc| doc['_id'] }
+    db_collection.map_reduce(map, reduce, opts).find().map { |doc| doc['_id'] }
   end
 
   def self.by_public_label label, raw_params={}, &blok

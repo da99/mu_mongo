@@ -2,9 +2,10 @@ require 'mongo'
 require 'loofah'
 require 'models/Data_Pouch'
 
+DB_NAME = "mu02"
 DB_CONN = if The_App::ON_HEROKU
             Mongo::Connection.from_uri(
-              "mongodb://da01:isle569vxwo103@flame.mongohq.com:27024/mu01"
+              "mongodb://da01:isle569vxwo103@pearl.mongohq.com:27027/#{DB_NAME}"
             ) 
           else
             Mongo::Connection.new
@@ -24,7 +25,7 @@ DB = case ENV['RACK_ENV']
     DB_CONN.db("megauni_dev")
 
   when 'production'
-    DB_CONN.db("mu01")
+    DB_CONN.db(DB_NAME)
 
   else
     raise ArgumentError, "Unknown RACK_ENV value: #{ENV['RACK_ENV'].inspect}"

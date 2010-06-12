@@ -1,6 +1,18 @@
 require 'json'
 require 'mongo'
 
+require 'mongo'
+# DB_HOST = "flame.mongohq.com"
+# DB_PORT = 27024
+# DB_USER = 'da01'
+# DB_PASSWORD = "isle569vxwo103"
+# DB_NAME = 'mu02'
+# DB_CONN = Mongo::Connection.from_uri(
+#     "mongodb://da01:isle569vxwo103@flame.mongohq.com:27024/mu01"
+# )
+# DB = DB_CONN.db('mu01')
+# COLLS = %w{Clubs Members Member_Usernames Messages}
+
 def compile_with_mongo_ids hsh
   case hsh
   when Array
@@ -142,5 +154,31 @@ namespace :db do
 
     puts_white 'Inserted sample data just for tests.'
   end # ======== :db_reset!
+
+  desc "Export the production MongoDB to development machine."
+  task :export_production do
+    raise "Not done: Figure out how to get list of collections."
+      file_loc = File.expand_path('~/Desktop/')
+      COLLS.each { |coll|
+        loc = File.join(file_loc, "db_backup.#{coll}.json")
+        cmd = "mongoexport -v -o #{loc} -h #{DB_HOST}:#{DB_PORT.to_s} -d #{DB_NAME} -c #{coll} -u #{DB_USER} -p #{DB_PASSWORD}"
+        puts cmd
+        puts `#{cmd} 2>&1`
+        puts "\n"
+      }
+  end
+
+  desc "Import backup files to production machine."
+  task :import_production do
+      file_loc = File.expand_path('~/Desktop/')
+      COLLS.each { |coll|
+        loc = File.join(file_loc, "db_backup.#{coll}.json")
+        cmd = "mongoimport -v --drop --file #{loc} -h pearl.mongohq.com:27027/mu02 -d mu02 -c #{coll} -u #{DB_USER} -p #{DB_PASSWORD}"
+        puts cmd
+        puts `#{cmd} 2>&1`
+        puts "\n"
+      }
+
+  end
 end # === namespace :db
 

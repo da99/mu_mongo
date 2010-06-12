@@ -78,8 +78,10 @@ namespace 'git' do
   end # === task
 
   desc 'Pushes code.
-  SKIP_PREP = false'
+  SKIP_PREP = false
+  SKIP_GEM_UPDATE = false'
   task :push do
+    
     unless ENV['SKIP_PREP']
       Rake::Task['git:prep_push'].invoke
     end
@@ -90,9 +92,14 @@ namespace 'git' do
       puts_red "DB Size too big: #{db_size} MB"
     else
       puts_white "DB Size is ok: #{db_size} MB"
+     
+      unless ENV['SKIP_GEM_UPDATE']
+        puts_white "Updating gems on Heroku..."
+        results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
+      else
+        results = ''
+      end
       
-      puts_white "Updating gems on Heroku..."
-      results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
       if results['ERROR']
         puts_red results
         exit
