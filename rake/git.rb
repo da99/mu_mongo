@@ -87,17 +87,18 @@ namespace 'git' do
     else
       puts_white "DB Size is ok: #{db_size} MB"
       
-      puts_white "Updating gems on Heroku..."
-      results = sh(%~heroku console "IO.popen('gem update 2>&1') { |io| io.gets }"~)
-      if results['ERROR']
-        puts_red results
-      else
+      # puts_white "Updating gems on Heroku..."
+      # results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
+      # if results['ERROR']
+      #   puts_red results
+      #   exit
+      # else
         puts_white results
-      end
+        puts_white "Pushing code to Heroku..."
+        sh('git push heroku master')
+        sh('heroku open')
+      # end
 
-      puts_white "Pushing code to Heroku..."
-      sh('git push heroku master')
-      sh('heroku open')
     end
   end
 
