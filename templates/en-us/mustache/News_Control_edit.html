@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276220868"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276304911"/>
 
 {{/not_mobile_request?}}
 
@@ -73,7 +73,7 @@
      <div id="content">
       <a href="{{news_href}}">View</a>
       <h3>{{title}}</h3>
-      <form method="post" name="form_news_edit" id="form_news_edit" action="{{news_href_update}}">
+      <form method="post" action="{{news_href_update}}" name="form_news_edit" id="form_news_edit">
         <input type="hidden" value="_put" name="method"/>
        <fieldset>
         <label>Title</label>
@@ -124,7 +124,7 @@
 {{#selected}}
 
           <div class="box selected">
-           <input checked="checked" type="checkbox" value="{{filename}}" name="tags[]"/>
+           <input type="checkbox" value="{{filename}}" name="tags[]" checked="checked"/>
            <span>{{filename}}</span>
           </div>
 
