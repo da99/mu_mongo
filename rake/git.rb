@@ -30,7 +30,7 @@ namespace 'git' do
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
     sh 'git add . && git add -u'
-    system 'git status'
+    sh 'git status'
   end
   
   
