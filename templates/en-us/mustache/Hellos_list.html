@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276381030" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276384151" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -182,6 +182,18 @@
 
 {{/logged_in?}}
 
+      <p class="divider">Old Clubs</p>
+      <ul class="old_clubs">
+
+{{#old_clubs}}
+
+       <li>
+        <a href="{{href}}">{{title}}</a>
+       </li>
+
+{{/old_clubs}}
+
+      </ul>
      </div>
 
 {{#city_clubs?}}
