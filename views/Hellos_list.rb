@@ -32,17 +32,6 @@ class Hellos_list < Base_View
   
   def clubs
     @cache[:clubs] ||= begin
-                         old_clubs = [ 
-                           { :teaser=>nil, :href=>'/salud/',    :title=>'Salud (Español)'},
-                           { :teaser=>nil, :href=>'back_pain',  :title=>'Back Pain'},
-                           { :teaser=>nil, :href=>'child_care', :title=>'Child Care'},
-                           { :teaser=>nil, :href=>'computer',   :title=>'Computer Use'},
-                           { :teaser=>nil, :href=>'hair',      :title=>'Skin & Hair'},
-                           { :teaser=>nil, :href=>'housing',   :title=>'Housing & Apartments'},
-                           { :teaser=>nil, :href=>'health',    :title=>'Pain & Disease'},
-                           { :teaser=>nil, :href=>'preggers',  :title=>'Pregnancy'}
-                         ]
-
                          old_clubs + @app.env['results.clubs'].map { |r| 
                            r[:href] = "/clubs/#{r['filename']}/"
                            r

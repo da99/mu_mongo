@@ -86,7 +86,7 @@ namespace 'git' do
       Rake::Task['git:prep_push'].invoke
     end
     
-    require 'models/Couch_Plastic'
+    require 'megauni'
     puts_white "Checking size of MongoDB account..."
     db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
     if db_size > MAX_DB_SIZE_IN_MB 

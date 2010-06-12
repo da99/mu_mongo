@@ -91,6 +91,13 @@ div.col.nav_bar! {
     }
   end
 
+  p.divider 'Old Clubs'
+  ul.old_clubs {
+    loop 'old_clubs' do
+      li { a('{{title}}', :href=>'{{href}}') }
+    end
+  }
+
 } # === div.nav_bar!
 
 
