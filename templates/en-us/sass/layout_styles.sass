@@ -22,6 +22,7 @@ $text_box_border_green: #38761b
 $text_box_bg: #eaeaf0
 $text_box_bg_dark: #d6d6d6
 
+$sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
 $custom_black_text: #242424
@@ -40,7 +41,7 @@ $light_green: #dae6b4
 =input_text
   font-size: 20px
   font-weight: bold
-  font-family: helvetica, arial, sans-serif
+  font-family: $sans_serif
 
 =dashed_border_bottom
   border-bottom: 1px dashed $dashed_border
@@ -55,7 +56,7 @@ a:link, a:visited
   color: $red
   text-transform: uppercase
   font:
-    family: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
+    family: $sans_serif
     weight: bold
 
 a:hover, a:active, a:focus
@@ -73,8 +74,8 @@ img.right
 #timestamp
   display: none
 
-#the_body
-  font: unquote("13px/1.5") unquote("Helvetica, 'Liberation Sans', FreeSans, serif")
+body
+  font-family: $sans_serif
   background-color: white
 
 #notice
@@ -129,7 +130,7 @@ img.right
     padding: 0 0 10px 0
     li
       list-style: none
-      padding: 2px 0 0 0
+      padding: 2px 0 
       &.selected
         text-transform: lowercase
       a
@@ -232,8 +233,6 @@ form
     button
       text-transform: uppercase
 
-#footer
-  display: none
 
 div.body
   +clearfix

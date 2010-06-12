@@ -9,6 +9,13 @@ module Base_View_Club
     @app.env['results.club'].data.title
   end
 
+  def compile_clubs arr
+    arr.map { |club|
+      club['href'] = "/clubs/#{club['filename']}/"
+      club
+    }
+  end
+
   def club
     @app.env['results.club']
   end
@@ -60,6 +67,5 @@ module Base_View_Club
   def follow_href
     club.follow_href
   end
-
   
 end # === Clubs_read_e 

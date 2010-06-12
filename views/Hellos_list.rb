@@ -1,14 +1,17 @@
 # ~/megauni/templates/en-us/mab/Hellos_list.rb
 # ~/megauni/controls/Hellos.rb
+require "views/__Base_View_Club"
 
 class Hellos_list < Base_View
+  
+  include Base_View_Club
 
   def javascripts
     default_javascripts
   end
 
   def title
-    "#{The_App::SITE_TITLE} #{The_App::SITE_TAG_LINE}"
+    "#{The_App::SITE_TITLE}"
   end
 
   def meta_description
@@ -46,5 +49,21 @@ class Hellos_list < Base_View
                          }  
                        end
   end 
+
+  def city_clubs
+    @cache['cities'] ||= compile_clubs(Club.by_club_model('city'))
+  end
+
+  def beauty_clubs
+    @cache['beauty'] ||= compile_clubs(Club.by_club_model(['healty', 'beauty']))
+  end
+
+  def political_clubs
+    @cache['evil'] ||= compile_clubs(Club.by_club_model(['economics', 'history']))
+  end
+
+  def joy_clubs
+    @cache['joy'] ||= compile_clubs(Club.by_club_model(['joy', 'fun']))
+  end
   
 end # === Hello_Bunny_GET_list

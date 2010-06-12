@@ -126,6 +126,11 @@ class Club
     }
   end
 
+  def self.by_club_model raw_models, opts = {}
+    models = [raw_models].flatten.compact.uniq
+    clubs = db_collection.find({:club_model=>{:$in=>models}}, opts)
+  end
+  
   def self.by_filename filename
     club = db_collection.find_one('filename'=>filename)
     if not club

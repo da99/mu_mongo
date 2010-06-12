@@ -1,39 +1,61 @@
-// ~/megauni/templates/English/mab/Hellos_list.rb
+// ~/megauni/templates/en-us/mab/Hellos_list.rb
 
 @import base.sass
 @import layout_styles.sass
 
-body
+#intro 
   text-align: center
+  h1
+    color: $red
+    font-size: 28px
+    font-weight: bold
+
+  h2
+    font-size: 14px
+    text-transform: uppercase
+
+  #search_club_form
+    margin: 20px 0
+    fieldset
+      padding-bottom: 0
+    
+div.col
+  float: left
+
+#city_clubs, #political_beauty, #joy_clubs
+  width: 180px
+  padding: 0 10px
+
+body
   padding: 10px
 
-#container
-  text-align: left
-  margin: 0 auto
-  +clearfix
-
-#content
-  width: 500px
-  textarea
-    width: 480px
-
-#clubs
-  width: 250px
-  float: left
-  text-align: right
-  div.club
-    border-bottom-width: 0
-
-#messages
-  width: 450px
-  float: left
-  h4
-    margin: 0 20px 0 0
-    border-bottom: 1px dashed black
-      color: $dashed_border
-
-#coming_soon
-  ul
-    padding-bottom: 10px
-    padding-left: 25px
-    margin-top: -10px
+// #container
+//   text-align: left
+//   margin: 0 auto
+//   +clearfix
+// 
+// #content
+//   width: 500px
+//   textarea
+//     width: 480px
+// 
+// #clubs
+//   width: 250px
+//   float: left
+//   text-align: right
+//   div.club
+//     border-bottom-width: 0
+// 
+// #messages
+//   width: 450px
+//   float: left
+//   h4
+//     margin: 0 20px 0 0
+//     border-bottom: 1px dashed black
+//       color: $dashed_border
+// 
+// #coming_soon
+//   ul
+//     padding-bottom: 10px
+//     padding-left: 25px
+//     margin-top: -10px

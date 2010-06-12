@@ -138,7 +138,7 @@ class Message
     opts = if target_ids
              { :query => { :target_ids=> { :$in=>target_ids}} }
            else
-             {}
+             { :query => { :tags => { :$ne => nil } } }
            end
     
     db_collection.map_reduce(map, reduce, opts).find().map { |doc| doc['_id'] }

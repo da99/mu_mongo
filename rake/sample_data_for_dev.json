@@ -47,7 +47,8 @@
     "teaser": "A list of links for people who love The Factor Programming Language. (Most links are not about the language though.)",
     "lang": "en-us",
     "filename": "slava-factor",
-    "old_id": "club-slava-factor"
+    "old_id": "club-slava-factor",
+    "club_model" : "fun"
   },
   {
     "old_rev": "2-0ea01adbb21f60026c6eab065c6f9b82",

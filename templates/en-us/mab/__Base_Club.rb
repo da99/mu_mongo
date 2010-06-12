@@ -1,6 +1,21 @@
 
 module Base_Club
 
+  def loop_clubs list_name
+    text(capture {
+      loop list_name do 
+        div.club {
+          h4 {
+            a('{{title}}', :href=>'{{href}}')
+          }
+          show_if 'teaser' do
+            div.teaser '{{teaser}}'
+          end
+        }
+      end
+    })
+  end
+
   def club_nav_bar filename
     file     = File.basename(filename).sub('.rb', '')
     li_span  = lambda { |txt| li.selected { span txt } }
