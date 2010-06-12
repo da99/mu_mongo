@@ -77,8 +77,12 @@ namespace 'git' do
 
   end # === task
 
+  desc 'Pushes code.
+  SKIP_PREP = false'
   task :push do
-    Rake::Task['git:prep_push'].invoke
+    unless ENV['SKIP_PREP']
+      Rake::Task['git:prep_push'].invoke
+    end
     
     puts_white "Checking size of MongoDB account..."
     db_size = `mongo flame.mongohq.com:27024/mu01 -u da01 -p isle569vxwo103  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f

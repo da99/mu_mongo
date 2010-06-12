@@ -3,7 +3,8 @@
 namespace :tests do
   
 
-  desc %! Runs tests for your app using glob: tests/test_*.rb !
+  desc %! Runs tests for your app using glob: tests/test_*.rb 
+  SKIP_GEM_UPDATE = false!
   task :all do
     
     unless ENV['SKIP_GEM_UPDATE']
