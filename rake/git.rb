@@ -1,6 +1,7 @@
 require 'launchy'
 require 'rest_client'
 
+MAX_DB_SIZE_IN_MB = 12.0
 
 def check_this_url url, r_text
   begin
@@ -81,7 +82,7 @@ namespace 'git' do
     
     puts_white "Checking size of MongoDB account..."
     db_size = `mongo flame.mongohq.com:27024/mu01 -u da01 -p isle569vxwo103  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
-    if db_size > 12.0
+    if db_size > MAX_DB_SIZE_IN_MB 
       puts_red "DB Size too big: #{db_size} MB"
     else
       puts_white "DB Size is ok: #{db_size} MB"
@@ -95,8 +96,8 @@ namespace 'git' do
       end
 
       puts_white "Pushing code to Heroku..."
-      puts_white `git push heroku master 2>&1`
-      `heroku open`
+      sh('git push heroku master')
+      sh('heroku open')
     end
   end
 

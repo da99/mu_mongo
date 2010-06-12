@@ -33,6 +33,32 @@ class Test_Model_Member_Update < Test::Unit::TestCase
     }
   end
 
+  must 'replace old password reset codes with new ones' do
+    mem = create_member
+    old_codes = (1..2).to_a.map { |i|
+      mem.reset_password
+    }
+    
+    mem.reset_password
+    
+    old_codes.each { |code|
+      assert_raises(Member::Invalid_Password_Reset_Code) do 
+        mem.change_password_through_reset(:code=>code, :password=>"new_password", :confirm_password=>"new_password")
+      end
+    }
+  end
+
+  must 'use latest password reset code even if others were generated previously.' do
+    mem = create_member
+    old_codes = (1..2).to_a.map { |i|
+      mem.reset_password
+    }
+    
+    latest = mem.reset_password
+    
+    assert_equal mem, mem.change_password_through_reset(:code=>latest, :password=>"new_password", :confirm_password=>"new_password")
+  end
+
   must 'allow allow authentication with new password after reset' do
     pwrd = 'test12345t6'
     new_pwrd = "12345test"

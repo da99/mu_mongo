@@ -366,7 +366,7 @@ class Member
            end
 
     hashed_code = BCrypt::Password.create( code + salt ).to_s
-    self.class.db_collection_password_resets.insert(
+    self.class.db_collection_password_resets.save( # Use :save => update OR insert.
       {:_id       => pass_reset_id, 
       :created_at => Couch_Plastic.utc_now, 
       :owner_id   => data._id,
