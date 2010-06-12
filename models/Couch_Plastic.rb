@@ -3,9 +3,12 @@ require 'loofah'
 require 'models/Data_Pouch'
 
 DB_NAME = "mu02"
+DB_HOST = "pearl.mongohq.com:27027/#{DB_NAME}"
+DB_USER = 'da01'
+DB_PASSWORD = "isle569vxwo103"
 DB_CONN = if The_App::ON_HEROKU
             Mongo::Connection.from_uri(
-              "mongodb://da01:isle569vxwo103@pearl.mongohq.com:27027/#{DB_NAME}"
+              "mongodb://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}"
             ) 
           else
             Mongo::Connection.new
