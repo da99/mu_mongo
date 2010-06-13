@@ -94,9 +94,4 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_redirect "/missing/page/"
   end
 
-  must 'redirect /me/ to /account/' do
-    get '/account/'
-    assert_redirect "/me/"
-  end
-
 end # === class Test_Control_Old_Apps_Read
