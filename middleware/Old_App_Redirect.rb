@@ -170,13 +170,7 @@ class Old_App_Redirect
       return hearty_redirect("/clubs/hearts/by_date/#{$1}/#{$2}/")
     end
 
-    status, headers, body = @app.call(new_env)
-    if status === 404 && new_env['PATH_INFO']['/+/']
-      new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )
-      return hearty_redirect(new_url)
-    end
-    [status, headers, body]
-    
+    @app.call(new_env)
 
   end
 
