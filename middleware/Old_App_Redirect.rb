@@ -36,7 +36,7 @@ class Old_App_Redirect
     end
 
 		ua = new_env['HTTP_USER_AGENT']
-    if ua && [ 'panscient', 'aiHitBot' , "WebSurfer text", "Linguee Bot" ].detect { |ua_s|  
+    if ua && [ 'panscient', 'aiHitBot' , "WebSurfer text"].detect { |ua_s|  
 			ua[ua_s]
 		}
       return hearty_redirect("http://www.bing.com/")
@@ -170,7 +170,13 @@ class Old_App_Redirect
       return hearty_redirect("/clubs/hearts/by_date/#{$1}/#{$2}/")
     end
 
-    @app.call(new_env)
+    status, headers, body = @app.call(new_env)
+    if status === 404 && new_env['PATH_INFO']['/+/']
+      new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )
+      return hearty_redirect(new_url)
+    end
+    [status, headers, body]
+    
 
   end
 
