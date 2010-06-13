@@ -50,7 +50,7 @@ div( :id=>"nav_bar" ) {
       nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
     }
     mustache 'logged_in?' do
-      nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create ]'
+      nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'
     end
   } # === ul
 

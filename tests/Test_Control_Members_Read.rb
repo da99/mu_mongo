@@ -40,7 +40,13 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   must 'show profile: /life/{username}/' do
     un = regular_member_3.usernames.first
     get "/life/#{un}/"
-    assert_equal 200, last_response.status
+    assert_last_response_ok
+  end
+
+  must 'show account: /account/' do
+    log_in_regular_member_2
+    get '/account/', {}, ssl_hash
+    assert_last_response_ok
   end
 
 end # === class Test_Control_Members_Read

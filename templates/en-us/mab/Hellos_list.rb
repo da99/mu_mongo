@@ -87,7 +87,7 @@ div.col.nav_bar! {
   show_if 'logged_in?' do
     p.divider 'Clubs'
     ul.news {
-      nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create Club ]'
+      nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
     }
   end
 

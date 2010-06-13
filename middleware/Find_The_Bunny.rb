@@ -47,7 +47,7 @@ class Find_The_Bunny
       
       ['/clubs/'                  , Clubs, 'list'      , 'GET'] ,
       ['/clubs/'                  , Clubs, 'create'    , 'POST'],
-      ['/clubs/create/'           , Clubs, 'create' ]  ,
+      ['/club-create/'           , Clubs, 'create' ]  ,
       ['/clubs/{filename}/edit/'  , Clubs, 'edit' ]    ,
       ['/clubs/{old_topics}/'     , Clubs, 'by_old_id'],
       ['/clubs/{filename}/'       , Clubs, 'by_id']    ,
@@ -68,9 +68,9 @@ class Find_The_Bunny
       ['/life/{filename}/' , Members, 'life' ]          ,
       ['/lives/{filename}/', Members, 'lives' ]         ,
       ['/create-account/'  , Members ],
-      ['/create-life/'     , Members ]   ,
-      ['/today/'           , Members ]         ,
-      ['/account/'         , Members ]         ,
+      ['/create-life/'     , Members ],
+      ['/today/'           , Members ],
+      ['/account/'         , Members ],
       ['/reset-password/'  , Members, nil, 'POST' ],
 			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ]
     ]

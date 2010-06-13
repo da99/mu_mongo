@@ -20,39 +20,39 @@ div( :id=>"nav_bar" ) {
     
     nav_bar_li :Hello, 'help'
     
-    mustache 'logged_in?' do
+    show_if 'logged_in?' do
       nav_bar_li :Sessions, 'log-out', 'Log-out'
       nav_bar_li :Members, '/today/', '[ Today ]'
       nav_bar_li :Members, '/account/', '[ Account ]'
     end  
     
-    mustache 'not_logged_in?' do
+    show_if 'not_logged_in?' do
       nav_bar_li :Sessions, 'log-in', 'Log-in'
       # nav_bar_li :Member_Control, 'create-account', 'Join'
     end
     
   }
 
-  mustache 'logged_in?' do
-    mustache 'no_mini_nav_bar?' do
+  show_if 'logged_in?' do
+    show_if 'no_mini_nav_bar?' do
       p.divider 'Lives' 
     end
     ul.lives {
       mustache 'username_nav' do
-        mustache 'selected' do
+        show_if 'selected' do
           nav_bar_li_selected '{{username}}'
         end
-        mustache 'not_selected' do
+        show_if 'not_selected' do
           nav_bar_li_unselected '{{username}}', '{{href}}'
         end
       end
-    mustache 'no_mini_nav_bar?' do
+    show_if 'no_mini_nav_bar?' do
       nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
     end
     }
   end
   
-  # mustache 'no_mini_nav_bar?' do
+  # show_if 'no_mini_nav_bar?' do
   #   h4 'Egg Timers'
   #   ul.to_dos {
   #     nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
@@ -60,9 +60,9 @@ div( :id=>"nav_bar" ) {
   #   }
   # end
 
-    # mustache 'development?' do
+    # show_if 'development?' do
 
-      # mustache 'not_logged_in?' do
+      # show_if 'not_logged_in?' do
       #   h4 'Non-Members'
       #   ul.non_members {
       #     nav_bar_li :Member_Control, 'create-account', 'Create Account'
@@ -93,7 +93,7 @@ div( :id=>"nav_bar" ) {
     # 
     # end # === if development?
 
-  mustache 'no_mini_nav_bar?' do
+  show_if 'no_mini_nav_bar?' do
     p.divider 'Clubs'
     ul.news {
 
@@ -123,14 +123,14 @@ div( :id=>"nav_bar" ) {
       
       nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
       
-      mustache 'logged_in?' do
-        nav_bar_li :Clubs, :create, '/clubs/create/', '[ Create ]'
+      show_if 'logged_in?' do
+        nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'
       end
     
     }
   end
 
-  mustache 'mini_nav_bar?' do
+  show_if 'mini_nav_bar?' do
     ul {
       li {
         nav_bar_li :Clubs, :list, '/clubs/', 'Clubs'

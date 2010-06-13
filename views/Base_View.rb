@@ -54,8 +54,14 @@ class Base_View < Mustache
   def method_missing *args
     meth = args.shift.to_s
     
-    if meth[@not_prefix]
-      result = send(meth.sub(@not_prefix, ''), *args) 
+    alt_meths = [ 
+      meth.sub(@not_prefix, ''),
+      meth.sub(@not_prefix, '').sub('?',''),
+      meth.sub('?','')
+    ]
+    target = alt_meths.detect { |alt| respond_to?(alt.to_sym) }
+    if target
+      result = send(target, *args) 
       return result_empty?(result)
     end
     

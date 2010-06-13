@@ -193,6 +193,10 @@ class Test::Unit::TestCase
     assert_equal status, last_response.status
   end
 
+  def assert_last_response_ok
+    assert_equal 200, last_response.status
+  end
+
   def log_in_member
     mem = Member.by_username(regular_username_1)
     assert_equal false, mem.has_power_of?( :ADMIN )

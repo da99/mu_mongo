@@ -5,7 +5,11 @@
 class Members_account < Base_View
 
   def title 
-    '...'
+    "Your Account on #{site_title}"
+  end
+
+  def clubs_owned
+    []
   end
   
 end # === Members_account 
