@@ -322,6 +322,10 @@ class Base_View < Mustache
     The_App::SITE_TITLE
   end
 
+  def site_name
+    The_App::SITE_NAME
+  end
+
   def site_tag_line
     The_App::SITE_TAG_LINE
   end

@@ -5,7 +5,7 @@
 class Members_account < Base_View
 
   def title 
-    "Your Account on #{site_title}"
+    "Your Account on #{site_name}"
   end
 
   def clubs_owned
