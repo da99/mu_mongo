@@ -16,7 +16,7 @@ class Test_Control_Messages_Edit < Test::Unit::TestCase
   end
 
   must 'allow owner to view.' do
-    log_in_member
+    create_member_and_log_in
     mem = create_message(regular_member_1)
     get "/mess/#{mem.data._id}/edit/"
     assert 200, last_response.status

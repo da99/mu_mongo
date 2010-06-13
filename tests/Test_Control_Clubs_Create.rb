@@ -11,7 +11,7 @@ class Test_Control_Clubs_Create < Test::Unit::TestCase
   end
 
   must 'allow any member to create a Club' do
-    log_in_member
+    create_member_and_log_in
     club = rand_club
     post '/clubs/', club
     follow_redirect!

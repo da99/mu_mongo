@@ -18,7 +18,7 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
     mess = create_message(regular_member_1)
 		mess_id = mess.data._id.to_s
 		new_body = 'http://new.com'
-		log_in_member
+		create_member_and_log_in
 		post "/mess/#{mess_id}/", {:body=>new_body, :_method=>'put'}
 		reloaded = Message.by_id(mess.data._id)
 

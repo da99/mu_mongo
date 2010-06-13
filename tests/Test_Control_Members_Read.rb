@@ -11,7 +11,7 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   end
 
   must "renders ok for members" do
-    log_in_member
+    create_member_and_log_in
     get '/today/', {}, ssl_hash
     assert_equal 200, last_response.status
   end
