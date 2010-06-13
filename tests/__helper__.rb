@@ -188,6 +188,11 @@ class Test::Unit::TestCase
     follow_redirect!
   end
 
+  def assert_redirect(loc, status = 301)
+    assert_equal loc, last_response.headers['Location'] 
+    assert_equal status, last_response.status
+  end
+
   def log_in_member
     mem = Member.by_username(regular_username_1)
     assert_equal false, mem.has_power_of?( :ADMIN )

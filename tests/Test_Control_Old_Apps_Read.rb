@@ -89,4 +89,9 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_equal "/stylesheets/en-us/Hellos_list.css", last_request.fullpath
   end
 
+  must 'redirect the Linguee Bot to bing.com' do
+    get '/', {}, { 'HTTP_USER_AGENT'=>'Linguee Bot'}
+    assert_redirect "http://www.bing.com/"
+  end
+
 end # === class Test_Control_Old_Apps_Read
