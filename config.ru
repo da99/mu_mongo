@@ -4,6 +4,7 @@ $KCODE = 'utf8'
 begin
 
   require 'mongo_rack'
+  require 'helpers/mongo_rack_with_proper_uri_parser'
 
   %w{
     Allow_Only_Roman_Uri
@@ -49,8 +50,7 @@ begin
   
   # === Helpers
   use Rack::MethodOverride
-  use Rack::Session::Pool
-  # use Rack::Session::Mongo, {:server=>File.join(DB_CONN_STRING, DB_SESSION_TABLE)}
+  use Rack::Session::Mongo, {:server=>File.join(MONGODB_CONN_STRING, DB_SESSION_TABLE)}
   use Strip_If_Head_Request
   
   # === Low-level Helpers 
@@ -90,24 +90,24 @@ rescue Object => e
   
   if ['test', 'development'].include?(ENV['RACK_ENV'])
     raise e
-	else
-		begin
-			require 'cgi'
-			load File.expand_path('~/.megauni_conf')
-			Pony.mail(
-				:to=>'diego@miniuni.com', 
-				:from=>'help@megauni.com',
-				:subject => CGI.escapeHTML(e.class.to_s),
-				:body    => CGI.escapeHTML(e.message.to_s),
-				:via      => :smtp,
-			  :via_options => { 
-					:address   => 'smtp.webfaction.com',
-				  :user_name => The_App::SMTP_USER_NAME,
-					:password => The_App::SMTP_PASSWORD
-				}
-			)
-		rescue Object => x
-		end
+  else
+    begin
+      require 'cgi'
+      load File.expand_path('~/.megauni_conf')
+      Pony.mail(
+        :to=>'diego@miniuni.com', 
+        :from=>'help@megauni.com',
+        :subject => CGI.escapeHTML(e.class.to_s),
+        :body    => CGI.escapeHTML(e.message.to_s),
+        :via      => :smtp,
+        :via_options => { 
+          :address   => 'smtp.webfaction.com',
+          :user_name => The_App::SMTP_USER_NAME,
+          :password => The_App::SMTP_PASSWORD
+        }
+      )
+    rescue Object => x
+    end
   end
   
   the_app = lambda { |env|

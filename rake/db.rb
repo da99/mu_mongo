@@ -2,15 +2,6 @@ require 'json'
 require 'mongo'
 
 require 'mongo'
-# DB_HOST = "flame.mongohq.com"
-# DB_PORT = 27024
-# DB_USER = 'da01'
-# DB_PASSWORD = "isle569vxwo103"
-# DB_NAME = 'mu02'
-# DB_CONN = Mongo::Connection.from_uri(
-#     "mongodb://da01:isle569vxwo103@flame.mongohq.com:27024/mu01"
-# )
-# DB = DB_CONN.db('mu01')
 # COLLS = %w{Clubs Members Member_Usernames Messages}
 
 def compile_with_mongo_ids hsh
