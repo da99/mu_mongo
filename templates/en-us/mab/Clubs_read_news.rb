@@ -2,33 +2,37 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_news.sass
 # NAME Clubs_read_news
 
-h3 'News: {{club_title}}' 
-
-div.teaser '{{club_teaser}}'
-
-club_nav_bar(__FILE__)
-
-show_if 'logged_in?' do
+div.col.intro! {
   
-  form_message_create(
-    :title => 'Post news:',
-    :hidden_input => Hash.new[
-                      :message_model => 'news', 
-                      :club_filename => '{{club_filename}}',
-                      :privacy       => 'public'
-                     ]
-  )
+  h3 'News: {{club_title}}' 
   
-end # logged_in?
+  show_if 'logged_in?' do
+    
+    form_message_create(
+      :title => 'Post news:',
+      :hidden_input => Hash.new[
+                        :message_model => 'news', 
+                        :club_filename => '{{club_filename}}',
+                        :privacy       => 'public'
+                       ]
+    )
+    
+  end # logged_in?
 
+} # div.intro!
 
-div.club_messages! do
+div.col.navigate! {
   
-  show_if('no_news'){
-    div.empty_msg 'Nothing has been posted yet.'
-  }
-  
-  loop_messages 'news'
-  
-end
+  club_nav_bar(__FILE__)
 
+  div.club_messages! do
+    
+    show_if('no_news'){
+      div.empty_msg 'Nothing has been posted yet.'
+    }
+    
+    loop_messages 'news'
+    
+  end
+
+} # div.navigate!

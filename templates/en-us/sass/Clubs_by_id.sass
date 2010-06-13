@@ -6,36 +6,30 @@
 @import layout_styles.sass
 @import mini_nav_bar.sass
 
+div.col
+  float: left
+
+#intro
+  width: 350px
+  h3
+    color: $blue
+
 #the_content
   padding: 10px 10px 50px 10px
   +clearfix
-
+  
 #club_nav_bar 
-  +inline-list
-  display: block
-  margin-bottom: -1px
-  li
-    padding: 2px 3px
-    a
-      padding: 2px 3px
-  li.selected
-    margin-right: 5px
-    text-align: center
-    background-color: #fff
-    border: 1px solid black
-      bottom: 0
+  +nav_bar
+  margin-bottom: 10px
 
 #club_messages
   border-top: 1px dashed #003860
-  float: left
   width: 550px
 
 #club_message_create
   padding-bottom: 15px
   width: 300px
-  float: left
 
 #club_intro
   width: 400px
-  float: left
 

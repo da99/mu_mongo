@@ -2,30 +2,40 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_by_id.sass
 # NAME Club_profile
 
-h3 '{{club_title}}' 
-
-div.teaser '{{club_teaser}}'
-
-club_nav_bar(__FILE__)
-
-show_if 'logged_in?' do
+div.col.intro! {
   
-  form_message_create(
-    :hidden_input => { :club_filename => '{{club_filename}}',
-                       :privacy       => 'public'
-                     }
-  )
+  h3 '{{club_title}}' 
+
+  div.teaser '{{club_teaser}}'
+
   
-end # logged_in?
+  show_if 'logged_in?' do
+    
+    form_message_create(
+      :hidden_input => { :club_filename => '{{club_filename}}',
+                         :privacy       => 'public'
+                       }
+    )
+    
+  end # logged_in?
+
+} # div.intro!
 
 
-div.club_messages! do
+div.col.navigate! {
   
-  show_if('no_messages_latest'){
-    div.empty_msg 'No messages yet.'
-  }
+  club_nav_bar(__FILE__)
+
+
+  div.club_messages! do
+    
+    show_if('no_messages_latest'){
+      div.empty_msg 'No messages yet.'
+    }
+    
+    loop_messages 'messages_latest'
+    
+  end
   
-  loop_messages 'messages_latest'
-  
-end
+} # div.navigate!
 

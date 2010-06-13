@@ -22,18 +22,18 @@ module Base_Club
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
     vals = [ 
       [/_id\Z/ , 'Home', ''],
-      [/_e\Z/  , 'Encyclopedia', 'e'],
-      [/_qa\Z/ , 'Q & A', 'qa'],
-      [/_news\Z/ , 'News', 'news']
+      [/_e\Z/  , 'Encyclopedia', 'e/'],
+      [/_qa\Z/ , 'Q & A', 'qa/'],
+      [/_news\Z/ , 'News', 'news/']
     ]
     text(capture {
 
       ul.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
-            li.selected { span trip[1] }
+            li.selected  trip[1] 
           else
-            li { a(trip[1], :href=>'{{club_href}}' + trip[2] + '/') }
+            li { a(trip[1], :href=>'{{club_href}}' + trip[2] ) }
           end
         }
 
