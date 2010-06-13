@@ -129,10 +129,12 @@ class Find_The_Bunny
     if results
       @app.call new_env 
     else
+      
       if new_env['PATH_INFO']['/+/']
         new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )
         return redirect(new_url)
       end
+      
       raise The_App::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
     end
 

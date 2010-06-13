@@ -43,6 +43,10 @@ class Old_App_Redirect
     end
 
     # =====================================================
+    
+    if new_env['PATH_INFO'] === "/account/"
+      return hearty_redirect("/me/")
+    end
 
     if new_env['PATH_INFO'] === "/skins/jinx/css/main_show.css"
       return hearty_redirect("/stylesheets/en-us/Hellos_list.css")
