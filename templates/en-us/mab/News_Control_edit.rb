@@ -11,7 +11,7 @@ div.content! {
 
   form.form_news_edit!(:action=>'{{news_href_update}}', :method=>'post') {
 
-    _input_put_method
+    _method_put
     
     fieldset {
       label 'Title'

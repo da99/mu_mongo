@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276441388" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276451552" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -79,8 +79,8 @@
        <div id="club_message_create">
         <h4>Post a message:</h4>
         <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
-         <input type="hidden" value="{{club_filename}}" name="club_filename"/>
          <input type="hidden" value="public" name="privacy"/>
+         <input type="hidden" value="{{club_filename}}" name="club_filename"/>
 
 {{#single_username?}}
 

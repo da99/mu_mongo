@@ -63,7 +63,11 @@ a img {
   border: none; }
 
 #the_body {
+  overflow: hidden;
+  display: inline-block;
   padding: 10px 20px; }
+  #the_body {
+    display: block; }
 
 #container {
   overflow: hidden;
@@ -72,7 +76,17 @@ a img {
     display: block; }
 
 #content {
+  overflow: hidden;
+  display: inline-block;
   float: left; }
+  #content {
+    display: block; }
+
+#the_content {
+  overflow: hidden;
+  display: inline-block; }
+  #the_content {
+    display: block; }
 
 #nav_bar {
   float: left;
@@ -470,7 +484,11 @@ a img {
   border: none; }
 
 #the_body {
+  overflow: hidden;
+  display: inline-block;
   padding: 10px 20px; }
+  #the_body {
+    display: block; }
 
 #container {
   overflow: hidden;
@@ -479,7 +497,17 @@ a img {
     display: block; }
 
 #content {
+  overflow: hidden;
+  display: inline-block;
   float: left; }
+  #content {
+    display: block; }
+
+#the_content {
+  overflow: hidden;
+  display: inline-block; }
+  #the_content {
+    display: block; }
 
 #nav_bar {
   float: left;

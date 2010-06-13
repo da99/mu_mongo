@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276441388" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276451552" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -98,6 +98,7 @@
        <span>Delete ALL your clubs first. All else they will remain.</span>
       </p>
       <form action="/delete-account-forever-and-ever/" method="POST" name="delete_account_form" id="delete_account_form">
+        <input type="hidden" value="delete" name="_method"/>
        <p>
         <strong>Are you really, really sure? (There is no undo.)</strong>
        </p>
