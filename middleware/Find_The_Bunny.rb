@@ -67,10 +67,11 @@ class Find_The_Bunny
       ['/members/'         , Members, 'update'          , 'PUT'] ,
       ['/life/{filename}/' , Members, 'life' ]          ,
       ['/lives/{filename}/', Members, 'lives' ]         ,
-      ['/create-account/'  , Members, 'create_account' ],
-      ['/create-life/'     , Members, 'create_life' ]   ,
-      ['/today/'           , Members, 'today' ]         ,
-      ['/reset-password/'  , Members, 'reset_password', 'POST' ],
+      ['/create-account/'  , Members ],
+      ['/create-life/'     , Members ]   ,
+      ['/today/'           , Members ]         ,
+      ['/account/'         , Members ]         ,
+      ['/reset-password/'  , Members, nil, 'POST' ],
 			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ]
     ]
   end
@@ -79,8 +80,12 @@ class Find_The_Bunny
     
     new_env['the.app.meta'] ||= {}
     http_meth = new_env['REQUEST_METHOD'].to_s
-    results = @url_aliases.detect { |path, control, action_name, raw_http_verbs| 
+    results = @url_aliases.detect { |path, control, raw_action_name, raw_http_verbs| 
 
+      action_name = raw_action_name ? 
+                      raw_action_name : 
+                      path.gsub(%r!\A/|/\Z!, '').split("/").join('-').gsub('-', '_')
+      
       # === Validate HTTP verbs
       http_verbs = [ raw_http_verbs || 'GET' ].flatten
       if http_verbs.empty?
