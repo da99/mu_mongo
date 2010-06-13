@@ -14,9 +14,15 @@ module Base
   alias_method :show_if, :mustache
   alias_method :loop,    :mustache
 
-  def _input_put_method
+  def _method_delete
     text(capture { 
-      input :type=>'hidden', :name=>'method', :value=>'_put' 
+      input :type=>'hidden', :name=>'_method', :value=>'delete' 
+    })
+  end
+  
+  def _method_put
+    text(capture { 
+      input :type=>'hidden', :name=>'_method', :value=>'put' 
     })
   end
 

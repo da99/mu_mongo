@@ -797,15 +797,14 @@ module Couch_Plastic_Class_Methods
     end
   end
 
-  def delete! id, editor # DELETE
-    doc = new(id) do
+  def delete id, editor # DELETE
+    new(id) do
       self.manipulator = editor
       if !deletor?(editor)
         raise Unauthorized, "Deletor: #{self.class} #{manipulator.inspect}"
       end
-      delete!
+      self.class.db_collection.remove({:_id=>data._id}, {:safe=>true})
     end
-    doc
   end
 
 

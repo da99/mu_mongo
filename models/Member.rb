@@ -89,6 +89,19 @@ class Member
       }]
   # ==== Class Methods =====================================================    
 
+  def self.delete id, editor
+    obj = begin
+            by_id(id)
+          rescue Member::Not_Found
+            nil
+          end
+    if obj
+      super(id, editor)
+      db_collection_members_deleted.save(obj.data.as_hash, :safe=>true)
+    end
+    obj
+  end
+
   def self.valid_security_level?(perm_level)
     return true if SECURITY_LEVELS.include?(perm_level)
     case perm_level
@@ -99,6 +112,10 @@ class Member
     end
   end
   
+  def self.db_collection_members_deleted
+    @coll_members_deleted ||= DB.collection('Members_Deleted')
+  end
+
   def self.db_collection_usernames
     @coll_usernames ||= DB.collection('Member_Usernames')
   end

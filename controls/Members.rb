@@ -126,5 +126,12 @@ class Members
     end
   end # === put :update
 
+  def DELETE_delete_account_forever_and_ever
+    Member.delete( current_member.data._id, current_member )
+    log_out!
+    flash_msg.success = "Your account has been deleted forever."
+    redirect! '/'
+  end
+
 end # === Member_Control
 

@@ -72,7 +72,8 @@ class Find_The_Bunny
       ['/today/'           , Members ],
       ['/account/'         , Members ],
       ['/reset-password/'  , Members, nil, 'POST' ],
-			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ]
+			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ],
+      ['/delete-account-forever-and-ever/', Members, nil, 'DELETE']
     ]
   end
 

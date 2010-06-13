@@ -197,10 +197,14 @@ class Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
-  def log_in_member
-    mem = Member.by_username(regular_username_1)
+  def assert_log_out
+    get '/account/'
+    assert_redirect('/log-in/', 302)
+  end
+
+  def log_in_member(mem, password)
     assert_equal false, mem.has_power_of?( :ADMIN )
-    post '/log-in/', {:username=>mem.usernames.first, :password=>regular_password_1}, ssl_hash
+    post '/log-in/', {:username=>mem.usernames.first, :password=>password}, ssl_hash
     follow_redirect!
     assert_match( /today/, last_request.fullpath)
   end
@@ -214,21 +218,31 @@ class Test::Unit::TestCase
   end
 
 	def create_member raw_opts = {}
+    
 		opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username, :email)
-		if !opts.password && !opts.confirm_password
-			new_pwrd              = "pass#{rand(100000)}"
-			opts.password         = new_pwrd
-			opts.confirm_password = new_pwrd
-		end
+    
 		if !opts.add_username
 			opts.add_username = "name#{rand(1000000)}"
 		end
+    
+		if !opts.password && !opts.confirm_password
+			new_pwrd              = "pass-#{opts.add_username}"
+			opts.password         = new_pwrd
+			opts.confirm_password = new_pwrd
+		end
+    
 		if !opts.email
 			opts.email = "test-#{rand(10000)}@megauni.com"
 		end
 
 		Member.create nil, opts.as_hash
 	end
+
+  def create_member_and_log_in(*args)
+    mem = create_member(*args)
+    log_in_member(mem, "pass-#{mem.usernames.first}")
+    mem
+  end
 
   def create_club(mem = nil, raw_club_opts = {})
     mem ||= regular_member_1
