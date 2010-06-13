@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276386547" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276391969" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,50 +70,115 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <h3>Q&amp;A: {{club_title}}</h3>
-     <div class="teaser">{{club_teaser}}</div>
-      <ul id="club_nav_bar">
-       <li>
-        <a href="{{club_href}}/">Home</a>
-       </li>
-       <li>
-        <a href="{{club_href}}e/">Encyclopedia</a>
-       </li>
-       <li class="selected">
-        <span>Q &amp; A</span>
-       </li>
-       <li>
-        <a href="{{club_href}}news/">News</a>
-       </li>
+     <div class="col" id="intro">
+      <h3>Q&amp;A: {{club_title}}</h3>
 
 {{#logged_in?}}
 
-       <li>
-        <a href="/log-out/">Log-out</a>
-       </li>
+       <div id="club_message_create">
+        <h4>Ask a question:</h4>
+        <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
+
+{{#single_username?}}
+
+         <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+         <fieldset>
+          <select name="message_model">
+           <option value="comment">Comment</option>
+           <option value="story">Story</option>
+           <option value="joke">Humorous ;)</option>
+           <option value="question">Question?</option>
+           <option value="plea">Request</option>
+           <option value="brainstorm">Brainstorm</option>
+           <option value="complaint">Complain!</option>
+           <option value="product">Product</option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <textarea name="body"></textarea>
+         </fieldset>
+         <fieldset>
+          <label>Labels (Separate each with a comma.)</label>
+          <input type="text" class="text" value="" name="public_labels"/>
+         </fieldset>
+
+{{#multiple_usernames?}}
+
+         <fieldset>
+          <label>Post as:</label>
+          <select name="owner_id">
+
+{{#multiple_usernames}}
+
+           <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+          </select>
+         </fieldset>
+
+{{/multiple_usernames?}}
+
+         <fieldset>
+          <label>Important?</label>
+          <select name="important">
+           <option value="">No. It can wait.</option>
+           <option value="true">Yes</option>
+          </select>
+         </fieldset>
+         <div class="buttons">
+          <button class="create">Save</button>
+         </div>
+        </form>
+       </div>
+
+{{/logged_in?}}
+
+     </div>
+     <div class="col" id="navigate">
+       <ul id="club_nav_bar">
+        <li>
+         <a href="{{club_href}}">Home</a>
+        </li>
+        <li>
+         <a href="{{club_href}}e/">Encyclopedia</a>
+        </li>
+        <li class="selected">Q &amp; A</li>
+        <li>
+         <a href="{{club_href}}news/">News</a>
+        </li>
+
+{{#logged_in?}}
+
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-       <li>
-        <a href="/log-in/">Log-in</a>
-       </li>
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
 
 {{/not_logged_in?}}
 
-       <li>
-        <a href="/">Megauni</a>
-       </li>
-      </ul>
+        <li>
+         <a href="/">Megauni</a>
+        </li>
+       </ul>
 
 {{#logged_in?}}
 
 
 {{#follower?}}
 
-      <p>You are following this club.</p>
+       <p>You are following this club.</p>
 
 {{/follower?}}
 
@@ -123,32 +188,32 @@
 
 {{#single_username?}}
 
-      <p>
-       <a href="{{follow_href}}">Follow this club.</a>
-      </p>
+       <p>
+        <a href="{{follow_href}}">Follow this club.</a>
+       </p>
 
 {{/single_username?}}
 
 
 {{#multiple_usernames?}}
 
-      <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
-       <fieldset>
-        <label>Follow this club as: </label>
-        <select name="username">
+       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
+        <fieldset>
+         <label>Follow this club as: </label>
+         <select name="username">
 
 {{#current_member_usernames}}
 
-         <option value="{{username}}">{{username}}</option>
+          <option value="{{username}}">{{username}}</option>
 
 {{/current_member_usernames}}
 
-        </select>
-       </fieldset>
-       <div class="buttons">
-        <button>Follow.</button>
-       </div>
-      </form>
+         </select>
+        </fieldset>
+        <div class="buttons">
+         <button>Follow.</button>
+        </div>
+       </form>
 
 {{/multiple_usernames?}}
 
@@ -158,91 +223,27 @@
 
 {{/logged_in?}}
 
-
-{{#logged_in?}}
-
-      <div id="club_message_create">
-       <h4>Ask a question:</h4>
-       <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
-
-{{#single_username?}}
-
-        <input type="hidden" value="{{first_username}}" name="username"/>
-
-{{/single_username?}}
-
-        <fieldset>
-         <select name="message_model">
-          <option value="comment">Comment</option>
-          <option value="story">Story</option>
-          <option value="joke">Humorous ;)</option>
-          <option value="question">Question?</option>
-          <option value="plea">Request</option>
-          <option value="brainstorm">Brainstorm</option>
-          <option value="complaint">Complain!</option>
-          <option value="product">Product</option>
-         </select>
-        </fieldset>
-        <fieldset>
-         <textarea name="body"></textarea>
-        </fieldset>
-        <fieldset>
-         <label>Labels (Separate each with a comma.)</label>
-         <input type="text" class="text" value="" name="public_labels"/>
-        </fieldset>
-
-{{#multiple_usernames?}}
-
-        <fieldset>
-         <label>Post as:</label>
-         <select name="owner_id">
-
-{{#multiple_usernames}}
-
-          <option value="{{username}}">{{username}}</option>
-
-{{/multiple_usernames}}
-
-         </select>
-        </fieldset>
-
-{{/multiple_usernames?}}
-
-        <fieldset>
-         <label>Important?</label>
-         <select name="important">
-          <option value="">No. It can wait.</option>
-          <option value="true">Yes</option>
-         </select>
-        </fieldset>
-        <div class="buttons">
-         <button class="create">Save</button>
-        </div>
-       </form>
-      </div>
-
-{{/logged_in?}}
-
-     <div id="club_messages">
+      <div id="club_messages">
 
 {{#no_questions}}
 
-      <div class="empty_msg">No questions have been asked.</div>
+       <div class="empty_msg">No questions have been asked.</div>
 
 {{/no_questions}}
 
 
 {{#questions}}
 
-       <div class="message">
-        <div class="body">{{{compiled_body}}}</div>
-        <div class="permalink">
-         <a href="{{href}}">Permalink</a>
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
         </div>
-       </div>
 
 {{/questions}}
 
+      </div>
      </div>
    </div>
 

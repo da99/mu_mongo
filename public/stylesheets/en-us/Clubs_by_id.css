@@ -322,6 +322,14 @@ div.message, div.club {
       display: inline;
       padding: 2px 5px; }
 
+div.col {
+  float: left; }
+
+#intro {
+  width: 350px; }
+  #intro h3 {
+    color: #185dad; }
+
 #the_content {
   padding: 10px 10px 50px 10px;
   overflow: hidden;
@@ -335,32 +343,37 @@ div.message, div.club {
   padding: 0px;
   display: inline;
   display: block;
-  margin-bottom: -1px; }
+  padding: 0 10px 2px 20px;
+  border-bottom: 2px solid #1d70d2;
+  margin-bottom: 10px; }
   #club_nav_bar li {
     margin: 0px;
     padding: 0px;
     display: inline; }
   #club_nav_bar li {
-    padding: 2px 3px; }
+    padding: 2px 3px 3px 3px; }
     #club_nav_bar li a {
-      padding: 2px 3px; }
+      padding: 2px 4px 4px 4px; }
   #club_nav_bar li.selected {
     margin-right: 5px;
+    padding: 4px 9px 3px 9px;
+    font-size: 90%;
+    font-weight: bold;
     text-align: center;
-    background-color: white;
-    border: 1px solid black;
-      border-bottom: 0; }
+    text-transform: uppercase;
+    background-color: #1d70d2;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    color: white; }
 
 #club_messages {
   border-top: 1px dashed #003860;
-  float: left;
   width: 550px; }
 
 #club_message_create {
   padding-bottom: 15px;
-  width: 300px;
-  float: left; }
+  width: 300px; }
 
 #club_intro {
-  width: 400px;
-  float: left; }
+  width: 400px; }
