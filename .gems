@@ -12,3 +12,4 @@ mongo
 mongo_ext
 bson_ext
 pony
+mongo_rack

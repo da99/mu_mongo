@@ -2,16 +2,29 @@ require 'mongo'
 require 'loofah'
 require 'models/Data_Pouch'
 
-DB_NAME = "mu02"
-DB_HOST = "pearl.mongohq.com:27027/#{DB_NAME}"
-DB_USER = 'da01'
-DB_PASSWORD = "isle569vxwo103"
 DB_CONN = if The_App::ON_HEROKU
+            DB_NAME          = "mu02"
+            DB_HOST          = "pearl.mongohq.com:27027/#{DB_NAME}"
+            DB_USER          = 'da01'
+            DB_PASSWORD      = "isle569vxwo103"
+            DB_CONN_STRING   = "#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}"
+            DB_SESSION_TABLE = 'rack_sessions'
             Mongo::Connection.from_uri(
-              "mongodb://#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}",
+              "mongodb://#{DB_CONN_STRING}",
               :timeout=>3
             ) 
           else
+            case ENV['RACK_ENV']
+            when 'development'
+              DB_NAME = "megauni_dev"
+            when 'test'
+              DB_NAME = "megauni_test"
+            end
+            DB_HOST          = "localhost:27017/#{DB_NAME}"
+            DB_USER          = ''
+            DB_PASSWORD      = ""
+            DB_CONN_STRING   = DB_HOST
+            DB_SESSION_TABLE = 'rack_sessions'
             Mongo::Connection.new(nil, nil, :timeout=>1)
           end
 

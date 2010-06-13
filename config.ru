@@ -3,6 +3,8 @@ $KCODE = 'utf8'
 
 begin
 
+  require 'mongo_rack'
+
   %w{
     Allow_Only_Roman_Uri
     Squeeze_Uri_Dots 
@@ -47,7 +49,8 @@ begin
   
   # === Helpers
   use Rack::MethodOverride
-  use Rack::Session::Pool
+  # use Rack::Session::Pool
+  use Rack::Session::Mongo, {:server=>File.join(DB_CONN_STRING, DB_SESSION_TABLE)}
   use Strip_If_Head_Request
   
   # === Low-level Helpers 
