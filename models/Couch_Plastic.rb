@@ -8,9 +8,10 @@ DB_CONN = if The_App::ON_HEROKU
             DB_USER          = 'da01'
             DB_PASSWORD      = "isle569vxwo103"
             DB_CONN_STRING   = "#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}"
+            MONGODB_CONN_STRING ="mongodb://#{DB_CONN_STRING}"
             DB_SESSION_TABLE = 'rack_sessions'
             Mongo::Connection.from_uri(
-              "mongodb://#{DB_CONN_STRING}",
+              MONGODB_CONN_STRING,
               :timeout=>3
             ) 
           else
@@ -21,11 +22,17 @@ DB_CONN = if The_App::ON_HEROKU
               DB_NAME = "megauni_test"
             end
             DB_HOST          = "localhost:27017/#{DB_NAME}"
-            DB_USER          = ''
-            DB_PASSWORD      = ""
-            DB_CONN_STRING   = DB_HOST
+            DB_USER          = 'da01'
+            DB_PASSWORD      = "kgflw30zeno4vr"
+            DB_CONN_STRING   = "#{DB_USER}:#{DB_PASSWORD}@#{DB_HOST}"
+            MONGODB_CONN_STRING = "mongodb://#{DB_CONN_STRING}"
             DB_SESSION_TABLE = 'rack_sessions'
-            Mongo::Connection.new(nil, nil, :timeout=>1)
+            begin
+              Mongo::Connection.from_uri(MONGODB_CONN_STRING, :timeout=>1)
+            rescue Mongo::AuthenticationError 
+              puts "Did you add #{DB_USER} to both dev and test databases? If not, please do."
+              raise
+            end
           end
 
 at_exit do
@@ -83,7 +90,8 @@ module Couch_Plastic
     if not valid_env
       raise ArgumentError, "DB reseting only allowed in 'test' or 'development'."
     end
-    DB.collection_names.each { |coll|
+    
+    DB.collection_names.reject { |name| name['system.'] }.each { |coll|
       DB.collection(coll).remove()
     }
     ensure_indexes
