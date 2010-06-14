@@ -8,8 +8,4 @@ class Members_account < Base_View
     "Your Account on #{site_name}"
   end
 
-  def clubs_owned
-    []
-  end
-  
 end # === Members_account 

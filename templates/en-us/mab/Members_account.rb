@@ -5,7 +5,7 @@
 
 div.col.clubs_owned! {
   
-  show_if 'no_clubs_owned' do
+  show_if 'no_your_clubs?' do
     p "You don't own any clubs at the moment."
   end
 
@@ -13,7 +13,13 @@ div.col.clubs_owned! {
     a("Create a fan club.", :href=>'/club-create/')
   }
   
-  loop 'clubs_owned'
+  show_if('your_clubs?') {
+    ul {
+      loop 'your_clubs' do
+        li { a('{{title}}', :href=>'{{href}}') }
+      end
+    }
+  }
   
 } # clubs_owned!
 
