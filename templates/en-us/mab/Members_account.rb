@@ -2,19 +2,6 @@
 # SASS ~/megauni/templates/en-us/sass/Members_account.sass
 # NAME Members_account
 
-
-div.col.clubs_owned! {
-  
-  show_if 'no_your_clubs?' do
-    p "You don't own any clubs at the moment."
-  end
-
-  div.create_club {
-    a("Create a fan club.", :href=>'/club-create/')
-  }
-  
-} # clubs_owned!
-
 div.col.kill_me! {
   
   p %@

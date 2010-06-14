@@ -1,58 +1,58 @@
 
 class Angry_Snoopy
-	include Demand_Arguments_Dsl
+  include Demand_Arguments_Dsl
 
-	def initialize 
-		on_assertion_exit {
-			raise DemandFailed, assertion_exit_msg
-		}
-	end
+  def initialize 
+    on_assertion_exit {
+      raise DemandFailed, assertion_exit_msg
+    }
+  end
 
-	def do_this &blok
-		instance_eval &blok
-	end
+  def do_this &blok
+    instance_eval &blok
+  end
 
 end # ======== Angry_Snoopy
 
 class App_Demand_Arguments 
 
-	include FeFe_Test
+  include FeFe_Test
 
-	before {
-		@pony = Angry_Snoopy.new
-	}
+  before {
+    @pony = Angry_Snoopy.new
+  }
 
-	it 'reminds hacker to get it done.' do
-		e = begin
-			@pony.do_this { demand_to_be_done	}
-		rescue DemandFailed => err
+  it 'reminds hacker to get it done.' do
+    e = begin
+      @pony.do_this { demand_to_be_done  }
+    rescue DemandFailed => err
       err
-		end
+    end
     demand_regex_match( /Please implement/,
                        e.message )
-	end
+  end
 
   context 'Booleans & Equality' # =================================== 
 
-	it 'demands a false' do
-		@pony.do_this { demand_false( 1 == 2 ) }
-		e = begin
-			@pony.do_this { demand_false 1==1 }
-		rescue DemandFailed=>err
+  it 'demands a false' do
+    @pony.do_this { demand_false( 1 == 2 ) }
+    e = begin
+      @pony.do_this { demand_false 1==1 }
+    rescue DemandFailed=>err
       err
-		end
+    end
     demand_regex_match( /This needs to be false/, e.message )
-	end
+  end
 
-	it 'demands a true' do
-		@pony.do_this { demand_true( 3 == 3 ) }
-		e = begin
-			@pony.do_this { demand_true 3==1 }
-		rescue DemandFailed=>err
-			err
-		end
+  it 'demands a true' do
+    @pony.do_this { demand_true( 3 == 3 ) }
+    e = begin
+      @pony.do_this { demand_true 3==1 }
+    rescue DemandFailed=>err
+      err
+    end
     demand_regex_match( /This needs to be true/, e.message )
-	end
+  end
   
   it 'demands equality' do
     @pony.do_this { demand_equal 100, 100.0 }
@@ -63,84 +63,84 @@ class App_Demand_Arguments
     end
     demand_regex_match( /These must be equal: #{'string'.inspect}, #{'STRING'.inspect}/, e.message )
   end
-	
+  
   context 'Regexp' # =================================== 
 
   it 'demands a regex' do
-		@pony.do_this { demand_regex( /Wat Wat/ ) }
-		e = begin
-			@pony.do_this { demand_regex :regex }
-		rescue DemandFailed=>err
+    @pony.do_this { demand_regex( /Wat Wat/ ) }
+    e = begin
+      @pony.do_this { demand_regex :regex }
+    rescue DemandFailed=>err
       err
-		end
+    end
     demand_regex_match( /Regexp is required\: \:regex/, e.message )
-	end
+  end
   
-	it 'demands a String matches against a Regexp' do
-		@pony.do_this { demand_regex_match( /YOYO/, 'YOYO' ) }
-		e = begin
-			@pony.do_this { demand_regex_match( /YOYO/, 'WatWat' ) }
-		rescue DemandFailed=>err
+  it 'demands a String matches against a Regexp' do
+    @pony.do_this { demand_regex_match( /YOYO/, 'YOYO' ) }
+    e = begin
+      @pony.do_this { demand_regex_match( /YOYO/, 'WatWat' ) }
+    rescue DemandFailed=>err
       err
-		end
+    end
     if e.message != "String does not match Regex: /YOYO/, #{'WatWat'.inspect}"  
       raise "Fail"
     end
-	end
-	
+  end
+  
   context 'Strings & Symbols' # =================================== 
   
-	it 'demands a string' do
-		@pony.do_this { demand_string 'string' }
-		e = begin
-			@pony.do_this { demand_string :string }
-		rescue DemandFailed=>err
+  it 'demands a string' do
+    @pony.do_this { demand_string 'string' }
+    e = begin
+      @pony.do_this { demand_string :string }
+    rescue DemandFailed=>err
       err
-		end
-    demand_regex_match( /A String is required\: \:string/, e.message )
-	end
-	
-	it 'demands a non-empty string' do
-		@pony.do_this { demand_string_not_empty 'string' }
-		e = begin
-			@pony.do_this { demand_string_not_empty '' }
-		rescue DemandFailed=>err
-      err
-		end
-    demand_regex_match( /String must not be empty/, e.message )
-	end
-
-	it 'demands a string when it demands a non-empty string' do
-		e = begin
-			@pony.do_this { demand_string_not_empty :string }
-		rescue DemandFailed=>err
-		  err 
     end
     demand_regex_match( /A String is required\: \:string/, e.message )
-	end
-
-	it 'demands a symbol' do
-		@pony.do_this { demand_symbol :yo }
-		e = begin
-			@pony.do_this { demand_symbol 'yo' }
-		rescue DemandFailed=>err
+  end
+  
+  it 'demands a non-empty string' do
+    @pony.do_this { demand_string_not_empty 'string' }
+    e = begin
+      @pony.do_this { demand_string_not_empty '' }
+    rescue DemandFailed=>err
       err
-		end
+    end
+    demand_regex_match( /String must not be empty/, e.message )
+  end
+
+  it 'demands a string when it demands a non-empty string' do
+    e = begin
+      @pony.do_this { demand_string_not_empty :string }
+    rescue DemandFailed=>err
+      err 
+    end
+    demand_regex_match( /A String is required\: \:string/, e.message )
+  end
+
+  it 'demands a symbol' do
+    @pony.do_this { demand_symbol :yo }
+    e = begin
+      @pony.do_this { demand_symbol 'yo' }
+    rescue DemandFailed=>err
+      err
+    end
     demand_regex_match( /A Symbol is required: #{'yo'.inspect}/, e.message )
-	end
+  end
 
   context 'Hashes & Arrays' # =================================== 
   
-	it 'demands a hash' do
-		@pony.do_this { demand_hash( {:a=>:b} ) }
-		e = begin
-			@pony.do_this { demand_hash([:a, :b]) }
-		rescue DemandFailed=>err
+  it 'demands a hash' do
+    @pony.do_this { demand_hash( {:a=>:b} ) }
+    e = begin
+      @pony.do_this { demand_hash([:a, :b]) }
+    rescue DemandFailed=>err
       err
-		end
+    end
     demand_equal( "A Hash is required\: #{[:a, :b].inspect}", e.message )
-	end
-	
+  end
+  
   it 'demands and allows keys from a hash' do
     @pony.do_this {
       demand_hash({:a=>:b, :c=>:d}) {
@@ -190,88 +190,88 @@ class App_Demand_Arguments
   end
 
   it 'demands a non-empty Array' do
-		@pony.do_this { demand_array_not_empty([1,2,3]) }
-		e = begin
-			@pony.do_this { demand_array_not_empty([]) }
-		rescue DemandFailed=>err
+    @pony.do_this { demand_array_not_empty([1,2,3]) }
+    e = begin
+      @pony.do_this { demand_array_not_empty([]) }
+    rescue DemandFailed=>err
       err
-		end
+    end
     demand_equal( 
         "Array can't be empty: #{[].inspect}",
         e.message 
     )
-	end
+  end
    
   it 'demands an Array when checking to see if it is not empty' do
-		e = begin
-			@pony.do_this { demand_array_not_empty({}) }
-		rescue DemandFailed=>err
+    e = begin
+      @pony.do_this { demand_array_not_empty({}) }
+    rescue DemandFailed=>err
       err
-		end
-			demand_equal( 
+    end
+      demand_equal( 
         "An Array is required: #{{}.inspect}",
         e.message 
       )
-	end
-	
+  end
+  
   it 'demands an element is included in the Array.' do
-		@pony.do_this { demand_array_includes [1,2,3], 2 }
-		e = begin
-			@pony.do_this { demand_array_includes [1,2,3], 1000 }
-		rescue DemandFailed=>err
+    @pony.do_this { demand_array_includes [1,2,3], 2 }
+    e = begin
+      @pony.do_this { demand_array_includes [1,2,3], 1000 }
+    rescue DemandFailed=>err
       err
-		end
-			demand_equal( 
+    end
+      demand_equal( 
         "Missing element in Array: #{1000} --> #{[1,2,3].inspect}",
         e.message
       )
-	end
-	
+  end
+  
 
   it 'demands an Array when checking to see if elements is in the Array.' do
-		e = begin
-			@pony.do_this { demand_array_includes({:a=>:b}, :a)}
-		rescue DemandFailed=>err
+    e = begin
+      @pony.do_this { demand_array_includes({:a=>:b}, :a)}
+    rescue DemandFailed=>err
       err
-		end
-			demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
-	end
-	
-	
+    end
+      demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
+  end
+  
+  
   it 'demands an element is *not* included in the Array.' do
-		@pony.do_this { demand_array_not_include [1,2,3], 4 }
-		e = begin
-			@pony.do_this { demand_array_not_include [1,2,3], 2 }
-		rescue DemandFailed=>err
+    @pony.do_this { demand_array_not_include [1,2,3], 4 }
+    e = begin
+      @pony.do_this { demand_array_not_include [1,2,3], 2 }
+    rescue DemandFailed=>err
       err
-		end
-			demand_equal( 
+    end
+      demand_equal( 
         "Element should not be in Array: #{2} --> #{[1,2,3].inspect}",
         e.message
       )
-	end
-	
+  end
+  
 
   it 'demands an Array when checking to see if element is *not* in the Array.' do
-		e = begin
-			@pony.do_this { demand_array_not_include({:a=>:b}, :a)}
-		rescue DemandFailed=>err
+    e = begin
+      @pony.do_this { demand_array_not_include({:a=>:b}, :a)}
+    rescue DemandFailed=>err
       err
-		end
-			demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
-	end
-	
+    end
+      demand_equal( "An Array is required: #{{:a=>:b}.inspect}", e.message )
+  end
+  
   context 'Bindings & Blocks'
 
-	it 'demands a binding' do 
-		@pony.do_this { demand_binding binding }
-		e = begin
-			@pony.do_this { demand_binding :binding }
-		rescue DemandFailed => err
+  it 'demands a binding' do 
+    @pony.do_this { demand_binding binding }
+    e = begin
+      @pony.do_this { demand_binding :binding }
+    rescue DemandFailed => err
       err
-		end
-			demand_regex_match( /A Binding is required\: \:binding/, e.message)
-	end
+    end
+      demand_regex_match( /A Binding is required\: \:binding/, e.message)
+  end
 
   it 'demands a block' do
     def @pony.block_demand &blok
@@ -339,7 +339,7 @@ class App_Demand_Arguments
       )
 
   end
-	
+  
   it 'demands no block is given' do
     def @pony.no_block_given 
       demand_no_block_given binding
@@ -425,12 +425,12 @@ end # ======== App_Demand_Arguments
 
 __END__
 
-	it '' do
-		@pony.do_this { demand_ }
-		begin
-			@pony.do_this {  }
-		rescue DemandFailed=>e
-			demand_regex_match( //, e.message )
-		end
-	end
-	
+  it '' do
+    @pony.do_this { demand_ }
+    begin
+      @pony.do_this {  }
+    rescue DemandFailed=>e
+      demand_regex_match( //, e.message )
+    end
+  end
+  

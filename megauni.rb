@@ -26,13 +26,13 @@ if The_App::ON_HEROKU
     SMTP_DOMAIN    = ENV['SENDGRID_DOMAIN']
   end
 else
-	class The_App
+  class The_App
     SMTP_AUTHENTICATION = :plain 
     SMTP_ADDRESS   = 'unknown'
     SMTP_USER_NAME = 'username'
     SMTP_PASSWORD  = 'password'
     SMTP_DOMAIN    = 'unknown'
-	end
+  end
 end
 
 # === DB urls/connections ===
@@ -44,7 +44,7 @@ require 'models/Couch_Plastic'
 %w{
   Club
   Message
-	Member
+  Member
 }.each { |mod| require "models/#{mod}" }
 
 

@@ -1,4 +1,4 @@
-require 'pony'
+require 'helpers/Pony'
 
 class Members
   include Base_Control
@@ -58,57 +58,57 @@ class Members
     env['results.member'] = Member.by_username(un)
     render_html_template
   end
-	
-	def POST_reset_password
-		env['results.email'] = clean_room['email']
-		
-		begin
-			mem       = Member.by_email( clean_room['email'] )
-			code      = mem.reset_password
-			env['results.reset'] = true
-			reset_url = File.join(The_App::SITE_URL, "change-password", code, CGI.escape(mem.data.email), '/')
-			Pony.mail(
-				:to=>clean_room['email'], 
-				:from=>The_App::SITE_HELP_EMAIL, 
-				:subject=>"#{The_App::SITE_DOMAIN}: Lost Password",
-				:body=>"To change your old password, go to: #{reset_url}",
-				:via      => :smtp,
-			  :via_options => { 
-          :authentication => The_App::SMTP_AUTHENTICATION,
-					:address   => The_App::SMTP_ADDRESS,
-				  :user_name => The_App::SMTP_USER_NAME,
-					:password  => The_App::SMTP_PASSWORD,
-          :domain    => The_App::SMTP_DOMAIN
-				}
-			)
-		rescue Member::Not_Found
-		end
-			
+  
+  def POST_reset_password
+    env['results.email'] = clean_room['email']
+    
+    begin
+      mem       = Member.by_email( clean_room['email'] )
+      code      = mem.reset_password
+      env['results.reset'] = true
+      reset_url = File.join(The_App::SITE_URL, "change-password", code, CGI.escape(mem.data.email), '/')
+      Pony.mail(
+        :to    =>clean_room['email'], 
+        :from  =>The_App::SITE_HELP_EMAIL, 
+        :subject=>"#{The_App::SITE_DOMAIN}: Lost Password",
+        :body  =>"To change your old password, go to: #{reset_url}"
+        # :via      => :smtp,
+        # :via_options => { 
+        #   :authentication => The_App::SMTP_AUTHENTICATION,
+        #   :address   => The_App::SMTP_ADDRESS,
+        #   :user_name => The_App::SMTP_USER_NAME,
+        #   :password  => The_App::SMTP_PASSWORD,
+        #   :domain    => The_App::SMTP_DOMAIN
+        # }
+      )
+    rescue Member::Not_Found
+    end
+      
     render_html_template
-	end
+  end
 
-	def GET_change_password code, email
-		env['results.member'] = Member.by_email(CGI.unescape(email))
-		env['results.code']   = code
-		env['results.email']  = email
-		render_html_template
-	end
+  def GET_change_password code, email
+    env['results.member'] = Member.by_email(CGI.unescape(email))
+    env['results.code']   = code
+    env['results.email']  = email
+    render_html_template
+  end
 
-	def POST_change_password code, email
-		mem = Member.by_email(CGI.unescape(email))
-		begin
-			mem.change_password_through_reset(
-				:code=>code, 
-				:password=>clean_room[:password], 
-				:confirm_password=>clean_room[:confirm_password]
-			)
-			flash_msg.success = "Your password has been updated."
-			redirect! '/log-in/'
-		rescue Member::Invalid
-			flash_msg.errors = $!.doc.errors
-			redirect! "/change-password/#{code}/#{email}/"
-		end
-	end
+  def POST_change_password code, email
+    mem = Member.by_email(CGI.unescape(email))
+    begin
+      mem.change_password_through_reset(
+        :code=>code, 
+        :password=>clean_room[:password], 
+        :confirm_password=>clean_room[:confirm_password]
+      )
+      flash_msg.success = "Your password has been updated."
+      redirect! '/log-in/'
+    rescue Member::Invalid
+      flash_msg.errors = $!.doc.errors
+      redirect! "/change-password/#{code}/#{email}/"
+    end
+  end
         
   def PUT_update
     begin

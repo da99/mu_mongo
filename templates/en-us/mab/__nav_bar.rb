@@ -62,12 +62,6 @@ div( :id=>"nav_bar" ) {
 
     # show_if 'development?' do
 
-      # show_if 'not_logged_in?' do
-      #   h4 'Non-Members'
-      #   ul.non_members {
-      #     nav_bar_li :Member_Control, 'create-account', 'Create Account'
-      #   }
-      # end
 
     #   h4 'Stuff To Do'
     #   ul.to_dos {
@@ -77,20 +71,6 @@ div( :id=>"nav_bar" ) {
     #       nav_bar_li :To_dos, 'this-month', 'This Month'
     #   }
 
-    #   h4 'Lives'
-    #   ul.lives {
-    #      
-    #       nav_bar_li :Lives, 'work'
-    #       nav_bar_li :Lives, 'friend'
-    #       nav_bar_li :Lives, 'pets', 'Pet Owner'
-    #       nav_bar_li :Lives, 'fan'
-    #       nav_bar_li :Lives, 'relatives'
-    #       nav_bar_li :Lives, 'parenting'
-    #       nav_bar_li :Lives, 'education'
-    #       nav_bar_li :Lives, 'love'
-    #       nav_bar_li :Lives, 'secret', 'Secret Life'
-    #   }
-    # 
     # end # === if development?
 
   p.divider 'Clubs'
