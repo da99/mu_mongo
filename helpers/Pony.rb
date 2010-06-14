@@ -14,7 +14,7 @@ class Pony
     msg.body = opts[:body]
     msg.date = Time.now.utc
     msg.mime_version = '1.0'
-    msg.set_content_type = 'utf-8'
+    msg.set_content_type 'text', 'plain', 'charset'=>'utf-8', 'format'=>'flowed'
 
     Net::SMTP.start(The_App::SMTP_ADDRESS, 25, The_App::SMTP_DOMAIN, The_APP::SMTP_USER_NAME, The_APP::SMTP_PASSWORD, The_App::SMTP_AUTHENTICATION) do |smtp|
       smtp.send_message msg.to_s, msg.from, msg.to
