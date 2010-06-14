@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276534427" media="screen"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276537441"/>
 
 {{/not_mobile_request?}}
 
@@ -78,9 +78,9 @@
        <div id="club_message_create">
         <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
          <label>Post news:</label>
+         <input type="hidden" value="{{club_filename}}" name="club_filename"/>
          <input type="hidden" value="public" name="privacy"/>
          <input type="hidden" value="news" name="message_model"/>
-         <input type="hidden" value="{{club_filename}}" name="club_filename"/>
 
 {{#single_username?}}
 

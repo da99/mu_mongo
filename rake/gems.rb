@@ -57,7 +57,7 @@ namespace :gem do
     
   desc 'Uninstalls a gem in the .development_gems file.'
   task :development_uninstall do
-    ENV['env']
+    ENV['env'] = 'development'
     Rake::Task['gem:uninstall']
   end
 
@@ -72,48 +72,41 @@ namespace :gem do
   desc "Uninstalls and updates .gems and .development_gems."
   task :uninstall do
 
-    cmd = ENV['cmd']
-    env = ENV['env']
-
-
-
-    assert_not_empty cmd
-    assert_included  %w{production development}, env
-
-    puts_white "Uninstalling: #{cmd}"
-
-    # Let's see if the user choose the right environment
-    # for the gem.
-    gem_name = cmd.strip.split.first.upcase
-    all_gem_names = arr.map { |l| l.strip.split.first }
-    demand_array_includes all_gem_names, gem_name
+    cmd = ENV['cmd'].to_s.strip
+    raise ArgumentError, "cmd can't be empty" if cmd.empty?
+    gem_name = cmd.split.first
+    puts_white "Uninstalling: #{gem_name}"
 
     # It's magic time... Uninstall gem, don't use
     # anything other than :system, to retain 'gem uninstall'
     # interactivity, especially during questioning of 
     # gem dependencies.
-    sh "gem uninstall #{cmd} -a -x -V --backtrace "
-
-    file, arr = eval("GEM_#{env.upcase}_PAIR")
-
-    File.open( file, 'w' ) do |f|
-      f.write arr.reject { |l| 
-        l.strip.split.first.upcase == gem_name
-      }.join("\n")
+    if `gem list`[gem_name]
+      sh "gem uninstall #{cmd} -a -x -V --backtrace "
     end
+
+    %w{development production}.each { |env|
+      file, arr = eval("GEM_#{env.upcase}_PAIR")
+
+      File.open( file, 'w' ) do |f|
+        f.write arr.reject { |l| 
+          l.strip.split.first == gem_name
+        }.join("\n")
+      end
+    }
 
   end
 
   
   desc "Installs and updates all gems from manifest (.gems, .development_gems).
-		Use PRODUCTION=true to limit to just .gems.
-	" 
+    Use PRODUCTION=true to limit to just .gems.
+  " 
   task :update  do
 
     gems_to_install = GEM_MANIFEST_ARRAY 
-		unless ENV['PRODUCTION']
-			gems_to_install += GEM_MANIFEST_DEV_ARRAY
-		end
+    unless ENV['RACK_ENV']=='production'
+      gems_to_install += GEM_MANIFEST_DEV_ARRAY
+    end
 
     installed = `gem list`
     if gems_to_install.empty?
