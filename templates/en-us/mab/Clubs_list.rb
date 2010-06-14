@@ -16,18 +16,19 @@ show_if 'your_clubs?' do
   }
 end
 
-div.clubs.clubs! do
-  h4 'Clubs:'
-  loop 'other_clubs' do 
-    div.club {
-      div {
-        a '{{title}}', :href=>'{{href}}'
+show_if('other_clubs?') {
+  div.clubs.clubs! do
+    h4 'Clubs:'
+    loop 'other_clubs' do 
+      div.club {
+        div {
+          a '{{title}}', :href=>'{{href}}'
+        }
+        div.teaser '{{teaser}}'
       }
-      div.teaser '{{teaser}}'
-    }
+    end
   end
-end
-
+} 
   
 
 
