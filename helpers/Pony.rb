@@ -7,7 +7,7 @@ class Pony
     invalid_keys = opts.keys - valid_keys
     raise ArgumentError, "Invalid options: #{invalid_keys.inspect}" unless invalid_keys.empty?
 
-    msg = TMail.new
+    msg = TMail::Mail.new
     msg.to = opts[:to]
     msg.from = opts[:from]
     msg.subject = opts[:subject]
