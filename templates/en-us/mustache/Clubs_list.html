@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276537442"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276540417"/>
 
 {{/not_mobile_request?}}
 
@@ -74,6 +74,7 @@
 {{#your_clubs?}}
 
      <div class="clubs" id="my_clubs">
+      <h4>Your Clubs:</h4>
 
 {{#your_clubs}}
 
@@ -91,17 +92,18 @@
 {{/your_clubs?}}
 
      <div class="clubs" id="clubs">
+      <h4>Clubs:</h4>
 
-{{#clubs}}
+{{#other_clubs}}
 
       <div class="club">
-       <h4>
+       <div>
         <a href="{{href}}">{{title}}</a>
-       </h4>
+       </div>
        <div class="teaser">{{teaser}}</div>
       </div>
 
-{{/clubs}}
+{{/other_clubs}}
 
      </div>
       <div id="nav_bar">

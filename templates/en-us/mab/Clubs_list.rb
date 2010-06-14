@@ -4,6 +4,7 @@
 
 show_if 'your_clubs?' do
   div.clubs.my_clubs! {
+    h4 'Your Clubs:'
     loop 'your_clubs' do 
       div.club {
         h4 {
@@ -16,12 +17,13 @@ show_if 'your_clubs?' do
 end
 
 div.clubs.clubs! do
-  loop 'clubs' do 
+  h4 'Clubs:'
+  loop 'other_clubs' do 
     div.club {
-      h4 {
-      a '{{title}}', :href=>'{{href}}'
-    }
-    div.teaser '{{teaser}}'
+      div {
+        a '{{title}}', :href=>'{{href}}'
+      }
+      div.teaser '{{teaser}}'
     }
   end
 end
@@ -29,4 +31,4 @@ end
   
 
 
-  partial('__mini_nav_bar')
+partial('__mini_nav_bar')

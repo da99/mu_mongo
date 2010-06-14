@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Clubs_list.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_list.sass
+# MAB   ~/megauni/templates/en-us/mab/Clubs_list.rb
+# SASS  ~/megauni/templates/en-us/sass/Clubs_list.sass
 # NAME  Clubs_list
 
 class Clubs_list < Base_View
@@ -13,6 +13,10 @@ class Clubs_list < Base_View
       r[:href] = "/clubs/#{r['filename']}/"
       r
     }
+  end
+
+  def other_clubs
+    @cache[:other_clubs] ||= (clubs - your_clubs)
   end
 
 end # === Clubs_list 
