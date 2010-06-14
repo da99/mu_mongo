@@ -1,12 +1,39 @@
 # VIEW views/Members_life.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Members_life.sass
+# SASS ~/megauni/templates/en-us/sass/Members_life.sass
 # NAME Members_life
 
-div.content! { 
+div.col.navigate! {
   
-  p 'Not done. Check back later.'
+  h3 '{{title}}'
   
-} # === div.content!
+  life_club_nav_bar('_id')
 
-partial('__nav_bar')
+  div.club_messages! do
+    
+    show_if('no_stream?'){
+      div.empty_msg 'No messages have been posted.'
+    }
+    
+    loop_messages 'stream'
+    
+  end
+  
+} # div.navigate!
+
+div.col.intro! {
+
+
+  show_if('owner?') {
+    
+    form_message_create(
+      :hidden_input => {:target=>'{{username_id}}'}
+    )
+
+  } # show_if
+  
+
+} # div.intro!
+
+
+# partial('__nav_bar')
 

@@ -2,23 +2,24 @@
 # SASS templates/en-us/sass/Members_today.sass
 # NAME Member_Control_today
 
-
-div.newspaper! {
-  mustache 'no_newspaper' do
-    a( 'Check out some clubs to follow.', :href=>'/clubs/')
+div.stream! {
+  
+  show_if 'no_stream?' do
+    p {
+      span "On {{site_title}}, you can join "
+      a(" different fan clubs", :href=>'/clubs/')
+      span " or post messages to your "
+      a( "own fan club", :href=>"{{my_club_href}}" )
+      span ' . '
+    }
   end
 
-  mustache 'newspaper?' do  
+  show_if 'stream?' do  
     h4 'The latest from clubs you follow:'
-    mustache 'newspaper' do
-      div.message do
-        div.body( '{{{compiled_body}}}' )
-        div.permalink {
-          a('Permalink', :href=>"{{href}}")
-        }
-      end
-    end
+    loop_messages 'stream'  
   end
-} # === div.newspaper!
+  
+} # === div.stream!
+
 partial('__nav_bar')
 

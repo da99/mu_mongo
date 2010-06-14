@@ -8,16 +8,17 @@ class Members_today < Base_View
     "Today on #{site_title}"
   end
 
-  def newspaper
-    @cache[:newspaper] ||= compile_messages( current_member.newspaper )
+  def stream
+    return []
+    @cache[:stream] ||= compile_messages( current_member.stream )
   end
 
-  def newspaper?
-    newspaper.size > 0
+  def random_stream
+    @cache[:stream] ||= compile_messages( Club.random_stream )
   end
-  
-  def clubs
-    @cache[:clubs] ||= current_member.potential_clubs
+
+  def my_club_href
+    "/life/#{current_member.usernames.first}/"
   end
 
 end # === Member_Control_today 

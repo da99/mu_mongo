@@ -56,6 +56,7 @@ class Members
   def GET_life un
     env['results.username'] = un
     env['results.member'] = Member.by_username(un)
+    env['results.owner'] = Member.by_username(un)
     render_html_template
   end
   
