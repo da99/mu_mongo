@@ -28,7 +28,7 @@ class Sessions
       flash_msg.errors = "Incorrect info. Try again."
       
     rescue Member::Password_Reset
-      flash_msg.errors = "Too many failed log-in attempts. Contact support." 
+      flash_msg.errors = "Your password has been reset. Check your email for instructions." 
       
     end
 

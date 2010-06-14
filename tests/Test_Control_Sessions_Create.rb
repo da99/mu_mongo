@@ -45,4 +45,13 @@ class Test_Control_Sessions_Create < Test::Unit::TestCase
     assert_equal '/log-in/', last_request.path_info
   end
 
+  must 'show a flash message if password has been reset' do
+    pass = "mypass123"
+    mem = create_member(:password=>pass, :confirm_password=>pass)
+    mem.reset_password
+    post '/log-in/', {:username=>mem.usernames.first, :password=>pass}, ssl_hash
+    follow_redirect!
+    assert last_response.body['has been reset']
+  end
+
 end # === class Test_Control_Sessions_Create

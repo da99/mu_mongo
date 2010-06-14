@@ -71,7 +71,7 @@ class Members
         :to    =>clean_room['email'], 
         :from  =>The_App::SITE_HELP_EMAIL, 
         :subject=>"#{The_App::SITE_DOMAIN}: Lost Password",
-        :body  =>"To change your old password, go to: #{reset_url}"
+        :body  =>"To change your old password, go to:\n#{reset_url}"
         # :via      => :smtp,
         # :via_options => { 
         #   :authentication => The_App::SMTP_AUTHENTICATION,
