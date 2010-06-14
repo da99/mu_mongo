@@ -139,6 +139,15 @@ class Club
     Club.new(club)
   end
 
+  def self.by_owner_ids raw_ids, raw_opts={}
+    username_ids = [raw_ids].flatten.compact
+    return [] if username_ids.empty?
+    db_collection.find(
+      {:owner_id=>{:$in=>username_ids}}, 
+      raw_opts
+    )
+  end
+
   def owner?(mem)
     return false if not mem
     mem.username_ids.include?(data.owner_id)

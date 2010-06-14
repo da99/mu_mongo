@@ -88,4 +88,12 @@ module Base_View_Club
     ]
   end
 
-end # === Clubs_read_e 
+  def your_clubs
+    @cache['your_clubs'] ||= if logged_in?
+                               compile_clubs(current_member.owned_clubs)
+                             else
+                               []
+                             end
+  end
+
+end # === Base_View_Club

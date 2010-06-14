@@ -3,7 +3,7 @@
 # NAME  Members_today
 
 class Members_today < Base_View
-
+  
   def title 
     "Today on #{site_title}"
   end
@@ -15,7 +15,7 @@ class Members_today < Base_View
   def newspaper?
     newspaper.size > 0
   end
-	
+  
   def clubs
     @cache[:clubs] ||= current_member.potential_clubs
   end

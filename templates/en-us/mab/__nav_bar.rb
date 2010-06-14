@@ -34,7 +34,7 @@ div( :id=>"nav_bar" ) {
   }
 
   show_if 'logged_in?' do
-    show_if 'no_mini_nav_bar?' do
+    show_if 'not_mini_nav_bar?' do
       p.divider 'Lives' 
     end
     ul.lives {
@@ -46,13 +46,13 @@ div( :id=>"nav_bar" ) {
           nav_bar_li_unselected '{{username}}', '{{href}}'
         end
       end
-    show_if 'no_mini_nav_bar?' do
+    show_if 'not_mini_nav_bar?' do
       nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
     end
     }
   end
   
-  # show_if 'no_mini_nav_bar?' do
+  # show_if 'not_mini_nav_bar?' do
   #   h4 'Egg Timers'
   #   ul.to_dos {
   #     nav_bar_li :Timer_old, 'my-egg-timer', 'Old Timer'
@@ -93,40 +93,24 @@ div( :id=>"nav_bar" ) {
     # 
     # end # === if development?
 
-  show_if 'no_mini_nav_bar?' do
-    p.divider 'Clubs'
-    ul.news {
+  p.divider 'Clubs'
+  ul.clubs {
 
-      # li "San Francisco" #  (Survival Tips + Marketplace)
-      # li "Tokyo" # (+ Translate Please)
-      # li "Vote For More Clubs"
-      # li "- How I Train My Boyfriend"
-      # li "- Introverts"
-      # li "- Obama-rific" #  (Politics + News)
-      # li "City Clubs "
-      # li "- Multiple Languages"
-      # li "- Carpooling"
-      # li "- Garage Renting"
-      # li "Tropical Physician Ratings" 
-      
-
-      # nav_bar_li nil, 'salud',    'Salud (Español)'
-      # nav_bar_li :Topic, 'back_pain', 'Back Pain'
-      # nav_bar_li :Topic, 'child_care', 'Child Care'
-      # nav_bar_li :Topic, 'computer', 'Computer Use'
-      # 
-      # nav_bar_li :Topic, 'hair',     'Skin & Hair'
-      # nav_bar_li :Topic, 'housing',  'Housing & Apartments'
-      # nav_bar_li :Topic, 'health',   'Pain & Disease'
-      # nav_bar_li :Topic, 'preggers', 'Pregnancy'
-      
-      
-      nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
-      
-      show_if 'logged_in?' do
-        nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'
-      end
+    nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
     
+    show_if 'logged_in?' do
+      nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'
+    end
+  
+  }
+  
+  show_if 'your_clubs?' do
+    p.divider 'Your Clubs'
+
+    ul.your_clubs {
+      loop 'your_clubs' do
+        li { a("{{title}}", :href=>'{{href}}') }
+      end
     }
   end
 

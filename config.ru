@@ -1,4 +1,3 @@
-
 $KCODE = 'utf8'
 
 begin

@@ -8,7 +8,7 @@ div.content! {
 		p "Your password has been reset. Check your email: {{email}}"
 	}
 
-	show_if("no_reset?") {
+	show_if("not_reset?") {
 		p "No account found with email: {{email}}"
 		p { 
 			span "Check for typos and "

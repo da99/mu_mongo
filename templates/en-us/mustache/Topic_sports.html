@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276478207" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276533408" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -114,11 +114,11 @@
 {{#logged_in?}}
 
 
-{{#no_mini_nav_bar?}}
+{{#not_mini_nav_bar?}}
 
        <p class="divider">Lives</p>
 
-{{/no_mini_nav_bar?}}
+{{/not_mini_nav_bar?}}
 
        <ul class="lives">
 
@@ -146,23 +146,20 @@
 {{/username_nav}}
 
 
-{{#no_mini_nav_bar?}}
+{{#not_mini_nav_bar?}}
 
          <li>
           <a href="/create-life/"> [ Create ] </a>
          </li>
 
-{{/no_mini_nav_bar?}}
+{{/not_mini_nav_bar?}}
 
        </ul>
 
 {{/logged_in?}}
 
-
-{{#no_mini_nav_bar?}}
-
        <p class="divider">Clubs</p>
-       <ul class="news">
+       <ul class="clubs">
          <li>
           <a href="/clubs/"> [ View All ] </a>
          </li>
@@ -177,7 +174,22 @@
 
        </ul>
 
-{{/no_mini_nav_bar?}}
+{{#your_clubs?}}
+
+       <p class="divider">Your Clubs</p>
+       <ul class="your_clubs">
+
+{{#your_clubs}}
+
+        <li>
+         <a href="{{href}}">{{title}}</a>
+        </li>
+
+{{/your_clubs}}
+
+       </ul>
+
+{{/your_clubs?}}
 
 
 {{#mini_nav_bar?}}

@@ -2,9 +2,9 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_list.sass
 # NAME Clubs_list
 
-  
-  div.clubs.my_clubs! do
-    mustache 'my_clubs' do 
+show_if 'your_clubs?' do
+  div.clubs.my_clubs! {
+    loop 'your_clubs' do 
       div.club {
         h4 {
           a '{{title}}', :href=>'{{href}}'
@@ -12,18 +12,19 @@
         div.teaser '{{teaser}}'
       }
     end
-  end
+  }
+end
 
-  div.clubs.clubs! do
-    mustache 'clubs' do 
-      div.club {
-        h4 {
-          a '{{title}}', :href=>'{{href}}'
-        }
-        div.teaser '{{teaser}}'
-      }
-    end
+div.clubs.clubs! do
+  loop 'clubs' do 
+    div.club {
+      h4 {
+      a '{{title}}', :href=>'{{href}}'
+    }
+    div.teaser '{{teaser}}'
+    }
   end
+end
 
   
 

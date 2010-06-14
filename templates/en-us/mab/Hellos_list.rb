@@ -72,7 +72,7 @@ div.col.nav_bar! {
           nav_bar_li_unselected '{{username}}', '{{href}}'
         end
       end
-    show_if 'no_mini_nav_bar?' do
+    show_if 'not_mini_nav_bar?' do
       nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
     end
     }

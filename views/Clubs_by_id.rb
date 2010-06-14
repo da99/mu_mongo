@@ -4,15 +4,11 @@
 # CONTROL ~/megauni/controls/Clubs.rb
 # NAME  Clubs_by_id
 
-require 'views/__Base_View_Club'
-
 class Clubs_by_id < Base_View
  
-  include Base_View_Club
-
-	def mini_nav_bar?
-		true
-	end
+  def mini_nav_bar?
+    true
+  end
 
   
   def months

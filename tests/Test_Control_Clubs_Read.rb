@@ -3,6 +3,17 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Clubs_Read < Test::Unit::TestCase
 
+	must 'render /clubs/' do
+		get '/clubs/'
+		assert_last_response_ok
+	end
+
+	must 'render /clubs/ for members' do
+		log_in_regular_member_1
+		get '/clubs/'
+		assert_last_response_ok
+	end
+
   must 'be viewable by non-members' do
     club = create_club
     get "/clubs/#{club.data.filename}/"

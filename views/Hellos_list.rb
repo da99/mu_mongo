@@ -1,11 +1,8 @@
 # ~/megauni/templates/en-us/mab/Hellos_list.rb
 # ~/megauni/controls/Hellos.rb
-require "views/__Base_View_Club"
 
 class Hellos_list < Base_View
   
-  include Base_View_Club
-
   def javascripts
     default_javascripts
   end

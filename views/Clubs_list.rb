@@ -15,8 +15,4 @@ class Clubs_list < Base_View
     }
   end
 
-  def my_clubs
-    current_member && current_member.clubs
-  end
-  
 end # === Clubs_list 

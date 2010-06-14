@@ -1,5 +1,7 @@
 require 'mustache'
 require 'loofah'
+require 'views/__Base_View_Club'
+
 FIND_URLS = %r~(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.]+)~
 
 class Array
@@ -31,6 +33,8 @@ end # === class Array
 
 class Base_View < Mustache
   
+  include Base_View_Club
+
   attr_reader :not_prefix, :app
   
   def initialize new_app
@@ -39,30 +43,50 @@ class Base_View < Mustache
     @cache = {}
   end
 
-  def respond_to? raw_name
-    meth         = raw_name.to_s
-    
-    orig         = super(meth)
-    (return orig) if orig 
-    
-    not_meth     = meth.sub(@not_prefix, '') 
-    (return super( not_meth )) if meth[@not_prefix] 
-    
-    orig
-  end
-
-  def method_missing *args
-    meth = args.shift.to_s
-    
-    alt_meths = [ 
+  def alt_method_names raw_meth
+    meth = raw_meth.to_s
+    [ 
       meth.sub(@not_prefix, ''),
       meth.sub(@not_prefix, '').sub('?',''),
       meth.sub('?','')
-    ]
-    target = alt_meths.detect { |alt| respond_to?(alt.to_sym) }
+    ].compact.uniq
+  end
+
+  def cup
+    ['test', "test"]
+  end
+
+  def find_target_method raw_meth
+    meth = raw_meth.to_s
+    [ 
+      meth.sub(/\Anot_/, ''),            # e.g.: not_mobile_request? => 'mobile_request?'
+      meth.sub(/\Ano_/, '').sub('?',''), # e.g.: no_cups? => 'cups'
+      meth.sub('?','')                   # clubs? => 'clubs'
+    ].compact.uniq.detect { |alt| 
+        old_respond_to?(alt)
+    }
+  end
+
+  def mu_respond_to? meth
+    orig         = old_respond_to?(meth)
+    (return meth) if orig 
+    !!(alt_method_names(meth).detect { |alt| old_respond_to?(alt) })
+  end
+  
+  alias_method :old_respond_to?, :respond_to?
+  alias_method :respond_to?, :mu_respond_to?
+
+  def method_missing meth, *args
+    target = find_target_method(meth)
+  
     if target
       result = send(target, *args) 
-      return result_empty?(result)
+      meth_s = meth.to_s
+      if meth_s[/\Ano_/] || meth_s[/\Anot_/]
+        return result_empty?(result)
+      else
+        return !result_empty?(result)
+      end
     end
     
     raise(NoMethodError, "NAME: #{meth.inspect}, ARGS: #{args.inspect}")

@@ -506,11 +506,12 @@ class Member
       cache[:newspaper] ||= Message.db_collection.find( {:target_ids=>{:$in=>following_club_ids}}, {:limit=>10})
     end
   end
-
-  def clubs
-    []
-  end
   
+  def owned_clubs
+    cache[:owned_clubs] ||= begin
+                              Club.by_owner_ids(username_ids)
+                            end
+  end
 end # === model Member
 
 
