@@ -67,6 +67,13 @@ module Base_View_Club
   def follow_href
     club.follow_href
   end
+  
+  def egg_timers_as_clubs
+    @cache['egg_timers_as_clubs'] ||= [ 
+      { :teaser=>'Works on old computers.', :href=>'/my-egg-timer/',    :title=>'Old (my-egg_timer)'},
+      { :teaser=>'Works on newer computers.', :href=>'/busy-noise/',  :title=>'New (busy-noise egg timer)'},
+    ]
+  end
 
   def old_clubs
     @cache['old_clubs'] ||= [ 
