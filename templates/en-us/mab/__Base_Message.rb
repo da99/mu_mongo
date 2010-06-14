@@ -16,17 +16,21 @@ module Base_Message
   end
 
   def form_message_create raw_opts = {}
+    
     opts = Data_Pouch.new(raw_opts, :hidden_input, :title)
     opts.hidden_input ||= {} 
-    opts.title ||= 'Post a message:'
     message_model = opts.hidden_input[:message_model]
     text(capture {
     div.club_message_create! do
       
-      h4 opts.title
-      
       form.form_club_message_create! :method=>'POST', :action=>"/messages/" do
 
+        if opts.title
+          label opts.title
+        else
+          label 'Post a message:'
+        end
+      
         opts.hidden_input.each { |k,v|
           input :type=>'hidden', :name=>k, :value=>v
         }

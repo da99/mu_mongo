@@ -108,7 +108,7 @@ namespace 'git' do
         puts_white results
         puts_white "Pushing code to Heroku..."
         sh('git push heroku master')
-        sh('heroku open')
+        Launchy.open('http://www.megauni.com/')
       end
 
     end

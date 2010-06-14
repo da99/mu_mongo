@@ -9,11 +9,11 @@ div.col.intro! {
     
     form_message_create(
       :title => 'Ask a question:',
-      :hidden_input => Hash.new[
-                        :message_model => 'question',
-                        :club_filename => '{{club_filename}}',
-                        :privacy       => 'public'
-                       ]
+      :hidden_input => {
+        :message_model => 'question',
+        :club_filename => '{{club_filename}}',
+        :privacy       => 'public'
+      }
     )
     
   end # logged_in?

@@ -10,11 +10,11 @@ div.col.intro! {
     
     form_message_create(
       :title => 'Post news:',
-      :hidden_input => Hash.new[
+      :hidden_input => {
                         :message_model => 'news', 
                         :club_filename => '{{club_filename}}',
                         :privacy       => 'public'
-                       ]
+                       }
     )
     
   end # logged_in?
