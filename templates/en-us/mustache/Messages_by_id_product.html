@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276534047" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276534428" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -241,18 +241,18 @@
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
 
 {{/logged_in?}}
 
        </ul>
 
-{{#your_clubs?}}
+{{#logged_in?}}
 
        <p class="divider">Your Clubs</p>
        <ul class="your_clubs">
+         <li>
+          <a href="/club-create/"> [ Create ] </a>
+         </li>
 
 {{#your_clubs}}
 
@@ -264,7 +264,7 @@
 
        </ul>
 
-{{/your_clubs?}}
+{{/logged_in?}}
 
 
 {{#mini_nav_bar?}}

@@ -91,18 +91,18 @@
 
 {{#logged_in?}}
 
-    <li>
-     <a href="/club-create/"> [ Create ] </a>
-    </li>
 
 {{/logged_in?}}
 
   </ul>
 
-{{#your_clubs?}}
+{{#logged_in?}}
 
   <p class="divider">Your Clubs</p>
   <ul class="your_clubs">
+    <li>
+     <a href="/club-create/"> [ Create ] </a>
+    </li>
 
 {{#your_clubs}}
 
@@ -114,7 +114,7 @@
 
   </ul>
 
-{{/your_clubs?}}
+{{/logged_in?}}
 
 
 {{#mini_nav_bar?}}

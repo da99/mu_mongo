@@ -13,14 +13,6 @@ div.col.clubs_owned! {
     a("Create a fan club.", :href=>'/club-create/')
   }
   
-  show_if('your_clubs?') {
-    ul {
-      loop 'your_clubs' do
-        li { a('{{title}}', :href=>'{{href}}') }
-      end
-    }
-  }
-  
 } # clubs_owned!
 
 div.col.kill_me! {

@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276534046" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276534427" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -81,23 +81,6 @@
       <div class="create_club">
        <a href="/club-create/">Create a fan club.</a>
       </div>
-
-{{#your_clubs?}}
-
-      <ul>
-
-{{#your_clubs}}
-
-       <li>
-        <a href="{{href}}">{{title}}</a>
-       </li>
-
-{{/your_clubs}}
-
-      </ul>
-
-{{/your_clubs?}}
-
      </div>
      <div class="col" id="kill_me">
       <p>
@@ -214,18 +197,18 @@
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
 
 {{/logged_in?}}
 
        </ul>
 
-{{#your_clubs?}}
+{{#logged_in?}}
 
        <p class="divider">Your Clubs</p>
        <ul class="your_clubs">
+         <li>
+          <a href="/club-create/"> [ Create ] </a>
+         </li>
 
 {{#your_clubs}}
 
@@ -237,7 +220,7 @@
 
        </ul>
 
-{{/your_clubs?}}
+{{/logged_in?}}
 
 
 {{#mini_nav_bar?}}
