@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276540727"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276555494"/>
 
 {{/not_mobile_request?}}
 
@@ -70,32 +70,38 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="newspaper">
+     <div id="stream">
 
-{{#no_newspaper}}
+{{#no_stream?}}
 
-      <a href="/clubs/">Check out some clubs to follow.</a>
+      <p>
+       <span>On {{site_title}}, you can join </span>
+       <a href="/clubs/"> different fan clubs</a>
+       <span> or post messages to your </span>
+       <a href="{{my_club_href}}">own fan club</a>
+       <span> . </span>
+      </p>
 
-{{/no_newspaper}}
+{{/no_stream?}}
 
 
-{{#newspaper?}}
+{{#stream?}}
 
       <h4>The latest from clubs you follow:</h4>
 
-{{#newspaper}}
+{{#stream}}
 
-      <div class="message">
-       <div class="body">{{{compiled_body}}}</div>
-       <div class="permalink">
-        <a href="{{href}}">Permalink</a>
+       <div class="message">
+        <div class="body">{{{compiled_body}}}</div>
+        <div class="permalink">
+         <a href="{{href}}">Permalink</a>
+        </div>
        </div>
-      </div>
 
-{{/newspaper}}
+{{/stream}}
 
 
-{{/newspaper?}}
+{{/stream?}}
 
      </div>
       <div id="nav_bar">

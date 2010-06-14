@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276540727"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276555494"/>
 
 {{/not_mobile_request?}}
 
@@ -70,141 +70,131 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="content">
-      <p>Not done. Check back later.</p>
-     </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
-       </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
+     <div class="col" id="navigate">
+      <h3>{{title}}</h3>
+       <ul id="club_nav_bar">
+        <li class="selected">Home</li>
+        <li>
+         <a href="{{life_club_href}}e/">Encyclopedia</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}qa/">Q &amp; A</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}news/">News</a>
+        </li>
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
 
 {{/not_logged_in?}}
 
-       </ul>
-
-{{#logged_in?}}
-
-
-{{#not_mini_nav_bar?}}
-
-       <p class="divider">Lives</p>
-
-{{/not_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
-
-
-{{#selected}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected}}
-
-
-{{#not_selected}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected}}
-
-
-{{/username_nav}}
-
-
-{{#not_mini_nav_bar?}}
-
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
-
-{{/not_mini_nav_bar?}}
-
-       </ul>
-
-{{/logged_in?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="clubs">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
-
-{{#logged_in?}}
-
-
-{{/logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-       <p class="divider">Your Clubs</p>
-       <ul class="your_clubs">
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
-
-{{#your_clubs}}
-
         <li>
-         <a href="{{href}}">{{title}}</a>
-        </li>
-
-{{/your_clubs}}
-
-       </ul>
-
-{{/logged_in?}}
-
-
-{{#mini_nav_bar?}}
-
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
+         <a href="/">Megauni</a>
         </li>
        </ul>
+      <div id="club_messages">
 
-{{/mini_nav_bar?}}
+{{#no_stream?}}
+
+       <div class="empty_msg">No messages have been posted.</div>
+
+{{/no_stream?}}
+
+
+{{#stream}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/stream}}
 
       </div>
+     </div>
+     <div class="col" id="intro">
+
+{{#owner?}}
+
+       <div id="club_message_create">
+        <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
+         <label>Post a message:</label>
+         <input type="hidden" value="{{username_id}}" name="target"/>
+
+{{#single_username?}}
+
+         <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+         <fieldset>
+          <select name="message_model">
+           <option value="comment">Comment</option>
+           <option value="story">Story</option>
+           <option value="joke">Humorous ;)</option>
+           <option value="question">Question?</option>
+           <option value="plea">Request</option>
+           <option value="brainstorm">Brainstorm</option>
+           <option value="complaint">Complain!</option>
+           <option value="product">Product</option>
+          </select>
+         </fieldset>
+         <fieldset>
+          <textarea name="body"></textarea>
+         </fieldset>
+         <fieldset>
+          <label>Labels (Separate each with a comma.)</label>
+          <input type="text" class="text" value="" name="public_labels"/>
+         </fieldset>
+
+{{#multiple_usernames?}}
+
+         <fieldset>
+          <label>Post as:</label>
+          <select name="owner_id">
+
+{{#multiple_usernames}}
+
+           <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+          </select>
+         </fieldset>
+
+{{/multiple_usernames?}}
+
+         <fieldset>
+          <label>Important?</label>
+          <select name="important">
+           <option value="">No. It can wait.</option>
+           <option value="true">Yes</option>
+          </select>
+         </fieldset>
+         <div class="buttons">
+          <button class="create">Save</button>
+         </div>
+        </form>
+       </div>
+
+{{/owner?}}
+
+     </div>
    </div>
 
 {{#javascripts}}

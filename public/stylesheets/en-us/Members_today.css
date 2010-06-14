@@ -320,10 +320,10 @@ div.message, div.club {
     text-align: right;
     font-size: 80%; }
 
-#newspaper {
+#stream {
   float: left;
   width: 300px; }
-  #newspaper h4 {
+  #stream h4 {
     border-bottom: 1px dashed black;
       border-bottom-colors: #003860; }
 
