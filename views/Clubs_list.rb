@@ -9,10 +9,7 @@ class Clubs_list < Base_View
   end
 
   def clubs
-    @cache[:clubs] ||= @app.env['results.clubs'].map { |r| 
-      r[:href] = "/clubs/#{r['filename']}/"
-      r
-    }
+    @cache[:clubs] ||= compile_clubs(@app.env['results.clubs']) 
   end
 
   def other_clubs
