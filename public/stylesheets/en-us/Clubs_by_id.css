@@ -178,9 +178,8 @@ h3 {
 h4 {
   text-transform: uppercase;
   font-weight: bold;
-  color: #003860;
-  display: block;
-  font-size: 14px; }
+  color: #185dad;
+  display: block; }
 
 p {
   padding-bottom: 10px;
@@ -242,8 +241,9 @@ div.form {
 form label, form div.title {
   text-transform: uppercase;
   font-weight: bold;
-  color: #003860;
-  display: block; }
+  color: #185dad;
+  display: block;
+  font-size: 13px; }
 form fieldset {
   padding: 0 0 15px 0; }
   form fieldset input.text, form fieldset select, form fieldset option {
@@ -329,6 +329,9 @@ div.col {
   width: 350px; }
   #intro h3 {
     color: #185dad; }
+
+#club_message_create {
+  padding-top: 20px; }
 
 #the_content {
   padding: 10px 10px 50px 10px;

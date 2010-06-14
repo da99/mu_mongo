@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276451551" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1276478207" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -76,8 +76,11 @@
 {{#logged_in?}}
 
        <div id="club_message_create">
-        <h4>Post news:</h4>
         <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
+         <label>Post news:</label>
+         <input type="hidden" value="public" name="privacy"/>
+         <input type="hidden" value="news" name="message_model"/>
+         <input type="hidden" value="{{club_filename}}" name="club_filename"/>
 
 {{#single_username?}}
 
@@ -85,18 +88,7 @@
 
 {{/single_username?}}
 
-         <fieldset>
-          <select name="message_model">
-           <option value="comment">Comment</option>
-           <option value="story">Story</option>
-           <option value="joke">Humorous ;)</option>
-           <option value="question">Question?</option>
-           <option value="plea">Request</option>
-           <option value="brainstorm">Brainstorm</option>
-           <option value="complaint">Complain!</option>
-           <option value="product">Product</option>
-          </select>
-         </fieldset>
+         <input type="hidden" value="news" name="message_model"/>
          <fieldset>
           <textarea name="body"></textarea>
          </fieldset>
