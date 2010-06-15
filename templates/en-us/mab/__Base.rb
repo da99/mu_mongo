@@ -145,13 +145,13 @@ module Base
     
     txt = capture {
       mustache coll do
-        mustache 'selected' do
+        mustache 'selected?' do
           div.box.selected {
             input( {:checked=>'checked'}.update attrs )
             span "{{#{span_txt}}}"
           }
         end
-        mustache 'not_selected' do
+        mustache 'not_selected?' do
           div.box {
             input attrs 
             span "{{#{span_txt}}}"
@@ -180,10 +180,10 @@ module Base
     txt = (capture { 
       select(select_attrs) {
         mustache coll do
-          mustache 'selected' do
+          mustache 'selected?' do
             option "{{#{opt_txt}}}", {:selected=>'selected'}.update(attrs)
           end 
-          mustache 'not_selected' do
+          mustache 'not_selected?' do
             option "{{#{opt_txt}}}"
           end
         end

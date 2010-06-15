@@ -33,10 +33,10 @@ div( :id=>"nav_bar" ) {
     p.divider 'Lives'
     ul {
       mustache 'username_nav' do
-      mustache 'selected' do
+      mustache 'selected?' do
         nav_bar_li_selected '{{username}}'
       end
-      mustache 'not_selected' do
+      mustache 'not_selected?' do
         nav_bar_li_unselected '{{username}}', '{{href}}'
       end
       end

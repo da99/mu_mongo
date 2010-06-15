@@ -30,7 +30,7 @@ div.the_form! {
 			label 'Language'
 			select :name=>'lang' do
 				loop 'languages' do
-					show_if 'selected' do
+					show_if 'selected?' do
 						option '{{name}}', :value=>'filename', :selected=>'selected'
 					end
 					show_if 'not_selected?' do

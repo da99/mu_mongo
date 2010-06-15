@@ -18,7 +18,10 @@ class Array
         [raw_results, {}]
       end
 
-      add_attrs = {:selected=>selected, :not_selected=>!selected}
+      add_attrs = { 
+        :selected? => selected, 
+        :not_selected? =>!selected
+      }
       
       if orig.is_a?(Hash)
         orig.update add_attrs
@@ -230,10 +233,10 @@ class Base_View < Mustache
                                 life_page = (c_name == :Members && a_name == 'lives')
                                 current_member_usernames.map { |raw_un|
                                   un = raw_un[:username]
-                                  { :selected=> (life_page && current_member_username == un), 
+                                  { :selected? => (life_page && current_member_username == un), 
                                     :username=>un, 
-                                    :href=>"/lives/#{un}/",
-                                  :not_selected=> !(life_page && current_member_username == un)
+                                    :href =>"/lives/#{un}/",
+                                  :not_selected? => !(life_page && current_member_username == un)
                                   }
                                 }
                               end
@@ -268,7 +271,7 @@ class Base_View < Mustache
 	def languages
 		@cache[:languages] ||= begin
 														 Couch_Plastic::LANGS.map { |k,v| 
-															{:name=>v, :filename=>k, :selected=>(k=='en-us'), :not_selected=> (k != 'en-us')}
+															{:name=>v, :filename=>k, :selected? =>(k=='en-us'), :not_selected? => (k != 'en-us')}
 														 }.sort { |x,y| 
 															x[:name] <=> y[:name]
 														 }

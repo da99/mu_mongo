@@ -65,10 +65,10 @@ div.col.nav_bar! {
     
     ul.lives {
       loop 'username_nav' do
-        show_if 'selected' do
+        show_if 'selected?' do
           nav_bar_li_selected '{{username}}'
         end
-        show_if 'not_selected' do
+        show_if 'not_selected?' do
           nav_bar_li_unselected '{{username}}', '{{href}}'
         end
       end
