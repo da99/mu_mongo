@@ -4,7 +4,7 @@
 
 div.content! { 
   
-  mustache 'show_moving_message?' do
+  show_if 'show_moving_message?' do
     div.notice! {
       span "I'm moving content from my old site, "
       a('SurferHearts.com', :href=>'http://www.surferhearts.com/') 
@@ -18,7 +18,7 @@ div.content! {
     span.published_at '{{published_at}}'
    }
 
-   mustache 'message_data' do
+   show_if 'message_data' do
      h4 '{{title}}'
      div.body { '{{{compiled_body}}}' }
    end
@@ -53,7 +53,7 @@ div.content! {
     p 'comments go here'
   }
 
-  mustache 'show_moving_message?' do
+  show_if 'show_moving_message?' do
     div.news_post.archives! {
       h4 'Archives:'
       div.body {

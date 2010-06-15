@@ -1,4 +1,4 @@
-mustache 'success_msg' do
+show_if 'success_msg' do
   div.success_msg {
     div.title 'Success.'
     div.msg( "{{success_msg}}" )

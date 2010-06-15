@@ -29,7 +29,7 @@ div.col.navigate! {
 
   div.club_messages! do
     
-    show_if('no_messages_latest'){
+    show_if('no_messages_latest?'){
       div.empty_msg 'No messages yet.'
     }
     

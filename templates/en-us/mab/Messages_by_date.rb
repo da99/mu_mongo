@@ -10,7 +10,7 @@ div.content! {
     span ", over to this new site."
   }
   
-  mustache 'logged_in?' do
+  show_if 'logged_in?' do
     div {
       a('Create', :href=>'/clubs/hearts/new/')
     }
@@ -25,7 +25,7 @@ div.content! {
     }
   }
   
-  mustache 'messages' do 
+  loop 'messages' do 
     div.news_post {
      div.info {
       span.published_at '{{published_at}}'

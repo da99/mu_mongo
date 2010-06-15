@@ -26,7 +26,7 @@ div.col.navigate! {
 
   div.club_messages! do
     
-    show_if('no_questions'){
+    show_if('no_questions?'){
       div.empty_msg 'No questions have been asked.'
     }
     

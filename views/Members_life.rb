@@ -2,34 +2,14 @@
 # SASS  ~/megauni/templates/en-us/sass/Members_life.sass
 # NAME  Members_life
 
+require 'views/__Base_View_Member_Life'
+
 class Members_life < Base_View
 
-  def life_club_href
-    "/life/#{username}/"
-  end
+  include Base_View_Member_Life
 
-  def title 
+	def title 
     "#{app.env['results.username']}'s Fan Club"
-  end
-
-  def username
-    app.env['results.username']
-  end
-  
-  def owner
-    app.env['results.owner']
-  end
-
-  def owner?
-    current_member == owner
-  end
-
-  def username_id
-    @cache['username_id'] ||= app.env['results.owner'].username_hash.index(username)
-  end
-
-  def stream
-    []
   end
   
 end # === Members_life 

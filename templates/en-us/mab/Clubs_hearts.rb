@@ -16,7 +16,7 @@ div.content! {
     div.body {
     
       ul {
-        mustache 'public_labels' do 
+        loop 'public_labels' do 
           li {
             a( '{{filename}}', :href=>"/clubs/hearts/by_label/{{filename}}/")
           }
@@ -31,7 +31,7 @@ div.content! {
     div.body {
     
       ul {
-        mustache 'months' do
+        loop 'months' do
           li {
             a( '{{text}}', :href=>"{{href}}" )
           }

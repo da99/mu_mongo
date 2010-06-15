@@ -10,7 +10,7 @@ div.content! {
     span.published_at '{{published_at}}'
    }
 
-   mustache 'message' do
+   show_if 'message' do
      h4 '{{title}}'
      div.body { '{{{compiled_body}}}' }
    end

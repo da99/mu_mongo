@@ -11,11 +11,11 @@ div.content! {
 
   div.news! {
     
-    mustache 'no_news' do
+    mustache 'no_news?' do
       p.empty 'No news posted yet.'
     end
 
-    mustache 'news' do
+    loop 'news' do
       ul {
         li {
           a("{{title}}", :href=>"{{href}}")

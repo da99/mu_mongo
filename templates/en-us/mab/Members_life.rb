@@ -6,7 +6,7 @@ div.col.navigate! {
   
   h3 '{{title}}'
   
-  life_club_nav_bar('_id')
+  life_club_nav_bar(__FILE__)
 
   div.club_messages! do
     

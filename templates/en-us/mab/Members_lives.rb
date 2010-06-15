@@ -42,12 +42,12 @@ div.content! {
 
 
   div.newspaper! {
-    mustache('no_newspaper?') {
+    show_if('no_newspaper?') {
       a('You have not subscribed to anyone\'s life.')
     }
-    mustache 'newspaper?' do  
+    show_if 'newspaper?' do  
       h4 'The latest from your subscriptions:'
-      mustache 'newspaper' do
+      show_if 'newspaper' do
         div.message do
           div.body( '{{{compiled_body}}}' )
           div.permalink {

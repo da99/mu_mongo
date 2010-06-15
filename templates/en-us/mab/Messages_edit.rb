@@ -8,7 +8,7 @@ div.content! {
   form(:id=>'form_messages_update', :action=>"{{mess_href}}", :method=>'post' ) do
     input :type=>'hidden', :name=>'_method', :value=>'put'
 
-    mustache 'mess_data' do
+    show_if 'mess_data' do
       fieldset {
         label 'Title:'
         input.text :type=>'text', :name=>'title', :value=>'{{title}}'

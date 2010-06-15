@@ -6,7 +6,7 @@ div.content! {
   
   div.message {
    
-   mustache 'message' do
+   show_if 'message' do
   
      div.info {
       span.published_at '{{published_at}}'
@@ -20,7 +20,7 @@ div.content! {
       '{{{compiled_body}}}' 
      }
      
-   end # === mustache 'message'
+   end # === show_if 'message'
 
   } # === div.message
   

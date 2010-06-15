@@ -26,7 +26,7 @@ div.col.navigate! {
 
   div.club_messages! do
     
-    show_if('no_facts'){
+    show_if('no_facts?'){
       div.empty_msg 'Nothing has been posted yet.'
     }
     

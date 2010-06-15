@@ -29,11 +29,11 @@ div.the_form! {
 		fieldset {
 			label 'Language'
 			select :name=>'lang' do
-				mustache 'languages' do
-					mustache 'selected' do
+				loop 'languages' do
+					show_if 'selected' do
 						option '{{name}}', :value=>'filename', :selected=>'selected'
 					end
-					mustache 'not_selected' do
+					show_if 'not_selected?' do
 						option '{{name}}', :value=>'filename'
 					end
 				end

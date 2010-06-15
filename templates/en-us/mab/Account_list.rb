@@ -8,7 +8,7 @@ div.content!  {
   div.usernames {
     h4 'Usernames'
     a.new('Add Another Username.', :href=>'#add_username')
-    mustache 'lives' do
+    loop 'lives' do
       div.un(:id=>"life_{{category}}") {
         div.username '{{username}}' 
         div.category '{{category}}' 
