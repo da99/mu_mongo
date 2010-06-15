@@ -144,6 +144,10 @@ class Find_The_Bunny
         return redirect(new_url)
       end
       
+      if new_env['PATH_INFO'] == '/templates/'
+        return redirect('/')
+      end
+      
       raise The_App::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
     end
 
