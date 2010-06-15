@@ -86,32 +86,43 @@ namespace 'git' do
       Rake::Task['git:prep_push'].invoke
     end
     
-    require 'megauni'
-    puts_white "Checking size of MongoDB account..."
-    db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
-    if db_size > MAX_DB_SIZE_IN_MB 
-      puts_red "DB Size too big: #{db_size} MB"
-    else
-      puts_white "DB Size is ok: #{db_size} MB"
-     
-      unless ENV['SKIP_GEM_UPDATE']
-        puts_white "Updating gems on Heroku..."
-        results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
-      else
-        results = ''
-      end
-      
-      if results['ERROR']
-        puts_red results
+    unless ENV['SKIP_MONGO_CHECK'] 
+      require 'megauni'
+      puts_white "Checking size of MongoDB account..."
+      db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
+      if db_size > MAX_DB_SIZE_IN_MB 
+        puts_red "DB Size too big: #{db_size} MB"
         exit
       else
-        puts_white results
-        puts_white "Pushing code to Heroku..."
-        sh('git push heroku master')
-        Launchy.open('http://www.megauni.com/')
+        puts_white "DB Size is ok: #{db_size} MB"
       end
-
     end
+    
+    unless ENV['SKIP_GEM_UPDATE']
+      puts_white "Updating gems on Heroku..."
+      results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
+    else
+      results = ''
+    end
+
+    if results['ERROR']
+      puts_red results
+      exit
+    else
+      puts_white results
+      puts_white "Pushing code to Heroku..."
+      sh('git push heroku master')
+      Launchy.open('http://www.megauni.com/')
+    end
+
+  end
+
+  desc 'Pushed the code and nothing else.'
+  task :just_push do
+    ENV['SKIP_PREP']        = true
+    ENV['SKIP_MONGO_CHECK'] = true
+    ENV['SKIP_GEM_UPDATE']  = true
+    Rake::Task['git:push'].invoke
   end
 
   
