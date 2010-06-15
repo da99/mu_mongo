@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276559678"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276560812"/>
 
 {{/not_mobile_request?}}
 
@@ -70,8 +70,64 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="intro">
+     <div class="col" id="navigate">
       <h3>{{title}}</h3>
+       <ul id="club_nav_bar">
+        <li>
+         <a href="{{life_club_href}}">Home</a>
+        </li>
+        <li class="selected">Encyclopedia</li>
+        <li>
+         <a href="{{life_club_href}}qa/">Q &amp; A</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}status/">Status</a>
+        </li>
+
+{{#logged_in?}}
+
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
+
+{{/not_logged_in?}}
+
+        <li>
+         <a href="/">Megauni</a>
+        </li>
+       </ul>
+      <div id="club_messages">
+
+{{#no_facts?}}
+
+       <div class="empty_msg">Nothing has been posted yet.</div>
+
+{{/no_facts?}}
+
+
+{{#facts}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/facts}}
+
+      </div>
+     </div>
+     <div class="col" id="intro">
 
 {{#logged_in?}}
 
@@ -128,62 +184,6 @@
 
 {{/logged_in?}}
 
-     </div>
-     <div class="col" id="navigate">
-       <ul id="club_nav_bar">
-        <li>
-         <a href="{{life_club_href}}">Home</a>
-        </li>
-        <li class="selected">Encyclopedia</li>
-        <li>
-         <a href="{{life_club_href}}qa/">Q &amp; A</a>
-        </li>
-        <li>
-         <a href="{{life_club_href}}status/">Status</a>
-        </li>
-
-{{#logged_in?}}
-
-        <li>
-         <a href="/log-out/">Log-out</a>
-        </li>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-        <li>
-         <a href="/log-in/">Log-in</a>
-        </li>
-
-{{/not_logged_in?}}
-
-        <li>
-         <a href="/">Megauni</a>
-        </li>
-       </ul>
-      <div id="club_messages">
-
-{{#no_facts?}}
-
-       <div class="empty_msg">Nothing has been posted yet.</div>
-
-{{/no_facts?}}
-
-
-{{#facts}}
-
-        <div class="message">
-         <div class="body">{{{compiled_body}}}</div>
-         <div class="permalink">
-          <a href="{{href}}">Permalink</a>
-         </div>
-        </div>
-
-{{/facts}}
-
-      </div>
      </div>
    </div>
 

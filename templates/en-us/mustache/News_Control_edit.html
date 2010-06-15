@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276559677"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1276560811"/>
 
 {{/not_mobile_request?}}
 
@@ -96,18 +96,18 @@
 {{#clubs}}
 
 
-{{#selected}}
+{{#selected?}}
 
           <option selected="selected" value="{{id}}">{{title}}</option>
 
-{{/selected}}
+{{/selected?}}
 
 
-{{#not_selected}}
+{{#not_selected?}}
 
           <option>{{title}}</option>
 
-{{/not_selected}}
+{{/not_selected?}}
 
 
 {{/clubs}}
@@ -121,24 +121,24 @@
 {{#news_tags}}
 
 
-{{#selected}}
+{{#selected?}}
 
           <div class="box selected">
            <input type="checkbox" checked="checked" value="{{filename}}" name="tags[]"/>
            <span>{{filename}}</span>
           </div>
 
-{{/selected}}
+{{/selected?}}
 
 
-{{#not_selected}}
+{{#not_selected?}}
 
           <div class="box">
            <input type="checkbox" value="{{filename}}" name="tags[]"/>
            <span>{{filename}}</span>
           </div>
 
-{{/not_selected}}
+{{/not_selected?}}
 
 
 {{/news_tags}}
@@ -203,22 +203,22 @@
 {{#username_nav}}
 
 
-{{#selected}}
+{{#selected?}}
 
          <li class="selected">
           <span>&lt; {{username}} &gt;</span>
          </li>
 
-{{/selected}}
+{{/selected?}}
 
 
-{{#not_selected}}
+{{#not_selected?}}
 
          <li>
           <a href="{{href}}"> {{username}} </a>
          </li>
 
-{{/not_selected}}
+{{/not_selected?}}
 
 
 {{/username_nav}}

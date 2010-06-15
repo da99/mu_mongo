@@ -50,22 +50,22 @@
 {{#username_nav}}
 
 
-{{#selected}}
+{{#selected?}}
 
     <li class="selected">
      <span>&lt; {{username}} &gt;</span>
     </li>
 
-{{/selected}}
+{{/selected?}}
 
 
-{{#not_selected}}
+{{#not_selected?}}
 
     <li>
      <a href="{{href}}"> {{username}} </a>
     </li>
 
-{{/not_selected}}
+{{/not_selected?}}
 
 
 {{/username_nav}}
