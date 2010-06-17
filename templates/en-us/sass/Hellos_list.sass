@@ -22,9 +22,23 @@
 div.col
   float: left
 
-#city_clubs, #political_beauty, #joy_clubs
-  width: 180px
+#nav_bar
+  border-width: 0 1px
+  width: auto 
+  padding-right: 10px
+  
+#city_clubs, #political_beauty, #joy_clubs, #random_clubs
+  width: 480px
   padding: 0 10px
+  div.club
+    border-bottom-width: 0
+    div.teaser
+      border-bottom: 1px unquote('dashed') $dashed_border
+      margin-bottom: 10px
+    div.message
+      div.body
+        font-family: $serif
+
 
 body
   padding: 10px

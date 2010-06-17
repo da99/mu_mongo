@@ -115,8 +115,8 @@ body {
   text-align: left;
   margin-left: 10px;
   padding: 0 0 100px 10px;
-  border-left: 1px dashed white;
-    border-left-color: #003860; }
+  border: 1px dashed #003860;
+    border-width: 0 0 0 1px; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
     font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;

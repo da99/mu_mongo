@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276794636"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276796828"/>
 
 {{/not_mobile_request?}}
 
@@ -88,6 +88,18 @@
         <div class="teaser">{{teaser}}</div>
 
 {{/teaser}}
+
+
+{{#messages}}
+
+         <div class="message">
+          <div class="body">{{{compiled_body}}}</div>
+          <div class="permalink">
+           <a href="{{href}}">Permalink</a>
+          </div>
+         </div>
+
+{{/messages}}
 
        </div>
 

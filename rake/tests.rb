@@ -4,10 +4,10 @@ namespace :tests do
   
 
   desc %! Runs tests for your app using glob: tests/test_*.rb 
-  SKIP_GEM_UPDATE = false!
+  GEM_UPDATE = false!
   task :all do
     
-    unless ENV['SKIP_GEM_UPDATE']
+    if ENV['GEM_UPDATE']
       puts_white 'Updating gems...'
       puts_white shell_out('gem update')
     end

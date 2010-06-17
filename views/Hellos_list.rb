@@ -28,6 +28,7 @@ class Hellos_list < Base_View
   end
   
   def clubs
+    return []
     @cache[:clubs] ||= begin
                          old_clubs + @app.env['results.clubs'].map { |r| 
                            r[:href] = "/clubs/#{r['filename']}/"
@@ -37,18 +38,22 @@ class Hellos_list < Base_View
   end 
 
   def city_clubs
+    return []
     @cache['cities'] ||= compile_clubs(Club.by_club_model('city'))
   end
 
   def beauty_clubs
+    return []
     @cache['beauty'] ||= compile_clubs(Club.by_club_model(['healty', 'beauty']))
   end
 
   def political_clubs
+    return []
     @cache['evil'] ||= compile_clubs(Club.by_club_model(['economics', 'history']))
   end
 
   def joy_clubs
+    return []
     @cache['joy'] ||= compile_clubs(Club.by_club_model(['joy', 'fun']))
   end
 
@@ -66,6 +71,18 @@ class Hellos_list < Base_View
   def political_beauty?
     @cache['not_empty_pb'] ||= begin
                                  !(beauty_clubs.empty? && political_clubs.empty?)
+                               end
+  end
+
+  def random_clubs
+		@cache['random_clubs'] ||= begin
+                                 doc = Club.by_filename('predictions')
+                                 club = if doc
+                                   club = doc.data.as_hash
+                                   club['messages'] = compile_messages(Message.latest_by_club_id club['_id'])
+                                   club
+                                 end
+                                 compile_clubs([club])
                                end
   end
   

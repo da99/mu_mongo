@@ -28,6 +28,7 @@ $text_box_bg_dark: #d6d6d6
 $sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
+$serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
 $custom_black_text: #242424
 $custom_orange: #ffe759
 
@@ -133,8 +134,8 @@ body
   text-align: left
   margin-left: 10px
   padding: 0 0 100px 10px
-  border-left: 1px dashed white
-    color: $dashed_border
+  border: 1px unquote("dashed") $dashed_border
+    width: 0 0 0 1px
   p
     color: #f00919
     font-family: $custom_sans_serif

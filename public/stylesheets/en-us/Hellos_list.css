@@ -115,8 +115,8 @@ body {
   text-align: left;
   margin-left: 10px;
   padding: 0 0 100px 10px;
-  border-left: 1px dashed white;
-    border-left-color: #003860; }
+  border: 1px dashed #003860;
+    border-width: 0 0 0 1px; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
     font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
@@ -306,9 +306,21 @@ div.message, div.club {
 div.col {
   float: left; }
 
-#city_clubs, #political_beauty, #joy_clubs {
-  width: 180px;
+#nav_bar {
+  border-width: 0 1px;
+  width: auto;
+  padding-right: 10px; }
+
+#city_clubs, #political_beauty, #joy_clubs, #random_clubs {
+  width: 480px;
   padding: 0 10px; }
+  #city_clubs div.club, #political_beauty div.club, #joy_clubs div.club, #random_clubs div.club {
+    border-bottom-width: 0; }
+    #city_clubs div.club div.teaser, #political_beauty div.club div.teaser, #joy_clubs div.club div.teaser, #random_clubs div.club div.teaser {
+      border-bottom: 1px dashed #003860;
+      margin-bottom: 10px; }
+    #city_clubs div.club div.message div.body, #political_beauty div.club div.message div.body, #joy_clubs div.club div.message div.body, #random_clubs div.club div.message div.body {
+      font-family: 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
 
 body {
   padding: 10px; }

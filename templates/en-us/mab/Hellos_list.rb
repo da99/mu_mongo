@@ -127,6 +127,12 @@ show_if 'joy_clubs?' do
   }
 end
 
+show_if 'random_clubs?' do
+  div.col.random_clubs! { 
+    loop_clubs "random_clubs"
+  }
+end
+
 
 # div.messages.messages! do
 #   h4 'Random News:'

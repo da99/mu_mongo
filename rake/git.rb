@@ -79,7 +79,8 @@ namespace 'git' do
 
   desc 'Pushes code.
   SKIP_PREP = false
-  SKIP_GEM_UPDATE = false'
+  GEM_UPDATE = false
+  SKIP_MONGO_CHECK = false'
   task :push do
     
     unless ENV['SKIP_PREP']
@@ -98,7 +99,7 @@ namespace 'git' do
       end
     end
     
-    unless ENV['SKIP_GEM_UPDATE']
+    if ENV['GEM_UPDATE']
       puts_white "Updating gems on Heroku..."
       results = `heroku console "IO.popen('gem update 2>&1') { |io| io.gets }" 2>&1`
     else

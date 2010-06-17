@@ -11,6 +11,8 @@ module Base_Club
           show_if 'teaser' do
             div.teaser '{{teaser}}'
           end
+          
+          loop_messages 'messages'
         }
       end
     })

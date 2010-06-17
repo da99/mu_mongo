@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276794637"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276796829"/>
 
 {{/not_mobile_request?}}
 
@@ -211,6 +211,18 @@
 
 {{/teaser}}
 
+
+{{#messages}}
+
+         <div class="message">
+          <div class="body">{{{compiled_body}}}</div>
+          <div class="permalink">
+           <a href="{{href}}">Permalink</a>
+          </div>
+         </div>
+
+{{/messages}}
+
        </div>
 
 {{/city_clubs}}
@@ -239,6 +251,18 @@
 
 {{/teaser}}
 
+
+{{#messages}}
+
+          <div class="message">
+           <div class="body">{{{compiled_body}}}</div>
+           <div class="permalink">
+            <a href="{{href}}">Permalink</a>
+           </div>
+          </div>
+
+{{/messages}}
+
         </div>
 
 {{/beauty_clubs}}
@@ -258,6 +282,18 @@
          <div class="teaser">{{teaser}}</div>
 
 {{/teaser}}
+
+
+{{#messages}}
+
+          <div class="message">
+           <div class="body">{{{compiled_body}}}</div>
+           <div class="permalink">
+            <a href="{{href}}">Permalink</a>
+           </div>
+          </div>
+
+{{/messages}}
 
         </div>
 
@@ -287,6 +323,18 @@
 
 {{/teaser}}
 
+
+{{#messages}}
+
+         <div class="message">
+          <div class="body">{{{compiled_body}}}</div>
+          <div class="permalink">
+           <a href="{{href}}">Permalink</a>
+          </div>
+         </div>
+
+{{/messages}}
+
        </div>
 
 {{/joy_clubs}}
@@ -294,6 +342,44 @@
      </div>
 
 {{/joy_clubs?}}
+
+
+{{#random_clubs?}}
+
+     <div class="col" id="random_clubs">
+
+{{#random_clubs}}
+
+       <div class="club">
+        <h4>
+         <a href="{{href}}">{{title}}</a>
+        </h4>
+
+{{#teaser}}
+
+        <div class="teaser">{{teaser}}</div>
+
+{{/teaser}}
+
+
+{{#messages}}
+
+         <div class="message">
+          <div class="body">{{{compiled_body}}}</div>
+          <div class="permalink">
+           <a href="{{href}}">Permalink</a>
+          </div>
+         </div>
+
+{{/messages}}
+
+       </div>
+
+{{/random_clubs}}
+
+     </div>
+
+{{/random_clubs?}}
 
    </div>
 
