@@ -100,7 +100,7 @@ class Message
   end
 
 	def self.public raw_params = {}, raw_opts = {}, &blok
-		opts = {:limit=>10}.update(raw_opts)
+		opts = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     include_mods = [opts.delete(:include)].flatten.compact
 		params = {}.update(raw_params)
     cursor = db_collection.find(
