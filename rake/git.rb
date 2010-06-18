@@ -120,9 +120,9 @@ namespace 'git' do
 
   desc 'Pushed the code and nothing else.'
   task :just_push do
-    ENV['SKIP_PREP']        = true
-    ENV['SKIP_MONGO_CHECK'] = true
-    ENV['SKIP_GEM_UPDATE']  = true
+    ENV['SKIP_PREP']        = true.to_s
+    ENV['SKIP_MONGO_CHECK'] = true.to_s
+    ENV['SKIP_GEM_UPDATE']  = true.to_s
     Rake::Task['git:push'].invoke
   end
 

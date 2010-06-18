@@ -1,8 +1,8 @@
 require 'mustache'
 require 'loofah'
 require 'views/__Base_View_Club'
+require 'helpers/Anchorify'
 
-FIND_URLS = %r~(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.]+)~
 
 class Array
   
@@ -257,7 +257,7 @@ class Base_View < Mustache
   def auto_link raw_str
     str = raw_str.to_s 
     Loofah::Helpers.sanitize(
-      str.gsub(FIND_URLS, "<a href=\"\\1\">\\1</a>")
+      Anchorify.new.anchorify(str)
     ).gsub(/\r?\n/, "<br />")
   end
 

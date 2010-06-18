@@ -13,3 +13,4 @@ mongo_ext
 bson_ext
 mongo_rack
 tmail
+auto_html
