@@ -31,13 +31,17 @@ module Base_View_Member_Life
     current_member == owner
   end
 
-  def username_id
+  def owner_username_id
     @cache['username_id'] ||= app.env['results.owner'].username_hash.index(username)
+  end
+
+  def username_id
+    owner_username_id
   end
 
   def compiled_owner_messages model
     @cache["mess.#{model}"] ||= begin
-                                  compile_messages(Message.public(:owner_id=>owner.data._id, :message_model=>model))
+                                  compile_messages(Message.public(:owner_id=>owner_username_id, :message_model=>model))
                                 end
   end
 
