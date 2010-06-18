@@ -13,7 +13,7 @@ class Members_life_qa < Base_View
   end
 
 	def questions
-		[]
-	end
+	  compiled_owner_messages 'question'
+  end
   
 end # === Members_life_qa 

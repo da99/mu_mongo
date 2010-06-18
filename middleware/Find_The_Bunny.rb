@@ -69,6 +69,7 @@ class Find_The_Bunny
       ['/life/{filename}/e/'     , Members  , 'life_e' ] ,
       ['/life/{filename}/qa/'    , Members  , 'life_qa' ],
       ['/life/{filename}/status/', Members  , 'life_status' ] ,
+      ['/life/{filename}/shop/', Members  , 'life_shop' ] ,
       ['/lives/{filename}/'      , Members  , 'lives' ]  ,
       ['/create-account/'        , Members ],
       ['/create-life/'           , Members ],

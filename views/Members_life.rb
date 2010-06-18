@@ -11,5 +11,9 @@ class Members_life < Base_View
 	def title 
     "#{app.env['results.username']}'s Fan Club"
   end
+
+  def stream
+    compiled_owner_messages :$in=>%w{fact question status buy comment}
+  end
   
 end # === Members_life 

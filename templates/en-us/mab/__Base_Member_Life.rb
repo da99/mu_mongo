@@ -9,7 +9,8 @@ module Base_Member_Life
       [/_life\Z/ , 'Home', ''],
       [/_e\Z/  , 'Encyclopedia', 'e/'],
       [/_qa\Z/ , 'Q & A', 'qa/'],
-      [/_status\Z/ , 'Status', 'status/']
+      [/_status\Z/ , 'Status', 'status/'],
+      [/_shop\Z/ , 'Shop', 'shop/']
     ]
     text(capture {
 

@@ -35,10 +35,10 @@ module Base_View_Member_Life
     @cache['username_id'] ||= app.env['results.owner'].username_hash.index(username)
   end
 
-  def stream
-    []
+  def compiled_owner_messages model
+    @cache["mess.#{model}"] ||= begin
+                                  compile_messages(Message.public(:owner_id=>owner.data._id, :message_model=>model))
+                                end
   end
-
-
 
 end # === Base_View_Club

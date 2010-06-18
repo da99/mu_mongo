@@ -14,6 +14,8 @@ class Message
     fact
     question
     news
+    buy
+    status
 
     fulfill
     tip

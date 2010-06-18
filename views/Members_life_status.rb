@@ -13,7 +13,7 @@ class Members_life_status < Base_View
   end
 
 	def statuses
-		[]
+    compiled_owner_messages 'status' 
 	end
   
 end # === Members_life_status 

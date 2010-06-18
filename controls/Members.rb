@@ -76,6 +76,12 @@ class Members
     env['results.owner'] = Member.by_username(un)
     render_html_template
   end
+
+  def GET_life_shop un
+    env['results.username'] = un
+    env['results.owner'] = Member.by_username(un)
+    render_html_template
+  end
   
   def POST_reset_password
     env['results.email'] = clean_room['email']

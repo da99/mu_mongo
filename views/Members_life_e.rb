@@ -13,7 +13,7 @@ class Members_life_e < Base_View
   end
 
 	def facts
-		[]
+    compiled_owner_messages 'fact'
 	end
   
 end # === Members_life_e 
