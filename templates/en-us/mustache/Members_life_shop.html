@@ -70,156 +70,124 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="content">
-      <ul class="faq">
-       <li>
-        <div class="question">Vitamin C</div>
-        <div class="answer">
-         <p>1000 mg, 3 times a day.</p>
-         <p>Buy it either as 500 mg or 1000 mg. The important thing is to take it 3 times a day or more.</p>
-        </div>
-       </li>
-       <li>
-        <div class="question">Vitamin D3 + Magnesium Citrate</div>
-        <div class="answer">
-         <p>LifeSpanNutrition.com &#8211; (800) 247-5731 (correo postal)</p>
-         <p>$15 - "30 Minutes of Sunshine"</p>
-        </div>
-       </li>
-      </ul>
-     </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
-       </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
+     <div class="col" id="navigate">
+      <h3>{{title}}</h3>
+       <ul id="club_nav_bar">
+        <li>
+         <a href="{{life_club_href}}">Home</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}e/">Encyclopedia</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}qa/">Q &amp; A</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}status/">Status</a>
+        </li>
+        <li class="selected">Shop</li>
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
 
 {{/not_logged_in?}}
 
-       </ul>
-
-{{#logged_in?}}
-
-
-{{#not_mini_nav_bar?}}
-
-       <p class="divider">Lives</p>
-
-{{/not_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
-
-
-{{#selected?}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected?}}
-
-
-{{#not_selected?}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected?}}
-
-
-{{/username_nav}}
-
-
-{{#not_mini_nav_bar?}}
-
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
-
-{{/not_mini_nav_bar?}}
-
-       </ul>
-
-{{/logged_in?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="clubs">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
-
-{{#logged_in?}}
-
-
-{{/logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-       <p class="divider">Your Clubs</p>
-       <ul class="your_clubs">
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
-
-{{#your_clubs}}
-
         <li>
-         <a href="{{href}}">{{title}}</a>
-        </li>
-
-{{/your_clubs}}
-
-       </ul>
-
-{{/logged_in?}}
-
-
-{{#mini_nav_bar?}}
-
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
+         <a href="/">Megauni</a>
         </li>
        </ul>
+      <div id="club_messages">
 
-{{/mini_nav_bar?}}
+{{#no_buys?}}
+
+       <div class="empty_msg">Nothing has been posted.</div>
+
+{{/no_buys?}}
+
+
+{{#buys}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/buys}}
 
       </div>
+     </div>
+     <div class="col" id="intro">
+
+{{#logged_in?}}
+
+       <div id="club_message_create">
+        <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
+         <label>Bought something? Post it here:</label>
+         <input type="hidden" value="public" name="privacy"/>
+         <input type="hidden" value="buy" name="message_model"/>
+
+{{#single_username?}}
+
+         <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+         <input type="hidden" value="buy" name="message_model"/>
+         <fieldset>
+          <textarea name="body"></textarea>
+         </fieldset>
+         <fieldset>
+          <label>Labels (Separate each with a comma.)</label>
+          <input type="text" class="text" value="" name="public_labels"/>
+         </fieldset>
+
+{{#multiple_usernames?}}
+
+         <fieldset>
+          <label>Post as:</label>
+          <select name="owner_id">
+
+{{#multiple_usernames}}
+
+           <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+          </select>
+         </fieldset>
+
+{{/multiple_usernames?}}
+
+         <fieldset>
+          <label>Important?</label>
+          <select name="important">
+           <option value="">No. It can wait.</option>
+           <option value="true">Yes</option>
+          </select>
+         </fieldset>
+         <div class="buttons">
+          <button class="create">Save</button>
+         </div>
+        </form>
+       </div>
+
+{{/logged_in?}}
+
+     </div>
    </div>
 
 {{#javascripts}}
