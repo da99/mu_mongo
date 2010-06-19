@@ -1,4 +1,4 @@
-require 'loofah'
+require 'sanitize'
 
 class Anchorify
   
@@ -73,6 +73,11 @@ end # === class
 
 
 AutoHtml = Anchorify
+
+Anchorify.add_filter(:br_ify) do |txt|
+	txt.gsub(/\r?\n/, "<br />")
+end
+
 Anchorify.add_filter(:image) do |text, options|
 	new_text = " #{text} ".gsub(/https?:\/\/[^\s]+(jpg|jpeg|bmp|gif|png)(\?\S+)?/i) do |match|
 		dims   = options[match] || {}
@@ -87,9 +92,53 @@ Anchorify.add_filter(:image) do |text, options|
 	new_text.strip
 end
 
-%w{ dailymotion google_video vimeo youtube}.each { |filter|
+Anchorify.add_filter(:scrubber) do |txt|
+  relax = Sanitize::Config::RELAXED
+  relax[:attributes]['object'] = %w{ width height }
+  relax[:attributes]['param'] = %w{ name value }
+  relax[:elements] << 'object'
+  relax[:elements] << 'param'
+  Sanitize.clean(txt, relax)
+
+  # allow_media = Loofah::Scrubber.new do |node|
+  #   
+  #   result = case node.type
+  #   when Nokogiri::XML::Node::ELEMENT_NODE
+  #     if Loofah::HTML5::HashedWhiteList::ALLOWED_ELEMENTS_WITH_LIBXML2[node.name] || 'object' == node.name
+  #       Loofah::HTML5::Scrub.scrub_attributes node
+  #       Loofah::Scrubber::CONTINUE
+  #     end
+  #   when Nokogiri::XML::Node::TEXT_NODE, Nokogiri::XML::Node::CDATA_SECTION_NODE
+  #     Loofah::Scrubber::CONTINUE
+  #   end
+
+  #   if result 
+  #     result
+  #   else
+  #     Loofah::Scrubbers::Escape.new.scrub(node)
+  #   end
+
+  # end
+
+  # Loofah.xml_fragment(txt).scrub!(allow_media).to_s
+end
+
+
+%w{ dailymotion google_video vimeo }.each { |filter|
   require "auto_html/filters/#{filter}"
 }
+
+Anchorify.add_filter(:youtube).with(:width => 390, :height => 250) do |text, options|
+  text.gsub(/http:\/\/(www.)?youtube\.com\/watch\?v=([A-Za-z0-9._%-]*)(\&\S+)?/) do
+    youtube_id = $2
+    %{
+      <object width="#{options[:width]}" height="#{options[:height]}" type="application/x-shockwave-flash" data="http://www.youtube.com/v/#{youtube_id}" >
+        <param name="movie" value="http://www.youtube.com/v/#{youtube_id}" />
+        <param name="wmode" value="transparent" />
+      </object>
+    }
+  end
+end
 
 Anchorify.add_filter(:link) do |text|
   find_urls = %r~[\s](http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)[\s]~
@@ -97,33 +146,5 @@ Anchorify.add_filter(:link) do |text|
     match = raw_match.strip
     %!<a href="#{match}">#{match}</a>!
   }.strip
-end
-
-Anchorify.add_filter(:br_ify) do |txt|
-	txt.gsub(/\r?\n/, "<br />")
-end
-
-Anchorify.add_filter(:scrubber) do |txt|
-  allow_media = Loofah::Scrubber.new do |node|
-    
-    result = case node.type
-    when Nokogiri::XML::Node::ELEMENT_NODE
-      if Loofah::HTML5::HashedWhiteList::ALLOWED_ELEMENTS_WITH_LIBXML2[node.name] || %w{ embed object }.include?( node.name )
-        Loofah::HTML5::Scrub.scrub_attributes node
-        Loofah::Scrubber::CONTINUE
-      end
-    when Nokogiri::XML::Node::TEXT_NODE, Nokogiri::XML::Node::CDATA_SECTION_NODE
-      Loofah::Scrubber::CONTINUE
-    end
-
-    if result 
-      result
-    else
-      Loofah::Scrubbers::Escape.new.scrub(node)
-    end
-
-  end
-
-  Loofah.xml_fragment(txt).scrub!(allow_media).to_s
 end
 

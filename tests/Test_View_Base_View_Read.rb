@@ -33,13 +33,13 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
 
   must 'turn any \r\n or \n into <br />' do
     result = Base_View.new(Object.new).auto_link("hello \r\n goodbye \n hello")
-    assert_equal "hello <br/> goodbye <br/> hello", result
+    assert_equal "hello <br /> goodbye <br /> hello", result
   end
 
-  must 'escape out SCRIPT tags' do
+  must 'delete any SCRIPT tags' do
     orig = "<script>test</script>"
     result = Base_View.new(Object.new).auto_link(orig)
-    assert_equal "&lt;script&gt;test&lt;/script&gt;", result 
+    assert_equal "test", result 
   end
 
 end # === class Test_View_Base_View_Read
