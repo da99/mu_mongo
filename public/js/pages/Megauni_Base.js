@@ -76,12 +76,12 @@ var Form_Submitter = {
 
 
 
+// 
+// var img_srcs = ['http://farm5.static.flickr.com/4031/4642110880_5c18162b34.jpg',
+// 'htTp://farm5.static.flickr.com/4025/4642110868_7e82baafe6.jpg',
+// 'htTp://farm5.tatic.flickr.com/025/4642110868_7e82baafe6.jpg'];
+// 
 
-var img_srcs = ['http://farm5.static.flickr.com/4031/4642110880_5c18162b34.jpg',
-'htTp://farm5.static.flickr.com/4025/4642110868_7e82baafe6.jpg',
-'htTp://farm5.tatic.flickr.com/025/4642110868_7e82baafe6.jpg'];
-
-
-var the_body = $('#form_club_message_create textarea[name=body]');
-the_body.val( img_srcs.join(" --- text -- ") );
-var the_cache = $('#form_club_message_create input[name=body_images_cache]');
+// var the_body = $('#form_club_message_create textarea[name=body]');
+// /* the_body.val( img_srcs.join(" --- text -- ") ); */
+// var the_cache = $('#form_club_message_create input[name=body_images_cache]');
