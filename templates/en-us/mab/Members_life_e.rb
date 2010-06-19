@@ -28,7 +28,9 @@ div.col.intro! {
       :title => 'Post a new section:',
       :hidden_input => {
                         :message_model => 'fact',
-                        :privacy       => 'public'
+                        :privacy       => 'public',
+                        :target_ids    => '{{owner_username_id}}'
+
                        }
     )
     

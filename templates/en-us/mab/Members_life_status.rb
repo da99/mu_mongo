@@ -26,10 +26,11 @@ div.col.intro! {
   show_if 'logged_in?' do
     
     form_message_create(
-      :title => 'Post news:',
+      :title => 'What are you doing?',
       :hidden_input => {
                         :message_model => 'status', 
-                        :privacy       => 'public'
+                        :privacy       => 'public',
+                        :target_ids    => '{{owner_username_id}}'
                        }
     )
     

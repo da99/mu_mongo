@@ -30,7 +30,9 @@ div.col.intro! {
       :title => 'Ask a question:',
       :hidden_input => {
         :message_model => 'question',
-        :privacy       => 'public'
+        :privacy       => 'public',
+        :target_ids    => '{{owner_username_id}}'
+
       }
     )
     

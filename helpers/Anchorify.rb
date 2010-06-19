@@ -95,32 +95,11 @@ end
 Anchorify.add_filter(:scrubber) do |txt|
   relax = Sanitize::Config::RELAXED
   relax[:attributes]['object'] = %w{ width height }
-  relax[:attributes]['param'] = %w{ name value }
   relax[:elements] << 'object'
+  
+  relax[:attributes]['param'] = %w{ name value }
   relax[:elements] << 'param'
   Sanitize.clean(txt, relax)
-
-  # allow_media = Loofah::Scrubber.new do |node|
-  #   
-  #   result = case node.type
-  #   when Nokogiri::XML::Node::ELEMENT_NODE
-  #     if Loofah::HTML5::HashedWhiteList::ALLOWED_ELEMENTS_WITH_LIBXML2[node.name] || 'object' == node.name
-  #       Loofah::HTML5::Scrub.scrub_attributes node
-  #       Loofah::Scrubber::CONTINUE
-  #     end
-  #   when Nokogiri::XML::Node::TEXT_NODE, Nokogiri::XML::Node::CDATA_SECTION_NODE
-  #     Loofah::Scrubber::CONTINUE
-  #   end
-
-  #   if result 
-  #     result
-  #   else
-  #     Loofah::Scrubbers::Escape.new.scrub(node)
-  #   end
-
-  # end
-
-  # Loofah.xml_fragment(txt).scrub!(allow_media).to_s
 end
 
 
@@ -141,10 +120,9 @@ Anchorify.add_filter(:youtube).with(:width => 390, :height => 250) do |text, opt
 end
 
 Anchorify.add_filter(:link) do |text|
-  find_urls = %r~[\s](http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)[\s]~
-  (' ' + text + ' ').gsub(find_urls) { |raw_match|
-    match = raw_match.strip
-    %!<a href="#{match}">#{match}</a>!
+  find_urls = %r~(\s|<br />|<br/>)(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)(\s|<br />|<br/>)~
+  (' ' + text + ' ').gsub(find_urls) { |entire_match|
+    %!#{$1}<a href="#{$2}">#{$2}</a>#{$3}!
   }.strip
 end
 

@@ -42,4 +42,14 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     assert_equal "test", result 
   end
 
+  must 'turn links starting on a newline' do
+    orig = %~
+Read Mike's blog:
+http://modernmarketingjapan.blogspot.com/
+    ~.strip
+    result = Base_View.new(Object.new).auto_link(orig)
+    target = %~Read Mike's blog:<br /><a href="http://modernmarketingjapan.blogspot.com/">http://modernmarketingjapan.blogspot.com/</a>~
+    assert_equal target, result 
+  end
+
 end # === class Test_View_Base_View_Read
