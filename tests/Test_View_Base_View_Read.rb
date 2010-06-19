@@ -2,7 +2,7 @@
 
 class Test_View_Base_View_Read < Test::Unit::TestCase
 
-  must 'run this example: http://gilesbowkett.blogspot.com/2010/03/automating-email-awesome-mini.html' do
+  must 'turn this url into an HTML A tag: http://gilesbowkett.blogspot.com/2010/03/automating-email-awesome-mini.html' do
     orig = "http://gilesbowkett.blogspot.com/2010/03/automating-email-awesome-mini.html"
     result = Base_View.new(Object.new).auto_link(orig)
     assert_equal "<a href=\"#{orig}\">#{orig}</a>", result

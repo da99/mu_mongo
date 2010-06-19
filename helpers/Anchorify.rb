@@ -1,3 +1,4 @@
+require 'loofah'
 
 class Anchorify
   
@@ -72,10 +73,6 @@ end # === class
 
 
 AutoHtml = Anchorify
-%w{ dailymotion google_video vimeo youtube}.each { |filter|
-  require "auto_html/filters/#{filter}"
-}
-
 Anchorify.add_filter(:image) do |text, options|
 	new_text = " #{text} ".gsub(/https?:\/\/[^\s]+(jpg|jpeg|bmp|gif|png)(\?\S+)?/i) do |match|
 		dims   = options[match] || {}
@@ -90,11 +87,35 @@ Anchorify.add_filter(:image) do |text, options|
 	new_text.strip
 end
 
+%w{ dailymotion google_video vimeo youtube}.each { |filter|
+  require "auto_html/filters/#{filter}"
+}
+
 Anchorify.add_filter(:link) do |text|
   find_urls = %r~[\s](http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)[\s]~
-  (' ' + text + ' ').gsub(find_urls, "<a href=\"\\1\">\\1</a>").strip
+  (' ' + text + ' ').gsub(find_urls) { |raw_match|
+    match = raw_match.strip
+    %!<a href="#{match}">#{match}</a>!
+  }.strip
 end
 
 Anchorify.add_filter(:br_ify) do |txt|
 	txt.gsub(/\r?\n/, "<br />")
 end
+
+Anchorify.add_filter(:scrubber) do |txt|
+  allow_media = Loofah::Scrubber.new do |node|
+    if %w{ embed object }.include?( node.name )
+      Loofah::Scrubber::STOP # don't bother with the rest of the subtree
+    else
+      if Loofah::HTML5::WhiteList::ACCEPTABLE_ELEMENTS.include?(node.name)
+        Loofah::Scrubber::CONTINUE
+      else
+        Loofah::Scrubber::STOP
+      end
+    end
+  end
+
+  Loofah.xml_fragment(txt).scrub!(allow_media).to_s
+end
+

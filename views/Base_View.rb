@@ -1,8 +1,6 @@
 require 'mustache'
-require 'loofah'
 require 'views/__Base_View_Club'
 require 'helpers/Anchorify'
-
 
 class Array
   
@@ -260,10 +258,7 @@ class Base_View < Mustache
 
   def auto_link raw_str, meta_img = {}
     str = raw_str.to_s 
-    Loofah.scrub_xml_fragment(
-      Anchorify.new.anchorify(str, meta_img),
-      :prune
-    ).to_s
+    Anchorify.new.anchorify(str, meta_img)
   end
 
   def default_javascripts
