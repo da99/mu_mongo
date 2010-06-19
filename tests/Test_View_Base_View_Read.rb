@@ -13,6 +13,12 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     assert_equal "<a href=\"http://www.mises.org\">http://www.mises.org</a>", result
   end
 
+  must 'turn valid http urls with "%" into HTML anchor tags' do
+    url = "http://www.alternet.org/news/147217/the_u.s._war_addiction%3A_funding_enemies_to_maintain_trillion_dollar_racket/?page=5"
+    result = Base_View.new(Object.new).auto_link(url)
+    assert_equal "<a href=\"#{url}\">#{url}</a>", result
+  end
+
   must 'not turn javascript protocol into anchor tags.' do
     original = 'javascript:alert("hello")'
     result = Base_View.new(Object.new).auto_link(original)

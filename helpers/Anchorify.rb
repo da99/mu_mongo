@@ -91,7 +91,7 @@ Anchorify.add_filter(:image) do |text, options|
 end
 
 Anchorify.add_filter(:link) do |text|
-  find_urls = %r~[\s](http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.]+)[\s]~
+  find_urls = %r~[\s](http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)[\s]~
   (' ' + text + ' ').gsub(find_urls, "<a href=\"\\1\">\\1</a>").strip
 end
 
