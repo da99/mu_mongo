@@ -105,15 +105,23 @@ end
 
 Anchorify.add_filter(:scrubber) do |txt|
   allow_media = Loofah::Scrubber.new do |node|
-    if %w{ embed object }.include?( node.name )
-      Loofah::Scrubber::STOP # don't bother with the rest of the subtree
-    else
-      if Loofah::HTML5::WhiteList::ACCEPTABLE_ELEMENTS.include?(node.name)
+    
+    result = case node.type
+    when Nokogiri::XML::Node::ELEMENT_NODE
+      if Loofah::HTML5::HashedWhiteList::ALLOWED_ELEMENTS_WITH_LIBXML2[node.name] || %w{ embed object }.include?( node.name )
+        Loofah::HTML5::Scrub.scrub_attributes node
         Loofah::Scrubber::CONTINUE
-      else
-        Loofah::Scrubber::STOP
       end
+    when Nokogiri::XML::Node::TEXT_NODE, Nokogiri::XML::Node::CDATA_SECTION_NODE
+      Loofah::Scrubber::CONTINUE
     end
+
+    if result 
+      result
+    else
+      Loofah::Scrubbers::Escape.new.scrub(node)
+    end
+
   end
 
   Loofah.xml_fragment(txt).scrub!(allow_media).to_s

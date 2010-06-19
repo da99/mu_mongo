@@ -36,5 +36,10 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     assert_equal "hello <br/> goodbye <br/> hello", result
   end
 
+  must 'escape out SCRIPT tags' do
+    orig = "<script>test</script>"
+    result = Base_View.new(Object.new).auto_link(orig)
+    assert_equal "&lt;script&gt;test&lt;/script&gt;", result 
+  end
 
 end # === class Test_View_Base_View_Read
