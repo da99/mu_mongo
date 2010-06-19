@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276822226"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276917863"/>
 
 {{/not_mobile_request?}}
 
@@ -135,17 +135,18 @@
 {{#owner?}}
 
        <div id="club_message_create">
-        <form action="/messages/" method="POST" name="form_club_message_create" id="form_club_message_create">
-         <label>Post a message:</label>
-         <input type="hidden" value="{{username_id}}" name="target"/>
+        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+         <h4>Post a message:</h4>
+         <fieldset>
+          <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="{{username_id}}" name="target"/>
 
 {{#single_username?}}
 
-         <input type="hidden" value="{{first_username}}" name="username"/>
+          <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-         <fieldset>
           <select name="message_model">
            <option value="comment">Comment</option>
            <option value="story">Story</option>
@@ -190,7 +191,7 @@
           </select>
          </fieldset>
          <div class="buttons">
-          <button class="create">Save</button>
+          <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
          </div>
         </form>
        </div>
@@ -199,13 +200,8 @@
 
      </div>
    </div>
-
-{{#javascripts}}
-
-   <script type="text/javascript" src="{{src}}?{{time_i}}"></script>
-
-{{/javascripts}}
-
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1276917863"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1276917863"></script>
 
 {{#include_tracking?}}
 

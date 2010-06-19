@@ -8,7 +8,7 @@ namespace :views do
     Mab_In_Disguise.compile_all
     Xml_In_Disguise.compile_all
     Render_Css.compile_all
-    sh('rm -v .sass-cache')
+    sh('rm -v -r .sass-cache')
   end
 
   desc 'Uses name= and lang= [en-us]'

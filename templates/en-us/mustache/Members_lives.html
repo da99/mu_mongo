@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276822225"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1276917862"/>
 
 {{/not_mobile_request?}}
 
@@ -73,7 +73,7 @@
      <div id="content">
       <div id="lives_create">
        <h4>Post message</h4>
-       <form action="/messages/" method="POST" name="form_lives_create" id="form_lives_create">
+       <form action="/messages/" method="post" name="form_lives_create" id="form_lives_create">
         <input type="hidden" value="tweet" name="category"/>
         <input type="hidden" value="{{current_member_username}}" name="username"/>
         <fieldset>
@@ -258,13 +258,6 @@
 
       </div>
    </div>
-
-{{#javascripts}}
-
-   <script type="text/javascript" src="{{src}}?{{time_i}}"></script>
-
-{{/javascripts}}
-
 
 {{#include_tracking?}}
 
