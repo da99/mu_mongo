@@ -26,6 +26,23 @@ module Base
     })
   end
 
+	def javascript_files
+		(@js_files ||= []).compact.uniq
+		@js_files
+	end
+
+	def add_javascript_file file_hash_or_string
+		case file_hash_or_string
+		when String
+			javascript_files << ({
+				:src=>"#{file_hash_or_string}?#{Time.now.utc.to_i}" , 
+				:type=>'text/javascript'
+			})
+		else
+			javascript_files << file_hash_or_string
+		end
+	end
+
   def the_app
     @the_app = Class.new {
       def method_missing *args

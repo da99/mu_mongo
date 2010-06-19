@@ -44,9 +44,13 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     }
     # ==============================================================
 
-    mustache 'javascripts' do
-      script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
+		javascript_files.each do |file_hash|
+      script '', file_hash
     end
+		
+    # mustache 'javascripts' do
+    #   script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
+    # end
 
     mustache 'include_tracking?' do
       text %~

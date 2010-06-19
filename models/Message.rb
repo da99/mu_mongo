@@ -33,6 +33,21 @@ class Message
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
   make :target_ids, :split_and_flatten, :mongo_object_id_array
   make :body, :not_empty
+	make :body_images_cache, [:set_to, lambda { 
+		# turn "URL 100 100" into 
+		# ==> [URL, 100, 100]
+		# ==> BSON won't allow URL as key because it contains '.'
+		raw_data.body_images_cache.to_s.split("\n").map { |val|
+			url, width, height = val.split.map(&:strip)
+			[url, width.to_i, height.to_i]
+		}
+
+		# .inject({}) { |memo, val|
+		# 	url, width, height = val[0].strip, val[1].to_i, val[2].to_i
+		# 	memo[url] = {:width => width, :height => height}
+		# 	memo
+		# }
+	}]
   make :emotion, :not_empty
   make :category, :not_empty
   make :labels, :split_and_flatten, :array
@@ -59,7 +74,8 @@ class Message
       ask_for :category, :privacy, :labels,
           :emotion, :rating,
           :labels, :public_labels,
-          :message_model, :important
+          :message_model, :important,
+					:body_images_cache
       save_create 
     end
   end
@@ -78,7 +94,8 @@ class Message
       self.raw_data    = new_raw_data
       ask_for :title, :body, :teaser, :public_labels, 
 				:private_labels, :published_at,
-        :message_model, :important
+        :message_model, :important,
+				:body_images_cache
       save_update
     end
   end

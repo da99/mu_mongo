@@ -357,6 +357,10 @@ module Couch_Plastic
           
           case reg
             
+					when :set_to
+						clean_val = instance_eval(&target_val)
+						new_clean_value(fld, clean_val)
+
           when :anything
             new_clean_value(fld, raw)
             

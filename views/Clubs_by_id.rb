@@ -9,7 +9,6 @@ class Clubs_by_id < Base_View
   def mini_nav_bar?
     true
   end
-
   
   def months
     %w{ 8 4 3 2 1 }.map { |month|

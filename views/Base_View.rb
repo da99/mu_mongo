@@ -245,7 +245,11 @@ class Base_View < Mustache
   def compile_messages( mess_arr )
     mess_arr.map { |doc|
 			doc['href'] = "/mess/#{doc['_id']}/"
-      doc['compiled_body'] = from_surfer_hearts?(doc) ? doc['body'] : auto_link(doc['body'])
+      doc['compiled_body'] = if from_surfer_hearts?(doc)
+                               doc['body']
+                             else
+                               doc['body_compiled'] || auto_link(doc['body'], doc['body_images_cache'])
+                             end
 			doc
 		}
   end
@@ -254,11 +258,12 @@ class Base_View < Mustache
     doc['created_at'] < '2010-01-01 01:01:01'
   end
 
-  def auto_link raw_str
+  def auto_link raw_str, meta_img = {}
     str = raw_str.to_s 
-    Loofah::Helpers.sanitize(
-      Anchorify.new.anchorify(str)
-    ).gsub(/\r?\n/, "<br />")
+    Loofah.scrub_xml_fragment(
+      Anchorify.new.anchorify(str, meta_img),
+      :prune
+    ).to_s
   end
 
   def default_javascripts

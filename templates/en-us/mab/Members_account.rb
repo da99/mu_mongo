@@ -19,7 +19,7 @@ div.col.kill_me! {
     span 'Delete ALL your clubs first. All else they will remain.'
   }
 
-  form.delete_account_form!(:method=>'POST', :action=>"/delete-account-forever-and-ever/") {
+  form.delete_account_form!(:method=>'post', :action=>"/delete-account-forever-and-ever/") {
     _method_delete
     p { strong "Are you really, really sure? (There is no undo.)" }
     div.buttons {

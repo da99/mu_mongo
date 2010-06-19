@@ -20,42 +20,46 @@ module Base_Message
     opts = Data_Pouch.new(raw_opts, :hidden_input, :title)
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
+    add_javascript_file '/js/vendor/jquery-1.4.2.min.js'
+    add_javascript_file '/js/pages/Megauni_Base.js'
     text(capture {
     div.club_message_create! do
       
-      form.form_club_message_create! :method=>'POST', :action=>"/messages/" do
+      form.form_club_message_create! :method=>'post', :action=>"/messages/" do
 
         if opts.title
-          label opts.title
+          h4 opts.title
         else
-          label 'Post a message:'
+          h4 'Post a message:'
         end
       
-        opts.hidden_input.each { |k,v|
-          input :type=>'hidden', :name=>k, :value=>v
-        }
+				fieldset {
+					input :type=>'hidden', :name=>'body_images_cache', :value=>''
 
-        show_if 'single_username?' do
-          input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
-        end
+					opts.hidden_input.each { |k,v|
+						input :type=>'hidden', :name=>k, :value=>v
+					}
 
-        if message_model
-          input :type=>'hidden', :name=>'message_model', :value=>message_model
-        else
-          fieldset {
-            select(:name=>'message_model') {
-              option "Comment",     :value=>'comment'
-              option "Story",       :value=>'story'
-              option "Humorous ;)", :value=>'joke'
-              option "Question?",   :value=>'question'
-              option "Request",     :value=>'plea'
-              option "Brainstorm",  :value=>'brainstorm'
-              # option "Event",       :value=>'event'
-              option "Complain!",   :value=>'complaint'
-              option "Product",     :value=>'product'
-            }
-          } 
-        end
+					show_if 'single_username?' do
+						input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
+					end
+
+					if message_model
+						input :type=>'hidden', :name=>'message_model', :value=>message_model
+					else
+						select(:name=>'message_model') {
+							option "Comment",     :value=>'comment'
+							option "Story",       :value=>'story'
+							option "Humorous ;)", :value=>'joke'
+							option "Question?",   :value=>'question'
+							option "Request",     :value=>'plea'
+							option "Brainstorm",  :value=>'brainstorm'
+							# option "Event",       :value=>'event'
+							option "Complain!",   :value=>'complaint'
+							option "Product",     :value=>'product'
+							}
+					end
+				}
 
         fieldset {
           textarea '', :name=>'body'
@@ -86,7 +90,7 @@ module Base_Message
         } 
         
         div.buttons {
-          button.create 'Save'
+          button.create 'Save', :onclick=>"if(window['Form_Submitter']) Form_Submitter.submit(this); return false;"
         }
       end
     end

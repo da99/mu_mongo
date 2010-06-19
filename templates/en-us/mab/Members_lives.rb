@@ -9,7 +9,7 @@ div.content! {
   div.lives_create! { 
     h4 'Post message'
 
-    form :id=>'form_lives_create', :action=>'/messages/', :method=>'POST' do
+    form :id=>'form_lives_create', :action=>'/messages/', :method=>'post' do
     
       input :type=>'hidden', :name=>'category', :value=>'tweet'
       input :type=>'hidden', :name=>'username', :value=>'{{current_member_username}}'
