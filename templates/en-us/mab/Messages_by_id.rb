@@ -24,7 +24,7 @@ div.col.about! {
   p.published_at '{{published_at}}'
   
   p {
-    span "This {{message_model}} message was posted to "
+    span "This {{message_model}} message was posted in "
     a('{{club_title}}', :href=>'{{club_href}}')
     span '.'
   }
