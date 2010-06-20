@@ -8,4 +8,12 @@ class Test_Control_Messages_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must 'render a message posted to a life club' do
+    mem = regular_member_2
+		club = create_club(mem)
+    mess = create_message(mem, club)
+    get mess.href
+    assert_equal 200, last_response.status
+  end
+	
 end # === class Test_Control_Messages_Read

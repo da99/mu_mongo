@@ -73,6 +73,23 @@ class Club
     DB.collection('Club_Followers')
   end
 
+  def self.by_id id
+    begin
+      super(id)
+    rescue Club::Not_Found
+      orig = $!
+      begin
+        doc = Member.username_doc_by_id(id)
+        doc['filename']  = doc['username']
+        doc['title']     = "#{doc['username']}'s Fan Club"
+        doc['life_club'] = true
+        Club.new doc
+      rescue Member::Not_Found
+        raise orig
+      end
+    end
+  end
+  
   def self.all raw_params = {}, &blok
     db_collection.find( raw_params, &blok)
   end
@@ -154,7 +171,13 @@ class Club
   end
 
   def href 
-    cache[:href] = "/clubs/#{data.filename}/"
+    cache[:href] ||= begin
+                       if data.as_hash['life_club']
+        "/life/#{data.filename}/"
+                       else
+        "/clubs/#{data.filename}/"
+                       end
+                     end
   end
 
   def follow_href

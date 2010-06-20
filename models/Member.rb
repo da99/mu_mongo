@@ -130,6 +130,12 @@ class Member
 
   # ==== Getters =====================================================    
   
+  def self.username_doc_by_id(id)
+    doc = db_collection_usernames.find_one(:_id=> Couch_Plastic.mongofy_id(id))
+    raise Member::Not_Found, "Member username: #{id.inspect}"  unless doc
+    doc
+  end
+
   def self.by_email email
     mem = Member.db_collection.find_one(:email=>email)
     if email.empty? || !mem

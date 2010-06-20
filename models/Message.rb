@@ -247,4 +247,22 @@ class Message
     Time.parse(latest)
   end
 
+  def clubs
+    cache['clubs.assoc'] ||= data.target_ids.map { |id|
+      begin
+        Club.by_id(id)
+      rescue Member::Not_Found
+        nil
+      end
+    }.compact
+  end
+
+  def club
+    cache['first.club'] ||= clubs.first
+  end
+
+  def href
+    "/mess/#{data._id}/"
+  end
+
 end # === end Message

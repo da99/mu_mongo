@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Messages_by_id.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_by_id.sass
+# MAB   ~/megauni/templates/en-us/mab/Messages_by_id.rb
+# SASS  ~/megauni/templates/en-us/sass/Messages_by_id.sass
 # NAME  Messages_by_id
 
 class Messages_by_id < Base_View
@@ -30,6 +30,10 @@ class Messages_by_id < Base_View
     @app.env['message_by_id']
   end
 
+  def message_model
+    message.data.message_model
+  end
+
   def message_data
     @cache[:message_data] ||= begin
                                 v= message.data.as_hash
@@ -38,5 +42,16 @@ class Messages_by_id < Base_View
                               end
   end
 
+  def club
+    message.club
+  end
+
+  def club_title
+    club.data.title
+  end
+
+  def club_href
+    club.href
+  end
   
 end # === Messages_by_id 

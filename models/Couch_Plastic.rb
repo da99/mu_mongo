@@ -783,7 +783,7 @@ module Couch_Plastic_Class_Methods
     new(id)
   end
 
-  def self.by_owner_id str, params = {}, opts = {}
+  def by_owner_id str, params = {}, opts = {}
     id = BSON::ObjectID.legal?(str) ? BSON::ObjectID.from_string(str) : str
     db_collection.find({:owner_id=>str}, params, opts)
   end

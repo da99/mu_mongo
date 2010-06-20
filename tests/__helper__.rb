@@ -253,7 +253,8 @@ class Test::Unit::TestCase
     club      = Club.create(mem, club_opts )
   end
 
-  def create_club_message( mem, club, un_id = nil )
+  def create_message( mem, club = nil, un_id = nil )
+		club ||= self.club
     Message.create( mem, 
       :privacy => 'public',
       :target_ids => [club.data._id],
@@ -266,8 +267,8 @@ class Test::Unit::TestCase
   def create_club_content
     club_1 = create_club
     club_2 = create_club
-    mess_1 = create_club_message(regular_member_1, club_1)
-    mess_2 = create_club_message(regular_member_2, club_2)
+    mess_1 = create_message(regular_member_1, club_1)
+    mess_2 = create_message(regular_member_2, club_2)
     {:clubs => [club_1, club_2], :messages=>[mess_1, mess_2]}
   end
 
@@ -282,19 +283,7 @@ class Test::Unit::TestCase
   end
 
   def club
-    Club.db_collection.find_one()
-  end
-
-  def create_message mem
-    Message.create(
-      mem, 
-      :owner_id=> mem.username_ids.first.to_s,
-      :target_ids => [club['_id']],
-      :body => 'test body',
-      :emotion => 'poignant',
-      :category => 'tweet',
-      :privacy => 'public'
-    )
+    Club.by_id(Club.db_collection.find_one()['_id'])
   end
 
   
