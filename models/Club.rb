@@ -82,8 +82,11 @@ class Club
         doc = Member.username_doc_by_id(id)
         doc['filename']  = doc['username']
         doc['title']     = "#{doc['username']}'s Fan Club"
-        doc['life_club'] = true
-        Club.new doc
+        club = Club.new doc
+        def club.life_club?
+          true
+        end
+        club
       rescue Member::Not_Found
         raise orig
       end
@@ -170,12 +173,16 @@ class Club
     mem.username_ids.include?(data.owner_id)
   end
 
+  def life_club?
+    false
+  end
+
   def href 
     cache[:href] ||= begin
-                       if data.as_hash['life_club']
-        "/life/#{data.filename}/"
+                       if life_club?
+                         "/life/#{data.filename}/"
                        else
-        "/clubs/#{data.filename}/"
+                         "/clubs/#{data.filename}/"
                        end
                      end
   end

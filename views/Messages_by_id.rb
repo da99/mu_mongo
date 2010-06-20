@@ -51,7 +51,7 @@ class Messages_by_id < Base_View
   end
 
   def club_href
-    club.href
+		club.href
   end
   
 end # === Messages_by_id 
