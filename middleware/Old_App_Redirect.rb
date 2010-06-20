@@ -42,6 +42,10 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
+    if ua && ua['Yahoo! Slurp/'] && new_env['PATH_INFO']['/SlurpConfirm404']
+      return hearty_redirect("http://www.bing.com/")
+    end
+
     # =====================================================
     
     if new_env['PATH_INFO'] === "/skins/jinx/css/main_show.css"

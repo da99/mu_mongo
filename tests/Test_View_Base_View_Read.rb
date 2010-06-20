@@ -19,6 +19,13 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     assert_equal "<a href=\"#{url}\">#{url}</a>", result
   end
 
+  # must "turn anchor-ify this link: http://modernmarketingjapan.blogspot.com/search?updated-max=2010-06-10T14%3A00%3A00-07%3A00&max-results=7" do
+  #   url = "http://modernmarketingjapan.blogspot.com/search?updated-max=2010-06-10T14%3A00%3A00-07%3A00&max-results=7"
+  #   target = %~<a href="#{url}">#{url}</a>~
+  #   result = Base_View.new(Object.new).auto_link(url)
+  #   assert_equal target, result
+  # end
+
   must 'not turn javascript protocol into anchor tags.' do
     original = 'javascript:alert("hello")'
     result = Base_View.new(Object.new).auto_link(original)

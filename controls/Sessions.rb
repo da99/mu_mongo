@@ -20,7 +20,7 @@ class Sessions
         :username   => clean_room['username'], 
         :password   => clean_room['password'], 
         :ip_address => request.env['REMOTE_ADDR'],
-        :user_agent => request.env['HTT_USER_AGENT']
+        :user_agent => request.env['HTTP_USER_AGENT']
       )
       redirect!( session.delete(:return_page) || '/today/' )
       
