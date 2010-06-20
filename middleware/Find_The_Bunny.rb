@@ -145,7 +145,7 @@ class Find_The_Bunny
         return redirect(new_url)
       end
       
-      if new_env['PATH_INFO'] == '/templates/'
+      if new_env['PATH_INFO'] == '/templates/' || new_env['HTTP_USER_AGENT'].to_s['TwengaBot']
         return redirect('/')
       end
       
