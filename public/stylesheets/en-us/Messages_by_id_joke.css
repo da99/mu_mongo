@@ -314,3 +314,20 @@ div.message, div.club {
     padding: 5px 0 0 0;
     text-align: right;
     font-size: 80%; }
+
+div.col {
+  float: left; }
+
+#message {
+  max-width: 750px;
+  padding: 0 10px 0 0;
+  border: 1px dashed #003860;
+    border-width: 0 1px 0 0; }
+
+#about {
+  width: 200px;
+  text-align: right;
+  padding: 0 0 0 10px; }
+
+#archives {
+  padding: 0 10px; }

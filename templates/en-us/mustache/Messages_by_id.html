@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277000388"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277071862"/>
 
 {{/not_mobile_request?}}
 
@@ -70,62 +70,35 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="content">
 
 {{#show_moving_message?}}
 
-      <div id="notice">
-       <span>I'm moving content from my old site, </span>
-       <a href="http://www.surferhearts.com/">SurferHearts.com</a>
-       <span>, over to this new site.</span>
-      </div>
+     <div id="notice">
+      <span>I'm moving content from my old site, </span>
+      <a href="http://www.surferhearts.com/">SurferHearts.com</a>
+      <span>, over to this new site.</span>
+     </div>
 
 {{/show_moving_message?}}
 
-      <div class="heart_link news_post">
-       <div class="info">
-        <span class="published_at">{{published_at}}</span>
-       </div>
+     <div class="col" id="message">
 
 {{#message_data}}
 
-       <h4>{{title}}</h4>
-       <div class="body">
-{{{compiled_body}}}       </div>
+      <h4>{{title}}</h4>
+      <div class="body">
+{{{compiled_body}}}      </div>
 
 {{/message_data}}
 
-
-{{#product?}}
-
-       <div class="wonderful">
-        <p>---</p>
-       </div>
-       <div class="tips">
-        <p>---</p>
-       </div>
-       <div class="questions">
-        <p>---</p>
-       </div>
-       <div class="complain">
-        <p>---</p>
-       </div>
-
-{{/product?}}
-
-      </div>
-
-{{#show_moving_message?}}
-
-      <div class="news_post" id="archives">
-       <h4>Archives:</h4>
-       <div class="body">
-        <a href="/clubs/hearts/">See all.</a>
-       </div>
-      </div>
-
-{{/show_moving_message?}}
-
+     </div>
+     <div class="col" id="about">
+      <p class="published_at">{{published_at}}</p>
+      <p>
+       <span>This {{message_model}} message was posted to </span>
+       <a href="{{club_href}}">{{club_title}}</a>
+       <span>.</span>
+      </p>
      </div>
       <div id="nav_bar">
        <div id="logo">
