@@ -317,12 +317,14 @@ div.col {
   #city_clubs div.club, #political_beauty div.club, #joy_clubs div.club, #random_clubs div.club {
     border-bottom-width: 0; }
     #city_clubs div.club h4, #political_beauty div.club h4, #joy_clubs div.club h4, #random_clubs div.club h4 {
-      font-size: 120%; }
+      font-size: 120%;
+      text-align: center; }
     #city_clubs div.club div.teaser, #political_beauty div.club div.teaser, #joy_clubs div.club div.teaser, #random_clubs div.club div.teaser {
       border-bottom: 1px dashed #003860;
       margin-bottom: 10px;
       padding: 5px 5px 10px 5px;
-      font-style: italic; }
+      font-style: italic;
+      text-align: center; }
     #city_clubs div.club div.message div.body, #political_beauty div.club div.message div.body, #joy_clubs div.club div.message div.body, #random_clubs div.club div.message div.body {
       font-family: 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
 
