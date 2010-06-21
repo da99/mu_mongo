@@ -10,7 +10,8 @@ namespace :server do
 
 	desc 'Start the server.'
 	task :http do
-		exec 'unicorn -p 4567'
+		# exec 'unicorn -p 4567'
+    exec "thin -p 4567 -R config.ru start"
 	end
 
   task :nginx do
