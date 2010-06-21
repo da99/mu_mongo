@@ -8,9 +8,14 @@ div.col.intro! {
 
   div.teaser '{{club_teaser}}'
 
-  
   show_if 'logged_in?' do
     
+    show_if('club_updator?') {
+      div {
+        a('Edit settings.', :href=>'{{club_href_edit}}')
+      }
+    }
+
     form_message_create(
       :hidden_input => { :club_filename => '{{club_filename}}',
                          :privacy       => 'public'

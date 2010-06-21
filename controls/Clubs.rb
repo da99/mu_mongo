@@ -86,7 +86,7 @@ class Clubs
       redirect! club.href
     rescue Club::Invalid
       flash_msg.errors = $!.doc.errors
-      redirect! File.join(club.href, 'edit/')
+      redirect! club.href_edit
     end
   end
 
@@ -122,6 +122,7 @@ class Clubs
   def save_club_to_env id
     club_filename       = "#{id.sub('club-', '')}"
     env['the.app.club'] = Club.by_filename club_filename
+    env['results.club'] = Club.by_filename club_filename
   end
 
   # =========================================================

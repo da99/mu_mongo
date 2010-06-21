@@ -26,6 +26,44 @@ module Base
     })
   end
 
+  def _fieldset_method_put
+    text(capture {
+      fieldset.hidden {
+        _method_put
+      }
+    })
+  end
+
+  def input_text name, val= ''
+    text(capture {
+      input.text :type=>'text', :name=>name, :value=>val
+    })
+  end
+
+  def label_to_name slabel
+    slabel.downcase.gsub(/[^a-z0-9\_\-]/i, '')
+  end
+
+  def fieldset_input_text slabel, sname=nil, sval=''
+    sname ||= label_to_name(slabel)
+    text(capture {
+      fieldset {
+        label slabel
+        input_text sname, sval
+      }
+    })
+  end
+
+  def fieldset_textarea slabel, name = nil, val = ''
+    name ||= label_to_name(slabel)
+    text( capture {
+      fieldset {
+        label slabel
+        textarea val, :name=>name
+      }
+    })
+  end
+
 	def javascript_files
 		(@js_files ||= []).compact.uniq
 		@js_files

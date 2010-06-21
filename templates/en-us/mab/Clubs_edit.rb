@@ -1,12 +1,26 @@
 # VIEW views/Clubs_edit.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_edit.sass
+# SASS ~/megauni/templates/en-us/sass/Clubs_edit.sass
 # NAME Clubs_edit
 
-div.content! { 
+div.col.the_form! {
+
+  form.edit_form!(:action=>'{{club_href}}', :method=>'post') {
   
-  p 'Not done'
-  
-} # === div.content!
+    _fieldset_method_put
+
+    fieldset_input_text 'Filename:', nil, '{{club_filename}}'
+    
+    fieldset_input_text 'Title:', nil, '{{club_title}}'
+
+    fieldset_textarea 'Teaser:', nil, '{{club_teaser}}'
+
+    div.buttons {
+      button.update 'Update', :onclick=>'document.getElementById(\'edit_form\').submit(); return false;'
+    }
+
+  } # === form
+
+} # === div.form!
 
 partial('__nav_bar')
 

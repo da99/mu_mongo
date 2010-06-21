@@ -187,6 +187,10 @@ class Club
                      end
   end
 
+  def href_edit
+    cache[:href_edit] ||= File.join(href, 'edit/' )
+  end
+
   def follow_href
     cache[:follow_href] ||= "/clubs/#{data.filename}/follow/"
   end

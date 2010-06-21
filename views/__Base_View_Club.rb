@@ -21,7 +21,11 @@ module Base_View_Club
   end
 
   def club_href
-    "/clubs/#{club.data.filename}/"
+    club.href
+  end
+
+  def club_href_edit
+    club.href_edit
   end
 
   def club_href_e
@@ -58,6 +62,10 @@ module Base_View_Club
 
   def potential_follower?
     club.potential_follower?(current_member)
+  end
+
+  def club_updator?
+    club.updator?(current_member)
   end
 
   def follower?

@@ -29,4 +29,20 @@ class Test_Control_Clubs_Edit < Test::Unit::TestCase
     assert_equal 403, last_response.status
   end
 
+  must 'show link to edit club' do
+    club = create_club(regular_member_1)
+    log_in_regular_member_1
+    get( club.href )
+    assert last_response.body["href=\"#{club.href_edit}"]
+  end
+
+  must 'not show link to edit club to a non-owner' do
+    owner  = regular_member_1
+    viewer = regular_member_3
+    club = create_club(owner)
+    log_in_regular_member_3
+    get( club.href )
+    assert_equal nil, last_response.body["href=\"#{club.href_edit}"]
+  end
+
 end # === class Test_Control_Clubs_Edit
