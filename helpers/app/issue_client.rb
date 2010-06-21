@@ -28,6 +28,11 @@ class IssueClient
           title, body, e = args
       end
 
+      params = if env['the.app']
+                 env['the.app'].request.params
+               else
+                 'No params.'
+               end
       query_string = (env['QUERY_STRING'].to_s.strip.empty? ? 
                       '' : 
                       ' (with query string)' 
@@ -39,7 +44,7 @@ class IssueClient
         :api_key    => 'luv.4all.29bal--w0l3mg930--3',
         :app_name   => 'Mega Uni', 
         :title      => (title || e.message),
-        :body       => (body.inspect + "\n\n" + env.inspect + "\n\n" + e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
+        :body       => (body.inspect + "\n\n" + params.inspect + "\n\n" + e.backtrace.reject {|b| b['mnt/.gems/gems'] || b['lib/ruby/gems'] }.join("\n")), 
         :environment => environ.to_s ,
         :user_agent => env['HTTP_USER_AGENT'],
         :ip_address => env['REMOTE_ADDR'] || 'MISSING'
