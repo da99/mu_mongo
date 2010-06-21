@@ -11,9 +11,9 @@ class Catch_Bad_Bunny
     begin
       @app.call the_env
     rescue Object => e
+      the_env['the.app.error'] = $!
       case e
         when The_App::HTTP_403
-          the_env['the.app.error'] = $!
           response             = Rack::Response.new
           response.status      = 403
           response.body        = begin
@@ -24,7 +24,6 @@ class Catch_Bad_Bunny
                                  end
           response.finish
         when The_App::HTTP_404
-          the_env['the.app.error'] = $!
           response             = Rack::Response.new
           response.status      = 404
           response.body        = begin
@@ -40,7 +39,6 @@ class Catch_Bad_Bunny
             raise $!
           end
 
-          the_env['the.app.error'] = $!
           response             = Rack::Response.new
           response.status      = 500
           response.body        = begin
