@@ -62,7 +62,12 @@ module Base_Control
   def clean_room
     @clean_room ||= begin
                         data = Hash_Sym_Or_Str_Keys.new
-                        request.params.each { |k,v| 
+                        kv = if request.params.empty?
+                               env['rack.request.form_hash'] || {}
+                             else
+                               request.params
+                             end
+                        kv.each { |k,v| 
                           data[k.to_s.strip] = case v
                           when String
                             temp = Loofah::Helpers.sanitize(v.strip)
