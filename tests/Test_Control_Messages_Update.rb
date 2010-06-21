@@ -25,4 +25,13 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
 		assert_equal new_body, reloaded.data.body
   end
 
+  must 'redirect to message href after update' do
+    mess = create_message(regular_member_1)
+		mess_id = mess.data._id.to_s
+		new_body = 'http://new.com'
+		log_in_regular_member_1
+		post "/mess/#{mess_id}/", {:body=>new_body, :_method=>'put'}
+    assert_redirect mess.href, 302
+  end
+
 end # === class Test_Control_Messages_Update
