@@ -26,7 +26,7 @@ class Member_Username
       (mem.respond_to?(:data) && mem.data._id == data.owner_id)
   end
 
-  def creator? editor # NEW, CREATE
+  def allow_as_creator? editor # NEW, CREATE
     return false if !editor.is_a?(Member)
     true
   end

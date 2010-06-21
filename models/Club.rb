@@ -22,7 +22,7 @@ class Club
   
   # ======== Authorizations ======== 
 
-  def creator? editor 
+  def allow_as_creator? editor 
     return false if not new?
     return true if editor.has_power_of? :MEMBER
     # editor.has_power_of? Member::ADMIN
@@ -64,7 +64,7 @@ class Club
   end
   
   def deletor? editor
-    creator? editor
+    owner? editor
   end
 
   # ======== Accessors ======== 

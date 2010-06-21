@@ -77,7 +77,7 @@ class Message
     end
   end
 
-  def creator? editor # NEW, CREATE
+  def allow_as_creator? editor # NEW, CREATE
     return false unless editor
     editor.has_power_of? :MEMBER
   end

@@ -585,7 +585,7 @@ module Couch_Plastic
 
     clear_cache
     
-    if !(creator? manipulator)
+    if !(allow_as_creator? manipulator)
       raise Unauthorized, "Creator: #{self.class} #{manipulator.inspect}"
     end
     

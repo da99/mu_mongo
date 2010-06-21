@@ -253,7 +253,7 @@ class Member
 
   # ==== Authorizations ====
 
-  def creator? editor # NEW, CREATE
+  def allow_as_creator? editor # NEW, CREATE
     return true if !editor
     false
   end
