@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277073526"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277081544"/>
 
 {{/not_mobile_request?}}
 
@@ -76,13 +76,22 @@
 
 {{#logged_in?}}
 
+
+{{#club_updator?}}
+
+      <div>
+       <a href="{{club_href_edit}}">Edit settings.</a>
+      </div>
+
+{{/club_updator?}}
+
        <div id="club_message_create">
         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
          <h4>Post a message:</h4>
          <fieldset>
           <input type="hidden" value="" name="body_images_cache"/>
-          <input type="hidden" value="public" name="privacy"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+          <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
@@ -250,8 +259,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277073526"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277073526"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277081544"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277081544"></script>
 
 {{#include_tracking?}}
 
