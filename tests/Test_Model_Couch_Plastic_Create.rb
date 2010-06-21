@@ -93,7 +93,7 @@ class Cafe_Le_Roger
     end
   end
 
-	def creator? editor
+	def allow_as_creator? editor
 		true
 	end
 

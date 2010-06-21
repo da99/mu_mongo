@@ -63,7 +63,7 @@ class Message
     return false if not editor
     case editor
     when Member
-      editor.username_ids.include? data.owner_id
+      editor.username_ids.include?( data.owner_id ) || editor.has_power_of?(:ADMIN)
     when BSON::ObjectID
       match = data.owner_id == editor
       if not match
