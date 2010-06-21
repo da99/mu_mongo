@@ -29,6 +29,12 @@ div.col.about! {
     span '.'
   }
 
+  show_if 'message_updator?' do
+    p {
+      a('Edit.', :href=>'{{message_href_edit}}')
+    }
+  end
+
 } # div.about!
   
 partial('__nav_bar')

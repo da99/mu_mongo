@@ -1,5 +1,5 @@
 # VIEW views/Messages_edit.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Messages_edit.sass
+# SASS ~/megauni/templates/en-us/sass/Messages_edit.sass
 # NAME Messages_edit
 
 div.content! { 

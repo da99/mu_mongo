@@ -59,7 +59,26 @@ class Message
 
   # ==== Authorizations ====
  
+  def owner? editor
+    return false if not editor
+    case editor
+    when Member
+      editor.username_ids.include? data.owner_id
+    when BSON::ObjectID
+      match = data.owner_id == editor
+      if not match
+        match = begin
+                  Member.by_id(editor).username_ids.include?(data.owner_id)
+                rescue Member::Not_Found
+                  false
+                end
+      end
+      match
+    end
+  end
+
   def creator? editor # NEW, CREATE
+    return false unless editor
     editor.has_power_of? :MEMBER
   end
 
@@ -85,7 +104,7 @@ class Message
   end
 
   def updator? editor # EDIT, UPDATE
-    creator? editor
+    owner? editor
   end
 
   def self.update id, editor, new_raw_data
@@ -263,6 +282,10 @@ class Message
 
   def href
     "/mess/#{data._id}/"
+  end
+
+  def href_edit
+    cache[:href_edit] ||= File.join(href, 'edit/')
   end
 
 end # === end Message
