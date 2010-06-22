@@ -70,27 +70,11 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="kill_me">
+     <div id="content">
+      <p>Not done yet.</p>
       <p>
-    Would you like to delete your {{site_name}} account? 
-  </p>
-      <p>
-    When I say "delete", I mean it. It will be as if you never existed.
-  </p>
-      <p> Your usernames will also be deleted. ALL of them.</p>
-      <p>
-       <strong>Remember:</strong>
-       <span>Delete ALL your clubs first. All else they will remain.</span>
+       <a href="{{life_club_href}}">Go back.</a>
       </p>
-      <form action="/delete-account-forever-and-ever/" method="post" name="delete_account_form" id="delete_account_form">
-        <input type="hidden" value="delete" name="_method"/>
-       <p>
-        <strong>Are you really, really sure? (There is no undo.)</strong>
-       </p>
-       <div class="buttons">
-        <button onclick="if(confirm('Are you really, really sure?')) { document.getElementById('delete_account_form').submit(); }; return false;">Yes!</button>
-       </div>
-      </form>
      </div>
       <div id="nav_bar">
        <div id="logo">
@@ -113,8 +97,8 @@
          <li>
           <a href="/today/"> [ Today ] </a>
          </li>
-         <li class="selected">
-          <span>&lt; [ Account ] &gt;</span>
+         <li>
+          <a href="/account/"> [ Account ] </a>
          </li>
 
 {{/logged_in?}}

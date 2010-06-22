@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277159455"/>
+   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277172778"/>
 
 {{/not_mobile_request?}}
 
@@ -81,10 +81,16 @@
          <a href="{{life_club_href}}qa/">Q &amp; A</a>
         </li>
         <li>
-         <a href="{{life_club_href}}status/">Status</a>
+         <a href="{{life_club_href}}news/">News</a>
         </li>
         <li>
          <a href="{{life_club_href}}shop/">Shop</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}predictions/">Predictions</a>
+        </li>
+        <li>
+         <a href="{{life_club_href}}random/">Random</a>
         </li>
 
 {{#logged_in?}}
@@ -139,9 +145,9 @@
          <h4>Post a new section:</h4>
          <fieldset>
           <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="{{owner_username_id}}" name="target_ids"/>
           <input type="hidden" value="fact" name="message_model"/>
           <input type="hidden" value="public" name="privacy"/>
-          <input type="hidden" value="{{owner_username_id}}" name="target_ids"/>
 
 {{#single_username?}}
 
@@ -151,6 +157,10 @@
 
           <input type="hidden" value="fact" name="message_model"/>
          </fieldset>
+          <fieldset>
+           <label>Title:</label>
+            <input type="text" class="text" value="" name="title"/>
+          </fieldset>
          <fieldset>
           <textarea name="body"></textarea>
          </fieldset>
@@ -193,8 +203,8 @@
 
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277159455"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277159455"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277172778"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277172778"></script>
 
 {{#include_tracking?}}
 
