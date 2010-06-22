@@ -72,12 +72,28 @@ class Members
   end
 
   def GET_life_status un
+    redirect!(request.path_info.sub('status/', 'news/'), 301)
+  end
+
+  def GET_life_news un
+    env['results.username'] = un
+    env['results.owner']    = Member.by_username(un)
+    render_html_template
+  end
+
+  def GET_life_shop un
     env['results.username'] = un
     env['results.owner'] = Member.by_username(un)
     render_html_template
   end
 
-  def GET_life_shop un
+  def GET_life_predictions un
+    env['results.username'] = un
+    env['results.owner'] = Member.by_username(un)
+    render_html_template
+  end
+
+  def GET_life_random un
     env['results.username'] = un
     env['results.owner'] = Member.by_username(un)
     render_html_template

@@ -6,11 +6,13 @@ module Base_Member_Life
     li_span  = lambda { |txt| li.selected { span txt } }
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
     vals = [ 
-      [/_life\Z/ , 'Home', ''],
-      [/_e\Z/  , 'Encyclopedia', 'e/'],
-      [/_qa\Z/ , 'Q & A', 'qa/'],
-      [/_status\Z/ , 'Status', 'status/'],
-      [/_shop\Z/ , 'Shop', 'shop/']
+      [/_life\Z/  , 'Home'        , '']       ,
+      [/_e\Z/     , 'Encyclopedia', 'e/']     ,
+      [/_qa\Z/    , 'Q & A'       , 'qa/']    ,
+      [/_news\Z/  , 'News'        , 'news/']  ,
+      [/_shop\Z/  , 'Shop'        , 'shop/'],
+      [/_predictions\Z/, 'Predictions'      , 'predictions/'],
+      [/_random\Z/, 'Random'      , 'random/']
     ]
     text(capture {
 

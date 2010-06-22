@@ -51,12 +51,18 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     assert_last_response_ok
   end
 
-  %w{ qa shop status }.each { |suffix|
+  %w{ e qa news shop predictions random }.each { |suffix|
     must "show /life/{username}/#{suffix}/" do
       un = regular_member_3.usernames.first
       get "/life/#{un}/#{suffix}/"
       assert_last_response_ok
     end
   }
+
+	must 'redirect life/../status/ to life/../news/ with 301 (permanent)' do
+		un = regular_member_3.usernames.first
+		get "/life/#{un}/status/"
+		assert_redirect "/life/#{un}/news/", 301
+	end
 
 end # === class Test_Control_Members_Read

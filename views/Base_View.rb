@@ -1,5 +1,6 @@
 require 'mustache'
 require 'views/__Base_View_Club'
+require 'views/__Base_View_Member_Life'
 require 'helpers/Anchorify'
 
 class Array

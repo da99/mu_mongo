@@ -39,6 +39,8 @@ begin
 
   
   if The_App.non_production?
+    use Rack::CommonLogger
+    
     require 'middleware/Render_Css' 
     use Render_Css
   end

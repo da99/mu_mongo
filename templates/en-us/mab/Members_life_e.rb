@@ -26,6 +26,7 @@ div.col.intro! {
     
     form_message_create(
       :title => 'Post a new section:',
+      :input_title => true,
       :hidden_input => {
                         :message_model => 'fact',
                         :privacy       => 'public',

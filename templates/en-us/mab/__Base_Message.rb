@@ -17,7 +17,7 @@ module Base_Message
 
   def form_message_create raw_opts = {}
     
-    opts = Data_Pouch.new(raw_opts, :hidden_input, :title)
+    opts = Data_Pouch.new(raw_opts, :hidden_input, :title, :input_title)
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
     add_javascript_file '/js/vendor/jquery-1.4.2.min.js'
@@ -60,6 +60,10 @@ module Base_Message
 							}
 					end
 				}
+
+        if opts.input_title
+          fieldset_input_text 'Title:'
+        end
 
         fieldset {
           textarea '', :name=>'body'
