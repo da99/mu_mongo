@@ -145,6 +145,15 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert Nokogiri::HTML(last_response.body).css('form#form_follow_create').first
   end
 
+  # ================ Life Club ===========================
+
+	must 'use /clubs/{filename}/ for life clubs' do
+		mem   = regular_member_1
+		un_id, un  = mem.username_hash.to_a.first
+		life  = Club.by_filename_or_member_username(un)
+		assert_equal "/clubs/#{un}/", life.href
+	end
+
   # ================ Club Search ===========================
 
   must 'redirect to /club-search/{filename}/ if more no club found' do

@@ -31,8 +31,8 @@ class Clubs
     redirect! club.href
   end
 
-  def GET_by_id filename
-    env['results.club'] = club = Club.by_filename(filename)
+  def GET_by_filename filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.messages_latest'] = Message.latest_by_club_id(club.data._id)
     case filename
     when 'hearts'
@@ -48,20 +48,38 @@ class Clubs
   end
 
   def GET_read_news filename
-    env['results.club'] = club = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.news'] = Message.latest_by_club_id(club.data._id, :message_model=>'news')
     render_html_template
   end
 
   def GET_read_qa filename
-    env['results.club'] = club = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.questions'] = Message.latest_by_club_id(club.data._id, :message_model=>'questions')
     render_html_template
   end
 
   def GET_read_e filename
-    env['results.club'] = club = Club.by_filename(filename)
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>'fact')
+    render_html_template
+  end
+
+  def GET_read_shop filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
+    env['results.buys'] = Message.latest_by_club_id(club.data._id, :message_model=>'buy')
+    render_html_template
+  end
+
+  def GET_read_predictions filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
+    env['results.predictions'] = Message.latest_by_club_id(club.data._id, :message_model=>'prediction')
+    render_html_template
+  end
+
+  def GET_read_random filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
+    env['results.randoms'] = Message.latest_by_club_id(club.data._id, :message_model=>'random')
     render_html_template
   end
 

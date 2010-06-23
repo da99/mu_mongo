@@ -269,9 +269,9 @@ class Message
   def clubs
     cache['clubs.assoc'] ||= data.target_ids.map { |id|
       begin
-        Club.by_id(id)
-      rescue Member::Not_Found
-        nil
+        Club.by_id_or_member_username_id(id)
+      rescue Club::Not_Found
+				nil
       end
     }.compact
   end

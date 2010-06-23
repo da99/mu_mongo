@@ -3,6 +3,8 @@ class Club
 
   include Couch_Plastic
 
+  attr_reader :life, :life_username, :life_member
+
 	def self.db_collection
 		DB.collection('Clubs')
 	end
@@ -47,11 +49,10 @@ class Club
   end
 
   def updator? editor
-    if editor.has_power_of?(:ADMIN) ||
-       editor.has_power_of?(data.owner_id)
-      return true
-    end
-    false
+    return false if not editor
+    return false if not data.owner_id
+    editor.has_power_of?(:ADMIN) ||
+      editor.has_power_of?(data.owner_id)
   end
 
   def self.update id, editor, new_raw_data # UPDATE
@@ -73,26 +74,50 @@ class Club
     DB.collection('Club_Followers')
   end
 
-  def self.by_id id
+  def self.by_filename filename
+    doc = db_collection.find_one(:filename=>filename)
+    return Club.new(doc) if doc
+    raise Club::Not_Found, "Filename: #{filename}"
+  end
+
+  def set_as_life username, mem
+    @life_club     = true
+    @life_username = username
+    @life_member   = mem
+  end
+
+  def self.by_filename_or_member_username filename
     begin
-      super(id)
+      by_filename filename
     rescue Club::Not_Found
-      orig = $!
       begin
-        doc = Member.username_doc_by_id(id)
-        doc['filename']  = doc['username']
-        doc['title']     = "#{doc['username']}'s Fan Club"
+        mem = Member.by_username(filename)
+        doc = mem.data.as_hash.clone
+        doc['filename']  = filename
+        doc['title']     = "#{filename}'s Fan Club"
+        doc['_id']       = mem.username_to_username_id(filename)
         club = Club.new doc
-        def club.life_club?
-          true
-        end
+        club.set_as_life filename, mem
         club
       rescue Member::Not_Found
-        raise orig
+        raise Club::Not_Found, "Filename: #{filename.inspect}"
       end
     end
   end
-  
+
+  def self.by_id_or_member_username_id id
+    begin
+      by_id(id)
+    rescue Club::Not_Found
+      begin
+        mem = Member.by_username_id(id)
+        by_filename_or_member_username( mem.username_id_to_username(id) )
+      rescue Member::Not_Found, Club::Not_Found
+        raise Club::Not_Found, "ID: #{id.inspect}"
+      end
+    end
+  end
+
   def self.all raw_params = {}, &blok
     db_collection.find( raw_params, &blok)
   end
@@ -174,17 +199,11 @@ class Club
   end
 
   def life_club?
-    false
+    !!@life_club
   end
 
   def href 
-    cache[:href] ||= begin
-                       if life_club?
-                         "/life/#{data.filename}/"
-                       else
-                         "/clubs/#{data.filename}/"
-                       end
-                     end
+    cache[:href] ||= "/clubs/#{data.filename}/"
   end
 
   def href_edit

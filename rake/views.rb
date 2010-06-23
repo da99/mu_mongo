@@ -19,11 +19,12 @@ namespace :views do
     
     assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, name )
 
+    home    = "~/megauni"
     ldir      = ("~/megauni/templates/#{lang}")
     dir       = File.join( ldir, 'mab' )
     mab       = File.join( ldir, 'mab',   name + '.rb'   )
     sass      = File.join( ldir, 'sass',  name + '.sass' )
-    view      = File.join( 'views', name + '.rb'   )
+    view      = File.join( home, 'views', name + '.rb'   )
     created   = []
     already   = []
 

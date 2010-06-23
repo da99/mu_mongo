@@ -1,10 +1,10 @@
-# MAB   ~/megauni/templates/en-us/mab/Clubs_by_id.rb
-# SASS  ~/megauni/templates/en-us/sass/Clubs_by_id.sass
+# MAB   ~/megauni/templates/en-us/mab/Clubs_by_filename.rb
+# SASS  ~/megauni/templates/en-us/sass/Clubs_by_filename.sass
 # MODEL ~/megauni/models/Club.rb
 # CONTROL ~/megauni/controls/Clubs.rb
-# NAME  Clubs_by_id
+# NAME  Clubs_by_filename
 
-class Clubs_by_id < Base_View
+class Clubs_by_filename < Base_View
  
   def mini_nav_bar?
     true

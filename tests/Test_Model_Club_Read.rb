@@ -20,11 +20,4 @@ class Test_Model_Club_Read < Test::Unit::TestCase
 		}
   end
 
-	must 'use /life/{filename}/ for life clubs' do
-		mem   = regular_member_1
-		un_id, un  = mem.username_hash.to_a.first
-		life  = Club.by_id(un_id)
-		assert_equal "/life/#{un}/", life.href
-	end
-
 end # === class Test_Model_Club_Read

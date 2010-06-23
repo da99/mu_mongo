@@ -65,7 +65,7 @@ module Base_View_Club
   end
 
   def club_updator?
-    club.updator?(current_member)
+		club.updator?(current_member)
   end
 
   def follower?

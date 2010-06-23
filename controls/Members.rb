@@ -47,58 +47,26 @@ class Members
     render_html_template
   end
 
-  def GET_lives username
-    env['results.username'] = username
-    require_log_in!
-    render_html_template
+  def GET_lives un
+		GET_life un
   end
 
   def GET_life un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
+		redirect!("/clubs/#{un}/")
   end
 
-  def GET_life_e un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
-  end
-
-  def GET_life_qa un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
-  end
+	%w{e qa news shop predictions random }.each { |path|
+		eval(%~
+					def GET_life_#{path} un
+						redirect!("/clubs/\#{un}/#{path}/", 301)
+					end
+				 ~)
+	}
 
   def GET_life_status un
-    redirect!(request.path_info.sub('status/', 'news/'), 301)
+    redirect!(request.path_info.sub('status/', 'news/').sub('life', 'clubs'), 301)
   end
 
-  def GET_life_news un
-    env['results.username'] = un
-    env['results.owner']    = Member.by_username(un)
-    render_html_template
-  end
-
-  def GET_life_shop un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
-  end
-
-  def GET_life_predictions un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
-  end
-
-  def GET_life_random un
-    env['results.username'] = un
-    env['results.owner'] = Member.by_username(un)
-    render_html_template
-  end
-  
   def POST_reset_password
     env['results.email'] = clean_room['email']
     

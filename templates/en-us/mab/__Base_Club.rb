@@ -26,7 +26,10 @@ module Base_Club
       [/_id\Z/ , 'Home', ''],
       [/_e\Z/  , 'Encyclopedia', 'e/'],
       [/_qa\Z/ , 'Q & A', 'qa/'],
-      [/_news\Z/ , 'News', 'news/']
+      [/_news\Z/ , 'News', 'news/'],
+      [/_shop\Z/ , 'Shop', 'shop/'],
+      [/_predictions\Z/ , 'Predictions', 'predictions/'],
+      [/_random\Z/ , 'Random', 'random/']
     ]
     text(capture {
 

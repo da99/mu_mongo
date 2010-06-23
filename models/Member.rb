@@ -442,6 +442,11 @@ class Member
     username_hash.index(str)
   end
 
+  def username_id_to_username raw_id
+    id = Couch_Plastic.mongofy_id(raw_id)
+    username_hash[id]
+  end
+
   def has_power_of?(raw_level)
 
     return true if raw_level == self
