@@ -21,6 +21,12 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_match(/#{club.data.title}/, last_response.body)
   end
 
+  must 'render /clubs/{some filename}/ for members' do
+    log_in_regular_member_1
+    get '/clubs/predictions/'
+    assert_equal 200, last_response.status
+  end
+
   must 'render /sports/' do
     get "/sports/"
     follow_redirect!

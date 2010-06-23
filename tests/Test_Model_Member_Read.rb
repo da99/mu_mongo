@@ -85,4 +85,11 @@ class Test_Model_Member_Read < Test::Unit::TestCase
     assert_equal mem_by_un, mem_by_un_id
   end
 
+  must 'raise Member::Invalid_Security_Level if :has_power_of? given invalid parameter.' do
+    mem = regular_member_2
+    assert_raise Member::Invalid_Security_Level do
+      mem.has_power_of?(nil)
+    end
+  end
+
 end # === class Member_Read

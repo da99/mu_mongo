@@ -40,7 +40,7 @@ begin
   
   if The_App.non_production?
     use Rack::CommonLogger
-    
+    use Rack::ShowExceptions if The_App.development?
     require 'middleware/Render_Css' 
     use Render_Css
   end
