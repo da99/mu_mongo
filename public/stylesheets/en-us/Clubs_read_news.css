@@ -296,7 +296,13 @@ h3 {
   color: #185dad; }
 
 #intro {
-  width: 350px; }
+  max-width: 350px;
+  padding-right: 10px; }
+
+#navigate {
+  border-left: 1px dashed #003860;
+  padding-bottom: 100px;
+  padding-left: 10px; }
 
 #club_message_create {
   padding-top: 20px; }
@@ -345,6 +351,3 @@ h3 {
 #club_message_create {
   padding-bottom: 15px;
   width: 300px; }
-
-#club_intro {
-  width: 400px; }
