@@ -5,7 +5,8 @@
 class Clubs_read_random < Base_View
 
   def title 
-    '...'
+    return "Random: #{club_title}" unless club.life_club?
+    "#{club_filename}'s Random Thoughts & Babble"
   end
   
 end # === Clubs_read_random 

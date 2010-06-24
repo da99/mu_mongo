@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277353252" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277353253" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,6 +70,125 @@
 {{/flash_msg?}}
 
    <div id="the_content">
+     <div class="col" id="intro">
+      <h3>{{title}}</h3>
+     </div>
+     <div class="col" id="navigate">
+       <ul id="club_nav_bar">
+        <li>
+         <a href="{{club_href}}">Home</a>
+        </li>
+        <li>
+         <a href="{{club_href}}e/">Encyclopedia</a>
+        </li>
+        <li>
+         <a href="{{club_href}}qa/">Q &amp; A</a>
+        </li>
+        <li>
+         <a href="{{club_href}}news/">News</a>
+        </li>
+        <li class="selected">Shop</li>
+        <li>
+         <a href="{{club_href}}predictions/">Predictions</a>
+        </li>
+        <li>
+         <a href="{{club_href}}random/">Random</a>
+        </li>
+
+{{#logged_in?}}
+
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
+
+{{/not_logged_in?}}
+
+        <li>
+         <a href="/">Megauni</a>
+        </li>
+       </ul>
+
+{{#logged_in?}}
+
+
+{{#follower?}}
+
+       <p>You are following this club.</p>
+
+{{/follower?}}
+
+
+{{#potential_follower?}}
+
+
+{{#single_username?}}
+
+       <p>
+        <a href="{{follow_href}}">Follow this club.</a>
+       </p>
+
+{{/single_username?}}
+
+
+{{#multiple_usernames?}}
+
+       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
+        <fieldset>
+         <label>Follow this club as: </label>
+         <select name="username">
+
+{{#current_member_usernames}}
+
+          <option value="{{username}}">{{username}}</option>
+
+{{/current_member_usernames}}
+
+         </select>
+        </fieldset>
+        <div class="buttons">
+         <button>Follow.</button>
+        </div>
+       </form>
+
+{{/multiple_usernames?}}
+
+
+{{/potential_follower?}}
+
+
+{{/logged_in?}}
+
+      <div id="club_messages">
+
+{{#no_buys?}}
+
+       <div class="empty_msg">Nothing has been posted yet.</div>
+
+{{/no_buys?}}
+
+
+{{#buys}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/buys}}
+
+      </div>
+     </div>
    </div>
 
 {{#include_tracking?}}

@@ -2,12 +2,24 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_shop.sass
 # NAME Clubs_read_shop
 
-div.content! { 
-  
-	p 'Not done yet.'
-	p { a("Go back.", :href=>'{{club_href}}') }
-  
-} # === div.content!
+div.col.intro! {
+  h3 '{{title}}' 
 
-partial('__nav_bar')
+} # div.intro!
+
+div.col.navigate! {
+  
+  club_nav_bar(__FILE__)
+
+  div.club_messages! do
+    
+    show_if('no_buys?'){
+      div.empty_msg 'Nothing has been posted yet.'
+    }
+    
+    loop_messages 'buys'
+    
+  end
+  
+} # div.navigate!
 

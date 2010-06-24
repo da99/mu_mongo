@@ -1,6 +1,7 @@
-# VIEW ~/megauni/views/Clubs_by_id.rb
-# SASS ~/megauni/templates/en-us/sass/Clubs_by_id.sass
-# NAME Club_profile
+# VIEW ~/megauni/views/Clubs_by_filename.rb
+# SASS ~/megauni/templates/en-us/sass/Clubs_by_filename.sass
+# NAME Club_by_filename
+
 
 div.col.intro! {
   

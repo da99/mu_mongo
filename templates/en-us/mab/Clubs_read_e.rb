@@ -3,7 +3,7 @@
 # NAME Clubs_read_e
 
 div.col.intro! {
-  h3 'Encyclopedia: {{club_title}}' 
+  h3 '{{title}}' 
 
   show_if 'logged_in?' do
     

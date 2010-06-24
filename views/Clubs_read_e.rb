@@ -5,7 +5,8 @@
 class Clubs_read_e < Base_View
  
   def title 
-    "Encyclopedia: #{super}"
+    return "Encyclopedia: #{club_title}" unless club.life_club?
+    "The Encyclopedia of #{club_filename}"
   end
 
   def facts

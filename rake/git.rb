@@ -77,18 +77,20 @@ namespace 'git' do
 
   end # === task
 
-  desc 'Pushes code.
+  desc 'Updates production DB indexes, pushes code.
   SKIP_PREP = false
   GEM_UPDATE = false
   SKIP_MONGO_CHECK = false'
   task :push do
     
-    unless ENV['SKIP_PREP']
-      Rake::Task['git:prep_push'].invoke
-    end
-    
+    # Update DB indexes on production server.
+    puts_white "Updating indexes on production DB server..."
+    orig_env = ENV['RACK_ENV']
+    ENV['RACK_ENV'] = 'production'
+    require 'megauni'
+    Couch_Plastic.ensure_indexes()
+
     unless ENV['SKIP_MONGO_CHECK'] 
-      require 'megauni'
       puts_white "Checking size of MongoDB account..."
       db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
       if db_size > MAX_DB_SIZE_IN_MB 
@@ -98,6 +100,12 @@ namespace 'git' do
         puts_white "DB Size is ok: #{db_size} MB"
       end
     end
+
+    unless ENV['SKIP_PREP']
+      Rake::Task['git:prep_push'].invoke
+    end
+    
+    ENV['RACK_ENV'] = orig_env
     
     if ENV['GEM_UPDATE']
       puts_white "Updating gems on Heroku..."

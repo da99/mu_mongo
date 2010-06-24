@@ -1,7 +1,7 @@
 
-# VIEW views/Clubs_by_id.rb
-# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_by_id.sass
-# NAME Clubs_by_id
+# VIEW views/Clubs_by_filename.rb
+# SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_by_filename.sass
+# NAME Clubs_by_filename
 
 div.content! { 
   div.notice! {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277172777"/>
+   <link href="{{css_file}}?time=1277353252" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -97,7 +97,7 @@
       <div class="news_post">
        <div class="info">
         <span class="published_at">{{published_at}}</span>
-        <a class="permalink" href="{{href}}">PermaLink</a>
+        <a href="{{href}}" class="permalink">PermaLink</a>
        </div>
        <h4>{{title}}</h4>
        <div class="body">

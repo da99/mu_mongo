@@ -25,5 +25,14 @@ class Clubs_by_filename < Base_View
   def messages_latest
     @cache['results.messages_latest'] ||= compile_messages(app.env['results.messages_latest'])
   end
+
+  def club_teaser
+    if club.life_club? && !club.data.teaser
+      "Post stuff to this fan club."
+    else
+      super
+    end
+  end
+
   
-end # === Clubs_by_id 
+end # === Clubs_by_filename

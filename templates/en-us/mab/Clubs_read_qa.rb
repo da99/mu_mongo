@@ -3,7 +3,7 @@
 # NAME Clubs_read_qa
 
 div.col.intro! {
-  h3 'Q&A: {{club_title}}' 
+  h3 '{{title}}' 
 
   show_if 'logged_in?' do
     

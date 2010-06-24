@@ -4,7 +4,7 @@
 
 div.col.intro! {
   
-  h3 'News: {{club_title}}' 
+  h3 '{{title}}' 
   
   show_if 'logged_in?' do
     

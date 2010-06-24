@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277353252" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277353253" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -71,17 +71,26 @@
 
    <div id="the_content">
      <div class="col" id="intro">
-      <h3>{{title}}</h3>
+      <h3>{{club_title}}</h3>
+      <div class="teaser">{{club_teaser}}</div>
 
 {{#logged_in?}}
 
+
+{{#club_updator?}}
+
+      <div>
+       <a href="{{club_href_edit}}">Edit settings.</a>
+      </div>
+
+{{/club_updator?}}
+
        <div id="club_message_create">
         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-         <h4>Ask a question:</h4>
+         <h4>Post a message:</h4>
          <fieldset>
           <input type="hidden" value="" name="body_images_cache"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-          <input type="hidden" value="question" name="message_model"/>
           <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
@@ -90,7 +99,16 @@
 
 {{/single_username?}}
 
-          <input type="hidden" value="question" name="message_model"/>
+          <select name="message_model">
+           <option value="comment">Comment</option>
+           <option value="story">Story</option>
+           <option value="joke">Humorous ;)</option>
+           <option value="question">Question?</option>
+           <option value="plea">Request</option>
+           <option value="brainstorm">Brainstorm</option>
+           <option value="complaint">Complain!</option>
+           <option value="product">Product</option>
+          </select>
          </fieldset>
          <fieldset>
           <textarea name="body"></textarea>
@@ -135,13 +153,13 @@
      </div>
      <div class="col" id="navigate">
        <ul id="club_nav_bar">
-        <li>
-         <a href="{{club_href}}">Home</a>
-        </li>
+        <li class="selected">Home</li>
         <li>
          <a href="{{club_href}}e/">Encyclopedia</a>
         </li>
-        <li class="selected">Q &amp; A</li>
+        <li>
+         <a href="{{club_href}}qa/">Q &amp; A</a>
+        </li>
         <li>
          <a href="{{club_href}}news/">News</a>
         </li>
@@ -229,14 +247,14 @@
 
       <div id="club_messages">
 
-{{#no_questions?}}
+{{#no_messages_latest?}}
 
-       <div class="empty_msg">No questions have been asked.</div>
+       <div class="empty_msg">No messages yet.</div>
 
-{{/no_questions?}}
+{{/no_messages_latest?}}
 
 
-{{#questions}}
+{{#messages_latest}}
 
         <div class="message">
          <div class="body">{{{compiled_body}}}</div>
@@ -245,13 +263,13 @@
          </div>
         </div>
 
-{{/questions}}
+{{/messages_latest}}
 
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277353252"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277353252"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277353253"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277353253"></script>
 
 {{#include_tracking?}}
 

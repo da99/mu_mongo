@@ -5,7 +5,8 @@
 class Clubs_read_news < Base_View
 
   def title 
-    "News: #{super}"
+    return "News: #{club_title}" unless club.life_club?
+    "#{club_filename}'s Important News"
   end
   
   def news

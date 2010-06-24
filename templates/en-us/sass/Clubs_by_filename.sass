@@ -1,6 +1,6 @@
-// MAB  ~/megauni/templates/en-us/mab/Clubs_by_id.rb
-// VIEW ~/megauni/views/Clubs_by_id.rb
-// NAME Clubs_by_id
+// MAB  ~/megauni/templates/en-us/mab/Clubs_by_filename.rb
+// VIEW ~/megauni/views/Clubs_by_filename.rb
+// NAME Clubs_by_filename
 
 @import base.sass
 @import layout_styles.sass
@@ -10,8 +10,15 @@ div.col
 
 h3
   color: $blue
+  
 #intro
-  width: 350px
+  max-width: 350px
+  padding-right: 10px
+
+#navigate
+  +dashed_border_left 
+  padding-bottom: 100px
+  padding-left: 10px
 
 #club_message_create
   padding-top: 20px
@@ -31,7 +38,4 @@ h3
 #club_message_create
   padding-bottom: 15px
   width: 300px
-
-#club_intro
-  width: 400px
 

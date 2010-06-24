@@ -5,7 +5,8 @@
 class Clubs_read_qa < Base_View
  
   def title 
-    "Q & A: #{super}"
+    return "Q & A: #{club_title}" if not club.life_club?
+    "Q & A with #{club_filename}"
   end
 
   def questions

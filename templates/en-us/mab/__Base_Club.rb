@@ -23,7 +23,7 @@ module Base_Club
     li_span  = lambda { |txt| li.selected { span txt } }
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
     vals = [ 
-      [/_id\Z/ , 'Home', ''],
+      [/_filename\Z/ , 'Home', ''],
       [/_e\Z/  , 'Encyclopedia', 'e/'],
       [/_qa\Z/ , 'Q & A', 'qa/'],
       [/_news\Z/ , 'News', 'news/'],

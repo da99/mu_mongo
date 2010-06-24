@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
+   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" media="screen" href="{{css_file}}?time=1277172777"/>
+   <link href="{{css_file}}?time=1277353252" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -71,7 +71,7 @@
 
    <div id="the_content">
      <div class="col" id="intro">
-      <h3>News: {{club_title}}</h3>
+      <h3>{{title}}</h3>
 
 {{#logged_in?}}
 
@@ -80,8 +80,8 @@
          <h4>Post news:</h4>
          <fieldset>
           <input type="hidden" value="" name="body_images_cache"/>
-          <input type="hidden" value="news" name="message_model"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+          <input type="hidden" value="news" name="message_model"/>
           <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
@@ -145,6 +145,15 @@
          <a href="{{club_href}}qa/">Q &amp; A</a>
         </li>
         <li class="selected">News</li>
+        <li>
+         <a href="{{club_href}}shop/">Shop</a>
+        </li>
+        <li>
+         <a href="{{club_href}}predictions/">Predictions</a>
+        </li>
+        <li>
+         <a href="{{club_href}}random/">Random</a>
+        </li>
 
 {{#logged_in?}}
 
@@ -192,7 +201,7 @@
 
 {{#multiple_usernames?}}
 
-       <form method="post" action="/clubs/follow/" name="form_follow_create" id="form_follow_create">
+       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
         <fieldset>
          <label>Follow this club as: </label>
          <select name="username">
@@ -241,8 +250,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277172777"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277172777"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277353252"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277353252"></script>
 
 {{#include_tracking?}}
 

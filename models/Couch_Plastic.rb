@@ -2,7 +2,7 @@ require 'mongo'
 require 'loofah'
 require 'models/Data_Pouch'
 
-DB_CONN = if The_App::ON_HEROKU
+DB_CONN = if The_App.production?
             DB_NAME          = "mu02"
             DB_HOST          = "pearl.mongohq.com:27027/#{DB_NAME}"
             DB_USER          = 'da01'
@@ -15,7 +15,7 @@ DB_CONN = if The_App::ON_HEROKU
               :timeout=>3
             ) 
           else
-            case ENV['RACK_ENV']
+            case The_App.environment
             when 'development'
               DB_NAME = "megauni_dev"
             when 'test'

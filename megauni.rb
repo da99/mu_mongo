@@ -48,6 +48,4 @@ require 'models/Couch_Plastic'
 }.each { |mod| require "models/#{mod}" }
 
 
-Couch_Plastic.ensure_indexes()
-
 

@@ -5,7 +5,16 @@
 class Clubs_read_shop < Base_View
 
   def title 
-    '...'
+    return "Shop: #{club_title}" unless club.life_club?
+    "#{club_filename}'s Favorite Stuff"
+  end
+
+  def no_buys?
+    true
+  end
+
+  def buys
+    []
   end
   
 end # === Clubs_read_shop 
