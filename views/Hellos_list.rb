@@ -77,7 +77,8 @@ class Hellos_list < Base_View
 
   def random_clubs
 		@cache['random_clubs'] ||= begin
-                                 doc = Club.by_filename('predictions')
+                                 filenames = %w{ hearts predictions vitamins o-wave liberty }
+                                 doc = Club.by_filename(filenames[rand(filenames.size)])
                                  club = if doc
                                    club = doc.data.as_hash
                                    club['messages'] = compile_messages(Message.latest_by_club_id club['_id'])
