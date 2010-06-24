@@ -178,6 +178,12 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal "/clubs/#{club.data.filename}/", last_request.fullpath
   end
 
+	must 'redirect to life club if keyword is a member username' do
+		un = regular_member_1.usernames.first
+		post "/club-search/", :keyword=>un
+		assert_redirect "/clubs/#{un}/", 303
+	end
+
   # ================= Club Parts ===========================
 
   must 'render /clubs/filename/e/' do

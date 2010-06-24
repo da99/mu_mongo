@@ -20,7 +20,7 @@ class Test_Control_Members_Delete < Test::Unit::TestCase
   must 'redirect to /' do
     mem = create_member_and_log_in
     delete '/delete-account-forever-and-ever/'
-    assert_redirect '/', 302
+    assert_redirect '/', 303
   end
 
   must 'show flash message on redirect to /' do

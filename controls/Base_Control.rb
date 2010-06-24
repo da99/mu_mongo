@@ -94,6 +94,13 @@ module Base_Control
 
   def redirect! *args
     render_text_plain ''
+		
+		# If HTTP Code not specified, use 303.
+		# This forces redirect as a GET.
+		if not args.last.is_a?(Integer)
+			args << 303 
+		end
+		
     response.redirect( *args )
     raise The_App::Redirect
   end

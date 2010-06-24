@@ -127,7 +127,7 @@ class Clubs
 	def POST_club_search
 		filename = clean_room['keyword'].to_s
 		begin
-			club = Club.by_filename(filename)
+			club = Club.by_filename_or_member_username(filename)
 			redirect!("/clubs/#{club.data.filename}/")
 		rescue Club::Not_Found
 			cgi_filename = CGI.escape(filename)

@@ -31,12 +31,12 @@ class Redirect_Mobile
     end
     
     if do_salud
-      response.redirect '/salud/m/'
+      response.redirect '/salud/m/', 303
     elsif do_redirect
-      response.redirect env['PATH_INFO'].sub( @url, '/' )
+      response.redirect env['PATH_INFO'].sub( @url, '/' ), 303
     else
       response.set_cookie('use_mobile_version', :value=>'no', :expires => (Time.now + (60 * 60 * 24 * 365 * 10)) )
-      response.redirect '/'
+      response.redirect '/', 303
     end
     
     response.finish

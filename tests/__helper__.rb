@@ -199,7 +199,7 @@ class Test::Unit::TestCase
 
   def assert_log_out
     get '/account/'
-    assert_redirect('/log-in/', 302)
+    assert_redirect('/log-in/', 303)
   end
 
   def log_in_member(mem, password)

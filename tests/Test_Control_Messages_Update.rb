@@ -31,7 +31,7 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
 		new_body = 'http://new.com'
 		log_in_regular_member_1
 		post "/mess/#{mess_id}/", {:body=>new_body, :_method=>'put'}
-    assert_redirect mess.href, 302
+    assert_redirect mess.href, 303
   end
 
 end # === class Test_Control_Messages_Update

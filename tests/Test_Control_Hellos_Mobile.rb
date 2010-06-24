@@ -20,14 +20,12 @@ class Test_Control_Hellos_Mobile < Test::Unit::TestCase
 
   must 'redirects /salud/m/ to /salud/' do
     get '/salud/m/'
-    assert_equal 302, last_response.status
-    assert_equal '/salud/', last_response.headers['Location']
+    assert_redirect '/salud/', 303
   end
 
   must 'redirects /help/m/ to /help/' do
     get '/help/m/' 
-    assert_equal 302, last_response.status
-    assert_equal '/help/', last_response.headers['Location']
+    assert_redirect '/help/', 303
   end
 
   must 'redirects the following to /salud/m/: /saludm/ /saludm/ /saludmobi/ /saludiphone/ /saludpda/' do
