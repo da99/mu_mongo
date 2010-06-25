@@ -1,0 +1,50 @@
+ARCH LINUX
+1) Upgrade
+pacman --sync --refresh --sysupgrade
+
+1) Change root password
+passwd
+
+2) Add admin user with sudo privileges
+- groupdadd da01
+- adduser da01
+- visudo
+da01 ALL=(ALL) ALL
+
+3) Upload public key to admin user (not root)
+scp ~/.ssh/id_rsa.pub demo@123.45.67.890:/home/demo/
+- MV to ~/.ssh/authorized_keys
+- set permission: 
+chown -R demo:demo /home/demo/.ssh
+chmod 700 /home/demo/.ssh
+chmod 600 /home/demo/.ssh/authorized_keys
+
+4) SSH CONFIG
+nano /etc/ssh/sshd_config
+
+THEN, update and restart "/etc/rc.d/sshd/ restart":
+Make sure thare are no config errors shown when restarting:
+Port 25671    # Change to whatever 
+Protocol 2
+PermitRootLogin no
+PasswordAuthentication no
+X11Forwarding no
+UsePAM no
+UseDNS no
+AllowUsers demo # change this to admin user
+# Change to no to disable s/key passwords
+ChallengeResponseAuthentication no # what does this mean?
+
+# override default of no subsystems
+Subsystem       sftp    /usr/lib/ssh/sftp-server # Change this if not using Arch linux
+
+
+5) Setup IP TABLES
+http://wiki.archlinux.org/index.php/SSH
+http://cloudservers.rackspacecloud.com/index.php/Arch_2007.08_-_Setup#Updating_and_Upgrading
+Also add options to: net.ipv4.conf
+/etc/rc.d/iptables restart
+
+6) TODO 
+Automatic system upgrade
+pacman -Sy

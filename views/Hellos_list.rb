@@ -77,7 +77,7 @@ class Hellos_list < Base_View
 
   def random_clubs
 		@cache['random_clubs'] ||= begin
-                                 filenames = %w{ hearts predictions vitamins o-wave liberty }
+                                 filenames = %w{ hearts predictions vitamins }
                                  doc = Club.by_filename(filenames[rand(filenames.size)])
                                  club = if doc
                                    club = doc.data.as_hash
