@@ -118,6 +118,15 @@ namespace 'my_computer' do
         puts_red 'Install rsync and run this task again.'
       end
       
+      sysctrl_file_name = "/etc/sysctl.conf"
+      sysctrl_file = File.read(sysctrl_file_name)
+
+      if not sysctrl_file[/swappiness = (1|0)\s/]
+        puts_red("From: http://lifehacker.com/333798/slim-down-and-speed-up-linux")
+        puts_red("Put the following line in file: #{sysctrl_file_name}:")
+        puts_red("vm.swappiness = 1")
+      end
+
       puts_white %~
         Checking Firefox configuration...' 
         http://blogs.n1zyy.com/n1zyy/2008/09/16/firefoxs-history-setting/
@@ -128,10 +137,9 @@ namespace 'my_computer' do
       vals[:"browser.history_expire_days"]        = 3
       vals[:"browser.history_expire_sites"]       = 1000
       vals[:"network.cookie.cookieBehavior"]      = 1 # 1 = Accept cookies, except from third parties.
-      grep_vals = shell_out("grep history -r ~/.mozilla/firefox --include=prefs.js")
 
       vals.each do |k,v|
-        if !grep_vals[/#{k}...#{v}/]
+        if !shell_out(%!grep "#{k}" -r -r ~/.mozilla/firefox --include=prefs.js!)[/#{k}...#{v}/]
           puts_red "Change Firefox option: #{k} ===>> #{v}" 
         end
       end
@@ -200,17 +208,17 @@ namespace 'my_computer' do
       }
 
       require 'yaml'
-      puts_white 'gem configuration file:'
+      
       gemrc                   = File.join(MY_PREFS, 'ruby', 'gemrc.yaml')
       yaml                    = YAML::load(File.read(gemrc))
       bashrc_content          = File.read(File.expand_path(custom_bashrc))
-      match_in_bash_additions = bashrc_content['GEM_HOME=' + yaml["gemhome"]] &&
-                                bashrc_content['GEM_PATH=' + yaml["gemhome"]]
-      if not match_in_bash_additions
-        puts_red "GEM_HOME and GEM_PATH are not set properly in #{custom_bashrc}"
-      else
+      # match_in_bash_additions = bashrc_content['GEM_HOME=' + yaml["gemhome"]] &&
+      #                           bashrc_content['GEM_PATH=' + yaml["gemhome"]]
+      # if not match_in_bash_additions
+      #   puts_red "GEM_HOME and GEM_PATH are not set properly in #{custom_bashrc}"
+      # else
         FiDi.file(gemrc).create_alias '~/.gemrc'
-      end
+      # end
 
   end # task
 
