@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277353388" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277840792" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -78,7 +78,7 @@
        <div id="club_message_create">
         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
          <h4>Post news:</h4>
-         <fieldset>
+         <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
           <input type="hidden" value="news" name="message_model"/>
@@ -94,10 +94,6 @@
          </fieldset>
          <fieldset>
           <textarea name="body"></textarea>
-         </fieldset>
-         <fieldset>
-          <label>Labels (Separate each with a comma.)</label>
-          <input type="text" class="text" value="" name="public_labels"/>
          </fieldset>
 
 {{#multiple_usernames?}}
@@ -117,13 +113,6 @@
 
 {{/multiple_usernames?}}
 
-         <fieldset>
-          <label>Important?</label>
-          <select name="important">
-           <option value="">No. It can wait.</option>
-           <option value="true">Yes</option>
-          </select>
-         </fieldset>
          <div class="buttons">
           <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
          </div>
@@ -141,10 +130,13 @@
         <li>
          <a href="{{club_href}}e/">Encyclopedia</a>
         </li>
+        <li class="selected">News</li>
+        <li>
+         <a href="{{club_href}}fights/">Fights &amp; Complaints</a>
+        </li>
         <li>
          <a href="{{club_href}}qa/">Q &amp; A</a>
         </li>
-        <li class="selected">News</li>
         <li>
          <a href="{{club_href}}shop/">Shop</a>
         </li>
@@ -250,8 +242,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277353388"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277353388"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277840792"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277840792"></script>
 
 {{#include_tracking?}}
 

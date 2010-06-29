@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277353388" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277840793" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,145 +70,180 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div id="content">
-      <p>Not done yet.</p>
-      <p>
-       <a href="{{club_href}}">Go back.</a>
-      </p>
-     </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
-       </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
+     <div class="col" id="intro">
+      <h3>{{title}}</h3>
 
 {{#logged_in?}}
 
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
+       <div id="club_message_create">
+        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+         <h4>Post a random thought:</h4>
+         <fieldset class="hidden">
+          <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+          <input type="hidden" value="random" name="message_model"/>
+          <input type="hidden" value="public" name="privacy"/>
+
+{{#single_username?}}
+
+          <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+          <input type="hidden" value="random" name="message_model"/>
+         </fieldset>
+         <fieldset>
+          <textarea name="body"></textarea>
+         </fieldset>
+
+{{#multiple_usernames?}}
+
+         <fieldset>
+          <label>Post as:</label>
+          <select name="owner_id">
+
+{{#multiple_usernames}}
+
+           <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+          </select>
+         </fieldset>
+
+{{/multiple_usernames?}}
+
+         <div class="buttons">
+          <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
+         </div>
+        </form>
+       </div>
+
+{{/logged_in?}}
+
+     </div>
+     <div class="col" id="navigate">
+       <ul id="club_nav_bar">
+        <li>
+         <a href="{{club_href}}">Home</a>
+        </li>
+        <li>
+         <a href="{{club_href}}e/">Encyclopedia</a>
+        </li>
+        <li>
+         <a href="{{club_href}}news/">News</a>
+        </li>
+        <li>
+         <a href="{{club_href}}fights/">Fights &amp; Complaints</a>
+        </li>
+        <li>
+         <a href="{{club_href}}qa/">Q &amp; A</a>
+        </li>
+        <li>
+         <a href="{{club_href}}shop/">Shop</a>
+        </li>
+        <li>
+         <a href="{{club_href}}predictions/">Predictions</a>
+        </li>
+        <li class="selected">Random</li>
+
+{{#logged_in?}}
+
+        <li>
+         <a href="/log-out/">Log-out</a>
+        </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
 
 {{/not_logged_in?}}
 
-       </ul>
-
-{{#logged_in?}}
-
-
-{{#not_mini_nav_bar?}}
-
-       <p class="divider">Lives</p>
-
-{{/not_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
-
-
-{{#selected?}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected?}}
-
-
-{{#not_selected?}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected?}}
-
-
-{{/username_nav}}
-
-
-{{#not_mini_nav_bar?}}
-
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
-
-{{/not_mini_nav_bar?}}
-
-       </ul>
-
-{{/logged_in?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="clubs">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
-
-{{#logged_in?}}
-
-
-{{/logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-       <p class="divider">Your Clubs</p>
-       <ul class="your_clubs">
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
-
-{{#your_clubs}}
-
         <li>
-         <a href="{{href}}">{{title}}</a>
-        </li>
-
-{{/your_clubs}}
-
-       </ul>
-
-{{/logged_in?}}
-
-
-{{#mini_nav_bar?}}
-
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
+         <a href="/">Megauni</a>
         </li>
        </ul>
 
-{{/mini_nav_bar?}}
+{{#logged_in?}}
+
+
+{{#follower?}}
+
+       <p>You are following this club.</p>
+
+{{/follower?}}
+
+
+{{#potential_follower?}}
+
+
+{{#single_username?}}
+
+       <p>
+        <a href="{{follow_href}}">Follow this club.</a>
+       </p>
+
+{{/single_username?}}
+
+
+{{#multiple_usernames?}}
+
+       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
+        <fieldset>
+         <label>Follow this club as: </label>
+         <select name="username">
+
+{{#current_member_usernames}}
+
+          <option value="{{username}}">{{username}}</option>
+
+{{/current_member_usernames}}
+
+         </select>
+        </fieldset>
+        <div class="buttons">
+         <button>Follow.</button>
+        </div>
+       </form>
+
+{{/multiple_usernames?}}
+
+
+{{/potential_follower?}}
+
+
+{{/logged_in?}}
+
+      <div id="club_messages">
+
+{{#no_random?}}
+
+       <div class="empty_msg">Nothing has been posted yet.</div>
+
+{{/no_random?}}
+
+
+{{#random}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/random}}
 
       </div>
+     </div>
    </div>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277840793"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277840793"></script>
 
 {{#include_tracking?}}
 
