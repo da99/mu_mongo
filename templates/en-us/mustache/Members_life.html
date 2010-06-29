@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277840794" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277842099" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -143,6 +143,22 @@
        <div id="club_message_create">
         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
          <h4>Post a message:</h4>
+         <fieldset>
+          <select name="message_model">
+           <option value="random">Random Thought/Stuff/Babble</option>
+           <option value="news">Important News</option>
+           <option value="question">Question</option>
+           <option value="fact">Fact</option>
+           <option value="story">Story</option>
+           <option value="chapter">Chapter</option>
+           <option value="fight">Fight</option>
+           <option value="complaint">Complaint</option>
+           <option value="debate">Friendly Debate</option>
+           <option value="plea">Request</option>
+           <option value="buy">Product Recommendation</option>
+           <option value="prediction">Prediction</option>
+          </select>
+         </fieldset>
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
           <input type="hidden" value="{{username_id}}" name="target"/>
@@ -153,17 +169,6 @@
 
 {{/single_username?}}
 
-          <select name="message_model">
-           <option value="random">Random Thought/Stuff/Babble</option>
-           <option value="news">Important News</option>
-           <option value="question">Question</option>
-           <option value="fact">Fact</option>
-           <option value="story">Story</option>
-           <option value="complaint">Complaint</option>
-           <option value="plea">Request</option>
-           <option value="buy">Product Recommendation</option>
-           <option value="prediction">Prediction</option>
-          </select>
          </fieldset>
          <fieldset>
           <textarea name="body"></textarea>
@@ -196,8 +201,8 @@
 
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277840794"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277840794"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277842099"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277842099"></script>
 
 {{#include_tracking?}}
 
