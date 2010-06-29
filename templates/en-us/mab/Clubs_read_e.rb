@@ -8,8 +8,8 @@ div.col.intro! {
   show_if 'logged_in?' do
     
     form_message_create(
-      :title => 'Post a new section:',
-      :models => %w{fact story},
+      :title => 'Publish a new:',
+      :models => %w{fact story chapter},
       :input_title => true,
       :hidden_input => {
                         :club_filename => '{{club_filename}}',

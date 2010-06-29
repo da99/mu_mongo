@@ -5,7 +5,7 @@
 class Clubs_read_fights < Base_View
 
   def title 
-    "{{club_title}} Fights"
+    "#{club_title} Fights"
   end
 
 	def passions

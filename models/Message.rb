@@ -7,11 +7,16 @@ class Message
     plea  
     brainstorm
     joke
+		fight
     complaint
+		debate
     product
     event
-    story
+	
     fact
+    story
+		chapter
+	
     question
     news
     buy

@@ -8,7 +8,7 @@ div.col.intro! {
   show_if 'logged_in?' do
     
     form_message_create(
-      :title => 'Publish a new',
+      :title => 'Publish a new:',
       :models => %w{fight complaint debate},
       :input_title => true,
       :hidden_input => {

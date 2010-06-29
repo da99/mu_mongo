@@ -21,14 +21,17 @@ module Base_Message
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
     english = [ 
-      ['random' , 'Random Thought/Stuff/Babble'],
-      ['news' , 'Important News'],
-      ['question' , 'Question'],
-      ['fact' , 'Fact'],
-      ['story' , 'Story'],
-      ['complaint' , 'Complaint'],
-      ['plea'  , 'Request'],
-      ['buy'   , 'Product Recommendation'],
+      ['random'    , 'Random Thought/Stuff/Babble'],
+      ['news'      , 'Important News']             ,
+      ['question'  , 'Question']                   ,
+      ['fact'      , 'Fact']                       ,
+      ['story'     , 'Story']                      ,
+      ['chapter'     , 'Chapter']                      ,
+      ['fight'     , 'Fight']                      ,
+      ['complaint' , 'Complaint']                  ,
+      ['debate'    , 'Friendly Debate']                     ,
+      ['plea'      , 'Request']                    ,
+      ['buy'       , 'Product Recommendation']     ,
       ['prediction', 'Prediction']
     ]
     models = opts.models || english.map(&:first)
@@ -44,6 +47,16 @@ module Base_Message
         else
           h4 'Post a message:'
         end
+
+        if not message_model
+          fieldset {
+						select(:name=>'message_model') {
+              english.each do |val, name|
+                option( name, :value=>val ) if models.include?(val)
+              end
+            }
+          }
+        end
       
 				fieldset.hidden {
 					input :type=>'hidden', :name=>'body_images_cache', :value=>''
@@ -58,19 +71,13 @@ module Base_Message
 
 					if message_model
 						input :type=>'hidden', :name=>'message_model', :value=>message_model
-					else
-						select(:name=>'message_model') {
-              english.each do |val, name|
-                option( name, :value=>val ) if models.include?(val)
-              end
-            }
 					end
 				}
 
         if opts.input_title
           fieldset_input_text 'Title:'
         end
-
+        
         fieldset {
           textarea '', :name=>'body'
         }
