@@ -8,5 +8,9 @@ class Clubs_read_predictions < Base_View
     return "Predictions: #{club_title}" unless club.life_club?
     "Predictions for #{club_filename}"
   end
+
+  def predictions
+    []
+  end
   
 end # === Clubs_read_predictions 

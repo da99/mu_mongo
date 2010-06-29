@@ -23,13 +23,14 @@ module Base_Club
     li_span  = lambda { |txt| li.selected { span txt } }
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
     vals = [ 
-      [/_filename\Z/ , 'Home', ''],
-      [/_e\Z/  , 'Encyclopedia', 'e/'],
-      [/_qa\Z/ , 'Q & A', 'qa/'],
-      [/_news\Z/ , 'News', 'news/'],
-      [/_shop\Z/ , 'Shop', 'shop/'],
-      [/_predictions\Z/ , 'Predictions', 'predictions/'],
-      [/_random\Z/ , 'Random', 'random/']
+      [/_filename\Z/   , 'Home'               , '']            ,
+      [/_e\Z/          , 'Encyclopedia'       , 'e/']          ,
+      [/_news\Z/       , 'News'               , 'news/']       ,
+      [/_fights\Z/     , 'Fights & Complaints', 'fights/']     ,
+      [/_qa\Z/         , 'Q & A'              , 'qa/']         ,
+      [/_shop\Z/       , 'Shop'               , 'shop/']       ,
+      [/_predictions\Z/, 'Predictions'        , 'predictions/'],
+      [/_random\Z/     , 'Random'             , 'random/']
     ]
     text(capture {
 

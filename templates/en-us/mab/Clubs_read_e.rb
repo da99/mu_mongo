@@ -9,8 +9,9 @@ div.col.intro! {
     
     form_message_create(
       :title => 'Post a new section:',
+      :models => %w{fact story},
+      :input_title => true,
       :hidden_input => {
-                        :message_model => 'fact',
                         :club_filename => '{{club_filename}}',
                         :privacy       => 'public'
                        }

@@ -57,6 +57,7 @@ class Find_The_Bunny
       ['/clubs/{filename}/e/'     , Clubs, 'read_e'    , 'GET'] ,
       ['/clubs/{filename}/qa/'    , Clubs, 'read_qa'   , 'GET'] ,
       ['/clubs/{filename}/news/'  , Clubs, 'read_news' , 'GET'] ,
+      ['/clubs/{filename}/fights/'  , Clubs, 'read_fights' , 'GET'] ,
       ['/clubs/{filename}/shop/'  , Clubs, 'read_shop' , 'GET'] ,
       ['/clubs/{filename}/random/'  , Clubs, 'read_random' , 'GET'] ,
       ['/clubs/{filename}/predictions/'  , Clubs, 'read_predictions' , 'GET'] ,

@@ -186,22 +186,13 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
   # ================= Club Parts ===========================
 
-  must 'render /clubs/filename/e/' do
-    club = create_club(regular_member_1)
-    get "/clubs/#{club.data.filename}/e/"
-    assert_equal 200, last_response.status
-  end
-
-  must 'render /clubs/filename/qa/' do
-    club =create_club(regular_member_2)
-    get "/clubs/#{club.data.filename}/qa/"
-    assert_equal 200, last_response.status
-  end
-
-  must 'render /clubs/filename/news/' do
-    club = create_club(regular_member_3)
-    get "/clubs/#{club.data.filename}/news/"
-    assert_equal 200, last_response.status
-  end
+	%w{ e	qa news fights shop predictions random }.each { |suffix|
+		club = nil
+		must "render /clubs/..filename../#{suffix}/" do
+			club ||= create_club(regular_member_1)
+			get "/clubs/#{club.data.filename}/#{suffix}/"
+			assert_equal 200, last_response.status
+		end
+	}
 
 end # === class Test_Control_Clubs_Read

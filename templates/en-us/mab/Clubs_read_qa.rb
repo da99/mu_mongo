@@ -8,9 +8,8 @@ div.col.intro! {
   show_if 'logged_in?' do
     
     form_message_create(
-      :title => 'Ask a question:',
+      :models => %w{question complaint plea},
       :hidden_input => {
-        :message_model => 'question',
         :club_filename => '{{club_filename}}',
         :privacy       => 'public'
       }

@@ -5,6 +5,19 @@
 div.col.intro! {
   h3 '{{title}}' 
 
+  show_if 'logged_in?' do
+    
+    form_message_create(
+      :title => 'Recommend a product:',
+      :hidden_input => {
+                        :message_model => 'buy',
+                        :club_filename => '{{club_filename}}',
+                        :privacy       => 'public'
+                       }
+    )
+    
+  end # logged_in?
+
 } # div.intro!
 
 div.col.navigate! {

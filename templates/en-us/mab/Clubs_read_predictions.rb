@@ -2,12 +2,37 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_predictions.sass
 # NAME Clubs_read_predictions
 
-div.content! { 
+div.col.intro! {
   
-	p 'Not done yet.'
-	p { a("Go back.", :href=>'{{club_href}}') }
+  h3 '{{title}}' 
   
-} # === div.content!
+  show_if 'logged_in?' do
+    
+    form_message_create(
+      :title => 'Post a prediction:',
+      :hidden_input => {
+                        :message_model => 'prediction', 
+                        :club_filename => '{{club_filename}}',
+                        :privacy       => 'public'
+                       }
+    )
+    
+  end # logged_in?
 
-partial('__nav_bar')
+} # div.intro!
 
+div.col.navigate! {
+  
+  club_nav_bar(__FILE__)
+
+  div.club_messages! do
+    
+    show_if('no_predictions?'){
+      div.empty_msg 'Nothing has been posted yet.'
+    }
+    
+    loop_messages 'predictions'
+    
+  end
+
+} # div.navigate!
