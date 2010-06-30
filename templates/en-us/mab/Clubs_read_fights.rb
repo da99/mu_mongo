@@ -2,11 +2,25 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_fights.sass
 # NAME Clubs_read_fights
 
-div.col.intro! {
+# div.col.intro! {
+# } # div.intro!
+
+div.col.navigate! {
+  
   h3 '{{title}}' 
+  
+  club_nav_bar(__FILE__)
 
   show_if 'logged_in?' do
     
+    div.guide! {
+      h4 'Stuff you can do:'
+      p %~
+        Express negative feelings. Try to use
+      polite profanity, like meathead instead of 
+      doo-doo head.
+      ~
+    }
     form_message_create(
       :title => 'Publish a new:',
       :models => %w{fight complaint debate},
@@ -18,12 +32,6 @@ div.col.intro! {
     )
     
   end # logged_in?
-
-} # div.intro!
-
-div.col.navigate! {
-  
-  club_nav_bar(__FILE__)
 
   div.club_messages! do
     

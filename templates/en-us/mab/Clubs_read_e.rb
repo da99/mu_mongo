@@ -2,11 +2,27 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_e.sass
 # NAME Clubs_read_e
 
-div.col.intro! {
+# div.col.intro! {
+# 
+# } # div.intro!
+
+div.col.navigate! {
+  
   h3 '{{title}}' 
+  
+  club_nav_bar(__FILE__)
 
   show_if 'logged_in?' do
     
+    div.guide! {
+      h4 'Stuff you can do:'
+      ul {
+        li 'Write a story. '
+        li 'Start a new chapter.'
+        li 'Tell others. '
+      }
+    }
+
     form_message_create(
       :title => 'Publish a new:',
       :models => %w{fact story chapter},
@@ -18,12 +34,6 @@ div.col.intro! {
     )
     
   end # logged_in?
-
-} # div.intro!
-
-div.col.navigate! {
-  
-  club_nav_bar(__FILE__)
 
   div.club_messages! do
     

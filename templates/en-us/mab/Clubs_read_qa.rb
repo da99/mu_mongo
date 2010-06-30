@@ -2,11 +2,25 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-div.col.intro! {
+# div.col.intro! {
+# 
+# } # div.intro!
+
+div.col.navigate! {
+
   h3 '{{title}}' 
+
+  club_nav_bar(__FILE__)
 
   show_if 'logged_in?' do
     
+    div.guide! {
+      h4 'Stuff you can do here:'
+      p %~
+        Help others by answering questions.
+      ~
+    }
+
     form_message_create(
 			:title => 'Publish a new:',
       :models => %w{question plea},
@@ -17,13 +31,7 @@ div.col.intro! {
     )
     
   end # logged_in?
-
-} # div.intro!
-
-div.col.navigate! {
   
-  club_nav_bar(__FILE__)
-
   div.club_messages! do
     
     show_if('no_questions?'){

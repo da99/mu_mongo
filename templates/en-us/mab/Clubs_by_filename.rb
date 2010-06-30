@@ -33,6 +33,15 @@ div.col.navigate! {
   
   club_nav_bar(__FILE__)
 
+  div.guide! {
+    h4 'Stuff you can do in this club:'
+    ul {
+      li "Start a fight."
+      li "Make a prediction."
+      li "Help write the club's encyclopedia."
+      li "Ask a question."
+    }
+  }
 
   div.club_messages! do
     
@@ -40,7 +49,10 @@ div.col.navigate! {
       div.empty_msg 'No messages yet.'
     }
     
-    loop_messages 'messages_latest'
+    show_if 'messages_latest?' do
+      h4 'Latest messages:'
+      loop_messages 'messages_latest'
+    end
     
   end
   

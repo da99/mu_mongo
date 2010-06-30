@@ -2,12 +2,27 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_predictions.sass
 # NAME Clubs_read_predictions
 
-div.col.intro! {
+# div.col.intro! {
+#   
+# } # div.intro!
+
+div.col.navigate! {
   
   h3 '{{title}}' 
   
+  club_nav_bar(__FILE__)
+
   show_if 'logged_in?' do
     
+    div.guide! {
+      h4 'Stuff you can do here:'
+      p %~
+        This is where you can publish your thoughts
+      on what will happen in the future.  When
+      you are right, you can yell, "I told you so!"
+      ~
+    }
+
     form_message_create(
       :title => 'Post a prediction:',
       :hidden_input => {
@@ -18,12 +33,6 @@ div.col.intro! {
     )
     
   end # logged_in?
-
-} # div.intro!
-
-div.col.navigate! {
-  
-  club_nav_bar(__FILE__)
 
   div.club_messages! do
     

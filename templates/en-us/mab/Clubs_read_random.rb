@@ -2,12 +2,31 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_random.sass
 # NAME Clubs_read_random
 
-div.col.intro! {
+# div.col.intro! {
+# 
+# } # div.intro!
+
+div.col.navigate! {
   
   h3 '{{title}}' 
   
+  club_nav_bar(__FILE__)
+  
   show_if 'logged_in?' do
     
+    div.guide! {
+      h4 'Stuff you can do here:'
+      p %~
+        Post stuff that no one really 
+      cares about. Examples:
+      ~
+      ul {
+        li 'Thoughts on economics.'
+        li 'Opinions on religion.'
+        li 'Wonder why the world is against you.'
+      }
+    }
+
     form_message_create(
       :title => 'Post a random thought:',
       :hidden_input => {
@@ -18,12 +37,6 @@ div.col.intro! {
     )
     
   end # logged_in?
-
-} # div.intro!
-
-div.col.navigate! {
-  
-  club_nav_bar(__FILE__)
 
   div.club_messages! do
     

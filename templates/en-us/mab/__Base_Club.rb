@@ -85,8 +85,6 @@ module Base_Club
 
       }
 
-      
-      
     })
   end
 
