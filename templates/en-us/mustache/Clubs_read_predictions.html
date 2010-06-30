@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277842099" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277930514" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -80,9 +80,9 @@
          <h4>Post a prediction:</h4>
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="public" name="privacy"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
           <input type="hidden" value="prediction" name="message_model"/>
-          <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
@@ -145,6 +145,9 @@
         <li class="selected">Predictions</li>
         <li>
          <a href="{{club_href}}random/">Random</a>
+        </li>
+        <li>
+         <a href="{{club_href}}thanks/">Thanks</a>
         </li>
 
 {{#logged_in?}}
@@ -242,8 +245,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277842099"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277842099"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277930514"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277930514"></script>
 
 {{#include_tracking?}}
 
