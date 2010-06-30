@@ -10,7 +10,7 @@ class Clubs_read_random < Base_View
   end
 
   def random
-    []
+    @cache['results.randoms'] ||= compile_messages(app.env['results.randoms'])
   end
   
 end # === Clubs_read_random 

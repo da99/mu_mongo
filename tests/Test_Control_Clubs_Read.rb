@@ -43,7 +43,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     club = create_club
     
     log_in_regular_member_1
-    get club.href
+    get club.href_e
     form = Nokogiri::HTML(last_response.body).css('form#form_club_message_create').first
     
     assert_equal form.class, Nokogiri::XML::Element
@@ -53,7 +53,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     club = create_club
     
     log_in_regular_member_1
-    get club.href
+    get club.href_e
     target_ids = Nokogiri.HTML(last_response.body).css(
       'form#form_club_message_create input[name=club_filename]'
     ).first
@@ -65,7 +65,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     club = create_club
     
     log_in_regular_member_1
-    get club.href
+    get club.href_e
     un = Nokogiri.HTML(last_response.body).css(
       'form#form_club_message_create input[name=username]'
     ).first
@@ -186,7 +186,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
   # ================= Club Parts ===========================
 
-	%w{ e	qa news fights shop predictions random }.each { |suffix|
+	%w{ e	qa news fights shop predictions random thanks }.each { |suffix|
 		club = nil
 		must "render /clubs/..filename../#{suffix}/" do
 			club ||= create_club(regular_member_1)

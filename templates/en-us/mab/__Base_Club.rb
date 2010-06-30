@@ -30,7 +30,8 @@ module Base_Club
       [/_qa\Z/         , 'Q & A'              , 'qa/']         ,
       [/_shop\Z/       , 'Shop'               , 'shop/']       ,
       [/_predictions\Z/, 'Predictions'        , 'predictions/'],
-      [/_random\Z/     , 'Random'             , 'random/']
+      [/_random\Z/     , 'Random'             , 'random/'],
+      [/_thanks\Z/     , 'Thanks'             , 'thanks/']
     ]
     text(capture {
 

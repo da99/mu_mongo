@@ -3,6 +3,8 @@
 class Message
 
   MODELS = %w{
+    random 
+    
     comment
     plea  
     brainstorm
@@ -26,6 +28,8 @@ class Message
     tip
     praise
     answer
+
+		thank
   }.uniq
   include Couch_Plastic
 

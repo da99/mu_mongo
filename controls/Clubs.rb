@@ -89,6 +89,12 @@ class Clubs
     render_html_template
   end
 
+  def GET_read_thanks filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
+    env['results.thanks'] = Message.latest_by_club_id(club.data._id, :message_model=>'thank')
+    render_html_template
+  end
+
   def POST_create
     require_log_in!
     begin

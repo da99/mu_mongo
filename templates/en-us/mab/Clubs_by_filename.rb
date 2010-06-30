@@ -17,12 +17,12 @@ div.col.intro! {
       }
     }
 
-    form_message_create(
-      :models => %w{random story complaint},
-      :hidden_input => { :club_filename => '{{club_filename}}',
-                         :privacy       => 'public'
-                       }
-    )
+    # form_message_create(
+    #   :models => %w{random story complaint},
+    #   :hidden_input => { :club_filename => '{{club_filename}}',
+    #                      :privacy       => 'public'
+    #                    }
+    # )
     
   end # logged_in?
 

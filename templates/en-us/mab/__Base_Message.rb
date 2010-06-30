@@ -21,7 +21,7 @@ module Base_Message
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
     english = [ 
-      ['random'    , 'Random Thought/Stuff/Babble'],
+      ['random'    , 'Random Thought'],
       ['news'      , 'Important News']             ,
       ['question'  , 'Question']                   ,
       ['fact'      , 'Fact']                       ,
