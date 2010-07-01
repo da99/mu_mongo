@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277930512" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277947081" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,59 +70,8 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="intro">
-      <h3>{{title}}</h3>
-
-{{#logged_in?}}
-
-       <div id="club_message_create">
-        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-         <h4>Post news:</h4>
-         <fieldset class="hidden">
-          <input type="hidden" value="" name="body_images_cache"/>
-          <input type="hidden" value="public" name="privacy"/>
-          <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-          <input type="hidden" value="news" name="message_model"/>
-
-{{#single_username?}}
-
-          <input type="hidden" value="{{first_username}}" name="username"/>
-
-{{/single_username?}}
-
-          <input type="hidden" value="news" name="message_model"/>
-         </fieldset>
-         <fieldset>
-          <textarea name="body"></textarea>
-         </fieldset>
-
-{{#multiple_usernames?}}
-
-         <fieldset>
-          <label>Post as:</label>
-          <select name="owner_id">
-
-{{#multiple_usernames}}
-
-           <option value="{{username}}">{{username}}</option>
-
-{{/multiple_usernames}}
-
-          </select>
-         </fieldset>
-
-{{/multiple_usernames?}}
-
-         <div class="buttons">
-          <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
-         </div>
-        </form>
-       </div>
-
-{{/logged_in?}}
-
-     </div>
      <div class="col" id="navigate">
+      <h3>{{title}}</h3>
        <ul id="club_nav_bar">
         <li>
          <a href="{{club_href}}">Home</a>
@@ -222,6 +171,68 @@
 
 {{/logged_in?}}
 
+
+{{#logged_in?}}
+
+      <div id="guide">
+       <h4>Stuff you can do here:</h4>
+       <p>
+        Post only important news. 
+      Examples:
+      </p>
+       <ul>
+        <li>Your plane landed in Dallas.</li>
+        <li>You got a job demotion.</li>
+        <li>You broke up with your dog walker.</li>
+        <li>You got arrested... again.</li>
+       </ul>
+      </div>
+       <div id="club_message_create">
+        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+         <h4>Post news:</h4>
+         <fieldset class="hidden">
+          <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="public" name="privacy"/>
+          <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+          <input type="hidden" value="news" name="message_model"/>
+
+{{#single_username?}}
+
+          <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+          <input type="hidden" value="news" name="message_model"/>
+         </fieldset>
+         <fieldset>
+          <textarea name="body"></textarea>
+         </fieldset>
+
+{{#multiple_usernames?}}
+
+         <fieldset>
+          <label>Post as:</label>
+          <select name="owner_id">
+
+{{#multiple_usernames}}
+
+           <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+          </select>
+         </fieldset>
+
+{{/multiple_usernames?}}
+
+         <div class="buttons">
+          <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
+         </div>
+        </form>
+       </div>
+
+{{/logged_in?}}
+
       <div id="club_messages">
 
 {{#no_news?}}
@@ -245,8 +256,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277930512"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277930512"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1277947081"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1277947081"></script>
 
 {{#include_tracking?}}
 

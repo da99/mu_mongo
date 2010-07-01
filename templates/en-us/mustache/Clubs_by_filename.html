@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1277930513" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1277947082" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -189,6 +189,15 @@
 
 {{/logged_in?}}
 
+      <div id="guide">
+       <h4>Stuff you can do in this club:</h4>
+       <ul>
+        <li>Start a fight.</li>
+        <li>Make a prediction.</li>
+        <li>Help write the club's encyclopedia.</li>
+        <li>Ask a question.</li>
+       </ul>
+      </div>
       <div id="club_messages">
 
 {{#no_messages_latest?}}
@@ -197,6 +206,10 @@
 
 {{/no_messages_latest?}}
 
+
+{{#messages_latest?}}
+
+       <h4>Latest messages:</h4>
 
 {{#messages_latest}}
 
@@ -208,6 +221,9 @@
         </div>
 
 {{/messages_latest}}
+
+
+{{/messages_latest?}}
 
       </div>
      </div>
