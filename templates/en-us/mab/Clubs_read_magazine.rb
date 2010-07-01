@@ -1,10 +1,6 @@
-# VIEW ~/megauni/views/Clubs_read_e.rb
-# SASS ~/megauni/templates/en-us/sass/Clubs_read_e.sass
-# NAME Clubs_read_e
-
-# div.col.intro! {
-# 
-# } # div.intro!
+# VIEW ~/megauni/views/Clubs_read_magazine.rb
+# SASS ~/megauni/templates/en-us/sass/Clubs_read_magazine.sass
+# NAME Clubs_read_magazine
 
 div.col.navigate! {
   
@@ -18,16 +14,16 @@ div.col.navigate! {
       h4 'Stuff you can do:'
       ul {
         li 'Write a story. '
-        li 'Start a new chapter.'
-        li 'Tell others. '
+        li 'Review a restaurant.'
+        li 'Write about a family reunion.'
       }
     }
 
     form_message_create(
-      :title => 'Publish a new chapter:',
+      :title => 'Publish a new story:',
       :input_title => true,
       :hidden_input => {
-                        :message_model => 'chapter',
+                        :message_model => 'story',
                         :club_filename => '{{club_filename}}',
                         :privacy       => 'public'
                        }
@@ -37,11 +33,11 @@ div.col.navigate! {
 
   div.club_messages! do
     
-    show_if('no_facts?'){
+    show_if('no_storys?'){
       div.empty_msg 'Nothing has been posted yet.'
     }
     
-    loop_messages 'facts'
+    loop_messages 'storys'
     
   end
   

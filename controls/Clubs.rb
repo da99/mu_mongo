@@ -53,6 +53,12 @@ class Clubs
     render_html_template
   end
 
+  def GET_read_magazine filename
+    env['results.club'] = club = Club.by_filename_or_member_username(filename)
+    env['results.magazine'] = Message.latest_by_club_id(club.data._id, :message_model=>'story')
+    render_html_template
+  end
+
 	def GET_read_fights filename
     env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.passions'] = Message.latest_by_club_id(club.data._id, :message_model=>{ :$in=> %w{fight complaint debate} })
