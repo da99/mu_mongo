@@ -46,6 +46,10 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
+    if ua && ua["Sosospider"] && new_env['PATH_INFO'][/.css$/i]
+      return hearty_redirect("http://www.bing.com/")
+    end
+
     # =====================================================
     
     if new_env['PATH_INFO'] === "/skins/jinx/css/main_show.css"

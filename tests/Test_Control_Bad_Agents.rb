@@ -39,4 +39,10 @@ class Test_Control_Bad_Agents < Test::Unit::TestCase
     assert_equal '/', last_response.headers['Location']
   end
 
+  must 'redirect to http://www.bing.com/ if Sosospider and file is CSS' do
+    ua = "Sosospider+(+http://help.soso.com/webspider.htm)"
+    get("/stylesheets/en-us/hellos_list.css", {}, 'HTTP_USER_AGENT' => ua)
+    assert_redirect 'http://www.bing.com/'
+  end
+
 end # === class Test_Control_Old_Apps_Read
