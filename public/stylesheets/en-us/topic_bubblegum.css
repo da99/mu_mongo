@@ -196,6 +196,14 @@ body {
     #content ul div.answer {
       padding: 0 0 10px 0; }
 
+h1 {
+  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
+  font-size: 250%;
+  font-style: italic; }
+
+h2 {
+  font-size: 150%; }
+
 h3 {
   font-size: 20px;
   font-weight: bold; }
@@ -613,6 +621,14 @@ body {
       color: #005088; }
     #content ul div.answer {
       padding: 0 0 10px 0; }
+
+h1 {
+  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
+  font-size: 250%;
+  font-style: italic; }
+
+h2 {
+  font-size: 150%; }
 
 h3 {
   font-size: 20px;

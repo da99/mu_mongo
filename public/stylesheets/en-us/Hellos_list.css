@@ -170,6 +170,14 @@ body {
     #content ul div.answer {
       padding: 0 0 10px 0; }
 
+h1 {
+  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
+  font-size: 250%;
+  font-style: italic; }
+
+h2 {
+  font-size: 150%; }
+
 h3 {
   font-size: 20px;
   font-weight: bold; }
@@ -291,8 +299,29 @@ div.message, div.club {
     text-align: right;
     font-size: 80%; }
 
+div.col {
+  float: left; }
+
+#pretension {
+  width: 600px;
+  padding: 30px 0px 50px 50px; }
+  #pretension h1 {
+    padding: 0 0 30px 0; }
+  #pretension h4.coming_soon {
+    text-align: center; }
+  #pretension ul {
+    padding: 0 0 0 20px;
+    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+    font-size: 120%; }
+
+#middle {
+  padding: 0 20px 100px 20px;
+  margin: 0 20px 0 0;
+  border: 1px dashed #214d81;
+    border-width: 0 1px; }
+
 #intro {
-  text-align: center; }
+  padding: 0 0 10px 0; }
   #intro h1 {
     color: #f00919;
     font-size: 28px;
@@ -304,18 +333,17 @@ div.message, div.club {
     margin: 20px 0; }
     #intro #search_club_form fieldset {
       padding-bottom: 0; }
-
-div.col {
-  float: left; }
+  #intro #footer {
+    font-size: 12px; }
 
 #nav_bar {
-  border-width: 0 1px;
-  width: auto;
-  padding-right: 10px; }
+  border-width: 0;
+  padding: 0;
+  margin: 0; }
 
 #city_clubs, #political_beauty, #joy_clubs, #random_clubs {
   width: 480px;
-  padding: 0 10px; }
+  padding: 0; }
   #city_clubs div.club, #political_beauty div.club, #joy_clubs div.club, #random_clubs div.club {
     border-bottom-width: 0; }
     #city_clubs div.club h4, #political_beauty div.club h4, #joy_clubs div.club h4, #random_clubs div.club h4 {
@@ -328,7 +356,7 @@ div.col {
       font-style: italic;
       text-align: center; }
     #city_clubs div.club div.message div.body, #political_beauty div.club div.message div.body, #joy_clubs div.club div.message div.body, #random_clubs div.club div.message div.body {
-      font-family: 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
+      font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
 
 body {
   padding: 10px; }

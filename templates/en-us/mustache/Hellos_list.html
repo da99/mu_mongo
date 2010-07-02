@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278031062" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278067418" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,75 +70,97 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="intro">
-      <h1>{{site_title}}</h1>
-      <h2>{{site_tag_line}}</h2>
-      <form action="/club-search/" method="post" name="search_club_form" id="search_club_form">
-       <fieldset>
-        <label>Find a club by keyword:</label>
-        <input type="text" class="text" value="" name="keyword" id="club_keyword"/>
-       </fieldset>
-       <div class="buttons">
-        <button class="create" onclick="document.getElementById('search_club_form').submit(); return false;">Go</button>
-       </div>
-      </form>
-      <div id="footer">
-       <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
-      </div>
+     <div class="col" id="pretension">
+      <h4 class="coming_soon"> Coming Soon. </h4>
+      <h1>
+    MegaUni.com let's you create
+  your own universe. 
+  </h1>
+      <h4> Each universe includes: </h4>
+      <ul>
+       <li>Encyclopedia: You and your friends
+    write in this section to record important
+    moments of your life.</li>
+       <li>Q &amp; A: Answer questions people throw
+    at you.</li>
+       <li>Magazine: A place to write stories. reviews, and eloquent rants.</li>
+       <li>Random Section: Post random thoughts that cross
+    your messy mind.</li>
+       <li>Fights Section: Discuss &amp; debate ideas with others in a friendly fashion.</li>
+       <li>Shop Section: Tell others what they should buy.</li>
+       <li>News: Important things people should know.</li>
+       <li>Predictions Section: Record your efforts to see into the future.</li>
+       <li>Thanks Section: People can thank you when you do something right.</li>
+      </ul>
      </div>
-     <div class="col" id="nav_bar">
-      <ul class="help">
-       <li>
-        <a href="/help/">Help</a>
-       </li>
+     <div class="col" id="middle">
+      <div id="intro">
+       <form action="/club-search/" method="post" name="search_club_form" id="search_club_form">
+        <fieldset>
+         <label>Find a club by keyword:</label>
+         <input type="text" class="text" value="" name="keyword" id="club_keyword"/>
+        </fieldset>
+        <div class="buttons">
+         <button class="create" onclick="document.getElementById('search_club_form').submit(); return false;">Go</button>
+        </div>
+       </form>
+       <div id="footer">
+        <span>(c) {{copyright_year}} {{site_domain}}. Some rights reserved.</span>
+       </div>
+      </div>
+      <div id="nav_bar">
+       <ul class="help">
+        <li>
+         <a href="/help/">Help</a>
+        </li>
 
 {{#logged_in?}}
 
-       <li>
-        <a href="log-out">Log-out</a>
-       </li>
-       <li>
-        <a href="/today/">[ Today ]</a>
-       </li>
-       <li>
-        <a href="/account/">[ Account ]</a>
-       </li>
+        <li>
+         <a href="log-out">Log-out</a>
+        </li>
+        <li>
+         <a href="/today/">[ Today ]</a>
+        </li>
+        <li>
+         <a href="/account/">[ Account ]</a>
+        </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-       <li>
-        <a href="/log-in/">Log-in</a>
-       </li>
+        <li>
+         <a href="/log-in/">Log-in</a>
+        </li>
 
 {{/not_logged_in?}}
 
-      </ul>
+       </ul>
 
 {{#logged_in?}}
 
-      <p class="divider">Lives</p>
-      <ul class="lives">
+       <p class="divider">Lives</p>
+       <ul class="lives">
 
 {{#username_nav}}
 
 
 {{#selected?}}
 
-        <li class="selected">
-         <span>&lt; {{username}} &gt;</span>
-        </li>
+         <li class="selected">
+          <span>&lt; {{username}} &gt;</span>
+         </li>
 
 {{/selected?}}
 
 
 {{#not_selected?}}
 
-        <li>
-         <a href="{{href}}"> {{username}} </a>
-        </li>
+         <li>
+          <a href="{{href}}"> {{username}} </a>
+         </li>
 
 {{/not_selected?}}
 
@@ -148,49 +170,50 @@
 
 {{#not_mini_nav_bar?}}
 
-        <li>
-         <a href="/create-life/"> [ Create ] </a>
-        </li>
+         <li>
+          <a href="/create-life/"> [ Create ] </a>
+         </li>
 
 {{/not_mini_nav_bar?}}
 
-      </ul>
+       </ul>
 
 {{/logged_in?}}
 
-      <p class="divider">Egg Timers</p>
-      <ul class="to_dos">
-        <li>
-         <a href="/my-egg-timer/"> Old </a>
-        </li>
-        <li>
-         <a href="/busy-noise/"> New </a>
-        </li>
-      </ul>
+       <p class="divider">Egg Timers</p>
+       <ul class="to_dos">
+         <li>
+          <a href="/my-egg-timer/"> Old </a>
+         </li>
+         <li>
+          <a href="/busy-noise/"> New </a>
+         </li>
+       </ul>
 
 {{#logged_in?}}
 
-      <p class="divider">Clubs</p>
-      <ul class="news">
-        <li>
-         <a href="/club-create/"> [ Create Club ] </a>
-        </li>
-      </ul>
+       <p class="divider">Clubs</p>
+       <ul class="news">
+         <li>
+          <a href="/club-create/"> [ Create Club ] </a>
+         </li>
+       </ul>
 
 {{/logged_in?}}
 
-      <p class="divider">Old Clubs</p>
-      <ul class="old_clubs">
+       <p class="divider">Old Clubs</p>
+       <ul class="old_clubs">
 
 {{#old_clubs}}
 
-       <li>
-        <a href="{{href}}">{{title}}</a>
-       </li>
+        <li>
+         <a href="{{href}}">{{title}}</a>
+        </li>
 
 {{/old_clubs}}
 
-      </ul>
+       </ul>
+      </div>
      </div>
 
 {{#city_clubs?}}
