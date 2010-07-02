@@ -9,16 +9,17 @@ class Message
     plea  
     brainstorm
     joke
-		fight
+    fight
     complaint
-		debate
+    debate
     product
     event
-	
+  
     fact
     story
-		chapter
-	
+    chapter
+prediction
+
     question
     news
     buy
@@ -29,7 +30,7 @@ class Message
     praise
     answer
 
-		thank
+    thank
   }.uniq
   include Couch_Plastic
 
@@ -38,25 +39,25 @@ class Message
   make :message_model, [:in_array, MODELS]
   make :important, :not_empty
   make :rating, :not_empty
-	make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
+  make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
   make :target_ids, :split_and_flatten, :mongo_object_id_array
   make :body, :not_empty
-	make :body_images_cache, [:set_to, lambda { 
-		# turn "URL 100 100" into 
-		# ==> [URL, 100, 100]
-		# ==> BSON won't allow URL as key because it contains '.'
-		raw_data.body_images_cache.to_s.split("\n").map { |val|
-			url, width, height = val.split.map(&:strip)
-			[url, width.to_i, height.to_i]
-		}
+  make :body_images_cache, [:set_to, lambda { 
+    # turn "URL 100 100" into 
+    # ==> [URL, 100, 100]
+    # ==> BSON won't allow URL as key because it contains '.'
+    raw_data.body_images_cache.to_s.split("\n").map { |val|
+      url, width, height = val.split.map(&:strip)
+      [url, width.to_i, height.to_i]
+    }
 
-		# .inject({}) { |memo, val|
-		# 	url, width, height = val[0].strip, val[1].to_i, val[2].to_i
-		# 	memo[url] = {:width => width, :height => height}
-		# 	memo
-		# }
-	}]
+    # .inject({}) { |memo, val|
+    #   url, width, height = val[0].strip, val[1].to_i, val[2].to_i
+    #   memo[url] = {:width => width, :height => height}
+    #   memo
+    # }
+  }]
   make :emotion, :not_empty
   make :category, :not_empty
   make :labels, :split_and_flatten, :array
@@ -103,7 +104,7 @@ class Message
           :emotion, :rating,
           :labels, :public_labels,
           :message_model, :important,
-					:body_images_cache
+          :body_images_cache
       save_create 
     end
   end
@@ -121,9 +122,9 @@ class Message
       self.manipulator = editor
       self.raw_data    = new_raw_data
       ask_for :title, :body, :teaser, :public_labels, 
-				:private_labels, :published_at,
+        :private_labels, :published_at,
         :message_model, :important,
-				:body_images_cache
+        :body_images_cache
       save_update
     end
   end
@@ -138,21 +139,21 @@ class Message
     params = {:target_ids=>club_id}.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}
     db_collection.find(
-			params,
-			opts.update(raw_opts),
-			&blok
-		)
+      params,
+      opts.update(raw_opts),
+      &blok
+    )
   end
 
-	def self.public raw_params = {}, raw_opts = {}, &blok
-		opts = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
+  def self.public raw_params = {}, raw_opts = {}, &blok
+    opts = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     include_mods = [opts.delete(:include)].flatten.compact
-		params = {}.update(raw_params)
+    params = {}.update(raw_params)
     cursor = db_collection.find(
-			params, 
+      params, 
       opts,
-			&blok
-		)
+      &blok
+    )
     if include_mods.empty?
       cursor
     else
@@ -165,7 +166,7 @@ class Message
       end
       docs
     end
-	end
+  end
 
   def self.public_labels target_ids = nil
     map = %~
@@ -243,9 +244,9 @@ class Message
 
   def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}, &blok
     db_collection.find(
-			{:target_ids=>Club.filename_to_id(club_id)},
+      {:target_ids=>Club.filename_to_id(club_id)},
       opts, 
-			&blok
+      &blok
     )
   end
   
@@ -280,7 +281,7 @@ class Message
       begin
         Club.by_id_or_member_username_id(id)
       rescue Club::Not_Found
-				nil
+        nil
       end
     }.compact
   end
