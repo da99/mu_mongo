@@ -4,7 +4,7 @@
 
 div.col.pretension! {
 
-  h4.coming_soon  %~ Coming Soon. ~
+  h4.coming_soon  %~ Coming Soon ~
 
   h1 %~
     MegaUni.com let's you create

@@ -278,11 +278,11 @@ div.form {
   border: 1px solid #717171; }
 
 form label, form div.title {
+  font-size: 80%;
   text-transform: uppercase;
   font-weight: bold;
   color: #185dad;
-  display: block;
-  font-size: 13px; }
+  display: block; }
 form fieldset {
   padding: 0 0 15px 0; }
   form fieldset.hidden {

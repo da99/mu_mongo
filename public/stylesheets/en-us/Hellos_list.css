@@ -252,11 +252,11 @@ div.form {
   border: 1px solid #717171; }
 
 form label, form div.title {
+  font-size: 80%;
   text-transform: uppercase;
   font-weight: bold;
   color: #185dad;
-  display: block;
-  font-size: 13px; }
+  display: block; }
 form fieldset {
   padding: 0 0 15px 0; }
   form fieldset.hidden {
@@ -314,11 +314,14 @@ div.col {
   #pretension h1 {
     padding: 0 0 30px 0; }
   #pretension h4.coming_soon {
+    font-size: 80%;
     text-align: center; }
   #pretension ul {
     padding: 0 0 0 20px;
     font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
     font-size: 120%; }
+    #pretension ul li {
+      padding: 6px 0 0 0; }
 
 #middle {
   padding: 0 20px 100px 20px;
