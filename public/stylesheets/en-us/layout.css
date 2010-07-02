@@ -97,6 +97,12 @@ a:hover, a:active, a:focus {
   color: white;
   background: #f00919; }
 
+strong {
+  color: #3a3a3a;
+  background: #f6f6f6;
+  padding: 0 5px;
+  font-size: 90%; }
+
 img.left {
   float: left;
   margin: 0 10px 0 0; }
