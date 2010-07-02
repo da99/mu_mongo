@@ -309,7 +309,8 @@ h3 {
 #guide {
   width: 250px;
   padding-right: 10px;
-  float: left; }
+  float: left;
+  display: none; }
 
 #club_message_create {
   padding-top: 20px; }
@@ -329,7 +330,8 @@ h3 {
   display: block;
   padding: 0 10px 2px 20px;
   border-bottom: 2px solid #1d70d2;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  padding-left: 0px; }
   #club_nav_bar li {
     margin: 0px;
     padding: 0px;
@@ -350,6 +352,11 @@ h3 {
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     color: white; }
+  #club_nav_bar li {
+    padding: 0; }
+  #club_nav_bar a {
+    font-size: 80%;
+    text-transform: uppercase; }
 
 #club_messages {
   border-top: 1px dashed #003860;
