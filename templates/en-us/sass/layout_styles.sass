@@ -28,7 +28,7 @@ $text_box_bg_dark: #d6d6d6
 $sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_sans_serif: unquote("'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif")
 $custom_serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
-$serif: unquote("'Century Schoolbook L', 'Times New Roman', 'Times', serif")
+$serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif")
 $custom_black_text: #242424
 $custom_orange: #ffe759
 
@@ -184,9 +184,20 @@ body
     div.answer
       padding: 0 0 10px 0
 
+h1
+  font:
+    family: $serif
+    size: 250%
+    style: italic
+    
+h2
+  font:
+    size: 150%
+    
 h3
-  font-size: 20px
-  font-weight: bold
+  font:
+    size: 20px
+    weight: bold
 
 h4
   text-transform: uppercase

@@ -2,103 +2,147 @@
 # ~/megauni/templates/en-us/sass/Hellos_list.sass
 
 
-div.col.intro! {
+div.col.pretension! {
 
-  h1 '{{site_title}}'
-  h2 '{{site_tag_line}}'
+  h4.coming_soon  %~ Coming Soon. ~
 
-  form.search_club_form!(:action=>"/club-search/", :method=>"post") {
-    fieldset {
-      label 'Find a club by keyword:'
-      input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
-    }
-    div.buttons {
-      button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
-    }
-  } # form
+  h1 %~
+    MegaUni.com let's you create
+  your own universe. 
+  ~
 
-  div.footer! {
-    span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-  } # the_footer
-} # div.intro!
+  h4 %~ Each universe includes: ~
 
+  ul {
 
-div.col.nav_bar! { 
+    li 'Encyclopedia: You and your friends
+    write in this section to record important
+    moments of your life.'
 
-  # div( :id=>"logo" ) { 
-  #   p.title '{{site_title}}' 
-  #   p.tag_line "{{site_tag_line}}" 
-  # }
+    li 'Q & A: Answer questions people throw
+    at you.'
 
-  ul.help {
+    li 'Magazine: A place to write stories. reviews, and eloquent rants.'
+
+    li 'Random Section: Post random thoughts that cross
+    your messy mind.'
+
+    li 'Fights Section: Discuss & debate ideas with others in a friendly fashion.'
+
+    li 'Shop Section: Tell others what they should buy.'
+
+    li 'News: Important things people should know.'
     
-    li {
-      a 'Help', :href=>'/help/'
-    }
+    li 'Predictions Section: Record your efforts to see into the future.'
     
-    show_if 'logged_in?' do
-      li {
-        a 'Log-out', :href=>'log-out' 
-      }
-      li {
-        a '[ Today ]', :href=>'/today/'
-      }
-      li {
-        a '[ Account ]', :href=>'/account/'
-      }
-    end  
-    
-    show_if 'not_logged_in?' do
-      li {
-        a 'Log-in', :href=>'/log-in/'
-      }
-      # li {
-      #   a 'Create Account', :href=>'/create-account/'
-      # }
-    end
-    
+    li 'Thanks Section: People can thank you when you do something right.'
+
   }
 
-  show_if 'logged_in?' do
-    
-    p.divider 'Lives' 
-    
-    ul.lives {
-      loop 'username_nav' do
-        show_if 'selected?' do
-          nav_bar_li_selected '{{username}}'
-        end
-        show_if 'not_selected?' do
-          nav_bar_li_unselected '{{username}}', '{{href}}'
-        end
+}
+
+
+div.col.middle! {
+  div.intro! {
+
+    # h1 '{{site_title}}'
+    # h2 '{{site_tag_line}}'
+
+    form.search_club_form!(:action=>"/club-search/", :method=>"post") {
+      fieldset {
+        label 'Find a club by keyword:'
+        input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
+      }
+      div.buttons {
+        button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
+      }
+    } # form
+
+    div.footer! {
+      span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
+    } # the_footer
+  } # div.intro!
+
+
+  div.nav_bar! { 
+
+    # div( :id=>"logo" ) { 
+    #   p.title '{{site_title}}' 
+    #   p.tag_line "{{site_tag_line}}" 
+    # }
+
+    ul.help {
+      
+      li {
+        a 'Help', :href=>'/help/'
+      }
+      
+      show_if 'logged_in?' do
+        li {
+          a 'Log-out', :href=>'log-out' 
+        }
+        li {
+          a '[ Today ]', :href=>'/today/'
+        }
+        li {
+          a '[ Account ]', :href=>'/account/'
+        }
+      end  
+      
+      show_if 'not_logged_in?' do
+        li {
+          a 'Log-in', :href=>'/log-in/'
+        }
+        # li {
+        #   a 'Create Account', :href=>'/create-account/'
+        # }
       end
-    show_if 'not_mini_nav_bar?' do
-      nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
-    end
+      
     }
-  end
-  
-  p.divider 'Egg Timers'
-  ul.to_dos {
-    nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
-    nav_bar_li :Timer_new, 'busy-noise', 'New'
-  }
 
-  show_if 'logged_in?' do
-    p.divider 'Clubs'
-    ul.news {
-      nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
-    }
-  end
-
-  p.divider 'Old Clubs'
-  ul.old_clubs {
-    loop 'old_clubs' do
-      li { a('{{title}}', :href=>'{{href}}') }
+    show_if 'logged_in?' do
+      
+      p.divider 'Lives' 
+      
+      ul.lives {
+        loop 'username_nav' do
+          show_if 'selected?' do
+            nav_bar_li_selected '{{username}}'
+          end
+          show_if 'not_selected?' do
+            nav_bar_li_unselected '{{username}}', '{{href}}'
+          end
+        end
+      show_if 'not_mini_nav_bar?' do
+        nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
+      end
+      }
     end
-  }
+    
+    p.divider 'Egg Timers'
+    ul.to_dos {
+      nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
+      nav_bar_li :Timer_new, 'busy-noise', 'New'
+    }
 
-} # === div.nav_bar!
+    show_if 'logged_in?' do
+      p.divider 'Clubs'
+      ul.news {
+        nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
+      }
+    end
+
+    p.divider 'Old Clubs'
+    ul.old_clubs {
+      loop 'old_clubs' do
+        li { a('{{title}}', :href=>'{{href}}') }
+      end
+    }
+
+  } # === div.nav_bar!
+
+
+} # === div.col
 
 
 show_if 'city_clubs?' do
