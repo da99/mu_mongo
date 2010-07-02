@@ -15,30 +15,53 @@ div.col.pretension! {
 
   ul {
 
-    li 'Encyclopedia: You and your friends
-    write in this section to record important
-    moments of your life.'
+    li {
+      strong 'Encyclopedia'
+      span ': You and your friends
+        write in this section to record important
+        moments of your life.'
+    }
+    li {
+      strong 'Q & A'
+      span ': Answer questions people throw
+        at you.'
+    }
+    li {
+      strong 'Magazine'
+      span ': A place to write stories. reviews, and eloquent rants.'
 
-    li 'Q & A: Answer questions people throw
-    at you.'
+    }
+    li {
+      strong 'Random Section'
+      span ': Post random thoughts that cross
+        your messy mind.'
+    }
 
-    li 'Magazine: A place to write stories. reviews, and eloquent rants.'
+    li {
+      strong 'Fights Section'
+      span ': Discuss & debate ideas with others in a friendly fashion.'
 
-    li 'Random Section: Post random thoughts that cross
-    your messy mind.'
+    }
+    li {
+      strong 'Shop Section'
+      span ': Tell others what they should buy.'
 
-    li 'Fights Section: Discuss & debate ideas with others in a friendly fashion.'
+    }
+    li {
+      strong 'News'
+      span ': Important things people should know.'
 
-    li 'Shop Section: Tell others what they should buy.'
+    }
+    li {
+      strong 'Predictions Section'
+      span ': Record your efforts to see into the future.'
 
-    li 'News: Important things people should know.'
-    
-    li 'Predictions Section: Record your efforts to see into the future.'
-    
-    li 'Thanks Section: People can thank you when you do something right.'
-
+    }
+    li {
+      strong 'Thanks Section'
+      span ': People can thank you when you do something right.'
+    }
   }
-
 }
 
 
@@ -184,17 +207,17 @@ end
 #     div.message do
 #       div.body( '{{{compiled_body}}}' )
 #       div.permalink {
-# 				show_if 'owner_username' do
-# 					span ' by: '
-# 					a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
-# 					br
-# 				end
-# 				show_if 'club_title' do
-# 					span ' in: '
-# 					a('{{club_title}}', :href=>"/clubs/{{club_filename}}/")
-# 					br
-# 				end
-# 				a('Permalink', :href=>"{{href}}")
+#         show_if 'owner_username' do
+#           span ' by: '
+#           a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
+#           br
+#         end
+#         show_if 'club_title' do
+#           span ' in: '
+#           a('{{club_title}}', :href=>"/clubs/{{club_filename}}/")
+#           br
+#         end
+#         a('Permalink', :href=>"{{href}}")
 #       }
 #     end
 #   end
