@@ -51,7 +51,7 @@ div.col.navigate! {
     
     show_if 'messages_latest?' do
       h4 'Latest messages:'
-      loop_messages 'messages_latest'
+      loop_messages 'messages_latest', :include_meta=>true
     end
     
   end
