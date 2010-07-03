@@ -2,10 +2,16 @@ require 'models/Data_Pouch'
 
 module Base_Message
 
-  def loop_messages mustache
+  def loop_messages mustache, opts = {}
+    options = Data_Pouch.new(opts, :include_meta)
     text(capture { 
       loop mustache  do
         div.message {
+          if options.include_meta
+            div.meta {
+              strong '{{message_model_in_english}}'
+            }
+          end
           div.body( '{{{compiled_body}}}' )
           div.permalink {
             a('Permalink', :href=>"{{href}}")
@@ -21,15 +27,16 @@ module Base_Message
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
     english = [ 
-      ['random'    , 'Random Thought'],
-      ['news'      , 'Important News']             ,
-      ['question'  , 'Question']                   ,
-      ['fact'      , 'Fact']                       ,
-      ['story'     , 'Story']                      ,
-      ['chapter'     , 'Chapter']                      ,
-      ['fight'     , 'Fight']                      ,
-      ['complaint' , 'Complaint']                  ,
-      ['debate'    , 'Friendly Debate']                     ,
+      ['random'   , 'Random Thought']      ,
+      ['news'     , 'Important News']      ,
+      ['question' , 'Question']            ,
+      ['fact'     , 'Encyclopedia Chapter'],
+      ['e_chapter', 'Encyclopedia Chapter'],
+      ['chapter'  , 'Encyclopedia Chapter'],
+      ['story'    , 'Story']               ,
+      ['fight'    , 'Fight']               ,
+      ['complaint', 'Complaint']           ,
+      ['debate'   , 'Friendly Debate']     ,
       ['plea'      , 'Request']                    ,
       ['buy'       , 'Product Recommendation']     ,
       ['prediction', 'Prediction']

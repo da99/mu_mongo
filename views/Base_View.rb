@@ -244,6 +244,13 @@ class Base_View < Mustache
   def compile_messages( mess_arr )
     mess_arr.map { |doc|
 			doc['href'] = "/mess/#{doc['_id']}/"
+      if doc['message_model']
+        doc['message_model_in_english'] = Message::MODEL_HASH[doc['message_model']].first
+        doc['message_section'] = Message::MODEL_HASH[doc['message_model']][1]
+      else
+        doc['message_model_in_english'] = 'unkown'
+        doc['message_section'] = 'Unknown'
+      end
       doc['compiled_body'] = if from_surfer_hearts?(doc)
                                doc['body']
                              else

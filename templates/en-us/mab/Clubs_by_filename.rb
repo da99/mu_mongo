@@ -18,7 +18,7 @@ div.col.intro! {
     }
 
     # form_message_create(
-    #   :models => %w{random story complaint},
+    #   :models => %w{random mag_story complaint},
     #   :hidden_input => { :club_filename => '{{club_filename}}',
     #                      :privacy       => 'public'
     #                    }

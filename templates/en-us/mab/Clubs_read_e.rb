@@ -24,10 +24,10 @@ div.col.navigate! {
     }
 
     form_message_create(
-      :title => 'Publish a new chapter:',
+      :title => 'Publish a new section:',
       :input_title => true,
       :hidden_input => {
-                        :message_model => 'chapter',
+                        :message_model => 'e_chapter',
                         :club_filename => '{{club_filename}}',
                         :privacy       => 'public'
                        }

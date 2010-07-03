@@ -55,7 +55,7 @@ class Clubs
 
   def GET_read_magazine filename
     env['results.club'] = club = Club.by_filename_or_member_username(filename)
-    env['results.magazine'] = Message.latest_by_club_id(club.data._id, :message_model=>'story')
+    env['results.magazine'] = Message.latest_by_club_id(club.data._id, :message_model=>'mag_story')
     render_html_template
   end
 
@@ -73,7 +73,7 @@ class Clubs
 
   def GET_read_e filename
     env['results.club'] = club = Club.by_filename_or_member_username(filename)
-    env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>'fact')
+    env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>{:$in=>['fact', 'chapter', 'e_chapter']})
     render_html_template
   end
 

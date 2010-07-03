@@ -2,36 +2,41 @@
 
 class Message
 
-  MODELS = %w{
-    random 
-    
-    comment
-    plea  
-    brainstorm
-    joke
-    fight
-    complaint
-    debate
-    product
-    event
+  module SECTIONS
+    E      = 'Encyclopedia'
+    R      = 'Random'
+    F      = 'Fights'
+    PREDICTIONS = 'Predictions'
+    RANDOM = 'RANDOM'
+    MAG    = 'Magazine'
+    NEWS   = 'News'
+    QA     = 'Q & A'
+    SHOP   = 'Shop'
+    FIGHTS = 'Fights'
+  end
+
+  MODEL_HASH = {
+    'news' => ['important news', SECTIONS::NEWS],
+    'comment' => ['comment'],
+    'random' => ['random info.', SECTIONS::R],
+    'complaint' => ['complaint', SECTIONS::F],
+    'prediction' => ['prediction', SECTIONS::PREDICTIONS],
+    'mag_story'  => ['magazine article', SECTIONS::MAG]
+    # e_chapter
+    # quote
+    # plea  
+    # fulfill
+    # fight
+    # discuss
+    # thank
+    # question
+    # answer
+    # buy
+    # event
+  }
   
-    fact
-    story
-    chapter
-prediction
-
-    question
-    news
-    buy
-    status
-
-    fulfill
-    tip
-    praise
-    answer
-
-    thank
-  }.uniq
+  MODELS = MODEL_HASH.keys
+  
   include Couch_Plastic
 
   enable_timestamps

@@ -196,7 +196,7 @@ end
 
 show_if 'random_clubs?' do
   div.col.random_clubs! { 
-    loop_clubs "random_clubs"
+    loop_clubs "random_clubs", :include_meta=>true
   }
 end
 

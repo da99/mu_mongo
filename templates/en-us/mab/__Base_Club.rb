@@ -1,7 +1,7 @@
 
 module Base_Club
 
-  def loop_clubs list_name
+  def loop_clubs list_name, *opts
     text(capture {
       loop list_name do 
         div.club {
@@ -12,7 +12,7 @@ module Base_Club
             div.teaser '{{teaser}}'
           end
           
-          loop_messages 'messages'
+          loop_messages 'messages', *opts
         }
       end
     })

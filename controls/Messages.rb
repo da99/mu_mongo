@@ -18,7 +18,7 @@ class Messages
 			plea
 			product
 			question
-			story
+			mag_story
 		}
 		mess_mod = env['message_by_id'].data.message_model
     if custom.include?(mess_mod)

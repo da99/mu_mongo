@@ -23,7 +23,7 @@ div.col.navigate! {
       :title => 'Publish a new story:',
       :input_title => true,
       :hidden_input => {
-                        :message_model => 'story',
+                        :message_model => 'mag_story',
                         :club_filename => '{{club_filename}}',
                         :privacy       => 'public'
                        }
