@@ -9,11 +9,13 @@ class Clubs_list < Base_View
   end
 
   def clubs
-    @cache[:clubs] ||= compile_clubs(@app.env['results.clubs']) 
+    cache('clubs') ||
+      cache_and_compile( 'clubs', @app.env['results.clubs'] ) 
   end
 
   def other_clubs
-    @cache[:other_clubs] ||= (clubs - your_clubs)
+    cache('clubs.other') || 
+      cache_and_compile( 'clubs.other',  (clubs - your_clubs) )
   end
 
 end # === Clubs_list 

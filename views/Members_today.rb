@@ -14,7 +14,8 @@ class Members_today < Base_View
   end
 
   def random_stream
-    @cache[:stream] ||= compile_messages( Club.random_stream )
+    cache('messages.random_stream') ||
+      cache_and_compile( 'messages.random_stream', Club.random_stream )
   end
 
   def my_club_href

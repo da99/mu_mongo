@@ -9,7 +9,8 @@ class Clubs_club_search < Base_View
   end
 
   def clubs
-    @cache['clubs'] ||= egg_timers_as_clubs + compile_clubs(Club.all) + old_clubs
+    cache('clubs') ||
+      cache('clubs',  ( egg_timers_as_clubs + compile_clubs(Club.all) + old_clubs ) )
   end
 
   def club_filename

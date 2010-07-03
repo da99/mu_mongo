@@ -23,7 +23,7 @@ class Clubs_by_filename < Base_View
   end
 
   def messages_latest
-    @cache['results.messages_latest'] ||= compile_messages(app.env['results.messages_latest'])
+    cache_and_compile 'messages.latest', app.env['results.messages_latest']
   end
 
   def club_teaser

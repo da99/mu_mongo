@@ -9,13 +9,11 @@ class Members_lives < Base_View
   end
 
 	def current_member_username
-		@app.env['results.username']
+		app.env['results.username']
 	end
 
   def newspaper
-    @cache[:newspaper] ||= compile_messages(
-      @app.current_member.newspaper(current_member_username)
-    )
+    cache_and_compile( 'messages.newspaper', app.current_member.newspaper(current_member_username) )
   end
 
   def newspaper?

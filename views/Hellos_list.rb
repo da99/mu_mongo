@@ -25,7 +25,7 @@ class Hellos_list < Base_View
   end
   
   def messages_public 
-    @cache[:messages_public] ||= compile_messages(@app.env['results.messages_public'])
+    cache_and_compile( 'messages.public', @app.env['results.messages_public'])
   end
   
   def clubs
@@ -61,10 +61,11 @@ class Hellos_list < Base_View
   %w{ city joy }.each { |club|
     eval(%~
       def #{club}_clubs?     
-       @cache['not_empty_#{club}'] ||= begin
-         arr = #{club}_clubs
-         arr && !arr.empty?
-       end
+        cache('not_empty_#{club}') || begin
+          arr = #{club}_clubs
+          result = arr && !arr.empty?
+          cache('not_empty_#{club}', result)
+         end
       end
     ~)
   }

@@ -45,6 +45,21 @@ class Base_View < Mustache
     @cache = {}
   end
 
+  def cache key, val = nil
+    @cache[key] ||= val
+  end
+
+  def cache_and_compile key, val
+    return @cache[key] if @cache[key]
+    if key.to_s['clubs']
+      @cache[key] = compile_clubs(val)
+    elsif key.to_s['messages']
+      @cache[key] = compile_messages(val)
+    else
+      raise "No compile method found for: #{key.inspect}"
+    end
+  end
+
   def alt_method_names raw_meth
     meth = raw_meth.to_s
     [ 
@@ -225,7 +240,6 @@ class Base_View < Mustache
   end
 
   def username_nav
-
     @cache[:username_nav] ||= begin
                                 c_name = @app.control_name
                                 a_name = @app.action_name
