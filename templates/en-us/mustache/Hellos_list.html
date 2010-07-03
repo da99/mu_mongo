@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278097470" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278185740" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -415,6 +415,9 @@
 {{#messages}}
 
          <div class="message">
+          <div class="meta">
+           <strong>{{message_model_in_english}}</strong>
+          </div>
           <div class="body">{{{compiled_body}}}</div>
           <div class="permalink">
            <a href="{{href}}">Permalink</a>

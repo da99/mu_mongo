@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278097470" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278185740" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -187,12 +187,12 @@
       </div>
        <div id="club_message_create">
         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-         <h4>Publish a new chapter:</h4>
+         <h4>Publish a new section:</h4>
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
           <input type="hidden" value="public" name="privacy"/>
+          <input type="hidden" value="e_chapter" name="message_model"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-          <input type="hidden" value="chapter" name="message_model"/>
 
 {{#single_username?}}
 
@@ -200,7 +200,7 @@
 
 {{/single_username?}}
 
-          <input type="hidden" value="chapter" name="message_model"/>
+          <input type="hidden" value="e_chapter" name="message_model"/>
          </fieldset>
           <fieldset>
            <label>Title:</label>
@@ -258,8 +258,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278097470"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278097470"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278185740"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278185740"></script>
 
 {{#include_tracking?}}
 
