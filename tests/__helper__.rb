@@ -253,15 +253,27 @@ class Test::Unit::TestCase
     club      = Club.create(mem, club_opts )
   end
 
-  def create_message( mem, club = nil, un_id = nil )
+  def create_message( mem, club = nil, un_id_or_opts = nil )
+    
 		club ||= self.club
-    Message.create( mem, 
+    
+    opts, un_id = case un_id_or_opts
+                  when Hash
+                    [ un_id_or_opts, nil ]
+                  when BSON::ObjectID
+                    [ {}, un_id_or_opts]
+                  else
+                    [ {}, nil ]
+                  end
+
+    final_opts = {
       :privacy => 'public',
       :target_ids => [club.data._id],
       :owner_id => (un_id || mem.username_ids.first),
-      
       :body => "random body #{rand(4000)}"
-    )
+    }.update(opts)
+
+    Message.create( mem, final_opts )
   end
 
   def create_club_content

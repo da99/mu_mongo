@@ -206,7 +206,7 @@ class Club
     cache[:href] ||= "/clubs/#{data.filename}/"
   end
 
-  %w{ e news qa shop random thanks fights }.each do |suffix|
+  %w{ e magazine news qa shop random thanks fights }.each do |suffix|
     eval %~
       def href_#{suffix}
         File.join(href, '#{suffix}/')

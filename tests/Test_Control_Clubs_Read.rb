@@ -195,4 +195,20 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 		end
 	}
 
+  must 'show magazine articles in magazine section' do
+    mem = regular_member_1
+    club = create_club(mem)
+    mess = create_message( mem, club, :message_model=>'mag_story')
+    get club.href_magazine
+    assert last_response.body[mess.data.body]
+  end
+
+  must 'show random messages in random section' do
+    mem = regular_member_1
+    club = create_club(mem)
+    mess = create_message( mem, club, :message_model=>'random')
+    get club.href_random
+    assert last_response.body[mess.data.body]
+  end
+
 end # === class Test_Control_Clubs_Read
