@@ -10,22 +10,22 @@ class Messages
                            else
                              Message.by_id(id)
                            end
-		custom = %w{ 
-			brainstorm
-			complaint
-			event
-			joke
-			plea
-			product
-			question
-			mag_story
-		}
-		mess_mod = env['message_by_id'].data.message_model
-    if custom.include?(mess_mod)
-			render_html_template "Message_by_id_#{mess_mod}"
-		else
+		# custom = %w{ 
+		# 	brainstorm
+		# 	complaint
+		# 	event
+		# 	joke
+		# 	plea
+		# 	product
+		# 	question
+		# 	mag_story
+		# }
+		# mess_mod = env['message_by_id'].data.message_model
+    # if custom.include?(mess_mod)
+		# 	render_html_template "Message_by_id_#{mess_mod}"
+		# else
 			render_html_template
-		end
+		# end
   end
 
   def GET_by_label club_filename, raw_label # LIST

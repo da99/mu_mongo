@@ -42,7 +42,7 @@ class Base_View < Mustache
   def initialize new_app
     @app        = new_app
     @not_prefix = /^not?_/
-    @cache = {}
+    @cache      = {}
   end
 
   def cache key, val = nil
