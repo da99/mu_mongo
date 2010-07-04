@@ -47,7 +47,7 @@ class Messages
     return_page = '/today/'
     begin
       if clean_room[:club_filename]
-        club = Club.by_filename(clean_room[:club_filename])
+        club = Club.by_filename_or_member_username(clean_room[:club_filename])
         return_page = club.href
         clean_room[:target_ids] = [club.data._id]
       else

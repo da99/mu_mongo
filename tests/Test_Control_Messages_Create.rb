@@ -45,4 +45,28 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
     assert_equal club.href, last_request.fullpath
   end
 
+
+  # ============== CLUBS based on USERNAMES =========================
+
+  must 'allow members to post to a life club.' do
+    mem = regular_member_1
+    un  = mem.usernames.first
+    club = Club.by_filename_or_member_username(un)
+    body = "random content #{rand(1000)} #{un}"
+    
+    log_in_regular_member_1
+    
+    post( '/messages/', 
+      "body"=>body, 
+      "body_images_cache"=>"http://28.media.tumblr.com/tumblr_l414x9008E1qba70ho1_500.jpg 500 644", 
+      "username"=>un, 
+      "message_model"=>"random", 
+      "privacy"=>"public", 
+      "club_filename"=>un
+    )
+    
+    get club.href
+    assert last_response.body[body]
+  end
+
 end # === class Test_Control_Messages_Create

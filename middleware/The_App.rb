@@ -62,7 +62,7 @@ class The_App
     rescue The_App::Redirect
     rescue Couch_Plastic::Not_Found
       if The_App.production?
-        raise The_App::HTTP_404, new_env['PATH_INFO']
+        raise The_App::HTTP_404, ($!.message.is_a?(String) ? $!.message : "Record not found.")
       else
         raise $!
       end
