@@ -303,4 +303,20 @@ class Message
     cache[:href_edit] ||= File.join(href, 'edit/')
   end
 
+	def message_model_in_english
+		if data.message_model
+			Message::MODEL_HASH[data.message_model].first 
+		else
+			'unkown'
+		end
+	end
+
+	def message_section
+		if data.message_model
+			Message::MODEL_HASH[data.message_model][1]
+		else
+			'Unknown'
+		end
+	end
+
 end # === end Message

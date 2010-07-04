@@ -34,6 +34,26 @@ class Messages_by_id < Base_View
     message.data.message_model
   end
 
+  def message_model_in_english
+    message.message_model_in_english
+  end
+
+  def message_section
+    message.message_section
+  end
+
+  def message_section_href
+    suffix = case message_section
+      when Message::SECTIONS::E
+        'e'
+      when Message::SECTIONS::QA
+        'qa'
+      else
+        message_section.to_s.downcase.split.join('_')
+      end
+    File.join(club_href, suffix + '/')
+  end
+
   def message_data
     @cache[:message_data] ||= begin
                                 v= message.data.as_hash
