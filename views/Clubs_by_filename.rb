@@ -23,12 +23,12 @@ class Clubs_by_filename < Base_View
   end
 
   def messages_latest
-    cache_and_compile 'messages.latest', app.env['results.messages_latest']
+    compile_and_cache( 'messages.latest' , app.env['results.messages_latest'] )
   end
 
   def club_teaser
     if club.life_club? && !club.data.teaser
-      "Post stuff to this fan club."
+      "Post stuff to this universe."
     else
       super
     end

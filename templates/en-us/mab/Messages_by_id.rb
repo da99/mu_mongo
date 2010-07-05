@@ -42,35 +42,39 @@ div.col.message_col! {
 
   # ==================== REPLIES =========================================
 
-  div.comments! {
-    p 'Comments go here'
-  } 
+  show_if 'comments?' do
+    div.comments! {
+      loop_messages 'comments'
+    } 
+  end
 
-  div.questions! {
-    p 'Questions go here'
-  }
-
+  show_if 'questions?' do
+    div.questions! {
+      loop_messages 'questions'
+    }
+  end
 
   show_if 'logged_in?' do
     
-    div.guide! {
-      h4 'Stuff you can do:'
-      p %~
-        Express negative feelings. Try to use
-      polite profanity, like meathead instead of 
-      doo-doo head.
-      ~
-    }
-    
-    form_message_create(
-      :title => 'Publish a new:',
-      :models => %w{praise complaint question},
-      :input_title => true,
-      :hidden_input => {
-                        :target_ids => '{{target_ids_joined}}',
-                        :privacy       => 'public'
-                       }
-    )
+    div.reply! {
+      div.guide! {
+        h4 'Stuff you can do:'
+        p %~
+          Express negative feelings. Try to use
+        polite profanity, like meathead instead of 
+        doo-doo head.
+        ~
+      }
+      
+      form_message_create(
+        :title => 'Publish a new:',
+        :models => %w{praise complaint question},
+        :hidden_input => {
+                          :target_ids => '{{target_ids_joined}}',
+                          :privacy       => 'public'
+                         }
+      )
+    } # === div.reply!
     
   end # logged_in?
 

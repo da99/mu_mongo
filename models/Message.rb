@@ -141,13 +141,23 @@ class Message
   # ==== Accessors ====
 
   def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
-    params = {:target_ids=>club_id}.update(raw_params)
-    opts   = {:limit=>10, :sort=>[:_id, :desc]}
+    params = {:target_ids =>club_id, :privacy => 'public' }.update(raw_params)
+    opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     db_collection.find(
       params,
-      opts.update(raw_opts),
+      opts,
       &blok
     )
+  end
+
+  def self.latest_comments_by_club_id club_id, raw_params = {}, *args
+    params = {:message_model => {:$in=>%w{complaint praise}}}.update(raw_params)
+    Message.latest_by_club_id(club_id, params, *args)
+  end
+
+  def self.latest_questions_by_club_id club_id, raw_params = {}, *args
+    params = {:message_model => 'question'}.update(raw_params)
+    Message.latest_by_club_id(club_id, params, *args)
   end
 
   def self.public raw_params = {}, raw_opts = {}, &blok

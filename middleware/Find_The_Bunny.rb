@@ -123,7 +123,6 @@ class Find_The_Bunny
                        }
       # if new_env['PATH_INFO'] == "/clubs/hearts/" && http_meth == 'GET'
       #   
-      #   require 'rubygems'; require 'ruby-debug'; debugger
       # end
         
                       

@@ -34,7 +34,6 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   #   log_in_regular_member_3
   #   get "/clubs/#{uns.last}/"
 		# 
-		# require 'rubygems'; require 'ruby-debug'; debugger
 		# 
 		# 
 		# assert_equal nil, last_response.body[mess_1.data.body]

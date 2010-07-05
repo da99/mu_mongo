@@ -37,7 +37,7 @@ class Base_View < Mustache
   
   include Base_View_Club
 
-  attr_reader :not_prefix, :app
+  attr_reader :not_prefix, :app, :cache
   
   def initialize new_app
     @app        = new_app
@@ -45,18 +45,15 @@ class Base_View < Mustache
     @cache      = {}
   end
 
-  def cache key, val = nil
-    @cache[key] ||= val
-  end
-
-  def cache_and_compile key, val
+  def compile_and_cache key, val
     return @cache[key] if @cache[key]
+
     if key.to_s['clubs']
       @cache[key] = compile_clubs(val)
     elsif key.to_s['messages']
       @cache[key] = compile_messages(val)
     else
-      raise "No compile method found for: #{key.inspect}"
+      @cache[key] = val
     end
   end
 
@@ -189,7 +186,7 @@ class Base_View < Mustache
 	end
 
   def current_member_usernames
-    @cache[:current_member_usernames] ||= begin
+    cache[:current_member_usernames] ||= begin
                                             if @app.current_member
                                               @app.current_member.usernames.map { |un| 
                                                 {:filename=>un, :username=>un}
@@ -240,7 +237,7 @@ class Base_View < Mustache
   end
 
   def username_nav
-    @cache[:username_nav] ||= begin
+    cache[:username_nav] ||= begin
                                 c_name = @app.control_name
                                 a_name = @app.action_name
                                 life_page = (c_name == :Members && a_name == 'lives')
@@ -291,7 +288,7 @@ class Base_View < Mustache
   end
 
 	def languages
-		@cache[:languages] ||= begin
+		cache[:languages] ||= begin
 														 Couch_Plastic::LANGS.map { |k,v| 
 															{:name=>v, :filename=>k, :selected? =>(k=='en-us'), :not_selected? => (k != 'en-us')}
 														 }.sort { |x,y| 

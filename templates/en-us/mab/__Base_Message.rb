@@ -36,6 +36,7 @@ module Base_Message
       ['story'    , 'Story']               ,
       ['fight'    , 'Fight']               ,
       ['complaint', 'Complaint']           ,
+      ['praise', 'Praise & Cheer']           ,
       ['debate'   , 'Friendly Debate']     ,
       ['plea'      , 'Request']                    ,
       ['buy'       , 'Product Recommendation']     ,

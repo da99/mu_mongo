@@ -55,7 +55,7 @@ class Messages_by_id < Base_View
   end
 
   def message_data
-    @cache[:message_data] ||= begin
+    cache[:message_data] ||= begin
                                 v= message.data.as_hash
                                 v[:compiled_body] = from_surfer_hearts?(v) ? v['body'] : auto_link(v['body'])
                                 v
@@ -80,6 +80,18 @@ class Messages_by_id < Base_View
 
   def club_href
 		club.href
+  end
+
+  def target_ids_joined
+    [club.data._id].map(&:to_s).join(",")
+  end
+
+  def questions
+    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_club_id(club_id))
+  end
+
+  def comments
+    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_club_id(club_id))
   end
   
 end # === Messages_by_id 

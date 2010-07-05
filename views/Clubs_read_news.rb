@@ -10,7 +10,7 @@ class Clubs_read_news < Base_View
   end
   
   def news
-    cache_and_compile('messages.news', app.env['results.news'])
+    compile_and_cache('messages.news', app.env['results.news'])
   end
   
 end # === Clubs_read_news 

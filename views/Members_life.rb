@@ -9,7 +9,7 @@ class Members_life < Base_View
   include Base_View_Member_Life
 
 	def title 
-    "#{app.env['results.username']}'s Fan Club"
+    "#{app.env['results.username']}'s Universe"
   end
 
   def stream

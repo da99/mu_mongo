@@ -94,7 +94,7 @@ class Club
         mem = Member.by_username(filename)
         doc = mem.data.as_hash.clone
         doc['filename']  = filename
-        doc['title']     = "#{filename}'s Fan Club"
+        doc['title']     = "#{filename}'s Universe"
         doc['_id']       = mem.username_to_username_id(filename)
         club = Club.new doc
         club.set_as_life filename, mem

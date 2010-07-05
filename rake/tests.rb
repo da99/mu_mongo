@@ -28,7 +28,10 @@ namespace :tests do
 
   end # ======== :run
 
-  desc "Run one test file. Uses: name=. 'tests/tests_' and '.rb' is automatically added."
+  desc "Run one test file. 
+        name= 
+        ('tests/tests_' and '.rb' is automatically added.)
+        warn= True"
   task :file do
     file_name    = ENV['name'].sub(/\ATest_/, '')
     use_debugger = ENV['debug']

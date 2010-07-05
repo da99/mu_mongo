@@ -9,7 +9,7 @@ class Clubs_read_thanks < Base_View
   end
 
 	def thanks
-		cache_and_compile( 'messages.thanks', app.env['results.thanks'])
+    compile_and_cache( 'messages.thanks', app.env['results.thanks'])
 	end
   
 end # === Clubs_read_thanks 

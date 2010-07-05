@@ -7,9 +7,9 @@ div.stream! {
   show_if 'no_stream?' do
     p {
       span "On {{site_title}}, you can join "
-      a(" different fan clubs", :href=>'/clubs/')
+      a(" different universes", :href=>'/clubs/')
       span " or post messages to your "
-      a( "own fan club", :href=>"{{my_club_href}}" )
+      a( "own universe", :href=>"{{my_club_href}}" )
       span ' . '
     }
   end

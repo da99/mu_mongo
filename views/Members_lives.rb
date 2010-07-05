@@ -13,7 +13,7 @@ class Members_lives < Base_View
 	end
 
   def newspaper
-    cache_and_compile( 'messages.newspaper', app.current_member.newspaper(current_member_username) )
+    cache[ 'messages.newspaper'] ||= compile_messages(app.current_member.newspaper(current_member_username))
   end
 
   def newspaper?

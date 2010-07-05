@@ -14,7 +14,7 @@ class Clubs_read_shop < Base_View
   end
 
   def buys
-    cache_and_compile( 'messages.buys', app.env['results.buys'])
+    compile_and_cache( 'messages.buys', app.env['results.buys'])
   end
   
 end # === Clubs_read_shop 

@@ -10,7 +10,7 @@ class Clubs_read_predictions < Base_View
   end
 
   def predictions
-    cache_and_compile('messages.predictions', app.env['results.predictions'])
+    compile_and_cache('messages.predictions', app.env['results.predictions'])
   end
   
 end # === Clubs_read_predictions 
