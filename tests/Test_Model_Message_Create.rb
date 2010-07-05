@@ -83,4 +83,32 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     assert_equal [club['_id']], mess_2.data.target_ids
   end
 
+  must 'allow replies posted to messages in life clubs' do
+    mem = regular_member_1
+    un  = mem.usernames.first
+    life = Club.by_filename_or_member_username(un)
+    club_id = life.data._id
+    mess_1 = Message.create(
+      regular_member_1, {
+        :owner_id => regular_member_1.username_ids.last,
+        :body => 'test body',
+        :target_ids => [club_id],
+        :message_model => 'random',
+				:privacy => 'public'
+      }
+    )
+
+    mess_2 = Message.create(
+      regular_member_1, {
+        :owner_id => regular_member_1.username_ids.last,
+        :body => 'test body',
+        :parent_message_id => mess_1.data._id,
+        :target_ids => '1235',
+        :message_model => 'cheer'
+      }
+    )
+    
+    assert_equal [club_id], mess_2.data.target_ids
+  end
+
 end # === class Test_Model_Message_Create
