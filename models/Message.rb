@@ -24,8 +24,8 @@ class Message
     'prediction' => ['prediction', SECTIONS::PREDICTIONS],
     'mag_story'  => ['magazine article', SECTIONS::MAG],
     'question'   => ['question', SECTIONS::QA],
-    'cheer'      => ['cheer', SECTIONS::THANKS],
-    'jeer'      => ['criticize', SECTIONS::THANKS]
+    'cheer'      => ['cheer reply', SECTIONS::THANKS],
+    'jeer'      => ['critique reply', SECTIONS::THANKS]
     # e_chapter
     # quote
     # plea  

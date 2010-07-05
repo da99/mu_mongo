@@ -262,6 +262,14 @@ class Base_View < Mustache
         doc['message_model_in_english'] = 'unkown'
         doc['message_section'] = 'Unknown'
       end
+      if doc['parent_message_id']
+        doc['has_parent_message?'] = true
+        doc['parent_message?']     = false
+        doc['parent_message_href'] = "/mess/#{doc['parent_message_id']}/"
+      else
+        doc['has_parent_message?'] = false
+        doc['parent_message?']     = true
+      end
       doc['compiled_body'] = if from_surfer_hearts?(doc)
                                doc['body']
                              else

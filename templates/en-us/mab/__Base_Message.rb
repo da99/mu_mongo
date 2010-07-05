@@ -13,9 +13,17 @@ module Base_Message
             }
           end
           div.body( '{{{compiled_body}}}' )
-          div.permalink {
-            a('Permalink', :href=>"{{href}}")
-          }
+          show_if 'has_parent_message?' do
+            div.permalink {
+              span 'in response to: '
+              a('message', :href=>"{{parent_message_href}}")
+            }
+          end
+          show_if 'parent_message?' do
+            div.permalink {
+              a('Permalink', :href=>"{{href}}")
+            }
+          end
         }
       end
     })
