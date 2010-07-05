@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278213622" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278335441" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -81,34 +81,143 @@
 
 {{/show_moving_message?}}
 
-     <div class="col" id="message">
+     <div class="col" id="message_col">
+      <div id="message">
 
 {{#message_data}}
 
-      <h4>{{title}}</h4>
-      <div class="body">
-{{{compiled_body}}}      </div>
+       <h4>{{title}}</h4>
+       <div class="body">
+{{{compiled_body}}}       </div>
 
 {{/message_data}}
 
-     </div>
-     <div class="col" id="about">
-      <p class="published_at">{{published_at}}</p>
-      <p>
-       <span>This {{message_model_in_english}} was posted in section, </span>
-       <a href="{{message_section_href}}">{{message_section}}</a>
-       <span>, of universe, </span>
-       <a href="{{club_href}}">{{club_title}}</a>
-       <span>.</span>
-      </p>
+      </div>
+      <div id="about">
+       <p class="published_at">{{published_at}}</p>
+       <p>
+        <span>This {{message_model_in_english}} was posted in section, </span>
+        <a href="{{message_section_href}}">{{message_section}}</a>
+        <span>, of universe, </span>
+        <a href="{{club_href}}">{{club_title}}</a>
+        <span>.</span>
+       </p>
 
 {{#message_updator?}}
 
-      <p>
-       <a href="{{message_href_edit}}">Edit.</a>
-      </p>
+       <p>
+        <a href="{{message_href_edit}}">Edit.</a>
+       </p>
 
 {{/message_updator?}}
+
+      </div>
+
+{{#comments?}}
+
+      <div id="comments">
+
+{{#comments}}
+
+        <div class="message">
+         <div class="meta">
+          <strong>{{message_model_in_english}}</strong>
+         </div>
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/comments}}
+
+      </div>
+
+{{/comments?}}
+
+
+{{#questions?}}
+
+      <div id="questions">
+
+{{#questions}}
+
+        <div class="message">
+         <div class="body">{{{compiled_body}}}</div>
+         <div class="permalink">
+          <a href="{{href}}">Permalink</a>
+         </div>
+        </div>
+
+{{/questions}}
+
+      </div>
+
+{{/questions?}}
+
+
+{{#logged_in?}}
+
+      <div id="reply">
+       <div id="guide">
+        <h4>Stuff you can do:</h4>
+        <p>
+          Express negative feelings. Try to use
+        polite profanity, like meathead instead of 
+        doo-doo head.
+        </p>
+       </div>
+        <div id="club_message_create">
+         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+          <h4>Publish a new:</h4>
+          <fieldset>
+           <select name="message_model">
+            <option value="question">Question</option>
+            <option value="cheer">Praise &amp; Cheer</option>
+            <option value="jeer">Criticize</option>
+           </select>
+          </fieldset>
+          <fieldset class="hidden">
+           <input type="hidden" value="" name="body_images_cache"/>
+           <input type="hidden" value="public" name="privacy"/>
+           <input type="hidden" value="{{target_ids_joined}}" name="target_ids"/>
+
+{{#single_username?}}
+
+           <input type="hidden" value="{{first_username}}" name="username"/>
+
+{{/single_username?}}
+
+          </fieldset>
+          <fieldset>
+           <textarea name="body"></textarea>
+          </fieldset>
+
+{{#multiple_usernames?}}
+
+          <fieldset>
+           <label>Post as:</label>
+           <select name="owner_id">
+
+{{#multiple_usernames}}
+
+            <option value="{{username}}">{{username}}</option>
+
+{{/multiple_usernames}}
+
+           </select>
+          </fieldset>
+
+{{/multiple_usernames?}}
+
+          <div class="buttons">
+           <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
+          </div>
+         </form>
+        </div>
+      </div>
+
+{{/logged_in?}}
 
      </div>
       <div id="nav_bar">
@@ -128,9 +237,6 @@
 
          <li>
           <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/today/"> [ Today ] </a>
          </li>
          <li>
           <a href="/account/"> [ Account ] </a>
@@ -244,6 +350,8 @@
 
       </div>
    </div>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278335441"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278335441"></script>
 
 {{#include_tracking?}}
 
