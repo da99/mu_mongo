@@ -68,7 +68,8 @@ module Base_Message
         end
       
 				fieldset.hidden {
-					input :type=>'hidden', :name=>'body_images_cache', :value=>''
+					input :type=>'hidden', :name=>'body_images_cache', :value => ''
+					input :type=>'hidden', :name=>'return_url', :value => '{{url}}'
 
 					opts.hidden_input.each { |k,v|
 						input :type=>'hidden', :name=>k, :value=>v

@@ -45,7 +45,30 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
     assert_equal club.href, last_request.fullpath
   end
 
+  must 'redirect to specified return url' do
+    club = create_club
+    log_in_regular_member_1
+    post "/messages/", :club_filename=>club.data.filename,
+      :privacy=>'public',
+      :username=> regular_member_1.usernames.last,
+      :body => rand(12000),
+      :return_url => '/test/page/'
 
+    assert_redirect '/test/page/', 303
+  end
+
+  must 'ignore return url if is is to an external site' do
+    club = create_club
+    log_in_regular_member_1
+    post "/messages/", :club_filename=>club.data.filename,
+      :privacy=>'public',
+      :username=> regular_member_1.usernames.last,
+      :body => rand(12000),
+      :return_url => 'http://www.bing.com/'
+
+    assert_redirect club.href, 303
+  end
+  
   # ============== CLUBS based on USERNAMES =========================
 
   must 'allow members to post to a life club.' do
