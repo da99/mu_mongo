@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278339679" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278345858" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -263,9 +263,25 @@
 
          <div class="message">
           <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+          <div class="permalink">
+           <span>in response to: </span>
+           <a href="{{parent_message_href}}">message</a>
+          </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
           <div class="permalink">
            <a href="{{href}}">Permalink</a>
           </div>
+
+{{/parent_message?}}
+
          </div>
 
 {{/messages}}
@@ -303,9 +319,25 @@
 
           <div class="message">
            <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+           <div class="permalink">
+            <span>in response to: </span>
+            <a href="{{parent_message_href}}">message</a>
+           </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
            <div class="permalink">
             <a href="{{href}}">Permalink</a>
            </div>
+
+{{/parent_message?}}
+
           </div>
 
 {{/messages}}
@@ -335,9 +367,25 @@
 
           <div class="message">
            <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+           <div class="permalink">
+            <span>in response to: </span>
+            <a href="{{parent_message_href}}">message</a>
+           </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
            <div class="permalink">
             <a href="{{href}}">Permalink</a>
            </div>
+
+{{/parent_message?}}
+
           </div>
 
 {{/messages}}
@@ -375,9 +423,25 @@
 
          <div class="message">
           <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+          <div class="permalink">
+           <span>in response to: </span>
+           <a href="{{parent_message_href}}">message</a>
+          </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
           <div class="permalink">
            <a href="{{href}}">Permalink</a>
           </div>
+
+{{/parent_message?}}
+
          </div>
 
 {{/messages}}
@@ -416,9 +480,25 @@
            <strong>{{message_model_in_english}}</strong>
           </div>
           <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+          <div class="permalink">
+           <span>in response to: </span>
+           <a href="{{parent_message_href}}">message</a>
+          </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
           <div class="permalink">
            <a href="{{href}}">Permalink</a>
           </div>
+
+{{/parent_message?}}
+
          </div>
 
 {{/messages}}

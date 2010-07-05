@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278339679" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278345857" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -250,9 +250,25 @@
 
         <div class="message">
          <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+         <div class="permalink">
+          <span>in response to: </span>
+          <a href="{{parent_message_href}}">message</a>
+         </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
          <div class="permalink">
           <a href="{{href}}">Permalink</a>
          </div>
+
+{{/parent_message?}}
+
         </div>
 
 {{/news}}
@@ -260,8 +276,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278339679"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278339679"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278345857"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278345857"></script>
 
 {{#include_tracking?}}
 
