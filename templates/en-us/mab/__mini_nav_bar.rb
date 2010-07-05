@@ -18,7 +18,7 @@ div( :id=>"nav_bar" ) {
     
     mustache 'logged_in?' do
       nav_bar_li :Session_Control, 'log-out', 'Log-out'
-      nav_bar_li :Members, '/today/', '[ Today ]'
+      # nav_bar_li :Members, '/today/', '[ Today ]'
       nav_bar_li :Members, '/account/', '[ Account ]'
     end  
     

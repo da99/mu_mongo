@@ -24,12 +24,12 @@ div.content! {
   
   form_create_message %w{
     regular_comment
-    praise
+    cheer
     tip
     question
   }
 
-  div.praise {
+  div.cheer {
     p 'No answers yet.'
   }
 

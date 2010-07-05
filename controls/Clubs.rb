@@ -109,7 +109,7 @@ class Clubs
       redirect! club.href
     rescue Club::Invalid
       flash_msg.errors = $!.doc.errors
-      redirect! "/today/"
+      redirect! "/account/"
     end
   end
 

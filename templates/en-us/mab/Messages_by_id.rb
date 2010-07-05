@@ -44,7 +44,7 @@ div.col.message_col! {
 
   show_if 'comments?' do
     div.comments! {
-      loop_messages 'comments'
+      loop_messages 'comments', :include_meta=>true
     } 
   end
 
@@ -68,7 +68,7 @@ div.col.message_col! {
       
       form_message_create(
         :title => 'Publish a new:',
-        :models => %w{praise complaint question},
+        :models => %w{cheer jeer question},
         :hidden_input => {
                           :target_ids => '{{target_ids_joined}}',
                           :privacy       => 'public'

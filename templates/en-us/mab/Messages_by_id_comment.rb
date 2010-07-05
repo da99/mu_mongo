@@ -27,14 +27,14 @@ div.content! {
   
   form_create_message %w{
     regular_comment
-    praise
+    cheer
     complain
     tip
     question
   }
 
-  div.praise {
-    p 'praise goes here'
+  div.cheer {
+    p 'cheer goes here'
   }
 
   div.complain {

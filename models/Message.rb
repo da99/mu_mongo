@@ -13,6 +13,7 @@ class Message
     QA     = 'Q & A'
     SHOP   = 'Shop'
     FIGHTS = 'Fights'
+    THANKS = 'Thanks'
   end
 
   MODEL_HASH = {
@@ -21,7 +22,10 @@ class Message
     'random' => ['random info.', SECTIONS::R],
     'complaint' => ['complaint', SECTIONS::F],
     'prediction' => ['prediction', SECTIONS::PREDICTIONS],
-    'mag_story'  => ['magazine article', SECTIONS::MAG]
+    'mag_story'  => ['magazine article', SECTIONS::MAG],
+    'question'   => ['question', SECTIONS::QA],
+    'cheer'      => ['cheer', SECTIONS::THANKS],
+    'jeer'      => ['criticize', SECTIONS::THANKS]
     # e_chapter
     # quote
     # plea  
@@ -29,7 +33,6 @@ class Message
     # fight
     # discuss
     # thank
-    # question
     # answer
     # buy
     # event
@@ -151,7 +154,7 @@ class Message
   end
 
   def self.latest_comments_by_club_id club_id, raw_params = {}, *args
-    params = {:message_model => {:$in=>%w{complaint praise}}}.update(raw_params)
+    params = {:message_model => {:$in=>%w{complaint cheer}}}.update(raw_params)
     Message.latest_by_club_id(club_id, params, *args)
   end
 

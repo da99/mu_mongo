@@ -30,6 +30,10 @@ class Messages_by_id < Base_View
     @app.env['message_by_id']
   end
 
+  def message_id
+    message.data._id
+  end
+
   def message_model
     message.data.message_model
   end
@@ -83,15 +87,15 @@ class Messages_by_id < Base_View
   end
 
   def target_ids_joined
-    [club.data._id].map(&:to_s).join(",")
+    [message_id, club_id].map(&:to_s).join(",")
   end
 
   def questions
-    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_club_id(club_id))
+    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_club_id(message_id))
   end
 
   def comments
-    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_club_id(club_id))
+    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_club_id(message_id))
   end
   
 end # === Messages_by_id 

@@ -492,7 +492,7 @@ module Couch_Plastic
               errors << (err_msg || @error_msg || "#{fld.humanize} is invalid.")
             end
 
-          when :split_and_flatten
+          when :split_and_flatten # Split on newline, then map split ','
             case raw
             when String
               arr = raw.split("\n").map {|piece| piece.split(',')}.flatten.map(&:strip)

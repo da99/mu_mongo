@@ -22,7 +22,7 @@ class Members
       m = Member.create( current_member, clean_room )
       self.current_member = m
       flash_msg.success = "Your account has been created."
-      redirect! '/today/' 
+      redirect! '/account/' 
       
     rescue Member::Invalid
 
@@ -125,12 +125,12 @@ class Members
       if clean_room['add_username']
         redirect! "/lives/#{m.clean_data.add_username}/"
       else
-        redirect! '/today/'
+        redirect! '/account/'
       end
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
       session[:add_username] = clean_room['add_username']
-      redirect! '/today/' 
+      redirect! '/account/' 
     end
   end # === put :update
 

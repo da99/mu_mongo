@@ -135,7 +135,7 @@ class Test::Unit::TestCase
         assert_equal false, mem.has_power_of?( :ADMIN )
         post '/log-in/', {:username=>mem.usernames.first, :password=>regular_password_#{i}}, ssl_hash
         follow_redirect!
-        assert_match( /today/, last_request.fullpath)
+        assert_match( /account/, last_request.fullpath)
       end
     ~
   end
@@ -206,7 +206,7 @@ class Test::Unit::TestCase
     assert_equal false, mem.has_power_of?( :ADMIN )
     post '/log-in/', {:username=>mem.usernames.first, :password=>password}, ssl_hash
     follow_redirect!
-    assert_match( /today/, last_request.fullpath)
+    assert_match( /account/, last_request.fullpath)
   end
 
   def log_in_admin
@@ -214,7 +214,7 @@ class Test::Unit::TestCase
     assert mem.has_power_of?(:ADMIN)
     post '/log-in/', {:username=>mem.usernames.first, :password=>admin_password}, ssl_hash
     follow_redirect!
-    assert_match( /today/, last_request.fullpath )
+    assert_match( /account/, last_request.fullpath )
   end
 
 	def create_member raw_opts = {}

@@ -104,9 +104,9 @@ div.col.middle! {
         li {
           a 'Log-out', :href=>'log-out' 
         }
-        li {
-          a '[ Today ]', :href=>'/today/'
-        }
+        # li {
+        #   a '[ Today ]', :href=>'/today/'
+        # }
         li {
           a '[ Account ]', :href=>'/account/'
         }

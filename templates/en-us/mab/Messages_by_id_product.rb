@@ -26,7 +26,7 @@ div.content! {
     comment 
     tip 
     question 
-    praise 
+    cheer 
     complain
   }
   
@@ -38,8 +38,8 @@ div.content! {
     p 'No questions.'
   }
 
-  div.praise {
-    p 'No praise yet.'
+  div.cheer {
+    p 'No cheer yet.'
   }
 
   div.complaints {

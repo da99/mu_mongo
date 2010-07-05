@@ -44,7 +44,7 @@ class Messages
   end
 
   def POST_create # CREATE
-    return_page = '/today/'
+    return_page = '/account/'
     begin
       if clean_room[:club_filename]
         club = Club.by_filename_or_member_username(clean_room[:club_filename])
