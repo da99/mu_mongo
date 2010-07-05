@@ -253,7 +253,7 @@ class Message
         raise ArgumentError, "Unknown argument list: #{args.inspect}"
       end
       time_format = '%Y-%m-%d %H:%M:%S'
-      start_tm = Time.utc(start_year, start_month).strftime(time_format),
+      start_tm = Time.utc(start_year, start_month).strftime(time_format)
       end_tm   = Time.utc(end_year, end_month).strftime(time_format)
       params = {:published_at=>{'$gt'=>start_tm,'$lt'=>end_tm}}
       opts = {}
