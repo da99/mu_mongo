@@ -70,7 +70,7 @@ div.col.message_col! {
         :title => 'Publish a new:',
         :models => %w{cheer jeer question},
         :hidden_input => {
-                          :target_ids => '{{target_ids_joined}}',
+                          :parent_message_id => '{{message_id}}',
                           :privacy       => 'public'
                          }
       )

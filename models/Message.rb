@@ -49,6 +49,10 @@ class Message
   make :rating, :not_empty
   make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
+  make :parent_message_id, [:set_raw_data, [:target_ids, lambda { 
+    mess = Message.by_id(raw_data.parent_message_id)
+    mess.data.target_ids
+  }]]
   make :target_ids, :split_and_flatten, :mongo_object_id_array
   make :body, :not_empty
   make :body_images_cache, [:set_to, lambda { 
@@ -107,6 +111,7 @@ class Message
       new_data.labels = []
       new_data.public_labels = []
       ask_for_or_default :lang
+      ask_for :parent_message_id
       demand :owner_id, :target_ids, :body
       ask_for :category, :privacy, :labels,
           :emotion, :rating,

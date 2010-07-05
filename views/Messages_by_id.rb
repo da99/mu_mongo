@@ -86,9 +86,9 @@ class Messages_by_id < Base_View
 		club.href
   end
 
-  def target_ids_joined
-    [message_id, club_id].map(&:to_s).join(",")
-  end
+#   def target_ids_joined
+#     [message_id, club_id].map(&:to_s).join(",")
+#   end
 
   def questions
     cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_club_id(message_id))
