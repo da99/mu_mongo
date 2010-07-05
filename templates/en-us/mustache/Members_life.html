@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278335441" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278339680" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -164,6 +164,7 @@
          </fieldset>
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
+          <input type="hidden" value="{{url}}" name="return_url"/>
           <input type="hidden" value="{{username_id}}" name="target"/>
 
 {{#single_username?}}
@@ -204,8 +205,8 @@
 
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278335441"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278335441"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278339680"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278339680"></script>
 
 {{#include_tracking?}}
 
