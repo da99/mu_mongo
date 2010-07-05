@@ -45,7 +45,7 @@ class Messages
 
   def POST_create # CREATE
     return_page = [clean_room[:return_url]].compact.detect { |path| 
-      path[%r!\A[a-z/\.\-\_]+\Z!] 
+      path[%r!\A[a-zA-Z0-9/\.\-\_]+\Z!] 
     }
     default_return_page = '/account/'
     begin

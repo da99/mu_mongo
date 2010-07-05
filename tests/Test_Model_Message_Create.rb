@@ -83,6 +83,32 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     assert_equal [club['_id']], mess_2.data.target_ids
   end
 
+	must 'turn :parent_message_id from a String to a BSON::ObjectID' do
+    mess_1 = Message.create(
+      regular_member_1, {
+        :owner_id => regular_member_1.username_ids.last,
+        :body => 'test body',
+        :target_ids => [club['_id']],
+        :message_model => 'random',
+				:privacy => 'public'
+      }
+    )
+
+		mess_1_id = mess_1.data._id
+		mess_1_id_s = mess_1_id.to_s
+    mess_2 = Message.create(
+      regular_member_1, {
+        :owner_id => regular_member_1.username_ids.last,
+        :body => 'test body',
+        :parent_message_id => mess_1_id_s,
+        :target_ids => '1235',
+        :message_model => 'cheer'
+      }
+    )
+    
+    assert_equal mess_1_id, mess_2.data.parent_message_id
+	end
+
   must 'allow replies posted to messages in life clubs' do
     mem = regular_member_1
     un  = mem.usernames.first

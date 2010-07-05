@@ -91,11 +91,11 @@ class Messages_by_id < Base_View
 #   end
 
   def questions
-    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_club_id(message_id))
+    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_parent_message_id(message_id))
   end
 
   def comments
-    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_club_id(message_id))
+    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_parent_message_id(message_id))
   end
   
 end # === Messages_by_id 

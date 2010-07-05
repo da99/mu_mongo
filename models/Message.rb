@@ -49,7 +49,7 @@ class Message
   make :rating, :not_empty
   make :privacy, [:in_array, ['private', 'public', 'friends_only'] ]
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
-  make :parent_message_id, [:set_raw_data, [:target_ids, lambda { 
+  make :parent_message_id, :mongo_object_id, [:set_raw_data, [:target_ids, lambda { 
     mess = Message.by_id(raw_data.parent_message_id)
     mess.data.target_ids
   }]]
@@ -159,13 +159,33 @@ class Message
   end
 
   def self.latest_comments_by_club_id club_id, raw_params = {}, *args
-    params = {:message_model => {:$in=>%w{complaint cheer}}}.update(raw_params)
+    params = {:message_model => {:$in=>%w{jeer cheer}}}.update(raw_params)
     Message.latest_by_club_id(club_id, params, *args)
   end
 
   def self.latest_questions_by_club_id club_id, raw_params = {}, *args
     params = {:message_model => 'question'}.update(raw_params)
     Message.latest_by_club_id(club_id, params, *args)
+  end
+
+  def self.latest_by_parent_message_id mess_id, raw_params = {}, raw_opts = {}, &blok
+    params = {:parent_message_id =>mess_id, :privacy => 'public' }.update(raw_params)
+    opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
+    db_collection.find(
+      params,
+      opts,
+      &blok
+    )
+  end
+  
+  def self.latest_comments_by_parent_message_id mess_id, raw_params = {}, *args
+    params = {:message_model => {:$in=>%w{jeer cheer}}}.update(raw_params)
+    Message.latest_by_parent_message_id(mess_id, params, *args)
+  end
+
+  def self.latest_questions_by_parent_message_id mess_id, raw_params = {}, *args
+    params = {:message_model => 'question'}.update(raw_params)
+    Message.latest_by_parent_message_id(mess_id, params, *args)
   end
 
   def self.public raw_params = {}, raw_opts = {}, &blok
