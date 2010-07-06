@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278345858" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278389719" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -128,7 +128,7 @@
          <input type="text" class="text" value="" name="keyword" id="club_keyword"/>
         </fieldset>
         <div class="buttons">
-         <button class="create" onclick="document.getElementById('search_club_form').submit(); return false;">Go</button>
+         <button onclick="document.getElementById('search_club_form').submit(); return false;" class="create">Go</button>
         </div>
        </form>
        <div id="footer">
@@ -262,6 +262,13 @@
 {{#messages}}
 
          <div class="message">
+
+{{#title}}
+
+          <strong class="title">{{title}}</strong>
+
+{{/title}}
+
           <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
@@ -318,6 +325,13 @@
 {{#messages}}
 
           <div class="message">
+
+{{#title}}
+
+           <strong class="title">{{title}}</strong>
+
+{{/title}}
+
            <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
@@ -366,6 +380,13 @@
 {{#messages}}
 
           <div class="message">
+
+{{#title}}
+
+           <strong class="title">{{title}}</strong>
+
+{{/title}}
+
            <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
@@ -422,6 +443,13 @@
 {{#messages}}
 
          <div class="message">
+
+{{#title}}
+
+          <strong class="title">{{title}}</strong>
+
+{{/title}}
+
           <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
@@ -479,6 +507,13 @@
           <div class="meta">
            <strong>{{message_model_in_english}}</strong>
           </div>
+
+{{#title}}
+
+          <strong class="title">{{title}}</strong>
+
+{{/title}}
+
           <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}

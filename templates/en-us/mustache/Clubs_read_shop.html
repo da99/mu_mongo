@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278345859" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278389719" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -127,11 +127,18 @@
 {{#logged_in?}}
 
 
-{{#follower?}}
+{{#owner?}}
+
+       <p>You own this universe.</p>
+
+{{/owner?}}
+
+
+{{#follower_but_not_owner?}}
 
        <p>You are following this club.</p>
 
-{{/follower?}}
+{{/follower_but_not_owner?}}
 
 
 {{#potential_follower?}}
@@ -195,9 +202,9 @@
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
           <input type="hidden" value="{{url}}" name="return_url"/>
-          <input type="hidden" value="buy" name="message_model"/>
           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
           <input type="hidden" value="public" name="privacy"/>
+          <input type="hidden" value="buy" name="message_model"/>
 
 {{#single_username?}}
 
@@ -229,7 +236,7 @@
 {{/multiple_usernames?}}
 
          <div class="buttons">
-          <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
+          <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
          </div>
         </form>
        </div>
@@ -248,6 +255,13 @@
 {{#buys}}
 
         <div class="message">
+
+{{#title}}
+
+         <strong class="title">{{title}}</strong>
+
+{{/title}}
+
          <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
@@ -275,8 +289,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278345859"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278345859"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278389719"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278389719"></script>
 
 {{#include_tracking?}}
 
