@@ -114,7 +114,7 @@ class Message
       ask_for_or_default :lang
       ask_for :parent_message_id
       demand :owner_id, :target_ids, :body
-      ask_for :category, :privacy, :labels,
+      ask_for :title, :category, :privacy, :labels,
           :emotion, :rating,
           :labels, :public_labels,
           :message_model, :important,

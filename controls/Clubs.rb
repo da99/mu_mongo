@@ -73,7 +73,7 @@ class Clubs
 
   def GET_read_e filename
     env['results.club'] = club = Club.by_filename_or_member_username(filename)
-    env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>{:$in=>['fact', 'chapter', 'e_chapter']})
+    env['results.facts'] = Message.latest_by_club_id(club.data._id, :message_model=>{:$in=>['fact', 'chapter', 'e_chapter', 'e_quote']})
     render_html_template
   end
 
