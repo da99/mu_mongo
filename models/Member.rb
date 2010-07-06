@@ -3,6 +3,8 @@ require 'bcrypt'
 class Member 
 
 	attr_reader :password_reset_code
+  attr_reader :old_un, :old_un_id, :current_un, :current_un_id
+  
   include Couch_Plastic
 
   def self.db_collection
@@ -483,46 +485,66 @@ class Member
     @tz_proxy ||= TZInfo::Timezone.get(self.timezone)
     @tz_proxy.utc_to_local( utc ).strftime('%a, %b %d, %Y @ %I:%M %p')
   end 
+
+  def within_username un, &blok
+    within_username_id username_to_username_id(un, &blok)
+  end
   
-  def potential_clubs
-    cache[:potential_clubs] ||= begin
-                                  Club.all(:_id=>{:$in => potential_club_ids})
-                                end
+  # This method makes sure username belongs to member.
+  # If not, current username/username_id is set to nil.
+  def within_username_id un_id
+    @old_un_id           = current_un_id
+    @old_un              = current_un
+    
+    @current_un    = username_id_to_username(un_id)
+    @current_un_id = username_to_username_id(current_un)
+    
+    yield
+    @current_un    = old_un
+    @current_un_id = old_un_id
   end
 
-  def potential_club_ids
-    cache[:potential_club_ids] ||= begin
-                                  created   = Club.all_ids_for_owner( self.data._id )
-                                  Club.all_ids(:_id=>{:$nin => created+following_club_ids})
-                                end
-  end
-
-  def following_club_ids un_id = nil
-    if un_id
-      cache["follwing_club_ids_#{un_id}"] ||= Club.all_ids_for_follower_id(un_id)
+  def current_username_ids
+    if current_un_id
+      [current_un_id]
     else
-      cache[:following_club_ids] ||= Club.all_ids_for_follower(self.data._id)
+      username_ids
     end
   end
+  alias_method :life_club_ids, :current_username_ids
 
-  def newspaper username = nil
-    if username
-      cache["newspaper_#{username}"] ||= begin
-                                            un_id = username_to_username_id(username)
-                                            raise "Username does not belong to user: #{username.inspect}" unless un_id
-                                            club_ids = following_club_ids(un_id)
-                                            Message.db_collection.find( {:target_ids=>{:$in=>club_ids}}, { :limit => 10 })
-                                          end
-    else
-      cache[:newspaper] ||= Message.db_collection.find( {:target_ids=>{:$in=>following_club_ids}}, {:limit=>10})
-    end
+  def club_ids 
+    (life_club_ids + following_club_ids + owned_club_ids)
+  end
+
+  def following_club_ids 
+    cache["flwng_clb_ids#{current_username_ids.join(',')}"] ||= Club.ids_for_follower_id( :$in => current_username_ids )
+  end
+
+  def following_club_id?(club_id)
+    club_ids.include?(Couch_Plastic.mongofy_id(club_id))
+  end
+  
+  def owned_club_ids 
+    cache["owned_club_ids_#{un_id}"] ||= Club.ids_by_owner_ids(:$in=>current_username_ids)
   end
   
   def owned_clubs
-    cache[:owned_clubs] ||= begin
-                              Club.by_owner_ids(username_ids)
-                            end
+    cache[:owned_clubs] ||= Club.by_owner_id(:$in=>current_username_ids)
   end
+
+  def life_club
+    cache['life_club_#{un_id}'] ||= Club.life_club_for_username_id(current_username_ids.first, self)
+  end
+
+  def life_clubs
+    cache['life_clubs'] ||= Club.life_clubs_for_member(self)
+  end
+
+  def messages_from_my_clubs 
+    Message.by_club_id(:$in=>club_ids)
+  end
+  
 end # === model Member
 
 

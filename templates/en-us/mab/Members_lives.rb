@@ -42,12 +42,12 @@ div.content! {
 
 
   div.newspaper! {
-    show_if('no_newspaper?') {
+    show_if('no_stream?') {
       a('You have not subscribed to anyone\'s life.')
     }
-    show_if 'newspaper?' do  
+    show_if 'stream?' do  
       h4 'The latest from your subscriptions:'
-      show_if 'newspaper' do
+      show_if 'stream' do
         div.message do
           div.body( '{{{compiled_body}}}' )
           div.permalink {
@@ -56,7 +56,7 @@ div.content! {
         end
       end
     end
-  } # === div.newspaper!
+  } # === div.stream!
 	
 } # === div.content! 
 

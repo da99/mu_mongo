@@ -2,28 +2,40 @@ require 'models/Data_Pouch'
 
 module Base_Message
 
-  def loop_messages mustache, opts = {}
-    options = Data_Pouch.new(opts, :include_meta)
+  def loop_messages mustache, raw_opts = {}
+    opts = {:include_meta => false, :include_permalink => true}.update(raw_opts)
+    options = Data_Pouch.new(opts, :include_meta, :include_permalink)
+    
     text(capture { 
       loop mustache  do
         div.message {
+          
           if options.include_meta
             div.meta {
               strong '{{message_model_in_english}}'
             }
           end
+        
+          show_if 'title' do
+            strong.title '{{title}}'
+          end
+
           div.body( '{{{compiled_body}}}' )
-          show_if 'has_parent_message?' do
-            div.permalink {
-              span 'in response to: '
-              a('message', :href=>"{{parent_message_href}}")
-            }
+          
+          if options.include_permalink
+            show_if 'has_parent_message?' do
+              div.permalink {
+                span 'in response to: '
+                a('message', :href=>"{{parent_message_href}}")
+              }
+            end
+            show_if 'parent_message?' do
+              div.permalink {
+                a('Permalink', :href=>"{{href}}")
+              }
+            end
           end
-          show_if 'parent_message?' do
-            div.permalink {
-              a('Permalink', :href=>"{{href}}")
-            }
-          end
+          
         }
       end
     })

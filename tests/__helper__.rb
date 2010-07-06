@@ -246,7 +246,7 @@ class Test::Unit::TestCase
 
   def create_club(mem = nil, raw_club_opts = {})
     mem ||= regular_member_1
-    id        = rand(20000)
+    id        = rand(20000).to_s + object_id.to_s
     defaults  = {:filename=>"#{id}", :title=>"Club: #{id}", 
                        :teaser=>"Teaser for: Club #{id}"}
     club_opts = defaults.update(raw_club_opts)

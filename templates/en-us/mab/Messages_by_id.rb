@@ -44,13 +44,13 @@ div.col.message_col! {
 
   show_if 'comments?' do
     div.comments! {
-      loop_messages 'comments', :include_meta=>true
+      loop_messages 'comments', :include_meta=>true, :include_permalink=>false
     } 
   end
 
   show_if 'questions?' do
     div.questions! {
-      loop_messages 'questions'
+      loop_messages 'questions', :include_meta=>true, :include_permalink=>false
     }
   end
 

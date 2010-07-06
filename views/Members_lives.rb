@@ -12,12 +12,8 @@ class Members_lives < Base_View
 		app.env['results.username']
 	end
 
-  def newspaper
-    cache[ 'messages.newspaper'] ||= compile_messages(app.current_member.newspaper(current_member_username))
+  def stream
+    cache[ 'messages.stream'] ||= compile_messages(app.current_member.stream(current_member_username))
   end
 
-  def newspaper?
-    newspaper.size > 0
-  end
-  
 end # === Members_lives 

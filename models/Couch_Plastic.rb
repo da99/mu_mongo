@@ -789,8 +789,8 @@ module Couch_Plastic_Class_Methods
   end
 
   def by_owner_id str, params = {}, opts = {}
-    id = BSON::ObjectID.legal?(str) ? BSON::ObjectID.from_string(str) : str
-    db_collection.find({:owner_id=>str}, params, opts)
+    id = Couch_Plastic.mongofy_id(str)
+    db_collection.find({:owner_id=>str}.update(params), opts)
   end
 
   def create editor, raw_raw_data # CREATE

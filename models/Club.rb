@@ -86,19 +86,29 @@ class Club
     @life_member   = mem
   end
 
+  def self.life_clubs_for_member mem
+    usernames.map { |filename|
+      life_club_for_member_username(mem, filename)
+    }
+  end
+
+  def self.life_club_for_username filename, mem
+    doc = mem.data.as_hash.clone
+    doc['filename']  = filename
+    doc['title']     = "#{filename}'s Universe"
+    doc['_id']       = mem.username_to_username_id(filename)
+    club = Club.new doc
+    club.set_as_life filename, mem
+    club
+  end
+
   def self.by_filename_or_member_username filename
     begin
       by_filename filename
     rescue Club::Not_Found
       begin
         mem = Member.by_username(filename)
-        doc = mem.data.as_hash.clone
-        doc['filename']  = filename
-        doc['title']     = "#{filename}'s Universe"
-        doc['_id']       = mem.username_to_username_id(filename)
-        club = Club.new doc
-        club.set_as_life filename, mem
-        club
+        life_club_for_username(filename, mem)
       rescue Member::Not_Found
         raise Club::Not_Found, "Filename: #{filename.inspect}"
       end
@@ -135,14 +145,7 @@ class Club
     }
   end
 
-  def self.all_ids_for_follower( raw_id )
-    id = Couch_Plastic.mongofy_id( raw_id )
-    db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
-      doc['club_id']
-    }
-  end
-
-  def self.all_ids_for_follower_id( raw_id )
+  def self.ids_for_follower_id( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
     db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
       doc['club_id']
@@ -184,11 +187,18 @@ class Club
     Club.new(club)
   end
 
-  def self.by_owner_ids raw_ids, raw_opts={}
-    username_ids = [raw_ids].flatten.compact
-    return [] if username_ids.empty?
+  def self.ids_by_owner_id raw_id, raw_opts = {}
+    id   = Couch_Plastic.mongofy_id(raw_id)
+    opts = {:fields => '_id'}.update(raw_opts)
+    db_collection.find({:owner_id => id }, opts).map { |doc|
+      doc['_id']
+    }
+  end
+
+  def self.by_owner_ids raw_id, raw_opts={}
+    id = Couch_Plastic.mongofy_id(raw_id)
     db_collection.find(
-      {:owner_id=>{:$in=>username_ids}}, 
+      {:owner_id=>id},
       raw_opts
     )
   end
