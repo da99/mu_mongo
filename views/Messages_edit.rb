@@ -15,7 +15,7 @@ class Messages_edit < Base_View
   def mess_data
     cache[:mess_data] ||= begin
                              hash = mess.data.as_hash
-                             hash[:title] ||= nil
+                             hash['title'] ||= nil
                              hash
                            end
   end
