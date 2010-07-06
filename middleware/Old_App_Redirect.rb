@@ -36,17 +36,13 @@ class Old_App_Redirect
     end
 
 		ua = new_env['HTTP_USER_AGENT']
-    if ua && [ 'panscient', 'aiHitBot' , "WebSurfer text"].detect { |ua_s|  
+    if ua && [ 'panscient', 'aiHitBot' , "WebSurfer text" , 'YandexBot', "Sosospider"].detect { |ua_s|  
 			ua[ua_s]
 		}
       return hearty_redirect("http://www.bing.com/")
     end
 
     if ua && ua['Yahoo! Slurp/'] && new_env['PATH_INFO']['/SlurpConfirm404']
-      return hearty_redirect("http://www.bing.com/")
-    end
-
-    if ua && ua["Sosospider"] && new_env['PATH_INFO'][/.css$/i]
       return hearty_redirect("http://www.bing.com/")
     end
 
