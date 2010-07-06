@@ -72,6 +72,14 @@ module Base_View_Club
     club.follower?(current_member)
   end
 
+  def owner?
+    club.owner?(current_member)
+  end
+
+  def follower_but_not_owner?
+    club.follower?(current_member) && !owner?
+  end
+
   def follow_href
     club.follow_href
   end

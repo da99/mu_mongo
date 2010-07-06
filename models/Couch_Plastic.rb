@@ -152,10 +152,14 @@ module Couch_Plastic
 
   def self.mongofy_id raw_id
     return raw_id if raw_id.is_a?(BSON::ObjectID)
-    str = raw_id.to_s.strip
-    BSON::ObjectID.legal?( str ) ?
-      BSON::ObjectID.from_string(str) :
-      str
+    return 'Nothing to see here' if raw_id.nil?
+    return raw_id if not raw_id.is_a?(String)
+    
+    str = raw_id.strip
+    return 'Nothing to see here' if str.empty?
+    return str if not BSON::ObjectID.legal?(str)
+
+    BSON::ObjectID.from_string(str)
   end
 
   attr_reader :data

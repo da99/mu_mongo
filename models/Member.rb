@@ -526,7 +526,7 @@ class Member
   end
   
   def owned_club_ids 
-    cache["owned_club_ids_#{un_id}"] ||= Club.ids_by_owner_ids(:$in=>current_username_ids)
+    cache["owned_club_ids_#{current_username_ids}"] ||= Club.ids_by_owner_id(:$in=>current_username_ids)
   end
   
   def owned_clubs
@@ -542,7 +542,7 @@ class Member
   end
 
   def messages_from_my_clubs 
-    Message.by_club_id(:$in=>club_ids)
+    Message.latest_by_club_id(:$in=>club_ids)
   end
   
 end # === model Member

@@ -59,7 +59,11 @@ module Base_Club
  
       mustache('logged_in?') {
 
-        mustache 'follower?' do
+        mustache 'owner?' do
+          p 'You own this universe.'
+        end
+      
+        mustache 'follower_but_not_owner?' do
           p "You are following this club."
         end
 

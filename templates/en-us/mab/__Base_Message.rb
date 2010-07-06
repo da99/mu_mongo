@@ -52,6 +52,7 @@ module Base_Message
       ['question' , 'Question']            ,
       ['fact'     , 'Encyclopedia Chapter'],
       ['e_chapter', 'Encyclopedia Chapter'],
+      ['e_quote', 'Quote'],
       ['chapter'  , 'Encyclopedia Chapter'],
       ['story'    , 'Story']               ,
       ['fight'    , 'Fight']               ,

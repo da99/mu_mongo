@@ -2,6 +2,12 @@
 # SASS ~/megauni/templates/en-us/sass/Members_account.sass
 # NAME Members_account
 
+div.col.messages! {
+
+	loop_messages 'messages'
+
+} # === div.messages!
+
 div.col.kill_me! {
   
   p %@

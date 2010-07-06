@@ -93,16 +93,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     log_in_regular_member_1
     get club.href
-    assert_equal nil, last_response.body['following']
-  end
-
-  must 'show follow club link to members.' do
-    club = create_club(regular_member_1)
-
-    log_in_regular_member_2
-    get club.href
-    
-    assert_equal club.follow_href, last_response.body[club.follow_href]
+    assert_equal nil, last_response.body[/....following..../]
   end
 
   must 'not show follow club link to followers.' do
@@ -115,6 +106,14 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_not_equal club.follow_href, last_response.body[club.follow_href]
   end
 
+  must 'show follow club link to members.' do
+    club = create_club(regular_member_1)
+
+    log_in_regular_member_2
+    get club.href
+    
+    assert_equal club.follow_href, last_response.body[club.follow_href]
+  end
 
   must 'allow members to follow someone else\'s club' do
     club = create_club(regular_member_2)
@@ -153,6 +152,16 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 		life  = Club.by_filename_or_member_username(un)
 		assert_equal "/clubs/#{un}/", life.href
 	end
+
+  must 'show "You own this universe" to owner of life club' do
+    msg = "You own this universe"
+    mem = regular_member_3
+    un_id, un = mem.username_hash.to_a.first
+    log_in_regular_member_3
+    life = Club.by_filename_or_member_username(un)
+    get life.href
+    assert_equal msg, last_response.body[msg]
+  end
 
   # ================ Club Search ===========================
 

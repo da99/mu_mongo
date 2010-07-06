@@ -25,8 +25,9 @@ class Message
     'mag_story'  => ['magazine article', SECTIONS::MAG],
     'question'   => ['question', SECTIONS::QA],
     'cheer'      => ['cheer reply', SECTIONS::THANKS],
-    'jeer'      => ['critique reply', SECTIONS::THANKS]
-    # e_chapter
+    'jeer'      => ['critique reply', SECTIONS::THANKS],
+		'e_chapter' => ['encyclopedia chapter', SECTIONS::E],
+		'e_quote' => ['quotation', SECTIONS::E]
     # quote
     # plea  
     # fulfill

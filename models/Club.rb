@@ -97,6 +97,7 @@ class Club
     doc['filename']  = filename
     doc['title']     = "#{filename}'s Universe"
     doc['_id']       = mem.username_to_username_id(filename)
+    doc['owner_id']  = doc['_id']
     club = Club.new doc
     club.set_as_life filename, mem
     club
@@ -147,9 +148,11 @@ class Club
 
   def self.ids_for_follower_id( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
-    db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
+    following = db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
       doc['club_id']
-    }
+    } 
+    owned = all_ids_for_owner(raw_id)
+    (following + owned).uniq
   end
 
   def self.all_filenames 
@@ -233,22 +236,17 @@ class Club
   end
 
   def followers
-    cache[:followers] ||= self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
+    cache[:followers] ||= (self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
       doc['follower_id']
-    }
+    } + [data.owner_id])
   end
 
   def potential_follower? mem
-    return false if !mem || owner?(mem) || follower?(mem)
-    true
+    !follower?(mem)
   end
 
   def follower? mem
-    return false if not mem
-    return false if owner?(mem)
-    mem.username_ids.detect { |un| 
-      followers.include?(un)
-    }
+    mem.following_club_id?(data._id)
   end
 
   # === Other Instance Methods
