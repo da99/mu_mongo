@@ -77,6 +77,12 @@ strong {
   padding: 0 5px;
   font-size: 90%; }
 
+strong.title {
+  color: #3a3a3a;
+  padding: 0;
+  font-size: 115%;
+  background: transparent; }
+
 img.left {
   float: left;
   margin: 0 10px 0 0; }
