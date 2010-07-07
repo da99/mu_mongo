@@ -62,6 +62,14 @@ table {
 a img {
   border: none; }
 
+#outer_shell {
+  overflow: hidden; }
+
+#inner_shell {
+  position: relative;
+  left: 50%;
+  float: left; }
+
 a:link, a:visited {
   color: #f00919;
   font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
@@ -320,31 +328,15 @@ div.message, div.club {
 div.col {
   float: left; }
 
-#intro {
-  max-width: 250px;
-  padding: 0 10px 100px 0;
-  text-align: right; }
-
-#navigate {
-  padding: 0px 0 100px 10px; }
-
-#guide {
-  width: 250px;
-  padding: 10px;
-  margin: 0 10px 0 0;
-  background: #ffffcc; }
-  #guide ul {
-    padding: 0 0 0 20px; }
-
-#club_message_create {
-  padding-top: 20px; }
-
 #the_content {
   padding: 10px 10px 50px 10px;
   overflow: hidden;
   display: inline-block; }
   #the_content {
     display: block; }
+
+#club_title {
+  text-align: center; }
 
 #club_nav_bar {
   list-style-type: none;
@@ -356,7 +348,8 @@ div.col {
   border-bottom: 2px solid #1d70d2;
   margin-bottom: 10px;
   padding-top: 10px;
-  padding-left: 0px; }
+  padding-left: 0px;
+  text-align: center; }
   #club_nav_bar li {
     margin: 0px;
     padding: 0px;
@@ -383,13 +376,32 @@ div.col {
     font-size: 80%;
     text-transform: uppercase; }
 
-#club_messages {
-  width: 550px;
-  float: left; }
+#club_body {
+  float: left;
+  position: relative;
+  left: -50%; }
+
+#intro {
+  max-width: 250px;
+  padding: 0 10px 100px 0;
+  text-align: right; }
+
+#guide {
+  width: 250px;
+  padding: 10px;
+  margin: 0 10px 0 0;
+  background: #ffffcc; }
+  #guide ul {
+    padding: 0 0 0 20px; }
 
 #club_message_create {
+  padding-top: 20px;
   padding-bottom: 15px;
   width: 300px; }
+
+#club_messages {
+  max-width: 550px;
+  float: left; }
 
 #intro {
   border-left: 1px dashed #003860;

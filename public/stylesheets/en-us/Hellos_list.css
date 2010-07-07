@@ -62,6 +62,14 @@ table {
 a img {
   border: none; }
 
+#outer_shell {
+  overflow: hidden; }
+
+#inner_shell {
+  position: relative;
+  left: 50%;
+  float: left; }
+
 a:link, a:visited {
   color: #f00919;
   font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;

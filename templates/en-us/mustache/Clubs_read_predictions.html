@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278466350" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278523045" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,72 +70,71 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="navigate">
-      <h3>{{title}}</h3>
+     <h3 id="club_title">{{title}}</h3>
 
 {{#logged_in?}}
 
 
 {{#follower_but_not_owner?}}
 
-       <p>You are following this club.</p>
+      <p>You are following this club.</p>
 
 {{/follower_but_not_owner?}}
 
 
 {{/logged_in?}}
 
-       <ul id="club_nav_bar">
-        <li>
-         <a href="{{club_href}}">Home</a>
-        </li>
-        <li>
-         <a href="{{club_href}}e/">Encyclopedia</a>
-        </li>
-        <li>
-         <a href="{{club_href}}news/">News</a>
-        </li>
-        <li>
-         <a href="{{club_href}}magazine/">Magazine</a>
-        </li>
-        <li>
-         <a href="{{club_href}}fights/">Fights</a>
-        </li>
-        <li>
-         <a href="{{club_href}}qa/">Q &amp; A</a>
-        </li>
-        <li>
-         <a href="{{club_href}}shop/">Shop</a>
-        </li>
-        <li class="selected">Predictions</li>
-        <li>
-         <a href="{{club_href}}random/">Random</a>
-        </li>
-        <li>
-         <a href="{{club_href}}thanks/">Thanks</a>
-        </li>
+      <ul id="club_nav_bar">
+       <li>
+        <a href="{{club_href}}">Home</a>
+       </li>
+       <li>
+        <a href="{{club_href}}e/">Encyclopedia</a>
+       </li>
+       <li>
+        <a href="{{club_href}}news/">News</a>
+       </li>
+       <li>
+        <a href="{{club_href}}magazine/">Magazine</a>
+       </li>
+       <li>
+        <a href="{{club_href}}fights/">Fights</a>
+       </li>
+       <li>
+        <a href="{{club_href}}qa/">Q &amp; A</a>
+       </li>
+       <li>
+        <a href="{{club_href}}shop/">Shop</a>
+       </li>
+       <li class="selected">Predictions</li>
+       <li>
+        <a href="{{club_href}}random/">Random</a>
+       </li>
+       <li>
+        <a href="{{club_href}}thanks/">Thanks</a>
+       </li>
 
 {{#logged_in?}}
 
-        <li>
-         <a href="/log-out/">Log-out</a>
-        </li>
+       <li>
+        <a href="/log-out/">Log-out</a>
+       </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-        <li>
-         <a href="/log-in/">Log-in</a>
-        </li>
+       <li>
+        <a href="/log-in/">Log-in</a>
+       </li>
 
 {{/not_logged_in?}}
 
-        <li>
-         <a href="/">Megauni</a>
-        </li>
-       </ul>
+       <li>
+        <a href="/">Megauni</a>
+       </li>
+      </ul>
 
 {{#logged_in?}}
 
@@ -145,32 +144,32 @@
 
 {{#single_username?}}
 
-       <p>
-        <a href="{{follow_href}}">Follow this club.</a>
-       </p>
+      <p>
+       <a href="{{follow_href}}">Follow this club.</a>
+      </p>
 
 {{/single_username?}}
 
 
 {{#multiple_usernames?}}
 
-       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
-        <fieldset>
-         <label>Follow this club as: </label>
-         <select name="username">
+      <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
+       <fieldset>
+        <label>Follow this club as: </label>
+        <select name="username">
 
 {{#current_member_usernames}}
 
-          <option value="{{username}}">{{username}}</option>
+         <option value="{{username}}">{{username}}</option>
 
 {{/current_member_usernames}}
 
-         </select>
-        </fieldset>
-        <div class="buttons">
-         <button>Follow.</button>
-        </div>
-       </form>
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button>Follow.</button>
+       </div>
+      </form>
 
 {{/multiple_usernames?}}
 
@@ -180,130 +179,135 @@
 
 {{/logged_in?}}
 
+     <div id="outer_shell">
+      <div id="inner_shell">
+       <div id="club_body">
 
 {{#logged_in?}}
 
-      <div class="col" id="guide">
-       <h4>Stuff you can do here:</h4>
-       <p>
-        This is where you can publish your thoughts
-      on what will happen in the future.  When
-      you are right, you can yell, "I told you so!"
-      </p>
-      </div>
-      <div class="col" id="message_create">
-        <div id="club_message_create">
-         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-          <h4>Post a prediction:</h4>
-          <fieldset class="hidden">
-           <input type="hidden" value="" name="body_images_cache"/>
-           <input type="hidden" value="{{url}}" name="return_url"/>
-           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-           <input type="hidden" value="public" name="privacy"/>
-           <input type="hidden" value="prediction" name="message_model"/>
+        <div class="col" id="guide">
+         <h4>Stuff you can do here:</h4>
+         <p>
+            This is where you can publish your thoughts
+          on what will happen in the future.  When
+          you are right, you can yell, "I told you so!"
+          </p>
+        </div>
+        <div class="col" id="message_create">
+          <div id="club_message_create">
+           <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+            <h4>Post a prediction:</h4>
+            <fieldset class="hidden">
+             <input type="hidden" value="" name="body_images_cache"/>
+             <input type="hidden" value="{{url}}" name="return_url"/>
+             <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+             <input type="hidden" value="public" name="privacy"/>
+             <input type="hidden" value="prediction" name="message_model"/>
 
 {{#single_username?}}
 
-           <input type="hidden" value="{{first_username}}" name="username"/>
+             <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-           <input type="hidden" value="prediction" name="message_model"/>
-          </fieldset>
-          <fieldset>
-           <textarea name="body"></textarea>
-          </fieldset>
+             <input type="hidden" value="prediction" name="message_model"/>
+            </fieldset>
+            <fieldset>
+             <textarea name="body"></textarea>
+            </fieldset>
 
 {{#multiple_usernames?}}
 
-          <fieldset>
-           <label>Post as:</label>
-           <select name="owner_id">
+            <fieldset>
+             <label>Post as:</label>
+             <select name="owner_id">
 
 {{#multiple_usernames}}
 
-            <option value="{{username}}">{{username}}</option>
+              <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-           </select>
-          </fieldset>
+             </select>
+            </fieldset>
 
 {{/multiple_usernames?}}
 
-          <div class="buttons">
-           <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            <div class="buttons">
+             <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            </div>
+           </form>
           </div>
-         </form>
         </div>
-      </div>
 
 {{/logged_in?}}
 
-      <div class="col" id="club_messages">
+        <div class="col" id="club_messages">
 
 {{#no_predictions?}}
 
-       <div class="empty_msg">Nothing has been posted yet.</div>
+         <div class="empty_msg">Nothing has been posted yet.</div>
 
 {{/no_predictions?}}
 
 
 {{#predictions}}
 
-        <div class="message">
+          <div class="message">
 
 {{#title}}
 
-         <strong class="title">{{title}}</strong>
+           <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-         <div class="body">{{{compiled_body}}}</div>
+           <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
 
-         <div class="permalink">
-          <strong>{{message_model_in_english}}</strong>
-          <span> for </span>
-          <a href="{{parent_message_href}}">this</a>
-         </div>
+           <div class="permalink">
+            <strong>{{message_model_in_english}}</strong>
+            <span> for </span>
+            <a href="{{parent_message_href}}">this</a>
+           </div>
 
 {{/has_parent_message?}}
 
 
 {{#parent_message?}}
 
-         <div class="permalink">
+           <div class="permalink">
 
 {{#logged_in?}}
 
-          <a href="{{href}}">Reply</a>
-          <span> to this </span>
-          <strong> {{message_model_in_english}} </strong>
+            <a href="{{href}}">Reply</a>
+            <span> to this </span>
+            <strong> {{message_model_in_english}} </strong>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-          <a href="{{href}}">link to this {{message_model_in_english}}</a>
+            <a href="{{href}}">link to this {{message_model_in_english}}</a>
 
 {{/not_logged_in?}}
 
-         </div>
+           </div>
 
 {{/parent_message?}}
 
-        </div>
+          </div>
 
 {{/predictions}}
 
+        </div>
+       </div>
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278466350"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278466350"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278523045"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278523045"></script>
 
 {{#include_tracking?}}
 

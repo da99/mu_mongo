@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278466349" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278523044" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,72 +70,71 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="navigate">
-      <h3>{{club_title}}</h3>
+     <h3 id="club_title">{{club_title}}</h3>
 
 {{#logged_in?}}
 
 
 {{#follower_but_not_owner?}}
 
-       <p>You are following this club.</p>
+      <p>You are following this club.</p>
 
 {{/follower_but_not_owner?}}
 
 
 {{/logged_in?}}
 
-       <ul id="club_nav_bar">
-        <li class="selected">Home</li>
-        <li>
-         <a href="{{club_href}}e/">Encyclopedia</a>
-        </li>
-        <li>
-         <a href="{{club_href}}news/">News</a>
-        </li>
-        <li>
-         <a href="{{club_href}}magazine/">Magazine</a>
-        </li>
-        <li>
-         <a href="{{club_href}}fights/">Fights</a>
-        </li>
-        <li>
-         <a href="{{club_href}}qa/">Q &amp; A</a>
-        </li>
-        <li>
-         <a href="{{club_href}}shop/">Shop</a>
-        </li>
-        <li>
-         <a href="{{club_href}}predictions/">Predictions</a>
-        </li>
-        <li>
-         <a href="{{club_href}}random/">Random</a>
-        </li>
-        <li>
-         <a href="{{club_href}}thanks/">Thanks</a>
-        </li>
+      <ul id="club_nav_bar">
+       <li class="selected">Home</li>
+       <li>
+        <a href="{{club_href}}e/">Encyclopedia</a>
+       </li>
+       <li>
+        <a href="{{club_href}}news/">News</a>
+       </li>
+       <li>
+        <a href="{{club_href}}magazine/">Magazine</a>
+       </li>
+       <li>
+        <a href="{{club_href}}fights/">Fights</a>
+       </li>
+       <li>
+        <a href="{{club_href}}qa/">Q &amp; A</a>
+       </li>
+       <li>
+        <a href="{{club_href}}shop/">Shop</a>
+       </li>
+       <li>
+        <a href="{{club_href}}predictions/">Predictions</a>
+       </li>
+       <li>
+        <a href="{{club_href}}random/">Random</a>
+       </li>
+       <li>
+        <a href="{{club_href}}thanks/">Thanks</a>
+       </li>
 
 {{#logged_in?}}
 
-        <li>
-         <a href="/log-out/">Log-out</a>
-        </li>
+       <li>
+        <a href="/log-out/">Log-out</a>
+       </li>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-        <li>
-         <a href="/log-in/">Log-in</a>
-        </li>
+       <li>
+        <a href="/log-in/">Log-in</a>
+       </li>
 
 {{/not_logged_in?}}
 
-        <li>
-         <a href="/">Megauni</a>
-        </li>
-       </ul>
+       <li>
+        <a href="/">Megauni</a>
+       </li>
+      </ul>
 
 {{#logged_in?}}
 
@@ -145,32 +144,32 @@
 
 {{#single_username?}}
 
-       <p>
-        <a href="{{follow_href}}">Follow this club.</a>
-       </p>
+      <p>
+       <a href="{{follow_href}}">Follow this club.</a>
+      </p>
 
 {{/single_username?}}
 
 
 {{#multiple_usernames?}}
 
-       <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
-        <fieldset>
-         <label>Follow this club as: </label>
-         <select name="username">
+      <form action="/clubs/follow/" method="post" name="form_follow_create" id="form_follow_create">
+       <fieldset>
+        <label>Follow this club as: </label>
+        <select name="username">
 
 {{#current_member_usernames}}
 
-          <option value="{{username}}">{{username}}</option>
+         <option value="{{username}}">{{username}}</option>
 
 {{/current_member_usernames}}
 
-         </select>
-        </fieldset>
-        <div class="buttons">
-         <button>Follow.</button>
-        </div>
-       </form>
+        </select>
+       </fieldset>
+       <div class="buttons">
+        <button>Follow.</button>
+       </div>
+      </form>
 
 {{/multiple_usernames?}}
 
@@ -180,47 +179,50 @@
 
 {{/logged_in?}}
 
-      <div class="col" id="intro">
-       <h4>About this universe:</h4>
+     <div id="outer_shell">
+      <div id="inner_shell">
+       <div id="club_body">
+        <div class="col" id="intro">
+         <h4>About this universe:</h4>
 
 {{#owner?}}
 
-       <p>You own this universe.</p>
+         <p>You own this universe.</p>
 
 {{/owner?}}
 
-       <div class="teaser">{{club_teaser}}</div>
+         <div class="teaser">{{club_teaser}}</div>
 
 {{#logged_in?}}
 
 
 {{#club_updator?}}
 
-       <div>
-        <a href="{{club_href_edit}}">Edit settings.</a>
-       </div>
+         <div>
+          <a href="{{club_href_edit}}">Edit settings.</a>
+         </div>
 
 {{/club_updator?}}
 
 
 {{/logged_in?}}
 
-      </div>
-      <div class="col" id="guide">
-       <h4>Stuff you should do:</h4>
-       <ul>
-        <li>Post something in the "Encyclopedia" section.</li>
-        <li>Write anything in the "Random" section.</li>
-        <li> Recommend a product in the "Shop" section. </li>
-        <li> Ask a question in the "Q &amp; A" section. </li>
-       </ul>
-      </div>
-      <div class="col" id="club_messages">
-       <h4>Latest Messages Posted:</h4>
+        </div>
+        <div class="col" id="guide">
+         <h4>Stuff you should do:</h4>
+         <ul>
+          <li>Post something in the "Encyclopedia" section.</li>
+          <li>Write anything in the "Random" section.</li>
+          <li> Recommend a product in the "Shop" section. </li>
+          <li> Ask a question in the "Q &amp; A" section. </li>
+         </ul>
+        </div>
+        <div class="col" id="club_messages">
+         <h4>Latest Messages Posted:</h4>
 
 {{#no_messages_latest?}}
 
-       <div class="empty_msg">No messages yet.</div>
+         <div class="empty_msg">No messages yet.</div>
 
 {{/no_messages_latest?}}
 
@@ -230,57 +232,59 @@
 
 {{#messages_latest}}
 
-        <div class="message">
+          <div class="message">
 
 {{#title}}
 
-         <strong class="title">{{title}}</strong>
+           <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-         <div class="body">{{{compiled_body}}}</div>
+           <div class="body">{{{compiled_body}}}</div>
 
 {{#has_parent_message?}}
 
-         <div class="permalink">
-          <strong>{{message_model_in_english}}</strong>
-          <span> for </span>
-          <a href="{{parent_message_href}}">this</a>
-         </div>
+           <div class="permalink">
+            <strong>{{message_model_in_english}}</strong>
+            <span> for </span>
+            <a href="{{parent_message_href}}">this</a>
+           </div>
 
 {{/has_parent_message?}}
 
 
 {{#parent_message?}}
 
-         <div class="permalink">
+           <div class="permalink">
 
 {{#logged_in?}}
 
-          <a href="{{href}}">Reply</a>
-          <span> to this </span>
-          <strong> {{message_model_in_english}} </strong>
+            <a href="{{href}}">Reply</a>
+            <span> to this </span>
+            <strong> {{message_model_in_english}} </strong>
 
 {{/logged_in?}}
 
 
 {{#not_logged_in?}}
 
-          <a href="{{href}}">link to this {{message_model_in_english}}</a>
+            <a href="{{href}}">link to this {{message_model_in_english}}</a>
 
 {{/not_logged_in?}}
 
-         </div>
+           </div>
 
 {{/parent_message?}}
 
-        </div>
+          </div>
 
 {{/messages_latest}}
 
 
 {{/messages_latest?}}
 
+        </div>
+       </div>
       </div>
      </div>
    </div>

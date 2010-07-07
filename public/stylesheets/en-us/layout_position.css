@@ -93,6 +93,14 @@ a img {
   margin-right: 10px;
   width: 700px; }
 
+#outer_shell {
+  overflow: hidden; }
+
+#inner_shell {
+  position: relative;
+  left: 50%;
+  float: left; }
+
 form fieldset input.text, form fieldset textarea {
   width: 600px; }
 
