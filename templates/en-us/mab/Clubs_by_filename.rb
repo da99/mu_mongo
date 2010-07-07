@@ -3,58 +3,63 @@
 # NAME Club_by_filename
 
 
+h3.club_title! '{{club_title}}' 
 
-div.col.navigate! {
+club_nav_bar(__FILE__)
+
+div.outer_shell! do
   
-  h3 '{{club_title}}' 
-  
-  club_nav_bar(__FILE__)
-
-  div.col.intro! {
-
-    h4 'About this universe:'
+  div.inner_shell! do
     
-    mustache 'owner?' do
-      p 'You own this universe.'
-    end
-      
-    div.teaser '{{club_teaser}}'
+    div.club_body! {
 
-    show_if 'logged_in?' do
+      div.col.intro! {
 
-      show_if('club_updator?') {
-        div {
-          a('Edit settings.', :href=>'{{club_href_edit}}')
+        h4 'About this universe:'
+        
+        mustache 'owner?' do
+          p 'You own this universe.'
+        end
+          
+        div.teaser '{{club_teaser}}'
+
+        show_if 'logged_in?' do
+
+          show_if('club_updator?') {
+            div {
+              a('Edit settings.', :href=>'{{club_href_edit}}')
+            }
+          }
+
+        end # logged_in?
+
+      } # div.intro!
+
+      div.col.guide! {
+        h4 'Stuff you should do:'
+        ul {
+          li "Post something in the \"Encyclopedia\" section."
+          li "Write anything in the \"Random\" section."
+          li %~ Recommend a product in the "Shop" section. ~
+          li %~ Ask a question in the "Q & A" section. ~
         }
       }
 
-    end # logged_in?
+      div.col.club_messages! do
+        
+        h4 'Latest Messages Posted:'
 
-  } # div.intro!
+        show_if('no_messages_latest?'){
+          div.empty_msg 'No messages yet.'
+        }
+        
+        show_if 'messages_latest?' do
+          loop_messages 'messages_latest', :include_meta=>true
+        end
+        
+      end
+      
+    } # div.navigate!
 
-  div.col.guide! {
-    h4 'Stuff you should do:'
-    ul {
-      li "Post something in the \"Encyclopedia\" section."
-      li "Write anything in the \"Random\" section."
-      li %~ Recommend a product in the "Shop" section. ~
-      li %~ Ask a question in the "Q & A" section. ~
-    }
-  }
-
-  div.col.club_messages! do
-    
-    h4 'Latest Messages Posted:'
-
-    show_if('no_messages_latest?'){
-      div.empty_msg 'No messages yet.'
-    }
-    
-    show_if 'messages_latest?' do
-      loop_messages 'messages_latest', :include_meta=>true
-    end
-    
-  end
-  
-} # div.navigate!
-
+  end # div.inner_shell!
+end # div.outer_shell!

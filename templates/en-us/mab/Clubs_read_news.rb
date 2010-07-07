@@ -2,54 +2,56 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_news.sass
 # NAME Clubs_read_news
 
-# div.col.intro! {
-#   
-# } # div.intro!
+h3.club_title! '{{title}}' 
 
-div.col.navigate! {
-  
-  h3 '{{title}}' 
-  
-  club_nav_bar(__FILE__)
-  
-  show_if 'logged_in?' do
-    
-    div.col.guide! {
-      h4 'Stuff you can do here:'
-      p %~
-        Post only important news. 
-      Examples:
-      ~
-      ul {
-        li 'Your plane landed in Dallas.'
-        li 'You got a job demotion.'
-        li 'You broke up with your dog walker.'
-        li 'You got arrested... again.'
-      }
-    }
+club_nav_bar(__FILE__)
 
-    div.col.message_create! {
-      form_message_create(
-        :title => 'Post news:',
-        :hidden_input => {
-                          :message_model => 'news', 
-                          :club_filename => '{{club_filename}}',
-                          :privacy       => 'public'
-                         }
-      )
-    }
+div.outer_shell! do
+  div.inner_shell! do
     
-  end # logged_in?
+    div.club_body! {
+      
+      show_if 'logged_in?' do
+        
+        div.col.guide! {
+          h4 'Stuff you can do here:'
+          p %~
+            Post only important news. 
+          Examples:
+          ~
+          ul {
+            li 'Your plane landed in Dallas.'
+            li 'You got a job demotion.'
+            li 'You broke up with your dog walker.'
+            li 'You got arrested... again.'
+          }
+        }
+
+        div.col.message_create! {
+          form_message_create(
+            :title => 'Post news:',
+            :hidden_input => {
+                              :message_model => 'news', 
+                              :club_filename => '{{club_filename}}',
+                              :privacy       => 'public'
+                             }
+          )
+        }
+        
+      end # logged_in?
 
 
-  div.col.club_messages! do
-    
-    show_if('no_news?'){
-      div.empty_msg 'Nothing has been posted yet.'
-    }
-    
-    loop_messages 'news'
-    
-  end
+      div.col.club_messages! do
+        
+        show_if('no_news?'){
+          div.empty_msg 'Nothing has been posted yet.'
+        }
+        
+        loop_messages 'news'
+        
+      end
 
-} # div.navigate!
+    } # div.club_body!
+    
+  end # div.inner_shell!
+end # div.outer_shell!

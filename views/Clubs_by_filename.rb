@@ -28,7 +28,7 @@ class Clubs_by_filename < Base_View
 
   def club_teaser
     if club.life_club? && !club.data.teaser
-      "Post stuff to this universe."
+      "The personal space of a member called: #{club_filename}."
     else
       super
     end

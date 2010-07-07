@@ -8,14 +8,32 @@
 div.col
   float: left
 
+#the_content
+  padding: 10px 10px 50px 10px
+  +clearfix
+
+#club_title
+  text-align: center
   
+#club_nav_bar 
+  +nav_bar
+  margin-bottom: 10px
+  padding-top: 10px
+  padding-left: 0px
+  text-align: center
+  li
+    padding: 0
+  a
+    font-size: 80%
+    text-transform: uppercase
+  
+#club_body
+  +variable_width_centered
+
 #intro
   max-width: 250px
   padding: 0 10px 100px 0
   text-align: right
-
-#navigate
-  padding: 0px 0 100px 10px
 
 #guide
   width: 250px
@@ -27,27 +45,10 @@ div.col
 
 #club_message_create
   padding-top: 20px
-
-#the_content
-  padding: 10px 10px 50px 10px
-  +clearfix
-  
-#club_nav_bar 
-  +nav_bar
-  margin-bottom: 10px
-  padding-top: 10px
-  padding-left: 0px
-  li
-    padding: 0
-  a
-    font-size: 80%
-    text-transform: uppercase
-
-#club_messages
-  width: 550px
-  float: left 
-
-#club_message_create
   padding-bottom: 15px
   width: 300px
+
+#club_messages
+  max-width: 550px
+  float: left 
 

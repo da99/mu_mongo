@@ -2,46 +2,49 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-# div.col.intro! {
-# 
-# } # div.intro!
+h3.club_title! '{{title}}' 
 
-div.col.navigate! {
+club_nav_bar(__FILE__)
 
-  h3 '{{title}}' 
-
-  club_nav_bar(__FILE__)
-
-  show_if 'logged_in?' do
+div.outer_shell! do
+  div.inner_shell! do
     
-    div.col.guide! {
-      h4 'Stuff you can do here:'
-      p %~
-        Help others by answering questions.
-      ~
-    }
+    div.club_body! {
 
-    div.col.message_create! {
-      form_message_create(
-        :title => 'Publish a new:',
-        :models => %w{question plea},
-        :hidden_input => {
-          :club_filename => '{{club_filename}}',
-          :privacy       => 'public'
+      show_if 'logged_in?' do
+        
+        div.col.guide! {
+          h4 'Stuff you can do here:'
+          p %~
+            Help others by answering questions.
+          ~
         }
-      )
-    }
-    
-  end # logged_in?
-  
-  div.col.club_messages! do
-    
-    show_if('no_questions?'){
-      div.empty_msg 'No questions have been asked.'
-    }
-    
-    loop_messages 'questions'
-    
-  end
 
-} # div.navigate!
+        div.col.message_create! {
+          form_message_create(
+            :title => 'Publish a new:',
+            :models => %w{question plea},
+            :hidden_input => {
+              :club_filename => '{{club_filename}}',
+              :privacy       => 'public'
+            }
+          )
+        }
+        
+      end # logged_in?
+      
+      div.col.club_messages! do
+        
+        show_if('no_questions?'){
+          div.empty_msg 'No questions have been asked.'
+        }
+        
+        loop_messages 'questions'
+        
+      end
+
+    } # div.club_body!
+    
+  end # div.inner_shell!
+end # div.outer_shell!
+    

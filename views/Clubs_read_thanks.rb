@@ -5,7 +5,7 @@
 class Clubs_read_thanks < Base_View
 
   def title 
-    "Thank you, #{club_title}"
+    "Thank you for #{club_title}"
   end
 
 	def thanks

@@ -59,6 +59,25 @@ $light_green: #dae6b4
 =dashed_border_right
   border-right: 1px dashed $dashed_border
 
+// Used with +variable_width_centered mixin.
+#outer_shell
+  overflow: hidden
+  
+// Used with +variable_width_centered mixin.
+#inner_shell
+  position: relative
+  left: 50%
+  float: left
+
+// How to center a variable width DIV:
+// 1) Add mixin to original div: +variable_width_centered
+// 2) Wrap div with #inner_shell.
+// 2) Wrap that div with #outer_shell.
+=variable_width_centered
+  float: left
+  position: relative
+  left: -50%
+
 =nav_bar
   +inline-list
   display: block
