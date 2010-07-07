@@ -67,8 +67,8 @@ a img {
 
 #inner_shell {
   position: relative;
-  left: 50%;
-  float: left; }
+  float: left;
+  left: 50%; }
 
 ul.tabs {
   margin: 0;
@@ -169,13 +169,12 @@ body {
       color: #133b00; }
 
 #mini_nav_bar, #nav_bar {
+  border-left: 1px dashed #003860;
   width: 200px;
   float: left;
   text-align: left;
   margin-left: 10px;
-  padding: 0 0 100px 10px;
-  border: 1px dashed #003860;
-    border-width: 0 0 0 1px; }
+  padding: 0 0 100px 10px; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
     font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
@@ -238,6 +237,8 @@ h3 {
   font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
   font-size: 200%;
   font-weight: normal; }
+  h3.title {
+    text-align: center; }
 
 h4, div.divider, p.divider {
   text-transform: uppercase;
@@ -376,8 +377,8 @@ div.col {
     padding: 0; }
 
 #club_body {
-  float: left;
   position: relative;
+  float: left;
   left: -50%; }
 
 #intro {

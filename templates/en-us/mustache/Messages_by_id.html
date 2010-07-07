@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278537449" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278544822" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -81,18 +81,76 @@
 
 {{/show_moving_message?}}
 
-     <div class="col" id="message_col">
-      <div id="message">
+     <h3 id="club_title">{{club_title}}</h3>
+      <ul id="club_nav_bar">
+       <li>
+        <a href="{{club_href}}">Home</a>
+       </li>
+       <li>
+        <a href="{{club_href}}e/">Encyclopedia</a>
+       </li>
+       <li>
+        <a href="{{club_href}}news/">News</a>
+       </li>
+       <li>
+        <a href="{{club_href}}magazine/">Magazine</a>
+       </li>
+       <li>
+        <a href="{{club_href}}fights/">Fights</a>
+       </li>
+       <li>
+        <a href="{{club_href}}qa/">Q &amp; A</a>
+       </li>
+       <li>
+        <a href="{{club_href}}shop/">Shop</a>
+       </li>
+       <li>
+        <a href="{{club_href}}predictions/">Predictions</a>
+       </li>
+       <li>
+        <a href="{{club_href}}random/">Random</a>
+       </li>
+       <li>
+        <a href="{{club_href}}thanks/">Thanks</a>
+       </li>
+
+{{#logged_in?}}
+
+       <li>
+        <a href="/log-out/">Log-out</a>
+       </li>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+       <li>
+        <a href="/log-in/">Log-in</a>
+       </li>
+
+{{/not_logged_in?}}
+
+       <li>
+        <a href="/">Megauni</a>
+       </li>
+      </ul>
+
+{{#logged_in?}}
+
+
+{{/logged_in?}}
+
+     <div id="message">
 
 {{#message_data}}
 
-       <h3>{{message_title}}</h3>
-       <div class="body">
-{{{compiled_body}}}       </div>
+      <h3>{{message_title}}</h3>
+      <div class="body">
+{{{compiled_body}}}      </div>
 
 {{/message_data}}
 
-      </div>
       <div id="about">
        <h4>About this content:</h4>
        <div>
@@ -125,252 +183,131 @@
 {{/message_updator?}}
 
       </div>
+     </div>
+     <div id="outer_shell">
+      <div id="inner_shell">
+       <div id="replies">
 
 {{#comments?}}
 
-      <div id="comments">
+        <div id="comments">
+         <h4>YAYs &amp; BOOs:</h4>
 
 {{#comments}}
 
-        <div class="message">
+          <div class="message">
 
 {{#title}}
 
-         <strong class="title">{{title}}</strong>
+           <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-         <div class="body">{{{compiled_body}}}</div>
-        </div>
+           <div class="body">{{{compiled_body}}}</div>
+          </div>
 
 {{/comments}}
 
-      </div>
+        </div>
 
 {{/comments?}}
 
 
 {{#questions?}}
 
-      <div id="questions">
+        <div id="questions">
+         <h4>Questions:</h4>
 
 {{#questions}}
 
-        <div class="message">
+          <div class="message">
 
 {{#title}}
 
-         <strong class="title">{{title}}</strong>
+           <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-         <div class="body">{{{compiled_body}}}</div>
-        </div>
+           <div class="body">{{{compiled_body}}}</div>
+          </div>
 
 {{/questions}}
 
-      </div>
+        </div>
 
 {{/questions?}}
 
 
 {{#logged_in?}}
 
-      <div id="reply">
-       <div id="guide">
-        <h4>Stuff you can do:</h4>
-        <p>
-          Express negative feelings. Try to use
-        polite profanity, like meathead instead of 
-        doo-doo head.
-        </p>
-       </div>
-        <div id="club_message_create">
-         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-          <h4>Publish a new:</h4>
-          <fieldset>
-           <select name="message_model">
-            <option value="question">Question</option>
-            <option value="cheer">Praise &amp; Cheer</option>
-            <option value="jeer">Criticize</option>
-           </select>
-          </fieldset>
-          <fieldset class="hidden">
-           <input type="hidden" value="" name="body_images_cache"/>
-           <input type="hidden" value="{{url}}" name="return_url"/>
-           <input type="hidden" value="public" name="privacy"/>
-           <input type="hidden" value="{{message_id}}" name="parent_message_id"/>
+        <div id="reply">
+         <div id="guide">
+          <h4>Stuff you can do:</h4>
+          <p>
+              Express negative feelings. Try to use
+            polite profanity, like meathead instead of 
+            doo-doo head.
+            </p>
+         </div>
+          <div id="club_message_create">
+           <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+            <h4>Publish a new:</h4>
+            <fieldset>
+             <select name="message_model">
+              <option value="question">Question</option>
+              <option value="cheer">Praise &amp; Cheer</option>
+              <option value="jeer">Criticize</option>
+             </select>
+            </fieldset>
+            <fieldset class="hidden">
+             <input type="hidden" value="" name="body_images_cache"/>
+             <input type="hidden" value="{{url}}" name="return_url"/>
+             <input type="hidden" value="public" name="privacy"/>
+             <input type="hidden" value="{{message_id}}" name="parent_message_id"/>
 
 {{#single_username?}}
 
-           <input type="hidden" value="{{first_username}}" name="username"/>
+             <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-          </fieldset>
-          <fieldset>
-           <textarea name="body"></textarea>
-          </fieldset>
+            </fieldset>
+            <fieldset>
+             <textarea name="body"></textarea>
+            </fieldset>
 
 {{#multiple_usernames?}}
 
-          <fieldset>
-           <label>Post as:</label>
-           <select name="owner_id">
+            <fieldset>
+             <label>Post as:</label>
+             <select name="owner_id">
 
 {{#multiple_usernames}}
 
-            <option value="{{username}}">{{username}}</option>
+              <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-           </select>
-          </fieldset>
+             </select>
+            </fieldset>
 
 {{/multiple_usernames?}}
 
-          <div class="buttons">
-           <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            <div class="buttons">
+             <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            </div>
+           </form>
           </div>
-         </form>
         </div>
-      </div>
 
 {{/logged_in?}}
 
-     </div>
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="english">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider site_tag_line">
-{{site_tag_line}}        </p>
        </div>
-       <ul class="help">
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
-
-{{#logged_in?}}
-
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
-
-{{/not_logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-
-{{#not_mini_nav_bar?}}
-
-       <p class="divider">Lives</p>
-
-{{/not_mini_nav_bar?}}
-
-       <ul class="lives">
-
-{{#username_nav}}
-
-
-{{#selected?}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected?}}
-
-
-{{#not_selected?}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected?}}
-
-
-{{/username_nav}}
-
-
-{{#not_mini_nav_bar?}}
-
-         <li>
-          <a href="/create-life/"> [ Create ] </a>
-         </li>
-
-{{/not_mini_nav_bar?}}
-
-       </ul>
-
-{{/logged_in?}}
-
-       <p class="divider">Clubs</p>
-       <ul class="clubs">
-         <li>
-          <a href="/clubs/"> [ View All ] </a>
-         </li>
-
-{{#logged_in?}}
-
-
-{{/logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-       <p class="divider">Your Clubs</p>
-       <ul class="your_clubs">
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
-
-{{#your_clubs}}
-
-        <li>
-         <a href="{{href}}">{{title}}</a>
-        </li>
-
-{{/your_clubs}}
-
-       </ul>
-
-{{/logged_in?}}
-
-
-{{#mini_nav_bar?}}
-
-       <ul>
-        <li>
-          <li>
-           <a href="/clubs/"> Clubs </a>
-          </li>
-        </li>
-       </ul>
-
-{{/mini_nav_bar?}}
-
       </div>
+     </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278537449"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278537449"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278544822"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278544822"></script>
 
 {{#include_tracking?}}
 
