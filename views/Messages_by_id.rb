@@ -34,6 +34,10 @@ class Messages_by_id < Base_View
     message.data._id
   end
 
+  def message_title
+    message.data.title || '~ ~ ~ ~'
+  end
+
   def message_model
     message.data.message_model
   end

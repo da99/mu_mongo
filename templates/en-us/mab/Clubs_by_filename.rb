@@ -47,7 +47,7 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        h4 'Latest Messages Posted:'
+        h4 'Latest Stuff:'
 
         show_if('no_messages_latest?'){
           div.empty_msg 'No messages yet.'

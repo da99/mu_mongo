@@ -13,8 +13,8 @@ end
 div.col.message_col! {  
   div.message!{
 
-   show_if 'message_data' do
-     h4 '{{title}}'
+   mustache 'message_data' do
+     h3 '{{message_title}}'
      div.body { '{{{compiled_body}}}' }
    end
 
@@ -22,6 +22,7 @@ div.col.message_col! {
 
   div.about! {
 
+    h4 'About this content:'
     p.published_at '{{published_at}}'
     
     p {
