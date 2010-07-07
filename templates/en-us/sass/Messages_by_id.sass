@@ -3,6 +3,7 @@
 // NAME Messages_by_id
 
 @import layout.sass
+@import Clubs_by_filename.sass
 
 div.col
   float: left
@@ -11,43 +12,52 @@ div.col
   padding: 0
   width: 860px
 
-#message, #about, #comments, #questions, #reply
+#comments, #questions, #reply
   float: left
   
 #message
-  width: 650px
-  padding: 0 0 80px 0
-  border: 1px unquote('dashed') $dashed_border
-    width: 0 1px 0 0
+  padding: 0 0 20px 0
+  text-align: center
   h3
     text-align: center
     padding: 0 0 3px 0
   div.body
+    text-align: left
+    margin: 0 auto
     padding: 3px 10px 5px 0
+    max-width: 800px
     font:
       family: $serif
       size: 140%
   
 #about
-  width: 190px
-  padding: 0 0 0 10px
+  +clearfix
+  +dashed_border_top
+  +dashed_border_bottom
+  max-width: 800px
   text-align: left
+  margin: 10px auto
+  padding: 10px 0
   strong
     background: transparent
     padding: 0
   div
-    padding-bottom: 10px
+    padding: 0 20px 0 0
+    float: left
+
+#replies
+  +variable_width_centered
 
 #comments
+  +first(20px)
   width: 420px
 
 #questions
   width: 420px
 
 #reply
-  padding: 0
-  width: 800px
-
+  +last(20px)
+  
 #archives
   padding: 0 10px
 

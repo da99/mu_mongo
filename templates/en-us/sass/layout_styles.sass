@@ -35,6 +35,11 @@ $ui_sans: unquote("'Nimbus Sans L','segoe ui',sans-serif")
 $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif")
 
 
+=first( $padding : 10px )
+  padding-right: $padding
+=last( $padding : 10px )
+  padding-left: $padding
+
 =dev_bg
   #the_body
     background: #f7f7f7 url("/16_col.gif") repeat-y center center
@@ -50,6 +55,9 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
   font-size: 20px
   font-weight: bold
   font-family: $sans_serif
+  
+=dashed_border_top
+  border-top: 1px dashed $dashed_border
 
 =dashed_border_bottom
   border-bottom: 1px dashed $dashed_border
@@ -67,8 +75,8 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
 // Used with +variable_width_centered mixin.
 #inner_shell
   position: relative
-  left: 50%
   float: left
+  left: 50%
 
 // From:
 //    http://www.tightcss.com/centering/center_variable_width.htm
@@ -77,8 +85,8 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
 // 2) Wrap div with #inner_shell.
 // 2) Wrap that div with #outer_shell.
 =variable_width_centered
-  float: left
   position: relative
+  float: left
   left: -50%
 
 =nav_bar
@@ -191,13 +199,12 @@ body
       color: $dark_green
 
 #mini_nav_bar, #nav_bar
+  +dashed_border_left
   width: 200px
   float: left
   text-align: left
   margin-left: 10px
   padding: 0 0 100px 10px
-  border: 1px unquote("dashed") $dashed_border
-    width: 0 0 0 1px
   p
     color: #f00919
     font-family: $sans_serif
@@ -258,6 +265,8 @@ h3
     family: $serif
     size: 200%
     weight: normal
+  &.title
+    text-align: center
 
 h4, div.divider, p.divider
   text-transform: uppercase

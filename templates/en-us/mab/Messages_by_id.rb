@@ -10,15 +10,16 @@ show_if 'show_moving_message?' do
   }
 end
 
-div.col.message_col! {  
-  div.message!{
+h3.club_title! '{{club_title}}' 
 
-   mustache 'message_data' do
-     h3 '{{message_title}}'
-     div.body { '{{{compiled_body}}}' }
-   end
+club_nav_bar __FILE__, :follow_href=>false
 
-  } # div.message!
+div.message!{
+
+  mustache 'message_data' do
+    h3 '{{message_title}}'
+    div.body { '{{{compiled_body}}}' }
+  end
 
   div.about! {
 
@@ -53,45 +54,55 @@ div.col.message_col! {
 
   } # div.about!
 
-  # ==================== REPLIES =========================================
+} # div.message!
 
-  show_if 'comments?' do
-    div.comments! {
-      loop_messages 'comments', :include_meta=>true, :include_permalink=>false
-    } 
-  end
+# ==================== REPLIES =========================================
 
-  show_if 'questions?' do
-    div.questions! {
-      loop_messages 'questions', :include_meta=>true, :include_permalink=>false
-    }
-  end
-
-  show_if 'logged_in?' do
-    
-    div.reply! {
-      div.guide! {
-        h4 'Stuff you can do:'
-        p %~
-          Express negative feelings. Try to use
-        polite profanity, like meathead instead of 
-        doo-doo head.
-        ~
-      }
-      
-      form_message_create(
-        :title => 'Publish a new:',
-        :models => %w{cheer jeer question},
-        :hidden_input => {
-                          :parent_message_id => '{{message_id}}',
-                          :privacy       => 'public'
-                         }
-      )
-    } # === div.reply!
-    
-  end # logged_in?
-
-} # === div.message_col!
+div.outer_shell! {
+  div.inner_shell! {
+    div.replies! {
   
-partial('__nav_bar')
+      show_if 'comments?' do
+        div.comments! {
+          h4 'YAYs & BOOs:'
+          loop_messages 'comments', :include_meta=>true, :include_permalink=>false
+        } 
+      end
+
+      show_if 'questions?' do
+        div.questions! {
+          h4 'Questions:'
+          loop_messages 'questions', :include_meta=>true, :include_permalink=>false
+        }
+      end
+
+      show_if 'logged_in?' do
+        
+        div.reply! {
+          div.guide! {
+            h4 'Stuff you can do:'
+            p %~
+              Express negative feelings. Try to use
+            polite profanity, like meathead instead of 
+            doo-doo head.
+            ~
+          }
+          
+          form_message_create(
+            :title => 'Publish a new:',
+            :models => %w{cheer jeer question},
+            :hidden_input => {
+                              :parent_message_id => '{{message_id}}',
+                              :privacy       => 'public'
+                             }
+          )
+        } # === div.reply!
+        
+      end # logged_in?
+      
+    } # === div.reply!
+  } # === div.inner_shell
+} # === div.outer_shell
+  
+# partial('__nav_bar')
 

@@ -18,7 +18,8 @@ module Base_Club
     })
   end
 
-  def club_nav_bar filename
+  def club_nav_bar filename, raw_opts = {}
+    opts = Data_Pouch.new({:follow_href=>true}.update(raw_opts), :follow_href)
     file     = File.basename(filename).sub('.rb', '')
     li_span  = lambda { |txt| li.selected { span txt } }
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
@@ -37,12 +38,13 @@ module Base_Club
     
     text(capture {
       
-      mustache('logged_in?') {
-      
-        mustache 'follower_but_not_owner?' do
-          p "You are following this club."
-        end
-      }
+      if opts.follow_href
+        mustache('logged_in?') {
+          mustache 'follower_but_not_owner?' do
+            p "You are following this club."
+          end
+        }
+      end
       
       ul.club_nav_bar! {
         vals.each { |trip|
@@ -67,23 +69,25 @@ module Base_Club
  
       mustache('logged_in?') {
 
-        mustache 'potential_follower?' do
-          mustache 'single_username?' do
-            p {
-              a("Follow this club.", :href=>"{{follow_href}}")
-            }
-          end
-          mustache 'multiple_usernames?' do
-            form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
-              fieldset {
-                label 'Follow this club as: ' 
-                select(:name=>'username') {
-                  mustache('current_member_usernames') {
-                  option('{{username}}', :value=>'{{username}}')
-                }
-                }
+        if opts.follow_href
+          mustache 'potential_follower?' do
+            mustache 'single_username?' do
+              p {
+                a("Follow this club.", :href=>"{{follow_href}}")
               }
-              div.buttons { button 'Follow.' }
+            end
+            mustache 'multiple_usernames?' do
+              form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+                fieldset {
+                  label 'Follow this club as: ' 
+                  select(:name=>'username') {
+                    mustache('current_member_usernames') {
+                    option('{{username}}', :value=>'{{username}}')
+                  }
+                  }
+                }
+                div.buttons { button 'Follow.' }
+              end
             end
           end
         end
