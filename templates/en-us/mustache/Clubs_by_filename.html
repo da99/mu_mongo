@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278427761" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278466349" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -70,26 +70,21 @@
 {{/flash_msg?}}
 
    <div id="the_content">
-     <div class="col" id="intro">
+     <div class="col" id="navigate">
       <h3>{{club_title}}</h3>
-      <div class="teaser">{{club_teaser}}</div>
 
 {{#logged_in?}}
 
 
-{{#club_updator?}}
+{{#follower_but_not_owner?}}
 
-      <div>
-       <a href="{{club_href_edit}}">Edit settings.</a>
-      </div>
+       <p>You are following this club.</p>
 
-{{/club_updator?}}
+{{/follower_but_not_owner?}}
 
 
 {{/logged_in?}}
 
-     </div>
-     <div class="col" id="navigate">
        <ul id="club_nav_bar">
         <li class="selected">Home</li>
         <li>
@@ -145,20 +140,6 @@
 {{#logged_in?}}
 
 
-{{#owner?}}
-
-       <p>You own this universe.</p>
-
-{{/owner?}}
-
-
-{{#follower_but_not_owner?}}
-
-       <p>You are following this club.</p>
-
-{{/follower_but_not_owner?}}
-
-
 {{#potential_follower?}}
 
 
@@ -199,16 +180,43 @@
 
 {{/logged_in?}}
 
-      <div id="guide">
-       <h4>Stuff you can do in this club:</h4>
+      <div class="col" id="intro">
+       <h4>About this universe:</h4>
+
+{{#owner?}}
+
+       <p>You own this universe.</p>
+
+{{/owner?}}
+
+       <div class="teaser">{{club_teaser}}</div>
+
+{{#logged_in?}}
+
+
+{{#club_updator?}}
+
+       <div>
+        <a href="{{club_href_edit}}">Edit settings.</a>
+       </div>
+
+{{/club_updator?}}
+
+
+{{/logged_in?}}
+
+      </div>
+      <div class="col" id="guide">
+       <h4>Stuff you should do:</h4>
        <ul>
-        <li>Start a fight.</li>
-        <li>Make a prediction.</li>
-        <li>Help write the club's encyclopedia.</li>
-        <li>Ask a question.</li>
+        <li>Post something in the "Encyclopedia" section.</li>
+        <li>Write anything in the "Random" section.</li>
+        <li> Recommend a product in the "Shop" section. </li>
+        <li> Ask a question in the "Q &amp; A" section. </li>
        </ul>
       </div>
-      <div id="club_messages">
+      <div class="col" id="club_messages">
+       <h4>Latest Messages Posted:</h4>
 
 {{#no_messages_latest?}}
 
@@ -219,14 +227,10 @@
 
 {{#messages_latest?}}
 
-       <h4>Latest messages:</h4>
 
 {{#messages_latest}}
 
         <div class="message">
-         <div class="meta">
-          <strong>{{message_model_in_english}}</strong>
-         </div>
 
 {{#title}}
 
@@ -239,8 +243,9 @@
 {{#has_parent_message?}}
 
          <div class="permalink">
-          <span>in response to: </span>
-          <a href="{{parent_message_href}}">message</a>
+          <strong>{{message_model_in_english}}</strong>
+          <span> for </span>
+          <a href="{{parent_message_href}}">this</a>
          </div>
 
 {{/has_parent_message?}}
@@ -249,7 +254,22 @@
 {{#parent_message?}}
 
          <div class="permalink">
-          <a href="{{href}}">Permalink</a>
+
+{{#logged_in?}}
+
+          <a href="{{href}}">Reply</a>
+          <span> to this </span>
+          <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+          <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
          </div>
 
 {{/parent_message?}}

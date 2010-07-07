@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278427761" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278466349" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -87,8 +87,9 @@
 {{#has_parent_message?}}
 
         <div class="permalink">
-         <span>in response to: </span>
-         <a href="{{parent_message_href}}">message</a>
+         <strong>{{message_model_in_english}}</strong>
+         <span> for </span>
+         <a href="{{parent_message_href}}">this</a>
         </div>
 
 {{/has_parent_message?}}
@@ -97,7 +98,22 @@
 {{#parent_message?}}
 
         <div class="permalink">
-         <a href="{{href}}">Permalink</a>
+
+{{#logged_in?}}
+
+         <a href="{{href}}">Reply</a>
+         <span> to this </span>
+         <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+         <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
         </div>
 
 {{/parent_message?}}

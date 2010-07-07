@@ -217,14 +217,17 @@ h2 {
   font-size: 150%; }
 
 h3 {
-  font-size: 20px;
-  font-weight: bold; }
+  color: #185dad;
+  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
+  font-size: 200%;
+  font-weight: normal; }
 
-h4 {
+h4, div.divider {
   text-transform: uppercase;
   font-weight: bold;
   color: #185dad;
-  display: block; }
+  display: block;
+  font-size: 90%; }
 
 p {
   padding-bottom: 10px;
@@ -328,14 +331,17 @@ div.news_post {
   border-bottom: 1px dashed #003860; }
 
 div.message, div.club {
-  padding-bottom: 5px;
-  padding-top: 5px;
-  border-bottom: 1px dashed #003860;
-  margin-right: 20px; }
+  padding: 10px 0 0 0;
+  margin: 0 0 10px 0;
+  border-bottom: 1px dashed #003860; }
+  div.message div.meta, div.club div.meta {
+    text-align: right; }
   div.message div.permalink, div.club div.permalink {
-    padding: 5px 0 0 0;
+    padding: 3px 0 2px 0;
     text-align: right;
-    font-size: 80%; }
+    font-size: 85%; }
+    div.message div.permalink strong, div.club div.permalink strong {
+      font-size: 100%; }
 
 div.col {
   float: left; }

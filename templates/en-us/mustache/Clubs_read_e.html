@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278427762" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278466349" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -72,6 +72,19 @@
    <div id="the_content">
      <div class="col" id="navigate">
       <h3>{{title}}</h3>
+
+{{#logged_in?}}
+
+
+{{#follower_but_not_owner?}}
+
+       <p>You are following this club.</p>
+
+{{/follower_but_not_owner?}}
+
+
+{{/logged_in?}}
+
        <ul id="club_nav_bar">
         <li>
          <a href="{{club_href}}">Home</a>
@@ -127,20 +140,6 @@
 {{#logged_in?}}
 
 
-{{#owner?}}
-
-       <p>You own this universe.</p>
-
-{{/owner?}}
-
-
-{{#follower_but_not_owner?}}
-
-       <p>You are following this club.</p>
-
-{{/follower_but_not_owner?}}
-
-
 {{#potential_follower?}}
 
 
@@ -184,70 +183,72 @@
 
 {{#logged_in?}}
 
-      <div id="guide">
+      <div class="col" id="guide">
        <h4>Stuff you can do:</h4>
        <ul>
         <li>Write a story. </li>
-        <li>Start a new chapter.</li>
-        <li>Tell others. </li>
+        <li>Post a quotation.</li>
+        <li>Tell others of related links.</li>
        </ul>
       </div>
-       <div id="club_message_create">
-        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-         <h4>Publish a new:</h4>
-         <fieldset>
-          <select name="message_model">
-           <option value="e_chapter">Encyclopedia Chapter</option>
-           <option value="e_quote">Quote</option>
-          </select>
-         </fieldset>
-         <fieldset class="hidden">
-          <input type="hidden" value="" name="body_images_cache"/>
-          <input type="hidden" value="{{url}}" name="return_url"/>
-          <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-          <input type="hidden" value="public" name="privacy"/>
+      <div class="col" id="message_create">
+        <div id="club_message_create">
+         <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+          <h4>Publish a new:</h4>
+          <fieldset>
+           <select name="message_model">
+            <option value="e_chapter">Encyclopedia Chapter</option>
+            <option value="e_quote">Quote</option>
+           </select>
+          </fieldset>
+          <fieldset class="hidden">
+           <input type="hidden" value="" name="body_images_cache"/>
+           <input type="hidden" value="{{url}}" name="return_url"/>
+           <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+           <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
-          <input type="hidden" value="{{first_username}}" name="username"/>
+           <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-         </fieldset>
-          <fieldset>
-           <label>Title:</label>
-            <input type="text" class="text" value="" name="title"/>
           </fieldset>
-         <fieldset>
-          <textarea name="body"></textarea>
-         </fieldset>
+           <fieldset>
+            <label>Title:</label>
+             <input type="text" class="text" value="" name="title"/>
+           </fieldset>
+          <fieldset>
+           <textarea name="body"></textarea>
+          </fieldset>
 
 {{#multiple_usernames?}}
 
-         <fieldset>
-          <label>Post as:</label>
-          <select name="owner_id">
+          <fieldset>
+           <label>Post as:</label>
+           <select name="owner_id">
 
 {{#multiple_usernames}}
 
-           <option value="{{username}}">{{username}}</option>
+            <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-          </select>
-         </fieldset>
+           </select>
+          </fieldset>
 
 {{/multiple_usernames?}}
 
-         <div class="buttons">
-          <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
-         </div>
-        </form>
-       </div>
+          <div class="buttons">
+           <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+          </div>
+         </form>
+        </div>
+      </div>
 
 {{/logged_in?}}
 
-      <div id="club_messages">
+      <div class="col" id="club_messages">
 
 {{#no_facts?}}
 
@@ -271,8 +272,9 @@
 {{#has_parent_message?}}
 
          <div class="permalink">
-          <span>in response to: </span>
-          <a href="{{parent_message_href}}">message</a>
+          <strong>{{message_model_in_english}}</strong>
+          <span> for </span>
+          <a href="{{parent_message_href}}">this</a>
          </div>
 
 {{/has_parent_message?}}
@@ -281,7 +283,22 @@
 {{#parent_message?}}
 
          <div class="permalink">
-          <a href="{{href}}">Permalink</a>
+
+{{#logged_in?}}
+
+          <a href="{{href}}">Reply</a>
+          <span> to this </span>
+          <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+          <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
          </div>
 
 {{/parent_message?}}
@@ -293,8 +310,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278427762"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278427762"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278466349"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278466349"></script>
 
 {{#include_tracking?}}
 
