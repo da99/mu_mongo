@@ -365,7 +365,8 @@ div.col {
   border: 1px dashed #003860;
     border-width: 0 1px 0 0; }
   #message h3 {
-    text-align: center; }
+    text-align: center;
+    padding: 0 0 3px 0; }
   #message div.body {
     padding: 3px 10px 5px 0;
     font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
@@ -375,6 +376,11 @@ div.col {
   width: 190px;
   padding: 0 0 0 10px;
   text-align: left; }
+  #about strong {
+    background: transparent;
+    padding: 0; }
+  #about div {
+    padding-bottom: 10px; }
 
 #comments {
   width: 420px; }
