@@ -72,7 +72,7 @@ a img {
 
 a:link, a:visited {
   color: #f00919;
-  font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+  font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif;
   font-weight: bold; }
 
 a:hover, a:active, a:focus {
@@ -103,7 +103,7 @@ img.right {
   display: none; }
 
 body {
-  font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+  font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif;
   background-color: white; }
 
 #notice {
@@ -139,7 +139,7 @@ body {
     border-width: 0 0 0 1px; }
   #mini_nav_bar p, #nav_bar p {
     color: #f00919;
-    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif;
     font-weight: bold;
     padding: 0;
     margin: 0; }
@@ -167,7 +167,7 @@ body {
 #loading {
   font-size: 20px;
   font-weight: bold;
-  font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+  font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif;
   text-align: center; }
 
 #content {
@@ -281,7 +281,7 @@ form fieldset {
   form fieldset input.text, form fieldset select, form fieldset option {
     font-size: 20px;
     font-weight: bold;
-    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif; }
+    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif; }
   form fieldset textarea {
     font-size: 18px;
     font-family: serif;
@@ -338,7 +338,7 @@ div.col {
     text-align: center; }
   #pretension ul {
     padding: 0 0 0 20px;
-    font-family: 'Helvetica Neue','HelveticaNeue',Helvetica,'bitstream vera sans',Arial,'segoe',sans-serif;
+    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui',sans-serif;
     font-size: 120%; }
     #pretension ul li {
       padding: 6px 0 0 0; }
