@@ -13,7 +13,7 @@ div.col.navigate! {
 
   show_if 'logged_in?' do
     
-    div.guide! {
+    div.col.guide! {
       h4 'Stuff you can do:'
       p %~
         Express negative feelings. Try to use
@@ -21,19 +21,22 @@ div.col.navigate! {
       doo-doo head.
       ~
     }
-    form_message_create(
-      :title => 'Publish a new:',
-      :models => %w{fight complaint debate},
-      :input_title => true,
-      :hidden_input => {
-                        :club_filename => '{{club_filename}}',
-                        :privacy       => 'public'
-                       }
-    )
+    
+    div.col.message_create! {
+      form_message_create(
+        :title => 'Publish a new:',
+        :models => %w{fight complaint debate},
+        :input_title => true,
+        :hidden_input => {
+                          :club_filename => '{{club_filename}}',
+                          :privacy       => 'public'
+                         }
+      )
+    }
     
   end # logged_in?
 
-  div.club_messages! do
+  div.col.club_messages! do
     
     show_if('no_passions?'){
       div.empty_msg 'Nothing passionate or furious has been published.'

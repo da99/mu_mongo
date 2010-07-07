@@ -13,7 +13,7 @@ div.col.navigate! {
 
   show_if 'logged_in?' do
     
-    div.guide! {
+    div.col.guide! {
       h4 'Stuff you can do here:'
       p %~
         You post your favorite stuff to buy.
@@ -26,19 +26,21 @@ div.col.navigate! {
       }
     }
 
-    form_message_create(
-      :title => 'Recommend a product:',
-      :hidden_input => {
-                        :message_model => 'buy',
-                        :club_filename => '{{club_filename}}',
-                        :privacy       => 'public'
-                       }
-    )
+    div.col.message_create! {
+      form_message_create(
+        :title => 'Recommend a product:',
+        :hidden_input => {
+                          :message_model => 'buy',
+                          :club_filename => '{{club_filename}}',
+                          :privacy       => 'public'
+                         }
+      )
+    }
     
   end # logged_in?
 
 
-  div.club_messages! do
+  div.col.club_messages! do
     
     show_if('no_buys?'){
       div.empty_msg 'Nothing has been posted yet.'

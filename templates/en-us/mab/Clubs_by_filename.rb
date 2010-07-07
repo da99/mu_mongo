@@ -3,54 +3,54 @@
 # NAME Club_by_filename
 
 
-div.col.intro! {
-  
-  h3 '{{club_title}}' 
-
-  div.teaser '{{club_teaser}}'
-
-  show_if 'logged_in?' do
-    
-    show_if('club_updator?') {
-      div {
-        a('Edit settings.', :href=>'{{club_href_edit}}')
-      }
-    }
-
-    # form_message_create(
-    #   :models => %w{random mag_story complaint},
-    #   :hidden_input => { :club_filename => '{{club_filename}}',
-    #                      :privacy       => 'public'
-    #                    }
-    # )
-    
-  end # logged_in?
-
-} # div.intro!
-
 
 div.col.navigate! {
   
+  h3 '{{club_title}}' 
+  
   club_nav_bar(__FILE__)
 
-  div.guide! {
-    h4 'Stuff you can do in this club:'
+  div.col.intro! {
+
+    h4 'About this universe:'
+    
+    mustache 'owner?' do
+      p 'You own this universe.'
+    end
+      
+    div.teaser '{{club_teaser}}'
+
+    show_if 'logged_in?' do
+
+      show_if('club_updator?') {
+        div {
+          a('Edit settings.', :href=>'{{club_href_edit}}')
+        }
+      }
+
+    end # logged_in?
+
+  } # div.intro!
+
+  div.col.guide! {
+    h4 'Stuff you should do:'
     ul {
-      li "Start a fight."
-      li "Make a prediction."
-      li "Help write the club's encyclopedia."
-      li "Ask a question."
+      li "Post something in the \"Encyclopedia\" section."
+      li "Write anything in the \"Random\" section."
+      li %~ Recommend a product in the "Shop" section. ~
+      li %~ Ask a question in the "Q & A" section. ~
     }
   }
 
-  div.club_messages! do
+  div.col.club_messages! do
     
+    h4 'Latest Messages Posted:'
+
     show_if('no_messages_latest?'){
       div.empty_msg 'No messages yet.'
     }
     
     show_if 'messages_latest?' do
-      h4 'Latest messages:'
       loop_messages 'messages_latest', :include_meta=>true
     end
     

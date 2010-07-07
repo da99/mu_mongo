@@ -34,8 +34,16 @@ module Base_Club
       [/_random\Z/     , 'Random'             , 'random/'],
       [/_thanks\Z/     , 'Thanks'             , 'thanks/']
     ]
+    
     text(capture {
-
+      
+      mustache('logged_in?') {
+      
+        mustache 'follower_but_not_owner?' do
+          p "You are following this club."
+        end
+      }
+      
       ul.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
@@ -58,14 +66,6 @@ module Base_Club
       
  
       mustache('logged_in?') {
-
-        mustache 'owner?' do
-          p 'You own this universe.'
-        end
-      
-        mustache 'follower_but_not_owner?' do
-          p "You are following this club."
-        end
 
         mustache 'potential_follower?' do
           mustache 'single_username?' do

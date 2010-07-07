@@ -13,7 +13,7 @@ div.col.navigate! {
 
   show_if 'logged_in?' do
     
-    div.guide! {
+    div.col.guide! {
       h4 'Stuff you can do here:'
       p %~
         Show how this club or it's members 
@@ -21,18 +21,20 @@ div.col.navigate! {
       ~
     }
     
-    form_message_create(
-      :title => 'Post a thank you:',
-      :hidden_input => {
-                        :message_model => 'thank',
-                        :club_filename => '{{club_filename}}',
-                        :privacy       => 'public'
-                       }
-    )
+    div.col.message_create! {
+      form_message_create(
+        :title => 'Post a thank you:',
+        :hidden_input => {
+                          :message_model => 'thank',
+                          :club_filename => '{{club_filename}}',
+                          :privacy       => 'public'
+                         }
+      )
+    }
     
   end # logged_in?
 
-  div.club_messages! do
+  div.col.club_messages! do
     
     show_if('no_thanks?'){
       div.empty_msg 'Nothing has been posted yet.'

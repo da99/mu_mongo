@@ -14,7 +14,7 @@ div.col.navigate! {
   
   show_if 'logged_in?' do
     
-    div.guide! {
+    div.col.guide! {
       h4 'Stuff you can do here:'
       p %~
         Post stuff that no one really 
@@ -27,18 +27,20 @@ div.col.navigate! {
       }
     }
 
-    form_message_create(
-      :title => 'Post a random thought:',
-      :hidden_input => {
-                        :message_model => 'random',
-                        :club_filename => '{{club_filename}}',
-                        :privacy       => 'public'
-                       }
-    )
+    div.col.message_create! {
+      form_message_create(
+        :title => 'Post a random thought:',
+        :hidden_input => {
+                          :message_model => 'random',
+                          :club_filename => '{{club_filename}}',
+                          :privacy       => 'public'
+                         }
+      )
+    }
     
   end # logged_in?
 
-  div.club_messages! do
+  div.col.club_messages! do
     
     show_if('no_random?'){
       div.empty_msg 'Nothing has been posted yet.'

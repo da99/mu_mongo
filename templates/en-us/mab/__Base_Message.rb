@@ -11,9 +11,9 @@ module Base_Message
         div.message {
           
           if options.include_meta
-            div.meta {
-              strong '{{message_model_in_english}}'
-            }
+            # div.meta {
+            #   strong ''
+            # }
           end
         
           show_if 'title' do
@@ -25,17 +25,24 @@ module Base_Message
           if options.include_permalink
             show_if 'has_parent_message?' do
               div.permalink {
-                span 'in response to: '
-                a('message', :href=>"{{parent_message_href}}")
+                strong '{{message_model_in_english}}'
+                span ' for '
+                a('this', :href=>"{{parent_message_href}}")
               }
             end
             show_if 'parent_message?' do
               div.permalink {
-                a('Permalink', :href=>"{{href}}")
+                show_if 'logged_in?' do
+                  a('Reply', :href=>"{{href}}")
+                  span " to this "
+                  strong " {{message_model_in_english}} "
+                end
+                show_if 'not_logged_in?' do
+                  a('link to this {{message_model_in_english}}', :href=>'{{href}}')
+                end
               }
             end
           end
-          
         }
       end
     })
