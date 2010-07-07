@@ -23,14 +23,26 @@ div.col.message_col! {
   div.about! {
 
     h4 'About this content:'
-    p.published_at '{{published_at}}'
     
-    p {
-      span "This {{message_model_in_english}} was posted in section, "
-      a('{{message_section}}', :href=>'{{message_section_href}}')
-      span ', of universe, '
+    div {
+      strong "Published on:"
+      br
+      span '{{published_at}}'
+    }
+    div {
+      strong "Category:"
+      br
+      span "{{message_model_in_english}}."
+    }
+    div {
+      strong 'Publication:'
+      br
       a('{{club_title}}', :href=>'{{club_href}}')
-      span '.'
+    }
+    div {
+      strong 'Section: '
+      br
+      a('{{message_section}}', :href=>'{{message_section_href}}')
     }
 
     show_if 'message_updator?' do
