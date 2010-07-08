@@ -16,16 +16,14 @@ div.col
   float: left
   
 #message
+  +variable_width_centered
   padding: 0 0 20px 0
-  text-align: center
+  width: 900px
   h3
     text-align: center
     padding: 0 0 3px 0
   div.body
-    text-align: left
-    margin: 0 auto
-    padding: 3px 10px 5px 0
-    max-width: 800px
+    padding: 3px 0 0 0  
     font:
       family: $serif
       size: 140%
@@ -34,7 +32,6 @@ div.col
   +clearfix
   +dashed_border_top
   +dashed_border_bottom
-  max-width: 800px
   text-align: left
   margin: 10px auto
   padding: 10px 0
@@ -46,18 +43,29 @@ div.col
     float: left
 
 #replies
-  +variable_width_centered
-
+  +clearfix
+  text-align: left
+  
 #comments
-  +first(20px)
-  width: 420px
+  +first
+  width: 440px
 
 #questions
-  width: 420px
+  +last
+  width: 440px 
 
 #reply
-  +last(20px)
+
+#guide
+  float: left
+  width: 360px
   
+#club_message_create
+  float: left 
+  padding: 0
+  textarea
+    width: 500px
+
 #archives
   padding: 0 10px
 
