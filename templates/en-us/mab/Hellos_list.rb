@@ -4,9 +4,11 @@
 
 div.col.pretension! {
 
-  h4.coming_soon  %~ Coming Soon ~
+  div.coming_soon! {
+    strong %~ Coming Soon ~
+  }
 
-  h1 %~
+  h3.title %~
     MegaUni.com let's you create
   your own universe. 
   ~
@@ -196,6 +198,7 @@ end
 
 show_if 'random_clubs?' do
   div.col.random_clubs! { 
+    h4 'An example of a universe:'
     loop_clubs "random_clubs", :include_meta=>true
   }
 end

@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278544822" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278549875" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -141,173 +141,173 @@
 
 {{/logged_in?}}
 
-     <div id="message">
+     <div id="outer_shell">
+      <div id="inner_shell">
+       <div id="message">
 
 {{#message_data}}
 
-      <h3>{{message_title}}</h3>
-      <div class="body">
-{{{compiled_body}}}      </div>
+        <h3>{{message_title}}</h3>
+        <div class="body">
+{{{compiled_body}}}        </div>
 
 {{/message_data}}
 
-      <div id="about">
-       <h4>About this content:</h4>
-       <div>
-        <strong>Published on:</strong>
-        <br/>
-        <span>{{published_at}}</span>
-       </div>
-       <div>
-        <strong>Category:</strong>
-        <br/>
-        <span>{{message_model_in_english}}.</span>
-       </div>
-       <div>
-        <strong>Publication:</strong>
-        <br/>
-        <a href="{{club_href}}">{{club_title}}</a>
-       </div>
-       <div>
-        <strong>Section: </strong>
-        <br/>
-        <a href="{{message_section_href}}">{{message_section}}</a>
-       </div>
+        <div id="about">
+         <h4>About this content:</h4>
+         <div>
+          <strong>Published on:</strong>
+          <br/>
+          <span>{{published_at}}</span>
+         </div>
+         <div>
+          <strong>Category:</strong>
+          <br/>
+          <span>{{message_model_in_english}}.</span>
+         </div>
+         <div>
+          <strong>Publication:</strong>
+          <br/>
+          <a href="{{club_href}}">{{club_title}}</a>
+         </div>
+         <div>
+          <strong>Section: </strong>
+          <br/>
+          <a href="{{message_section_href}}">{{message_section}}</a>
+         </div>
 
 {{#message_updator?}}
 
-       <p>
-        <a href="{{message_href_edit}}">Edit.</a>
-       </p>
+         <div>
+          <a href="{{message_href_edit}}">Edit.</a>
+         </div>
 
 {{/message_updator?}}
 
-      </div>
-     </div>
-     <div id="outer_shell">
-      <div id="inner_shell">
-       <div id="replies">
+        </div>
+        <div id="replies">
 
 {{#comments?}}
 
-        <div id="comments">
-         <h4>YAYs &amp; BOOs:</h4>
+         <div id="comments">
+          <h4>YAYs &amp; BOOs:</h4>
 
 {{#comments}}
 
-          <div class="message">
+           <div class="message">
 
 {{#title}}
 
-           <strong class="title">{{title}}</strong>
+            <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-           <div class="body">{{{compiled_body}}}</div>
-          </div>
+            <div class="body">{{{compiled_body}}}</div>
+           </div>
 
 {{/comments}}
 
-        </div>
+         </div>
 
 {{/comments?}}
 
 
 {{#questions?}}
 
-        <div id="questions">
-         <h4>Questions:</h4>
+         <div id="questions">
+          <h4>Questions:</h4>
 
 {{#questions}}
 
-          <div class="message">
+           <div class="message">
 
 {{#title}}
 
-           <strong class="title">{{title}}</strong>
+            <strong class="title">{{title}}</strong>
 
 {{/title}}
 
-           <div class="body">{{{compiled_body}}}</div>
-          </div>
+            <div class="body">{{{compiled_body}}}</div>
+           </div>
 
 {{/questions}}
 
-        </div>
+         </div>
 
 {{/questions?}}
 
 
 {{#logged_in?}}
 
-        <div id="reply">
-         <div id="guide">
-          <h4>Stuff you can do:</h4>
-          <p>
-              Express negative feelings. Try to use
-            polite profanity, like meathead instead of 
-            doo-doo head.
-            </p>
-         </div>
-          <div id="club_message_create">
-           <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-            <h4>Publish a new:</h4>
-            <fieldset>
-             <select name="message_model">
-              <option value="question">Question</option>
-              <option value="cheer">Praise &amp; Cheer</option>
-              <option value="jeer">Criticize</option>
-             </select>
-            </fieldset>
-            <fieldset class="hidden">
-             <input type="hidden" value="" name="body_images_cache"/>
-             <input type="hidden" value="{{url}}" name="return_url"/>
-             <input type="hidden" value="public" name="privacy"/>
-             <input type="hidden" value="{{message_id}}" name="parent_message_id"/>
+         <div id="reply">
+          <div id="guide">
+           <h4>Stuff you can do:</h4>
+           <p>
+            Express negative feelings. Try to use
+          polite profanity, like meathead instead of 
+          doo-doo head.
+          </p>
+          </div>
+           <div id="club_message_create">
+            <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+             <h4>Publish a new:</h4>
+             <fieldset>
+              <select name="message_model">
+               <option value="question">Question</option>
+               <option value="cheer">Praise &amp; Cheer</option>
+               <option value="jeer">Criticize</option>
+              </select>
+             </fieldset>
+             <fieldset class="hidden">
+              <input type="hidden" value="" name="body_images_cache"/>
+              <input type="hidden" value="{{url}}" name="return_url"/>
+              <input type="hidden" value="public" name="privacy"/>
+              <input type="hidden" value="{{message_id}}" name="parent_message_id"/>
 
 {{#single_username?}}
 
-             <input type="hidden" value="{{first_username}}" name="username"/>
+              <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-            </fieldset>
-            <fieldset>
-             <textarea name="body"></textarea>
-            </fieldset>
+             </fieldset>
+             <fieldset>
+              <textarea name="body"></textarea>
+             </fieldset>
 
 {{#multiple_usernames?}}
 
-            <fieldset>
-             <label>Post as:</label>
-             <select name="owner_id">
+             <fieldset>
+              <label>Post as:</label>
+              <select name="owner_id">
 
 {{#multiple_usernames}}
 
-              <option value="{{username}}">{{username}}</option>
+               <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-             </select>
-            </fieldset>
+              </select>
+             </fieldset>
 
 {{/multiple_usernames?}}
 
-            <div class="buttons">
-             <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
-            </div>
-           </form>
-          </div>
-        </div>
+             <div class="buttons">
+              <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+             </div>
+            </form>
+           </div>
+         </div>
 
 {{/logged_in?}}
 
+        </div>
        </div>
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278544822"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278544822"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278549875"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278549875"></script>
 
 {{#include_tracking?}}
 
