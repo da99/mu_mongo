@@ -1,6 +1,51 @@
 
 module Base_Club
 
+  def div_guide! txt, &blok
+    text(capture {
+      div.col.mind_control! {
+        div.guide! {
+          h4 txt
+          blok.call
+        }
+
+        club_follow_guide
+      }
+    })
+  end
+
+  def club_follow_guide
+    text( capture {
+      mustache('logged_in?') {
+
+          mustache 'follower_but_not_owner?' do
+            p "You are following this club."
+          end
+    
+          mustache 'potential_follower?' do
+            mustache 'single_username?' do
+              p {
+                a("Follow this club.", :href=>"{{follow_href}}")
+              }
+            end
+            mustache 'multiple_usernames?' do
+              form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+                fieldset {
+                  label 'Follow this club as: ' 
+                  select(:name=>'username') {
+                    mustache('current_member_usernames') {
+                    option('{{username}}', :value=>'{{username}}')
+                  }
+                  }
+                }
+                div.buttons { button 'Follow.' }
+              end
+            end
+          end
+      }
+    })
+  end
+
   def loop_clubs list_name, *opts
     text(capture {
       loop list_name do 
@@ -38,14 +83,6 @@ module Base_Club
     
     text(capture {
       
-      if opts.follow_href
-        mustache('logged_in?') {
-          mustache 'follower_but_not_owner?' do
-            p "You are following this club."
-          end
-        }
-      end
-      
       ul.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
@@ -66,34 +103,6 @@ module Base_Club
         li { a('Megauni', :href=>'/') }
       } # ul
       
- 
-      mustache('logged_in?') {
-
-        if opts.follow_href
-          mustache 'potential_follower?' do
-            mustache 'single_username?' do
-              p {
-                a("Follow this club.", :href=>"{{follow_href}}")
-              }
-            end
-            mustache 'multiple_usernames?' do
-              form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
-                fieldset {
-                  label 'Follow this club as: ' 
-                  select(:name=>'username') {
-                    mustache('current_member_usernames') {
-                    option('{{username}}', :value=>'{{username}}')
-                  }
-                  }
-                }
-                div.buttons { button 'Follow.' }
-              end
-            end
-          end
-        end
-
-      }
-
     })
   end
 

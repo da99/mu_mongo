@@ -13,12 +13,11 @@ div.outer_shell! do
 
       show_if 'logged_in?' do
         
-        div.col.guide! {
-          h4 'Stuff you can do here:'
+        div_guide!('Stuff you can do here:') {
           p %~
             Help others by answering questions.
           ~
-        }
+        } # === div_guide!
 
         div.col.message_create! {
           form_message_create(

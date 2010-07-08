@@ -13,8 +13,7 @@ div.outer_shell! do
 
       show_if 'logged_in?' do
         
-        div.col.guide! {
-          h4 'Stuff you can do here:'
+        div_guide!( 'Stuff you can do here:' ) {
           p %~
             Show how this club or it's members 
           have made your life better.

@@ -13,8 +13,7 @@ div.outer_shell! do
 
       show_if 'logged_in?' do
         
-        div.col.guide! {
-          h4 'Stuff you can do here:'
+        div_guide!( 'Stuff you can do here:' ) {
           p %~
             This is where you can publish your thoughts
           on what will happen in the future.  When

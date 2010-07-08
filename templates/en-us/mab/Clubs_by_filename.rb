@@ -35,15 +35,14 @@ div.outer_shell! do
 
       } # div.intro!
 
-      div.col.guide! {
-        h4 'Stuff you should do:'
+      div_guide! 'Stuff you should do:' do
         ul {
           li "Post something in the \"Encyclopedia\" section."
           li "Write anything in the \"Random\" section."
           li %~ Recommend a product in the "Shop" section. ~
           li %~ Ask a question in the "Q & A" section. ~
         }
-      }
+      end
 
       div.col.club_messages! do
         

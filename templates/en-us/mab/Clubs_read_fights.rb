@@ -12,8 +12,7 @@ div.outer_shell! do
     div.club_body! {
       show_if 'logged_in?' do
         
-        div.col.guide! {
-          h4 'Stuff you can do:'
+        div_guide!('Stuff you can do:') {
           p %~
             Express negative feelings. Try to use
           polite profanity, like meathead instead of 

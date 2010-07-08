@@ -13,14 +13,13 @@ div.outer_shell! do
 
       show_if 'logged_in?' do
         
-        div.col.guide! {
-          h4 'Stuff you can do:'
+        div_guide! 'Stuff you can do:' do
           ul {
             li 'Write a story. '
             li 'Post a quotation.'
             li 'Tell others of related links.'
           }
-        }
+        end
 
         div.col.message_create! {
           form_message_create(
