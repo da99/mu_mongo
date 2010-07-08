@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278549875" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278603259" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -71,11 +71,13 @@
 
    <div id="the_content">
      <div class="col" id="pretension">
-      <h4 class="coming_soon"> Coming Soon </h4>
-      <h1>
+      <div id="coming_soon">
+       <strong> Coming Soon </strong>
+      </div>
+      <h3 class="title">
     MegaUni.com let's you create
   your own universe. 
-  </h1>
+  </h3>
       <h4> Each universe includes: </h4>
       <ul>
        <li>
@@ -550,6 +552,7 @@
 {{#random_clubs?}}
 
      <div class="col" id="random_clubs">
+      <h4>An example of a universe:</h4>
 
 {{#random_clubs}}
 

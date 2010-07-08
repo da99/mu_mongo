@@ -747,9 +747,7 @@ div.col {
     padding: 0 0 0 20px; }
 
 #club_message_create {
-  padding-top: 20px;
-  padding-bottom: 15px;
-  width: 300px; }
+  padding-bottom: 15px; }
 
 #club_messages {
   max-width: 550px;
@@ -766,16 +764,16 @@ div.col {
   float: left; }
 
 #message {
+  position: relative;
+  float: left;
+  left: -50%;
   padding: 0 0 20px 0;
-  text-align: center; }
+  width: 900px; }
   #message h3 {
     text-align: center;
     padding: 0 0 3px 0; }
   #message div.body {
-    text-align: left;
-    margin: 0 auto;
-    padding: 3px 10px 5px 0;
-    max-width: 800px;
+    padding: 3px 0 0 0;
     font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
     font-size: 140%; }
 
@@ -784,7 +782,6 @@ div.col {
   display: inline-block;
   border-top: 1px dashed #003860;
   border-bottom: 1px dashed #003860;
-  max-width: 800px;
   text-align: left;
   margin: 10px auto;
   padding: 10px 0; }
@@ -798,19 +795,29 @@ div.col {
     float: left; }
 
 #replies {
-  position: relative;
-  float: left;
-  left: -50%; }
+  overflow: hidden;
+  display: inline-block;
+  text-align: left; }
+  #replies {
+    display: block; }
 
 #comments {
-  padding-right: 20px;
-  width: 420px; }
+  padding-right: 10px;
+  width: 440px; }
 
 #questions {
-  width: 420px; }
+  padding-left: 10px;
+  width: 440px; }
 
-#reply {
-  padding-left: 20px; }
+#guide {
+  float: left;
+  width: 360px; }
+
+#club_message_create {
+  float: left;
+  padding: 0; }
+  #club_message_create textarea {
+    width: 500px; }
 
 #archives {
   padding: 0 10px; }

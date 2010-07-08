@@ -328,25 +328,30 @@ div.col {
   float: left; }
 
 #pretension {
-  width: 600px;
+  width: 550px;
   padding: 30px 0px 50px 50px; }
   #pretension h1 {
     padding: 0 0 30px 0; }
-  #pretension h4.coming_soon {
+  #pretension h3.title {
+    font-style: italic;
+    padding: 4px 5px 30px 5px; }
+  #pretension #coming_soon {
     font-size: 80%;
-    text-align: center; }
+    text-align: center;
+    text-transform: uppercase; }
   #pretension ul {
-    padding: 0 0 0 20px;
+    padding: 0 10px 0 20px;
     font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
-    font-size: 120%; }
+    font-size: 110%; }
     #pretension ul li {
       padding: 6px 0 0 0; }
 
 #middle {
-  padding: 0 20px 100px 20px;
-  margin: 0 20px 0 0;
-  border: 1px dashed #214d81;
-    border-width: 0 1px; }
+  border-left: 1px dashed #003860;
+  border-right: 1px dashed #003860;
+  padding: 0 15px 100px 15px;
+  margin: 0 15px 0 0;
+  width: 250px; }
 
 #intro {
   padding: 0 0 10px 0; }
@@ -372,8 +377,12 @@ div.col {
 #city_clubs, #political_beauty, #joy_clubs, #random_clubs {
   width: 480px;
   padding: 0; }
+  #city_clubs h4, #political_beauty h4, #joy_clubs h4, #random_clubs h4 {
+    font-size: 80%;
+    text-align: center; }
   #city_clubs div.club, #political_beauty div.club, #joy_clubs div.club, #random_clubs div.club {
-    border-bottom-width: 0; }
+    border-bottom-width: 0;
+    padding-top: 0; }
     #city_clubs div.club h4, #political_beauty div.club h4, #joy_clubs div.club h4, #random_clubs div.club h4 {
       font-size: 120%;
       text-align: center; }
