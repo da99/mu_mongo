@@ -19,8 +19,8 @@ div.outer_shell! do
           ~
         } # === div_guide!
 
-        div.col.message_create! {
           form_message_create(
+          :css_class => 'col',
             :title => 'Publish a new:',
             :models => %w{question plea},
             :hidden_input => {
@@ -28,7 +28,6 @@ div.outer_shell! do
               :privacy       => 'public'
             }
           )
-        }
         
       end # logged_in?
       

@@ -21,17 +21,16 @@ div.outer_shell! do
           }
         end
 
-        div.col.message_create! {
-          form_message_create(
-            :title => 'Publish a new:',
-            :input_title => true,
-            :models => %w{e_quote e_chapter},
-            :hidden_input => {
-                              :club_filename => '{{club_filename}}',
-                              :privacy       => 'public'
-                             }
-          )
-        }
+        form_message_create(
+          :css_class => 'col',
+          :title => 'Publish a new:',
+          :input_title => true,
+          :models => %w{e_quote e_chapter},
+          :hidden_input => {
+                            :club_filename => '{{club_filename}}',
+                            :privacy       => 'public'
+                           }
+        )
         
       end # logged_in?
 

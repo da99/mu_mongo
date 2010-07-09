@@ -50,7 +50,7 @@ module Base_Message
 
   def form_message_create raw_opts = {}
     
-    opts = Data_Pouch.new(raw_opts, :hidden_input, :title, :input_title, :models)
+    opts = Data_Pouch.new(raw_opts, :css_class, :hidden_input, :title, :input_title, :models)
     opts.hidden_input ||= {} 
     message_model = opts.hidden_input[:message_model]
     english = [ 
@@ -72,12 +72,16 @@ module Base_Message
       ['prediction', 'Prediction']
     ]
     models = opts.models || english.map(&:first)
+    div_attrs = {}
+    if opts.css_class
+      div_attrs[:class] = opts.css_class
+    end
     add_javascript_file '/js/vendor/jquery-1.4.2.min.js'
     add_javascript_file '/js/pages/Megauni_Base.js'
     text(capture {
-    div.club_message_create! do
+    div.club_message_create!(div_attrs) do
       
-      form.form_club_message_create! :method=>'post', :action=>"/messages/" do
+      form.form_club_message_create!(:method=>'post', :action=>"/messages/") do
 
         if opts.title
           h4 opts.title

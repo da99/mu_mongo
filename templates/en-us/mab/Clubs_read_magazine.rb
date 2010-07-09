@@ -20,17 +20,16 @@ div.outer_shell! do
           }
         }
 
-        div.col.message_create! {
-          form_message_create(
-            :title => 'Publish a new story:',
-            :input_title => true,
-            :hidden_input => {
-                              :message_model => 'mag_story',
-                              :club_filename => '{{club_filename}}',
-                              :privacy       => 'public'
-                             }
-          )
-        }
+        form_message_create(
+          :css_class=>'col',
+          :title => 'Publish a new story:',
+          :input_title => true,
+          :hidden_input => {
+                            :message_model => 'mag_story',
+                            :club_filename => '{{club_filename}}',
+                            :privacy       => 'public'
+                           }
+        )
         
       end # logged_in?
 

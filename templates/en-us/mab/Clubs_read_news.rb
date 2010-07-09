@@ -26,8 +26,8 @@ div.outer_shell! do
           }
         }
 
-        div.col.message_create! {
           form_message_create(
+            :css_class => 'col',
             :title => 'Post news:',
             :hidden_input => {
                               :message_model => 'news', 
@@ -35,7 +35,6 @@ div.outer_shell! do
                               :privacy       => 'public'
                              }
           )
-        }
         
       end # logged_in?
 

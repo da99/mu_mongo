@@ -20,8 +20,8 @@ div.outer_shell! do
           ~
         }
         
-        div.col.message_create! {
           form_message_create(
+            :css_class => 'col',
             :title => 'Publish a new:',
             :models => %w{fight complaint debate},
             :input_title => true,
@@ -30,7 +30,6 @@ div.outer_shell! do
                               :privacy       => 'public'
                              }
           )
-        }
         
       end # logged_in?
 
