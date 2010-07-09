@@ -201,16 +201,10 @@ body {
   text-align: left;
   margin-left: 10px;
   padding: 0 0 100px 10px; }
-  #mini_nav_bar p, #nav_bar p {
-    color: #f00919;
-    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
-    font-weight: bold;
-    padding: 0;
-    margin: 0; }
-    #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
-      font-size: 20px;
-      text-transform: none;
-      text-decoration: none; }
+  #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
+    font-size: 20px;
+    text-transform: none;
+    text-decoration: none; }
   #mini_nav_bar p.site_title, #nav_bar p.site_title {
     font-size: 20px; }
   #mini_nav_bar ul, #nav_bar ul {
@@ -652,16 +646,10 @@ body {
   text-align: left;
   margin-left: 10px;
   padding: 0 0 100px 10px; }
-  #mini_nav_bar p, #nav_bar p {
-    color: #f00919;
-    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
-    font-weight: bold;
-    padding: 0;
-    margin: 0; }
-    #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
-      font-size: 20px;
-      text-transform: none;
-      text-decoration: none; }
+  #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
+    font-size: 20px;
+    text-transform: none;
+    text-decoration: none; }
   #mini_nav_bar p.site_title, #nav_bar p.site_title {
     font-size: 20px; }
   #mini_nav_bar ul, #nav_bar ul {
