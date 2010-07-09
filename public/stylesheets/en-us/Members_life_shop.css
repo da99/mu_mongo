@@ -394,12 +394,9 @@ div.col {
   #guide ul {
     padding: 0 0 0 20px; }
 
-#club_message_create {
-  padding-bottom: 15px; }
-
 #club_messages {
-  max-width: 550px;
-  float: left; }
+  padding-left: 10px;
+  max-width: 550px; }
 
 #intro {
   border-left: 1px dashed #003860;

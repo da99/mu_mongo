@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278607527" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1278707356" type="text/css" rel="stylesheet" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -189,60 +189,58 @@
 {{/logged_in?}}
 
          </div>
-        <div class="col" id="message_create">
-          <div id="club_message_create">
-           <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-            <h4>Publish a new:</h4>
-            <fieldset>
-             <select name="message_model">
-              <option value="e_chapter">Encyclopedia Chapter</option>
-              <option value="e_quote">Quote</option>
-             </select>
-            </fieldset>
-            <fieldset class="hidden">
-             <input type="hidden" value="" name="body_images_cache"/>
-             <input type="hidden" value="{{url}}" name="return_url"/>
-             <input type="hidden" value="{{club_filename}}" name="club_filename"/>
-             <input type="hidden" value="public" name="privacy"/>
+         <div class="col" id="club_message_create">
+          <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+           <h4>Publish a new:</h4>
+           <fieldset>
+            <select name="message_model">
+             <option value="e_chapter">Encyclopedia Chapter</option>
+             <option value="e_quote">Quote</option>
+            </select>
+           </fieldset>
+           <fieldset class="hidden">
+            <input type="hidden" value="" name="body_images_cache"/>
+            <input type="hidden" value="{{url}}" name="return_url"/>
+            <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+            <input type="hidden" value="public" name="privacy"/>
 
 {{#single_username?}}
 
-             <input type="hidden" value="{{first_username}}" name="username"/>
+            <input type="hidden" value="{{first_username}}" name="username"/>
 
 {{/single_username?}}
 
-            </fieldset>
-             <fieldset>
-              <label>Title:</label>
-               <input type="text" class="text" value="" name="title"/>
-             </fieldset>
+           </fieldset>
             <fieldset>
-             <textarea name="body"></textarea>
+             <label>Title:</label>
+              <input type="text" class="text" value="" name="title"/>
             </fieldset>
+           <fieldset>
+            <textarea name="body"></textarea>
+           </fieldset>
 
 {{#multiple_usernames?}}
 
-            <fieldset>
-             <label>Post as:</label>
-             <select name="owner_id">
+           <fieldset>
+            <label>Post as:</label>
+            <select name="owner_id">
 
 {{#multiple_usernames}}
 
-              <option value="{{username}}">{{username}}</option>
+             <option value="{{username}}">{{username}}</option>
 
 {{/multiple_usernames}}
 
-             </select>
-            </fieldset>
+            </select>
+           </fieldset>
 
 {{/multiple_usernames?}}
 
-            <div class="buttons">
-             <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
-            </div>
-           </form>
-          </div>
-        </div>
+           <div class="buttons">
+            <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+           </div>
+          </form>
+         </div>
 
 {{/logged_in?}}
 
@@ -310,8 +308,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278607527"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278607527"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278707356"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278707356"></script>
 
 {{#include_tracking?}}
 
