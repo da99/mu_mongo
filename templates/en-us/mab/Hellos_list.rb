@@ -9,8 +9,7 @@ div.col.pretension! {
   }
 
   h3.title %~
-    MegaUni.com let's you create
-  your own universe. 
+    MegaUni.com let's you create a universe with your friends. 
   ~
 
   h4 %~ Each universe includes: ~
