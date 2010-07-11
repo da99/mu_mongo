@@ -12,7 +12,7 @@ div( :id=>"nav_bar" ) {
       end
     }
     p.divider.site_tag_line {
-       "{{site_tag_line}}" # Unify
+       '~~ ? ! @ ~~'
     } 
   }
 

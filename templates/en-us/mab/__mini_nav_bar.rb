@@ -8,7 +8,7 @@ div( :id=>"nav_bar" ) {
       a '{{site_title}}', :href=>'/'
     }
     p.divider {
-      "{{site_tag_line}}" # Unify
+      '~~ ? ! @ ~~' 
     } 
   }
 

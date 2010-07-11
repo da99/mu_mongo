@@ -8,9 +8,7 @@ div.col.pretension! {
     strong %~ Coming Soon ~
   }
 
-  h3.title %~
-    MegaUni.com let's you create a universe with your friends. 
-  ~
+  h3.title '{{site_tag_line}}'
 
   h4 %~ Each universe includes: ~
 
