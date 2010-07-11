@@ -87,8 +87,8 @@ div.col.pretension! {
     }
     
     li {
-      strong %~Publicity Whoring Discouraged~
-      span %~: The total number of followers is kept secret to avoid spam and publicity whores.~
+      strong %~No Popularity Contests~
+      span %~: The total number of followers is kept secret to avoid spam and publicity hounds.~
     }
 
     li {
@@ -194,7 +194,7 @@ div.col.middle! {
       }
     end
 
-    div.divider 'Old Clubs'
+    div.divider 'Old Stuff'
     
     ul.old_clubs {
       loop 'old_clubs' do
