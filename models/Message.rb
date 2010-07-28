@@ -20,6 +20,8 @@ class Message
     'news' => ['important news', SECTIONS::NEWS],
     'comment' => ['comment'],
     'random' => ['random info.', SECTIONS::R],
+    'fight' => ['fight', SECTIONS::F],
+    'debate' => ['friendly debate', SECTIONS::F],
     'complaint' => ['complaint', SECTIONS::F],
     'prediction' => ['prediction', SECTIONS::PREDICTIONS],
     'mag_story'  => ['magazine article', SECTIONS::MAG],
@@ -27,15 +29,14 @@ class Message
     'cheer'      => ['cheer reply', SECTIONS::THANKS],
     'jeer'      => ['critique reply', SECTIONS::THANKS],
 		'e_chapter' => ['encyclopedia chapter', SECTIONS::E],
-		'e_quote' => ['quotation', SECTIONS::E]
+		'e_quote' => ['quotation', SECTIONS::E],
+    'buy'     => ['buy it', SECTIONS::SHOP],
+    'thank'   => ['thanks', SECTIONS::THANKS]
     # quote
     # plea  
     # fulfill
-    # fight
     # discuss
-    # thank
     # answer
-    # buy
     # event
   }
   
@@ -149,10 +150,24 @@ class Message
 
   # ==== Accessors ====
 
+  def self.validate_params_and_find params, *args, &blok
+    mess_model = params[:message_model] || params['message_model']
+    invalid = case mess_model
+              when String
+                mess_model if not MODELS.include?(mess_model)
+              when Hash
+                mess_model.values.flatten.detect { |mod| !MODELS.include?(mod) }
+              else
+                nil
+              end
+    raise "Invalid message model #{invalid.inspect}" if invalid
+    db_collection.find(params, *args, &blok)
+  end
+
   def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
     params = {:target_ids =>club_id, :privacy => 'public' }.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
-    db_collection.find(
+    validate_params_and_find(
       params,
       opts,
       &blok
@@ -193,7 +208,7 @@ class Message
     opts = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     include_mods = [opts.delete(:include)].flatten.compact
     params = {}.update(raw_params)
-    cursor = db_collection.find(
+    cursor = validate_params_and_find(
       params, 
       opts,
       &blok
@@ -238,7 +253,7 @@ class Message
 
   def self.by_public_label label, raw_params={}, &blok
     params = { :public_labels => {:$in=>[label]} }.update(raw_params)
-    db_collection.find( params, &blok )
+    validate_params_and_find( params, &blok )
   end
 
   def self.by_club_id_and_public_label club_id, label, raw_params = {}, raw_opts={}, &blok
@@ -247,8 +262,8 @@ class Message
               :public_labels => {:$in=>[label].flatten}
               }.update(raw_params)
     opts = {:sort=>[:_id, :desc]}.update(raw_opts)
-    db_collection.find(params, &blok)
-    end
+    validate_params_and_find(params, &blok)
+  end
 
   def self.by_published_at *args, &blok
     if args.size === 1
@@ -283,7 +298,7 @@ class Message
     # dt = Time.now.utc
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
-    db_collection.find(params, opts, &blok )
+    validate_params_and_find(params, opts, &blok )
   end
 
   def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}, &blok

@@ -204,6 +204,14 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 		end
 	}
 
+  must 'show questions in Q&A section' do
+    mem = regular_member_1
+    club = create_club(mem)
+    mess = create_message( mem, club, :message_model=>'question' )
+    get club.href_qa
+    assert last_response.body[mess.data.body]
+  end
+
   must 'show magazine articles in magazine section' do
     mem = regular_member_1
     club = create_club(mem)
