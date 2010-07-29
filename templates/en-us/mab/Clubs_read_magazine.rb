@@ -35,11 +35,11 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_storys?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'storys'
+        loop_messages_with_opening(
+          'storys',
+          'Latest Stories:',
+          'Nothing has been posted yet.'
+        )
         
       end
       

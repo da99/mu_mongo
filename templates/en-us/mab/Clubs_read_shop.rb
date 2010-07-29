@@ -28,6 +28,7 @@ div.outer_shell! do
           form_message_create(
           :css_class => 'col',
             :title => 'Recommend a product:',
+            :input_title => true,
             :hidden_input => {
                               :message_model => 'buy',
                               :club_filename => '{{club_filename}}',
@@ -40,12 +41,12 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_buys?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'buys'
-        
+        loop_messages_with_opening(
+          'buys',
+          'Latest Buys:',
+          'Nothing has been posted yet.'
+        )
+
       end
       
     } # div.navigate!

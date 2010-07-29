@@ -1,6 +1,23 @@
 require 'models/Data_Pouch'
 
 module Base_Message
+  
+  def loop_messages_with_opening mess, h4_txt, empty_txt = nil, opts = {}
+    text(capture {
+
+      show_if("#{mess}?") {
+        h4 h4_txt
+      }
+
+      if !!empty_txt
+        show_if("no_#{mess}?"){
+          div.empty_msg empty_txt
+        }
+      end
+
+      loop_messages mess, opts
+    })
+  end
 
   def loop_messages mustache, raw_opts = {}
     opts = {:include_meta => false, :include_permalink => true}.update(raw_opts)

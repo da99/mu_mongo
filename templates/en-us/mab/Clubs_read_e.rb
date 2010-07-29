@@ -36,11 +36,19 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_facts?'){
+        show_if('no_quotes_or_chapters?'){
           div.empty_msg 'Nothing has been posted yet.'
         }
         
-        loop_messages 'facts'
+        show_if('quotes?') {
+          h4 'Quotations'
+        }
+        loop_messages 'quotes'
+        
+        show_if('chapters?') {
+          h4 'Chapters'
+        }
+        loop_messages 'chapters'
         
       end
       

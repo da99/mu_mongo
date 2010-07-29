@@ -9,8 +9,34 @@ class Clubs_read_e < Base_View
     "The Encyclopedia of #{club_filename}"
   end
 
+  def quotes
+    @cache['messages.quotes'] ||= begin
+                                    filter_and_compile_facts( 'e_quote' )
+                                  end
+  end
+
+  def chapters
+    @cache['messages.chapters'] ||= begin
+                                      filter_and_compile_facts( 'e_chapter' )
+                                    end
+  end
+
+  def quotes_or_chapters?
+    !quotes.empty? && !chapters.empty?
+  end
+
+  def no_quotes_or_chapters?
+    !quotes_or_chapters?
+  end
+
   def facts
-    compile_and_cache( 'messages.facts' ,   app.env['results.facts'] )
+    @cache['messages.facts'] ||= compile_messages( app.env['results.facts'] )
+  end
+
+  private
+
+  def filter_and_compile_facts model
+    facts.select { |mess| mess['message_model'] == model }
   end
   
 end # === Clubs_read_e 

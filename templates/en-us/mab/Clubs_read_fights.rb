@@ -35,11 +35,11 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_passions?'){
-          div.empty_msg 'Nothing passionate or furious has been published.'
-        }
-        
-        loop_messages 'passions'
+        loop_messages_with_opening(
+          'passions',
+          'Latest Activity:',
+          'Nothing passionate or furious has been published.'
+        )
         
       end
       

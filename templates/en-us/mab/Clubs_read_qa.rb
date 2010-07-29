@@ -23,6 +23,7 @@ div.outer_shell! do
           :css_class => 'col',
             :title => 'Publish a new:',
             :models => %w{question plea},
+            :input_title => true,
             :hidden_input => {
               :club_filename => '{{club_filename}}',
               :privacy       => 'public'
@@ -33,11 +34,11 @@ div.outer_shell! do
       
       div.col.club_messages! do
         
-        show_if('no_questions?'){
-          div.empty_msg 'No questions have been asked.'
-        }
-        
-        loop_messages 'questions'
+        loop_messages_with_opening(
+          'questions',
+          'Latest Questions:',
+          'No questions have been asked.'
+        )
         
       end
 

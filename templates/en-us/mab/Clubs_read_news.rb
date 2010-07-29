@@ -29,6 +29,7 @@ div.outer_shell! do
           form_message_create(
             :css_class => 'col',
             :title => 'Post news:',
+            :input_title => true,
             :hidden_input => {
                               :message_model => 'news', 
                               :club_filename => '{{club_filename}}',
@@ -41,12 +42,12 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_news?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'news'
-        
+        loop_messages_with_opening(
+          'news',
+          'Latest News:',
+          'Nothing has been posted yet.'
+        )
+
       end
 
     } # div.club_body!

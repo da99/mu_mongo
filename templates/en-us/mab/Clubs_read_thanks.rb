@@ -34,12 +34,12 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_thanks?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'thanks'
-        
+        loop_messages_with_opening(
+          'thanks',
+          'Latest "Thank You" Notes:',
+          'Nothing has been posted yet.'
+        )
+          
       end
       
     } # div.navigate!

@@ -3,6 +3,10 @@ require 'tests/__rack_helper__'
 
 class Test_Control_Clubs_Read < Test::Unit::TestCase
 
+  def mem
+    regular_member_1
+  end
+
 	must 'render /clubs/' do
 		get '/clubs/'
 		assert_last_response_ok
@@ -204,8 +208,16 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 		end
 	}
 
+  %w{ e_chapter e_quote }.each { |mess_mod|
+    must "show #{mess_mod} in Encyclopedia section" do
+      club = create_club(mem)
+      mess = create_message( mem, club, :message_model=>mess_mod )
+      get club.href_e
+      assert last_response.body[mess.data.body]
+    end
+  }
+
   must 'show questions in Q&A section' do
-    mem = regular_member_1
     club = create_club(mem)
     mess = create_message( mem, club, :message_model=>'question' )
     get club.href_qa
@@ -213,7 +225,6 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
   end
 
   must 'show magazine articles in magazine section' do
-    mem = regular_member_1
     club = create_club(mem)
     mess = create_message( mem, club, :message_model=>'mag_story')
     get club.href_magazine
@@ -221,7 +232,6 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
   end
 
   must 'show random messages in random section' do
-    mem = regular_member_1
     club = create_club(mem)
     mess = create_message( mem, club, :message_model=>'random')
     get club.href_random

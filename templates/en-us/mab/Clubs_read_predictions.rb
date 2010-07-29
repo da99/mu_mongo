@@ -35,12 +35,12 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_predictions?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'predictions'
-        
+        loop_messages_with_opening(
+          'predictions',
+          'Latest Predictions:',
+          'Nothing has been posted yet.'
+        )
+
       end
 
     } # div.navigate!

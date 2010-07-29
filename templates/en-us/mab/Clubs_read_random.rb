@@ -28,6 +28,7 @@ div.outer_shell! do
           form_message_create(
           :css_class => 'col',
             :title => 'Post a random thought:',
+            :input_title => true,
             :hidden_input => {
                               :message_model => 'random',
                               :club_filename => '{{club_filename}}',
@@ -39,11 +40,11 @@ div.outer_shell! do
 
       div.col.club_messages! do
         
-        show_if('no_random?'){
-          div.empty_msg 'Nothing has been posted yet.'
-        }
-        
-        loop_messages 'random'
+        loop_messages_with_opening(
+          'random',
+          'Latest Random Thoughts:',
+          'Nothing has been posted yet.'
+        )
         
       end
 
