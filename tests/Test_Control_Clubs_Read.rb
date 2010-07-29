@@ -211,11 +211,19 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
   %w{ e_chapter e_quote }.each { |mess_mod|
     must "show #{mess_mod} in Encyclopedia section" do
       club = create_club(mem)
-      mess = create_message( mem, club, :message_model=>mess_mod )
+      mess = create_message( mem, club, :message_model => mess_mod )
       get club.href_e
       assert last_response.body[mess.data.body]
     end
+    
+    must "now show empty message if at least one #{mess_mod} is shown" do
+      club = create_club(mem)
+      mess = create_message( mem, club, :message_mode => mess_mod )
+      get club.href_e
+      assert_equal nil, last_response.body['empty_msg']
+    end
   }
+
 
   must 'show questions in Q&A section' do
     club = create_club(mem)

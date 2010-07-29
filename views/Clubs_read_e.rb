@@ -22,7 +22,7 @@ class Clubs_read_e < Base_View
   end
 
   def quotes_or_chapters?
-    !quotes.empty? && !chapters.empty?
+    !quotes.empty? || !chapters.empty?
   end
 
   def no_quotes_or_chapters?

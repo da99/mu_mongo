@@ -10,7 +10,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     mem = Message.create(
       regular_member_1, {
         :owner_id => regular_member_1.username_ids.last,
-				
+				:message_model => 'random',
         :target_ids =>  [ club['_id'] ],
         :body => 'test body',
         :emotion => 'poignant',
@@ -21,11 +21,20 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     assert_equal mem.data._id, Message.by_id(mem.data._id).data._id
 	end
   
+  must 'require :message_model' do
+    mem = regular_member_1
+    club = create_club(mem)
+    err = assert_raise(Message::Invalid) {
+      create_message(mem, club)
+    }
+    assert_match( /Message model/, err.message )
+  end
+
   must 'be created even if :target_ids is a String' do
     mem = Message.create(
       admin_member, {
         :owner_id => admin_member.username_ids.first,
-				
+				:message_model=>'random',
         :target_ids => club['_id'],
         :body => 'test body',
         :emotion => 'poignant',

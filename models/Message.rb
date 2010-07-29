@@ -114,11 +114,11 @@ class Message
       new_data.public_labels = []
       ask_for_or_default :lang
       ask_for :parent_message_id
-      demand :owner_id, :target_ids, :body
+      demand :owner_id, :target_ids, :body, :message_model
       ask_for :title, :category, :privacy, :labels,
           :emotion, :rating,
           :labels, :public_labels,
-          :message_model, :important,
+          :important,
           :body_images_cache
       save_create 
     end
