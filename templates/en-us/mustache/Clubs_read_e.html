@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1278881141" type="text/css" rel="stylesheet" media="screen"/>
+   <link href="{{css_file}}?time=1280364544" type="text/css" media="screen" rel="stylesheet"/>
 
 {{/not_mobile_request?}}
 
@@ -237,7 +237,7 @@
 {{/multiple_usernames?}}
 
            <div class="buttons">
-            <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            <button class="create" onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;">Save</button>
            </div>
           </form>
          </div>
@@ -246,14 +246,21 @@
 
         <div class="col" id="club_messages">
 
-{{#no_facts?}}
+{{#no_quotes_or_chapters?}}
 
          <div class="empty_msg">Nothing has been posted yet.</div>
 
-{{/no_facts?}}
+{{/no_quotes_or_chapters?}}
 
 
-{{#facts}}
+{{#quotes?}}
+
+         <h4>Quotations</h4>
+
+{{/quotes?}}
+
+
+{{#quotes}}
 
           <div class="message">
 
@@ -301,15 +308,73 @@
 
           </div>
 
-{{/facts}}
+{{/quotes}}
+
+
+{{#chapters?}}
+
+         <h4>Chapters</h4>
+
+{{/chapters?}}
+
+
+{{#chapters}}
+
+          <div class="message">
+
+{{#title}}
+
+           <strong class="title">{{title}}</strong>
+
+{{/title}}
+
+           <div class="body">{{{compiled_body}}}</div>
+
+{{#has_parent_message?}}
+
+           <div class="permalink">
+            <strong>{{message_model_in_english}}</strong>
+            <span> for </span>
+            <a href="{{parent_message_href}}">this</a>
+           </div>
+
+{{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+           <div class="permalink">
+
+{{#logged_in?}}
+
+            <a href="{{href}}">Reply</a>
+            <span> to this </span>
+            <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+            <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+           </div>
+
+{{/parent_message?}}
+
+          </div>
+
+{{/chapters}}
 
         </div>
        </div>
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1278881141"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1278881141"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1280364544"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1280364544"></script>
 
 {{#include_tracking?}}
 
