@@ -270,7 +270,8 @@ class Test::Unit::TestCase
       :privacy => 'public',
       :target_ids => [club.data._id],
       :owner_id => (un_id || mem.username_ids.first),
-      :body => "random body #{rand(4000)}"
+      :body => "random body #{rand(4000)}",
+      :message_model => 'random'
     }.update(opts)
 
     Message.create( mem, final_opts )

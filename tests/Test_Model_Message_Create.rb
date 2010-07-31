@@ -25,7 +25,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     mem = regular_member_1
     club = create_club(mem)
     err = assert_raise(Message::Invalid) {
-      create_message(mem, club)
+      create_message mem, club, :message_model=>nil
     }
     assert_match( /Message model/, err.message )
   end

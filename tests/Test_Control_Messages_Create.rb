@@ -12,7 +12,8 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
     post "/messages/", :club_filename=>club.data.filename,
       :privacy=>'public',
       :username=> regular_member_2.usernames.last,
-      :body => body
+      :body => body,
+      :message_model => 'random'
     assert_equal [body], Message.db_collection.find(:body=>body).map { |m| m['body'] }
   end
 
@@ -24,6 +25,7 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
       :privacy=>'public',
       :username=>regular_member_1.usernames.last,
       :body=>body,
+      :message_model=>'random',
       :public_labels => 'product , knees'
 
     mess_labels = Message.db_collection.find(

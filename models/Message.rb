@@ -83,24 +83,6 @@ class Message
 
   # ==== Authorizations ====
  
-  def owner? editor
-    return false if not editor
-    case editor
-    when Member
-      editor.username_ids.include?( data.owner_id ) || editor.has_power_of?(:ADMIN)
-    when BSON::ObjectID
-      match = data.owner_id == editor
-      if not match
-        match = begin
-                  Member.by_id(editor).username_ids.include?(data.owner_id)
-                rescue Member::Not_Found
-                  false
-                end
-      end
-      match
-    end
-  end
-
   def allow_as_creator? editor # NEW, CREATE
     return false unless editor
     editor.has_power_of? :MEMBER
