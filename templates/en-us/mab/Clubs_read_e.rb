@@ -40,16 +40,9 @@ div.outer_shell! do
           div.empty_msg 'Nothing has been posted yet.'
         }
         
-        show_if('quotes?') {
-          h4 'Quotations'
-        }
-        loop_messages 'quotes'
+        loop_messages_with_opening 'quotes', 'Quotations'
         
-        show_if('chapters?') {
-          h4 'Chapters'
-        }
-        loop_messages 'chapters'
-        
+        loop_messages_with_opening 'chapters', 'Chapters'
       end
       
     } # div.navigate!
