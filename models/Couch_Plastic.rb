@@ -240,16 +240,6 @@ module Couch_Plastic
     @clean_data
   end
 
-  def manipulator
-    raise ArgumentError, "No manipulator set." unless @manipulator_set
-    @manipulator
-  end
-
-  def manipulator= new_manipulator
-    @manipulator_set = true
-    @manipulator = new_manipulator
-  end
-  
   def raw_data= raw_data
     @raw_data   = Data_Pouch.new(raw_data, self.class.fields.keys + self.class.psuedo_fields.keys)
     @clean_data = Data_Pouch.new({}, self.class.fields.keys + self.class.psuedo_fields.keys)
@@ -279,6 +269,36 @@ module Couch_Plastic
 
   def cache 
     @cache ||= {}
+  end
+
+  # ==== Authorizations ====
+  
+  def manipulator
+    raise ArgumentError, "No manipulator set." unless @manipulator_set
+    @manipulator
+  end
+
+  def manipulator= new_manipulator
+    @manipulator_set = true
+    @manipulator = new_manipulator
+  end
+  
+  def owner? editor
+    return false if not editor
+    case editor
+    when Member
+      editor.username_ids.include?( data.owner_id ) || editor.has_power_of?(:ADMIN)
+    when BSON::ObjectID
+      match = data.owner_id == editor
+      if not match
+        match = begin
+                  Member.by_id(editor).username_ids.include?(data.owner_id)
+                rescue Member::Not_Found
+                  false
+                end
+      end
+      match
+    end
   end
 
   # ==== Methods for handling Old/New Data
@@ -373,11 +393,18 @@ module Couch_Plastic
           when :anything
             new_clean_value(fld, raw)
             
-          when :array
+          when :array, :Array
             if raw.is_a?(Array)
               new_clean_value(fld, raw)
             else
-              self.errors << (err_msg || @error_msg || "#{fld.capitalize} is invalid.")
+              self.errors << (err_msg || @error_msg || "#{fld.capitalize} must be an array of values.")
+            end
+            
+          when :hash, :Hash
+            if raw.is_a?(Hash)
+              new_clean_value(fld, raw)
+            else
+              self.errors << (err_msg || @error_msg || "#{fld.capitalize} is not a key/value data type.")
             end
             
           when :utc_now
@@ -422,7 +449,7 @@ module Couch_Plastic
             if arr.include?(raw)
               new_clean_value fld, raw
             else
-              errors << ( err_msg || @error_msg || "#{fld.humanize} is invalid" )
+              errors << ( err_msg || @error_msg || "#{fld.humanize} is invalid: #{raw.inspect}" )
             end
             
           when :match
@@ -646,8 +673,8 @@ module Couch_Plastic
   # Accepts an optional block that is given, if any, a RestClient::RequestFailed
   # exception.  Use ".response.body" on the exception for JSON data.
   # Parameters:
-  #   opts - Valid options: :set_updated_at
-  def save_update opts = {}
+  #   opts - Valid options: :set_updated_at, :record_diff
+  def save_update opts = {}, &blok
 
     clear_cache
     if !updator?(manipulator)
@@ -680,6 +707,17 @@ module Couch_Plastic
              else
                self.class.db_collection.update( {:_id=>id}, hsh, :safe=>true)
              end
+    
+    if opts[:record_diff]
+      raise
+      o = data.as_hash.dup
+      n = new_data.as_hash.dup
+      Doc_Log.create( manipulator, 
+        :doc_id  => data._id,
+        :old_doc => o, 
+        :new_doc => n
+      )
+    end
 
     data.as_hash.update(new_data.as_hash)
 
@@ -843,8 +881,6 @@ module Couch_Plastic_Class_Methods
 
 
 end # === module ClassMethods ==============================================
-
-
 
 
 
