@@ -27,5 +27,9 @@ class Messages_edit < Base_View
   def mess_id
     mess.data._id
   end
+
+	def editor_id
+		current_member.username_ids.first
+	end
   
 end # === Messages_edit 

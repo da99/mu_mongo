@@ -7,7 +7,7 @@ class Doc_Log
   enable_timestamps
   
   make :doc_id, :mongo_object_id
-  make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
+  make :editor_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
   make_psuedo :old_doc, :Hash
   make_psuedo :new_doc, :Hash
   make :diff, [:set_to, lambda { 
@@ -18,19 +18,31 @@ class Doc_Log
     o.diff_document n
   }]
 
+  # ==== Getters ====
+  
+  def self.by_doc_id id
+    doc = db_collection.find_one( :doc_id=>Couch_Plastic.mongofy_id(id) )
+    raise Doc_Log::Not_Found, "Doc log by document id: #{id.inspect}" unless doc
+    new(doc)
+  end
+
   # ==== Authorizations ====
+
+  def allow_as_creator? editor = nil
+    true
+  end
 
   def self.create editor, raw_data
     new do
       self.manipulator = editor
       self.raw_data = raw_data
-      demand :doc_id, :owner_id, :diff
+      demand :doc_id, :editor_id, :diff
       save_create
     end
   end
 
   def reader? editor 
-    owner? editor
+    editor.is_a?(Member) && editor.admin?
   end
 
   def updator? editor

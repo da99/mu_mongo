@@ -42,6 +42,7 @@ require 'models/Couch_Plastic'
 # === Require models. ===
 
 %w{
+  Doc_Log
   Club
   Message
   Member

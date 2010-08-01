@@ -26,11 +26,11 @@ class Test_Control_Messages_Update < Test::Unit::TestCase
   end
 
   must 'redirect to message href after update' do
-    mess = create_message(regular_member_1)
+    mess = create_message(mem)
 		mess_id = mess.data._id.to_s
 		new_body = 'http://new.com'
 		log_in_regular_member_1
-		post "/mess/#{mess_id}/", {:body=>new_body, :_method=>'put'}
+		post "/mess/#{mess_id}/", {:editor_id=>mem.username_ids.first, :body=>new_body, :_method=>'put'}
     assert_redirect mess.href, 303
   end
 

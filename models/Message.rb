@@ -46,6 +46,8 @@ class Message
 
   enable_timestamps
   
+  make_psuedo :editor_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
+
   make :message_model, [:in_array, MODELS]
   make :important, :not_empty
   make :rating, :not_empty
@@ -121,8 +123,9 @@ class Message
       ask_for :title, :body, :teaser, :public_labels, 
         :private_labels, :published_at,
         :message_model, :important,
-        :body_images_cache
-      save_update
+        :body_images_cache,
+        :editor_id
+      save_update :record_diff => true
     end
   end
 

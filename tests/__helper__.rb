@@ -140,6 +140,10 @@ class Test::Unit::TestCase
     ~
   end
 
+  def mem
+    regular_member_1
+  end
+
   def admin_member
     self.class.admin_member
   end
@@ -186,6 +190,18 @@ class Test::Unit::TestCase
   def follow_ssl_redirect!
     follow_redirect!
     follow_redirect!
+  end
+
+  def assert_raises_with_message( err_class, err_msg, &blok )
+    err = assert_raises(err_class, &blok)
+    case err_msg
+    when String
+      assert_equal err_msg, err.message
+    when Regexp
+      assert_match err_msg, err.message
+    else
+      raise ArgumentError, "Unknown class for error message: #{err_msg.inspect}"
+    end
   end
 
   def assert_redirect(loc, status = 301)

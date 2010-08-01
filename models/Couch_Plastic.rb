@@ -99,13 +99,19 @@ module Couch_Plastic
 
   def self.ensure_indexes
     new = {}
+    
     new['Clubs'] = [ 
       { 'unique' => true, 'key' => {'filename' => 1} }
     ]
+    
     new['Member_Usernames'] = [
       { 'unique' => true, 'key' => {'username' => 1} }
     ]
-
+    
+    new['Doc_Logs'] = [
+      { 'key' => {'doc_id' => 1} }
+    ]
+    
     new.each { |coll, ixs| 
       index_info      = DB.collection(coll).index_information()
       index_info.delete '_id'
@@ -709,11 +715,12 @@ module Couch_Plastic
              end
     
     if opts[:record_diff]
-      raise
       o = data.as_hash.dup
       n = new_data.as_hash.dup
+      
       Doc_Log.create( manipulator, 
         :doc_id  => data._id,
+        :editor_id => raw_data.editor_id,
         :old_doc => o, 
         :new_doc => n
       )

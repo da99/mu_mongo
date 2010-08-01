@@ -20,9 +20,46 @@ module Couch_Plastic::Diff_Document
 
   def diff_document new_doc
     raise "Invalid type: #{self.class}" unless self.is_a?(Hash)
-    differ = Differ.diff_by_word(new_doc, self)
-    differ.extend Differ_To_Document
-    differ.to_document
+    meta = {} 
+    new_doc.each { |k, v|
+      orig = self[k]
+      diff_type = (orig.is_a?(String) && v.is_a?(String) && :String) ||
+                  ( !orig && v && :changed ) ||
+                  ( orig && !v && :changed ) ||
+                  ( (orig.is_a?(Numeric) || v.is_a?(Numeric)) && :changed ) ||
+                  (v.is_a?(Array) && :Array) ||
+                  v
+      
+      case diff_type
+      when :String
+        differ = Differ.diff_by_word(v, self[k])
+        differ.extend Couch_Plastic::Differ_To_Document
+        meta[k] = differ.to_document
+
+      when :Array
+        o_arr = self[k] || []
+        n_arr = v || []
+        meta[k] = []
+
+        insert = n_arr - o_arr
+        delete = o_arr - n_arr
+
+        if not insert.empty?
+          meta[k] << ['+', insert]
+        end
+
+        if not delete.empty?
+          meta[k] << ['-', delete]
+        end
+          
+      when :changed
+        meta[k] = ['-+', orig, v]
+        
+      else
+        raise ArgumentError, "Unknown class for diff-ing: #{orig.inspect}, #{v.inspect}"
+      end
+    }
+    meta
   end
   
 end # === module
