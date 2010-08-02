@@ -9,7 +9,7 @@ div.content! {
 
   h3 'Add another username.'
   
-  form.form_username_create!(:action=>"/members/", :method=>"post") {
+  form.form_username_create!(:action=>"/member/", :method=>"post") {
     
     input :type=>'hidden', :name=>'_method', :value=>'put'
 

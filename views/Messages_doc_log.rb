@@ -24,6 +24,7 @@ class Messages_doc_log < Base_View
   def compile_logs arr_or_cursor
     arr_or_cursor.map { |doc|
       doc['compiled_diff'] = doc['diff'].inspect
+      doc['editor_href']   = "/uni/#{doc['editor_username']}/"
       doc
     }
   end

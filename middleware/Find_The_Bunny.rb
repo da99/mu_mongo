@@ -1,3 +1,51 @@
+class Path_Map
+
+  attr_reader :prefix, :control, :url_aliases
+  def initialize prefix, &blok
+    @control = nil
+    @prefix = prefix
+    @url_aliases = []
+    instance_eval(&blok) if block_given?
+  end
+
+  def to obj_class
+    @control = obj_class
+  end
+
+  def path *args
+    suffix, action, verbs = args
+    verbs ||= ['GET']
+    verbs = [verbs].flatten.compact.uniq
+    filename = suffix.split('/').last
+    full_path = if filename && filename['.']
+                  File.join(prefix, suffix)
+                else
+                  File.join(prefix, suffix, '/')
+                end
+    @url_aliases << [full_path, control, action, verbs]
+  end
+
+  def map new_prefix, &blok
+    @url_aliases += begin
+                      new_map = self.class.new(File.join(prefix, new_prefix))
+                      orig_control = control
+                      new_map.instance_eval do
+                        to orig_control
+                        instance_eval(&blok)
+                        self.url_aliases
+                      end
+                    end
+  end
+  
+  def top_slash &blok
+    old_prefix = prefix
+    @prefix = '/'
+    instance_eval &blok
+    @prefix = old_prefix
+  end
+  
+end # === class
+
 class Find_The_Bunny
 
   VALID_HTTP_VERBS = %w{ HEAD GET POST PUT DELETE }
@@ -22,6 +70,7 @@ class Find_The_Bunny
     preggers
     sports
   }
+  
   URL_REGEX = Hash[
     :id       => '[a-zA-Z\-\d]+',
     :filename => '[a-zA-Z0-9\-\_\+]+',
@@ -29,71 +78,107 @@ class Find_The_Bunny
     :digits   => '[0-9]+',
     :old_topics => "#{Old_Topics.join('|')}"
   ]
+  
+  def map prefix, &blok
+    @url_aliases += Path_Map.new(prefix, &blok).url_aliases
+  end
+
   def initialize new_app
     @app = new_app
-    # map('/mess').to(Messages) do 
-    #   path('/{id}').action(:by_id).verbs(:get,:put) do
-    #     path('/log').action(:doc_log).verbs(:get)
-    #   end
-    # end
-    @url_aliases = [
-      ['/'           , Hellos, 'list'        , 'GET'       ],
-      ['/salud/'     , Hellos, 'salud'       , 'GET'       ],
-      ['/rss.xml'    , Hellos, 'rss_xml']    ,
-      ['/sitemap.xml', Hellos, 'sitemap_xml'],
+    @url_aliases = []
+    
+    map '/' do
+      to Hellos
+      path '/', :list
+      path '/salud' , :salud
+      path '/rss.xml', :rss_xml
+      path '/sitemap.xml', :sitemap_xml
+    end
+    
+    map '/' do
+      to Messages
+      path '/messages/', :create, 'POST'
       
-      ['/mess/{id}/'                                 , Messages, 'by_id'       , %w{ GET PUT } ],
-      ['/mess/{id}/edit/'                            , Messages, 'edit'  ]     ,
-      ['/mess/{id}/log/'                            , Messages, 'doc_log' ]     ,
-      ['/clubs/{filename}/by_label/{filename}/'      , Messages, 'by_label']   ,
-      ['/clubs/{filename}/by_date/'                  , Messages, 'by_date']    ,
-      ['/clubs/{filename}/by_date/{digits}/'         , Messages, 'by_date']    ,
-      ['/clubs/{filename}/by_date/{digits}/{digits}/', Messages, 'by_date']    ,
-      ['/messages/'                                  , Messages, 'create'      , 'POST']        ,
+      map '/mess/{id}'  do 
+        path '/'    , :by_id  , %w{ GET PUT}
+        path '/edit', :edit
+        path '/log' , :doc_log
+      end
       
-      ['/clubs/'                       , Clubs, 'list'            , 'GET'] ,
-      ['/clubs/'                       , Clubs, 'create'          , 'POST'],
-      ['/club-create/'                 , Clubs, 'create' ]        ,
-      ['/clubs/{filename}/edit/'       , Clubs, 'edit' ]          ,
-      ['/clubs/{old_topics}/'          , Clubs, 'by_old_id']      ,
-      ['/clubs/{filename}/'            , Clubs, 'by_filename']    ,
-      ['/clubs/{filename}/'            , Clubs, 'update'          , 'PUT'] ,
-      ['/clubs/{filename}/follow/'     , Clubs, 'follow'          , 'GET'] ,
-      ['/clubs/follow/'                , Clubs, 'follow'          , 'POST'],
-      ['/clubs/{filename}/e/'          , Clubs, 'read_e'          , 'GET'] ,
-      ['/clubs/{filename}/qa/'         , Clubs, 'read_qa'         , 'GET'] ,
-      ['/clubs/{filename}/news/'       , Clubs, 'read_news'       , 'GET'] ,
-      ['/clubs/{filename}/fights/'     , Clubs, 'read_fights'     , 'GET'] ,
-      ['/clubs/{filename}/shop/'       , Clubs, 'read_shop'       , 'GET'] ,
-      ['/clubs/{filename}/random/'     , Clubs, 'read_random'     , 'GET'] ,
-      ['/clubs/{filename}/thanks/'     , Clubs, 'read_thanks'     , 'GET'] ,
-      ['/clubs/{filename}/predictions/', Clubs, 'read_predictions', 'GET'] ,
-      ['/clubs/{filename}/magazine/', Clubs, 'read_magazine', 'GET'] ,
-      ['/club-search/'                 , Clubs, 'club_search'     , 'POST'],
-      ['/club-search/{filename}/'      , Clubs, 'club_search'     , 'GET'] ,
+      map '/clubs/{filename}' do
+        path '/by_label/{filename}/', 'by_label'
+        map '/by_date' do
+          path '/'                  , 'by_date'
+          path '/{digits}/'         , 'by_date'
+          path '/{digits}/{digits}/', 'by_date'
+        end
+      end
+    end
+    
+    map '/clubs' do
+      to Clubs
       
-      ['/log-in/' , Sessions, 'log_in'  , %w{GET POST} ],
-      ['/log-out/', Sessions, 'log_out'],
+      top_slash do
+        path '/club-create/'                 ,  'create'         
+        path '/club-search/'                 ,  'club_search'     , 'POST'
+        path '/club-search/{filename}/'      ,  'club_search'
+      end
       
-      ['/member/'                , Members  , 'create'   , 'POST'] ,
-      ['/members/'               , Members  , 'update'   , 'PUT']  ,
-      ['/life/{filename}/'       , Members  , 'life' ]   ,
-      ['/life/{filename}/e/'     , Members  , 'life_e' ] ,
-      ['/life/{filename}/qa/'    , Members  , 'life_qa' ],
-      ['/life/{filename}/news/', Members  , 'life_news' ] ,
-      ['/life/{filename}/status/', Members  , 'life_status' ] ,
-      ['/life/{filename}/shop/', Members  , 'life_shop' ] ,
-      ['/life/{filename}/predictions/', Members  , 'life_predictions' ] ,
-      ['/life/{filename}/random/', Members  , 'life_random' ] ,
-      ['/lives/{filename}/'      , Members  , 'lives' ]  ,
-      ['/create-account/'        , Members ],
-      ['/create-life/'           , Members ],
-      ['/today/'                 , Members ],
-      ['/account/'               , Members ],
-      ['/reset-password/'        , Members  , nil        , 'POST' ],
-			['/change-password/{filename}/{cgi_escaped}/', Members, 'change_password', %w{GET POST} ],
-      ['/delete-account-forever-and-ever/', Members, nil, 'DELETE']
-    ]
+      path '/'                , 'list'
+      path '/'                , 'create'   , 'POST'
+      path '/{old_topics}/'   , 'by_old_id'
+      path '/follow/'         , 'follow'   , 'POST'
+      
+      map '/{filename}/' do
+        path '/'            ,  'by_filename'    
+        path '/'            ,  'update'          , 'PUT'
+        path '/edit/', 'edit'
+        path '/follow/'     ,  'follow'       
+        path '/e/'          ,  'read_e'      
+        path '/qa/'         ,  'read_qa'    
+        path '/news/'       ,  'read_news' 
+        path '/fights/'     ,  'read_fights'
+        path '/shop/'       ,  'read_shop'  
+        path '/random/'     ,  'read_random'
+        path '/thanks/'     ,  'read_thanks' 
+        path '/predictions/',  'read_predictions'
+        path '/magazine/',  'read_magazine'
+      end
+    end
+    
+    map '/' do
+      to Sessions
+      path '/log-in/' ,  'log_in'  , %w{GET POST} 
+      path '/log-out/',  'log_out'
+    end
+      
+    map '/member' do
+      to Members
+      path '/', 'create', 'POST'
+      path '/', 'update', 'PUT'
+
+      top_slash do
+        path '/lives/{filename}/', 'lives'
+        path '/create-account/'
+        path '/create-life/'
+        path '/today/'
+        path '/account/'
+        path '/reset-password/'                          , nil              , 'POST'
+        path '/change-password/{filename}/{cgi_escaped}/', 'change_password', %w{GET POST}
+        path '/delete-account-forever-and-ever/'         , nil              , 'DELETE'
+        
+        map '/life/{filename}' do
+          path '/'                         , 'life'
+          path '/e/'                       , 'life_e'
+          path '/qa/'                      , 'life_qa'
+          path '/news/'                    , 'life_news'
+          path '/status/'                  , 'life_status'
+          path '/shop/'                    , 'life_shop'
+          path '/predictions/'             , 'life_predictions'
+          path '/random/'                  , 'life_random'
+        end
+      end
+    end
   end
 
   def call new_env

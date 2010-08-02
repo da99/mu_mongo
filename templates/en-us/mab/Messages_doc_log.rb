@@ -12,7 +12,9 @@ div.logs {
 
     div.log {
       span.created_at '{{created_at}}'
-      span.author '{{editor_username}}'
+      span.author {
+        a '{{editor_username}}', :href=>'{{editor_href}}'
+      }
       span.diff '{{compiled_diff}}'
     }
 
