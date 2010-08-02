@@ -70,139 +70,26 @@
 {{/flash_msg?}}
 
    <div id="the_content">
+     <div class="logs">
 
-{{#your_clubs?}}
+{{#no_logs?}}
 
-     <div class="clubs" id="my_clubs">
-      <h4>Your Clubs:</h4>
+      <div class="empty_msg">No updates have been made.</div>
 
-{{#your_clubs}}
+{{/no_logs?}}
 
-      <div class="club">
-       <h4>
-        <a href="{{href}}">{{title}}</a>
-       </h4>
-       <div class="teaser">{{teaser}}</div>
+
+{{#logs}}
+
+      <div class="log">
+       <span class="created_at">{{created_at}}</span>
+       <span class="author">{{editor_username}}</span>
+       <span class="diff">{{diff}}</span>
       </div>
 
-{{/your_clubs}}
+{{/logs}}
 
      </div>
-
-{{/your_clubs?}}
-
-
-{{#other_clubs?}}
-
-     <div class="clubs" id="clubs">
-      <h4>Clubs:</h4>
-
-{{#other_clubs}}
-
-      <div class="club">
-       <div>
-        <a href="{{href}}">{{title}}</a>
-       </div>
-       <div class="teaser">{{teaser}}</div>
-      </div>
-
-{{/other_clubs}}
-
-     </div>
-
-{{/other_clubs?}}
-
-      <div id="nav_bar">
-       <div id="logo">
-        <p class="site_title">
-         <a href="/">{{site_title}}</a>
-        </p>
-        <p class="divider">
-~~ ? ! @ ~~        </p>
-       </div>
-       <ul>
-         <li>
-          <a href="/help/"> Help </a>
-         </li>
-
-{{#logged_in?}}
-
-         <li>
-          <a href="/log-out/"> Log-out </a>
-         </li>
-         <li>
-          <a href="/account/"> [ Account ] </a>
-         </li>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-         <li>
-          <a href="/log-in/"> Log-in </a>
-         </li>
-         <li>
-          <a href="/create-account/"> Join </a>
-         </li>
-
-{{/not_logged_in?}}
-
-       </ul>
-
-{{#logged_in?}}
-
-       <p class="divider">Lives</p>
-       <ul>
-
-{{#username_nav}}
-
-
-{{#selected?}}
-
-         <li class="selected">
-          <span>&lt; {{username}} &gt;</span>
-         </li>
-
-{{/selected?}}
-
-
-{{#not_selected?}}
-
-         <li>
-          <a href="{{href}}"> {{username}} </a>
-         </li>
-
-{{/not_selected?}}
-
-
-{{/username_nav}}
-
-         <li>
-          <a href="/create-life/"> [ Create Life ] </a>
-         </li>
-       </ul>
-
-{{/logged_in?}}
-
-       <p class="divider">Clubs</p>
-       <ul>
-        <li>
-          <li class="selected">
-           <span>&lt; [ View All ] &gt;</span>
-          </li>
-        </li>
-
-{{#logged_in?}}
-
-         <li>
-          <a href="/club-create/"> [ Create ] </a>
-         </li>
-
-{{/logged_in?}}
-
-       </ul>
-      </div>
    </div>
 
 {{#include_tracking?}}
