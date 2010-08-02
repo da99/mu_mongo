@@ -74,8 +74,16 @@ class Messages_by_id < Base_View
     message.href_edit
   end
 
+  def message_href_log
+    message.href_log
+  end
+
   def message_updator?
     message.updator?(current_member)
+  end
+
+  def message_updated?
+    !!message.data.updated_at
   end
 
   def club

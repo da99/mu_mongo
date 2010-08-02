@@ -256,6 +256,7 @@ class Base_View < Mustache
     mess_arr.map { |doc|
 			doc['href'] = "/mess/#{doc['_id']}/"
       doc['title'] = nil if not doc['title'] 
+			doc['message_updated?'] = !!doc['updated_at']
       if doc['message_model']
         doc['message_model_in_english'] = Message::MODEL_HASH[doc['message_model']].first
         doc['message_section'] = Message::MODEL_HASH[doc['message_model']][1]

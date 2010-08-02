@@ -53,6 +53,9 @@ div.message!{
       div {
         a('Edit.', :href=>'{{message_href_edit}}')
       }
+      show_if 'message_updated?' do
+        a('History of changes.', :href=>'{{message_href_log}}')
+      end
     end
 
   } # div.about!

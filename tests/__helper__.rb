@@ -144,6 +144,10 @@ class Test::Unit::TestCase
     regular_member_1
   end
 
+  def log_in_mem
+    log_in_regular_member_1
+  end
+
   def admin_member
     self.class.admin_member
   end

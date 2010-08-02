@@ -19,12 +19,12 @@ module Base_Message
     })
   end
 
-  def loop_messages mustache, raw_opts = {}
+  def loop_messages coll_name, raw_opts = {}
     opts = {:include_meta => false, :include_permalink => true}.update(raw_opts)
     options = Data_Pouch.new(opts, :include_meta, :include_permalink)
     
     text(capture { 
-      loop mustache  do
+      loop coll_name  do
         div.message {
           
           if options.include_meta

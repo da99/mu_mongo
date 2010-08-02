@@ -31,6 +31,11 @@ class Find_The_Bunny
   ]
   def initialize new_app
     @app = new_app
+    # map('/mess').to(Messages) do 
+    #   path('/{id}').action(:by_id).verbs(:get,:put) do
+    #     path('/log').action(:doc_log).verbs(:get)
+    #   end
+    # end
     @url_aliases = [
       ['/'           , Hellos, 'list'        , 'GET'       ],
       ['/salud/'     , Hellos, 'salud'       , 'GET'       ],
@@ -39,6 +44,7 @@ class Find_The_Bunny
       
       ['/mess/{id}/'                                 , Messages, 'by_id'       , %w{ GET PUT } ],
       ['/mess/{id}/edit/'                            , Messages, 'edit'  ]     ,
+      ['/mess/{id}/log/'                            , Messages, 'doc_log' ]     ,
       ['/clubs/{filename}/by_label/{filename}/'      , Messages, 'by_label']   ,
       ['/clubs/{filename}/by_date/'                  , Messages, 'by_date']    ,
       ['/clubs/{filename}/by_date/{digits}/'         , Messages, 'by_date']    ,

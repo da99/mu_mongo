@@ -132,6 +132,41 @@ class Member
 
   # ==== Getters =====================================================    
   
+  def self.all_usernames_by_id( raw_id )
+    db_collection_usernames.find(:$in=>Couch_Plastic.mongofy_id(raw_id))
+  end
+
+  def self.add_docs_by_username_id(docs, key = 'owner_id')
+    
+    # Grab all docs for: usernames, members.
+    editor_ids = docs.map { |doc| doc[key] }.compact.uniq
+    usernames  = Member.all_usernames_by_id(:$in => editor_ids).to_a
+    member_ids = usernames.map { |doc| doc['owner_id'] }
+    members    = Member.all_by_id( :$in  => member_ids ).to_a
+    
+    # Create a Hash: :username_id => :username
+    username_map = usernames.inject({}) { |memo, un|
+      memo[un['_id']] = un['username']
+      memo
+    }
+
+    # Create a Hash: :username_id => :member
+    editor_map = editor_ids.inject({}) do |memo, ed_id|
+      memo[ed_id] = members.detect { |mem| 
+                      mem['_id'].to_s == ed_id.to_s
+                    }
+      memo
+    end
+    
+    # Finally, add corresponding member to target collection.
+    docs.each { |doc|
+      un_id = doc[key]
+      doc['editor_username'] = username_map[ un_id ]
+      doc['editor']          = editor_map[ un_id ]
+    }
+    
+  end
+
   def self.username_doc_by_id(id)
     doc = db_collection_usernames.find_one(:_id=> Couch_Plastic.mongofy_id(id))
     raise Member::Not_Found, "Member username: #{id.inspect}"  unless doc

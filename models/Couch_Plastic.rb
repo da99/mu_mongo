@@ -837,6 +837,10 @@ module Couch_Plastic_Class_Methods
     new(id)
   end
 
+	def all_by_id raw_id
+		db_collection.find( :_id => Couch_Plastic.mongofy_id(raw_id) )
+	end
+
   def by_owner_id str, params = {}, opts = {}
     id = Couch_Plastic.mongofy_id(str)
     db_collection.find({:owner_id=>str}.update(params), opts)

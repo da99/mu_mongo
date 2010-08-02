@@ -3,13 +3,19 @@ class Messages
   
   include Base_Control
 
-  def GET_by_id raw_id  # SHOW
+  private
+  def id_to_mess raw_id
     id = raw_id.to_s.strip
     env['message_by_id'] = if id.size < 6
                              Message.by_old_id(id)
                            else
                              Message.by_id(id)
                            end
+  end
+
+  public
+  def GET_by_id raw_id  # SHOW
+    id_to_mess(raw_id)
 		# custom = %w{ 
 		# 	brainstorm
 		# 	complaint
@@ -26,6 +32,11 @@ class Messages
 		# else
 			render_html_template
 		# end
+  end
+
+  def GET_doc_log raw_id
+    id_to_mess(raw_id)
+    render_html_template
   end
 
   def GET_by_label club_filename, raw_label # LIST

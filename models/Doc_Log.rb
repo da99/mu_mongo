@@ -26,6 +26,20 @@ class Doc_Log
     new(doc)
   end
 
+  def self.all_by_doc_id id, *opts
+    valid_opts = [:with_assoc]
+    invalid_opts = opts - valid_opts
+    raise "Invalid options: #{invalid_opts.inspect}" unless invalid_opts.empty?
+
+    docs = db_collection.find(:doc_id=>Couch_Plastic.mongofy_id(id)).to_a
+    
+    if opts.include?(:with_assoc)
+      Member.add_docs_by_username_id(docs, 'editor_id')
+    end
+    
+    docs
+  end
+
   # ==== Authorizations ====
 
   def allow_as_creator? editor = nil

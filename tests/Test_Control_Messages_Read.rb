@@ -24,5 +24,12 @@ class Test_Control_Messages_Read < Test::Unit::TestCase
     get mess.href
     assert last_response.body[mess.href_edit]
   end
+  
+  must 'render doc log' do
+    mess = create_message(mem)
+    log_in_mem
+    get File.join(mess.href, '/log/')
+    assert_last_response_ok
+  end
 
 end # === class Test_Control_Messages_Read

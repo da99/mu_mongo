@@ -342,6 +342,10 @@ class Message
     cache[:href_edit] ||= File.join(href, 'edit/')
   end
 
+  def href_log
+    cache[:href_log] ||= File.join(href, 'log/')
+  end
+
 	def message_model_in_english
 		if data.message_model
 			Message::MODEL_HASH[data.message_model].first 
