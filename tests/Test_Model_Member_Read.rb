@@ -92,4 +92,21 @@ class Test_Model_Member_Read < Test::Unit::TestCase
     end
   end
 
+	must 'add :owner_username to a collection of docs with :owner_id (:username_id)' do
+		mem_1 = regular_member_1
+		mem_2 = regular_member_2
+		un_id_1 = mem_1.username_ids.first
+		un_id_2 = mem_2.username_ids.last
+		un_1    = mem_1.usernames.first
+		un_2    = mem_2.usernames.last
+		
+		docs = []
+		docs << {'title'=>'something', 'owner_id'=> un_id_1}
+		docs << {'title'=>'something', 'owner_id'=> un_id_2}
+		
+		results = Member.add_docs_by_username_id(docs).map { |doc| doc['owner_username'] }
+		target = [un_1, un_2]
+		assert_equal target, results
+	end
+
 end # === class Member_Read

@@ -14,8 +14,18 @@ class Messages_doc_log < Base_View
   
   def logs
     @cache['message.logs'] ||= begin
-                                 Doc_Log.all_by_doc_id(message.data._id, :with_assoc)
+                                 compile_logs(Doc_Log.all_by_doc_id(message.data._id, :with_assoc))
                                end
+  end
+  
+
+  private
+
+  def compile_logs arr_or_cursor
+    arr_or_cursor.map { |doc|
+      doc['compiled_diff'] = doc['diff'].inspect
+      doc
+    }
   end
 
 end # === Messages_doc_log 

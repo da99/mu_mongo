@@ -133,7 +133,7 @@ class Member
   # ==== Getters =====================================================    
   
   def self.all_usernames_by_id( raw_id )
-    db_collection_usernames.find(:$in=>Couch_Plastic.mongofy_id(raw_id))
+    db_collection_usernames.find(:_id=>Couch_Plastic.mongofy_id(raw_id))
   end
 
   def self.add_docs_by_username_id(docs, key = 'owner_id')
@@ -149,7 +149,7 @@ class Member
       memo[un['_id']] = un['username']
       memo
     }
-
+    
     # Create a Hash: :username_id => :member
     editor_map = editor_ids.inject({}) do |memo, ed_id|
       memo[ed_id] = members.detect { |mem| 
@@ -159,10 +159,12 @@ class Member
     end
     
     # Finally, add corresponding member to target collection.
+    key_username = key.sub('_id', '_username')
+    key_mem      = key.sub('_id', '')
     docs.each { |doc|
       un_id = doc[key]
-      doc['editor_username'] = username_map[ un_id ]
-      doc['editor']          = editor_map[ un_id ]
+      doc[key_username] = username_map[ un_id ]
+      doc[key_mem]       = editor_map[ un_id ]
     }
     
   end

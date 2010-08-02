@@ -13,7 +13,7 @@ div.logs {
     div.log {
       span.created_at '{{created_at}}'
       span.author '{{editor_username}}'
-      span.diff '{{diff}}'
+      span.diff '{{compiled_diff}}'
     }
 
   } # === loop
