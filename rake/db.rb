@@ -27,6 +27,24 @@ end
 # DB_PRODUCTION = [ File.dirname(PRODUCTION_DB), File.basename(PRODUCTION_DB) ]
 namespace :db do
   
+  desc 'Check if MongoDB is approaching size limit.'
+  task :check_size do
+    orig_env = ENV['RACK_ENV']
+    ENV['RACK_ENV'] = 'production'
+    require 'megauni'
+    
+    puts_white "Checking size of MongoDB account..."
+    db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
+    if db_size > MAX_DB_SIZE_IN_MB 
+      puts_red "DB Size too big: #{db_size} MB"
+      exit
+    else
+      puts_white "DB Size is ok: #{db_size} MB"
+    end
+    
+    ENV['RACK_ENV'] = orig_env
+  end
+  
   desc "Delete, then re-create database. Uses ENV['RACK_ENV']. Defaults to 'development'." 
   task :reset! do
     

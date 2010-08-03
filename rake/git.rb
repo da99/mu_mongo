@@ -91,14 +91,7 @@ namespace 'git' do
     Couch_Plastic.ensure_indexes()
 
     unless ENV['SKIP_MONGO_CHECK'] 
-      puts_white "Checking size of MongoDB account..."
-      db_size = `mongo #{DB_HOST} -u #{DB_USER} -p #{DB_PASSWORD}  --eval "db.stats().storageSize / 1024 / 1024;" 2>&1`.strip.split.last.to_f
-      if db_size > MAX_DB_SIZE_IN_MB 
-        puts_red "DB Size too big: #{db_size} MB"
-        exit
-      else
-        puts_white "DB Size is ok: #{db_size} MB"
-      end
+      Rake::Task['db:check_size'].invoke
     end
 
     unless ENV['SKIP_PREP']

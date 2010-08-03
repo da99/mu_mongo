@@ -1,5 +1,8 @@
 require 'rush'
 
+def db_running?
+  !!(Rush.processes.filter(:cmdline=>/mongod\ /).to_a.size > 0)
+end
 
 namespace :server do
   
@@ -10,7 +13,10 @@ namespace :server do
 
 	desc 'Start the server.'
 	task :http do
-		# exec 'unicorn -p 4567'
+    unless db_running?
+      puts_red "First, start db server." 
+      exit(1)
+    end
     exec "thin -p 4567 -R config.ru -t 5 start"
 	end
 
@@ -66,12 +72,12 @@ namespace :server do
 		puts_white 'Done.'
 		true
   end
-  
+
   desc 'Start MongoDB server.'
   task :db do 
     dir = "~/apps/mongodb"
-    exists = (Rush.processes.filter(:cmdline=>/mongod\ /).to_a.size > 0)
-    if not exists
+    exists = 
+    if not db_running?
       exec("#{dir}/bin/mongod --dbpath #{dir}/data/db --fork --logpath #{dir}/data/log/log.txt")
     else
       puts_white "Mongodb already running."

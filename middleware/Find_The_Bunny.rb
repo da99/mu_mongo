@@ -1,50 +1,4 @@
-class Path_Map
-
-  attr_reader :prefix, :control, :url_aliases
-  def initialize prefix, &blok
-    @control = nil
-    @prefix = prefix
-    @url_aliases = []
-    instance_eval(&blok) if block_given?
-  end
-
-  def to obj_class
-    @control = obj_class
-  end
-
-  def path *args
-    suffix, action, verbs = args
-    verbs ||= ['GET']
-    verbs = [verbs].flatten.compact.uniq
-    filename = suffix.split('/').last
-    full_path = if filename && filename['.']
-                  File.join(prefix, suffix)
-                else
-                  File.join(prefix, suffix, '/')
-                end
-    @url_aliases << [full_path, control, action, verbs]
-  end
-
-  def map new_prefix, &blok
-    @url_aliases += begin
-                      new_map = self.class.new(File.join(prefix, new_prefix))
-                      orig_control = control
-                      new_map.instance_eval do
-                        to orig_control
-                        instance_eval(&blok)
-                        self.url_aliases
-                      end
-                    end
-  end
-  
-  def top_slash &blok
-    old_prefix = prefix
-    @prefix = '/'
-    instance_eval &blok
-    @prefix = old_prefix
-  end
-  
-end # === class
+require 'models/Path_Map'
 
 class Find_The_Bunny
 
@@ -79,10 +33,18 @@ class Find_The_Bunny
     :old_topics => "#{Old_Topics.join('|')}"
   ]
   
+  private # ==================================================
   def map prefix, &blok
     @url_aliases += Path_Map.new(prefix, &blok).url_aliases
   end
 
+  def redirect new_url
+    response = Rack::Response.new
+    response.redirect( new_url, 301 ) # permanent
+    response.finish
+  end
+
+  public # ==================================================
   def initialize new_app
     @app = new_app
     @url_aliases = []
@@ -158,24 +120,24 @@ class Find_The_Bunny
       path '/', 'update', 'PUT'
 
       top_slash do
-        path '/lives/{filename}/', 'lives'
-        path '/create-account/'
-        path '/create-life/'
-        path '/today/'
-        path '/account/'
-        path '/reset-password/'                          , nil              , 'POST'
-        path '/change-password/{filename}/{cgi_escaped}/', 'change_password', %w{GET POST}
-        path '/delete-account-forever-and-ever/'         , nil              , 'DELETE'
+        path '/lives/{filename}', 'lives'
+        path '/create-account'
+        path '/create-life'
+        path '/today'
+        path '/account'
+        path '/reset-password'                          , nil              , 'POST'
+        path '/change-password/{filename}/{cgi_escaped}', 'change_password', %w{GET POST}
+        path '/delete-account-forever-and-ever'         , nil              , 'DELETE'
         
         map '/life/{filename}' do
-          path '/'                         , 'life'
-          path '/e/'                       , 'life_e'
-          path '/qa/'                      , 'life_qa'
-          path '/news/'                    , 'life_news'
-          path '/status/'                  , 'life_status'
-          path '/shop/'                    , 'life_shop'
-          path '/predictions/'             , 'life_predictions'
-          path '/random/'                  , 'life_random'
+          path '/'                        , 'life'
+          path '/e'                       , 'life_e'
+          path '/qa'                      , 'life_qa'
+          path '/news'                    , 'life_news'
+          path '/status'                  , 'life_status'
+          path '/shop'                    , 'life_shop'
+          path '/predictions'             , 'life_predictions'
+          path '/random'                  , 'life_random'
         end
       end
     end
@@ -253,13 +215,5 @@ class Find_The_Bunny
 
   end
   
-  private
-
-  def redirect new_url
-    response = Rack::Response.new
-    response.redirect( new_url, 301 ) # permanent
-    response.finish
-  end
-
 
 end # === Find_The_Bunny
