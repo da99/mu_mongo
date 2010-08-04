@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1280756141" type="text/css" rel="stylesheet" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890314" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -147,7 +147,7 @@
        </fieldset>
        <div class="buttons">
         <input type="hidden" value="put" name="_method"/>
-        <button onclick="document.getElementById('form_news_edit').submit(); return false;" class="update">Update</button>
+        <button class="update" onclick="document.getElementById('form_news_edit').submit(); return false;">Update</button>
        </div>
       </form>
      </div>

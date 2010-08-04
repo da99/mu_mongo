@@ -337,6 +337,12 @@ div.message, div.club {
   border-bottom: 1px dashed #003860; }
   div.message div.meta, div.club div.meta {
     text-align: right; }
+  div.message div.reply, div.club div.reply {
+    text-align: right; }
+  div.message div.toggle_suggest, div.club div.toggle_suggest {
+    text-align: right; }
+  div.message div.owner, div.club div.owner {
+    text-align: right; }
   div.message div.permalink, div.club div.permalink {
     padding: 3px 0 2px 0;
     text-align: right;
@@ -781,6 +787,12 @@ div.message, div.club {
   margin: 0 0 10px 0;
   border-bottom: 1px dashed #003860; }
   div.message div.meta, div.club div.meta {
+    text-align: right; }
+  div.message div.reply, div.club div.reply {
+    text-align: right; }
+  div.message div.toggle_suggest, div.club div.toggle_suggest {
+    text-align: right; }
+  div.message div.owner, div.club div.owner {
     text-align: right; }
   div.message div.permalink, div.club div.permalink {
     padding: 3px 0 2px 0;

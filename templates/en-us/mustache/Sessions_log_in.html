@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1280756142" type="text/css" rel="stylesheet" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890315" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -82,7 +82,7 @@
         <input type="password" class="text" value="" name="password" id="member_password"/>
        </fieldset>
        <div class="buttons">
-        <button onclick="document.getElementById('log_in_form').submit(); return false;" class="create">Log-in</button>
+        <button class="create" onclick="document.getElementById('log_in_form').submit(); return false;">Log-in</button>
        </div>
       </form>
       <h3>Forgot your password?</h3>
@@ -92,7 +92,7 @@
         <input type="text" class="text" value="" name="email" id="member_email"/>
        </fieldset>
        <div class="buttons">
-        <button onclick="document.getElementById('reset_password_form!').submit(); return false;" class="create">Get My Password</button>
+        <button class="create" onclick="document.getElementById('reset_password_form!').submit(); return false;">Get My Password</button>
        </div>
       </form>
      </div>

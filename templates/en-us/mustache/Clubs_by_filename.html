@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1280756141" type="text/css" rel="stylesheet" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890315" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -237,13 +237,51 @@
 {{/title}}
 
            <div class="body">{{{compiled_body}}}</div>
+           <div class="owner">
+            <span>Author: </span>
+
+{{#owner?}}
+
+            <span>you</span>
+
+{{/owner?}}
+
+
+{{#not_owner?}}
+
+            <a href="{{owner_href}}">{{owner_username}}</a>
+
+{{/not_owner?}}
+
+           </div>
+
+{{#has_parent_message?}}
+
+
+{{#suggest?}}
+
+
+{{#parent_message_owner?}}
+
+           <div class="toggle_suggest">
+            <a href="#accept">Accept</a>
+            <span> or </span>
+            <a href="#decline">Decline</a>
+           </div>
+
+{{/parent_message_owner?}}
+
+
+{{/suggest?}}
+
+
+{{/has_parent_message?}}
+
 
 {{#has_parent_message?}}
 
            <div class="permalink">
-            <strong>{{message_model_in_english}}</strong>
-            <span> for </span>
-            <a href="{{parent_message_href}}">this</a>
+            <a href="{{href}}">reply</a>
            </div>
 
 {{/has_parent_message?}}

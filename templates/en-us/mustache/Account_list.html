@@ -18,11 +18,11 @@
    <meta content="{{meta_description}}" name="description"/>
    <meta content="{{meta_keywords}}" name="keywords"/>
    <title>{{title}}</title>
-   <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+   <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link href="{{css_file}}?time=1280756142" type="text/css" rel="stylesheet" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890316" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -202,14 +202,14 @@
      <div id="content">
       <div class="usernames">
        <h4>Usernames</h4>
-       <a href="#add_username" class="new">Add Another Username.</a>
+       <a class="new" href="#add_username">Add Another Username.</a>
 
 {{#lives}}
 
        <div class="un" id="life_{{category}}">
         <div class="username">{{username}}</div>
         <div class="category">{{category}}</div>
-        <a href="#edit_username" class="edit">Edit</a>
+        <a class="edit" href="#edit_username">Edit</a>
        </div>
 
 {{/lives}}
@@ -222,7 +222,7 @@
       will be lost permanently. 
       For your privacy, there is no going back. No undo.
       It will be as if you never existed on this website.</div>
-       <a href="#delete" class="delete">Delete Entire Account</a>
+       <a class="delete" href="#delete">Delete Entire Account</a>
       </div>
      </div>
    </div>

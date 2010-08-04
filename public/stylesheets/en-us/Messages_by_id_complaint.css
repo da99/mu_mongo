@@ -337,6 +337,12 @@ div.message, div.club {
   border-bottom: 1px dashed #003860; }
   div.message div.meta, div.club div.meta {
     text-align: right; }
+  div.message div.reply, div.club div.reply {
+    text-align: right; }
+  div.message div.toggle_suggest, div.club div.toggle_suggest {
+    text-align: right; }
+  div.message div.owner, div.club div.owner {
+    text-align: right; }
   div.message div.permalink, div.club div.permalink {
     padding: 3px 0 2px 0;
     text-align: right;
@@ -657,6 +663,12 @@ div.message, div.club {
   border-bottom: 1px dashed #003860; }
   div.message div.meta, div.club div.meta {
     text-align: right; }
+  div.message div.reply, div.club div.reply {
+    text-align: right; }
+  div.message div.toggle_suggest, div.club div.toggle_suggest {
+    text-align: right; }
+  div.message div.owner, div.club div.owner {
+    text-align: right; }
   div.message div.permalink, div.club div.permalink {
     padding: 3px 0 2px 0;
     text-align: right;
@@ -745,18 +757,34 @@ div.col {
   padding: 0;
   width: 860px; }
 
-#comments, #questions, #reply {
-  float: left; }
+#responds {
+  overflow: hidden;
+  display: inline-block; }
+  #responds {
+    display: block; }
+
+#critiques, #suggests, #questions {
+  float: left;
+  width: 400px; }
+
+#suggests {
+  padding-right: 10px; }
+
+#critiques {
+  padding-right: 10px; }
+
+#questions {
+  padding: 0; }
+
+h3.message_title {
+  text-align: center;
+  padding: 0 0 3px 0; }
 
 #message {
   position: relative;
   float: left;
   left: -50%;
-  padding: 0 0 20px 0;
-  width: 900px; }
-  #message h3 {
-    text-align: center;
-    padding: 0 0 3px 0; }
+  padding: 0 0 20px 0; }
   #message div.body {
     padding: 3px 0 0 0;
     font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
@@ -788,10 +816,6 @@ div.col {
 
 #comments {
   padding-right: 10px;
-  width: 440px; }
-
-#questions {
-  padding-left: 10px;
   width: 440px; }
 
 #guide {
