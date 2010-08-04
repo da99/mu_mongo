@@ -784,6 +784,7 @@ h3.message_title {
   position: relative;
   float: left;
   left: -50%;
+  max-width: 900px;
   padding: 0 0 20px 0; }
   #message div.body {
     padding: 3px 0 0 0;
