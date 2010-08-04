@@ -7,6 +7,13 @@ class Test_View_Base_View_Read < Test::Unit::TestCase
     result = Base_View.new(Object.new).auto_link(orig)
     assert_equal "<a href=\"#{orig}\">#{orig}</a>", result
   end
+
+  must 'turn this url into an HTML A tag: http://globalresearch.ca/index.php?context=va&aid=20246' do
+    orig = "http://globalresearch.ca/index.php?context=va&aid=20246"
+    scrubbed = orig.gsub('&', '&amp;')
+		result = Base_View.new(Object.new).auto_link(orig)
+    assert_equal "<a href=\"#{scrubbed}\">#{scrubbed}</a>", result
+  end
   
   must 'turn valid http urls into HTML anchor tags' do
     result = Base_View.new(Object.new).auto_link('http://www.mises.org')

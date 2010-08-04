@@ -78,6 +78,16 @@ Anchorify.add_filter(:br_ify) do |txt|
 	txt.gsub(/\r?\n/, "<br />")
 end
 
+Anchorify.add_filter(:scrubber) do |txt|
+  relax = Sanitize::Config::RELAXED
+  relax[:attributes]['object'] = %w{ width height }
+  relax[:elements] << 'object'
+  
+  relax[:attributes]['param'] = %w{ name value }
+  relax[:elements] << 'param'
+  Sanitize.clean(txt, relax)
+end
+
 Anchorify.add_filter(:image) do |text, options|
 	new_text = " #{text} ".gsub(/https?:\/\/[^\s]+(jpg|jpeg|bmp|gif|png)(\?\S+)?/i) do |match|
 		dims   = options[match] || {}
@@ -90,16 +100,6 @@ Anchorify.add_filter(:image) do |text, options|
 		end
   end
 	new_text.strip
-end
-
-Anchorify.add_filter(:scrubber) do |txt|
-  relax = Sanitize::Config::RELAXED
-  relax[:attributes]['object'] = %w{ width height }
-  relax[:elements] << 'object'
-  
-  relax[:attributes]['param'] = %w{ name value }
-  relax[:elements] << 'param'
-  Sanitize.clean(txt, relax)
 end
 
 
@@ -120,7 +120,7 @@ Anchorify.add_filter(:youtube).with(:width => 390, :height => 250) do |text, opt
 end
 
 Anchorify.add_filter(:link) do |text|
-  find_urls = %r~(\s|<br />|<br/>)(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?\=\.%]+)(\s|<br />|<br/>)~
+  find_urls = %r~(\s|<br />|<br/>)(http://[^\/]{1}[A-Za-z0-9\@\#\&\/\-\_\?;\=\.%]+)(\s|<br />|<br/>)~
   (' ' + text + ' ').gsub(find_urls) { |entire_match|
     %!#{$1}<a href="#{$2}">#{$2}</a>#{$3}!
   }.strip

@@ -28,6 +28,7 @@ class Message
     'question'   => ['question', SECTIONS::QA],
     'cheer'      => ['cheer reply', SECTIONS::THANKS],
     'jeer'      => ['critique reply', SECTIONS::THANKS],
+    'suggest'      => ['suggestion', SECTIONS::THANKS],
 		'e_chapter' => ['encyclopedia chapter', SECTIONS::E],
 		'e_quote' => ['quotation', SECTIONS::E],
     'buy'     => ['buy it', SECTIONS::SHOP],
@@ -146,11 +147,11 @@ class Message
                 nil
               end
     raise "Invalid message model #{invalid.inspect}" if invalid
-    db_collection.find(params, *args, &blok)
+    Member.add_docs_by_username_id(db_collection.find(params, *args, &blok).to_a)
   end
 
   def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
-    params = {:target_ids =>club_id, :privacy => 'public' }.update(raw_params)
+    params = {:target_ids =>club_id, :parent_message_id => nil, :privacy => 'public' }.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     validate_params_and_find(
       params,
@@ -172,7 +173,7 @@ class Message
   def self.latest_by_parent_message_id mess_id, raw_params = {}, raw_opts = {}, &blok
     params = {:parent_message_id =>mess_id, :privacy => 'public' }.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
-    db_collection.find(
+    validate_params_and_find(
       params,
       opts,
       &blok
@@ -361,5 +362,32 @@ class Message
 			'Unknown'
 		end
 	end
+  
+  def responds
+    cache['responds'] ||= begin
+                            Message.latest_by_parent_message_id(self.data._id).to_a 
+                          end
+  end
+
+  def critiques
+    cache['critiques'] ||= select_responds_by_model('cheer', 'jeer')
+  end
+  
+  def suggests
+    cache['suggests'] ||= select_responds_by_model('suggest')
+  end
+  
+  def questions
+    cache['questions'] ||= select_responds_by_model('question')
+  end
+
+  private 
+  
+  def select_responds_by_model(*mods)
+    responds.select { |doc|
+      mods.include?(doc['message_model'])
+    }
+  end
+
 
 end # === end Message

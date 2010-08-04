@@ -12,16 +12,26 @@ div.col
   padding: 0
   width: 860px
 
-#comments, #questions, #reply
+#responds
+  +clearfix
+
+#critiques, #suggests, #questions
   float: left
+  width: 400px
+#suggests
+  padding-right: 10px
+#critiques
+  padding-right: 10px
+#questions
+  padding: 0
+
+h3.message_title
+  text-align: center
+  padding: 0 0 3px 0
   
 #message
   +variable_width_centered
   padding: 0 0 20px 0
-  width: 900px
-  h3
-    text-align: center
-    padding: 0 0 3px 0
   div.body
     padding: 3px 0 0 0  
     font:
@@ -50,11 +60,6 @@ div.col
   +first
   width: 440px
 
-#questions
-  +last
-  width: 440px 
-
-#reply
 
 #guide
   float: left

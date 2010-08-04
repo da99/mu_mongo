@@ -39,14 +39,39 @@ module Base_Message
 
           div.body( '{{{compiled_body}}}' )
           
-          if options.include_permalink
-            show_if 'has_parent_message?' do
-              div.permalink {
-                strong '{{message_model_in_english}}'
-                span ' for '
-                a('this', :href=>"{{parent_message_href}}")
-              }
+          div.owner {
+            span 'Author: '
+            show_if 'owner?' do
+              span 'you'
             end
+            show_if 'not_owner?' do
+              a('{{owner_username}}', :href=>'{{owner_href}}')
+            end
+              
+          }
+
+          show_if 'has_parent_message?' do
+            show_if 'suggest?' do
+              show_if 'parent_message_owner?' do
+                div.toggle_suggest {
+                  a('Accept', :href=>'#accept')
+                  span ' or '
+                  a('Decline', :href=>'#decline')
+                }
+              end
+            end
+          end
+
+          show_if 'has_parent_message?' do
+            div.permalink {
+              # strong '{{message_model_in_english}}'
+              # span ' for '
+              a('reply', :href=>"{{href}}")
+              # a('reply', :href=>"{{parent_message_href}}")
+            }
+          end
+
+          if options.include_permalink
             show_if 'parent_message?' do
               div.permalink {
                 show_if 'logged_in?' do
@@ -83,6 +108,7 @@ module Base_Message
       ['complaint', 'Complaint']           ,
       ['cheer', 'Praise & Cheer']           ,
       ['jeer', 'Criticize']           ,
+      ['suggest', 'Suggestion'],
       ['debate'   , 'Friendly Debate']     ,
       ['plea'      , 'Request']                    ,
       ['buy'       , 'Product Recommendation']     ,

@@ -16,22 +16,7 @@ class Messages
   public
   def GET_by_id raw_id  # SHOW
     id_to_mess(raw_id)
-		# custom = %w{ 
-		# 	brainstorm
-		# 	complaint
-		# 	event
-		# 	joke
-		# 	plea
-		# 	product
-		# 	question
-		# 	mag_story
-		# }
-		# mess_mod = env['message_by_id'].data.message_model
-    # if custom.include?(mess_mod)
-		# 	render_html_template "Message_by_id_#{mess_mod}"
-		# else
-			render_html_template
-		# end
+    render_html_template
   end
 
   def GET_doc_log raw_id

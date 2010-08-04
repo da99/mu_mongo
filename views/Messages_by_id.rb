@@ -85,6 +85,14 @@ class Messages_by_id < Base_View
   def message_updated?
     !!message.data.updated_at
   end
+  
+  def message_has_parent?
+    message.data.parent_message_id
+  end
+  
+  def message_parent_href
+    "/mess/#{message.data.parent_message_id}/"
+  end
 
   def club
     message.club
@@ -102,12 +110,12 @@ class Messages_by_id < Base_View
 #     [message_id, club_id].map(&:to_s).join(",")
 #   end
 
-  def questions
-    cache['messages.questions'] ||= compile_messages(Message.latest_questions_by_parent_message_id(message_id))
-  end
+  %w{ questions critiques suggests }.each { |mod|
+    eval %~
+      def #{mod}
+        cache['messages.#{mod}'] ||= compile_messages(message.#{mod}, message.data.as_hash)
+      end
+    ~
+  }
 
-  def comments
-    cache['messages.comments'] ||= compile_messages(Message.latest_comments_by_parent_message_id(message_id))
-  end
-  
 end # === Messages_by_id 

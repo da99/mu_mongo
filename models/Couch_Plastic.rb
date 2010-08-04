@@ -108,6 +108,10 @@ module Couch_Plastic
       { 'unique' => true, 'key' => {'username' => 1} }
     ]
     
+    new['Messages'] = [
+      { 'key' => {'target_ids' => 1, 'parent_message_id' => -1} }
+    ]
+    
     new['Doc_Logs'] = [
       { 'key' => {'doc_id' => 1} }
     ]

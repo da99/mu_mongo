@@ -252,11 +252,27 @@ class Base_View < Mustache
                               end
   end
 
-  def compile_messages( mess_arr )
+  def compile_messages( mess_arr, parent_doc = nil )
     mess_arr.map { |doc|
-			doc['href'] = "/mess/#{doc['_id']}/"
-      doc['title'] = nil if not doc['title'] 
+			doc['href']             = "/mess/#{doc['_id']}/"
+			doc['title']            = nil if not doc['title']
 			doc['message_updated?'] = !!doc['updated_at']
+			doc['owner_href']       = "/uni/#{doc['owner_username']}/"
+      doc['owner?']           = current_member && current_member.username_ids.include?(doc['owner_id'])
+      doc['not_owner?']       = !doc['owner?']
+      
+      if parent_doc
+        doc['parent_message_owner?']     = current_member && current_member.username_ids.include?(parent_doc['owner_id'])
+        doc['not_parent_message_owner?'] = !doc['parent_message_owner?']
+      end
+
+      Message::MODELS.each { |mod|
+        doc["#{mod}?"]     = doc['message_model'] == mod
+        doc["not_#{mod}?"] = doc['message_model'] != mod
+      }
+
+      doc['reply-able?'] = %w{ suggest question }.include?(doc['message_model'])
+      
       if doc['message_model']
         doc['message_model_in_english'] = Message::MODEL_HASH[doc['message_model']].first
         doc['message_section'] = Message::MODEL_HASH[doc['message_model']][1]
@@ -264,6 +280,7 @@ class Base_View < Mustache
         doc['message_model_in_english'] = 'unkown'
         doc['message_section'] = 'Unknown'
       end
+      
       if doc['parent_message_id']
         doc['has_parent_message?'] = true
         doc['parent_message?']     = false
@@ -272,6 +289,7 @@ class Base_View < Mustache
         doc['has_parent_message?'] = false
         doc['parent_message?']     = true
       end
+      
       doc['compiled_body'] = if from_surfer_hearts?(doc)
                                doc['body']
                              else
