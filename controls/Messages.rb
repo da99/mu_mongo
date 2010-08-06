@@ -90,10 +90,10 @@ class Messages
     begin
       mess = Message.update( mess_id, current_member, clean_room )
       flash_msg.success = "Message saved."
-      redirect! "/mess/#{id}/"
+      redirect_back! "/mess/#{id}/"
     rescue Message::Invalid
       flash_msg.errors = $!.doc.errors
-      redirect! "/mess/#{id}/edit/"
+      redirect_back! "/mess/#{id}/edit/"
     end
   end
   

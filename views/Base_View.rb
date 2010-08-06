@@ -66,10 +66,6 @@ class Base_View < Mustache
     ].compact.uniq
   end
 
-  def cup
-    ['test', "test"]
-  end
-
   def find_target_method raw_meth
     meth = raw_meth.to_s
     [ 
@@ -270,6 +266,17 @@ class Base_View < Mustache
         doc["#{mod}?"]     = doc['message_model'] == mod
         doc["not_#{mod}?"] = doc['message_model'] != mod
       }
+
+			if doc['suggest?']
+				doc['accepted?'] = doc['owner_accept'] === Message::ACCEPT
+				doc['not_accepted?'] = !doc['accepted?']
+				
+				doc['declined?'] = doc['owner_accept'] === Message::DECLINE
+				doc['not_declined?'] = !doc['declined?']
+				
+				doc['pending?'] = doc['owner_accept'] === Message::PENDING || !doc['owner_accept']
+				doc['not_pending?'] = !doc['pending?']
+			end
 
       doc['reply-able?'] = %w{ suggest question }.include?(doc['message_model'])
       

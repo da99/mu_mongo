@@ -1,7 +1,7 @@
 require 'models/Data_Pouch'
 
 module Base_Message
-  
+
   def loop_messages_with_opening mess, h4_txt, empty_txt = nil, opts = {}
     text(capture {
 
@@ -32,6 +32,15 @@ module Base_Message
             #   strong ''
             # }
           end
+				
+					show_if 'suggest?' do
+						show_if('accepted?') {
+							div.accepted { span 'Accepted' }
+						}
+						show_if('declined?') {
+							div.declined { span 'Declined' }
+						}
+					end
         
           show_if 'title' do
             strong.title '{{title}}'
@@ -54,9 +63,28 @@ module Base_Message
             show_if 'suggest?' do
               show_if 'parent_message_owner?' do
                 div.toggle_suggest {
-                  a('Accept', :href=>'#accept')
-                  span ' or '
-                  a('Decline', :href=>'#decline')
+									toggle_by_form('toggle_message_accept', :owner_accept) {
+									
+										href '{{href}}'	
+										
+										show_if 'not_accepted?' do
+											a_submit('Accept', Message::ACCEPT)
+										end
+										
+										show_if 'pending?' do
+											span ' or '
+										end
+										
+										show_if 'not_declined?' do
+											a_submit('Decline', Message::DECLINE)
+										end
+										
+										show_if 'not_pending?' do
+											span ' or '
+											a_submit('I don\'t know.', Message::PENDING)
+										end
+										
+									}
                 }
               end
             end

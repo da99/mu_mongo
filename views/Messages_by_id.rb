@@ -26,8 +26,42 @@ class Messages_by_id < Base_View
     message.published_at.strftime('%b  %d, %Y')
   end
 
+  def editor_id
+    @cache['editor_id'] ||= current_member.username_ids.detect { |id| id == message_owner_id }
+  end
+
   def message
     @app.env['message_by_id']
+  end
+  
+  def message_owner?
+    current_member.username_ids.include?(message_owner_id)
+  end
+
+  def message_owner_id
+    message.data.owner_id
+  end
+
+  def message_href
+    message.href
+  end
+
+  def mess_href
+    message_href
+  end
+
+  def suggestions_or_answers
+    message_question? ? 
+      "Answers and Suggestions:" :
+      "Suggestions:" 
+  end
+
+  def message_question?
+    message.data.message_model == 'question'
+  end
+
+  def message_answer
+    message.data.answer
   end
 
   def message_id

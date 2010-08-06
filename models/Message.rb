@@ -2,6 +2,10 @@
 
 class Message
 
+  DECLINE = -1
+  PENDING = 0
+  ACCEPT  = 1
+
   module SECTIONS
     E      = 'Encyclopedia'
     R      = 'Random'
@@ -33,11 +37,8 @@ class Message
 		'e_quote' => ['quotation', SECTIONS::E],
     'buy'     => ['buy it', SECTIONS::SHOP],
     'thank'   => ['thanks', SECTIONS::THANKS]
-    # quote
     # plea  
     # fulfill
-    # discuss
-    # answer
     # event
   }
   
@@ -58,8 +59,18 @@ class Message
     mess = Message.by_id(raw_data.parent_message_id)
     mess.data.target_ids
   }]]
-  make :target_ids, :split_and_flatten, :mongo_object_id_array
-  make :body, :not_empty
+  make :target_ids    , :split_and_flatten, :mongo_object_id_array
+  make :emotion       , :not_empty
+  make :category      , :not_empty
+  make :labels        , :split_and_flatten, :array
+  make :public_labels , :split_and_flatten, :array
+  make :private_labels, :split_and_flatten, :array
+  make :title         , :anything
+  make :answer        , :anything
+  make :teaser        , :anything
+  make :published_at  , :datetime_or_now
+  make :body          , :not_empty
+  make :owner_accept, :require_owner_as_manipulator, :integer, [ :in_array, [DECLINE, PENDING, ACCEPT]]
   make :body_images_cache, [:set_to, lambda { 
     # turn "URL 100 100" into 
     # ==> [URL, 100, 100]
@@ -68,21 +79,7 @@ class Message
       url, width, height = val.split.map(&:strip)
       [url, width.to_i, height.to_i]
     }
-
-    # .inject({}) { |memo, val|
-    #   url, width, height = val[0].strip, val[1].to_i, val[2].to_i
-    #   memo[url] = {:width => width, :height => height}
-    #   memo
-    # }
   }]
-  make :emotion, :not_empty
-  make :category, :not_empty
-  make :labels, :split_and_flatten, :array
-  make :public_labels, :split_and_flatten, :array
-  make :private_labels, :split_and_flatten, :array
-  make :title, :anything
-  make :teaser, :anything
-  make :published_at, :datetime_or_now
 
   # ==== Authorizations ====
  
@@ -125,7 +122,8 @@ class Message
         :private_labels, :published_at,
         :message_model, :important,
         :body_images_cache,
-        :editor_id
+        :editor_id,
+        :owner_accept
       save_update :record_diff => true
     end
   end

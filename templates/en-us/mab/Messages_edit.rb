@@ -4,7 +4,6 @@
 
 div.content! { 
   
-  
   form.form_messages_update!( :action=>"{{mess_href}}", :method=>'post' ) do
     input :type=>'hidden', :name=>'_method', :value=>'put'
     input :type=>'hidden', :name=>'editor_id', :value=>'{{editor_id}}'

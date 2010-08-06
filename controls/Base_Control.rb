@@ -92,6 +92,11 @@ module Base_Control
     ENV['RACK_ENV']
   end
 
+	def redirect_back! *args
+		args[0] = env['HTTP_REFERER'] || args[0]
+		redirect! *args
+	end
+
   def redirect! *args
     render_text_plain ''
 		

@@ -371,6 +371,7 @@ module Couch_Plastic
   end
 
   def demand(*args, &blok)
+		
     if block_given?
       raise "this function's block handling functionality not implemented yet"
     else
@@ -391,6 +392,9 @@ module Couch_Plastic
           
           case reg
             
+					when :require_owner_as_manipulator
+						manipulator.username_ids.include?(data.owner_id)
+
 					when :set_to
 						clean_val = instance_eval(&target_val)
 						new_clean_value(fld, clean_val)
@@ -449,6 +453,10 @@ module Couch_Plastic
               instance_eval(&target_val)
             end
             
+					when :integer
+						raw = Integer(raw)
+						new_clean_value fld, raw
+
           when :in_array
             arr = case target_val
                   when Proc

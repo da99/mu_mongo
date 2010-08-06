@@ -34,7 +34,7 @@ div.outer_shell! {
           span '{{published_at}}'
         }
         div {
-          strong "Category:"
+          strong "Type:"
           br
           span "{{message_model_in_english}}."
         }
@@ -76,7 +76,7 @@ div.outer_shell! {
 
         div.responds! {
           [ 
-            ['suggests', 'Suggestions:'],
+            ['suggests', '{{suggestions_or_answers}}'],
             ['critiques', 'Praise & Criticism:'],
             ['questions', 'Questions:']
           ].each { |mod, txt|
@@ -117,15 +117,14 @@ div.outer_shell! {
       } # === div.reply!
   
   
-  
-  
-  
     } # === div.message!
   } # == inner_shell!
 } # === outer_shell!
 
 
-
+show_if 'message_owner?' do
+  form_toggles
+end
 
 # ==================== REPLIES =========================================
 

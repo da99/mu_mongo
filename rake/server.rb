@@ -78,7 +78,7 @@ namespace :server do
     dir = "~/apps/mongodb"
     exists = 
     if not db_running?
-      exec("#{dir}/bin/mongod --dbpath #{dir}/data/db --fork --logpath #{dir}/data/log/log.txt")
+      exec("mongod --dbpath #{dir}/data/db --fork --logpath #{dir}/data/log/log.txt ")
     else
       puts_white "Mongodb already running."
     end

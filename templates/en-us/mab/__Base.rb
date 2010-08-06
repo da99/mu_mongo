@@ -304,5 +304,53 @@ module Base
     })
   end
 
+	def form_toggles
+		return if not @toggle_forms
+		@toggle_forms.each { | form_id, options |
+			attrs           = options.delete('options') || options.delete(:options)
+			attrs['id']     = form_id
+			attrs['method'] = 'post'
+			field_name      = options.delete('field') || options.delete(:field)
+			text(capture {
+				form(attrs) {
+					input(:type=>'hidden', :name=>'_method', :value=>'put')
+					input(:type=>'hidden', :name=>field_name, :value=>'0')
+					input(:type=>'hidden', :name=>'editor_id', :value=>'{{editor_id}}')
+				}
+			})
+		}
+	end
+
+	def toggle_by_form form_id, field_name, &blok
+		@toggle_forms           ||= {}
+		@toggle_forms[form_id]  = { :options => {:action=>'#nowhere'}, :field=>field_name }
+		@toggle_form_name       = form_id
+		@toggle_form_input_name = field_name
+		instance_eval &blok
+		@form_name = @toggle_form_input_name = nil
+	end
+
+	def href str = :return
+		return @str if str == :return
+		@href = string
+	end
+
+	def a_submit txt, val, raw_attrs
+		attrs = {
+			:href    => href || "\##{val}", 
+			:onclick => %~
+				$('body').addClass('toggling');
+				$('\##{@toggle_form_name} input[name=\\'#{@toggle_form_input_name}\\']').val('#{val}'); 
+				$(this).parents('div').first().addClass('loading');
+				$('\##{@toggle_form_name}').attr('action', $(this).attr('href'));
+				$('\##{@toggle_form_name}').submit();
+				return false;
+			~.split("\n").join(" ")
+		}.update(raw_attrs)
+
+		href nil
+		a( txt, attrs )
+	end
+
 
 end # === module

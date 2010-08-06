@@ -4,6 +4,7 @@
 $red: #f00919
 $blue: #185DAD
 $grey: #666666
+$green: #38761b
 $pink: #ff477c
 $highlight: #ffff99
 $dashed_border: #003860
@@ -335,6 +336,27 @@ div.message, div.club
   padding: 10px 0 0 0
   margin: 0 0 10px 0
   border-bottom: 1px dashed #003860
+  div.pending, div.accepted, div.declined
+    & span
+      padding: 0 4px
+      text-transform: uppercase
+      font-size: 80%
+      font-weight: bold
+  div.pending span
+    color: $random_orange
+  div.accepted span
+    background-color: $green
+    color: white
+  div.declined span
+    background-color: $red
+    color: white
+  div.loading
+    span, a, div
+      visibility: hidden
+    background:
+      image: url(/images/small_loading.gif)
+      position: center center
+      repeat: no-repeat
   div.meta
     text-align: right
   div.reply
