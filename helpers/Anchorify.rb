@@ -112,6 +112,7 @@ Anchorify.add_filter(:youtube).with(:width => 390, :height => 250) do |text, opt
     youtube_id = $2
     %{
       <object width="#{options[:width]}" height="#{options[:height]}" type="application/x-shockwave-flash" data="http://www.youtube.com/v/#{youtube_id}" >
+        <param name="allowFullScreen" value="true" />
         <param name="movie" value="http://www.youtube.com/v/#{youtube_id}" />
         <param name="wmode" value="transparent" />
       </object>
