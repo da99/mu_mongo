@@ -36,7 +36,7 @@ class Old_App_Redirect
     end
 
 		ua = new_env['HTTP_USER_AGENT']
-    if ua && [ 'libwww-perl', 'panscient', 'aiHitBot' , "WebSurfer text" , "Yandex/", 'YandexBot', "Sosospider"].detect { |ua_s|  
+    if ua && [ 'libwww-perl', 'LinkWalker/', 'panscient', 'aiHitBot' , "WebSurfer text" , "Yandex/", 'YandexBot', "Sosospider"].detect { |ua_s|  
 			ua[ua_s]
 		}
       return hearty_redirect("http://www.bing.com/")

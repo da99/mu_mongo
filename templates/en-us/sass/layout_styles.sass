@@ -293,6 +293,8 @@ div.form
   border: 1px solid #717171
 
 form
+  &.hidden
+    display: none
   label, div.title
     +small_font_size
     text-transform: uppercase
@@ -332,6 +334,14 @@ div.news_post
   padding-top: 10px
   border-bottom: 1px dashed #003860
 
+div.loading
+  span, a, div
+    visibility: hidden
+  background:
+    image: url(/images/small_loading.gif)
+    position: center center
+    repeat: no-repeat
+
 div.message, div.club
   padding: 10px 0 0 0
   margin: 0 0 10px 0
@@ -350,13 +360,6 @@ div.message, div.club
   div.declined span
     background-color: $red
     color: white
-  div.loading
-    span, a, div
-      visibility: hidden
-    background:
-      image: url(/images/small_loading.gif)
-      position: center center
-      repeat: no-repeat
   div.meta
     text-align: right
   div.reply

@@ -134,6 +134,14 @@ class Message
 
   # ==== Accessors ====
 
+  def self.db_collection_notifys
+    @coll_notifys ||= DB.collection('Message_Notifys')
+  end
+
+  def self.db_collection_reposts
+    @coll_reposts ||= DB.collection('Message_Reposts')
+  end
+
   def self.validate_params_and_find params, *args, &blok
     mess_model = params[:message_model] || params['message_model']
     invalid = case mess_model
@@ -306,6 +314,16 @@ class Message
 
   # ==== Accessors =====================================================
 
+  def notify? mem
+    cache["notify_#{mem.data._id}"] ||= begin
+                                          self.class.db_collection_notifys.find_one(:message_id=>data._id, :owner_id=>{ :$in=>mem.username_ids })
+                                        end
+  end
+
+  def reposted? mem
+    cache["reposted_#{mem.data._id}"] ||= self.class.db_collection_reposts.find_one(:message_id=>data._id, :owner_id=>{ :$in=>mem.username_ids })
+  end
+
   def product?
     data.public_labels && data.public_labels.include?('product')
   end
@@ -335,6 +353,14 @@ class Message
 
   def href
     "/mess/#{data._id}/"
+  end
+
+  def href_notify
+    cache[:href_notify] ||= File.join(href, 'notify/')
+  end
+
+  def href_repost
+    cache[:href_repost] ||= File.join(href, 'repost/')
   end
 
   def href_edit

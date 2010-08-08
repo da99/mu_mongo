@@ -80,6 +80,60 @@ class Club
     raise Club::Not_Found, "Filename: #{filename}"
   end
 
+  def self.hash_for_follower mem
+    following_ids = []
+    clubs         = {}
+
+    hash = db_collection_followers.find(
+      {:follower_id=>{:$in=>mem.username_ids}}, 
+      {:fields=>%w{ follower_id club_id }}
+    ).inject({}) { |memo, doc|
+      memo[doc['follower_id']] ||= []
+      memo[doc['follower_id']] << doc['club_id']
+      following_ids << doc['club_id']
+      memo
+    } 
+    
+    following = db_collection.find( :_id => { :$in => following_ids } ).inject({}) { |memo, doc|
+      memo[doc['_id']] = doc
+      memo
+    }
+    
+    hash.to_a.each { |pair|
+      clubs[pair.first] = hash[pair.first].map { |club_id|
+        following[club_id]
+      } 
+    }
+
+    clubs
+  end
+  
+  def self.hash_for_owner mem
+    clubs = {}
+    db_collection.find( :owner_id => {:$in=>mem.username_ids} ).each { |doc|
+      clubs[doc['owner_id']] ||= []
+      clubs[doc['owner_id']] << doc
+    }
+    clubs
+  end
+
+  def self.hash_for_lifer mem
+    life_clubs_for_member(mem).inject({}) { |memo, doc| 
+      memo[doc.data._id] ||= []
+      memo[doc.data._id] << doc.data.as_hash
+      memo
+    }
+  end
+
+  # Returns:
+  #   :as_owner    => { :usernamed_id => [Clubs] }
+  #   :as_follower => { :usernamed_id => [Clubs] }
+  #   :as_lifer    => { :usernamed_id => [Clubs] }
+  #
+  def self.all_for_member_by_relation mem
+    { :as_owner => hash_for_owner(mem), :as_follower => hash_for_follower(mem), :as_lifer  => hash_for_lifer(mem)}
+  end
+  
   def set_as_life username, mem
     @life_club     = true
     @life_username = username
@@ -87,8 +141,8 @@ class Club
   end
 
   def self.life_clubs_for_member mem
-    usernames.map { |filename|
-      life_club_for_member_username(mem, filename)
+    mem.usernames.map { |filename|
+      life_club_for_username(filename, mem)
     }
   end
 

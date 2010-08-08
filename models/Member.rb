@@ -459,14 +459,50 @@ class Member
     end
   end
   
+  # Returns: 
+  #   Array - [ :username ]
+  #     
   def usernames
     cache[:usernames] ||= username_hash.values
   end
 
+  # Accepts:
+  #   un_ids - Multiple
+  #
+  # Returns:
+  #   Array - [
+  #     { 
+  #       :username_id   => id, 
+  #       :username      => un, 
+  #       :selected?     => Boolean,
+  #       :not_selected? => Boolean
+  #     }
+  #   ]
+  #
+  def username_checkboxes un_ids = []
+    username_hash.map { |id, un|
+      { 
+        :username_id   => id,
+        :username      => un,
+        :selected?     => un_ids.include?(id),
+        :not_selected? => !un_ids.include?(id)
+      }
+    }
+  end
+
+  # Returns: 
+  #   Array - [ :username_id ]
+  #
   def username_ids
     cache[:username_ids] ||= username_hash.keys
   end
 
+  # Returns: 
+  #   Hash
+  #     :username_id => username
+  #     :username_id => username
+  #     :username_id => username
+  #
   def username_hash
     cache[:username_hash] = begin
                                     hsh = {}
@@ -550,6 +586,16 @@ class Member
   end
   alias_method :life_club_ids, :current_username_ids
 
+  def clubs  un_id, type = nil
+    @all_clubs ||= begin
+                     Club.hash_for_member(self).values.uniq
+                   end
+    return @all_clubs if not type
+    cache["#{un_id}_#{type}"] ||= begin
+                                    @all_clubs[type]
+                                  end
+  end
+
   def club_ids 
     (life_club_ids + following_club_ids + owned_club_ids)
   end
@@ -570,8 +616,8 @@ class Member
     cache[:owned_clubs] ||= Club.by_owner_id(:$in=>current_username_ids)
   end
 
-  def life_club
-    cache['life_club_#{un_id}'] ||= Club.life_club_for_username_id(current_username_ids.first, self)
+  def life_club un_id
+    cache['life_club_#{un_id}'] ||= Club.life_club_for_username_id( un_id, self)
   end
 
   def life_clubs
@@ -580,6 +626,104 @@ class Member
 
   def messages_from_my_clubs 
     Message.latest_by_club_id(:$in=>club_ids)
+  end
+
+  # Returns:
+  #   :as_owner    => { :usernamed_id => [club doc] }
+  #   :as_follower => { :usernamed_id => [club doc] }
+  #   :as_lifer    => { :usernamed_id => [club doc] }
+  #
+  def multi_verse
+    @multi_verse ||= Club.all_for_member_by_relation(self)
+  end
+  
+  # Accepts:
+  #   args - Multiple. Example:
+  #     :as_owner
+  #     :as_lifer
+  #     :as_follower
+  #
+  # Raises:
+  #   ArgumentError - If args has a value not listed above.
+  #   
+  # Returns:
+  #   Hash - {
+  #     :username_id => [club doc, club doc]
+  #     :username_id => [club doc, club doc]
+  #     :username_id => [club doc, club doc]
+  #   }
+  #
+  def multi_verse_per_username_id *args
+    valid_types =  [:as_owner, :as_lifer, :as_follower]
+    types = if args.empty?
+      valid_types
+    else
+      invalid_types = args - valid_types
+      raise ArgumentError, "Invalid types: #{invalid_types.inspect}" if not invalid_types
+      args
+    end
+    cache["multi_verse_per_username_id_#{types}"] ||= begin
+                                              hash = {}
+                                              multi_verse.each { |rel, un_id_clubs|
+                                                if types.include?(rel)
+                                                  un_id_clubs.each { |un_id, clubs|
+                                                    hash[un_id] ||= []
+                                                    hash[un_id] += clubs
+                                                    hash[un_id] = hash[un_id].uniq
+                                                  }
+                                                end
+                                              }
+                                              hash
+                                            end
+  end
+  
+  # Returns:
+  #   :username => [Club, Club].uniq
+  #   :username => [Club, Club].uniq
+  #   :username => [Club, Club].uniq
+  #
+  def multi_verse_per_username *args
+    cache[:multi_verse_per_username] ||= begin
+                                          hash = {}
+                                          multi_verse_per_username_id(*args).each { |k,v|
+                                            hash[username_id_to_username(k)] = v
+                                          }
+                                          hash
+                                         end
+  end
+  
+  # Accepts:
+  #   Hash - {
+  #     :username_id => [:club_id, :club_id]
+  #     :username_id => [:club_id, :club_id]
+  #   }
+  #
+  # Returns:
+  #   Array - [
+  #     { 
+  #       :username_id   => id 
+  #       :username      => un 
+  #       :selected?     => Boolean
+  #       :not_selected? => Boolean
+  #     }
+  #   ]
+  #
+  def multi_verse_checkboxes selected = {}
+    cache_name = selected.empty? ? '{}' : selected.object_id
+    multi      = multi_verse_per_username_id( :as_owner, :as_lifer )
+    
+    cache["multi_verse_checkboxes_#{cache_name}"] ||= multi.map { |un_id, club_arr|
+      hash = { 
+        :username_id => un_id,
+        :username    => username_id_to_username(un_id),
+        :clubs       => club_arr.map { |doc|
+                          doc['selected?'] = (selected[un_id] || []).include?( doc['_id'] )
+                          doc['not_selected?'] = !doc['selected?']
+                          doc
+                        }
+      }
+      hash
+    }
   end
   
 end # === model Member

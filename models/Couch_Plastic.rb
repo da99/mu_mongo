@@ -112,6 +112,10 @@ module Couch_Plastic
       { 'key' => {'target_ids' => 1, 'parent_message_id' => -1} }
     ]
     
+    new['Message_Notifys'] = [
+      { 'key' => { 'member_id' => 1, 'message_id' => 1 } }
+    ]
+    
     new['Doc_Logs'] = [
       { 'key' => {'doc_id' => 1} }
     ]
@@ -131,7 +135,7 @@ module Couch_Plastic
       
       insert = new[coll].each_index { |i| 
         if not slices.include?( new[coll][i] )
-          DB.collection(coll).create_index( new[coll][i]['key'].to_a, :unique=>new[coll][i]['unique'] )
+          DB.collection(coll).create_index( new[coll][i]['key'].to_a, :unique=>new[coll][i]['unique'] , :background => true )
         end
       } 
 

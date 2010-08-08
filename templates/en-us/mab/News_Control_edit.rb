@@ -42,8 +42,10 @@ div.content! {
     fieldset {
       label 'Tags'
       div.checkboxes {
-        checkboxes_for 'news_tags', :name=>'tags[]' do
-          checkbox 'filename',  :value=>'filename'
+        checkboxes_for 'news_tags' do
+          text  '{{filename}}'
+					value '{{filename}}'
+					name 'tags[]'
         end
       } # === checkboxes
     } # === fieldset

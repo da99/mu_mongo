@@ -62,9 +62,11 @@ class Find_The_Bunny
       path '/messages/', :create, 'POST'
       
       map '/mess/{id}'  do 
-        path '/'    , :by_id  , %w{ GET PUT}
-        path '/edit', :edit
-        path '/log' , :doc_log
+        path '/'      , :by_id  , %w{ GET PUT}
+        path '/notify', :notify , 'POST'
+        path '/repost', :repost , 'POST'
+        path '/edit'  , :edit
+        path '/log'   , :doc_log
       end
       
       map '/clubs/{filename}' do

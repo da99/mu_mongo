@@ -24,6 +24,40 @@ div.outer_shell! {
         div.body { '{{{compiled_body}}}' }
       end
 
+      show_if 'logged_in?' do
+        
+        div.notify_me! {
+        
+          if_not 'notify_me?' do
+            username_radio_form('notify') {
+              href '{{message_href_notify}}'
+              show_form 'Notify me '; span ' of activity for this {{message_model_in_english}}.' ;
+              submit_button 'Notify me.'
+            }
+          end
+        
+          show_if 'notify_me?' do  
+            delete_form('notify') {
+              href "{{message_href_notify}}"
+              a_submit 'Stop'; span ' notifying me.';
+            }
+          end
+          
+        } # === div.notify_me!
+        
+        show_if 'not_reposted?' do
+          div.repost! {
+            multi_verse_post('repost_form') {
+              href "{{message_href_repost}}"
+              show_form('Re-post.')
+              submit_button 'Re-post.'
+            }
+          }
+        end
+
+      end # === show_if 'logged_in?'
+      
+
       div.about! {
 
         h4 'About this content:'
@@ -33,11 +67,13 @@ div.outer_shell! {
           br
           span '{{published_at}}'
         }
+        
         div {
           strong "Type:"
           br
           span "{{message_model_in_english}}."
         }
+        
         div {
           strong 'Publication:'
           br
@@ -120,11 +156,6 @@ div.outer_shell! {
     } # === div.message!
   } # == inner_shell!
 } # === outer_shell!
-
-
-show_if 'message_owner?' do
-  form_toggles
-end
 
 # ==================== REPLIES =========================================
 

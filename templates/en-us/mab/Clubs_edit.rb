@@ -6,7 +6,7 @@ div.col.the_form! {
 
   form.edit_form!(:action=>'{{club_href}}', :method=>'post') {
   
-    _fieldset_method_put
+    _method_put
 
     fieldset_input_text 'Filename:', nil, '{{club_filename}}'
     

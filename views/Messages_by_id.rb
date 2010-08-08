@@ -12,6 +12,18 @@ class Messages_by_id < Base_View
     from_surfer_hearts?(message.data.as_hash)
   end
 
+  def notify_me?
+    !!message.notify?(current_member)
+  end
+  
+  def no_notify_me?
+    !notify_me?
+  end
+  
+  def reposted?
+    message.reposted?(current_member)
+  end
+
   def product?
     message.product?
   end
@@ -48,6 +60,14 @@ class Messages_by_id < Base_View
 
   def mess_href
     message_href
+  end
+  
+  def message_href_notify
+    message.href_notify
+  end
+
+  def message_href_repost
+    message.href_repost
   end
 
   def suggestions_or_answers

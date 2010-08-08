@@ -68,6 +68,14 @@ class Messages
     end
   end
 
+	def POST_notify
+		render_text clean_room.inspect
+	end
+
+	def POST_repost
+		render_text clean_room.inspect
+	end
+
   # def PUT id # UPDATE
   #   success_msg(lambda { |doc| "Update: #{doc.data.title}" })
   #   params = clean_room.clone

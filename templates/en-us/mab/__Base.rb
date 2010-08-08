@@ -14,6 +14,16 @@ module Base
   alias_method :show_if, :mustache
   alias_method :loop,    :mustache
 
+  def if_not mus, &blok
+    if block_given?
+      text "\n{{^#{mus}}}\n\n"
+      yield
+      text "\n{{/#{mus}}}\n\n" 
+    else
+      text "\n{{^#{mus}}}\n\n"
+    end
+  end
+
   def _method_delete
     text(capture { 
       input :type=>'hidden', :name=>'_method', :value=>'delete' 
@@ -182,41 +192,72 @@ module Base
     end
   end
 
-  def checkboxes_for coll, orig_attrs, &blok
+  # Example:
+  #   checkboxes_for 'news_tags', :name=>'tags[]'
+  #
+  # Parameters:
+  #   coll - String. Name of Array to be used in 
+  #          Mustache template.
+  #          Each item must be a Hash in the form of:
+  #           :selected?
+  #           :not_selected?
+  #           :value - Optional.
+  #   
+  def checkboxes_for coll, &blok
+    
     @checkbox ||= Class.new do 
-      attr_reader :results
+      
       def initialize &blok
-        @results = instance_eval(&blok)
+        instance_eval(&blok)
       end
-      def checkbox *args
-        @results =  args
+      
+      def text txt
+        @text = txt
       end
+      
+      def value txt
+        @value = txt
+      end
+      
+      def name txt
+        @name = txt
+      end
+      
+      def props
+        [   
+          @text, 
+          { :name => @name, 
+            :type => 'checkbox', 
+            :value => @value 
+          } 
+        ]
+      end
+      
     end
     
-    span_txt, attrs = @checkbox.new(&blok).results
-    attrs.update orig_attrs
-    attrs[:type] = 'checkbox'
-    attrs[:value] = "{{#{attrs[:value]}}}" if attrs[:value]
+    span_txt, attrs = @checkbox.new(&blok).props
     
-    txt = capture {
-      mustache coll do
-        mustache 'selected?' do
+    text(capture {
+      loop coll do
+      
+        show_if 'selected?' do
           div.box.selected {
             input( {:checked=>'checked'}.update attrs )
-            span "{{#{span_txt}}}"
+            span span_txt
           }
         end
-        mustache 'not_selected?' do
+        
+        if_not 'selected?' do
           div.box {
             input attrs 
-            span "{{#{span_txt}}}"
+            span span_txt
           }
         end
-      end
-    }
+        
+      end # === loop
+    })
 
-    text txt
-  end
+  end # === checkboxes_for
 
   def menu_for coll, select_attrs={}, &blok
     @option_class = Class.new do
@@ -321,21 +362,33 @@ module Base
 		}
 	end
 
-	def toggle_by_form form_id, field_name, &blok
+	def toggle_by_form form_id, field_name, attrs = {}, &blok
 		@toggle_forms           ||= {}
-		@toggle_forms[form_id]  = { :options => {:action=>'#nowhere'}, :field=>field_name }
+		@toggle_forms[form_id]  = { :options => {:action=>'#nowhere'}.update(attrs), :field=>field_name }
 		@toggle_form_name       = form_id
 		@toggle_form_input_name = field_name
 		instance_eval &blok
-		@form_name = @toggle_form_input_name = nil
+		clear_form_props
 	end
 
-	def href str = :return
-		return @str if str == :return
-		@href = string
+	def href str = nil
+		return @href if str == nil
+		@href = str
 	end
 
-	def a_submit txt, val, raw_attrs
+  def a_submit?
+    !!@a_submit_txt
+  end
+  
+  def a_submit_txt
+    @a_submit_txt
+  end
+
+	def a_submit txt, val = :just_txt, raw_attrs = {}
+    if val == :just_txt
+      @a_submit_txt = txt
+      return txt
+    end
 		attrs = {
 			:href    => href || "\##{val}", 
 			:onclick => %~
@@ -348,9 +401,152 @@ module Base
 			~.split("\n").join(" ")
 		}.update(raw_attrs)
 
-		href nil
 		a( txt, attrs )
 	end
 
+  def clear_form_props
+    @form_name = \
+      @toggle_form_input_name = \
+      @show_form = \
+      @href = \
+      @submit_button = \
+      @radio_name = \
+      @radio_value = \
+      @radio_txt = \
+      @a_submit_txt = \
+    nil
+  end
 
+  def show_form txt
+    @show_form = txt
+  end
+
+  def show_form_txt
+    @show_form
+  end
+
+  def show_form?
+    !!@show_form
+  end
+  
+  def submit_button txt
+    @submit_button = txt
+  end
+
+  def submit_button_txt
+    @submit_button || 'Submit'
+  end
+
+  def radio name, value, txt
+    @radio_name = name
+    @radio_value = value
+    @radio_txt = txt
+  end
+  
+  def multi_verse_post form_id, &blok
+    instance_eval &blok
+    
+    form_class = show_form? ? 'hidden' : ''
+    form_action = href || '{{message_href}}'
+    text(capture {
+      
+      if show_form?
+        a(show_form_txt, 
+            :href=>"\##{form_id}", 
+            :onclick=> to_one_line( %~
+              $('\##{form_id}').removeClass('hidden'); 
+              $(this).remove(); 
+              return false;
+            ~)
+        )
+      end
+    
+      form(:id=>form_id, :action=>form_action, :method=>'post', :class=>form_class) {
+        loop 'current_member_multi_verse_checkboxes' do
+          h4 '{{username}}'
+          checkboxes_for 'clubs' do
+            text '{{title}}'
+            value '{{_id}}'
+            name 'clubs[]'
+          end
+        end
+        div.buttons {
+          button.submit submit_button_txt
+        }
+      } # === form
+      
+    })
+    
+    clear_form_props
+  end
+
+  def username_radio_form raw_form_id, &blok
+    form_id = "username_radio_form_#{raw_form_id}"
+    txt = capture(&blok)
+    form_class = show_form? ? 'hidden' : ''
+    text(capture {
+      form( :id => form_id, :action => href, :method=>'post', :class=>form_class) do
+        radios_for 'current_member_usernames' do
+          radio 'editor_id', '{{username_id}}', '{{username}}'
+        end
+        div.buttons {
+          button.submit submit_button_txt
+        }
+      end
+  
+      if show_form?
+        div {
+          a( show_form_txt, 
+            :href=>"#show-form", 
+            :onclick=> to_one_line(%~
+              $('\##{form_id}').removeClass('hidden');
+              $(this).parents('div').first().remove();
+              return false;
+            ~)
+           )
+          text txt
+        }
+      end
+      
+    })
+    clear_form_props
+  end
+
+  def to_one_line txt
+    txt.split("\n").map(&:strip).join(' ')
+  end
+  
+  def radios_for mus
+    yield
+    loop mus do
+      div.radio {
+        input :type => 'radio', :name => radio_name, :value => radio_value
+        span radio_txt
+      }
+    end
+  end
+
+  def delete_form raw_form_id, &blok
+    form_id = "delete_form_#{raw_form_id}"
+    txt = capture &blok
+    form( :id => form_id, :action => href, :method => 'post' ) {
+      _method_delete
+      div.buttons {
+        if a_submit?
+          a.submit( 
+            a_submit_txt, 
+            :href=>'#delete', 
+            :onclick=> to_one_line(%~
+              $('##{form_id}').submit();
+              return false;
+            ~)
+          )
+          text txt
+        else
+          button.submit submit_button_txt
+        end
+      } # === div.buttons
+    } # === form
+  end
+  
 end # === module

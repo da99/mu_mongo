@@ -183,9 +183,9 @@ class Base_View < Mustache
 
   def current_member_usernames
     cache[:current_member_usernames] ||= begin
-                                            if @app.current_member
-                                              @app.current_member.usernames.map { |un| 
-                                                {:filename=>un, :username=>un}
+                                            if current_member
+                                              current_member.username_hash.map { |un_id, un| 
+                                                {:filename=>un, :username=>un, :username_id=>un_id}
                                               }
                                             else
                                               []
@@ -193,6 +193,10 @@ class Base_View < Mustache
                                           end
   end
 
+  def current_member_multi_verse_checkboxes
+    cache[:current_member_multi_verse] ||= current_member.multi_verse_checkboxes
+  end
+  
   def single_username?
     current_member_usernames.size == 1
   end
