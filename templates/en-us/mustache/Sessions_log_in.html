@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890609" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281238732" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -72,7 +72,7 @@
    <div id="the_content">
      <div id="the_form">
       <h3>Log-in</h3>
-      <form action="/log-in/" method="post" name="log_in_form" id="log_in_form">
+      <form method="post" action="/log-in/" name="log_in_form" id="log_in_form">
        <fieldset>
         <label>Username</label>
         <input type="text" class="text" value="" name="username" id="member_username"/>
@@ -82,17 +82,17 @@
         <input type="password" class="text" value="" name="password" id="member_password"/>
        </fieldset>
        <div class="buttons">
-        <button class="create" onclick="document.getElementById('log_in_form').submit(); return false;">Log-in</button>
+        <button onclick="document.getElementById('log_in_form').submit(); return false;" class="create">Log-in</button>
        </div>
       </form>
       <h3>Forgot your password?</h3>
-      <form action="/reset-password/" method="post" name="reset_password_form" id="reset_password_form">
+      <form method="post" action="/reset-password/" name="reset_password_form" id="reset_password_form">
        <fieldset>
         <label>Email</label>
         <input type="text" class="text" value="" name="email" id="member_email"/>
        </fieldset>
        <div class="buttons">
-        <button class="create" onclick="document.getElementById('reset_password_form!').submit(); return false;">Get My Password</button>
+        <button onclick="document.getElementById('reset_password_form!').submit(); return false;" class="create">Get My Password</button>
        </div>
       </form>
      </div>

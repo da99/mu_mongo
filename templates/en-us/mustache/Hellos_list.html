@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1280890610" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281238732" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -140,13 +140,13 @@
      </div>
      <div class="col" id="middle">
       <div id="intro">
-       <form action="/club-search/" method="post" name="search_club_form" id="search_club_form">
+       <form method="post" action="/club-search/" name="search_club_form" id="search_club_form">
         <fieldset>
          <label>Find a club by keyword:</label>
          <input type="text" class="text" value="" name="keyword" id="club_keyword"/>
         </fieldset>
         <div class="buttons">
-         <button class="create" onclick="document.getElementById('search_club_form').submit(); return false;">Go</button>
+         <button onclick="document.getElementById('search_club_form').submit(); return false;" class="create">Go</button>
         </div>
        </form>
        <div id="footer">
@@ -281,6 +281,30 @@
 
          <div class="message">
 
+{{#suggest?}}
+
+
+{{#accepted?}}
+
+          <div class="accepted">
+           <span>Accepted</span>
+          </div>
+
+{{/accepted?}}
+
+
+{{#declined?}}
+
+          <div class="declined">
+           <span>Declined</span>
+          </div>
+
+{{/declined?}}
+
+
+{{/suggest?}}
+
+
 {{#title}}
 
           <strong class="title">{{title}}</strong>
@@ -315,9 +339,35 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
-           <a href="#accept">Accept</a>
+
+{{#not_accepted?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+
+{{/not_accepted?}}
+
+
+{{#pending?}}
+
            <span> or </span>
-           <a href="#decline">Decline</a>
+
+{{/pending?}}
+
+
+{{#not_declined?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+
+{{/not_declined?}}
+
+
+{{#not_pending?}}
+
+           <span> or </span>
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+
+{{/not_pending?}}
+
           </div>
 
 {{/parent_message_owner?}}
@@ -398,6 +448,30 @@
 
           <div class="message">
 
+{{#suggest?}}
+
+
+{{#accepted?}}
+
+           <div class="accepted">
+            <span>Accepted</span>
+           </div>
+
+{{/accepted?}}
+
+
+{{#declined?}}
+
+           <div class="declined">
+            <span>Declined</span>
+           </div>
+
+{{/declined?}}
+
+
+{{/suggest?}}
+
+
 {{#title}}
 
            <strong class="title">{{title}}</strong>
@@ -432,9 +506,35 @@
 {{#parent_message_owner?}}
 
            <div class="toggle_suggest">
-            <a href="#accept">Accept</a>
+
+{{#not_accepted?}}
+
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+
+{{/not_accepted?}}
+
+
+{{#pending?}}
+
             <span> or </span>
-            <a href="#decline">Decline</a>
+
+{{/pending?}}
+
+
+{{#not_declined?}}
+
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+
+{{/not_declined?}}
+
+
+{{#not_pending?}}
+
+            <span> or </span>
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+
+{{/not_pending?}}
+
            </div>
 
 {{/parent_message_owner?}}
@@ -507,6 +607,30 @@
 
           <div class="message">
 
+{{#suggest?}}
+
+
+{{#accepted?}}
+
+           <div class="accepted">
+            <span>Accepted</span>
+           </div>
+
+{{/accepted?}}
+
+
+{{#declined?}}
+
+           <div class="declined">
+            <span>Declined</span>
+           </div>
+
+{{/declined?}}
+
+
+{{/suggest?}}
+
+
 {{#title}}
 
            <strong class="title">{{title}}</strong>
@@ -541,9 +665,35 @@
 {{#parent_message_owner?}}
 
            <div class="toggle_suggest">
-            <a href="#accept">Accept</a>
+
+{{#not_accepted?}}
+
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+
+{{/not_accepted?}}
+
+
+{{#pending?}}
+
             <span> or </span>
-            <a href="#decline">Decline</a>
+
+{{/pending?}}
+
+
+{{#not_declined?}}
+
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+
+{{/not_declined?}}
+
+
+{{#not_pending?}}
+
+            <span> or </span>
+            <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+
+{{/not_pending?}}
+
            </div>
 
 {{/parent_message_owner?}}
@@ -624,6 +774,30 @@
 
          <div class="message">
 
+{{#suggest?}}
+
+
+{{#accepted?}}
+
+          <div class="accepted">
+           <span>Accepted</span>
+          </div>
+
+{{/accepted?}}
+
+
+{{#declined?}}
+
+          <div class="declined">
+           <span>Declined</span>
+          </div>
+
+{{/declined?}}
+
+
+{{/suggest?}}
+
+
 {{#title}}
 
           <strong class="title">{{title}}</strong>
@@ -658,9 +832,35 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
-           <a href="#accept">Accept</a>
+
+{{#not_accepted?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+
+{{/not_accepted?}}
+
+
+{{#pending?}}
+
            <span> or </span>
-           <a href="#decline">Decline</a>
+
+{{/pending?}}
+
+
+{{#not_declined?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+
+{{/not_declined?}}
+
+
+{{#not_pending?}}
+
+           <span> or </span>
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+
+{{/not_pending?}}
+
           </div>
 
 {{/parent_message_owner?}}
@@ -740,6 +940,30 @@
 
          <div class="message">
 
+{{#suggest?}}
+
+
+{{#accepted?}}
+
+          <div class="accepted">
+           <span>Accepted</span>
+          </div>
+
+{{/accepted?}}
+
+
+{{#declined?}}
+
+          <div class="declined">
+           <span>Declined</span>
+          </div>
+
+{{/declined?}}
+
+
+{{/suggest?}}
+
+
 {{#title}}
 
           <strong class="title">{{title}}</strong>
@@ -774,9 +998,35 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
-           <a href="#accept">Accept</a>
+
+{{#not_accepted?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+
+{{/not_accepted?}}
+
+
+{{#pending?}}
+
            <span> or </span>
-           <a href="#decline">Decline</a>
+
+{{/pending?}}
+
+
+{{#not_declined?}}
+
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+
+{{/not_declined?}}
+
+
+{{#not_pending?}}
+
+           <span> or </span>
+           <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+
+{{/not_pending?}}
+
           </div>
 
 {{/parent_message_owner?}}
