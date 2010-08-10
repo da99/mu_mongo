@@ -35,7 +35,7 @@ div_centered {
               action '{{message_href_notify}}'
               button_create 'Notify me.'
               show {
-                a_show 'Notify me '
+                a_click 'Notify me '
                 span ' of activity for this {{message_model_in_english}}.'
               } # === show 
             }
@@ -59,7 +59,7 @@ div_centered {
               action "{{message_href_repost}}"
               button_create 'Re-post.'
               show {
-                a_show('Re-post.')
+                a_click 'Re-post.'
               }
             }
               

@@ -13,4 +13,14 @@ module Base_Js
     }.to_s
   end
 
+  def a_click *args, &blok
+    if args.size == 1 && !block_given?
+      raise "Can't use :a (for :a_show) in a :show block more than once." if @a_show
+      @a_show = true
+      a_show(*args)
+    else
+      tag!( :a, *args, &blok )
+    end
+  end
+
 end # === module Base_Js

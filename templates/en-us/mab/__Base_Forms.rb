@@ -1,31 +1,11 @@
-
-module Concise_Attrs
-  def attr_concise *fields
-    this = self
-    class_eval {
-      fields.each { |fld|
-        eval %~
-          def #{fld} *args
-            return @#{fld} if args.empty?
-            return @#{fld} = args.first if args.size === 1
-            @#{fld} = args
-          end
-            
-          def #{fld}?
-            !!@#{fld}
-          end
-        ~
-      }
-    }
-  end 
-end # === module Concise_Attrs
-
+require 'models/Private_Mab'
+require 'models/Concise_Attrs'
 
 module Base_Forms
 
   extend Concise_Attrs
   attr_reader :as_type
-  attr_concise :action, :show_target
+  attr_concise :action, :show_target, :show
 
   %w{ radios check_boxes menu }.each { |type|
     eval %~
@@ -269,7 +249,7 @@ module Base_Forms
     @show_target            = \
     @action                 = \
     @as_type                = \
-    @show_content           = \
+    @show           = \
     nil
   end
 
@@ -317,6 +297,16 @@ module Base_Forms
 		clear_form_props
 	end
   
+  # def instance_var_wrapper *args
+  #   args.each { |var|
+  #     eval %~@#{var} = false~
+  #   }
+  #   yield
+  #   args.each { |var|
+  #     eval %~@#{var} = false~
+  #   }
+  # end
+
   def form_wrapper form_id
     show_target form_id
     yield
@@ -331,23 +321,16 @@ module Base_Forms
       end
     }
   end
-
-  def show
-    if block_given?
-      @show_content = capture { 
-        div {
-          yield 
-        }
-      }
-    else
-      @show_content
-    end
+  
+  def show &blok
+    return @show if not block_given?
+    @a_show = false
+    @show = capture { 
+      div { yield }
+    }
+    @a_show = false
   end
   
-  def show?
-    !!@show_content
-  end
-
   def post_to_universes raw_form_id, &blok
     form_id    = "post_to_universes_#{raw_form_id}"
     
