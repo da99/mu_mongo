@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281238732" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281418970" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -137,7 +137,7 @@
 
 {{#not_accepted?}}
 
-         <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+         <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
 
 {{/not_accepted?}}
 
@@ -151,7 +151,7 @@
 
 {{#not_declined?}}
 
-         <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+         <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
 
 {{/not_declined?}}
 
@@ -159,7 +159,7 @@
 {{#not_pending?}}
 
          <span> or </span>
-         <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+         <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
 
 {{/not_pending?}}
 
@@ -182,30 +182,6 @@
 
 {{/has_parent_message?}}
 
-
-{{#parent_message?}}
-
-        <div class="permalink">
-
-{{#logged_in?}}
-
-         <a href="{{href}}">Reply</a>
-         <span> to this </span>
-         <strong> {{message_model_in_english}} </strong>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-         <a href="{{href}}">link to this {{message_model_in_english}}</a>
-
-{{/not_logged_in?}}
-
-        </div>
-
-{{/parent_message?}}
-
        </div>
 
 {{/messages}}
@@ -224,7 +200,9 @@
        <span>Delete ALL your clubs first. All else they will remain.</span>
       </p>
       <form action="/delete-account-forever-and-ever/" method="post" name="delete_account_form" id="delete_account_form">
-        <input type="hidden" value="delete" name="_method"/>
+        <fieldset class="hidden">
+          <input type="hidden" value="delete" name="_method"/>
+        </fieldset>
        <p>
         <strong>Are you really, really sure? (There is no undo.)</strong>
        </p>
