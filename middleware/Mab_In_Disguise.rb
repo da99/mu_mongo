@@ -5,7 +5,15 @@ require 'markaby'
 # puts caller.join("\n")
 # puts "\n"
 
-MAB_MODS = %w{ Base Base_Club Base_Message Base_Member_Life }
+MAB_MODS = %w{ 
+  Base 
+  Base_Js
+  Base_Forms
+  Base_Club
+  Base_Message
+  Base_Member_Life 
+}
+
 MAB_MODS.each { |mod|
   require( "templates/en-us/mab/__#{mod}" ) 
 }

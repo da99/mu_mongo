@@ -11,7 +11,9 @@ div.content! {
   
   form.form_username_create!(:action=>"/member/", :method=>"post") {
     
-    input :type=>'hidden', :name=>'_method', :value=>'put'
+    fieldset_hidden {
+      _method_put
+    }
 
     fieldset {
       label 'New Username'

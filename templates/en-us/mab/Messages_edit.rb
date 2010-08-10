@@ -5,13 +5,16 @@
 div.content! { 
   
   form.form_messages_update!( :action=>"{{mess_href}}", :method=>'post' ) do
-    input :type=>'hidden', :name=>'_method', :value=>'put'
-    input :type=>'hidden', :name=>'editor_id', :value=>'{{editor_id}}'
+  
+    fieldset_hidden {
+      _method_put
+      input_hidden 'editor_id', '{{editor_id}}'
+    }
 
     show_if 'mess_data' do
       fieldset {
         label 'Title:'
-        input.text :type=>'text', :name=>'title', :value=>'{{title}}'
+        input_text 'title', '{{title}}'
       }
 
       fieldset {

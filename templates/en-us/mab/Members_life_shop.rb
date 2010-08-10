@@ -26,13 +26,13 @@ div.col.intro! {
 
   show_if 'logged_in?' do
     
-    form_message_create(
-      :title => 'Bought something? Post it here:',
-      :hidden_input => {
+    post_message {
+      title 'Bought something? Post it here:'
+      hidden_input(
         :message_model => 'buy',
         :privacy       => 'public'
-      }
-    )
+      )
+    }
     
   end # logged_in?
 

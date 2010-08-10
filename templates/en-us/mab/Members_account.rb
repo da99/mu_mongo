@@ -26,7 +26,9 @@ div.col.kill_me! {
   }
 
   form.delete_account_form!(:method=>'post', :action=>"/delete-account-forever-and-ever/") {
-    _method_delete
+    fieldset_hidden {
+      _method_delete
+    }
     p { strong "Are you really, really sure? (There is no undo.)" }
     div.buttons {
       button("Yes!", :onclick=>"if(confirm('Are you really, really sure?')) { document.getElementById('delete_account_form').submit(); }; return false;")

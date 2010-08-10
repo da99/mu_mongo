@@ -12,12 +12,12 @@ end
 
 h3.club_title! '{{club_title}}' 
 
-club_nav_bar __FILE__, :follow_href=>false
+club_nav_bar __FILE__
 
 h3.message_title '{{message_title}}'
 
-div.outer_shell! {
-  div.inner_shell! {
+div_centered { 
+  
     div.message!{
 
       mustache 'message_data' do
@@ -29,17 +29,24 @@ div.outer_shell! {
         div.notify_me! {
         
           if_not 'notify_me?' do
-            username_radio_form('notify') {
-              href '{{message_href_notify}}'
-              show_form 'Notify me '; span ' of activity for this {{message_model_in_english}}.' ;
-              submit_button 'Notify me.'
+              
+            post_to_username('notify') {
+              as_radios
+              action '{{message_href_notify}}'
+              button_create 'Notify me.'
+              show {
+                a_show 'Notify me '
+                span ' of activity for this {{message_model_in_english}}.'
+              } # === show 
             }
+            
           end
         
           show_if 'notify_me?' do  
             delete_form('notify') {
-              href "{{message_href_notify}}"
-              a_submit 'Stop'; span ' notifying me.';
+              action "{{message_href_notify}}"
+              a_submit 'Stop'
+              span ' notifying me.'
             }
           end
           
@@ -47,12 +54,16 @@ div.outer_shell! {
         
         show_if 'not_reposted?' do
           div.repost! {
-            multi_verse_post('repost_form') {
-              href "{{message_href_repost}}"
-              show_form('Re-post.')
-              submit_button 'Re-post.'
+            
+            post_to_universes('repost_form') {
+              action "{{message_href_repost}}"
+              button_create 'Re-post.'
+              show {
+                a_show('Re-post.')
+              }
             }
-          }
+              
+          } # === div
         end
 
       end # === show_if 'logged_in?'
@@ -119,7 +130,9 @@ div.outer_shell! {
             show_if "#{mod}?" do
               div(:id=>mod) {
                 h4 txt
-                loop_messages mod, :include_meta=>true, :include_permalink=>false
+                loop_messages(mod) { 
+                  permalink
+                }
               } 
             end
           }
@@ -129,6 +142,7 @@ div.outer_shell! {
         show_if 'logged_in?' do
           
           div.reply! {
+            
             div.guide! {
               h4 'Stuff you can do:'
               p %~
@@ -138,14 +152,15 @@ div.outer_shell! {
               ~
             }
             
-            form_message_create(
-              :title => 'Publish a new:',
-              :models => %w{cheer jeer question suggest},
-              :hidden_input => {
-                                :parent_message_id => '{{message_id}}',
-                                :privacy       => 'public'
-                               }
-            )
+            post_message {
+              title 'Publish a new:'
+              models %w{cheer jeer question suggest}
+              hidden_input(
+                :parent_message_id => '{{message_id}}',
+                :privacy           => 'public'
+              )
+            }
+            
           } # === div.reply!
           
         end # logged_in?
@@ -154,10 +169,5 @@ div.outer_shell! {
   
   
     } # === div.message!
-  } # == inner_shell!
-} # === outer_shell!
-
-# ==================== REPLIES =========================================
-
-# partial('__nav_bar')
+} # === div_centered
 

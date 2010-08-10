@@ -25,16 +25,16 @@ div.outer_shell! do
           }
         }
 
-          form_message_create(
-          :css_class => 'col',
-            :title => 'Post a random thought:',
-            :input_title => true,
-            :hidden_input => {
-                              :message_model => 'random',
-                              :club_filename => '{{club_filename}}',
-                              :privacy       => 'public'
-                             }
-          )
+          post_message {
+            css_class  'col'
+            title  'Post a random thought:'
+            input_title 
+            hidden_input(
+              :message_model => 'random',
+              :club_filename => '{{club_filename}}',
+              :privacy       => 'public'
+            )
+          }
         
       end # logged_in?
 

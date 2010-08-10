@@ -25,9 +25,9 @@ div.col.intro! {
 
   show_if('owner?') {
     
-    form_message_create(
-      :hidden_input => {:target=>'{{username_id}}'}
-    )
+    post_message {
+      hidden_input( :target=>'{{username_id}}' )
+    }
 
   } # show_if
   

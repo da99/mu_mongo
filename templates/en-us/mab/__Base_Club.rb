@@ -18,12 +18,12 @@ module Base_Club
     text( capture {
       mustache('logged_in?') {
 
-          mustache 'follower_but_not_owner?' do
+          show_if 'follower_but_not_owner?' do
             p "You are following this club."
           end
     
-          mustache 'potential_follower?' do
-            mustache 'single_username?' do
+          show_if 'potential_follower?' do
+            show_if 'single_username?' do
               p {
                 a("Follow this club.", :href=>"{{follow_href}}")
               }
@@ -46,7 +46,7 @@ module Base_Club
     })
   end
 
-  def loop_clubs list_name, *opts
+  def loop_clubs list_name, &blok
     text(capture {
       loop list_name do 
         div.club {
@@ -57,14 +57,14 @@ module Base_Club
             div.teaser '{{teaser}}'
           end
           
-          loop_messages 'messages', *opts
+          loop_messages 'messages', &blok
         }
       end
     })
   end
 
-  def club_nav_bar filename, raw_opts = {}
-    opts = Data_Pouch.new({:follow_href=>true}.update(raw_opts), :follow_href)
+  def club_nav_bar filename
+    
     file     = File.basename(filename).sub('.rb', '')
     li_span  = lambda { |txt| li.selected { span txt } }
     li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }

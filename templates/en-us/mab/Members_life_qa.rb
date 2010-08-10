@@ -26,15 +26,14 @@ div.col.intro! {
 
   show_if 'logged_in?' do
     
-    form_message_create(
-      :title => 'Ask a question:',
-      :hidden_input => {
+    post_message {
+      title 'Ask a question:'
+      hidden_input(
         :message_model => 'question',
         :privacy       => 'public',
         :target_ids    => '{{owner_username_id}}'
-
-      }
-    )
+      )
+    }
     
   end # logged_in?
 

@@ -1,8 +1,9 @@
 require 'models/Data_Pouch'
+require 'models/Config_Switches'
 
 module Base_Message
 
-  def loop_messages_with_opening mess, h4_txt, empty_txt = nil, opts = {}
+  def loop_messages_with_opening mess, h4_txt, empty_txt = nil
     text(capture {
 
       show_if("#{mess}?") {
@@ -15,32 +16,30 @@ module Base_Message
         }
       end
 
-      loop_messages mess, opts
+      loop_messages mess
     })
   end
 
-  def loop_messages coll_name, raw_opts = {}
-    opts = {:include_meta => false, :include_permalink => true}.update(raw_opts)
-    options = Data_Pouch.new(opts, :include_meta, :include_permalink)
+  def loop_messages coll_name, &blok
     
+    opts = Config_Switches.new {
+      allow :meta, on
+      allow :permalink, on
+      exec( &blok ) if blok
+    }
+
     text(capture { 
       loop coll_name  do
         div.message {
           
-          if options.include_meta
-            # div.meta {
-            #   strong ''
-            # }
+          show_if 'suggest?' do
+            show_if('accepted?') {
+              div.accepted { span 'Accepted' }
+            }
+            show_if('declined?') {
+              div.declined { span 'Declined' }
+            }
           end
-				
-					show_if 'suggest?' do
-						show_if('accepted?') {
-							div.accepted { span 'Accepted' }
-						}
-						show_if('declined?') {
-							div.declined { span 'Declined' }
-						}
-					end
         
           show_if 'title' do
             strong.title '{{title}}'
@@ -63,28 +62,28 @@ module Base_Message
             show_if 'suggest?' do
               show_if 'parent_message_owner?' do
                 div.toggle_suggest {
-									toggle_by_form('toggle_message_accept', :owner_accept) {
-									
-										href '{{href}}'	
-										
-										show_if 'not_accepted?' do
-											a_submit('Accept', Message::ACCEPT)
-										end
-										
-										show_if 'pending?' do
-											span ' or '
-										end
-										
-										show_if 'not_declined?' do
-											a_submit('Decline', Message::DECLINE)
-										end
-										
-										show_if 'not_pending?' do
-											span ' or '
-											a_submit('I don\'t know.', Message::PENDING)
-										end
-										
-									}
+                  toggle_by_form('toggle_message_accept', :owner_accept) {
+                  
+                    action '{{href}}'  
+                    
+                    show_if 'not_accepted?' do
+                      a_submit('Accept', Message::ACCEPT)
+                    end
+                    
+                    show_if 'pending?' do
+                      span ' or '
+                    end
+                    
+                    show_if 'not_declined?' do
+                      a_submit('Decline', Message::DECLINE)
+                    end
+                    
+                    show_if 'not_pending?' do
+                      span ' or '
+                      a_submit('I don\'t know.', Message::PENDING)
+                    end
+                    
+                  }
                 }
               end
             end
@@ -92,14 +91,11 @@ module Base_Message
 
           show_if 'has_parent_message?' do
             div.permalink {
-              # strong '{{message_model_in_english}}'
-              # span ' for '
               a('reply', :href=>"{{href}}")
-              # a('reply', :href=>"{{parent_message_href}}")
             }
           end
 
-          if options.include_permalink
+          if opts.permalink?
             show_if 'parent_message?' do
               div.permalink {
                 show_if 'logged_in?' do
@@ -118,11 +114,18 @@ module Base_Message
     })
   end
 
-  def form_message_create raw_opts = {}
+  def post_message raw_opts = {}, &blok
     
-    opts = Data_Pouch.new(raw_opts, :css_class, :hidden_input, :title, :input_title, :models)
-    opts.hidden_input ||= {} 
+    opts = Config_Switches.new {
+      allow :input_title, off
+      strings :title, :css_class
+      array :models
+      hash :hidden_input
+      exec &blok
+    }
+    
     message_model = opts.hidden_input[:message_model]
+    
     english = [ 
       ['random'   , 'Random Thought']      ,
       ['news'     , 'Important News']      ,
@@ -142,9 +145,9 @@ module Base_Message
       ['buy'       , 'Product Recommendation']     ,
       ['prediction', 'Prediction']
     ]
-    models = opts.models || english.map(&:first)
+    models = opts.models? ? opts.models : english.map(&:first)
     div_attrs = {}
-    if opts.css_class
+    if opts.css_class?
       div_attrs[:class] = opts.css_class
     end
     add_javascript_file '/js/vendor/jquery-1.4.2.min.js'
@@ -152,9 +155,9 @@ module Base_Message
     text(capture {
     div.club_message_create!(div_attrs) do
       
-      form.form_club_message_create!(:method=>'post', :action=>"/messages/") do
+      form_post 'form_club_message_create', '/messages/' do
 
-        if opts.title
+        if opts.title?
           h4 opts.title
         else
           h4 'Post a message:'
@@ -162,7 +165,7 @@ module Base_Message
 
         if not message_model
           fieldset {
-						select(:name=>'message_model') {
+            select(:name=>'message_model') {
               english.each do |val, name|
                 option( name, :value=>val ) if models.include?(val)
               end
@@ -170,25 +173,29 @@ module Base_Message
           }
         end
       
-				fieldset.hidden {
-					input :type=>'hidden', :name=>'body_images_cache', :value => ''
-					input :type=>'hidden', :name=>'return_url', :value => '{{url}}'
+        fieldset.hidden {
+          input_hidden 'body_images_cache', ''
+          input_hidden 'return_url'       , '{{url}}'
+          input_hidden 'privacy', 'public'
+          if message_model
+            input_hidden 'message_id', '{{message_id}}'  
+            input_hidden 'message_model', message_model 
+          end
+          
+          opts.hidden_input.each { |k,v|
+            input_hidden k, v
+          }
 
-					opts.hidden_input.each { |k,v|
-						input :type=>'hidden', :name=>k, :value=>v
-					}
+          show_if 'single_username?' do
+            input_hidden 'username', '{{first_username}}'
+          end
 
-					show_if 'single_username?' do
-						input :type=>'hidden', :name=>'username', :value=>'{{first_username}}'
-					end
+          if message_model
+          end
+        }
 
-					if message_model
-						input :type=>'hidden', :name=>'message_model', :value=>message_model
-					end
-				}
-
-        if opts.input_title
-          fieldset_input_text 'Title:'
+        if opts.input_title?
+          fieldset 'Title:', ''
         end
         
         fieldset {
@@ -211,17 +218,7 @@ module Base_Message
           }
         end
 
-        # fieldset {
-        #   label 'Important?'
-        #   select(:name=>'important') {
-        #     option "No. It can wait.", :value=>''
-        #     option "Yes", :value=>'true'
-        #   }
-        # } 
-        
-        div.buttons {
-          button.create 'Save', :onclick=>"if(window['Form_Submitter']) Form_Submitter.submit(this); return false;"
-        }
+        button_create 'Save'
       end
     end
     })

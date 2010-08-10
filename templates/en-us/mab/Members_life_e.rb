@@ -24,16 +24,15 @@ div.col.intro! {
 
   show_if 'logged_in?' do
     
-    form_message_create(
-      :title => 'Post a new section:',
-      :input_title => true,
-      :hidden_input => {
-                        :message_model => 'fact',
-                        :privacy       => 'public',
-                        :target_ids    => '{{owner_username_id}}'
-
-                       }
-    )
+    post_message {
+      title  'Post a new section:'
+      input_title  
+      hidden_input(
+        :message_model => 'fact',
+        :privacy       => 'public',
+        :target_ids    => '{{owner_username_id}}'
+      )
+    }
     
   end # logged_in?
   

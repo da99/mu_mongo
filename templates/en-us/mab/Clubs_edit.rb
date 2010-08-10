@@ -4,18 +4,18 @@
 
 div.col.the_form! {
 
-  form.edit_form!(:action=>'{{club_href}}', :method=>'post') {
+  form_post('edit_form', '{{club_href}}') {
   
-    _method_put
+    fieldset_hidden {  
+      _method_put
+    }
 
-    fieldset_input_text 'Filename:', nil, '{{club_filename}}'
-    
-    fieldset_input_text 'Title:', nil, '{{club_title}}'
-
-    fieldset_textarea 'Teaser:', nil, '{{club_teaser}}'
+    fieldset 'Filename:', '{{club_filename}}'
+    fieldset 'Title:', '{{club_title}}'
+    fieldset! 'Teaser:', '{{club_teaser}}'
 
     div.buttons {
-      button.update 'Update', :onclick=>'document.getElementById(\'edit_form\').submit(); return false;'
+      button_update 
     }
 
   } # === form

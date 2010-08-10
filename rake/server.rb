@@ -13,10 +13,7 @@ namespace :server do
 
 	desc 'Start the server.'
 	task :http do
-    unless db_running?
-      puts_red "First, start db server." 
-      exit(1)
-    end
+    sh 'rake server:db' unless db_running?
     exec "thin -p 4567 -R config.ru -t 5 start"
 	end
 

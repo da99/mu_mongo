@@ -53,7 +53,10 @@ div.outer_shell! do
         }
         
         show_if 'messages_latest?' do
-          loop_messages 'messages_latest', :include_meta=>true
+          loop_messages 'messages_latest' do
+						meta
+						permalink
+					end
         end
         
       end

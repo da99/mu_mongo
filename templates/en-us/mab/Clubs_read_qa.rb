@@ -19,16 +19,16 @@ div.outer_shell! do
           ~
         } # === div_guide!
 
-          form_message_create(
-          :css_class => 'col',
-            :title => 'Publish a new:',
-            :models => %w{question plea},
-            :input_title => true,
-            :hidden_input => {
+          post_message {
+            css_class  'col'
+            title  'Publish a new:'
+            models  %w{question plea}
+            input_title
+            hidden_input(
               :club_filename => '{{club_filename}}',
               :privacy       => 'public'
-            }
-          )
+            )
+          }
         
       end # logged_in?
       
