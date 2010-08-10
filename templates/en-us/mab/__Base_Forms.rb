@@ -269,6 +269,7 @@ module Base_Forms
     @show_target            = \
     @action                 = \
     @as_type                = \
+    @show_content           = \
     nil
   end
 
