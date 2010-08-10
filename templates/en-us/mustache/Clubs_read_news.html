@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281238731" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281418622" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -201,6 +201,9 @@
             <input type="hidden" value="" name="body_images_cache"/>
             <input type="hidden" value="{{url}}" name="return_url"/>
             <input type="hidden" value="public" name="privacy"/>
+            <input type="hidden" value="{{message_id}}" name="message_id"/>
+            <input type="hidden" value="news" name="message_model"/>
+            <input type="hidden" value="public" name="privacy"/>
             <input type="hidden" value="news" name="message_model"/>
             <input type="hidden" value="{{club_filename}}" name="club_filename"/>
 
@@ -210,12 +213,7 @@
 
 {{/single_username?}}
 
-            <input type="hidden" value="news" name="message_model"/>
            </fieldset>
-            <fieldset>
-             <label>Title:</label>
-              <input type="text" class="text" value="" name="title"/>
-            </fieldset>
            <fieldset>
             <textarea name="body"></textarea>
            </fieldset>
@@ -238,7 +236,7 @@
 {{/multiple_usernames?}}
 
            <div class="buttons">
-            <button onclick="if(window['Form_Submitter']) Form_Submitter.submit(this); return false;" class="create">Save</button>
+            <button onclick="$(this).parent('form').submit(); return false;" class="create">Save</button>
            </div>
           </form>
          </div>
@@ -326,7 +324,7 @@
 
 {{#not_accepted?}}
 
-             <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Accept</a>
+             <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
 
 {{/not_accepted?}}
 
@@ -340,7 +338,7 @@
 
 {{#not_declined?}}
 
-             <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('-1');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">Decline</a>
+             <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
 
 {{/not_declined?}}
 
@@ -348,7 +346,7 @@
 {{#not_pending?}}
 
              <span> or </span>
-             <a onclick=" 				$('body').addClass('toggling'); 				$('#toggle_message_accept input[name=\'owner_accept\']').val('0');  				$(this).parents('div').first().addClass('loading'); 				$('#toggle_message_accept').attr('action', $(this).attr('href')); 				$('#toggle_message_accept').submit(); 				return false; 			" href="{{href}}">I don't know.</a>
+             <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
 
 {{/not_pending?}}
 
@@ -371,30 +369,6 @@
 
 {{/has_parent_message?}}
 
-
-{{#parent_message?}}
-
-            <div class="permalink">
-
-{{#logged_in?}}
-
-             <a href="{{href}}">Reply</a>
-             <span> to this </span>
-             <strong> {{message_model_in_english}} </strong>
-
-{{/logged_in?}}
-
-
-{{#not_logged_in?}}
-
-             <a href="{{href}}">link to this {{message_model_in_english}}</a>
-
-{{/not_logged_in?}}
-
-            </div>
-
-{{/parent_message?}}
-
            </div>
 
 {{/news}}
@@ -404,8 +378,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281238731"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281238731"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281418622"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281418622"></script>
 
 {{#include_tracking?}}
 
