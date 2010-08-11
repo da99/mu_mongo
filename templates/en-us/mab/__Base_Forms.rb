@@ -4,7 +4,7 @@ require 'models/Concise_Attrs'
 module Base_Forms
 
   extend Concise_Attrs
-  attr_reader :as_type
+  attr_reader :as_type, :config_scope
   attr_concise :action, :show_target, :show
 
   %w{ radios check_boxes menu }.each { |type|
@@ -20,13 +20,29 @@ module Base_Forms
 
   }
 
-  def a_show txt, &blok
-    context = self
+  def form_config
+   Config_Switches.new {
+                strings :id, :action, :method, :field
+                array :class
+                string_or_block :show, :button_create, :submit
+                switch :as_radios, off
+                switch :as_menu, off
+                switch :as_check_boxes, off
+              } 
+  end
+
+  def a_click txt
+    a_show txt
+  end
+  
+  def a_show txt
+    raise "Block not yet used" if block_given?
+    target = config_scope ? config_scope.get.id.first : 'UNKNOWN'
     a(
       txt, 
-      :href => "#show-#{context.show_target}",
+      :href => "#show-#{target}",
       :onclick => js {
-        id(context.show_target).remove_class('hidden')
+        id(target).remove_class('hidden')
         this.parent('div').remove
         return_false
       } 
@@ -236,23 +252,6 @@ module Base_Forms
     text txt
   end
 
-  def clear_form_props
-    @form_name              = \
-    @toggle_form_input_name = \
-    @show_form              = \
-    @href                   = \
-    @submit_button          = \
-    @radio_name             = \
-    @radio_value            = \
-    @radio_txt              = \
-    @a_submit_txt           = \
-    @show_target            = \
-    @action                 = \
-    @as_type                = \
-    @show           = \
-    nil
-  end
-
   def radios_for mus
     yield
     loop mus do
@@ -269,24 +268,68 @@ module Base_Forms
     @radio_txt = txt
   end
 
-	def form_toggles
-		return if not @toggle_forms
-		@toggle_forms.each { | form_id, options |
-			attrs           = options.delete('options') || options.delete(:options)
-			attrs['id']     = form_id
-			attrs['method'] = 'post'
-			field_name      = options.delete('field') || options.delete(:field)
+  def toggle_forms
+    @toggle_forms ||= []
+  end
+
+  def toggle_forms_include?(config)
+    toggle_forms.detect { |form| form.get.id === config.get.id }
+  end
+
+  def toggle txt, value
+    get = config_scope.get
+    ask = config_scope.ask
+      a( 
+        txt, 
+        :href => "##{get.id}",
+        :onclick => %~
+          $(this).parent('div').addClass('loading');
+          $('##{get.id} input[name=#{get.field}]').val(#{value.inspect});
+          $('##{get.id}').submit();
+          return false;
+        ~
+      )
+  end
+
+	def render_toggle_forms
+		return if toggle_forms.empty?
+		toggle_forms.each { | config |
+			config.put.method 'post'
+			field_name = config.get.field
 			text(capture {
-				form(attrs) {
-					fieldset_hidden {
+        form(config.as_hash(:id, :action, :method, :class)) {
+          fieldset_hidden {
             _method_put    
             input_hidden field_name, '0'
             input_hidden 'editor_id', '{{editor_id}}'
           }
-				}
+        }
 			})
 		}
 	end
+  
+  def toggle_form sId, sAction, sField, &blok
+    config = form_config
+    config.put {
+      action sAction
+      id     "toggle_form_#{sId}"
+      field  sField
+    }
+    ask = config.ask
+    get = config.get
+    put = config.put
+    @config_scope = config
+    
+    (toggle_forms << config) unless toggle_forms_include?(config)
+    yield
+    @config_scope = nil
+  end
+
+  def put_form config, &blok
+    form_post(config) {
+      yield
+    }
+  end
 
 	def toggle_by_form form_id, field_name, attrs = {}, &blok
 		@toggle_forms           ||= {}
@@ -294,111 +337,110 @@ module Base_Forms
 		@toggle_form_name       = form_id
 		@toggle_form_input_name = field_name
 		instance_eval &blok
-		clear_form_props
 	end
   
-  # def instance_var_wrapper *args
-  #   args.each { |var|
-  #     eval %~@#{var} = false~
-  #   }
-  #   yield
-  #   args.each { |var|
-  #     eval %~@#{var} = false~
-  #   }
-  # end
-
-  def form_wrapper form_id
-    show_target form_id
-    yield
-    text(show) if show?
-    clear_form_props
-  end
-
-  def form_post form_id, action
-    form_wrapper(form_id) {
-      form :id=>form_id, :action=>action, :method=>'post' do
-        yield
+  def form_post *args
+    @config_scope = config = if args.first.is_a?(Config_Switches)
+                               args.first
+                             else
+                               config = form_config
+                               config.put {
+                                 id      args[0]
+                                 action  args[1]
+                                 show    config.get.id
+                               }
+                               config
+                             end
+    
+    config.put.method 'post'
+    ask = config.ask
+    get = config.get
+    
+    if ask.show?
+      get.class << 'hidden'
+    end
+    
+    form( config.as_hash(:id, :action, :class, :method) ) {
+      yield
+      if ask.button_create?
+        div.buttons {
+          button_create get.button_create
+        }
+      end
+      if ask.submit?
+        if get.submit.first
+          a_submit(get.submit.first)
+        end
+        if get.submit.last
+          instance_eval(&get.submit.last)
+        end
       end
     }
+    
+    if ask.show?
+      div {
+        if get.show.last.is_a?(Proc)
+          text capture(&get.show.last)
+        elsif get.show.first.is_a?(String)
+            text( capture { 
+              a_show get.show.first 
+            })
+        end
+      }
+    end
+    @config_scope = nil
   end
-  
+
   def show &blok
     return @show if not block_given?
-    @a_show = false
     @show = capture { 
       div { yield }
     }
-    @a_show = false
   end
   
-  def post_to_universes raw_form_id, &blok
-    form_id    = "post_to_universes_#{raw_form_id}"
+  def post_to_universes raw_id, &configuration
+    config  = form_config
+    config.put.id "post_to_universes_#{raw_id}"
+    config.put(&configuration)
     
-    text(capture {
-      
-      form_wrapper(form_id) {
-      
-        txt        = capture(&blok)
-        form_class = show? ? 'hidden' : ''
-        
-        form(:id=>form_id, :action=>action, :method=>'post', :class=>form_class) {
-      
-          loop 'current_member_multi_verse_checkboxes' do
-            h4 '{{username}}'
-            checkboxes_for 'clubs' do
-              text '{{title}}'
-              value '{{_id}}'
-              name 'clubs[]'
-            end
-          end
-  
-          text txt
-          
-        } # === form
-        
-      } # === form_wrapper
-      
-    })
-    
+    form_post(config) {
+      loop 'current_member_multi_verse_checkboxes' do
+        h4 '{{username}}'
+        checkboxes_for 'clubs' do
+          text '{{title}}'
+          value '{{_id}}'
+          name 'clubs[]'
+        end
+      end
+    }
   end
 
   def post_to_username raw_form_id, &blok
-    form_id    = "username_radio_form_#{raw_form_id}"
+    config = form_config
+    config.put.id "post_to_username_#{raw_form_id}"
+    config.put(&blok)
 
-    text(capture {
-      form_wrapper(form_id) {
-      
-        txt        = capture(&blok)
-        form_class = show? ? 'hidden' : ''
-        
-        form( :class => form_class, :id => form_id, :action => action, :method=>'post') do
-          if as_radios?
-            radios_for 'current_member_usernames' do
-              radio 'editor_id', '{{username_id}}', '{{username}}'
-            end
-          else
-            raise "Unknown type: #{as_type.inspect}"
-          end
-        
-          text txt
+    ask = config.ask
+    get = config.get
+
+    form_post(config) {
+      if ask.as_radios?
+        radios_for 'current_member_usernames' do
+          radio 'editor_id', '{{username_id}}', '{{username}}'
         end
-  
-      }
-      
-    })
-    
+      end
+    }
   end
 
   def delete_form raw_form_id, &blok
-    form_id = "delete_form_#{raw_form_id}"
-    form_wrapper form_id do
-      txt = capture &blok
-      form( :id => form_id, :action => action, :method => 'post' ) {
-        fieldset_hidden {
-          _method_delete
-        }
-        text txt
-      } # === form
+    config = form_config
+    config.put.id "delete_form_#{raw_form_id}"
+    config.put &blok
+    
+    form_post config do
+      fieldset_hidden {
+        _method_delete
+      }
     end
   end
   

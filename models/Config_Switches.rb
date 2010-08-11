@@ -1,24 +1,43 @@
 
 class	Config_Switches
 
-	attr_reader :values_hash
+	attr_reader :store, :ask, :put, :get
 
 	def initialize &blok
-		@store = Class.new {
-			def values_hash
-				@values_hash ||= {}
+		@store = {}
+		
+		accessor = Class.new {
+			attr_reader :config
+			
+			def initialize new_config
+				@config = new_config
 			end
-		}.new
-		instance_eval &blok
+		}
+		
+		%w{ask put get}.each { |prop|
+			eval %~
+				@#{prop} = accessor.new(self)
+			~
+		}
+
+		if block_given?
+			instance_eval &blok
+		end
+	end
+		
+	def as_hash *keys
+		keys.inject({}) { |memo, k|
+			memo[k] = get.send(k)
+			memo
+		}
 	end
 
-	def exec &blok
-		@store.instance_eval &blok
-	end
-
-	def store_hash
-		@store.values_hash
-	end
+  def put &configuration
+    if block_given?
+      @put.instance_eval &configuration
+    end
+		@put
+  end
 
 	def on
 		true
@@ -31,16 +50,16 @@ class	Config_Switches
 	def strings *args
 		args.each { |field|
 			eval %~
-				def self.#{field}
-					store_hash[:#{field}]
-				end
-			
-				def self.#{field}?
-					!!store_hash[:#{field}]
+				def get.#{field}
+					config.store[:#{field}]
 				end
 
-				def @store.#{field} val
-					values_hash[:#{field}] = val
+				def put.#{field} val
+					config.store[:#{field}] = val
+				end
+			
+				def ask.#{field}?
+					!!config.get.#{field}
 				end
 			~
 		}
@@ -50,22 +69,21 @@ class	Config_Switches
 	def arrays *args
 		args.each { |field|
 			eval %~
-				def self.#{field}
-					store_hash[:#{field}] || []
-				end
-
-				def self.#{field}?
-					!!store_hash[:#{field}]
+				def get.#{field}
+					config.store[:#{field}] ||= []
 				end
 				
-				def @store.#{field} *args
-					values_hash[:#{field}] = if args.is_a?(Array) && args.first.is_a?(Array) &&args.size == 1
+				def put.#{field} *args
+					config.store[:#{field}] = if args.is_a?(Array) && args.first.is_a?(Array) &&args.size == 1
 																			args.first
 																		else
 																			args
 																		end
 				end
-				
+
+				def ask.#{field}?
+					!config.get.#{field}.empty?
+				end
 			~
 		}
 	end
@@ -74,44 +92,66 @@ class	Config_Switches
 	def hashes *args
 		args.each { |field|
 			eval %~
-				def self.#{field}
-					store_hash[:#{field}] || {}
+				def get.#{field}
+					config.store[:#{field}] || {}
 				end
 
-				def self.#{field}?
-					case store_hash[:#{field}]
-					when Hash
-						!store_hash[:#{field}].empty?
-					else
-						!!store_hash[:#{field}]
-					end
+				def put.#{field} hsh
+					config.store[:#{field}] = hsh
 				end
 
-				def @store.#{field} hsh
-					values_hash[:#{field}] = hsh
+				def ask.#{field}?
+					!config.get.#{field}.empty?
 				end
 			~
 		}
 	end
 	alias_method :hash, :hashes
 
-	def allow name, val_up
-		val_down = !!!val_up
+	def string_or_block *args
+		args.each { |name|
+			eval %~
+				def get.#{name}
+					config.store[:#{name}] || []
+				end
+				
+				def put.#{name} str = nil, &blok
+					config.store[:#{name}] = [str, blok]
+				end
+				
+				def ask.#{name}?
+					!config.get.#{name}.empty?
+				end
+			~
+		}
+	end
+
+	def switch name, default = nil
+		if default.nil?
+			default = off
+		end
+
 		eval %~
-			def self.#{name}?
-				!!store_hash[:#{name}] 
+			def get.#{name}_up
+				!#{default}
 			end
 		
-			def @store.#{name}
-				values_hash[:#{name}] = #{name}_up
+			def get.#{name}_down
+				#{default}
 			end
-			
-			def @store.#{name}_up
-				#{val_up.inspect}
+		
+			def get.#{name}
+				config.store.has_key?(:#{name}) ?
+					config.store[:#{name}] :
+					#{name}_down
 			end
-			
-			def @store.#{name}_down
-				#{val_down.inspect}
+		
+			def put.#{name}
+				config.store[:#{name}] = config.get.#{name}_up
+			end
+				
+			def ask.#{name}?
+				!!config.get.#{name}
 			end
 		~
 	end

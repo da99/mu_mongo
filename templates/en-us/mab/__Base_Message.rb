@@ -23,10 +23,10 @@ module Base_Message
   def loop_messages coll_name, &blok
     
     opts = Config_Switches.new {
-      allow :meta, on
-      allow :permalink, on
-      exec( &blok ) if blok
+      switch :meta, on
+      switch :permalink, on
     }
+    opts.put(&blok) if blok
 
     text(capture { 
       loop coll_name  do
@@ -35,6 +35,9 @@ module Base_Message
           show_if 'suggest?' do
             show_if('accepted?') {
               div.accepted { span 'Accepted' }
+            }
+            show_if('pending?') {
+              div.pending { span 'Pending' }
             }
             show_if('declined?') {
               div.declined { span 'Declined' }
@@ -61,28 +64,28 @@ module Base_Message
           show_if 'has_parent_message?' do
             show_if 'suggest?' do
               show_if 'parent_message_owner?' do
+                
                 div.toggle_suggest {
-                  toggle_by_form('toggle_message_accept', :owner_accept) {
-                  
-                    action '{{href}}'  
+                  toggle_form('message_accept', '{{message_href}}', :owner_accept) {
                     
-                    show_if 'not_accepted?' do
-                      a_submit('Accept', Message::ACCEPT)
-                    end
-                    
-                    show_if 'pending?' do
-                      span ' or '
-                    end
-                    
-                    show_if 'not_declined?' do
-                      a_submit('Decline', Message::DECLINE)
-                    end
-                    
-                    show_if 'not_pending?' do
-                      span ' or '
-                      a_submit('I don\'t know.', Message::PENDING)
-                    end
-                    
+                  div {
+                      show_if 'not_accepted?' do
+                        toggle('Accept', Message::ACCEPT)
+                      end
+                      
+                      show_if 'pending?' do
+                        span ' or '
+                      end
+                      
+                      show_if 'not_declined?' do
+                        toggle('Decline', Message::DECLINE)
+                      end
+                      
+                      show_if 'not_pending?' do
+                        span ' or '
+                        toggle('I don\'t know.', Message::PENDING)
+                      end
+                    }
                   }
                 }
               end
@@ -95,7 +98,7 @@ module Base_Message
             }
           end
 
-          if opts.permalink?
+          if opts.ask.permalink?
             show_if 'parent_message?' do
               div.permalink {
                 show_if 'logged_in?' do
@@ -117,14 +120,17 @@ module Base_Message
   def post_message raw_opts = {}, &blok
     
     opts = Config_Switches.new {
-      allow :input_title, off
+      switch :input_title, off
       strings :title, :css_class
       array :models
       hash :hidden_input
-      exec &blok
+      put &blok
     }
     
-    message_model = opts.hidden_input[:message_model]
+    ask = opts.ask
+    get = opts.get
+
+    message_model = get.hidden_input[:message_model]
     
     english = [ 
       ['random'   , 'Random Thought']      ,
@@ -145,20 +151,26 @@ module Base_Message
       ['buy'       , 'Product Recommendation']     ,
       ['prediction', 'Prediction']
     ]
-    models = opts.models? ? opts.models : english.map(&:first)
+    models = ask.models? ? get.models : english.map(&:first)
     div_attrs = {}
-    if opts.css_class?
-      div_attrs[:class] = opts.css_class
+    if ask.css_class?
+      div_attrs[:class] = get.css_class
     end
     add_javascript_file '/js/vendor/jquery-1.4.2.min.js'
     add_javascript_file '/js/pages/Megauni_Base.js'
+    
+    config = form_config
+    config.put {
+      id 'form_club_message_create'
+      action '/messages/'
+    }
     text(capture {
     div.club_message_create!(div_attrs) do
       
-      form_post 'form_club_message_create', '/messages/' do
+      form_post config  do
 
-        if opts.title?
-          h4 opts.title
+        if ask.title?
+          h4 get.title
         else
           h4 'Post a message:'
         end
@@ -182,7 +194,7 @@ module Base_Message
             input_hidden 'message_model', message_model 
           end
           
-          opts.hidden_input.each { |k,v|
+          get.hidden_input.each { |k,v|
             input_hidden k, v
           }
 
@@ -194,7 +206,7 @@ module Base_Message
           end
         }
 
-        if opts.input_title?
+        if ask.input_title?
           fieldset 'Title:', ''
         end
         

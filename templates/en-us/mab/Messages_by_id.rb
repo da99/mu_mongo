@@ -45,8 +45,10 @@ div_centered {
           show_if 'notify_me?' do  
             delete_form('notify') {
               action "{{message_href_notify}}"
-              a_submit 'Stop'
-              span ' notifying me.'
+              submit {
+                a_click 'Stop'
+                span ' notifying me.'
+              }
             }
           end
           
@@ -55,12 +57,10 @@ div_centered {
         show_if 'not_reposted?' do
           div.repost! {
             
-            post_to_universes('repost_form') {
+            post_to_universes(:repost_form) {
               action "{{message_href_repost}}"
               button_create 'Re-post.'
-              show {
-                a_click 'Re-post.'
-              }
+              show 'Re-post.'
             }
               
           } # === div
@@ -130,9 +130,7 @@ div_centered {
             show_if "#{mod}?" do
               div(:id=>mod) {
                 h4 txt
-                loop_messages(mod) { 
-                  permalink
-                }
+                loop_messages(mod)
               } 
             end
           }
@@ -171,3 +169,6 @@ div_centered {
     } # === div.message!
 } # === div_centered
 
+show_if 'logged_in?' do
+  render_toggle_forms
+end
