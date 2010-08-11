@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281419736" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515058" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -155,36 +155,38 @@
 
 {{^notify_me?}}
 
-           <form class="hidden" action="{{message_href_notify}}" method="post" name="username_radio_form_notify" id="username_radio_form_notify">
+          <form class="hidden" action="{{message_href_notify}}" method="post" name="post_to_username_notify" id="post_to_username_notify">
 
 {{#current_member_usernames}}
 
-            <div class="radio">
-             <input type="radio" value="{{username_id}}" name="editor_id"/>
-             <span>{{username}}</span>
-            </div>
+           <div class="radio">
+            <input type="radio" value="{{username_id}}" name="editor_id"/>
+            <span>{{username}}</span>
+           </div>
 
 {{/current_member_usernames}}
 
+           <div class="buttons">
             <div class="buttons">
              <button onclick="$(this).parent('form').submit(); return false;" class="create">Notify me.</button>
             </div>
-           </form>
-             <div>
-              <a onclick="$('#username_radio_form_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-username_radio_form_notify">Notify me </a>
-              <span> of activity for this {{message_model_in_english}}.</span>
-             </div>
+           </div>
+          </form>
+          <div>
+            <a onclick="$('#post_to_username_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-post_to_username_notify">Notify me </a>
+            <span> of activity for this {{message_model_in_english}}.</span>
+          </div>
 
 {{/notify_me?}}
 
 
 {{#notify_me?}}
 
-          <form action="{{message_href_notify}}" method="post" name="delete_form_notify" id="delete_form_notify">
+          <form class="" action="{{message_href_notify}}" method="post" name="delete_form_notify" id="delete_form_notify">
             <fieldset class="hidden">
               <input type="hidden" value="delete" name="_method"/>
             </fieldset>
-           <a onclick="$('delete_form_notify').parents('div').addClass('loading').attr('action', '{{message_href_notify}}').submit(); return false;" href="#save">Stop</a>
+           <a onclick="$('#delete_form_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-delete_form_notify">Stop</a>
            <span> notifying me.</span>
           </form>
 
@@ -195,31 +197,31 @@
 {{#not_reposted?}}
 
          <div id="repost">
-           <form class="hidden" action="{{message_href_repost}}" method="post" name="post_to_universes_repost_form" id="post_to_universes_repost_form">
+          <form class="hidden" action="{{message_href_repost}}" method="post" name="post_to_universes_repost_form" id="post_to_universes_repost_form">
 
 {{#current_member_multi_verse_checkboxes}}
 
-            <h4>{{username}}</h4>
+           <h4>{{username}}</h4>
 
 {{#clubs}}
 
 
 {{#selected?}}
 
-             <div class="box selected">
-              <input type="checkbox" value="{{_id}}" checked="checked" name="clubs[]"/>
-              <span>{{title}}</span>
-             </div>
+            <div class="box selected">
+             <input type="checkbox" value="{{_id}}" checked="checked" name="clubs[]"/>
+             <span>{{title}}</span>
+            </div>
 
 {{/selected?}}
 
 
 {{^selected?}}
 
-             <div class="box">
-              <input type="checkbox" value="{{_id}}" name="clubs[]"/>
-              <span>{{title}}</span>
-             </div>
+            <div class="box">
+             <input type="checkbox" value="{{_id}}" name="clubs[]"/>
+             <span>{{title}}</span>
+            </div>
 
 {{/selected?}}
 
@@ -229,13 +231,15 @@
 
 {{/current_member_multi_verse_checkboxes}}
 
+           <div class="buttons">
             <div class="buttons">
              <button onclick="$(this).parent('form').submit(); return false;" class="create">Re-post.</button>
             </div>
-           </form>
-             <div>
-              <a onclick="$('#post_to_universes_repost_form').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-post_to_universes_repost_form">Re-post.</a>
-             </div>
+           </div>
+          </form>
+          <div>
+            <a onclick="$('#post_to_universes_repost_form').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-post_to_universes_repost_form">Re-post.</a>
+          </div>
          </div>
 
 {{/not_reposted?}}
@@ -320,6 +324,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+              <div class="pending">
+               <span>Pending</span>
+              </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
               <div class="declined">
@@ -366,35 +379,52 @@
 {{#parent_message_owner?}}
 
               <div class="toggle_suggest">
+               <div>
 
 {{#not_accepted?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-               <span> or </span>
+                <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-               <span> or </span>
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+                <span> or </span>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+               </div>
               </div>
 
 {{/parent_message_owner?}}
@@ -468,6 +498,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+              <div class="pending">
+               <span>Pending</span>
+              </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
               <div class="declined">
@@ -514,35 +553,52 @@
 {{#parent_message_owner?}}
 
               <div class="toggle_suggest">
+               <div>
 
 {{#not_accepted?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-               <span> or </span>
+                <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-               <span> or </span>
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+                <span> or </span>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+               </div>
               </div>
 
 {{/parent_message_owner?}}
@@ -616,6 +672,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+              <div class="pending">
+               <span>Pending</span>
+              </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
               <div class="declined">
@@ -662,35 +727,52 @@
 {{#parent_message_owner?}}
 
               <div class="toggle_suggest">
+               <div>
 
 {{#not_accepted?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-               <span> or </span>
+                <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-               <span> or </span>
-               <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+                <span> or </span>
+                <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+               </div>
               </div>
 
 {{/parent_message_owner?}}
@@ -756,7 +838,7 @@
               </p>
            </div>
             <div id="club_message_create">
-             <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+             <form class="" action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
               <h4>Publish a new:</h4>
               <fieldset>
                <select name="message_model">
@@ -815,9 +897,22 @@
        </div>
       </div>
      </div>
+
+{{#logged_in?}}
+
+      <form class="" action="{{message_href}}" method="post" name="toggle_form_message_accept" id="toggle_form_message_accept">
+        <fieldset class="hidden">
+          <input type="hidden" value="put" name="_method"/>
+         <input type="hidden" value="0" name="owner_accept"/>
+         <input type="hidden" value="{{editor_id}}" name="editor_id"/>
+        </fieldset>
+      </form>
+
+{{/logged_in?}}
+
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281419736"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281419736"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281515058"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281515058"></script>
 
 {{#include_tracking?}}
 

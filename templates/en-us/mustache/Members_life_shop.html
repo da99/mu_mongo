@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281419734" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515057" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -139,6 +139,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+         <div class="pending">
+          <span>Pending</span>
+         </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
          <div class="declined">
@@ -185,35 +194,52 @@
 {{#parent_message_owner?}}
 
          <div class="toggle_suggest">
+          <div>
 
 {{#not_accepted?}}
 
-          <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+           <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-          <span> or </span>
+           <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-          <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+           <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-          <span> or </span>
-          <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+           <span> or </span>
+           <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+          </div>
          </div>
 
 {{/parent_message_owner?}}
@@ -233,6 +259,30 @@
 
 {{/has_parent_message?}}
 
+
+{{#parent_message?}}
+
+         <div class="permalink">
+
+{{#logged_in?}}
+
+          <a href="{{href}}">Reply</a>
+          <span> to this </span>
+          <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+          <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+         </div>
+
+{{/parent_message?}}
+
         </div>
 
 {{/buys}}
@@ -244,7 +294,7 @@
 {{#logged_in?}}
 
        <div id="club_message_create">
-        <form action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
+        <form class="" action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
          <h4>Bought something? Post it here:</h4>
          <fieldset class="hidden">
           <input type="hidden" value="" name="body_images_cache"/>
@@ -293,8 +343,8 @@
 
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281419734"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281419734"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281515057"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281515057"></script>
 
 {{#include_tracking?}}
 

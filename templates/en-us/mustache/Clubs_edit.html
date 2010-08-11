@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281419735" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515057" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -71,7 +71,7 @@
 
    <div id="the_content">
      <div class="col" id="the_form">
-      <form action="{{club_href}}" method="post" name="edit_form" id="edit_form">
+      <form class="hidden" action="{{club_href}}" method="post" name="edit_form" id="edit_form">
         <fieldset class="hidden">
           <input type="hidden" value="put" name="_method"/>
         </fieldset>
@@ -93,6 +93,9 @@
         </div>
        </div>
       </form>
+      <div>
+        <a onclick="$('#edit_form').removeClass('hidden'); $(this).parent('div').remove(); return false;" href="#show-edit_form">edit_form</a>
+      </div>
      </div>
       <div id="nav_bar">
        <div id="logo">

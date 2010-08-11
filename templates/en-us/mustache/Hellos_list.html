@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281419735" media="screen"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515057" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -293,6 +293,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+          <div class="pending">
+           <span>Pending</span>
+          </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
           <div class="declined">
@@ -339,35 +348,52 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
+           <div>
 
 {{#not_accepted?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-           <span> or </span>
+            <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-           <span> or </span>
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+            <span> or </span>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+           </div>
           </div>
 
 {{/parent_message_owner?}}
@@ -386,6 +412,30 @@
           </div>
 
 {{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+          <div class="permalink">
+
+{{#logged_in?}}
+
+           <a href="{{href}}">Reply</a>
+           <span> to this </span>
+           <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+           <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+          </div>
+
+{{/parent_message?}}
 
          </div>
 
@@ -436,6 +486,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+           <div class="pending">
+            <span>Pending</span>
+           </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
            <div class="declined">
@@ -482,35 +541,52 @@
 {{#parent_message_owner?}}
 
            <div class="toggle_suggest">
+            <div>
 
 {{#not_accepted?}}
 
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-            <span> or </span>
+             <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-            <span> or </span>
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+             <span> or </span>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+            </div>
            </div>
 
 {{/parent_message_owner?}}
@@ -529,6 +605,30 @@
            </div>
 
 {{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+           <div class="permalink">
+
+{{#logged_in?}}
+
+            <a href="{{href}}">Reply</a>
+            <span> to this </span>
+            <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+            <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+           </div>
+
+{{/parent_message?}}
 
           </div>
 
@@ -571,6 +671,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+           <div class="pending">
+            <span>Pending</span>
+           </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
            <div class="declined">
@@ -617,35 +726,52 @@
 {{#parent_message_owner?}}
 
            <div class="toggle_suggest">
+            <div>
 
 {{#not_accepted?}}
 
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-            <span> or </span>
+             <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-            <span> or </span>
-            <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+             <span> or </span>
+             <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+            </div>
            </div>
 
 {{/parent_message_owner?}}
@@ -664,6 +790,30 @@
            </div>
 
 {{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+           <div class="permalink">
+
+{{#logged_in?}}
+
+            <a href="{{href}}">Reply</a>
+            <span> to this </span>
+            <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+            <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+           </div>
+
+{{/parent_message?}}
 
           </div>
 
@@ -714,6 +864,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+          <div class="pending">
+           <span>Pending</span>
+          </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
           <div class="declined">
@@ -760,35 +919,52 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
+           <div>
 
 {{#not_accepted?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-           <span> or </span>
+            <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-           <span> or </span>
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+            <span> or </span>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+           </div>
           </div>
 
 {{/parent_message_owner?}}
@@ -807,6 +983,30 @@
           </div>
 
 {{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+          <div class="permalink">
+
+{{#logged_in?}}
+
+           <a href="{{href}}">Reply</a>
+           <span> to this </span>
+           <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+           <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+          </div>
+
+{{/parent_message?}}
 
          </div>
 
@@ -856,6 +1056,15 @@
 {{/accepted?}}
 
 
+{{#pending?}}
+
+          <div class="pending">
+           <span>Pending</span>
+          </div>
+
+{{/pending?}}
+
+
 {{#declined?}}
 
           <div class="declined">
@@ -902,35 +1111,52 @@
 {{#parent_message_owner?}}
 
           <div class="toggle_suggest">
+           <div>
 
 {{#not_accepted?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Accept</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Accept</a>
 
 {{/not_accepted?}}
 
 
 {{#pending?}}
 
-           <span> or </span>
+            <span> or </span>
 
 {{/pending?}}
 
 
 {{#not_declined?}}
 
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">Decline</a>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">Decline</a>
 
 {{/not_declined?}}
 
 
 {{#not_pending?}}
 
-           <span> or </span>
-           <a onclick="$('').parents('div').addClass('loading').attr('action', '{{href}}').submit(); return false;" href="#save">I don't know.</a>
+            <span> or </span>
+            <a onclick="
+          $(this).parent('div').addClass('loading');
+          $('#toggle_form_message_accept input[name=owner_accept]').val(0);
+          $('#toggle_form_message_accept').submit();
+          return false;
+        " href="#toggle_form_message_accept">I don't know.</a>
 
 {{/not_pending?}}
 
+           </div>
           </div>
 
 {{/parent_message_owner?}}
@@ -949,6 +1175,30 @@
           </div>
 
 {{/has_parent_message?}}
+
+
+{{#parent_message?}}
+
+          <div class="permalink">
+
+{{#logged_in?}}
+
+           <a href="{{href}}">Reply</a>
+           <span> to this </span>
+           <strong> {{message_model_in_english}} </strong>
+
+{{/logged_in?}}
+
+
+{{#not_logged_in?}}
+
+           <a href="{{href}}">link to this {{message_model_in_english}}</a>
+
+{{/not_logged_in?}}
+
+          </div>
+
+{{/parent_message?}}
 
          </div>
 
