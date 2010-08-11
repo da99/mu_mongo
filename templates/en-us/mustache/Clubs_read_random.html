@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -22,7 +22,7 @@
 
 {{#not_mobile_request?}}
 
-   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515057" media="screen"/>
+   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1281515909"/>
 
 {{/not_mobile_request?}}
 
@@ -199,12 +199,9 @@
            <fieldset class="hidden">
             <input type="hidden" value="" name="body_images_cache"/>
             <input type="hidden" value="{{url}}" name="return_url"/>
-            <input type="hidden" value="public" name="privacy"/>
-            <input type="hidden" value="{{message_id}}" name="message_id"/>
-            <input type="hidden" value="random" name="message_model"/>
-            <input type="hidden" value="public" name="privacy"/>
-            <input type="hidden" value="random" name="message_model"/>
             <input type="hidden" value="{{club_filename}}" name="club_filename"/>
+            <input type="hidden" value="public" name="privacy"/>
+            <input type="hidden" value="random" name="message_model"/>
 
 {{#single_username?}}
 
@@ -239,7 +236,7 @@
 {{/multiple_usernames?}}
 
            <div class="buttons">
-            <button onclick="$(this).parent('form').submit(); return false;" class="create">Save</button>
+            <button class="create" onclick="$(this).parent('form').submit(); return false;">Save</button>
            </div>
           </form>
          </div>
@@ -431,8 +428,8 @@
       </div>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281515057"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281515057"></script>
+   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281515909"></script>
+   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281515909"></script>
 
 {{#include_tracking?}}
 
