@@ -85,19 +85,19 @@ module Base_Forms
 
   def button_create txt = 'Save'
     div.buttons {
-      button.create txt, :onclick => js! { parent_form.submit }
+      button.create txt #, :onclick => js! { parent_form.submit }
     }
   end
 
   def button_submit txt = 'Save'
     div.buttons {
-      button.submit txt, :onclick => js! { parent_form.submit }
+      button.submit txt #, :onclick => js! { parent_form.submit }
     }
   end
 
   def button_update txt = 'Update'
     div.buttons {
-      button.update txt, :onclick => js! { parent_form.submit }
+      button.update txt #, :onclick => js! { parent_form.submit }
     }
   end
   

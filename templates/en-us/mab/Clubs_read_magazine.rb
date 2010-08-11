@@ -14,7 +14,7 @@ div.outer_shell! do
         
         div_guide!( 'Stuff you can do:' ) {
           ul {
-            li 'Write a story. '
+            li 'Write a story.'
             li 'Review a restaurant.'
             li 'Write about a family reunion.'
           }
