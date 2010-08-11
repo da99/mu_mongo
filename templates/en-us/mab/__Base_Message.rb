@@ -188,11 +188,6 @@ module Base_Message
         fieldset.hidden {
           input_hidden 'body_images_cache', ''
           input_hidden 'return_url'       , '{{url}}'
-          input_hidden 'privacy', 'public'
-          if message_model
-            input_hidden 'message_id', '{{message_id}}'  
-            input_hidden 'message_model', message_model 
-          end
           
           get.hidden_input.each { |k,v|
             input_hidden k, v

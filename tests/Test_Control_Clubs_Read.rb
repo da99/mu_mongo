@@ -199,10 +199,18 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
   # ================= Club Parts ===========================
 
-	%w{ e	qa news fights shop predictions random thanks }.each { |suffix|
+	%w{ e	qa news magazine fights shop predictions random thanks }.each { |suffix|
 		club = nil
+    
 		must "render /clubs/..filename../#{suffix}/" do
 			club ||= create_club(regular_member_1)
+			get "/clubs/#{club.data.filename}/#{suffix}/"
+			assert_equal 200, last_response.status
+		end
+    
+		must "render /clubs/..filename../#{suffix}/ while logged in" do
+			club ||= create_club(regular_member_1)
+      log_in_regular_member_1
 			get "/clubs/#{club.data.filename}/#{suffix}/"
 			assert_equal 200, last_response.status
 		end
