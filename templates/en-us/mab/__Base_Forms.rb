@@ -331,14 +331,6 @@ module Base_Forms
     }
   end
 
-	def toggle_by_form form_id, field_name, attrs = {}, &blok
-		@toggle_forms           ||= {}
-		@toggle_forms[form_id]  = { :options => {:action=>'#nowhere'}.update(attrs), :field=>field_name }
-		@toggle_form_name       = form_id
-		@toggle_form_input_name = field_name
-		instance_eval &blok
-	end
-  
   def form_post *args
     @config_scope = config = if args.first.is_a?(Config_Switches)
                                args.first
