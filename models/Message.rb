@@ -331,7 +331,7 @@ class Message
   #      }
   #    ]
   def notifys mem 
-    cache["notify_#{mem.data._id}"] ||= self.class.db_collection_notifys.find( 
+    self.class.db_collection_notifys.find( 
       :message_id => data._id,
       :owner_id   => { :$in=>mem.username_ids } 
     ).to_a
@@ -367,12 +367,11 @@ class Message
   #      }
   #    ]
   def reposts mem
-    cache["reposts_#{mem.data._id}"] ||= \
-      self.class.validate_params_and_find( 
-        :message_id => data._id,
-        :owner_id   => { :$in=>mem.username_ids },
-        :message_model => 'repost'
-      ).to_a
+    self.class.validate_params_and_find( 
+      :message_id => data._id,
+      :owner_id   => { :$in=>mem.username_ids },
+      :message_model => 'repost'
+    ).to_a
   end
   
   # Accepts:
@@ -405,7 +404,7 @@ class Message
   end
 
   def clubs
-    cache['clubs.assoc'] ||= data.target_ids.map { |id|
+    data.target_ids.map { |id|
       begin
         Club.by_id_or_member_username_id(id)
       rescue Club::Not_Found
@@ -414,28 +413,24 @@ class Message
     }.compact
   end
 
-  def club
-    cache['first.club'] ||= clubs.first
-  end
-
   def href
     "/mess/#{data._id}/"
   end
 
   def href_notify
-    cache[:href_notify] ||= File.join(href, 'notify/')
+    File.join(href, 'notify/')
   end
 
   def href_repost
-    cache[:href_repost] ||= File.join(href, 'repost/')
+    File.join(href, 'repost/')
   end
 
   def href_edit
-    cache[:href_edit] ||= File.join(href, 'edit/')
+    File.join(href, 'edit/')
   end
 
   def href_log
-    cache[:href_log] ||= File.join(href, 'log/')
+    File.join(href, 'log/')
   end
 
   def message_model_in_english
@@ -455,21 +450,19 @@ class Message
   end
   
   def responds
-    cache['responds'] ||= begin
-                            Message.latest_by_parent_message_id(self.data._id).to_a 
-                          end
+      Message.latest_by_parent_message_id(self.data._id).to_a 
   end
 
   def critiques
-    cache['critiques'] ||= select_responds_by_model('cheer', 'jeer')
+    select_responds_by_model('cheer', 'jeer')
   end
   
   def suggests
-    cache['suggests'] ||= select_responds_by_model('suggest')
+    select_responds_by_model('suggest')
   end
   
   def questions
-    cache['questions'] ||= select_responds_by_model('question')
+    select_responds_by_model('question')
   end
 
   private 

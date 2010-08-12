@@ -463,7 +463,7 @@ class Member
   #   Array - [ :username ]
   #     
   def usernames
-    cache[:usernames] ||= username_hash.values
+    username_hash.values
   end
 
   # Accepts:
@@ -483,7 +483,7 @@ class Member
   #   ]
   #
   def username_menu un_ids = []
-    cache[:username_menu] ||= username_hash.map { |id, un|
+    username_hash.map { |id, un|
       { 
         'username_id'   => id,
         'username'      => un,
@@ -497,7 +497,7 @@ class Member
   #   Array - [ :username_id ]
   #
   def username_ids
-    cache[:username_ids] ||= username_hash.keys
+    username_hash.keys
   end
 
   # Returns: 
@@ -507,13 +507,11 @@ class Member
   #     :username_id => username
   #
   def username_hash
-    cache[:username_hash] = begin
-                                    hsh = {}
-                                    self.class.db_collection_usernames.find(:owner_id=>data._id).map { |un| 
-                                      hsh[un['_id']] = un['username']
-                                    }
-                                    hsh
-                                  end
+    hsh = {}
+    self.class.db_collection_usernames.find(:owner_id=>data._id).map { |un| 
+      hsh[un['_id']] = un['username']
+    }
+    hsh
   end
 
   def username_to_username_id str
@@ -594,9 +592,7 @@ class Member
                      Club.hash_for_member(self).values.uniq
                    end
     return @all_clubs if not type
-    cache["#{un_id}_#{type}"] ||= begin
-                                    @all_clubs[type]
-                                  end
+    @all_clubs[type]
   end
 
   def club_ids 
@@ -604,7 +600,7 @@ class Member
   end
 
   def following_club_ids 
-    cache["flwng_clb_ids#{current_username_ids.join(',')}"] ||= Club.ids_for_follower_id( :$in => current_username_ids )
+    Club.ids_for_follower_id( :$in => current_username_ids )
   end
 
   def following_club_id?(club_id)
@@ -612,19 +608,19 @@ class Member
   end
   
   def owned_club_ids 
-    cache["owned_club_ids_#{current_username_ids}"] ||= Club.ids_by_owner_id(:$in=>current_username_ids)
+    Club.ids_by_owner_id(:$in=>current_username_ids)
   end
   
   def owned_clubs
-    cache[:owned_clubs] ||= Club.by_owner_id(:$in=>current_username_ids)
+    Club.by_owner_id(:$in=>current_username_ids)
   end
 
   def life_club un_id
-    cache['life_club_#{un_id}'] ||= Club.life_club_for_username_id( un_id, self)
+    Club.life_club_for_username_id( un_id, self)
   end
 
   def life_clubs
-    cache['life_clubs'] ||= Club.life_clubs_for_member(self)
+    Club.life_clubs_for_member(self)
   end
 
   def messages_from_my_clubs 
@@ -658,26 +654,27 @@ class Member
   #
   def multi_verse_per_username_id *args
     valid_types =  [:as_owner, :as_lifer, :as_follower]
+    
     types = if args.empty?
-      valid_types
-    else
-      invalid_types = args - valid_types
-      raise ArgumentError, "Invalid types: #{invalid_types.inspect}" if not invalid_types
-      args
-    end
-    cache["multi_verse_per_username_id_#{types}"] ||= begin
-                                              hash = {}
-                                              multi_verse.each { |rel, un_id_clubs|
-                                                if types.include?(rel)
-                                                  un_id_clubs.each { |un_id, clubs|
-                                                    hash[un_id] ||= []
-                                                    hash[un_id] += clubs
-                                                    hash[un_id] = hash[un_id].uniq
-                                                  }
-                                                end
-                                              }
-                                              hash
-                                            end
+              valid_types
+            else
+              invalid_types = args - valid_types
+              raise ArgumentError, "Invalid types: #{invalid_types.inspect}" if not invalid_types
+              args
+            end
+    
+    hash = {}
+    
+    multi_verse.each { |rel, un_id_clubs|
+      if types.include?(rel)
+        un_id_clubs.each { |un_id, clubs|
+          hash[un_id] ||= []
+          hash[un_id] += clubs
+          hash[un_id] = hash[un_id].uniq
+        }
+      end
+    }
+    hash
   end
   
   # Returns:
@@ -686,13 +683,11 @@ class Member
   #   :username => [Club, Club].uniq
   #
   def multi_verse_per_username *args
-    cache[:multi_verse_per_username] ||= begin
-                                          hash = {}
-                                          multi_verse_per_username_id(*args).each { |k,v|
-                                            hash[username_id_to_username(k)] = v
-                                          }
-                                          hash
-                                         end
+    hash = {}
+    multi_verse_per_username_id(*args).each { |k,v|
+      hash[username_id_to_username(k)] = v
+    }
+    hash
   end
   
   # Accepts:
@@ -717,7 +712,7 @@ class Member
     cache_name = selected.empty? ? '{}' : selected.object_id
     multi      = multi_verse_per_username_id( :as_owner, :as_lifer )
     
-    cache["multi_verse_menu_#{cache_name}"] ||= multi.map { |un_id, club_arr|
+    multi.map { |un_id, club_arr|
       hash = { 
         'username_id' => un_id,
         'username'    => username_id_to_username(un_id),
@@ -750,10 +745,9 @@ class Member
     
     return username_menu if notifys.empty?
     
-    cache["notifys_menu_#{message.data._id}"] = \
-      username_menu(
-        notifys_by_username(mem)
-      )
+    username_menu(
+      notifys_by_username(mem)
+    )
   end
   
   # Accepts:
@@ -772,12 +766,9 @@ class Member
   #   ]
   def reposts_menu message = nil
     return multi_verse_menu if not message
-    cache["reposts_menu_#{message.data._id}"] ||= \
-      begin
-        multi_verse_menu(
-          reposts_by_username(self)
-        )
-      end
+    multi_verse_menu(
+      reposts_by_username(self)
+    )
   end
 
 end # === model Member

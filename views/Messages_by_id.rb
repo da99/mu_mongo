@@ -1,6 +1,7 @@
 # MAB   ~/megauni/templates/en-us/mab/Messages_by_id.rb
 # SASS  ~/megauni/templates/en-us/sass/Messages_by_id.sass
 # NAME  Messages_by_id
+# MODEL ~/megauni/models/Message.rb
 
 class Messages_by_id < Base_View
 

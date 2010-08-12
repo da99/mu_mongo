@@ -270,7 +270,7 @@ class Club
   end
 
   def href 
-    cache[:href] ||= "/clubs/#{data.filename}/"
+    "/clubs/#{data.filename}/"
   end
 
   %w{ e magazine news qa shop random thanks fights }.each do |suffix|
@@ -282,15 +282,15 @@ class Club
   end
 
   def href_edit
-    cache[:href_edit] ||= File.join(href, 'edit/' )
+    File.join(href, 'edit/' )
   end
 
   def follow_href
-    cache[:follow_href] ||= "/clubs/#{data.filename}/follow/"
+    "/clubs/#{data.filename}/follow/"
   end
 
   def followers
-    cache[:followers] ||= (self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
+    (self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
       doc['follower_id']
     } + [data.owner_id])
   end
