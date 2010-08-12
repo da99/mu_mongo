@@ -16,5 +16,5 @@ class Topic_economy < Base_View
   "cancer vitamins "
   end
 
-	
+  
 end # === Topic_economy 

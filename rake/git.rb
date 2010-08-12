@@ -65,7 +65,7 @@ namespace 'git' do
     Rake::Task['views:compile'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
-		
+    
 
     # # Check if specs all pass.
     # total, passed, errors = run_task( 'fefe:tests' )

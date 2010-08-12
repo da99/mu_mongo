@@ -48,20 +48,20 @@ class Members
   end
 
   def GET_lives un
-		GET_life un
+    GET_life un
   end
 
   def GET_life un
-		redirect!("/clubs/#{un}/")
+    redirect!("/clubs/#{un}/")
   end
 
-	%w{e qa news shop predictions random }.each { |path|
-		eval(%~
-					def GET_life_#{path} un
-						redirect!("/clubs/\#{un}/#{path}/", 301)
-					end
-				 ~)
-	}
+  %w{e qa news shop predictions random }.each { |path|
+    eval(%~
+          def GET_life_#{path} un
+            redirect!("/clubs/\#{un}/#{path}/", 301)
+          end
+         ~)
+  }
 
   def GET_life_status un
     redirect!(request.path_info.sub('status/', 'news/').sub('life', 'clubs'), 301)

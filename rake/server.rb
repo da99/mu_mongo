@@ -11,17 +11,17 @@ namespace :server do
     exec('ssh da01@174.121.79.154')
   end
 
-	desc 'Start the server.'
-	task :http do
+  desc 'Start the server.'
+  task :http do
     sh 'rake server:db' unless db_running?
     exec "thin -p 4567 -R config.ru -t 5 start"
-	end
+  end
 
-	desc 'Start Shotgun.'
-	task :shotgun do
+  desc 'Start Shotgun.'
+  task :shotgun do
     sh 'rake server:db' unless db_running?
     exec "shotgun --server=thin --port=4567 config.ru"
-	end
+  end
 
   task :nginx do
     it 'Starts up Nginx, after invoking nginx_stop.'
@@ -64,16 +64,16 @@ namespace :server do
     }
   end
 
-	desc "Sends HUP signal to Unicorn master, which will restart all workers."
+  desc "Sends HUP signal to Unicorn master, which will restart all workers."
   task :reload do
-		puts_white 'Restarting...'
-		require 'rush'
-		Rush.processes.filter(:cmdline=>/unicorn master/).each { |process|
+    puts_white 'Restarting...'
+    require 'rush'
+    Rush.processes.filter(:cmdline=>/unicorn master/).each { |process|
       puts_white "Sending HUP signal to unicorn master pid: #{process.pid}"
       Process.kill('HUP', process.pid)
     }
-		puts_white 'Done.'
-		true
+    puts_white 'Done.'
+    true
   end
 
   desc 'Start MongoDB server.'
@@ -144,9 +144,9 @@ namespace :unicorn do
       require 'rush'
       old_master = Rush.processes.filter(:cmdline=>/unicorn master/).first
       Process.kill('HUP', old_master.pid)
-			
-			# The following isn't working on the server.
-			# It shutdowns Unicorn, but won't restart the new process.
+      
+      # The following isn't working on the server.
+      # It shutdowns Unicorn, but won't restart the new process.
       # Process.kill('USR2', old_master.pid)
       # Process.kill('WINCH', old_master.pid)
       # Process.kill('QUIT', old_master.pid)

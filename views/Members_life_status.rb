@@ -6,12 +6,12 @@ class Members_life_status < Base_View
 
   include Base_View_Member_Life
 
-	def title 
+  def title 
     "What are you doing, #{username}?"
   end
 
-	def statuses
+  def statuses
     compiled_owner_messages 'status' 
-	end
+  end
   
 end # === Members_life_status 

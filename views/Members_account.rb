@@ -8,8 +8,8 @@ class Members_account < Base_View
     "Your Account on #{site_name}"
   end
 
-	def messages
-		cache['messages.my'] ||= compile_messages(current_member.messages_from_my_clubs)
-	end
+  def messages
+    cache['messages.my'] ||= compile_messages(current_member.messages_from_my_clubs)
+  end
 
 end # === Members_account 

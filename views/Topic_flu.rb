@@ -15,5 +15,5 @@ class Topic_flu < Base_View
   def meta_keywords 
   "cold flu vitamins "
   end
-	
+  
 end # === Topic_flu 

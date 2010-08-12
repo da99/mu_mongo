@@ -7,5 +7,5 @@ class Sessions_log_in < Base_View
   def title 
     'Log In'
   end
-	
+  
 end # === Session_Control_log_in 

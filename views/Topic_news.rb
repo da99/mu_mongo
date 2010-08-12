@@ -16,5 +16,5 @@ class Topic_news < Base_View
   "cancer vitamins "
   end
 
-	
+  
 end # === Topic_news 

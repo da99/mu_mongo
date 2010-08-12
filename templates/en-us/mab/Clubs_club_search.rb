@@ -4,12 +4,12 @@
 
 div.content! { 
   
-	p {
-		span.not_found "Club not found:"
-		span.filename '{{club_filename}}'
-	}
+  p {
+    span.not_found "Club not found:"
+    span.filename '{{club_filename}}'
+  }
 
-	loop_clubs 'clubs'
+  loop_clubs 'clubs'
   
 } # === div.content!
 

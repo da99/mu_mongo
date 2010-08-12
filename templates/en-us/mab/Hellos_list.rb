@@ -238,8 +238,8 @@ show_if 'random_clubs?' do
   div.col.random_clubs! { 
     h4 'An example of a universe:'
     loop_clubs "random_clubs" do
-			meta
-		end
+      meta
+    end
   }
 end
 

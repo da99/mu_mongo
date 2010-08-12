@@ -16,5 +16,5 @@ class Club_Control_edit < Club_Control_Base_View
       )
     }
   end
-	
+  
 end # === Club_Control_edit 

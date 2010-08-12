@@ -6,12 +6,12 @@ class Members_life_qa < Base_View
 
   include Base_View_Member_Life
 
-	def title 
+  def title 
     "Q&A for #{username}"
   end
 
-	def questions
-	  compiled_owner_messages 'question'
+  def questions
+    compiled_owner_messages 'question'
   end
   
 end # === Members_life_qa 

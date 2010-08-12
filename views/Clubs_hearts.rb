@@ -27,5 +27,5 @@ class Clubs_hearts < Base_View
   def public_labels
     @public_labels ||= Message.public_labels.map {|label| {:filename => label} }
   end
-	
+  
 end # === Topic_bubblegum 

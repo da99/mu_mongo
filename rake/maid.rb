@@ -1,6 +1,6 @@
 class Maid
-	
-	include FeFe
+  
+  include FeFe
 
   describe :install do
 
@@ -9,15 +9,15 @@ class Maid
     ~
 
     steps {
-			require 'rubygems'
+      require 'rubygems'
       __FILE__.file.relative('../fefe.rb').file.create_alias( Gem.bindir, 'fefe')
-			puts 'Finished linking FeFe executable.'
+      puts 'Finished linking FeFe executable.'
     }
 
   end
   
   describe :list do
-		
+    
     it %!
       Lists all the task collections, but not the tasks.
     !
@@ -33,11 +33,11 @@ class Maid
           puts( t.name.inspect + (t.options ? ' : ' + t.options.inspect : '') )
         }
       else
-				
+        
         __FILE__.file.directory.ruby_files_wo_rb.each { |f|
           puts File.basename(f)
         }
-				
+        
       end
     }
   end

@@ -4,8 +4,8 @@
 
 div.content! { 
   
-	p 'Not done yet.'
-	p { a("Go back.", :href=>'{{life_club_href}}') }
+  p 'Not done yet.'
+  p { a("Go back.", :href=>'{{life_club_href}}') }
   
 } # === div.content!
 

@@ -375,7 +375,7 @@ module Couch_Plastic
   end
 
   def demand(*args, &blok)
-		
+    
     if block_given?
       raise "this function's block handling functionality not implemented yet"
     else
@@ -396,12 +396,12 @@ module Couch_Plastic
           
           case reg
             
-					when :require_owner_as_manipulator
-						manipulator.username_ids.include?(data.owner_id)
+          when :require_owner_as_manipulator
+            manipulator.username_ids.include?(data.owner_id)
 
-					when :set_to
-						clean_val = instance_eval(&target_val)
-						new_clean_value(fld, clean_val)
+          when :set_to
+            clean_val = instance_eval(&target_val)
+            new_clean_value(fld, clean_val)
 
           when :set_raw_data
             field, process = target_val
@@ -457,9 +457,9 @@ module Couch_Plastic
               instance_eval(&target_val)
             end
             
-					when :integer
-						raw = Integer(raw)
-						new_clean_value fld, raw
+          when :integer
+            raw = Integer(raw)
+            new_clean_value fld, raw
 
           when :in_array
             arr = case target_val
@@ -853,9 +853,9 @@ module Couch_Plastic_Class_Methods
     new(id)
   end
 
-	def all_by_id raw_id
-		db_collection.find( :_id => Couch_Plastic.mongofy_id(raw_id) )
-	end
+  def all_by_id raw_id
+    db_collection.find( :_id => Couch_Plastic.mongofy_id(raw_id) )
+  end
 
   def by_owner_id str, params = {}, opts = {}
     id = Couch_Plastic.mongofy_id(str)

@@ -8,8 +8,8 @@ class Clubs_read_thanks < Base_View
     "Thank you for #{club_title}"
   end
 
-	def thanks
+  def thanks
     compile_and_cache( 'messages.thanks', app.env['results.thanks'])
-	end
+  end
   
 end # === Clubs_read_thanks 

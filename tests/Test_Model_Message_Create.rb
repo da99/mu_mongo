@@ -2,24 +2,24 @@
 
 class Test_Model_Message_Create < Test::Unit::TestCase
 
-	def club
-		Club.db_collection.find_one()
-	end
+  def club
+    Club.db_collection.find_one()
+  end
 
-	must 'be allowed to be created by member' do
+  must 'be allowed to be created by member' do
     mem = Message.create(
       regular_member_1, {
         :owner_id => regular_member_1.username_ids.last,
-				:message_model => 'random',
+        :message_model => 'random',
         :target_ids =>  [ club['_id'] ],
         :body => 'test body',
         :emotion => 'poignant',
         :category => 'tweet',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
     assert_equal mem.data._id, Message.by_id(mem.data._id).data._id
-	end
+  end
   
   must 'require :message_model' do
     mem = regular_member_1
@@ -34,12 +34,12 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     mem = Message.create(
       admin_member, {
         :owner_id => admin_member.username_ids.first,
-				:message_model=>'random',
+        :message_model=>'random',
         :target_ids => club['_id'],
         :body => 'test body',
         :emotion => 'poignant',
         :category => 'tweet',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
     assert_equal mem.data._id, Message.by_id(mem.data._id).data._id
@@ -52,7 +52,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
         :body => 'test body',
         :target_ids => [club['_id']],
         :message_model => 'random',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
 
@@ -75,7 +75,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
         :body => 'test body',
         :target_ids => [club['_id']],
         :message_model => 'random',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
 
@@ -92,19 +92,19 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     assert_equal [club['_id']], mess_2.data.target_ids
   end
 
-	must 'turn :parent_message_id from a String to a BSON::ObjectID' do
+  must 'turn :parent_message_id from a String to a BSON::ObjectID' do
     mess_1 = Message.create(
       regular_member_1, {
         :owner_id => regular_member_1.username_ids.last,
         :body => 'test body',
         :target_ids => [club['_id']],
         :message_model => 'random',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
 
-		mess_1_id = mess_1.data._id
-		mess_1_id_s = mess_1_id.to_s
+    mess_1_id = mess_1.data._id
+    mess_1_id_s = mess_1_id.to_s
     mess_2 = Message.create(
       regular_member_1, {
         :owner_id => regular_member_1.username_ids.last,
@@ -116,7 +116,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
     )
     
     assert_equal mess_1_id, mess_2.data.parent_message_id
-	end
+  end
 
   must 'allow replies posted to messages in life clubs' do
     mem = regular_member_1
@@ -129,7 +129,7 @@ class Test_Model_Message_Create < Test::Unit::TestCase
         :body => 'test body',
         :target_ids => [club_id],
         :message_model => 'random',
-				:privacy => 'public'
+        :privacy => 'public'
       }
     )
 

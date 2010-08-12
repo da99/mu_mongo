@@ -77,7 +77,7 @@ class Hellos_list < Base_View
 
   def random_clubs
     return []
-		cache['random_clubs'] ||= begin
+    cache['random_clubs'] ||= begin
                                  filenames = %w{ hearts predictions vitamins }
                                  doc = Club.by_filename(filenames[rand(filenames.size)])
                                  club = if doc

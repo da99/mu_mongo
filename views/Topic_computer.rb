@@ -7,7 +7,7 @@ class Topic_computer < Base_View
   def title 
     "Buying and Using a Computer"
   end
-	
+  
   def  meta_description
   "computer buying"
   end

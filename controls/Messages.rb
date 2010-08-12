@@ -25,8 +25,8 @@ class Messages
   end
 
   def GET_by_label club_filename, raw_label # LIST
-		club = Club.by_filename(club_filename.to_s.strip)
-		label = raw_label.to_s.strip
+    club = Club.by_filename(club_filename.to_s.strip)
+    label = raw_label.to_s.strip
     env['message_label'] = label
     env['messages_by_label'] = Message.by_club_id_and_public_label(club.data._id, label)
     render_html_template
@@ -68,13 +68,13 @@ class Messages
     end
   end
 
-	def POST_notify mess_id
-		render_text_plain clean_room.inspect
-	end
+  def POST_notify mess_id
+    render_text_plain clean_room.inspect
+  end
 
-	def POST_repost
-		render_text_plain clean_room.inspect
-	end
+  def POST_repost
+    render_text_plain clean_room.inspect
+  end
 
   # def PUT id # UPDATE
   #   success_msg(lambda { |doc| "Update: #{doc.data.title}" })

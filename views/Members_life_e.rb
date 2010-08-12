@@ -6,12 +6,12 @@ class Members_life_e < Base_View
 
   include Base_View_Member_Life
 
-	def title 
+  def title 
     "The Encyclopedia of #{username}"
   end
 
-	def facts
+  def facts
     compiled_owner_messages 'fact'
-	end
+  end
   
 end # === Members_life_e 

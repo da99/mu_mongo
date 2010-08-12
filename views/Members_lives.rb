@@ -8,9 +8,9 @@ class Members_lives < Base_View
     current_member_username
   end
 
-	def current_member_username
-		app.env['results.username']
-	end
+  def current_member_username
+    app.env['results.username']
+  end
 
   def stream
     cache[ 'messages.stream'] ||= compile_messages(app.current_member.stream(current_member_username))

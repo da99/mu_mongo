@@ -16,5 +16,5 @@ class Topic_housing < Base_View
   "mouse traps"
   end
 
-	
+  
 end # === Topic_housing 

@@ -177,9 +177,9 @@ class Base_View < Mustache
     @app.current_member
   end
 
-	def current_member_lang
-		current_member.data.lang
-	end
+  def current_member_lang
+    current_member.data.lang
+  end
 
   def current_member_usernames
     cache[:current_member_usernames] ||= begin
@@ -228,11 +228,11 @@ class Base_View < Mustache
     @app.env['HTTP_HOST'] =~ /megauni/
   end
 
-	def current_member_username
-		@app.env['results.username']
-	end
+  def current_member_username
+    @app.env['results.username']
+  end
   
-	def mini_nav_bar?
+  def mini_nav_bar?
     false
   end
 
@@ -254,10 +254,10 @@ class Base_View < Mustache
 
   def compile_messages( mess_arr, parent_doc = nil )
     mess_arr.map { |doc|
-			doc['href']             = "/mess/#{doc['_id']}/"
-			doc['title']            = nil if not doc['title']
-			doc['message_updated?'] = !!doc['updated_at']
-			doc['owner_href']       = "/uni/#{doc['owner_username']}/"
+      doc['href']             = "/mess/#{doc['_id']}/"
+      doc['title']            = nil if not doc['title']
+      doc['message_updated?'] = !!doc['updated_at']
+      doc['owner_href']       = "/uni/#{doc['owner_username']}/"
       doc['owner?']           = current_member && current_member.username_ids.include?(doc['owner_id'])
       doc['not_owner?']       = !doc['owner?']
       
@@ -271,16 +271,16 @@ class Base_View < Mustache
         doc["not_#{mod}?"] = doc['message_model'] != mod
       }
 
-			if doc['suggest?']
-				doc['accepted?'] = doc['owner_accept'] === Message::ACCEPT
-				doc['not_accepted?'] = !doc['accepted?']
-				
-				doc['declined?'] = doc['owner_accept'] === Message::DECLINE
-				doc['not_declined?'] = !doc['declined?']
-				
-				doc['pending?'] = doc['owner_accept'] === Message::PENDING || !doc['owner_accept']
-				doc['not_pending?'] = !doc['pending?']
-			end
+      if doc['suggest?']
+        doc['accepted?'] = doc['owner_accept'] === Message::ACCEPT
+        doc['not_accepted?'] = !doc['accepted?']
+        
+        doc['declined?'] = doc['owner_accept'] === Message::DECLINE
+        doc['not_declined?'] = !doc['declined?']
+        
+        doc['pending?'] = doc['owner_accept'] === Message::PENDING || !doc['owner_accept']
+        doc['not_pending?'] = !doc['pending?']
+      end
 
       doc['reply-able?'] = %w{ suggest question }.include?(doc['message_model'])
       
@@ -306,8 +306,8 @@ class Base_View < Mustache
                              else
                                doc['body_compiled'] || auto_link(doc['body'], doc['body_images_cache'])
                              end
-			doc
-		}
+      doc
+    }
   end
 
   def from_surfer_hearts?(doc)
@@ -326,15 +326,15 @@ class Base_View < Mustache
       {:src=>"/js/pages/#{base_filename}.js"}]
   end
 
-	def languages
-		cache[:languages] ||= begin
-														 Couch_Plastic::LANGS.map { |k,v| 
-															{:name=>v, :filename=>k, :selected? =>(k=='en-us'), :not_selected? => (k != 'en-us')}
-														 }.sort { |x,y| 
-															x[:name] <=> y[:name]
-														 }
-													 end
-	end
+  def languages
+    cache[:languages] ||= begin
+                             Couch_Plastic::LANGS.map { |k,v| 
+                              {:name=>v, :filename=>k, :selected? =>(k=='en-us'), :not_selected? => (k != 'en-us')}
+                             }.sort { |x,y| 
+                              x[:name] <=> y[:name]
+                             }
+                           end
+  end
 
   def site_domain
     The_App::SITE_DOMAIN

@@ -1,13 +1,13 @@
 
 class Test_Couch_Plastic_Create < Test::Unit::TestCase
 
-	must 'raise Invalid, with errors msg, if missing required field' do
-		err = assert_raise Cafe_Le_Roger::Invalid do
-			Cafe_Le_Roger.create nil, {}
-		end
+  must 'raise Invalid, with errors msg, if missing required field' do
+    err = assert_raise Cafe_Le_Roger::Invalid do
+      Cafe_Le_Roger.create nil, {}
+    end
 
     assert_match( /is required/, err.message )
-	end
+  end
   
   must 'set new field value using :must_be' do
     teaser = "My Teaser: #{rand(1000)}"
@@ -71,7 +71,7 @@ end # === class _create
 # === Custom Classes for Testing ===
 
 class Cafe_Le_Roger
-	include Couch_Plastic
+  include Couch_Plastic
 
   %w{ 
     title
@@ -93,9 +93,9 @@ class Cafe_Le_Roger
     end
   end
 
-	def allow_as_creator? editor
-		true
-	end
+  def allow_as_creator? editor
+    true
+  end
 
 end # === Cafe_Le_Roger
 

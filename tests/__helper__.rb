@@ -12,27 +12,27 @@ require 'helpers/app/Color_Puts'
 require 'quietbacktrace'
 
 class QuietBacktrace::BacktraceCleaner
-	
-	ALL_GEMS_SUB  = '/lib/ruby/gems' 
-	ALL_NOISE << '/middleware'
-	ALL_NOISE << '/tests/__helper__'
-	ALL_NOISE << ALL_GEMS_SUB
+  
+  ALL_GEMS_SUB  = '/lib/ruby/gems' 
+  ALL_NOISE << '/middleware'
+  ALL_NOISE << '/tests/__helper__'
+  ALL_NOISE << ALL_GEMS_SUB
 
-	def body_clean(backtrace)
-		total = backtrace.size
-		brain = [backtrace[0]].compact
-		head  = backtrace[1..3]     || []
-		body  = backtrace[4..total] || []
-		filter(brain) + filter(silence_all_gems(head)) + filter(silence(body || []))
-	end
-	alias_method :orig_clean, :clean
-	alias_method :clean, :body_clean
-	
-	def silence_all_gems(backtrace)
-		backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
-		backtrace
-	end
-	
+  def body_clean(backtrace)
+    total = backtrace.size
+    brain = [backtrace[0]].compact
+    head  = backtrace[1..3]     || []
+    body  = backtrace[4..total] || []
+    filter(brain) + filter(silence_all_gems(head)) + filter(silence(body || []))
+  end
+  alias_method :orig_clean, :clean
+  alias_method :clean, :body_clean
+  
+  def silence_all_gems(backtrace)
+    backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
+    backtrace
+  end
+  
 end # === class
 
 
@@ -144,7 +144,7 @@ class Test::Unit::TestCase
     @regular_mem ||= [1,2,3].map { |i| Member.by_username("regular-member-#{i}") }
   end
   
-	[1,2,3].each do |i|
+  [1,2,3].each do |i|
     eval %~
       def regular_member_#{i}
         self.class.regular_members[#{i}-1]
@@ -188,17 +188,17 @@ class Test::Unit::TestCase
     'admin-password'
   end
 
-	def generate_random_member
-		chars    = ('a'..'z').to_a + ('A'..'Z').to_a
-		username = (1..5).to_a.inject('') { |m,l| m << chars[rand(chars.size)]; m } + "#{rand(100)}"
-		password = "random-password-#{rand(1000)}"
-		mem = Member.create(nil,
-			:add_username => username ,
-		  :password => password,
-			:confirm_password => password
-		)
-		[mem, username, password]
-	end
+  def generate_random_member
+    chars    = ('a'..'z').to_a + ('A'..'Z').to_a
+    username = (1..5).to_a.inject('') { |m,l| m << chars[rand(chars.size)]; m } + "#{rand(100)}"
+    password = "random-password-#{rand(1000)}"
+    mem = Member.create(nil,
+      :add_username => username ,
+      :password => password,
+      :confirm_password => password
+    )
+    [mem, username, password]
+  end
 
   def utc_string
     Time.now.utc.strftime('%Y-%m-%d %H:%M:%S')
@@ -265,26 +265,26 @@ class Test::Unit::TestCase
     assert_match( /account/, last_request.fullpath )
   end
 
-	def create_member raw_opts = {}
+  def create_member raw_opts = {}
     
-		opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username, :email)
+    opts = Data_Pouch.new(raw_opts, :password, :confirm_password, :add_username, :email)
     
-		if !opts.add_username
-			opts.add_username = "name#{rand(1000000)}"
-		end
+    if !opts.add_username
+      opts.add_username = "name#{rand(1000000)}"
+    end
     
-		if !opts.password && !opts.confirm_password
-			new_pwrd              = "pass-#{opts.add_username}"
-			opts.password         = new_pwrd
-			opts.confirm_password = new_pwrd
-		end
+    if !opts.password && !opts.confirm_password
+      new_pwrd              = "pass-#{opts.add_username}"
+      opts.password         = new_pwrd
+      opts.confirm_password = new_pwrd
+    end
     
-		if !opts.email
-			opts.email = "test-#{rand(10000)}@megauni.com"
-		end
+    if !opts.email
+      opts.email = "test-#{rand(10000)}@megauni.com"
+    end
 
-		Member.create nil, opts.as_hash
-	end
+    Member.create nil, opts.as_hash
+  end
 
   def create_member_and_log_in(*args)
     mem = create_member(*args)
@@ -303,7 +303,7 @@ class Test::Unit::TestCase
 
   def create_message( mem, club = nil, un_id_or_opts = nil )
     
-		club ||= self.club
+    club ||= self.club
     
     opts, un_id = case un_id_or_opts
                   when Hash

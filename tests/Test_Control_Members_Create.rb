@@ -28,26 +28,26 @@ class Test_Control_Members_Create < Test::Unit::TestCase
   end
 
   must( 'does not create itself + username if username is already taken.' ) do
-		
-		u_name = "da01-#{Time.now.to_i}"
+    
+    u_name = "da01-#{Time.now.to_i}"
     total_rows = lambda { Member.db_collection.find().count }
     old = total_rows.call
     assert_raise(Member::Invalid) do
-			Member.create(nil, { 
-					:password=>'test123test',
-					:confirm_password => 'test123test',
-					:add_username => regular_username_1
-			})
+      Member.create(nil, { 
+          :password=>'test123test',
+          :confirm_password => 'test123test',
+          :add_username => regular_username_1
+      })
     end
     
-		assert_equal old, total_rows.call
-		
+    assert_equal old, total_rows.call
+    
   end
   
-	must 'show form with :add_username' do
-		get "/create-account/"
+  must 'show form with :add_username' do
+    get "/create-account/"
     input = Nokogiri::HTML(last_response.body).css('form#form_member_create input[name=add_username]').first
-		assert input
-	end
+    assert input
+  end
 
 end # === class Test_Control_Members_Create

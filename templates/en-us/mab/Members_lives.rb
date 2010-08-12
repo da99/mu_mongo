@@ -3,7 +3,7 @@
 # NAME Members_lives
 
   
-	
+  
 div.content! { 
 
   div.lives_create! { 
@@ -57,7 +57,7 @@ div.content! {
       end
     end
   } # === div.stream!
-	
+  
 } # === div.content! 
 
 partial('__nav_bar')

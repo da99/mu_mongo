@@ -13,7 +13,7 @@ module Demand_Arguments_Dsl
       if !@on_assertion_exit 
         @on_assertion_exit = proc {
           puts assertion_call_back
-					raise DemandFailed, assertion_exit_msg
+          raise DemandFailed, assertion_exit_msg
         }
       end
       if block_given?
@@ -59,20 +59,20 @@ module Demand_Arguments_Dsl
         else
           true
         end
-				if use_it
-					l.split(':')[0,2]
-				else
-					nil
-				end
+        if use_it
+          l.split(':')[0,2]
+        else
+          nil
+        end
       }.compact.uniq
       
       seirtne = entries.reverse
-			
-			@assertion_exit_msg = msg
-			@assertion_call_back ||=''
-			
+      
+      @assertion_exit_msg = msg
+      @assertion_call_back ||=''
+      
       seirtne.each { |l|
-				 
+         
         file, line = l
 
         @assertion_call_back += %~
@@ -94,7 +94,7 @@ module Demand_Arguments_Dsl
 \e[0m
 
       ~
-			
+      
       instance_eval( &on_assertion_exit )
 
     end
@@ -104,10 +104,10 @@ module Demand_Arguments_Dsl
     end
 
     
-		# ===================================================
-		# ======== Equality & Booleans
-		# ===================================================
-		
+    # ===================================================
+    # ======== Equality & Booleans
+    # ===================================================
+    
     def demand_false bool
       return true if bool == false
       print_and_exit "This needs to be false: #{bool.inspect}"
@@ -128,10 +128,10 @@ module Demand_Arguments_Dsl
       print_and_exit("These must not be equal: #{one.inspect}, #{two.inspect}")
     end
     
-		# ===================================================
-		# ======== Regexp
-		# ===================================================
-		
+    # ===================================================
+    # ======== Regexp
+    # ===================================================
+    
 
     def demand_regex re
       return true if re.is_a?(Regexp)
@@ -146,11 +146,11 @@ module Demand_Arguments_Dsl
       print_and_exit "String does not match Regex: #{re.inspect}, #{str.inspect}"
     end
 
-		
-		# ===================================================
-		# ======== Strings & Symbols
-		# ===================================================
-		
+    
+    # ===================================================
+    # ======== Strings & Symbols
+    # ===================================================
+    
     def demand_string s
       if !s.is_a?(String)
         print_and_exit "A String is required: #{s.inspect}"
@@ -162,20 +162,20 @@ module Demand_Arguments_Dsl
       demand_string raw_s
       s = raw_s.strip
       return s unless s.empty?
-			print_and_exit "String must not be empty."
+      print_and_exit "String must not be empty."
     end
     
     def demand_symbol sym
       return sym if sym.is_a?(Symbol)
-			print_and_exit "A Symbol is required: #{sym.inspect}"
+      print_and_exit "A Symbol is required: #{sym.inspect}"
     end
     alias_method :demand_sym, :demand_symbol
 
-		
-		# ===================================================
-		# ======== Hashes & Arrays
-		# ===================================================
-		
+    
+    # ===================================================
+    # ======== Hashes & Arrays
+    # ===================================================
+    
       
     def demand_hash arg, &blok
       if !arg.is_a?(Hash)
@@ -197,41 +197,41 @@ module Demand_Arguments_Dsl
       arg
     end
 
-		def demand_array arr
-			return true if arr.is_a?(Array)
-			print_and_exit "An Array is required: #{arr.inspect}"
-		end
+    def demand_array arr
+      return true if arr.is_a?(Array)
+      print_and_exit "An Array is required: #{arr.inspect}"
+    end
     
-		def demand_array_not_empty arr
+    def demand_array_not_empty arr
       demand_array arr
-			return true if !arr.empty?
-			print_and_exit "Array can't be empty: #{arr.inspect}"
-		end
+      return true if !arr.empty?
+      print_and_exit "Array can't be empty: #{arr.inspect}"
+    end
 
-		def demand_array_includes arr, ele
-			demand_array arr
-			return true if arr.include?(ele)
+    def demand_array_includes arr, ele
+      demand_array arr
+      return true if arr.include?(ele)
 
-			print_and_exit "Missing element in Array: #{ele.inspect} --> #{arr.inspect}"
-		end
-		
-		def demand_array_not_include arr, ele
-			demand_array arr
-			return true if !arr.include?(ele)
+      print_and_exit "Missing element in Array: #{ele.inspect} --> #{arr.inspect}"
+    end
+    
+    def demand_array_not_include arr, ele
+      demand_array arr
+      return true if !arr.include?(ele)
 
-			print_and_exit "Element should not be in Array: #{ele.inspect} --> #{arr.inspect}"
-		end
-		
-		# ===================================================
-		# ======== Blocks
-		# ===================================================
+      print_and_exit "Element should not be in Array: #{ele.inspect} --> #{arr.inspect}"
+    end
+    
+    # ===================================================
+    # ======== Blocks
+    # ===================================================
 
     def demand_binding b
       if !b.is_a?(Binding)
         print_and_exit "A Binding is required: #{b.inspect}"
       end
       b
-    end		
+    end    
     
     def demand_block blok
       return blok if blok.is_a? Proc
@@ -250,11 +250,11 @@ module Demand_Arguments_Dsl
       return true unless blok_given
       print_and_exit "No Block allowed."
     end
-		
-		# ===================================================
-		# ======== Files & Directories
-		# ===================================================
-		
+    
+    # ===================================================
+    # ======== Files & Directories
+    # ===================================================
+    
     def demand_directory_exists raw_arg
       dir = File.expand_path(raw_arg)
       return dir if File.directory?(dir)
@@ -297,19 +297,19 @@ end # === Demand_Arguments_Dsl
 
 class Dsl_For_Demand_Sym_Link_Matches
 
-	def initialize &blok
-		instance_eval( &blok )
-	end
+  def initialize &blok
+    instance_eval( &blok )
+  end
 
-	def from *old_file
-		return @from if old_file.empty?
-		@from = File.join(*old_file).file_system_name 
-	end
+  def from *old_file
+    return @from if old_file.empty?
+    @from = File.join(*old_file).file_system_name 
+  end
 
-	def to *new_file
-		return @to if new_file.empty?
-		@to = File.join(*new_file).file_system_name
-	end
+  def to *new_file
+    return @to if new_file.empty?
+    @to = File.join(*new_file).file_system_name
+  end
 
 end
 

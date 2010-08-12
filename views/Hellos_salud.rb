@@ -7,5 +7,5 @@ class Hellos_salud < Base_View
   def title 
     'Lista Para Salud'
   end
-	
+  
 end # === Hello_salud 

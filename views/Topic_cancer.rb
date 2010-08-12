@@ -7,7 +7,7 @@ class Topic_cancer < Base_View
   def title 
     'To Serve Man.'
   end
-	
+  
   def meta_description
   "Do you need help?"
   end

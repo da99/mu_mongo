@@ -46,8 +46,8 @@ div.content! {
       div.checkboxes {
         checkboxes_for 'news_tags' do
           text  '{{filename}}'
-					value '{{filename}}'
-					name 'tags[]'
+          value '{{filename}}'
+          name 'tags[]'
         end
       } # === checkboxes
     } # === fieldset

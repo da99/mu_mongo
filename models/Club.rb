@@ -5,17 +5,17 @@ class Club
 
   attr_reader :life, :life_username, :life_member
 
-	def self.db_collection
-		DB.collection('Clubs')
-	end
+  def self.db_collection
+    DB.collection('Clubs')
+  end
 
   enable_created_at
 
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids }]
 
   make :filename, 
-		   [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
-			 :not_empty,
+       [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
+       :not_empty,
        :unique
 
   make :title, :not_empty

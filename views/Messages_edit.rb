@@ -28,8 +28,8 @@ class Messages_edit < Base_View
     mess.data._id
   end
 
-	def editor_id
-		current_member.username_ids.first
-	end
+  def editor_id
+    current_member.username_ids.first
+  end
   
 end # === Messages_edit 

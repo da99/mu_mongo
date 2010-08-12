@@ -50,10 +50,10 @@ class Anchorify
   def anchorify raw_txt, raw_meta = nil
     txt = raw_txt.to_s.strip
     return '' if !txt || txt.empty?
-		meta = (raw_meta || []).inject({}) { |memo, val|
-			memo[val.first] = {:width=>val[1], :height=>val[2]}
-			memo
-		}
+    meta = (raw_meta || []).inject({}) { |memo, val|
+      memo[val.first] = {:width=>val[1], :height=>val[2]}
+      memo
+    }
     filters.inject(txt) { |memo, fil|
       
       the_filter = Anchorify.filters[fil]
@@ -61,8 +61,8 @@ class Anchorify
       case the_filter[:block].arity
       when 1
         the_filter[:block].call memo
-			else
-				opts = the_filter[:options].empty? ? meta : the_filter[:options]
+      else
+        opts = the_filter[:options].empty? ? meta : the_filter[:options]
         the_filter[:block].call memo, opts
       end
       
@@ -75,7 +75,7 @@ end # === class
 AutoHtml = Anchorify
 
 Anchorify.add_filter(:br_ify) do |txt|
-	txt.gsub(/\r?\n/, "<br />")
+  txt.gsub(/\r?\n/, "<br />")
 end
 
 Anchorify.add_filter(:scrubber) do |txt|
@@ -89,17 +89,17 @@ Anchorify.add_filter(:scrubber) do |txt|
 end
 
 Anchorify.add_filter(:image) do |text, options|
-	new_text = " #{text} ".gsub(/https?:\/\/[^\s]+(jpg|jpeg|bmp|gif|png)(\?\S+)?/i) do |match|
-		dims   = options[match] || {}
-		width  = (dims['width'] || dims[:width]).to_i
-		height = (dims['height'] || dims[:height]).to_i
-		if !(width.zero? && height.zero?)
-			%|<img src="#{match}" width="#{width}" height="#{height}" alt="*"/>|
-		else
-			%|<img src="#{match}" alt="*"/>|
-		end
+  new_text = " #{text} ".gsub(/https?:\/\/[^\s]+(jpg|jpeg|bmp|gif|png)(\?\S+)?/i) do |match|
+    dims   = options[match] || {}
+    width  = (dims['width'] || dims[:width]).to_i
+    height = (dims['height'] || dims[:height]).to_i
+    if !(width.zero? && height.zero?)
+      %|<img src="#{match}" width="#{width}" height="#{height}" alt="*"/>|
+    else
+      %|<img src="#{match}" alt="*"/>|
+    end
   end
-	new_text.strip
+  new_text.strip
 end
 
 

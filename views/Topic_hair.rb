@@ -15,5 +15,5 @@ class Topic_hair < Base_View
   def meta_keywords 
   "hair skin vitamins alternatives shampoo"
   end
-	
+  
 end # === Topic_hair 

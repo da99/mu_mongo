@@ -5,32 +5,32 @@ declare!(:DOCTYPE, :html, :PUBLIC, "-//W3C//DTD XHTML 1.0 Strict//EN", "http://w
 tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" ) {
 
   head {
-	
+  
     meta( :'http-equiv'=>"Content-Script-Type" , :content=>"text/javascript" )
     meta( :'http-equiv'=>"Content-Style-Type"  , :content=>"text/css" )
     meta( :'http-equiv'=>"Content-Language"    , :content=>"en-US" )
     meta( :'http-equiv'=>"Content-Type"        , :content=>"text/html; charset=utf-8" )
     meta( :'http-equiv'=>"Content-Language"    , :content=>"en-US" )
     
-		show_if 'no_meta_cache?' do
+    show_if 'no_meta_cache?' do
       meta( :'http-equiv'=>'expires' , :content=>'Thu, 12 Mar 2004 12:34:12 GMT' )
       meta( :'http-equiv'=>'pragma'  , :content=>'no-cache' )
     end
 
-		meta( :name=>'description', :content=>"{{meta_description}}")
+    meta( :name=>'description', :content=>"{{meta_description}}")
 
     meta( :name=>'keywords'   , :content=>"{{meta_keywords}}")
 
     title( "{{title}}" )
 
     link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
-		
+    
     mustache("not_mobile_request?") {
       link( :rel=>"stylesheet",  :href=>"{{css_file}}?time=#{Time.now.utc.to_i}", :media=>"screen", :type=>"text/css" )
       # link( :rel=>"stylesheet", :href=>"/skins/{{skin_name}}/css/{{page_name}}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
-		}
+    }
     
-		mustache "head_content"
+    mustache "head_content"
    
   } # head
 
@@ -44,10 +44,10 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     }
     # ==============================================================
 
-		javascript_files.each do |file_hash|
+    javascript_files.each do |file_hash|
       script '', file_hash
     end
-		
+    
     # mustache 'javascripts' do
     #   script '', :src=>'{{src}}?{{time_i}}', :type=>'text/javascript'
     # end

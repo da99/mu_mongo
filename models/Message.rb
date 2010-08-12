@@ -37,7 +37,7 @@ class Message
     'e_quote' => ['quotation', SECTIONS::E],
     'buy'     => ['buy it', SECTIONS::SHOP],
     'thank'   => ['thanks', SECTIONS::THANKS],
-		'repost'  => ['repost', 'everywhere']
+    'repost'  => ['repost', 'everywhere']
     # plea  
     # fulfill
     # event
@@ -315,9 +315,9 @@ class Message
 
   # ==== Accessors =====================================================
 
-	def notifys?(mem)
-		!notifys(mem).empty?
-	end
+  def notifys?(mem)
+    !notifys(mem).empty?
+  end
 
   # Accepts:
   #    Member - Required.
@@ -332,9 +332,9 @@ class Message
   #    ]
   def notifys mem 
     cache["notify_#{mem.data._id}"] ||= self.class.db_collection_notifys.find( 
-			:message_id => data._id,
-			:owner_id   => { :$in=>mem.username_ids } 
-		).to_a
+      :message_id => data._id,
+      :owner_id   => { :$in=>mem.username_ids } 
+    ).to_a
   end
 
   # Accepts:
@@ -342,12 +342,12 @@ class Message
   #
   #  Returns:
   #    Array - [
-	#      owner_id
-	#      owner_id
+  #      owner_id
+  #      owner_id
   #    ]
-	def notifys_by_username mem
-		notifys(mem).map { |doc| doc['owner_id'] }
-	end
+  def notifys_by_username mem
+    notifys(mem).map { |doc| doc['owner_id'] }
+  end
 
   def reposts? mem
     !reposts(mem).empty?
@@ -360,21 +360,21 @@ class Message
   #    Array - [
   #      {
   #        'message_model' => 'repost'
-	#        'owner_id'   => id
-	#        'target_ids' => []
+  #        'owner_id'   => id
+  #        'target_ids' => []
   #        'message_id' => id
   #        '_id'        => id
   #      }
   #    ]
-	def reposts mem
+  def reposts mem
     cache["reposts_#{mem.data._id}"] ||= \
-			self.class.validate_params_and_find( 
-				:message_id => data._id,
-				:owner_id   => { :$in=>mem.username_ids },
-				:message_model => 'repost'
-			).to_a
-	end
-	
+      self.class.validate_params_and_find( 
+        :message_id => data._id,
+        :owner_id   => { :$in=>mem.username_ids },
+        :message_model => 'repost'
+      ).to_a
+  end
+  
   # Accepts:
   #    Member - Required.
   #
@@ -384,11 +384,11 @@ class Message
   #      'owner_id' => [ club_id, club_id]
   #    }
   def reposts_by_username mem
-		reposts(mem).inject({}) { |memo, doc|
-			memo[ doc['owner_id'] ] ||= []
-			memo[ doc['owner_id'] ] += doc['target_ids']
-			memo
-		}
+    reposts(mem).inject({}) { |memo, doc|
+      memo[ doc['owner_id'] ] ||= []
+      memo[ doc['owner_id'] ] += doc['target_ids']
+      memo
+    }
   end
 
   def product?

@@ -2,17 +2,17 @@ require 'views/Base_View'
 
 
 Hash_Sym_Or_Str_Keys = Class.new(Hash) do
-													def [](k)
-														case k
-															when Symbol
-																super(k) || super(k.to_s)
-															when String
-																super(k) || super(k.to_sym)
-															else
-																super
-															end
-													end
-												end
+                          def [](k)
+                            case k
+                              when Symbol
+                                super(k) || super(k.to_s)
+                              when String
+                                super(k) || super(k.to_sym)
+                              else
+                                super
+                              end
+                          end
+                        end
 
 module Base_Control
 
@@ -92,20 +92,20 @@ module Base_Control
     ENV['RACK_ENV']
   end
 
-	def redirect_back! *args
-		args[0] = env['HTTP_REFERER'] || args[0]
-		redirect! *args
-	end
+  def redirect_back! *args
+    args[0] = env['HTTP_REFERER'] || args[0]
+    redirect! *args
+  end
 
   def redirect! *args
     render_text_plain ''
-		
-		# If HTTP Code not specified, use 303.
-		# This forces redirect as a GET.
-		if not args.last.is_a?(Integer)
-			args << 303 
-		end
-		
+    
+    # If HTTP Code not specified, use 303.
+    # This forces redirect as a GET.
+    if not args.last.is_a?(Integer)
+      args << 303 
+    end
+    
     response.redirect( *args )
     raise The_App::Redirect
   end

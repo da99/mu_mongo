@@ -16,5 +16,5 @@ class Topic_hiv < Base_View
   "aids hiv stds"
   end
 
-	
+  
 end # === Topic_hiv 

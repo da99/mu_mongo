@@ -157,7 +157,7 @@ class Messages_by_id < Base_View
   end
 
   def club_href
-		club.href
+    club.href
   end
 
 #   def target_ids_joined

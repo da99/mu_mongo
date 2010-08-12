@@ -16,5 +16,5 @@ class Topic_preggers < Base_View
   "cancer vitamins "
   end
 
-	
+  
 end # === Topic_preggers 

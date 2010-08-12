@@ -4,7 +4,7 @@
 
 div.col.messages! {
 
-	loop_messages 'messages'
+  loop_messages 'messages'
 
 } # === div.messages!
 

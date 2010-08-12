@@ -28,7 +28,7 @@ class Find_The_Bunny
   URL_REGEX = Hash[
     :id       => '[a-zA-Z\-\d]+',
     :filename => '[a-zA-Z0-9\-\_\+]+',
-		:cgi_escaped => '[^/]{1,90}',
+    :cgi_escaped => '[^/]{1,90}',
     :digits   => '[0-9]+',
     :old_topics => "#{Old_Topics.join('|')}"
   ]

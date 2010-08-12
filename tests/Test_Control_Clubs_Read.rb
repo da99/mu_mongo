@@ -7,16 +7,16 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     regular_member_1
   end
 
-	must 'render /clubs/' do
-		get '/clubs/'
-		assert_last_response_ok
-	end
+  must 'render /clubs/' do
+    get '/clubs/'
+    assert_last_response_ok
+  end
 
-	must 'render /clubs/ for members' do
-		log_in_regular_member_1
-		get '/clubs/'
-		assert_last_response_ok
-	end
+  must 'render /clubs/ for members' do
+    log_in_regular_member_1
+    get '/clubs/'
+    assert_last_response_ok
+  end
 
   must 'be viewable by non-members' do
     club = create_club
@@ -142,7 +142,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     end
 
     club = create_club(regular_member_1)
-		log_in_regular_member_3
+    log_in_regular_member_3
     get club.href
 
     assert Nokogiri::HTML(last_response.body).css('form#form_follow_create').first
@@ -150,12 +150,12 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
   # ================ Life Club ===========================
 
-	must 'use /clubs/{filename}/ for life clubs' do
-		mem   = regular_member_1
-		un_id, un  = mem.username_hash.to_a.first
-		life  = Club.by_filename_or_member_username(un)
-		assert_equal "/clubs/#{un}/", life.href
-	end
+  must 'use /clubs/{filename}/ for life clubs' do
+    mem   = regular_member_1
+    un_id, un  = mem.username_hash.to_a.first
+    life  = Club.by_filename_or_member_username(un)
+    assert_equal "/clubs/#{un}/", life.href
+  end
 
   must 'show "You own this universe" to owner of life club' do
     msg = "You own this universe"
@@ -191,30 +191,30 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal "/clubs/#{club.data.filename}/", last_request.fullpath
   end
 
-	must 'redirect to life club if keyword is a member username' do
-		un = regular_member_1.usernames.first
-		post "/club-search/", :keyword=>un
-		assert_redirect "/clubs/#{un}/", 303
-	end
+  must 'redirect to life club if keyword is a member username' do
+    un = regular_member_1.usernames.first
+    post "/club-search/", :keyword=>un
+    assert_redirect "/clubs/#{un}/", 303
+  end
 
   # ================= Club Parts ===========================
 
-	%w{ e	qa news magazine fights shop predictions random thanks }.each { |suffix|
-		club = nil
+  %w{ e  qa news magazine fights shop predictions random thanks }.each { |suffix|
+    club = nil
     
-		must "render /clubs/..filename../#{suffix}/" do
-			club ||= create_club(regular_member_1)
-			get "/clubs/#{club.data.filename}/#{suffix}/"
-			assert_equal 200, last_response.status
-		end
+    must "render /clubs/..filename../#{suffix}/" do
+      club ||= create_club(regular_member_1)
+      get "/clubs/#{club.data.filename}/#{suffix}/"
+      assert_equal 200, last_response.status
+    end
     
-		must "render /clubs/..filename../#{suffix}/ while logged in" do
-			club ||= create_club(regular_member_1)
+    must "render /clubs/..filename../#{suffix}/ while logged in" do
+      club ||= create_club(regular_member_1)
       log_in_regular_member_1
-			get "/clubs/#{club.data.filename}/#{suffix}/"
-			assert_equal 200, last_response.status
-		end
-	}
+      get "/clubs/#{club.data.filename}/#{suffix}/"
+      assert_equal 200, last_response.status
+    end
+  }
 
   %w{ e_chapter e_quote }.each { |mess_mod|
     must "show #{mess_mod} in Encyclopedia section" do

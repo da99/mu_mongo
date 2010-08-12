@@ -9,12 +9,12 @@ class Members_reset_password < Base_View
     "Your password has been reset."
   end
 
-	def email
-		app.env['results.email']
-	end
+  def email
+    app.env['results.email']
+  end
 
-	def reset?
-		!!app.env['results.reset']
-	end
+  def reset?
+    !!app.env['results.reset']
+  end
   
 end # === Members_reset_password 

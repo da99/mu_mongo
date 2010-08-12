@@ -16,5 +16,5 @@ class Topic_heart < Base_View
   "vitamins supplements diabetes heart attacks"
   end
 
-	
+  
 end # === Topic_heart 

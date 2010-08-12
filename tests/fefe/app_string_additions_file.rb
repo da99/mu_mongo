@@ -1,14 +1,14 @@
 
 class App_String_Additions_File
-	
-	include FeFe_Test
+  
+  include FeFe_Test
 
-	context 'Test File properties of String Additions.'
+  context 'Test File properties of String Additions.'
 
-	before {
-		@path = '~/megauni/config.ru'
+  before {
+    @path = '~/megauni/config.ru'
     @delete_files = []
-	}
+  }
 
   after {
     @delete_files.each { |file|
@@ -19,43 +19,43 @@ class App_String_Additions_File
     }
   }
   
-	it 'lets you ask: file?' do
-		demand_equal true, @path.file? 
-	end
-	
-	it 'lets you ask: file.exists?' do
-		demand_equal true, @path.file.exists? 
-	end
-	
-	it 'expands name of file' do
-		demand_equal(
-			File.expand_path(@path),
-			@path.file.expand_path
-		)
-	end
+  it 'lets you ask: file?' do
+    demand_equal true, @path.file? 
+  end
+  
+  it 'lets you ask: file.exists?' do
+    demand_equal true, @path.file.exists? 
+  end
+  
+  it 'expands name of file' do
+    demand_equal(
+      File.expand_path(@path),
+      @path.file.expand_path
+    )
+  end
 
-	it 'gives the file name without path' do
-		demand_equal(
-			File.basename(@path),
-			@path.file.name
-		)
-	end
+  it 'gives the file name without path' do
+    demand_equal(
+      File.basename(@path),
+      @path.file.name
+    )
+  end
 
-	it 'gives the expanded path of file' do
-		demand_equal(
-			File.expand_path(@path),
-			@path.file.path
-		)
-	end
-	
-	it 'reads the file' do
-		demand_equal(
-			File.read(File.expand_path(@path)),
-			@path.file.read
-		)
-	end
-	
-	it 'renames file' do
+  it 'gives the expanded path of file' do
+    demand_equal(
+      File.expand_path(@path),
+      @path.file.path
+    )
+  end
+  
+  it 'reads the file' do
+    demand_equal(
+      File.read(File.expand_path(@path)),
+      @path.file.read
+    )
+  end
+  
+  it 'renames file' do
     @delete_files << (old_file = File.expand_path( '~/Desktop/s123456'+Time.now.utc.to_i.to_s+'.rb' ))
     @delete_files << (new_file = File.expand_path('~/Desktop/s_new_123456' + Time.now.utc.to_i.to_s + '.rb'))
     

@@ -42,56 +42,56 @@ module Kernel
     false
    end
 
-	 def assert_size obj, raw_target_size
-		 meth =  obj.respond_to?(:jsize) ? :jsize : :size 
-		 size = obj.send(meth)
-		 target = Integer(raw_target_size)
-		 if not (size === target)
-			 raise ArgumentError, "Object is wrong #{meth}: #{obj.inspect}, SIZE: #{size}"
-		 end
-		 size
-	 end
+   def assert_size obj, raw_target_size
+     meth =  obj.respond_to?(:jsize) ? :jsize : :size 
+     size = obj.send(meth)
+     target = Integer(raw_target_size)
+     if not (size === target)
+       raise ArgumentError, "Object is wrong #{meth}: #{obj.inspect}, SIZE: #{size}"
+     end
+     size
+   end
 
-	 def assert_not_empty obj
-		 empty, val = case obj
-						 when nil
-							 [false, nil]
-						 when String
-							 str = obj.strip
-							 [str.empty?, str]
-						 else
-							 if obj.respond_to?(:empty)
-								 [obj.empty?, obj]
-							 else 
-								 raise ArgumentError, "Can't check for emptiness: #{obj.inspect}"
-							 end
-						 end
-		 if empty
-			 raise ArgumentError, "Object must not be empty: #{obj.inspect}"
-		 end
+   def assert_not_empty obj
+     empty, val = case obj
+             when nil
+               [false, nil]
+             when String
+               str = obj.strip
+               [str.empty?, str]
+             else
+               if obj.respond_to?(:empty)
+                 [obj.empty?, obj]
+               else 
+                 raise ArgumentError, "Can't check for emptiness: #{obj.inspect}"
+               end
+             end
+     if empty
+       raise ArgumentError, "Object must not be empty: #{obj.inspect}"
+     end
 
-		 val
+     val
 
-	 end
+   end
 
-	 def assert_match regexp, str
-		 if not str.is_a?(String)
-			 raise ArgumentError, "#{str} must be a String."
-		 end
-		 match = (regexp =~ str)
-		 if not match
-			 raise ArgumentError, "Invalid characters: #{str.inspect}"
-		 end
-		 match
-	 end
+   def assert_match regexp, str
+     if not str.is_a?(String)
+       raise ArgumentError, "#{str} must be a String."
+     end
+     match = (regexp =~ str)
+     if not match
+       raise ArgumentError, "Invalid characters: #{str.inspect}"
+     end
+     match
+   end
 
-	 def assert_dir_exists str
-		 exists = File.directory?(str)
-		 if not exists
-			 raise ArgumentError, "Directory does not exist: #{str.inspect}"
-		 end
-		 File.expand_path(str)
-	 end
+   def assert_dir_exists str
+     exists = File.directory?(str)
+     if not exists
+       raise ArgumentError, "Directory does not exist: #{str.inspect}"
+     end
+     File.expand_path(str)
+   end
 
    def assert_valid_keys hash, valid_keys
      invalid = hash.keys - valid_keys

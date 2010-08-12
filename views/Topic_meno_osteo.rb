@@ -16,5 +16,5 @@ class Topic_meno_osteo < Base_View
   "Ostero-porosis, Heart (corazon), Menopause, Cancer, Flu, Fibromyalgia, Sleep (sueno), PMS, Hormonal Imbalances"
   end
 
-	
+  
 end # === Topic_meno_osteo 

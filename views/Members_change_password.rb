@@ -8,12 +8,12 @@ class Members_change_password < Base_View
     'Change your password.'
   end
 
-	def code
-		app.env['results.code']
-	end
+  def code
+    app.env['results.code']
+  end
 
-	def email
-		app.env['results.email']
-	end
+  def email
+    app.env['results.email']
+  end
   
 end # === Members_change_password 

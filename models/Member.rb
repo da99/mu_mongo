@@ -2,7 +2,7 @@ require 'bcrypt'
 
 class Member 
 
-	attr_reader :password_reset_code
+  attr_reader :password_reset_code
   attr_reader :old_un, :old_un_id, :current_un, :current_un_id
   
   include Couch_Plastic
@@ -264,7 +264,7 @@ class Member
     # Raise Account::Reset if necessary.
     if new_count > 2
       mem.reset_password
-			raise Password_Reset, mem.inspect
+      raise Password_Reset, mem.inspect
     end
 
     raise Wrong_Password, "Password is invalid for: #{username.inspect}"
@@ -375,18 +375,18 @@ class Member
   end
 
   # ==== UPDATORS ======================================================
-	
-	def pass_reset_id 
-		"#{data._id}-password-reset"
-	end
+  
+  def pass_reset_id 
+    "#{data._id}-password-reset"
+  end
 
   def password_reset_doc
     self.class.db_collection_password_resets.find_one(:_id=>pass_reset_id)
   end
 
-	def password_in_reset?
+  def password_in_reset?
     !!password_reset_doc
-	end
+  end
   
   def change_password_through_reset raw_opts 
     if not password_in_reset?
@@ -408,7 +408,7 @@ class Member
     end
   end
 
-	def reset_password 
+  def reset_password 
 
     code = begin
              # Salt and encrypt values.
@@ -439,7 +439,7 @@ class Member
     )
     @password_reset_code = code
   
-	end
+  end
 
   # ==== ACCESSORS =====================================================
 

@@ -43,7 +43,7 @@ helpers {
     # along with request.host
     # depending if logged in.
     def urlize(url)
-			base = response.url.split('/')[0,3].join('/')
+      base = response.url.split('/')[0,3].join('/')
       File.join( base, url)
     end
     
