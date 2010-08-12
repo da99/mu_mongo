@@ -8,6 +8,33 @@ require 'test/unit/testresult'
 require 'test/unit/testcase'
 require 'term/ansicolor'
 require 'helpers/app/Color_Puts'
+
+require 'quietbacktrace'
+
+class QuietBacktrace::BacktraceCleaner
+	
+	ALL_GEMS_SUB  = '/lib/ruby/gems' 
+	ALL_NOISE << '/middleware'
+	ALL_NOISE << '/tests/__helper__'
+	ALL_NOISE << ALL_GEMS_SUB
+
+	def body_clean(backtrace)
+		total = backtrace.size
+		head  = backtrace[0..3]
+		body  = backtrace[4..total]
+		filter(silence_all_gems(head)) + filter(silence(body))
+	end
+	alias_method :orig_clean, :clean
+	alias_method :clean, :body_clean
+	
+	def silence_all_gems(backtrace)
+		backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
+		backtrace
+	end
+	
+end # === class
+
+
 require 'megauni'
 raise '$KCODE not set to UTF8 in start file.' unless $KCODE == 'UTF8'
 
