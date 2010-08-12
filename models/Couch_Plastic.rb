@@ -113,7 +113,7 @@ module Couch_Plastic
     ]
     
     new['Message_Notifys'] = [
-      { 'key' => { 'member_id' => 1, 'message_id' => 1 } }
+      { 'key' => { 'owner_id' => 1, 'message_id' => 1 } }
     ]
     
     new['Doc_Logs'] = [

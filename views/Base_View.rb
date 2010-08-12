@@ -193,8 +193,8 @@ class Base_View < Mustache
                                           end
   end
 
-  def current_member_multi_verse_checkboxes
-    cache[:current_member_multi_verse] ||= current_member.multi_verse_checkboxes
+  def current_member_multi_verse_menu
+    cache[:current_member_multi_verse] ||= current_member.multi_verse_menu
   end
   
   def single_username?

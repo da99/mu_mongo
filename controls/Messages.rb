@@ -68,12 +68,12 @@ class Messages
     end
   end
 
-	def POST_notify
-		render_text clean_room.inspect
+	def POST_notify mess_id
+		render_text_plain clean_room.inspect
 	end
 
 	def POST_repost
-		render_text clean_room.inspect
+		render_text_plain clean_room.inspect
 	end
 
   # def PUT id # UPDATE

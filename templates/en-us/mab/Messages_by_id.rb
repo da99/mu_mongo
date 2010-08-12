@@ -54,7 +54,7 @@ div_centered {
           
         } # === div.notify_me!
         
-        show_if 'not_reposted?' do
+        if_not 'reposts?' do
           div.repost! {
             
             post_to_universes(:repost_form) {

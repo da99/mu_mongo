@@ -13,15 +13,15 @@ class Messages_by_id < Base_View
   end
 
   def notify_me?
-    !!message.notify?(current_member)
+    !!message.notifys?(current_member)
   end
   
   def no_notify_me?
     !notify_me?
   end
   
-  def reposted?
-    message.reposted?(current_member)
+  def reposts?
+    message.reposts?(current_member)
   end
 
   def product?
@@ -172,4 +172,8 @@ class Messages_by_id < Base_View
     ~
   }
 
+  def notify_menu
+    cache[:notify_menu] ||= current_member.notifys_menu( message )
+  end
+  
 end # === Messages_by_id 

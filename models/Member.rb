@@ -467,25 +467,28 @@ class Member
   end
 
   # Accepts:
-  #   un_ids - Multiple
+  #   un_ids - Optional. Array [
+  #     username_id
+  #     username_id
+  #   ]
   #
   # Returns:
   #   Array - [
   #     { 
-  #       :username_id   => id, 
-  #       :username      => un, 
-  #       :selected?     => Boolean,
-  #       :not_selected? => Boolean
+  #       'username_id'   => id, 
+  #       'username'      => un, 
+  #       'selected?'     => Boolean,
+  #       'not_selected?' => Boolean
   #     }
   #   ]
   #
-  def username_checkboxes un_ids = []
-    username_hash.map { |id, un|
+  def username_menu un_ids = []
+    cache[:username_menu] ||= username_hash.map { |id, un|
       { 
-        :username_id   => id,
-        :username      => un,
-        :selected?     => un_ids.include?(id),
-        :not_selected? => !un_ids.include?(id)
+        'username_id'   => id,
+        'username'      => un,
+        'selected?'     => un_ids.include?(id),
+        'not_selected?' => !un_ids.include?(id)
       }
     }
   end
@@ -693,7 +696,7 @@ class Member
   end
   
   # Accepts:
-  #   Hash - {
+  #   Hash - Optional. {
   #     :username_id => [:club_id, :club_id]
   #     :username_id => [:club_id, :club_id]
   #   }
@@ -701,22 +704,24 @@ class Member
   # Returns:
   #   Array - [
   #     { 
-  #       :username_id   => id 
-  #       :username      => un 
-  #       :selected?     => Boolean
-  #       :not_selected? => Boolean
+  #       'username_id'   => id 
+  #       'username'      => un 
+  #       'clubs'         => {
+  #                           :selected?     => Boolean
+  #                           :not_selected? => Boolean
+  #                         }
   #     }
   #   ]
   #
-  def multi_verse_checkboxes selected = {}
+  def multi_verse_menu selected = {}
     cache_name = selected.empty? ? '{}' : selected.object_id
     multi      = multi_verse_per_username_id( :as_owner, :as_lifer )
     
-    cache["multi_verse_checkboxes_#{cache_name}"] ||= multi.map { |un_id, club_arr|
+    cache["multi_verse_menu_#{cache_name}"] ||= multi.map { |un_id, club_arr|
       hash = { 
-        :username_id => un_id,
-        :username    => username_id_to_username(un_id),
-        :clubs       => club_arr.map { |doc|
+        'username_id' => un_id,
+        'username'    => username_id_to_username(un_id),
+        'clubs'       => club_arr.map { |doc|
                           doc['selected?'] = (selected[un_id] || []).include?( doc['_id'] )
                           doc['not_selected?'] = !doc['selected?']
                           doc
@@ -726,6 +731,55 @@ class Member
     }
   end
   
+  # Accepts:
+  #   Message - Optional.
+  #   
+  # Returns:
+  #   Array - [
+  #     {
+  #       'username_id'   => id
+  #       'username'      => un
+  #       'selected?'     => Boolean
+  #       'not_selected?' => Boolean
+  #     }
+  #   ]
+  def notifys_menu message = nil
+    notifys = message ? 
+                message.notifys(self) :
+                []
+    
+    return username_menu if notifys.empty?
+    
+    cache["notifys_menu_#{message.data._id}"] = \
+      username_menu(
+        notifys_by_username(mem)
+      )
+  end
+  
+  # Accepts:
+  #   Message - Optional.
+  #   
+  # Returns:
+  #   Array - [
+  #     { 
+  #       :username_id   => id 
+  #       :username      => un 
+  #       :clubs         => [ {
+  #                          :selected?     => Boolean
+  #                          :not_selected? => Boolean
+  #                         } ]
+  #     }
+  #   ]
+  def reposts_menu message = nil
+    return multi_verse_menu if not message
+    cache["reposts_menu_#{message.data._id}"] ||= \
+      begin
+        multi_verse_menu(
+          reposts_by_username(self)
+        )
+      end
+  end
+
 end # === model Member
 
 

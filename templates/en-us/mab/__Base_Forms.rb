@@ -101,21 +101,21 @@ module Base_Forms
     }
   end
   
-	def a_submit txt, href = nil
+  def a_submit txt, href = nil
     context = self
-		a( 
+    a( 
       txt, 
-			:href    => "#save", 
-			:onclick => js {
-				element(context.show_target) {
-				  parents('div').add_class('loading')
+      :href    => "#save", 
+      :onclick => js {
+        element(context.show_target) {
+          parents('div').add_class('loading')
           attr('action', context.action )
-				  submit();
+          submit();
         }
-				return_false
+        return_false
        }
     )
-	end
+  end
 
   def fieldset *args, &blok
     case args.size
@@ -291,12 +291,12 @@ module Base_Forms
       )
   end
 
-	def render_toggle_forms
-		return if toggle_forms.empty?
-		toggle_forms.each { | config |
-			config.put.method 'post'
-			field_name = config.get.field
-			text(capture {
+  def render_toggle_forms
+    return if toggle_forms.empty?
+    toggle_forms.each { | config |
+      config.put.method 'post'
+      field_name = config.get.field
+      text(capture {
         form(config.as_hash(:id, :action, :method, :class)) {
           fieldset_hidden {
             _method_put    
@@ -304,9 +304,9 @@ module Base_Forms
             input_hidden 'editor_id', '{{editor_id}}'
           }
         }
-			})
-		}
-	end
+      })
+    }
+  end
   
   def toggle_form sId, sAction, sField, &blok
     config = form_config
@@ -396,7 +396,7 @@ module Base_Forms
     config.put(&configuration)
     
     form_post(config) {
-      loop 'current_member_multi_verse_checkboxes' do
+      loop 'current_member_multi_verse_menu' do
         h4 '{{username}}'
         checkboxes_for 'clubs' do
           text '{{title}}'
@@ -407,19 +407,28 @@ module Base_Forms
     }
   end
 
+  # Uses a View collection name composed of:
+  #   #{raw_form_id}_menu
   def post_to_username raw_form_id, &blok
     config = form_config
-    config.put.id "post_to_username_#{raw_form_id}"
-    config.put(&blok)
-
     ask = config.ask
     get = config.get
+    
+    config.string :collection_name
+    has_field = ask.field?
+    
+    config.put {
+      id              "post_to_username_#{raw_form_id}"
+      collection_name "#{raw_form_id}_menu"
+      field( 'owner_id' ) unless has_field
+      instance_eval &blok
+    }
 
     form_post(config) {
       if ask.as_radios?
-        radios_for 'current_member_usernames' do
-          radio 'editor_id', '{{username_id}}', '{{username}}'
-        end
+        radios_for( get.collection_name ) {
+          radio get.field, '{{username_id}}', '{{username}}'
+        }
       end
     }
   end

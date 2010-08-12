@@ -33,10 +33,11 @@ class Message
     'cheer'      => ['cheer reply', SECTIONS::THANKS],
     'jeer'      => ['critique reply', SECTIONS::THANKS],
     'suggest'      => ['suggestion', SECTIONS::THANKS],
-		'e_chapter' => ['encyclopedia chapter', SECTIONS::E],
-		'e_quote' => ['quotation', SECTIONS::E],
+    'e_chapter' => ['encyclopedia chapter', SECTIONS::E],
+    'e_quote' => ['quotation', SECTIONS::E],
     'buy'     => ['buy it', SECTIONS::SHOP],
-    'thank'   => ['thanks', SECTIONS::THANKS]
+    'thank'   => ['thanks', SECTIONS::THANKS],
+		'repost'  => ['repost', 'everywhere']
     # plea  
     # fulfill
     # event
@@ -314,14 +315,80 @@ class Message
 
   # ==== Accessors =====================================================
 
-  def notify? mem
-    cache["notify_#{mem.data._id}"] ||= begin
-                                          self.class.db_collection_notifys.find_one(:message_id=>data._id, :owner_id=>{ :$in=>mem.username_ids })
-                                        end
+	def notifys?(mem)
+		!notifys(mem).empty?
+	end
+
+  # Accepts:
+  #    Member - Required.
+  #
+  #  Returns:
+  #    Array - [
+  #      {
+  #        'owner_id'   => id
+  #        'message_id' => id
+  #        '_id'        => id
+  #      }
+  #    ]
+  def notifys mem 
+    cache["notify_#{mem.data._id}"] ||= self.class.db_collection_notifys.find( 
+			:message_id => data._id,
+			:owner_id   => { :$in=>mem.username_ids } 
+		).to_a
   end
 
-  def reposted? mem
-    cache["reposted_#{mem.data._id}"] ||= self.class.db_collection_reposts.find_one(:message_id=>data._id, :owner_id=>{ :$in=>mem.username_ids })
+  # Accepts:
+  #    Member - Required.
+  #
+  #  Returns:
+  #    Array - [
+	#      owner_id
+	#      owner_id
+  #    ]
+	def notifys_by_username mem
+		notifys(mem).map { |doc| doc['owner_id'] }
+	end
+
+  def reposts? mem
+    !reposts(mem).empty?
+  end
+
+  # Accepts:
+  #    Member - Required.
+  #
+  #  Returns:
+  #    Array - [
+  #      {
+  #        'message_model' => 'repost'
+	#        'owner_id'   => id
+	#        'target_ids' => []
+  #        'message_id' => id
+  #        '_id'        => id
+  #      }
+  #    ]
+	def reposts mem
+    cache["reposts_#{mem.data._id}"] ||= \
+			self.class.validate_params_and_find( 
+				:message_id => data._id,
+				:owner_id   => { :$in=>mem.username_ids },
+				:message_model => 'repost'
+			).to_a
+	end
+	
+  # Accepts:
+  #    Member - Required.
+  #
+  #  Returns:
+  #    Array - {
+  #      'owner_id' => [ club_id, club_id]
+  #      'owner_id' => [ club_id, club_id]
+  #    }
+  def reposts_by_username mem
+		reposts(mem).inject({}) { |memo, doc|
+			memo[ doc['owner_id'] ] ||= []
+			memo[ doc['owner_id'] ] += doc['target_ids']
+			memo
+		}
   end
 
   def product?
@@ -371,21 +438,21 @@ class Message
     cache[:href_log] ||= File.join(href, 'log/')
   end
 
-	def message_model_in_english
-		if data.message_model
-			Message::MODEL_HASH[data.message_model].first 
-		else
-			'unkown'
-		end
-	end
+  def message_model_in_english
+    if data.message_model
+      Message::MODEL_HASH[data.message_model].first 
+    else
+      'unkown'
+    end
+  end
 
-	def message_section
-		if data.message_model
-			Message::MODEL_HASH[data.message_model][1]
-		else
-			'Unknown'
-		end
-	end
+  def message_section
+    if data.message_model
+      Message::MODEL_HASH[data.message_model][1]
+    else
+      'Unknown'
+    end
+  end
   
   def responds
     cache['responds'] ||= begin
