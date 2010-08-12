@@ -20,9 +20,10 @@ class QuietBacktrace::BacktraceCleaner
 
 	def body_clean(backtrace)
 		total = backtrace.size
-		head  = backtrace[0..3]
-		body  = backtrace[4..total]
-		filter(silence_all_gems(head)) + filter(silence(body))
+		brain = [backtrace[0]].compact
+		head  = backtrace[1..3]     || []
+		body  = backtrace[4..total] || []
+		filter(brain) + filter(silence_all_gems(head)) + filter(silence(body || []))
 	end
 	alias_method :orig_clean, :clean
 	alias_method :clean, :body_clean
