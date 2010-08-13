@@ -200,21 +200,23 @@ module Base_Forms
     end
     
     span_txt, attrs = @checkbox.new(&blok).props
+    ele_id = "checkbox_#{rand(1000)}_#{attrs[:value]}"
+    s_ele_id = "selected_checkbox_#{rand(1000)}_#{attrs[:value]}"
     
     text(capture {
       loop coll do
       
         show_if 'selected?' do
           div.box.selected {
-            input( {:checked=>'checked'}.update attrs )
-            span span_txt
+            input( {:checked=>'checked', :id=>s_ele_id}.update attrs )
+            label span_txt, :for=>s_ele_id
           }
         end
         
         if_not 'selected?' do
           div.box {
-            input attrs 
-            span span_txt
+            input( {:id=>ele_id}.update attrs )
+            label span_txt, :for=>ele_id
           }
         end
         
@@ -254,10 +256,11 @@ module Base_Forms
 
   def radios_for mus
     yield
+    ele_id = "radio_#{rand(1000)}_#{radio_value}"
     loop mus do
       div.radio {
-        input :type => 'radio', :name => radio_name, :value => radio_value
-        span radio_txt
+        input :type => 'radio', :name => ele_id, :id => ele_id, :value => radio_value
+        label radio_txt,  :for=>ele_id
       }
     end
   end
