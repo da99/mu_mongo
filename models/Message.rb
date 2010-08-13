@@ -47,6 +47,9 @@ class Message
   
   include Couch_Plastic
 
+  related_collection :notifys, 'Member_Notifys'
+  related_collection :reposts, 'Member_Reposts'
+  
   enable_timestamps
   
   make_psuedo :editor_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids } ]
@@ -135,32 +138,35 @@ class Message
 
   # ==== Accessors ====
 
-  def self.db_collection_notifys
-    @coll_notifys ||= DB.collection('Message_Notifys')
+  def self.message_model?( str_or_hash )
+    case str_or_hash
+    when String
+      MODELS.include?(str_or_hash)
+    when Hash
+      !!(str_or_hash.values.flatten.detect { |mod| MODELS.include?(mod) })
+    else
+      raise ArgumentError, "Unknown type: #{str_or_hash}"
+    end
   end
 
-  def self.db_collection_reposts
-    @coll_reposts ||= DB.collection('Message_Reposts')
+  def self.find_with_selector_validation selector, params = {}, &blok
+    mess_model = selector[:message_model] || selector['message_model']
+    if mess_model
+      valid    = message_model?(mess_model)
+      raise "Invalid message model #{mess_model.inspect}" if not valid
+    end
+    Member.add_docs_by_username_id(find_wo_validation(selector, params, &blok))
   end
-
-  def self.validate_params_and_find params, *args, &blok
-    mess_model = params[:message_model] || params['message_model']
-    invalid = case mess_model
-              when String
-                mess_model if not MODELS.include?(mess_model)
-              when Hash
-                mess_model.values.flatten.detect { |mod| !MODELS.include?(mod) }
-              else
-                nil
-              end
-    raise "Invalid message model #{invalid.inspect}" if invalid
-    Member.add_docs_by_username_id(db_collection.find(params, *args, &blok).to_a)
+  
+  class << self
+    alias_method :find_wo_validation, :find
+    alias_method :find, :find_with_selector_validation
   end
 
   def self.latest_by_club_id club_id, raw_params = {}, raw_opts = {}, &blok
     params = {:target_ids =>club_id, :parent_message_id => nil, :privacy => 'public' }.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
-    validate_params_and_find(
+    find(
       params,
       opts,
       &blok
@@ -180,7 +186,7 @@ class Message
   def self.latest_by_parent_message_id mess_id, raw_params = {}, raw_opts = {}, &blok
     params = {:parent_message_id =>mess_id, :privacy => 'public' }.update(raw_params)
     opts   = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
-    validate_params_and_find(
+    find(
       params,
       opts,
       &blok
@@ -201,7 +207,7 @@ class Message
     opts = {:limit=>10, :sort=>[:_id, :desc]}.update(raw_opts)
     include_mods = [opts.delete(:include)].flatten.compact
     params = {}.update(raw_params)
-    cursor = validate_params_and_find(
+    cursor = find(
       params, 
       opts,
       &blok
@@ -246,7 +252,7 @@ class Message
 
   def self.by_public_label label, raw_params={}, &blok
     params = { :public_labels => {:$in=>[label]} }.update(raw_params)
-    validate_params_and_find( params, &blok )
+    find( params, &blok )
   end
 
   def self.by_club_id_and_public_label club_id, label, raw_params = {}, raw_opts={}, &blok
@@ -255,7 +261,7 @@ class Message
               :public_labels => {:$in=>[label].flatten}
               }.update(raw_params)
     opts = {:sort=>[:_id, :desc]}.update(raw_opts)
-    validate_params_and_find(params, &blok)
+    find(params, &blok)
   end
 
   def self.by_published_at *args, &blok
@@ -291,11 +297,11 @@ class Message
     # dt = Time.now.utc
     # start_dt = dt.strftime(time_format)
     # end_dt   = (dt + (60 * 60 * 24)).strftime(time_format)
-    validate_params_and_find(params, opts, &blok )
+    find(params, opts, &blok )
   end
 
   def self.by_club_id_and_published_at club_id, raw_params = {}, opts = {}, &blok
-    db_collection.find(
+    find(
       {:target_ids=>Club.filename_to_id(club_id)},
       opts, 
       &blok
@@ -305,7 +311,7 @@ class Message
 
   def self.by_old_id id
     old_id = "message-#{id}"
-    mess = db_collection.find_one(:old_id=>old_id)
+    mess = find_one(:old_id=>old_id)
     if mess
       by_id(mess['_id'])
     else
@@ -314,10 +320,6 @@ class Message
   end
 
   # ==== Accessors =====================================================
-
-  def notifys?(mem)
-    !notifys(mem).empty?
-  end
 
   # Accepts:
   #    Member - Required.
@@ -331,7 +333,7 @@ class Message
   #      }
   #    ]
   def notifys mem 
-    self.class.db_collection_notifys.find( 
+    find_notifys( 
       :message_id => data._id,
       :owner_id   => { :$in=>mem.username_ids } 
     ).to_a
@@ -349,10 +351,6 @@ class Message
     notifys(mem).map { |doc| doc['owner_id'] }
   end
 
-  def reposts? mem
-    !reposts(mem).empty?
-  end
-
   # Accepts:
   #    Member - Required.
   #
@@ -367,11 +365,11 @@ class Message
   #      }
   #    ]
   def reposts mem
-    self.class.validate_params_and_find( 
+    find_reposts( 
       :message_id => data._id,
       :owner_id   => { :$in=>mem.username_ids },
       :message_model => 'repost'
-    ).to_a
+    )
   end
   
   # Accepts:

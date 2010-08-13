@@ -76,6 +76,8 @@ module Couch_Plastic
     end
   end
 
+
+  attr_reader :data
   
   # =========================================================
   #                  self.included
@@ -176,8 +178,6 @@ module Couch_Plastic
     BSON::ObjectID.from_string(str)
   end
 
-  attr_reader :data
-  
   # 
   # Parameters:
   #   doc_id_or_hash - Optional. If String, used as a doc ID to
@@ -192,16 +192,16 @@ module Couch_Plastic
             when String, BSON::ObjectID
 
               result = if doc_id_or_hash.is_a?(BSON::ObjectID)
-                         self.class.db_collection.find_one(
+                         find_one(
                            '_id'=>doc_id_or_hash
                          )
                        else 
                          if BSON::ObjectID.legal?(doc_id_or_hash)
-                           self.class.db_collection.find_one(
+                           find_one(
                              '_id'=>BSON::ObjectID.from_string(doc_id_or_hash)
                            )
                          else
-                           self.class.db_collection.find_one('old_id'=>doc_id_or_hash)
+                           find_one('old_id'=>doc_id_or_hash)
                          end
                        end
               if !result
@@ -223,6 +223,23 @@ module Couch_Plastic
       instance_eval(&blok)
     end
 
+  end
+
+  def find selector, params = {}, &blok
+    raise "I don't know what to do with blocks." if block_given?
+    db_coll = params.delete(:collection) || self.class.db_collection
+    cache[db_coll]           ||= {}
+    cache[db_coll][selector] ||= {}
+    cache[db_coll][selector][params] ||= db_coll.find(selector, params, &blok).to_a
+  end
+  
+  def find_one selector, params = {}, &blok
+    raise "I don't know what to do with blocks." if block_given?
+    
+    params.delete('limit')
+    params[:limit] = 1
+    
+    find(selector, params, &blok).first
   end
 
   def data?
@@ -846,20 +863,65 @@ module Couch_Plastic_Class_Methods
     allowed_field?('created_at') && allowed_field?('updated_at')
   end
 
+  def related_collections *args
+    args.each { |name|
+      related_collection name
+    }
+  end
+
+  def related_collection lower_case_name, full_name = nil
+    full_name ||= "#{self}_#{lower_case_name.to_s.split('_').map(&:capitalize).join('_')}"
+    eval %~
+      def db_collection_#{lower_case_name}
+        @coll_#{lower_case_name} ||= DB.collection('#{full_name}')
+      end
+      
+      def find_#{lower_case_name} selector, params = {}, &blok
+        params[:collection] = db_collection_#{lower_case_name}
+        find selector, params, &blok
+      end
+      
+      def find_one_#{lower_case_name} selector, params = {}, &blok
+        params[:collection] = db_collection_#{lower_case_name}
+        find_one selector, params, &blok
+      end
+    ~
+    class_eval %~
+      def find_#{lower_case_name} selector, params = {}, &blok
+        params[:collection] = self.class.db_collection_#{lower_case_name}
+        find(selector, params, &blok)
+      end
+        
+      def find_one_#{lower_case_name} selector, params = {}, &blok
+        params[:collection] = self.class.db_collection_#{lower_case_name}
+        find_one(selector, params, &blok)
+      end
+    ~
+  end
 
   # ===== CRUD Methods ====================================
+
+  def find selector, params = {}, &blok
+    raise ArgumentError, "I don't know what to do with a block." if blok
+    (params.delete(:collection) || db_collection).find(selector, params).to_a
+  end
+  
+  def find_one selector, params = {}, &blok
+    raise ArgumentError, "I don't know what to do with a block." if blok
+    (params.delete(:collection) || db_collection).find_one(selector, params)
+  end
 
   def by_id( id ) # READ
     new(id)
   end
 
   def all_by_id raw_id
-    db_collection.find( :_id => Couch_Plastic.mongofy_id(raw_id) )
+    find( :_id => Couch_Plastic.mongofy_id(raw_id) )
   end
 
   def by_owner_id str, params = {}, opts = {}
     id = Couch_Plastic.mongofy_id(str)
-    db_collection.find({:owner_id=>str}.update(params), opts)
+    find({:owner_id=>str}.update(params), opts)
   end
 
   def create editor, raw_raw_data # CREATE

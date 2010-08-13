@@ -193,6 +193,13 @@ class Base_View < Mustache
                                           end
   end
 
+  def current_member_username_ids
+    cache[:current_member_username_ids] ||= \
+        current_member ? 
+          current_member_usernames.map { |doc| doc[:username_id] } :
+          []
+  end
+
   def current_member_multi_verse_menu
     cache[:current_member_multi_verse] ||= current_member.multi_verse_menu
   end

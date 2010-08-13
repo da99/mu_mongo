@@ -3,24 +3,19 @@ class Club
 
   include Couch_Plastic
 
+  related_collection :followers
+  
   attr_reader :life, :life_username, :life_member
-
-  def self.db_collection
-    DB.collection('Clubs')
-  end
-
   enable_created_at
 
   make :owner_id, :mongo_object_id, [:in_array, lambda { manipulator.username_ids }]
-
   make :filename, 
        [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
        :not_empty,
        :unique
-
   make :title, :not_empty
-
   make :teaser, :not_empty
+
   
   # ======== Authorizations ======== 
 
@@ -70,12 +65,8 @@ class Club
 
   # ======== Accessors ======== 
 
-  def self.db_collection_followers
-    DB.collection('Club_Followers')
-  end
-
   def self.by_filename filename
-    doc = db_collection.find_one(:filename=>filename)
+    doc = find_one(:filename=>filename)
     return Club.new(doc) if doc
     raise Club::Not_Found, "Filename: #{filename}"
   end
@@ -84,7 +75,7 @@ class Club
     following_ids = []
     clubs         = {}
 
-    hash = db_collection_followers.find(
+    hash = find_followers(
       {:follower_id=>{:$in=>mem.username_ids}}, 
       {:fields=>%w{ follower_id club_id }}
     ).inject({}) { |memo, doc|
@@ -94,7 +85,7 @@ class Club
       memo
     } 
     
-    following = db_collection.find( :_id => { :$in => following_ids } ).inject({}) { |memo, doc|
+    following = find( :_id => { :$in => following_ids } ).inject({}) { |memo, doc|
       memo[doc['_id']] = doc
       memo
     }
@@ -110,7 +101,7 @@ class Club
   
   def self.hash_for_owner mem
     clubs = {}
-    db_collection.find( :owner_id => {:$in=>mem.username_ids} ).each { |doc|
+    find( :owner_id => {:$in=>mem.username_ids} ).each { |doc|
       clubs[doc['owner_id']] ||= []
       clubs[doc['owner_id']] << doc
     }
@@ -184,25 +175,25 @@ class Club
   end
 
   def self.all raw_params = {}, &blok
-    db_collection.find( raw_params, &blok)
+    find( raw_params, &blok)
   end
 
   def self.all_ids params = {}, opts = {}
-    db_collection.find( params, {:fields=>['_id']}.update(opts) ).map { |doc|
+    find( params, {:fields=>['_id']}.update(opts) ).map { |doc|
       doc['_id']
     }
   end
   
   def self.all_ids_for_owner( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
-    db_collection.find({:owner_id=>id}, {:fields=>'_id'}).map { |doc|
+    find({:owner_id=>id}, {:fields=>'_id'}).map { |doc|
       doc['_id']
     }
   end
 
   def self.ids_for_follower_id( raw_id )
     id = Couch_Plastic.mongofy_id( raw_id )
-    following = db_collection_followers.find({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
+    following = find_followers({:follower_id=>id}, {:fields=>'club_id'}).map { |doc|
       doc['club_id']
     } 
     owned = all_ids_for_owner(raw_id)
@@ -210,13 +201,16 @@ class Club
   end
 
   def self.all_filenames 
-    db_collection.find().map {|r| r['filename']}
+    find(
+      { :owner_id => {:$in=>Member.by_filename('da01tv').username_ids} },
+      { :fields => 'filename' }
+    ).map {|r| r['filename']}
   end
 
   def self.add_clubs_to_collection raw_coll
     coll     = (raw_coll.is_a?(Array)) ? raw_coll : raw_coll.to_a
     club_ids = coll.map { |doc| doc['target_ids'] }.compact.flatten.uniq
-    clubs    = Club.db_collection.find({ :_id=>{:$in=>club_ids}}).inject({}) { | m, club| 
+    clubs    = find({ :_id=>{:$in=>club_ids}}).inject({}) { | m, club| 
       m[club['_id']] = club
       m
     } 
@@ -233,11 +227,11 @@ class Club
 
   def self.by_club_model raw_models, opts = {}
     models = [raw_models].flatten.compact.uniq
-    clubs = db_collection.find({:club_model=>{:$in=>models}}, opts)
+    clubs = find({:club_model=>{:$in=>models}}, opts)
   end
   
   def self.by_filename filename
-    club = db_collection.find_one('filename'=>filename)
+    club = find_one('filename'=>filename)
     if not club
       raise Couch_Plastic::Not_Found, "Club by filename: #{filename.inspect}"
     end
@@ -247,14 +241,14 @@ class Club
   def self.ids_by_owner_id raw_id, raw_opts = {}
     id   = Couch_Plastic.mongofy_id(raw_id)
     opts = {:fields => '_id'}.update(raw_opts)
-    db_collection.find({:owner_id => id }, opts).map { |doc|
+    find({:owner_id => id }, opts).map { |doc|
       doc['_id']
     }
   end
 
   def self.by_owner_ids raw_id, raw_opts={}
     id = Couch_Plastic.mongofy_id(raw_id)
-    db_collection.find(
+    find(
       {:owner_id=>id},
       raw_opts
     )
@@ -290,7 +284,7 @@ class Club
   end
 
   def followers
-    (self.class.db_collection_followers.find(:club_id=>data._id).map { |doc|
+    (find_followers(:club_id=>data._id).map { |doc|
       doc['follower_id']
     } + [data.owner_id])
   end

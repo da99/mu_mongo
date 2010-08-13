@@ -23,7 +23,11 @@ class QuietBacktrace::BacktraceCleaner
     brain = [backtrace[0]].compact
     head  = backtrace[1..3]     || []
     body  = backtrace[4..total] || []
-    filter(brain) + filter(silence_all_gems(head)) + filter(silence(body || []))
+    remove_first_slash( 
+      filter(brain) + 
+      filter(silence_all_gems(head)) + 
+      filter(silence(body || []))
+    ) 
   end
   alias_method :orig_clean, :clean
   alias_method :clean, :body_clean
@@ -31,6 +35,16 @@ class QuietBacktrace::BacktraceCleaner
   def silence_all_gems(backtrace)
     backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
     backtrace
+  end
+  
+  def remove_first_slash(backtrace)
+    backtrace.map { |line| 
+      if line.lstrip[ /\A\// ]
+        line.sub('/', '')
+      else
+        line
+      end
+    }
   end
   
 end # === class
@@ -344,7 +358,7 @@ class Test::Unit::TestCase
   end
 
   def club
-    Club.by_id(Club.db_collection.find_one()['_id'])
+    Club.by_id(Club.find_one({})['_id'])
   end
 
   

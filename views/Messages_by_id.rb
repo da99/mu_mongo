@@ -14,19 +14,11 @@ class Messages_by_id < Base_View
   end
 
   def notify_me?
-    !!message.notifys?(current_member)
-  end
-  
-  def no_notify_me?
-    !notify_me?
-  end
-  
-  def reposts?
-    message.reposts?(current_member)
+    !notifys.empty?
   end
 
-  def product?
-    message.product?
+  def reposts
+    cache['message_reposts'] ||= message.reposts(current_member)
   end
 
   def title 
@@ -40,15 +32,15 @@ class Messages_by_id < Base_View
   end
 
   def editor_id
-    @cache['editor_id'] ||= current_member.username_ids.detect { |id| id == message_owner_id }
+    @cache['editor_id'] ||= current_member_username_ids.detect { |id| id == message_owner_id }
   end
 
   def message
     @app.env['message_by_id']
   end
   
-  def message_owner?
-    current_member.username_ids.include?(message_owner_id)
+  def message_owner
+    cache['message_owner'] ||= current_member_username_ids.include?(message_owner_id)
   end
 
   def message_owner_id
@@ -149,8 +141,12 @@ class Messages_by_id < Base_View
     "/mess/#{message.data.parent_message_id}/"
   end
 
+  def message_clubs
+    cache['message_clubs'] ||= message.clubs
+  end
+
   def club
-    message.club
+    message_clubs.first
   end
 
   def club_title
@@ -177,4 +173,8 @@ class Messages_by_id < Base_View
     cache[:notify_menu] ||= current_member.notifys_menu( message )
   end
   
+  def notifys
+    cache['message_notifys'] ||= message.notifys(current_member)
+  end
+
 end # === Messages_by_id 

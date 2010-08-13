@@ -14,7 +14,7 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
       :username=> regular_member_2.usernames.last,
       :body => body,
       :message_model => 'random'
-    assert_equal [body], Message.db_collection.find(:body=>body).map { |m| m['body'] }
+    assert_equal [body], Message.find(:body=>body).map { |m| m['body'] }
   end
 
   must 'allow public labels (comma delimited' do
@@ -28,7 +28,7 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
       :message_model=>'random',
       :public_labels => 'product , knees'
 
-    mess_labels = Message.db_collection.find(
+    mess_labels = Message.find(
       :body=>body, 
       :target_ids=>[club.data._id]
     ).first['public_labels']
@@ -99,7 +99,7 @@ class Test_Control_Messages_Create < Test::Unit::TestCase
     mem  = regular_member_1
     un   = mem.usernames.first
     club = Club.by_filename_or_member_username(un)
-    mess = Message.db_collection.find_one(:target_ids => [club.data._id])
+    mess = Message.find_one(:target_ids => [club.data._id])
     
     log_in_regular_member_2
     poster = regular_member_2

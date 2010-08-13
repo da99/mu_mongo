@@ -21,7 +21,7 @@ class Doc_Log
   # ==== Getters ====
   
   def self.by_doc_id id
-    doc = db_collection.find_one( :doc_id=>Couch_Plastic.mongofy_id(id) )
+    doc = find_one( :doc_id=>Couch_Plastic.mongofy_id(id) )
     raise Doc_Log::Not_Found, "Doc log by document id: #{id.inspect}" unless doc
     new(doc)
   end
@@ -31,7 +31,7 @@ class Doc_Log
     invalid_opts = opts - valid_opts
     raise "Invalid options: #{invalid_opts.inspect}" unless invalid_opts.empty?
 
-    docs = db_collection.find(:doc_id=>Couch_Plastic.mongofy_id(id)).to_a
+    docs = find(:doc_id=>Couch_Plastic.mongofy_id(id))
     
     if opts.include?(:with_assoc)
       Member.add_docs_by_username_id(docs, 'editor_id')

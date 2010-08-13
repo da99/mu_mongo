@@ -7,6 +7,8 @@ class Member
   
   include Couch_Plastic
 
+  related_collection :deleted
+
   def self.db_collection
     @coll ||= DB.collection('Members')
   end
@@ -99,7 +101,7 @@ class Member
           end
     if obj
       super(id, editor)
-      db_collection_members_deleted.save(obj.data.as_hash, :safe=>true)
+      db_collection_deleted.save(obj.data.as_hash, :safe=>true)
     end
     obj
   end
@@ -114,26 +116,15 @@ class Member
     end
   end
   
-  def self.db_collection_members_deleted
-    @coll_members_deleted ||= DB.collection('Members_Deleted')
-  end
-
-  def self.db_collection_usernames
-    @coll_usernames ||= DB.collection('Member_Usernames')
-  end
-
-  def self.db_collection_failed_attempts
-    @coll_failed_attempts ||= DB.collection('Member_Failed_Attempts')
-  end
-
-  def self.db_collection_password_resets
-    @coll_password_resets ||= DB.collection('Member_Password_Resets')
-  end
+  related_collections :deleted
+  related_collections :usernames
+  related_collections :failed_attempts
+  related_collections :password_resets
 
   # ==== Getters =====================================================    
   
   def self.all_usernames_by_id( raw_id )
-    db_collection_usernames.find(:_id=>Couch_Plastic.mongofy_id(raw_id))
+    find_usernames(:_id=>Couch_Plastic.mongofy_id(raw_id))
   end
 
   def self.add_docs_by_username_id(docs, key = 'owner_id')
@@ -170,13 +161,13 @@ class Member
   end
 
   def self.username_doc_by_id(id)
-    doc = db_collection_usernames.find_one(:_id=> Couch_Plastic.mongofy_id(id))
+    doc = find_one_username(:_id=> Couch_Plastic.mongofy_id(id))
     raise Member::Not_Found, "Member username: #{id.inspect}"  unless doc
     doc
   end
 
   def self.by_email email
-    mem = Member.db_collection.find_one(:email=>email)
+    mem = find_one(:email=>email)
     if email.empty? || !mem
       raise Not_Found, "Member email: #{email.inspect}"
     end
@@ -185,7 +176,7 @@ class Member
 
   def self.by_username raw_username
     username = raw_username.to_s.strip
-    doc = db_collection_usernames.find_one( :username => username )
+    doc = find_one_usernames( :username => username )
     if doc && !username.empty?
       Member.by_id(doc['owner_id'])
     else
@@ -195,7 +186,7 @@ class Member
 
   def self.by_username_id raw_id
     id = Couch_Plastic.mongofy_id(raw_id)
-    doc = db_collection_usernames.find_one(:_id=>id)
+    doc = find_one_usernames(:_id=>id)
     if doc
       Member.by_id(doc['owner_id'])
     else
@@ -205,7 +196,7 @@ class Member
 
   def self.failed_attempts_for_today mem, &blok
     require 'time'
-    db_collection_failed_attempts.find( 
+    find_failed_attempts( 
        :owner_id => mem.data._id,  
        :created_at => { :$lte => Couch_Plastic.utc_now,
                  :$gte => Couch_Plastic.utc_string(Time.now.utc - (60*60*24))
@@ -275,7 +266,7 @@ class Member
     coll = raw_coll.is_a?(Array) ? raw_coll : raw_coll.to_a
 
     un_ids = coll.map { |c| c['owner_id'] }.uniq.compact
-    usernames = db_collection_usernames.find(:_id=>{ :$in => un_ids }).inject({}) { |m, doc|
+    usernames = find_usernames(:_id=>{ :$in => un_ids }).inject({}) { |m, doc|
       m[doc['_id']] = doc
       m
     }
@@ -381,7 +372,7 @@ class Member
   end
 
   def password_reset_doc
-    self.class.db_collection_password_resets.find_one(:_id=>pass_reset_id)
+    find_one_password_resets(:_id=>pass_reset_id)
   end
 
   def password_in_reset?
@@ -508,7 +499,7 @@ class Member
   #
   def username_hash
     hsh = {}
-    self.class.db_collection_usernames.find(:owner_id=>data._id).map { |un| 
+    find_usernames(:owner_id=>data._id).map { |un| 
       hsh[un['_id']] = un['username']
     }
     hsh

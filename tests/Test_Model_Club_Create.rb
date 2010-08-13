@@ -33,7 +33,7 @@ class Test_Club_Create < Test::Unit::TestCase
   end
   
   must 'require a unique filename' do
-    filename = Club.db_collection.find_one()['filename']
+    filename = Club.find_one({})['filename']
     club = begin
              Club.create( admin_member,
               {:filename=>filename, :title=>'title', :teaser=>'teaser'} 

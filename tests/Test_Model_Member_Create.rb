@@ -43,7 +43,7 @@ class Test_Model_Member_Create < Test::Unit::TestCase
   end
 
   must 'require a unique username' do
-    old_mem_id = Member.db_collection.find_one()['_id']
+    old_mem_id = Member.find_one({})['_id']
     mem = Member.by_id('_id'=>old_mem_id)
     username = mem.usernames.first
     doc = begin

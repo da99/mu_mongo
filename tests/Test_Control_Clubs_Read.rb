@@ -124,7 +124,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     log_in_regular_member_1
     get File.join('/', club.href, 'follow/')
-    follows = Club.db_collection_followers.find(
+    follows = Club.find_followers(
       :club_id=>club.data._id, 
       :follower_id=>regular_member_1.username_ids.first
     ).to_a

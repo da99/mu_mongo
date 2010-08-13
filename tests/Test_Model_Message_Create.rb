@@ -3,7 +3,7 @@
 class Test_Model_Message_Create < Test::Unit::TestCase
 
   def club
-    Club.db_collection.find_one()
+    Club.find_one({})
   end
 
   must 'be allowed to be created by member' do
