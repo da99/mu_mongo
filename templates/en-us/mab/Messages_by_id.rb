@@ -88,13 +88,13 @@ div_centered {
         div {
           strong 'Publication:'
           br
-          a('{{club_title}}', :href=>'{{club_href}}')
+          a('{{club_title}}', :href=>'{{href_club}}')
         }
         
         div {
           strong 'Section: '
           br
-          a('{{message_section}}', :href=>'{{message_section_href}}')
+          a('{{message_section}}', :href=>'{{href_section}}')
         }
         
         show_if 'has_parent?' do

@@ -402,7 +402,7 @@ class Message
   end
 
   def clubs
-    data.target_ids.map { |id|
+    @clubs ||= data.target_ids.map { |id|
       begin
         Club.by_id_or_member_username_id(id)
       rescue Club::Not_Found
@@ -435,6 +435,22 @@ class Message
     "/mess/#{data.parent_message_id}/"
   end
 
+  def href_club
+    clubs.first.href
+  end
+
+  def href_section
+    suffix = case message_section
+      when Message::SECTIONS::E
+        'e'
+      when Message::SECTIONS::QA
+        'qa'
+      else
+        message_section.to_s.downcase.split.join('_')
+      end
+    File.join(href_club, suffix + '/')
+  end
+  
   def message_model_in_english
     if data.message_model
       Message::MODEL_HASH[data.message_model].first 
