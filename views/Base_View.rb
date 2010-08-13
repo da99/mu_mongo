@@ -39,6 +39,36 @@ class Base_View < Mustache
 
   attr_reader :not_prefix, :app, :cache
   
+  def self.delegate_template receiver, prop, value = nil
+    value ||= "#{receiver}.#{prop}"
+    cache_name = "#{value}_#{rand(1000)}".gsub( %r![^a-zA-Z0-9\_]!, '_' )
+    %~
+      def %s
+        @%s ||= %s
+      end
+    ~ % [prop, cache_name, value].map(&:to_s)
+  end
+  
+  def self.delegate_to receiver, *raw_words
+    raw_words.flatten.each { |prop|
+      class_eval(
+        delegate_template(receiver, prop)
+      )
+    }
+  end
+
+  def self.delegate_date_to receiver, *raw_words
+    raw_words.flatten.each { |prop|
+      class_eval(
+        delegate_template(
+          receiver, 
+          prop, 
+          "#{receiver}.#{prop}.strftime('%b  %d, %Y')" 
+        )
+      )
+    }
+  end
+  
   def initialize new_app
     @app        = new_app
     @not_prefix = /^not?_/

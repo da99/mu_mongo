@@ -66,7 +66,7 @@ module Base_Message
               show_if 'parent_message_owner?' do
                 
                 div.toggle_suggest {
-                  toggle_form('message_accept', '{{message_href}}', :owner_accept) {
+                  toggle_form('message_accept', '{{href}}', :owner_accept) {
                     
                   div {
                       show_if 'not_accepted?' do

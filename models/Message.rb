@@ -430,6 +430,10 @@ class Message
   def href_log
     File.join(href, 'log/')
   end
+  
+  def href_parent
+    "/mess/#{data.parent_message_id}/"
+  end
 
   def message_model_in_english
     if data.message_model

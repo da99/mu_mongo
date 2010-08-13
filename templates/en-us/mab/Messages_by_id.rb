@@ -20,7 +20,7 @@ div_centered {
   
     div.message!{
 
-      mustache 'message_data' do
+      mustache 'data' do
         div.body { '{{{compiled_body}}}' }
       end
 
@@ -32,7 +32,7 @@ div_centered {
               
             post_to_username('notify') {
               as_radios
-              action '{{message_href_notify}}'
+              action '{{href_notify}}'
               button_create 'Notify me.'
               show {
                 a_click 'Notify me '
@@ -44,7 +44,7 @@ div_centered {
         
           show_if 'notify_me?' do  
             delete_form('notify') {
-              action "{{message_href_notify}}"
+              action "{{href_notify}}"
               submit {
                 a_click 'Stop'
                 span ' notifying me.'
@@ -58,7 +58,7 @@ div_centered {
           div.repost! {
             
             post_to_universes(:repost_form) {
-              action "{{message_href_repost}}"
+              action "{{href_repost}}"
               button_create 'Re-post.'
               show 'Re-post.'
             }
@@ -97,22 +97,22 @@ div_centered {
           a('{{message_section}}', :href=>'{{message_section_href}}')
         }
         
-        show_if 'message_has_parent?' do
+        show_if 'has_parent?' do
           div {
             strong 'A reply to:'
             br
-            a('this message', :href=>'{{message_parent_href}}')
+            a('this message', :href=>'{{href_parent}}')
           }
         end
 
-        show_if 'message_updator?' do
+        show_if 'updator?' do
           div {
             strong 'Actions:'
             br
-            a('Edit.', :href=>'{{message_href_edit}}')
-            show_if 'message_updated?' do
+            a('Edit.', :href=>'{{href_edit}}')
+            show_if 'updated?' do
               br 
-              a('View changes.', :href=>'{{message_href_log}}')
+              a('View changes.', :href=>'{{href_log}}')
             end
           }
         end
@@ -154,7 +154,7 @@ div_centered {
               title 'Publish a new:'
               models %w{cheer jeer question suggest}
               hidden_input(
-                :parent_message_id => '{{message_id}}',
+                :parent_message_id => '{{_id}}',
                 :privacy           => 'public'
               )
             }

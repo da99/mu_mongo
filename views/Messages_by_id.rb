@@ -5,12 +5,28 @@
 
 class Messages_by_id < Base_View
 
-  def show_form_create_message?
-    logged_in?
-  end
-
+  delegate_date_to :message, %w{ published_at }
+  delegate_to 'message.data', :owner_id, :answer, :_id, :message_model
+  delegate_to :message, %w{ 
+    href 
+    href_notify 
+    href_repost 
+    href_edit 
+    href_log 
+    href_parent
+    message_model_in_english 
+    message_section 
+    clubs
+  }
+  
   def show_moving_message?
     from_surfer_hearts?(message.data.as_hash)
+  end
+
+  def title 
+    message.data.title || 
+      (message.data.as_hash.has_key?('old_id') && message.data._id.to_s.sub('message-', 'Message ID: ')) ||
+        ( "Message ID: #{message.data._id}" )
   end
 
   def notify_me?
@@ -21,80 +37,30 @@ class Messages_by_id < Base_View
     cache['message_reposts'] ||= message.reposts(current_member)
   end
 
-  def title 
-    message.data.title || 
-      (message.data.as_hash.has_key?('old_id') && message.data._id.to_s.sub('message-', 'Message ID: ')) ||
-        ( "Message ID: #{message.data._id}" )
-  end
-
-  def published_at
-    message.published_at.strftime('%b  %d, %Y')
-  end
-
   def editor_id
-    @cache['editor_id'] ||= current_member_username_ids.detect { |id| id == message_owner_id }
+    @cache['editor_id'] ||= current_member_username_ids.detect { |id| id == owner_id }
   end
 
   def message
     @app.env['message_by_id']
   end
   
-  def message_owner
-    cache['message_owner'] ||= current_member_username_ids.include?(message_owner_id)
-  end
-
-  def message_owner_id
-    message.data.owner_id
-  end
-
-  def message_href
-    message.href
-  end
-
-  def mess_href
-    message_href
-  end
-  
-  def message_href_notify
-    message.href_notify
-  end
-
-  def message_href_repost
-    message.href_repost
+  def owner?
+    current_member_username_ids.include?(owner_id)
   end
 
   def suggestions_or_answers
-    message_question? ? 
+    is_question? ? 
       "Answers and Suggestions:" :
       "Suggestions:" 
   end
 
-  def message_question?
+  def is_question?
     message.data.message_model == 'question'
-  end
-
-  def message_answer
-    message.data.answer
-  end
-
-  def message_id
-    message.data._id
   end
 
   def message_title
     message.data.title || '~ ~ ~ ~'
-  end
-
-  def message_model
-    message.data.message_model
-  end
-
-  def message_model_in_english
-    message.message_model_in_english
-  end
-
-  def message_section
-    message.message_section
   end
 
   def message_section_href
@@ -109,7 +75,7 @@ class Messages_by_id < Base_View
     File.join(club_href, suffix + '/')
   end
 
-  def message_data
+  def data
     cache[:message_data] ||= begin
                                 v= message.data.as_hash
                                 v[:compiled_body] = from_surfer_hearts?(v) ? v['body'] : auto_link(v['body'])
@@ -117,36 +83,20 @@ class Messages_by_id < Base_View
                               end
   end
 
-  def message_href_edit
-    message.href_edit
-  end
-
-  def message_href_log
-    message.href_log
-  end
-
-  def message_updator?
+  def updator?
     message.updator?(current_member)
   end
 
-  def message_updated?
+  def updated?
     !!message.data.updated_at
   end
   
-  def message_has_parent?
+  def has_parent?
     message.data.parent_message_id
   end
   
-  def message_parent_href
-    "/mess/#{message.data.parent_message_id}/"
-  end
-
-  def message_clubs
-    cache['message_clubs'] ||= message.clubs
-  end
-
   def club
-    message_clubs.first
+    clubs.first
   end
 
   def club_title
@@ -156,10 +106,6 @@ class Messages_by_id < Base_View
   def club_href
     club.href
   end
-
-#   def target_ids_joined
-#     [message_id, club_id].map(&:to_s).join(",")
-#   end
 
   %w{ questions critiques suggests }.each { |mod|
     eval %~
