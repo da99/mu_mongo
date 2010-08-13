@@ -10,15 +10,11 @@ class Clubs_read_e < Base_View
   end
 
   def quotes
-    @cache['messages.quotes'] ||= begin
-                                    filter_and_compile_facts( 'e_quote' )
-                                  end
+    @cache_messages_quotes ||= filter_and_compile_facts( 'e_quote' )
   end
 
   def chapters
-    @cache['messages.chapters'] ||= begin
-                                      filter_and_compile_facts( 'e_chapter' )
-                                    end
+    @cache_messages_chapters ||= filter_and_compile_facts( 'e_chapter' )
   end
 
   def quotes_or_chapters?
@@ -30,7 +26,7 @@ class Clubs_read_e < Base_View
   end
 
   def facts
-    @cache['messages.facts'] ||= compile_messages( app.env['results.facts'] )
+    @cache_messages_facts ||= compile_messages( app.env['results.facts'] )
   end
 
   private

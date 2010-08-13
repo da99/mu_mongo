@@ -72,18 +72,20 @@ class Base_View < Mustache
   def initialize new_app
     @app        = new_app
     @not_prefix = /^not?_/
-    @cache      = {}
   end
 
   def compile_and_cache key, val
-    return @cache[key] if @cache[key]
-
-    if key.to_s['clubs']
-      @cache[key] = compile_clubs(val)
-    elsif key.to_s['messages']
-      @cache[key] = compile_messages(val)
-    else
-      @cache[key] = val
+    cache_name = "@cache_#{key.to_s.gsub( /[^a-z0-9\_]/i , '')}".to_sym
+    
+    instance_variable_get(cache_name) || begin
+      result = if key.to_s['clubs']
+                 compile_clubs(val)
+               elsif key.to_s['messages']
+                 compile_messages(val)
+               else
+                 val
+               end
+      instance_variable_set( cache_name, result)
     end
   end
 
@@ -212,26 +214,25 @@ class Base_View < Mustache
   end
 
   def current_member_usernames
-    cache[:current_member_usernames] ||= begin
-                                            if current_member
-                                              current_member.username_hash.map { |un_id, un| 
-                                                {:filename=>un, :username=>un, :username_id=>un_id}
-                                              }
-                                            else
-                                              []
-                                            end
-                                          end
+    @cache_current_member_usernames ||= \
+      if current_member
+        current_member.username_hash.map { |un_id, un| 
+          {:filename=>un, :username=>un, :username_id=>un_id}
+        }
+      else
+        []
+      end
   end
 
   def current_member_username_ids
-    cache[:current_member_username_ids] ||= \
+    @cache_current_member_username_ids ||= \
         current_member ? 
           current_member_usernames.map { |doc| doc[:username_id] } :
           []
   end
 
   def current_member_multi_verse_menu
-    cache[:current_member_multi_verse] ||= current_member.multi_verse_menu
+    @cache_current_member_multi_verse ||= current_member.multi_verse_menu
   end
   
   def single_username?
@@ -274,7 +275,7 @@ class Base_View < Mustache
   end
 
   def username_nav
-    cache[:username_nav] ||= begin
+    @cache_username_nav ||= begin
                                 c_name = @app.control_name
                                 a_name = @app.action_name
                                 life_page = (c_name == :Members && a_name == 'lives')
@@ -364,7 +365,7 @@ class Base_View < Mustache
   end
 
   def languages
-    cache[:languages] ||= begin
+    @cache_languages ||= begin
                              Couch_Plastic::LANGS.map { |k,v| 
                               {:name=>v, :filename=>k, :selected? =>(k=='en-us'), :not_selected? => (k != 'en-us')}
                              }.sort { |x,y| 

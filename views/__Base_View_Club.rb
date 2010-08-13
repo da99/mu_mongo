@@ -85,14 +85,14 @@ module Base_View_Club
   end
   
   def egg_timers_as_clubs
-    cache['egg_timers_as_clubs'] ||= [ 
+    @cache_egg_timers_as_clubs ||= [ 
       { :teaser=>'Works on old computers.', :href=>'/my-egg-timer/',    :title=>'Old (my-egg_timer)'},
       { :teaser=>'Works on newer computers.', :href=>'/busy-noise/',  :title=>'New (busy-noise egg timer)'},
     ]
   end
 
   def old_clubs
-    cache['old_clubs'] ||= [ 
+    @cache_old_clubs ||= [ 
       { :teaser=>nil, :href=>'/salud/',    :title=>'Salud (Español)'},
       { :teaser=>nil, :href=>'/clubs/back_pain/',  :title=>'Back Pain'},
       { :teaser=>nil, :href=>'/clubs/child_care/', :title=>'Child Care'},
@@ -105,7 +105,7 @@ module Base_View_Club
   end
 
   def your_clubs
-    cache['your_clubs'] ||= if logged_in?
+    @cache_your_clubs ||= if logged_in?
                                compile_clubs(current_member.owned_clubs)
                              else
                                []

@@ -36,11 +36,11 @@ class Messages_by_id < Base_View
   end
 
   def reposts
-    cache['message_reposts'] ||= message.reposts(current_member)
+    @cache_message_reposts ||= message.reposts(current_member)
   end
 
   def editor_id
-    @cache['editor_id'] ||= current_member_username_ids.detect { |id| id == owner_id }
+    @cache_editor_id ||= current_member_username_ids.detect { |id| id == owner_id }
   end
 
   def message
@@ -67,7 +67,7 @@ class Messages_by_id < Base_View
 
 
   def data
-    cache[:message_data] ||= begin
+    @cache_message_data ||= begin
                                 v= message.data.as_hash
                                 v[:compiled_body] = from_surfer_hearts?(v) ? v['body'] : auto_link(v['body'])
                                 v
@@ -97,17 +97,17 @@ class Messages_by_id < Base_View
   %w{ questions critiques suggests }.each { |mod|
     eval %~
       def #{mod}
-        cache['messages.#{mod}'] ||= compile_messages(message.#{mod}, message.data.as_hash)
+        @cache_messages_#{mod} ||= compile_messages(message.#{mod}, message.data.as_hash)
       end
     ~
   }
 
   def notify_menu
-    cache[:notify_menu] ||= current_member.notifys_menu( message )
+    @cache_notify_menu ||= current_member.notifys_menu( message )
   end
   
   def notifys
-    cache['message_notifys'] ||= message.notifys(current_member)
+    @cache_message_notifys ||= message.notifys(current_member)
   end
 
 end # === Messages_by_id 

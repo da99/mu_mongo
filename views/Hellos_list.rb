@@ -30,7 +30,7 @@ class Hellos_list < Base_View
   
   def clubs
     return []
-    cache[:clubs] ||= begin
+    @cache_clubs ||= begin
                         old_clubs + @app.env['results.clubs'].map { |r| 
                           r[:href] = "/clubs/#{r['filename']}/"
                           r
@@ -40,28 +40,28 @@ class Hellos_list < Base_View
 
   def city_clubs
     return []
-    cache['clubs.cities'] ||= compile_clubs( Club.by_club_model('city') )
+    @cache_clubs_cities ||= compile_clubs( Club.by_club_model('city') )
   end
 
   def beauty_clubs
     return []
-    cache['clubs.beauty'] ||= compile_clubs( Club.by_club_model(['healty', 'beauty']) )
+    @cache_clubs_beauty ||= compile_clubs( Club.by_club_model(['healty', 'beauty']) )
   end
 
   def political_clubs
     return []
-    cache['clubs.evil'] ||= compile_clubs(Club.by_club_model(['economics', 'history']))
+    @cache_clubs_evil ||= compile_clubs(Club.by_club_model(['economics', 'history']))
   end
 
   def joy_clubs
     return []
-    cache['clubs.joy'] ||= compile_clubs(Club.by_club_model(['joy', 'fun']))
+    @cache_clubs_joy ||= compile_clubs(Club.by_club_model(['joy', 'fun']))
   end
 
   %w{ city joy }.each { |club|
     eval(%~
       def #{club}_clubs?     
-        cache['not_empty_#{club}'] ||= begin
+        @cache_not_empty_#{club} ||= begin
           arr = #{club}_clubs
           arr && !arr.empty?
          end
@@ -70,14 +70,14 @@ class Hellos_list < Base_View
   }
 
   def political_beauty?
-    cache['not_empty_pb'] ||= begin
+    @cache_not_empty_pb ||= begin
                                  !(beauty_clubs.empty? && political_clubs.empty?)
                                end
   end
 
   def random_clubs
     return []
-    cache['random_clubs'] ||= begin
+    @cache_random_clubs ||= begin
                                  filenames = %w{ hearts predictions vitamins }
                                  doc = Club.by_filename(filenames[rand(filenames.size)])
                                  club = if doc

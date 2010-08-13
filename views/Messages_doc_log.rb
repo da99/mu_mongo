@@ -13,7 +13,7 @@ class Messages_doc_log < Base_View
   end
   
   def logs
-    @cache['message.logs'] ||= begin
+    @cache_message_logs ||= begin
                                  compile_logs(Doc_Log.all_by_doc_id(message.data._id, :with_assoc))
                                end
   end

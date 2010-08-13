@@ -9,7 +9,7 @@ class Members_account < Base_View
   end
 
   def messages
-    cache['messages.my'] ||= compile_messages(current_member.messages_from_my_clubs)
+    @cache_messages_my ||= compile_messages(current_member.messages_from_my_clubs)
   end
 
 end # === Members_account 

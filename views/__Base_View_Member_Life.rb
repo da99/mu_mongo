@@ -32,7 +32,7 @@ module Base_View_Member_Life
   end
 
   def owner_username_id
-    cache['username_id'] ||= app.env['results.owner'].username_hash.index(username)
+    @cache_username_id ||= app.env['results.owner'].username_hash.index(username)
   end
 
   def username_id
@@ -40,9 +40,11 @@ module Base_View_Member_Life
   end
 
   def compiled_owner_messages model
-    cache["mess.#{model}"] ||= begin
-                                  compile_messages(Message.public(:owner_id=>owner_username_id, :message_model=>model))
-                                end
+    cache_name = "@cache_mess_#{model}".to_sym
+    instance_variable_get(cache_name) || 
+      instance_variable_set(cache_name, compile_messages(
+        Message.public(:owner_id=>owner_username_id, :message_model=>model)
+      ))
   end
 
 end # === Base_View_Club

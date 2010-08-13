@@ -13,7 +13,7 @@ class Clubs_list < Base_View
   end
 
   def other_clubs
-    cache[ 'clubs.other' ] ||= (clubs - your_clubs)
+    @cache_clubs_other ||= (clubs - your_clubs)
   end
 
 end # === Clubs_list 

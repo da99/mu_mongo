@@ -13,7 +13,7 @@ class Members_lives < Base_View
   end
 
   def stream
-    cache[ 'messages.stream'] ||= compile_messages(app.current_member.stream(current_member_username))
+    @cache_messages_stream ||= compile_messages(app.current_member.stream(current_member_username))
   end
 
 end # === Members_lives 
