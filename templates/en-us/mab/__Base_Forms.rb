@@ -21,14 +21,14 @@ module Base_Forms
   }
 
   def form_config
-   Config_Switches.new {
-                strings :id, :action, :method, :field
-                array :class
-                string_or_block :show, :button_create, :submit
-                switch :as_radios, off
-                switch :as_menu, off
-                switch :as_check_boxes, off
-              } 
+    Config_Switches.new {
+      strings :id, :action, :method, :field, :collection
+      array :class
+      string_or_block :show, :button_create, :submit
+      switch :as_radios, off
+      switch :as_menu, off
+      switch :as_check_boxes, off
+    } 
   end
 
   def a_click txt
@@ -395,17 +395,23 @@ module Base_Forms
   
   def post_to_universes raw_id, &configuration
     config  = form_config
-    config.put.id "post_to_universes_#{raw_id}"
-    config.put(&configuration)
+    
+    config.put {
+      id         "post_to_universes_#{raw_id}"
+      collection "#{raw_id}_menu"
+      instance_eval &configuration
+    }
+    
+    get = config.get
     
     form_post(config) {
-      loop 'current_member_multi_verse_menu' do
+      loop(get.collection) do
         h4 '{{username}}'
-        checkboxes_for 'clubs' do
-          text '{{title}}'
+        checkboxes_for('clubs') {
+          text  '{{title}}'
           value '{{_id}}'
-          name 'clubs[]'
-        end
+          name  'clubs[]'
+        }
       end
     }
   end

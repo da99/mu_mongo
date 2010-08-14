@@ -23,6 +23,8 @@ module Base
       text "\n{{^#{mus}}}\n\n"
     end
   end
+  alias_method :if_no,    :if_not
+  alias_method :if_empty, :if_not
   
   def javascript_files
     (@js_files ||= []).compact.uniq

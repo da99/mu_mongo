@@ -11,20 +11,32 @@ namespace :views do
     sh('rm -v -r .sass-cache')
   end
 
-  desc 'Uses name= and lang= [en-us]'
+  desc 'Create a view file.
+    lang=    [en-us]
+    model=   [nil]
+    control= 
+    name= 
+  '
   task :create do
     
     lang      = ENV['lang'] || 'en-us'
+    control   = assert_not_empty( ENV['control'] )
     name      = assert_not_empty( ENV['name'] )
+    filename  = "#{control}_#{name}"
+    model     = ENV['model']
+    control   = ENV['control']
+    model_piece   = control ? "# MODEL   controls/#{model}.rb": ''
+    control_piece = model   ? "# CONTROL models/#{model}.rb": ''
     
-    assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, name )
+    assert_match( /\A[a-zA-Z\-\_0-9]+\Z/, filename )
 
     home    = "~/megauni"
     ldir      = ("~/megauni/templates/#{lang}")
     dir       = File.join( ldir, 'mab' )
-    mab       = File.join( ldir, 'mab',   name + '.rb'   )
-    sass      = File.join( ldir, 'sass',  name + '.sass' )
-    view      = File.join( home, 'views', name + '.rb'   )
+    mab       = File.join( ldir, 'mab',   filename + '.rb'   )
+    sass      = File.join( ldir, 'sass',  filename + '.sass' )
+    view      = File.join( home, 'views', filename + '.rb'   )
+    piece_txt = [control_piece, model_piece].compact.join("\n")
     created   = []
     already   = []
 
@@ -32,7 +44,8 @@ namespace :views do
     templates[mab] = %~
 # VIEW #{view}
 # SASS #{sass}
-# NAME #{name}
+# NAME #{filename}
+#{piece_txt}
 
 div.content! { 
   
@@ -48,6 +61,7 @@ partial('__nav_bar')
 # MAB   #{mab}
 # SASS  #{sass}
 # NAME  #{name}
+#{piece_txt}
 
 class #{name} < Base_View
 
@@ -62,6 +76,8 @@ end # === #{name} ~.lstrip
 // MAB  #{mab}
 // VIEW #{view}
 // NAME #{name}
+// #{control_piece}
+// #{model_piece}
 
 @import layout.sass
 

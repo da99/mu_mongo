@@ -1,6 +1,8 @@
 # VIEW views/Members_life.rb
 # SASS ~/megauni/templates/en-us/sass/Members_life.sass
 # NAME Members_life
+# CONTROL controls/Members
+# MODEL   models/Member
 
 div.col.navigate! {
   
@@ -10,7 +12,7 @@ div.col.navigate! {
 
   div.club_messages! do
     
-    show_if('no_stream?'){
+    if_empty('stream'){
       div.empty_msg 'No messages have been posted.'
     }
     
@@ -20,20 +22,15 @@ div.col.navigate! {
   
 } # div.navigate!
 
-div.col.intro! {
 
-
-  show_if('owner?') {
-    
-    post_message {
-      hidden_input( :target=>'{{username_id}}' )
-    }
-
-  } # show_if
-  
-
-} # div.intro!
-
-
-# partial('__nav_bar')
+div {
+  h4 "Things to do:"
+  ul {
+    li "Create a universe for your friend."
+    li "Post on your friend's universes?"
+    li "What did you do today?"
+    li "Discover other universes."
+    li "Watch this video."
+  }
+}
 

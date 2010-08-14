@@ -12,27 +12,33 @@ tag!(:html, :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang 
     meta( :'http-equiv'=>"Content-Type"        , :content=>"text/html; charset=utf-8" )
     meta( :'http-equiv'=>"Content-Language"    , :content=>"en-US" )
     
-    show_if 'no_meta_cache?' do
+    if_not 'meta_cache?' do
       meta( :'http-equiv'=>'expires' , :content=>'Thu, 12 Mar 2004 12:34:12 GMT' )
       meta( :'http-equiv'=>'pragma'  , :content=>'no-cache' )
     end
 
-    meta( :name=>'description', :content=>"{{meta_description}}")
+    loop 'meta_menu' do
+      meta( :name=>'{{name}}', :content=>"{{content}}")
+    end
 
-    meta( :name=>'keywords'   , :content=>"{{meta_keywords}}")
-
-    title( "{{title}}" )
+    mustache 'page' do
+      title( "{{title}}" )
+    end
 
     link( :rel=>"shortcut icon", :href=>"/favicon.ico", :type=>"image/x-icon")
     
     mustache("not_mobile_request?") {
-      link( :rel=>"stylesheet",  :href=>"{{css_file}}?time=#{Time.now.utc.to_i}", :media=>"screen", :type=>"text/css" )
-      # link( :rel=>"stylesheet", :href=>"/skins/{{skin_name}}/css/{{page_name}}.css?v=#{Time.now.to_i}", :media=>"screen", :type=>"text/css" )
+      link( 
+        :rel=>"stylesheet",  
+        :href=>"{{css_file}}?time=#{Time.now.utc.to_i}", 
+        :media=>"screen", 
+        :type=>"text/css" 
+      )
     }
     
     mustache "head_content"
    
-  } # head
+  } # === head
 
   body.the_body! {
     

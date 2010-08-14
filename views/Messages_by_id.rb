@@ -1,12 +1,12 @@
 # MAB   ~/megauni/templates/en-us/mab/Messages_by_id.rb
 # SASS  ~/megauni/templates/en-us/sass/Messages_by_id.sass
 # NAME  Messages_by_id
-# MODEL ~/megauni/models/Message.rb
+# MODEL models/Message
 
 class Messages_by_id < Base_View
 
   delegate_date_to :message, %w{ published_at }
-  delegate_to 'message.data', :owner_id, :answer, :_id, :message_model
+  delegate_to 'message.data', :owner_id, :answer, :_id, :message_model, :title
   delegate_to :message, %w{ 
     href 
     href_notify 
@@ -25,7 +25,7 @@ class Messages_by_id < Base_View
     from_surfer_hearts?(message.data.as_hash)
   end
 
-  def title 
+  def page_title 
     message.data.title || 
       (message.data.as_hash.has_key?('old_id') && message.data._id.to_s.sub('message-', 'Message ID: ')) ||
         ( "Message ID: #{message.data._id}" )
@@ -108,6 +108,10 @@ class Messages_by_id < Base_View
   
   def notifys
     @cache_message_notifys ||= message.notifys(current_member)
+  end
+  
+  def repost_menu
+    @cache_repost_menu ||= current_member.reposts_menu( message )
   end
 
 end # === Messages_by_id 

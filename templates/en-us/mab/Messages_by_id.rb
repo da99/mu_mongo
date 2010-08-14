@@ -1,6 +1,7 @@
-# VIEW views/Messages_by_id.rb
+# VIEW ~/megauni/views/Messages_by_id.rb
 # SASS ~/megauni/templates/en-us/sass/Messages_by_id.sass
 # NAME Messages_by_id
+# MODEL models/Message
 
 show_if 'show_moving_message?' do
   div.notice! {
@@ -14,7 +15,7 @@ h3.club_title! '{{club_title}}'
 
 club_nav_bar __FILE__
 
-h3.message_title '{{message_title}}'
+h3.message_title '{{title}}'
 
 div_centered { 
   
@@ -57,7 +58,7 @@ div_centered {
         if_not 'reposts?' do
           div.repost! {
             
-            post_to_universes(:repost_form) {
+            post_to_universes(:repost) {
               action "{{href_repost}}"
               button_create 'Re-post.'
               show 'Re-post.'

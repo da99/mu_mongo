@@ -393,13 +393,21 @@ class Base_View < Mustache
 
   # === META ====
 
-  def meta_description
-  end
-
-  def meta_keywords
+  # Override this to return:
+  #   Array - [ 
+  #     {
+  #       :name => name
+  #       :content => name
+  #     } 
+  #   ]
+  def meta_menu 
+    @meta_menu ||= {}.map { |k,v| 
+      { :name => k, :content=> v } 
+    }
   end
 
   def meta_cache
+    false
   end
 
   def javascripts
@@ -453,6 +461,15 @@ class Base_View < Mustache
     The_App::SITE_TAG_LINE
   end
 
+  # === NAV BAR ===
+
+  def page
+    @page_props ||= {
+      'title' => respond_to?(:page_title) ?
+                  page_title :
+                  title
+    }
+  end
   
   private # ======== 
 
