@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -8,21 +8,32 @@
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="en-US" http-equiv="Content-Language"/>
 
-{{#no_meta_cache?}}
+{{^meta_cache?}}
 
    <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
    <meta content="no-cache" http-equiv="pragma"/>
 
-{{/no_meta_cache?}}
+{{/meta_cache?}}
 
-   <meta content="{{meta_description}}" name="description"/>
-   <meta content="{{meta_keywords}}" name="keywords"/>
+
+{{#meta_menu}}
+
+   <meta content="{{content}}" name="{{name}}"/>
+
+{{/meta_menu}}
+
+
+{{#page}}
+
    <title>{{title}}</title>
+
+{{/page}}
+
    <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1281516140"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281810970" media="screen"/>
 
 {{/not_mobile_request?}}
 

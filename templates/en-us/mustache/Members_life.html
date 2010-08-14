@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
- <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+ <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="text/javascript" http-equiv="Content-Script-Type"/>
@@ -8,21 +8,32 @@
    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
    <meta content="en-US" http-equiv="Content-Language"/>
 
-{{#no_meta_cache?}}
+{{^meta_cache?}}
 
    <meta content="Thu, 12 Mar 2004 12:34:12 GMT" http-equiv="expires"/>
    <meta content="no-cache" http-equiv="pragma"/>
 
-{{/no_meta_cache?}}
+{{/meta_cache?}}
 
-   <meta content="{{meta_description}}" name="description"/>
-   <meta content="{{meta_keywords}}" name="keywords"/>
+
+{{#meta_menu}}
+
+   <meta content="{{content}}" name="{{name}}"/>
+
+{{/meta_menu}}
+
+
+{{#page}}
+
    <title>{{title}}</title>
+
+{{/page}}
+
    <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico"/>
 
 {{#not_mobile_request?}}
 
-   <link media="screen" type="text/css" rel="stylesheet" href="{{css_file}}?time=1281516140"/>
+   <link type="text/css" rel="stylesheet" href="{{css_file}}?time=1281810970" media="screen"/>
 
 {{/not_mobile_request?}}
 
@@ -116,11 +127,11 @@
        </ul>
       <div id="club_messages">
 
-{{#no_stream?}}
+{{^stream}}
 
        <div class="empty_msg">No messages have been posted.</div>
 
-{{/no_stream?}}
+{{/stream}}
 
 
 {{#stream}}
@@ -198,12 +209,12 @@
 
 {{#not_accepted?}}
 
-           <a onclick="
+           <a href="#toggle_form_message_accept" onclick="
           $(this).parent('div').addClass('loading');
           $('#toggle_form_message_accept input[name=owner_accept]').val(1);
           $('#toggle_form_message_accept').submit();
           return false;
-        " href="#toggle_form_message_accept">Accept</a>
+        ">Accept</a>
 
 {{/not_accepted?}}
 
@@ -217,12 +228,12 @@
 
 {{#not_declined?}}
 
-           <a onclick="
+           <a href="#toggle_form_message_accept" onclick="
           $(this).parent('div').addClass('loading');
           $('#toggle_form_message_accept input[name=owner_accept]').val(-1);
           $('#toggle_form_message_accept').submit();
           return false;
-        " href="#toggle_form_message_accept">Decline</a>
+        ">Decline</a>
 
 {{/not_declined?}}
 
@@ -230,12 +241,12 @@
 {{#not_pending?}}
 
            <span> or </span>
-           <a onclick="
+           <a href="#toggle_form_message_accept" onclick="
           $(this).parent('div').addClass('loading');
           $('#toggle_form_message_accept input[name=owner_accept]').val(0);
           $('#toggle_form_message_accept').submit();
           return false;
-        " href="#toggle_form_message_accept">I don't know.</a>
+        ">I don't know.</a>
 
 {{/not_pending?}}
 
@@ -289,79 +300,17 @@
 
       </div>
      </div>
-     <div class="col" id="intro">
-
-{{#owner?}}
-
-       <div id="club_message_create">
-        <form class="" action="/messages/" method="post" name="form_club_message_create" id="form_club_message_create">
-         <h4>Post a message:</h4>
-         <fieldset>
-          <select name="message_model">
-           <option value="random">Random Thought</option>
-           <option value="news">Important News</option>
-           <option value="question">Question</option>
-           <option value="fact">Encyclopedia Chapter</option>
-           <option value="e_chapter">Encyclopedia Chapter</option>
-           <option value="e_quote">Quote</option>
-           <option value="chapter">Encyclopedia Chapter</option>
-           <option value="story">Story</option>
-           <option value="fight">Fight</option>
-           <option value="complaint">Complaint</option>
-           <option value="cheer">Praise &amp; Cheer</option>
-           <option value="jeer">Criticize</option>
-           <option value="suggest">Suggestion</option>
-           <option value="debate">Friendly Debate</option>
-           <option value="plea">Request</option>
-           <option value="buy">Product Recommendation</option>
-           <option value="prediction">Prediction</option>
-          </select>
-         </fieldset>
-         <fieldset class="hidden">
-          <input type="hidden" value="" name="body_images_cache"/>
-          <input type="hidden" value="{{url}}" name="return_url"/>
-          <input type="hidden" value="{{username_id}}" name="target"/>
-
-{{#single_username?}}
-
-          <input type="hidden" value="{{first_username}}" name="username"/>
-
-{{/single_username?}}
-
-         </fieldset>
-         <fieldset>
-          <textarea name="body"></textarea>
-         </fieldset>
-
-{{#multiple_usernames?}}
-
-         <fieldset>
-          <label>Post as:</label>
-          <select name="owner_id">
-
-{{#multiple_usernames}}
-
-           <option value="{{username}}">{{username}}</option>
-
-{{/multiple_usernames}}
-
-          </select>
-         </fieldset>
-
-{{/multiple_usernames?}}
-
-         <div class="buttons">
-          <button class="create">Save</button>
-         </div>
-        </form>
-       </div>
-
-{{/owner?}}
-
+     <div>
+      <h4>Things to do:</h4>
+      <ul>
+       <li>Create a universe for your friend.</li>
+       <li>Post on your friend's universes?</li>
+       <li>What did you do today?</li>
+       <li>Discover other universes.</li>
+       <li>Watch this video.</li>
+      </ul>
      </div>
    </div>
-   <script type="text/javascript" src="/js/vendor/jquery-1.4.2.min.js?1281516140"></script>
-   <script type="text/javascript" src="/js/pages/Megauni_Base.js?1281516140"></script>
 
 {{#include_tracking?}}
 
