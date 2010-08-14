@@ -758,7 +758,7 @@ class Member
   def reposts_menu message = nil
     return multi_verse_menu if not message
     multi_verse_menu(
-      reposts_by_username(self)
+      message.reposts_by_username(self)
     )
   end
 
