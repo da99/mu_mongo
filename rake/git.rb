@@ -17,22 +17,19 @@ end
 def git_commit_pending?
   output = `git status 2>&1`
   !output['nothing to commit']
-  # case $?.exitstatus
-  # when 0
-  #   true
-  # when 1
-  #   false
-  # else
-  #   raise "Unknown error: exitstatus: #{$?.exitstatus}  -  #{output}"
-  # end
 end
 
 namespace 'git' do
   
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
-    unless Dir.glob("templates/en-us/mustache/*.*").empty? 
-      sh 'git rm templates/en-us/mustache/*.*'
+    unless ENV['allow_compiled_views']
+      if `git status`[%r!templates/en-us/mustache/..!]
+        sh 'git checkout -- templates/en-us/mustache/*.*'
+      end
+      if `git status`[%r!public/stylesheets/en-us/..!]
+        sh 'git checkout -- public/stylesheets/en-us/*.*'
+      end
     end
     sh 'git add . && git add -u'
     sh 'git status'
@@ -71,6 +68,7 @@ namespace 'git' do
       exit(1)
     end
     
+    ENV['allow_compiled_views'] = 'yes'
     Rake::Task['views:compile'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
