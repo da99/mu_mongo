@@ -41,14 +41,20 @@ class Members
     require_log_in!
     render_html_template
   end
-
-  def GET_account
+	
+  def GET_follows
+    require_log_in!
+    render_html_template
+  end
+	
+  def GET_notifys
     require_log_in!
     render_html_template
   end
 
-  def GET_lives un
-    GET_life un
+  def GET_lifes
+    require_log_in!
+    render_html_template
   end
 
   def GET_life un

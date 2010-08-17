@@ -1,7 +1,17 @@
 
+class String
+  def m!
+    "{{#{self}}}"
+  end
+end # === class
 
 module Base
   
+  def a! raw_txt, href
+    txt = raw_txt[/[^a-z0-9\_]/] ? raw_txt : raw_txt.m!
+    a(txt, :href=>href.m!)
+  end
+
   def mustache mus, &blok
     if block_given?
       text "\n{{\##{mus}}}\n\n"
@@ -15,13 +25,9 @@ module Base
   alias_method :loop,    :mustache
 
   def if_not mus, &blok
-    if block_given?
-      text "\n{{^#{mus}}}\n\n"
-      yield
-      text "\n{{/#{mus}}}\n\n" 
-    else
-      text "\n{{^#{mus}}}\n\n"
-    end
+    text "\n{{^#{mus}}}\n\n"
+    yield
+    text "\n{{/#{mus}}}\n\n" 
   end
   alias_method :if_no,    :if_not
   alias_method :if_empty, :if_not

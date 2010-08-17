@@ -6,6 +6,12 @@
 
 class Clubs_by_filename < Base_View
  
+	delegate_to :club, %w{
+		href_delete_follow
+		href_delete
+		href_members
+	} 
+
   def mini_nav_bar?
     true
   end
@@ -34,5 +40,20 @@ class Clubs_by_filename < Base_View
     end
   end
 
+	def memberships
+		[]
+	end
+
+	def following
+		false
+	end
   
+	def follows
+		[]
+	end
+
+	def notifys
+		[]
+	end
+
 end # === Clubs_by_filename

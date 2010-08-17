@@ -5,6 +5,12 @@ namespace :views do
     require 'middleware/Mab_In_Disguise'
     require 'middleware/Xml_In_Disguise'
     require 'middleware/Render_Css'
+    
+    if !ENV['RACK_ENV'] 
+      ENV['RACK_ENV'] = 'development'
+      require 'megauni'
+    end
+
     Mab_In_Disguise.compile_all
     Xml_In_Disguise.compile_all
     Render_Css.compile_all
@@ -42,14 +48,13 @@ namespace :views do
 
     templates = {}
     templates[mab] = %~
-# VIEW #{view}
-# SASS #{sass}
-# NAME #{filename}
+# VIEW    #{view}
+# SASS    #{sass}
+# NAME    #{filename}
 #{piece_txt}
 
 div.content! { 
   
-
   
 } # === div.content!
 
@@ -58,12 +63,12 @@ partial('__nav_bar')
 ~.lstrip
 
       templates[view] = %~
-# MAB   #{mab}
-# SASS  #{sass}
-# NAME  #{name}
+# MAB     #{mab}
+# SASS    #{sass}
+# NAME    #{name}
 #{piece_txt}
 
-class #{name} < Base_View
+class #{filename} < Base_View
 
   def title 
     '...'
@@ -73,9 +78,9 @@ end # === #{name} ~.lstrip
 
       if sass
         templates[sass] = %~
-// MAB  #{mab}
-// VIEW #{view}
-// NAME #{name}
+// MAB    #{mab}
+// VIEW   #{view}
+// NAME   #{name}
 // #{control_piece}
 // #{model_piece}
 

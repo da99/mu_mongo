@@ -146,21 +146,42 @@ module Base_Control
   end
 
   def process_mustache ext = 'html', alt_file_name = nil
-    file_name = alt_file_name || "#{control_name}_#{action_name}"
     
+    file_name = alt_file_name || "#{control_name}_#{action_name}"
+    mustache  = "templates/#{lang}/mustache/#{file_name}.#{ext}"
     template_content = if The_App.production? 
-                         File.read("templates/#{lang}/mustache/#{file_name}.#{ext}")
+                         File.read(mustache)
                        else
-                         disguise = (ext == 'html' ? 'mab' : ext).capitalize
-                         require( "middleware/#{disguise}_In_Disguise"  )
-                         disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
-                         disguise_class.compile( "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb" ) 
+                         disguise    = (ext == 'html' ? 'mab' : ext).capitalize
+                         original    = "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb"
+                         time_format = '%M:%d:%H:%m:%Y'
+                         mtime_equal = begin
+                                         File.mtime( original ).strftime(time_format) == File.mtime( mustache ).strftime(time_format)
+                                       rescue Errno::ENOENT
+                                         false
+                                       end
+                         if not mtime_equal
+                           puts("Compiling templated instead of using cached Mustache...") if The_App.development?
+                           require( "middleware/#{disguise}_In_Disguise"  )
+                           disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
+                           disguise_class.compile_all(file_name)
+                         end
+                        
+                         #   Mustache::Generator.new.compile(
+                         #     Mustache::Parser.new.compile(
+                         #       disguise_class.compile( original ).to_s 
+                         #     )
+                         #   )
+                         # else
+                           
+                         File.read(mustache)
                        end
     
     require "views/#{file_name}.rb"
-    view_class = Object.const_get(file_name)
+    view_class                       = Object.const_get(file_name)
     view_class.raise_on_context_miss = true
-    html = view_class.new(self).render( template_content )
+    ctx                              = Mustache::Context.new(view_class.new(self))
+    eval(template_content)
   end
 
   def render_html_template *args

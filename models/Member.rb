@@ -449,6 +449,23 @@ class Member
       "#<#{self.class}:#{self.object_id} id=#{self.data._id}>"
     end
   end
+
+  # Returns: 
+  #   Hash
+  #     :username_id => username
+  #     :username_id => username
+  #     :username_id => username
+  #
+  def username_hash
+    @username_hash ||= \
+			begin
+				hsh = {}
+				find_usernames(:owner_id=>data._id).map { |un| 
+					hsh[un['_id']] = un['username']
+				}
+				hsh
+			end
+  end
   
   # Returns: 
   #   Array - [ :username ]
@@ -478,6 +495,7 @@ class Member
       { 
         'username_id'   => id,
         'username'      => un,
+        'href'      => "/life/#{un}/",
         'selected?'     => un_ids.include?(id),
         'not_selected?' => !un_ids.include?(id)
       }
@@ -489,20 +507,6 @@ class Member
   #
   def username_ids
     username_hash.keys
-  end
-
-  # Returns: 
-  #   Hash
-  #     :username_id => username
-  #     :username_id => username
-  #     :username_id => username
-  #
-  def username_hash
-    hsh = {}
-    find_usernames(:owner_id=>data._id).map { |un| 
-      hsh[un['_id']] = un['username']
-    }
-    hsh
   end
 
   def username_to_username_id str

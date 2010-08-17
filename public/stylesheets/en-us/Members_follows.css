@@ -62,6 +62,32 @@ table {
 a img {
   border: none; }
 
+#the_body {
+  padding: 10px 20px; }
+
+#container {
+  overflow: hidden;
+  display: inline-block; }
+  #container {
+    display: block; }
+
+#content {
+  overflow: hidden;
+  display: inline-block;
+  float: left; }
+  #content {
+    display: block; }
+
+#the_content {
+  overflow: hidden;
+  display: inline-block; }
+  #the_content {
+    display: block; }
+
+#nav_bar {
+  float: left;
+  width: 200px; }
+
 #outer_shell {
   overflow: hidden; }
 
@@ -345,86 +371,3 @@ div.message, div.club {
     font-size: 85%; }
     div.message div.permalink strong, div.club div.permalink strong {
       font-size: 100%; }
-
-div.col {
-  float: left; }
-
-#pretension {
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  width: 500px;
-  margin: 25px 25px 0 25px;
-  padding: 30px 10px 50px 10px;
-  text-align: center;
-  background: #ffffcc;
-  border: 1px dashed #003860; }
-  #pretension h1 {
-    padding: 0 0 30px 0; }
-  #pretension h3.title {
-    font-style: italic;
-    padding: 4px 5px 30px 5px; }
-  #pretension h4 span.title {
-    color: #333333; }
-  #pretension #coming_soon {
-    font-size: 80%;
-    text-align: center;
-    text-transform: uppercase; }
-  #pretension ul {
-    padding: 0 10px 0 20px;
-    font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
-    font-size: 110%; }
-    #pretension ul li {
-      padding: 6px 0 0 0; }
-
-#middle {
-  border-left: 1px dashed #003860;
-  border-right: 1px dashed #003860;
-  padding: 0 15px 100px 15px;
-  margin: 0 15px 0 0;
-  width: 250px; }
-
-#intro {
-  padding: 0 0 10px 0; }
-  #intro h1 {
-    color: #f00919;
-    font-size: 28px;
-    font-weight: bold; }
-  #intro h2 {
-    font-size: 14px;
-    text-transform: uppercase; }
-  #intro #search_club_form {
-    margin: 20px 0; }
-    #intro #search_club_form fieldset {
-      padding-bottom: 0; }
-  #intro #footer {
-    font-size: 12px; }
-
-#nav_bar {
-  border-width: 0;
-  padding: 0;
-  margin: 0; }
-
-#city_clubs, #political_beauty, #joy_clubs, #random_clubs {
-  width: 480px;
-  padding: 0; }
-  #city_clubs h4, #political_beauty h4, #joy_clubs h4, #random_clubs h4 {
-    font-size: 80%;
-    text-align: center; }
-  #city_clubs div.club, #political_beauty div.club, #joy_clubs div.club, #random_clubs div.club {
-    border-bottom-width: 0;
-    padding-top: 0; }
-    #city_clubs div.club h4, #political_beauty div.club h4, #joy_clubs div.club h4, #random_clubs div.club h4 {
-      font-size: 120%;
-      text-align: center; }
-    #city_clubs div.club div.teaser, #political_beauty div.club div.teaser, #joy_clubs div.club div.teaser, #random_clubs div.club div.teaser {
-      border-bottom: 1px dashed #003860;
-      margin-bottom: 10px;
-      padding: 5px 5px 10px 5px;
-      font-style: italic;
-      text-align: center; }
-    #city_clubs div.club div.message div.body, #political_beauty div.club div.message div.body, #joy_clubs div.club div.message div.body, #random_clubs div.club div.message div.body {
-      font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
-
-body {
-  padding: 10px; }

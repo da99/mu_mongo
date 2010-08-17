@@ -46,76 +46,22 @@ class Find_The_Bunny
   end
 
   def call new_env
-    
     new_env['the.app.meta'] ||= {}
-    http_meth = new_env['REQUEST_METHOD'].to_s
-    results = Mu_Router.maps.detect { |path, control, raw_action_name, raw_http_verbs| 
-
-      action_name = raw_action_name ? 
-                      raw_action_name : 
-                      path.gsub(%r!\A/|/\Z!, '').split("/").join('-').gsub('-', '_')
+    results = Mu_Router.detect(new_env)
+    return(@app.call(new_env)) if results
       
-      # === Validate HTTP verbs
-      http_verbs = [ raw_http_verbs || 'GET' ].flatten
-      if http_verbs.empty?
-        http_verbs << 'GET'
-      end
-      if http_verbs.include?('GET')
-        http_verbs << 'HEAD'
-      end
-      http_verbs = http_verbs.compact
-
-      invalid = http_verbs - VALID_HTTP_VERBS
-      unless invalid.empty?
-        raise ArgumentError, "Invalid http verbs, #{invalid.inspect} for #{control.inspect}, #{action_name.inspect}, #{raw_http_verbs.inspect}"
-      end
-      
-      # === Does the URL match that target?
-      path_matches = case path
-                     when String
-                       k_finale = URL_REGEX.to_a.inject(path) { |m, kv| 
-                         m.gsub("{#{kv.first}}", "(#{kv.last})")
-                       }
-      # if new_env['PATH_INFO'] == "/clubs/hearts/" && http_meth == 'GET'
-      #   
-      # end
-        
-                      
-                       new_env['PATH_INFO'] =~ %r~\A#{k_finale}\Z~
-                     when Regexp
-                       new_env['PATH_INFO'] =~ path
-                     end
-
-      # === Action found?
-      action_matches = http_verbs.include?(http_meth)
-
-      # === Store everything into the ENV.
-      if path_matches && action_matches
-        new_env['the.app.meta'][:control]     = control
-        new_env['the.app.meta'][:http_method] = http_meth
-        new_env['the.app.meta'][:action_name] = action_name || http_meth
-        new_env['the.app.meta'][:args]        = $~.captures
-      end
-      
-    }
-
-    if results
-      @app.call new_env 
-    else
-      
-      if new_env['PATH_INFO']['/+/']
-        new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )
-        return redirect(new_url)
-      end
-      
-      if new_env['PATH_INFO'] == '/templates/' || new_env['HTTP_USER_AGENT'].to_s['TwengaBot']
-        return redirect('/')
-      end
-      
-      raise The_App::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
+    if new_env['PATH_INFO']['/+/']
+      new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )
+      return redirect(new_url)
     end
-
+    
+    if new_env['PATH_INFO'] == '/templates/' || new_env['HTTP_USER_AGENT'].to_s['TwengaBot']
+      return redirect('/')
+    end
+    
+    raise The_App::HTTP_404, "Not found: #{new_env['REQUEST_METHOD']} #{new_env['PATH_INFO']}"
   end
+
   
 
 end # === Find_The_Bunny

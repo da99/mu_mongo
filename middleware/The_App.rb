@@ -47,7 +47,7 @@ class The_App
 
     control, http_method, action_name, args = new_env['the.app.meta'].values_at(:control, :http_method, :action_name, :args)
     the_app = new_env['the.app'] = control.new(new_env)
-
+		
     begin
       if http_method == action_name
         the_app.send( http_method, *args )

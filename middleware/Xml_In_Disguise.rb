@@ -1,22 +1,20 @@
 require 'builder'
+require 'middleware/Mab_In_Disguise'
 
 class Xml_In_Disguise
   
   def self.compile_all *args
     vals = compile
     vals.each do |xml_file_name, v|
-      puts "Writing: #{v.first}"
-      File.open(v.first, 'w') { |f| 
-        f.write v.last 
-      }
+			Mab_In_Disguise.save_file( xml_file_name, v.first, v.last)
     end
   end
 
-  def self.compile file_name = nil
+  def self.compile file_name = '*'
     
     vals = {}
 
-    Dir.glob(file_name || 'templates/*/xml/*.rb').each { |xml_file|
+    Dir.glob("templates/*/xml/#{file_name}.rb").each { |xml_file|
 
       file_basename = File.basename(xml_file)
       xml_dir       = File.dirname(xml_file)
@@ -32,10 +30,10 @@ class Xml_In_Disguise
       vals[xml_file] = [mus_file, str]
     }
     
-    file_name ?
-      vals[file_name].last :
-      vals
+    file_name == '*' ?
+      vals :
+      vals[file_name].last
     
   end
 
-end # === Mab_In_Disguise
+end # === Xml_In_Disguise

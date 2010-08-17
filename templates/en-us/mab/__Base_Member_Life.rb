@@ -1,6 +1,60 @@
 
 module Base_Member_Life
 
+  def filter_options type
+    
+    h4 'Filter by life:'
+    ul {
+      loop('usernames') {
+        li { a! 'username', "href_#{type}"}	
+      }
+    }
+    
+    show_if('clubs_not_owned?') {
+      h4 'Filter by universe:'
+      ul {
+        loop 'clubs_not_owned' do
+          li { a! 'title', "href_#{type}" }
+        end
+      }
+    }
+    
+  end
+
+  def member_nav_bar filename
+    file     = File.basename(filename).sub('.rb', '')
+    li_span  = lambda { |txt| li.selected { span txt } }
+    li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
+    vals = [ 
+      [/_follows\Z/      , 'Follows'     , '/follows/']         , # \Helps + Mind Control
+      [/_notifys\Z/      , 'Notifys'     , '/notifys/']         , #  \  Filters of: Secret Unis         , Unis, Contacts, Memberships
+      [/_lifes\Z/        , 'Lifes & UNIs', '/lifes/']           , #   \
+      [ /_help\Z/        , 'Help'        , '/help/'] ,
+      # [/_news\Z/       , 'Calendar'    , 'news/']            ,  
+      # [/_shop\Z/       , 'To-dos'      , 'shop/']            ,  
+      # [/_predictions\Z/, 'Contacts'    , 'predictions/']     , 
+    ]
+    text(capture {
+
+      ul.nav_bar.member_nav_bar! {
+        vals.each { |trip|
+          if file =~ trip[0]
+            li.selected  trip[1] 
+          else
+            li { a trip[1], :href=>trip[2]  }
+          end
+        }
+
+        mustache 'logged_in?' do
+          li { a('Log-out', :href=>'/log-out/') }
+        end
+        
+        li { a('Megauni', :href=>'/') }
+      } # ul
+      
+    })
+  end # === def member_nav_bar
+
   def life_club_nav_bar filename
     file     = File.basename(filename).sub('.rb', '')
     li_span  = lambda { |txt| li.selected { span txt } }

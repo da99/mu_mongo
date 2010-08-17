@@ -266,8 +266,9 @@ class Club
   def href 
     "/clubs/#{data.filename}/"
   end
+	alias_method :href_delete, :href
 
-  %w{ e magazine news qa shop random thanks fights }.each do |suffix|
+  %w{ e magazine news qa shop random thanks fights delete_follow members }.each do |suffix|
     eval %~
       def href_#{suffix}
         File.join(href, '#{suffix}/')
