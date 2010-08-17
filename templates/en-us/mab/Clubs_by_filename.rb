@@ -13,25 +13,62 @@ div.outer_shell! do
     
     div.club_body! {
 
+      show_if 'logged_in?' do
+        show_if 'memberships?' do
+          ul {
+            loop 'memberships' do
+              li { a! "Withdraw as: {{name}}", 'href'.m! }
+            end
+          }
+        end
+        show_if 'follower_but_not_owner?' do
+          post_delete 'follow' do
+            action 'href_delete_follow'.m!
+            submit {
+              a_click 'Unfollow'
+            }
+          end
+        end
+        show_if 'notifys?' do
+          a! 'See all notifys.', 'href_notifys'
+        end
+      end
+    
       div.col.intro! {
 
         h4 'About this universe:'
         
         mustache 'owner?' do
-          p 'You own this universe.'
+          h4 'You own this universe.'
+          div {
+            a! 'Members list.', 'href_members'
+          }
+          div {
+            a! 'Edit settings.', 'href_edit'
+          }
+          delete_form 'uni' do
+            action 'href_delete'
+            submit {
+              a_click 'Delete it.'
+            }
+          end
+          
+          h4 'You are following:'
+          show_if 'follows?' do
+            ul {
+              loop 'follows' do
+                li { a! 'title', 'href'  }
+              end
+            }
+          end
+          if_empty 'follows' do
+            div.empty_msg 'No one.'
+          end
         end
           
         div.teaser '{{club_teaser}}'
 
-        show_if 'logged_in?' do
 
-          show_if('club_updator?') {
-            div {
-              a('Edit settings.', :href=>'{{club_href_edit}}')
-            }
-          }
-
-        end # logged_in?
 
       } # div.intro!
 

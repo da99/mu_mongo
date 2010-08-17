@@ -127,10 +127,7 @@ div.col.middle! {
 
   div.nav_bar! { 
 
-    # div( :id=>"logo" ) { 
-    #   p.title '{{site_title}}' 
-    #   p.tag_line "{{site_tag_line}}" 
-    # }
+
 
     ul.help {
       
@@ -208,68 +205,8 @@ div.col.middle! {
 } # === div.col
 
 
-show_if 'city_clubs?' do
-  div.col.city_clubs! {
-    h3 'Cities'
-    loop_clubs "city_clubs"
-  }
-end
-
-show_if 'political_beauty?' do
-  div.col.political_beauty! {
-    h3 'Beauty'
-    div.beauty_clubs! {
-      loop_clubs "beauty_clubs"
-    }
-    div.political_clubs! {
-      loop_clubs "political_clubs"
-    }
-  } # div.clubs
-end
-
-show_if 'joy_clubs?' do
-  div.col.joy_clubs! { 
-    h3 'Pure Joy'
-    loop_clubs "joy_clubs"
-  }
-end
-
-show_if 'random_clubs?' do
-  div.col.random_clubs! { 
-    h4 'An example of a universe:'
-    loop_clubs "random_clubs" do
-      meta
-    end
-  }
-end
 
 
-# div.messages.messages! do
-#   h4 'Random News:'
-#   loop 'messages_public' do
-#     div.message do
-#       div.body( '{{{compiled_body}}}' )
-#       div.permalink {
-#         show_if 'owner_username' do
-#           span ' by: '
-#           a('{{owner_username}}', :href=>"/life/{{owner_username}}/")
-#           br
-#         end
-#         show_if 'club_title' do
-#           span ' in: '
-#           a('{{club_title}}', :href=>"/clubs/{{club_filename}}/")
-#           br
-#         end
-#         a('Permalink', :href=>"{{href}}")
-#       }
-#     end
-#   end
-# end
-
-
-# div.clubs! do
-  # loop_clubs 'clubs'
-# end 
 
 
 
