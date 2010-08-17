@@ -9,9 +9,9 @@ require 'middleware/The_App'
 class The_App
   
   SITE_DOMAIN        = 'megaUni.com'
-  SITE_TITLE         = 'Mega Uni'
-  SITE_NAME          = 'Mega Uni'
-  SITE_TAG_LINE      = "Create your own universe(s)."
+  SITE_TITLE         = 'megaUNI'
+  SITE_NAME          = 'megaUNI'
+  SITE_TAG_LINE      = "Create universes."
   SITE_HELP_EMAIL    = "help@#{SITE_DOMAIN}"
   SITE_URL           = "http://www.#{SITE_DOMAIN}/"
   ON_HEROKU          = ENV.keys.grep(/heroku/i).size > 0

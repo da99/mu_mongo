@@ -29,8 +29,12 @@ end # === Markaby::Builder
 class Mab_In_Disguise
   
   def self.save_file mab_file, html_file, content
-      # require 'rubygems'; require 'ruby-debug'; debugger
+      invalid_html = File.dirname(html_file) != 'mustache'
+      raise "Invalid HTML directory: #{html_file}" if invalid_html
       
+      invalid_mab = File.dirname(html_file) != 'mab'
+      raise "Invalid MAB directory: #{html_file}" if invalid_mab
+
       puts("Writing: #{html_file}") if The_App.development?
       parser    = Mustache::Parser.new
       generator = Mustache::Generator.new
