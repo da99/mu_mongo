@@ -165,14 +165,13 @@ module Base_Control
                            require( "middleware/#{disguise}_In_Disguise"  )
                            disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
                            disguise_class.compile_all(file_name)
-                         end
                         
-                         #   Mustache::Generator.new.compile(
-                         #     Mustache::Parser.new.compile(
-                         #       disguise_class.compile( original ).to_s 
-                         #     )
-                         #   )
-                         # else
+                           Mustache::Generator.new.compile(
+                             Mustache::Parser.new.compile(
+                               disguise_class.compile( original ).to_s 
+                             )
+                           )
+                         end
                            
                          File.read(mustache)
                        end

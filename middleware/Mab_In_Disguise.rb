@@ -29,7 +29,7 @@ end # === Markaby::Builder
 class Mab_In_Disguise
   
   def self.save_file mab_file, html_file, content
-      require 'rubygems'; require 'ruby-debug'; debugger
+      # require 'rubygems'; require 'ruby-debug'; debugger
       
       puts("Writing: #{html_file}") if The_App.development?
       parser    = Mustache::Parser.new

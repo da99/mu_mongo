@@ -1,15 +1,15 @@
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>\n   <meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n   <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n\n#{      v = ctx[:meta_cache?]
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\"/>\n   <meta content=\"text/css\" http-equiv=\"Content-Style-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n\n#{      v = ctx[:meta_cache?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<meta http-equiv=\"expires\" content=\"Thu, 12 Mar 2004 12:34:12 GMT\"/>\n   <meta http-equiv=\"pragma\" content=\"no-cache\"/>\n\n"
+        "<meta content=\"Thu, 12 Mar 2004 12:34:12 GMT\" http-equiv=\"expires\"/>\n   <meta content=\"no-cache\" http-equiv=\"pragma\"/>\n\n"
       end
 }#{      if v = ctx[:meta_menu]
         if v == true
-          "<meta name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\" content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\"/>\n\n"
+          "<meta content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\" name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<meta name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\" content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\"/>\n\n")
+          v.call("<meta content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\" name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<meta name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\" content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<meta content=\"#{CGI.escapeHTML(ctx[:content].to_s)}\" name=\"#{CGI.escapeHTML(ctx[:name].to_s)}\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      if v = ctx[:page]
@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282072759\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282065595\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282072759\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282065595\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282072759\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282065595\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -212,57 +212,623 @@
           v.map { |h| ctx.push(h); r = "<li>\n        <a href=\"/log-in/\">Log-in</a>\n       </li>\n\n"; ctx.pop; r }.join
         end
       end
-}<li>\n        <a href=\"/\">Megauni</a>\n       </li>\n      </ul>\n     <div id=\"outer_shell\">\n      <div id=\"inner_shell\">\n       <div id=\"club_body\">\n        <div class=\"col\" id=\"intro\">\n         <h4>About this universe:</h4>\n\n#{      if v = ctx[:owner?]
+}<li>\n        <a href=\"/\">Megauni</a>\n       </li>\n      </ul>\n     <div id=\"outer_shell\">\n      <div id=\"inner_shell\">\n       <div id=\"club_body\">\n        <div class=\"col\" id=\"intro\">\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<p>You own this universe.</p>\n\n"
+          "#{      if v = ctx[:memberships?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p>You own this universe.</p>\n\n")
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p>You own this universe.</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
         end
       end
-}<div class=\"teaser\">#{CGI.escapeHTML(ctx[:club_teaser].to_s)}</div>\n\n#{      if v = ctx[:logged_in?]
-        if v == true
-          "#{      if v = ctx[:club_updator?]
-        if v == true
-          "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"
+}</ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n")
+          v.call("<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:follower_but_not_owner?]
+        if v == true
+          "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:notifys?]
+        if v == true
+          "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:owner?]
+        if v == true
+          "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"
+        elsif v.is_a?(Proc)
+          v.call("<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"; ctx.pop; r }.join
         end
       end
 }"
         elsif v.is_a?(Proc)
-          v.call("#{      if v = ctx[:club_updator?]
+          v.call("#{      if v = ctx[:memberships?]
         if v == true
-          "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"
+          "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n")
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:follower_but_not_owner?]
+        if v == true
+          "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:notifys?]
+        if v == true
+          "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:owner?]
+        if v == true
+          "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"
+        elsif v.is_a?(Proc)
+          v.call("<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"; ctx.pop; r }.join
         end
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "#{      if v = ctx[:club_updator?]
+          v.map { |h| ctx.push(h); r = "#{      if v = ctx[:memberships?]
         if v == true
-          "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"
+          "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n")
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:memberships]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">Withdraw as: #{CGI.escapeHTML(ctx[:name].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:follower_but_not_owner?]
+        if v == true
+          "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete_follow].to_s)}\" method=\"post\" name=\"delete_form_follow\" id=\"delete_form_follow\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_follow\" onclick=\"$('#delete_form_follow').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Unfollow.</a>\n         </form>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:notifys?]
+        if v == true
+          "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<div class=\"href_notifys\">\n          <a href=\"#{CGI.escapeHTML(ctx[:href_notifys].to_s)}\">See all notifys.</a>\n         </div>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      if v = ctx[:owner?]
+        if v == true
+          "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"
+        elsif v.is_a?(Proc)
+          v.call("<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<h4>You Own This Universe:</h4>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:href_members].to_s)}\">Members list.</a>\n         </div>\n         <div>\n          <a href=\"#{CGI.escapeHTML(ctx[:club_href_edit].to_s)}\">Edit settings.</a>\n         </div>\n         <form class=\"\" action=\"#{CGI.escapeHTML(ctx[:href_delete].to_s)}\" method=\"post\" name=\"delete_form_uni\" id=\"delete_form_uni\">\n           <fieldset class=\"hidden\">\n             <input type=\"hidden\" value=\"delete\" name=\"_method\"/>\n           </fieldset>\n          <a href=\"#show-delete_form_uni\" onclick=\"$('#delete_form_uni').removeClass('hidden'); $(this).parent('div').remove(); return false;\">Delete it.</a>\n         </form>\n         <h4>You are following:</h4>\n\n#{      if v = ctx[:follows?]
+        if v == true
+          "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<ul>\n\n#{      if v = ctx[:follows]
+        if v == true
+          "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"
+        elsif v.is_a?(Proc)
+          v.call("<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n")
+        else
+          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
+          v.map { |h| ctx.push(h); r = "<li>\n           <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n          </li>\n\n"; ctx.pop; r }.join
+        end
+      end
+}</ul>\n\n"; ctx.pop; r }.join
+        end
+      end
+}#{      v = ctx[:follows]
+      if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
+        "<div class=\"empty_msg\">No one.</div>\n\n"
+      end
+}"; ctx.pop; r }.join
         end
       end
 }"; ctx.pop; r }.join
         end
       end
-}</div>\n         <div class=\"col\" id=\"mind_control\">\n          <div id=\"guide\">\n           <h4>Stuff you should do:</h4>\n           <ul>\n            <li>Post something in the \"Encyclopedia\" section.</li>\n            <li>Write anything in the \"Random\" section.</li>\n            <li> Recommend a product in the \"Shop\" section. </li>\n            <li> Ask a question in the \"Q &amp; A\" section. </li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
+}<h4>About this universe:</h4>\n         <div class=\"teaser\">#{CGI.escapeHTML(ctx[:club_teaser].to_s)}</div>\n        </div>\n         <div class=\"col\" id=\"mind_control\">\n          <div id=\"guide\">\n           <h4>Stuff you should do:</h4>\n           <ul>\n            <li>Post something in the \"Encyclopedia\" section.</li>\n            <li>Write anything in the \"Random\" section.</li>\n            <li> Recommend a product in the \"Shop\" section. </li>\n            <li> Ask a question in the \"Q &amp; A\" section. </li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:follower_but_not_owner?]
         if v == true
@@ -288,7 +854,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -300,7 +866,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -313,7 +879,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -340,7 +906,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -352,7 +918,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -365,7 +931,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -393,7 +959,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -405,7 +971,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -418,7 +984,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -460,7 +1026,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -472,7 +1038,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -485,7 +1051,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -512,7 +1078,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -524,7 +1090,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -537,7 +1103,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -565,7 +1131,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -577,7 +1143,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -590,7 +1156,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -633,7 +1199,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -645,7 +1211,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -658,7 +1224,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -685,7 +1251,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -697,7 +1263,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -710,7 +1276,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -738,7 +1304,7 @@
       end
 }#{      if v = ctx[:multiple_usernames?]
         if v == true
-          "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -750,7 +1316,7 @@
       end
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.call("<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
@@ -763,7 +1329,7 @@
 }</select>\n            </fieldset>\n            <div class=\"buttons\">\n             <button>Follow.</button>\n            </div>\n           </form>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<form action=\"/clubs/follow/\" method=\"post\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
+          v.map { |h| ctx.push(h); r = "<form method=\"post\" action=\"/clubs/follow/\" name=\"form_follow_create\" id=\"form_follow_create\">\n            <fieldset>\n             <label>Follow this club as: </label>\n             <select name=\"username\">\n\n#{      if v = ctx[:current_member_usernames]
         if v == true
           "<option value=\"#{CGI.escapeHTML(ctx[:username].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
