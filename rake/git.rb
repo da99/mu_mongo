@@ -30,8 +30,10 @@ namespace 'git' do
   
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
+    unless Dir.glob("templates/en-us/mustache/*.*").empty? 
+      sh 'git rm templates/en-us/mustache/*.*'
+    end
     sh 'git add . && git add -u'
-    sh 'git reset HEAD "templates/en-us/mustache/*.*"'
     sh 'git status'
   end
   
