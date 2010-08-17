@@ -64,7 +64,12 @@ namespace 'git' do
   
   desc "Prep push code to Heroku."
   task :prep_push do 
-
+    
+    if git_commit_pending?
+      puts_red "Commits pending."
+      exit(1)
+    end
+    
     Rake::Task['views:compile'].invoke
     ENV['msg'] = 'Development checkpoint. (Mustache/css compilation.)'
     Rake::Task['git:dev_check'].invoke
