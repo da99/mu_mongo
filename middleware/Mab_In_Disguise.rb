@@ -28,12 +28,16 @@ end # === Markaby::Builder
 
 class Mab_In_Disguise
   
+  def self.folder_name str
+    File.basename(File.dirname(str))
+  end
+
   def self.save_file mab_file, html_file, content
-      invalid_html = File.dirname(html_file) != 'mustache'
+      invalid_html = folder_name(html_file) != 'mustache'
       raise "Invalid HTML directory: #{html_file}" if invalid_html
       
-      invalid_mab = File.dirname(html_file) != 'mab'
-      raise "Invalid MAB directory: #{html_file}" if invalid_mab
+      invalid_mab = folder_name(mab_file) != 'mab'
+      raise "Invalid MAB directory: #{mab_file}" if invalid_mab
 
       puts("Writing: #{html_file}") if The_App.development?
       parser    = Mustache::Parser.new

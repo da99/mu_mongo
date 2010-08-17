@@ -106,12 +106,10 @@ div.col.pretension! {
 div.col.middle! {
   div.intro! {
 
-    # h1 '{{site_title}}'
-    # h2 '{{site_tag_line}}'
 
     form.search_club_form!(:action=>"/club-search/", :method=>"post") {
       fieldset {
-        label 'Find a club by keyword:'
+        label 'Find by keyword:'
         input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
       }
       div.buttons {
