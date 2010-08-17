@@ -43,7 +43,7 @@ class Messages
     return_page = [clean_room[:return_url]].compact.detect { |path| 
       path[%r!\A[a-zA-Z0-9/\.\-\_]+\Z!] 
     }
-    default_return_page = '/account/'
+    default_return_page = '/lifes/'
     begin
       if clean_room[:club_filename]
         club = Club.by_filename_or_member_username(clean_room[:club_filename])
@@ -60,11 +60,11 @@ class Messages
       Message.create( current_member, clean_room )
       
       flash_msg.success = "Your message has been saved."
-      redirect!( return_page || default_return_page )
+      redirect_back!( return_page || default_return_page )
       
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
-      redirect!( return_page || default_return_page )
+      redirect_back!( return_page || default_return_page )
     end
   end
 

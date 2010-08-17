@@ -40,9 +40,9 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   #   assert last_response.body[mess_2.data.body]
   # end
 
-  must 'show account: /account/' do
+  must 'show account: /lifes/' do
     log_in_regular_member_2
-    get '/account/', {}, ssl_hash
+    get '/lifes/', {}, ssl_hash
     assert_last_response_ok
   end
 

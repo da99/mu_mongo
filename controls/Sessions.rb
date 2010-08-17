@@ -22,7 +22,7 @@ class Sessions
         :ip_address => request.env['REMOTE_ADDR'],
         :user_agent => request.env['HTTP_USER_AGENT']
       )
-      redirect!( session.delete(:return_page) || '/account/' )
+      redirect!( session.delete(:return_page) || '/lifes/' )
       
     rescue Couch_Plastic::Not_Found, Member::Wrong_Password
       flash_msg.errors = "Incorrect info. Try again."

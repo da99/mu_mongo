@@ -10,6 +10,7 @@ class Clubs_by_filename < Base_View
 		href_delete_follow
 		href_delete
 		href_members
+    href_edit
 	} 
 
   def mini_nav_bar?

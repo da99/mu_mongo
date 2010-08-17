@@ -9,45 +9,45 @@ require 'test/unit/testcase'
 require 'term/ansicolor'
 require 'helpers/app/Color_Puts'
 
-require 'quietbacktrace'
-
-class QuietBacktrace::BacktraceCleaner
-  
-  ALL_GEMS_SUB  = '/lib/ruby/gems' 
-  ALL_NOISE << '/middleware'
-  ALL_NOISE << '/tests/__helper__'
-  ALL_NOISE << ALL_GEMS_SUB
-
-  def body_clean(backtrace)
-    total = backtrace.size
-    brain = [backtrace[0]].compact
-    head  = backtrace[1..3]     || []
-    body  = backtrace[4..total] || []
-    remove_first_slash( 
-      filter(brain) + 
-      filter(silence_all_gems(head)) + 
-      filter(silence(body || []))
-    ) 
-  end
-  alias_method :orig_clean, :clean
-  alias_method :clean, :body_clean
-  
-  def silence_all_gems(backtrace)
-    backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
-    backtrace
-  end
-  
-  def remove_first_slash(backtrace)
-    backtrace.map { |line| 
-      if line.lstrip[ /\A\// ]
-        line.sub('/', '')
-      else
-        line
-      end
-    }
-  end
-  
-end # === class
+# require 'quietbacktrace'
+# 
+# class QuietBacktrace::BacktraceCleaner
+#   
+#   ALL_GEMS_SUB  = '/lib/ruby/gems' 
+#   ALL_NOISE << '/middleware'
+#   ALL_NOISE << '/tests/__helper__'
+#   ALL_NOISE << ALL_GEMS_SUB
+# 
+#   def body_clean(backtrace)
+#     total = backtrace.size
+#     brain = [backtrace[0]].compact
+#     head  = backtrace[1..3]     || []
+#     body  = backtrace[4..total] || []
+#     remove_first_slash( 
+#       filter(brain) + 
+#       filter(silence_all_gems(head)) + 
+#       filter(silence(body || []))
+#     ) 
+#   end
+#   alias_method :orig_clean, :clean
+#   alias_method :clean, :body_clean
+#   
+#   def silence_all_gems(backtrace)
+#     backtrace = backtrace.reject { |line| line[ALL_GEMS_SUB] }
+#     backtrace
+#   end
+#   
+#   def remove_first_slash(backtrace)
+#     backtrace.map { |line| 
+#       if line.lstrip[ /\A\// ]
+#         line.sub('/', '')
+#       else
+#         line
+#       end
+#     }
+#   end
+#   
+# end # === class
 
 
 require 'megauni'
@@ -177,7 +177,7 @@ class Test::Unit::TestCase
         assert_equal false, mem.has_power_of?( :ADMIN )
         post '/log-in/', {:username=>mem.usernames.first, :password=>regular_password_#{i}}, ssl_hash
         follow_redirect!
-        assert_match( /account/, last_request.fullpath)
+        assert_match( /lifes/, last_request.fullpath)
       end
     ~
   end
@@ -260,7 +260,7 @@ class Test::Unit::TestCase
   end
 
   def assert_log_out
-    get '/account/'
+    get '/lifes/'
     assert_redirect('/log-in/', 303)
   end
 
@@ -268,7 +268,7 @@ class Test::Unit::TestCase
     assert_equal false, mem.has_power_of?( :ADMIN )
     post '/log-in/', {:username=>mem.usernames.first, :password=>password}, ssl_hash
     follow_redirect!
-    assert_match( /account/, last_request.fullpath)
+    assert_match( /lifes/, last_request.fullpath)
   end
 
   def log_in_admin
@@ -276,7 +276,7 @@ class Test::Unit::TestCase
     assert mem.has_power_of?(:ADMIN)
     post '/log-in/', {:username=>mem.usernames.first, :password=>admin_password}, ssl_hash
     follow_redirect!
-    assert_match( /account/, last_request.fullpath )
+    assert_match( /lifes/, last_request.fullpath )
   end
 
   def create_member raw_opts = {}

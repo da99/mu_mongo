@@ -18,7 +18,7 @@ class Test_Control_Members_Update < Test::Unit::TestCase
     log_in_regular_member_3
     put "/member/", :add_username=>rand_un
     follow_redirect!
-    assert_equal "/lives/#{rand_un}/", last_request.fullpath
+    assert_equal "/life/#{rand_un}/", last_request.fullpath
   end
 
   must 'send email to Member if password is reset' do

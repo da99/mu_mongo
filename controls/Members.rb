@@ -22,7 +22,7 @@ class Members
       m = Member.create( current_member, clean_room )
       self.current_member = m
       flash_msg.success = "Your account has been created."
-      redirect! '/account/' 
+      redirect! '/lifes/' 
       
     rescue Member::Invalid
 
@@ -129,14 +129,14 @@ class Members
       m = Member.update( current_member.data._id, current_member, clean_room )
       flash_msg.success = "Data has been updated and saved."
       if clean_room['add_username']
-        redirect! "/lives/#{m.clean_data.add_username}/"
+        redirect! "/life/#{m.clean_data.add_username}/"
       else
-        redirect! '/account/'
+        redirect! '/lifes/'
       end
     rescue Member::Invalid
       flash_msg.errors= $!.doc.errors 
       session[:add_username] = clean_room['add_username']
-      redirect! '/account/' 
+      redirect_back! "/lifes/"
     end
   end # === put :update
 

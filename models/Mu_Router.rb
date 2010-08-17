@@ -106,10 +106,10 @@ class Mu_Router
       
       path '/'                , 'list'
       path '/'                , 'create'   , 'POST'
-      path '/{old_topics}/'   , 'by_old_id'
+      path '/{old_topics}'   , 'by_old_id'
       path '/follow/'         , 'follow'   , 'POST'
       
-      map '/{filename}/' do
+      map '/{filename}' do
         path '/'            ,  'by_filename'    
         path '/'            ,  'update'          , 'PUT'
         path '/edit/', 'edit'
@@ -152,7 +152,6 @@ class Mu_Router
         end
 
         path '/lifes' # List of usernames + account deletion option
-        path '/life/{filename}'
         
         path '/create-account'
         path '/create-life'

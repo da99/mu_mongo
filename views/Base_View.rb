@@ -278,12 +278,12 @@ class Base_View < Mustache
     @cache_username_nav ||= begin
                                 c_name = @app.control_name
                                 a_name = @app.action_name
-                                life_page = (c_name == :Members && a_name == 'lives')
+                                life_page = (c_name == :Members && a_name == 'lifes')
                                 current_member_usernames.map { |raw_un|
                                   un = raw_un[:username]
                                   { :selected? => (life_page && current_member_username == un), 
                                     :username=>un, 
-                                    :href =>"/lives/#{un}/",
+                                    :href =>"/lifes/#{un}/",
                                   :not_selected? => !(life_page && current_member_username == un)
                                   }
                                 }

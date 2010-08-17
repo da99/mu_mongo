@@ -17,12 +17,12 @@ div.outer_shell! do
         show_if 'memberships?' do
           ul {
             loop 'memberships' do
-              li { a! "Withdraw as: {{name}}", 'href'.m! }
+              li { a! "Withdraw as: name.m", 'href' }
             end
           }
         end
         show_if 'follower_but_not_owner?' do
-          post_delete 'follow' do
+          delete_form 'follow' do
             action 'href_delete_follow'.m!
             submit {
               a_click 'Unfollow'
@@ -53,17 +53,19 @@ div.outer_shell! do
             }
           end
           
-          h4 'You are following:'
           show_if 'follows?' do
+            h4 'You are following:'
             ul {
               loop 'follows' do
                 li { a! 'title', 'href'  }
               end
             }
           end
+          
           if_empty 'follows' do
-            div.empty_msg 'No one.'
+            h4 'You are following no one.'
           end
+          
         end
           
         div.teaser '{{club_teaser}}'

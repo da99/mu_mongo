@@ -97,7 +97,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     log_in_regular_member_1
     get club.href
-    assert_equal nil, last_response.body[/....following..../]
+    assert_equal 'You are following no one.', last_response.body['You are following no one.']
   end
 
   must 'not show follow club link to followers.' do
