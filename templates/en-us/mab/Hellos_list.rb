@@ -12,92 +12,92 @@ div.col.pretension! {
   
   # h4 %~ A universe lets you: ~
 
-  ul {
-    li {
-      strong 'Make a Personal Encyclopedia'
-      span ': You and your friends
-        write in this section to record important
-        moments of your life.'
-    }
-    
-    li {
-      strong 'Q & A Section'
-      span ': Answer questions people throw
-        at you.'
-    }
-    
-    li {
-      strong 'Magazine Section'
-      span ': A place to write long stories: travel, reviews, eloquent rants, or explain why you got arrested last Saturday.'
-
-    }
-
-    li {
-      strong 'Random Section'
-      span ': Post random thoughts that cross
-        your messy mind.'
-    }
-
-    li {
-      strong 'Fights Section'
-      span ': Discuss & debate ideas with others in a friendly fashion.'
-
-    }
-    
-    li {
-      strong 'Shop Section'
-      span %~: Tell others about the products you love or hate.~
-
-    }
-    
-    li {
-      strong 'News Section'
-      span ': Important things people should know.'
-
-    }
-    
-    li {
-      strong %~Make Requests to Friends~
-      span %~: Ask friends to entertain you by posting messages.~
-    }
-
-    li {
-      strong 'Predictions Section'
-      span ': Record your efforts to see into the future.'
-
-    }
-    li {
-      strong '"Thank You" Section'
-      span ': People post a thank you note when you do something kind.'
-    }
-
-    li {
-      strong %~Mind Control Made Fun & Easy~
-      span %~: Bored? Let {{site_domain}} take over your mind.~
-    }
-  # } # === ul
-
-  # # h4 %~ Other features: ~
-
   # ul {
-    
-    li {
-      strong %~Multiple Lives~
-      span %~: Create different usernames for your work life, home life, babies, pets, fantasy life, etc.~
-    }
-    
-    li {
-      strong %~No Popularity Contests~
-      span %~: The total number of followers is kept secret to avoid spam and publicity hounds.~
-    }
+  #   li {
+  #     strong 'Make a Personal Encyclopedia'
+  #     span ': You and your friends
+  #       write in this section to record important
+  #       moments of your life.'
+  #   }
+  #   
+  #   li {
+  #     strong 'Q & A Section'
+  #     span ': Answer questions people throw
+  #       at you.'
+  #   }
+  #   
+  #   li {
+  #     strong 'Magazine Section'
+  #     span ': A place to write long stories: travel, reviews, eloquent rants, or explain why you got arrested last Saturday.'
 
-    li {
-      strong %~Re-posting for easy sharing.~
-      span %~: Find something you like in someone else's universe? You can re-post it easily with your own custom intro.~
-    }
+  #   }
 
-    
-  } # === ul
+  #   li {
+  #     strong 'Random Section'
+  #     span ': Post random thoughts that cross
+  #       your messy mind.'
+  #   }
+
+  #   li {
+  #     strong 'Fights Section'
+  #     span ': Discuss & debate ideas with others in a friendly fashion.'
+
+  #   }
+  #   
+  #   li {
+  #     strong 'Shop Section'
+  #     span %~: Tell others about the products you love or hate.~
+
+  #   }
+  #   
+  #   li {
+  #     strong 'News Section'
+  #     span ': Important things people should know.'
+
+  #   }
+  #   
+  #   li {
+  #     strong %~Make Requests to Friends~
+  #     span %~: Ask friends to entertain you by posting messages.~
+  #   }
+
+  #   li {
+  #     strong 'Predictions Section'
+  #     span ': Record your efforts to see into the future.'
+
+  #   }
+  #   li {
+  #     strong '"Thank You" Section'
+  #     span ': People post a thank you note when you do something kind.'
+  #   }
+
+  #   li {
+  #     strong %~Mind Control Made Fun & Easy~
+  #     span %~: Bored? Let {{site_domain}} take over your mind.~
+  #   }
+  # # } # === ul
+
+  # # # h4 %~ Other features: ~
+
+  # # ul {
+  #   
+  #   li {
+  #     strong %~Multiple Lives~
+  #     span %~: Create different usernames for your work life, home life, babies, pets, fantasy life, etc.~
+  #   }
+  #   
+  #   li {
+  #     strong %~No Popularity Contests~
+  #     span %~: The total number of followers is kept secret to avoid spam and publicity hounds.~
+  #   }
+
+  #   li {
+  #     strong %~Re-posting for easy sharing.~
+  #     span %~: Find something you like in someone else's universe? You can re-post it easily with your own custom intro.~
+  #   }
+
+  #   
+  # } # === ul
 
 
 } # === div
