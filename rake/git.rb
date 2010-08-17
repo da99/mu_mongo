@@ -31,7 +31,7 @@ namespace 'git' do
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
     sh 'git add . && git add -u'
-    sh 'git reset HEAD templates/en-us/mustache/*.*'
+    sh 'git reset HEAD "templates/en-us/mustache/*.*"'
     sh 'git status'
   end
   

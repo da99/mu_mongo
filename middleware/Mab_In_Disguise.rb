@@ -36,7 +36,7 @@ class Mab_In_Disguise
       invalid_html = folder_name(html_file) != 'mustache'
       raise "Invalid HTML directory: #{html_file}" if invalid_html
       
-      invalid_mab = %w{xml mab}.include? folder_name(mab_file)
+      invalid_mab = !( %w{xml mab}.include? folder_name(mab_file) )
       raise "Invalid MAB directory: #{mab_file}" if invalid_mab
 
       puts("Writing: #{html_file}") if The_App.development?
