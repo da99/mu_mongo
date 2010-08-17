@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081084\" media=\"screen\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081084\" media=\"screen\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081084\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -262,7 +262,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}</select>\n       </fieldset>\n       <div class=\"buttons\">\n        <button onclick=\"document.getElementById('create_account_form').submit(); return false;\" class=\"create\">Create My New Account</button>\n       </div>\n      </form>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <p class=\"divider site_tag_line\">\n~~ ? ! @ ~~        </p>\n       </div>\n       <ul class=\"help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
+}</select>\n       </fieldset>\n       <div class=\"buttons\">\n        <button class=\"create\" onclick=\"document.getElementById('create_account_form').submit(); return false;\">Create My New Account</button>\n       </div>\n      </form>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <p class=\"divider site_tag_line\">\n~~ ? ! @ ~~        </p>\n       </div>\n       <ul class=\"help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n          <a href=\"/log-out/\"> Log-out </a>\n         </li>\n         <li>\n          <a href=\"/lifes/\"> [ My Lifes ] </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)

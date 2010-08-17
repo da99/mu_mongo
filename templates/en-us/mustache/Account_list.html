@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081083\" media=\"screen\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081083\" media=\"screen\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282070268\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282081083\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -552,7 +552,7 @@
           v.map { |h| ctx.push(h); r = "<ul>\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n"; ctx.pop; r }.join
         end
       end
-}</div>\n     <div id=\"content\">\n      <div class=\"usernames\">\n       <h4>Usernames</h4>\n       <a class=\"new\" href=\"#add_username\">Add Another Username.</a>\n\n#{      if v = ctx[:lives]
+}</div>\n     <div id=\"content\">\n      <div class=\"usernames\">\n       <h4>Usernames</h4>\n       <a class=\"new\" href=\"#add_username\">Add Another Username.</a>\n\n#{      if v = ctx[:lifes]
         if v == true
           "<div class=\"un\" id=\"life_#{CGI.escapeHTML(ctx[:category].to_s)}\">\n        <div class=\"username\">#{CGI.escapeHTML(ctx[:username].to_s)}</div>\n        <div class=\"category\">#{CGI.escapeHTML(ctx[:category].to_s)}</div>\n        <a class=\"edit\" href=\"#edit_username\">Edit</a>\n       </div>\n\n"
         elsif v.is_a?(Proc)
