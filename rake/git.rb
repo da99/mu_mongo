@@ -25,10 +25,10 @@ namespace 'git' do
   task :update do 
     unless ENV['allow_compiled_views']
       if `git status`[%r!templates/en-us/mustache/..!]
-        sh 'git reset HEAD templates/en-us/mustache/*.*'
+        sh 'git checkout -- templates/en-us/mustache/*.*'
       end
       if `git status`[%r!public/stylesheets/en-us/..!]
-        sh 'git reset HEAD public/stylesheets/en-us/*.*'
+        sh 'git checkout -- public/stylesheets/en-us/*.*'
       end
     end
     sh 'git add . && git add -u'
