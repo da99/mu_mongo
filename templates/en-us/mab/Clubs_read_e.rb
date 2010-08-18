@@ -13,24 +13,28 @@ div.outer_shell! do
 
       show_if 'logged_in?' do
         
-        div_guide! 'Stuff you can do:' do
-          ul {
-            li 'Write a story. '
-            li 'Post a quotation.'
-            li 'Tell others of related links.'
-          }
-        end
+        div.col.mind_control! {
+          
+          div_guide! 'Stuff you can do:' do
+            ul {
+              li 'Write a story. '
+              li 'Post a quotation.'
+              li 'Tell others of related links.'
+            }
+          end
 
-        post_message {
-          css_class  'col'
-          title  'Publish a new:'
-          input_title 
-          models  %w{e_quote e_chapter}
-          hidden_input(
-            :club_filename => '{{club_filename}}',
-            :privacy       => 'public'
-          )
-        }
+          post_message {
+            css_class  'col'
+            title  'Publish a new:'
+            input_title 
+            models  %w{e_quote e_chapter}
+            hidden_input(
+              :club_filename => '{{club_filename}}',
+              :privacy       => 'public'
+            )
+          }
+          
+        } # === mind_control!
         
       end # logged_in?
 

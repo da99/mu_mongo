@@ -3,7 +3,7 @@ module Base_Club
 
   def div_guide! txt, &blok
     text(capture {
-      div.col.mind_control! {
+      div.follow_guide! {
         div.guide! {
           h4 txt
           blok.call
