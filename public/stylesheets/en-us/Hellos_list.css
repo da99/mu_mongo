@@ -346,22 +346,22 @@ div.message, div.club {
     div.message div.permalink strong, div.club div.permalink strong {
       font-size: 100%; }
 
-div.col {
-  float: left; }
+#the_content {
+  width: 500px;
+  text-align: center;
+  margin: 0 auto; }
 
 #pretension {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  width: 500px;
-  margin: 25px 25px 0 25px;
-  padding: 30px 10px 50px 10px;
   text-align: center; }
   #pretension h1 {
     padding: 0 0 30px 0; }
   #pretension h3.title {
+    border-bottom: 1px dashed #003860;
     font-style: italic;
-    padding: 4px 5px 30px 5px; }
+    padding: 5px 5px 20px 5px; }
   #pretension h4 span.title {
     color: #333333; }
   #pretension #coming_soon {
@@ -376,11 +376,7 @@ div.col {
       padding: 6px 0 0 0; }
 
 #middle {
-  border-left: 1px dashed #003860;
-  border-right: 1px dashed #003860;
-  padding: 0 15px 100px 15px;
-  margin: 0 15px 0 0;
-  width: 250px; }
+  border: 0; }
 
 #intro {
   padding: 0 0 10px 0; }
@@ -401,7 +397,10 @@ div.col {
 #nav_bar {
   border-width: 0;
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  float: none;
+  width: auto;
+  text-align: center; }
 
 #city_clubs, #political_beauty, #joy_clubs, #random_clubs {
   width: 480px;
