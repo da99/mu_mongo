@@ -65,7 +65,7 @@ namespace 'git' do
   desc "Prep push code to Heroku."
   task :prep_push do 
     
-    if git_commit_pending?
+    if git_commit_pending? && !ENV['force']
       puts_red "Commits pending."
       exit(1)
     end
