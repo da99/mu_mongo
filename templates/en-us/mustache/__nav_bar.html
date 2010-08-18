@@ -102,12 +102,12 @@
       end
 }#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"
+          "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n")
+          v.call("<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n"
@@ -194,12 +194,12 @@
       end
 }#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"
+          "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n")
+          v.call("<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n")
@@ -287,12 +287,12 @@
       end
 }#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"
+          "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n")
+          v.call("<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/create-life/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/lifes/\"> [ Create ] </a>\n    </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n"; ctx.pop; r }.join

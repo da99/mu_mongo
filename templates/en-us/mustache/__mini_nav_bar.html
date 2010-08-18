@@ -90,7 +90,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}<li>\n     <a href=\"/create-life/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n"
+}<li>\n     <a href=\"/lifes/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n"
         elsif v.is_a?(Proc)
           v.call("<p class=\"divider\">Lives</p>\n  <ul>\n\n#{      if v = ctx[:username_nav]
         if v == true
@@ -162,7 +162,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}<li>\n     <a href=\"/create-life/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n")
+}<li>\n     <a href=\"/lifes/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n  <ul>\n\n#{      if v = ctx[:username_nav]
@@ -235,7 +235,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}<li>\n     <a href=\"/create-life/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n"; ctx.pop; r }.join
+}<li>\n     <a href=\"/lifes/\"> [ Create Life ] </a>\n    </li>\n  </ul>\n\n"; ctx.pop; r }.join
         end
       end
 }<p class=\"divider\">Clubs</p>\n  <ul>\n   <li>\n     <li>\n      <a href=\"/clubs/\"> [ View All ] </a>\n     </li>\n   </li>\n\n#{      if v = ctx[:logged_in?]
