@@ -1,6 +1,6 @@
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>\n   <meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n   <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n\n#{      v = ctx[:meta_cache?]
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\"/>\n   <meta content=\"text/css\" http-equiv=\"Content-Style-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n\n#{      v = ctx[:meta_cache?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<meta http-equiv=\"expires\" content=\"Thu, 12 Mar 2004 12:34:12 GMT\"/>\n   <meta http-equiv=\"pragma\" content=\"no-cache\"/>\n\n"
+        "<meta content=\"Thu, 12 Mar 2004 12:34:12 GMT\" http-equiv=\"expires\"/>\n   <meta content=\"no-cache\" http-equiv=\"pragma\"/>\n\n"
       end
 }#{      if v = ctx[:meta_menu]
         if v == true
@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -228,7 +228,7 @@
       end
 }</ul>\n     <div id=\"outer_shell\">\n      <div id=\"inner_shell\">\n       <div id=\"club_body\">\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<div class=\"col\" id=\"mind_control\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
+          "<div id=\"follow_guide\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:follower_but_not_owner?]
         if v == true
@@ -748,7 +748,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n\n#{      if v = ctx[:single_username?]
+}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -800,7 +800,7 @@
       end
 }<div class=\"buttons\">\n            <button class=\"create\">Save</button>\n           </div>\n          </form>\n         </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"col\" id=\"mind_control\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
+          v.call("<div id=\"follow_guide\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:follower_but_not_owner?]
         if v == true
@@ -1320,7 +1320,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n\n#{      if v = ctx[:single_username?]
+}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -1373,7 +1373,7 @@
 }<div class=\"buttons\">\n            <button class=\"create\">Save</button>\n           </div>\n          </form>\n         </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"col\" id=\"mind_control\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
+          v.map { |h| ctx.push(h); r = "<div id=\"follow_guide\">\n          <div id=\"guide\">\n           <h4>Stuff you can do:</h4>\n           <ul>\n            <li>Write a story.</li>\n            <li>Review a restaurant.</li>\n            <li>Write about a family reunion.</li>\n           </ul>\n          </div>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:follower_but_not_owner?]
         if v == true
@@ -1893,7 +1893,7 @@
 }"; ctx.pop; r }.join
         end
       end
-}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n\n#{      if v = ctx[:single_username?]
+}</div>\n         <div class=\"col\" id=\"club_message_create\">\n          <form class=\"\" action=\"/messages/\" method=\"post\" name=\"form_club_message_create\" id=\"form_club_message_create\">\n           <h4>Publish a new story:</h4>\n           <fieldset class=\"hidden\">\n            <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n            <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:club_filename].to_s)}\" name=\"club_filename\"/>\n            <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n            <input type=\"hidden\" value=\"mag_story\" name=\"message_model\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -6236,7 +6236,7 @@
 }</div>\n\n"; ctx.pop; r }.join
         end
       end
-}</div>\n       </div>\n      </div>\n     </div>\n   </div>\n   <script type=\"text/javascript\" src=\"/js/vendor/jquery-1.4.2.min.js?1282095694\"></script>\n   <script type=\"text/javascript\" src=\"/js/pages/Megauni_Base.js?1282095694\"></script>\n\n#{      if v = ctx[:include_tracking?]
+}</div>\n       </div>\n      </div>\n     </div>\n   </div>\n   <script type=\"text/javascript\" src=\"/js/vendor/jquery-1.4.2.min.js?1282164664\"></script>\n   <script type=\"text/javascript\" src=\"/js/pages/Megauni_Base.js?1282164664\"></script>\n\n#{      if v = ctx[:include_tracking?]
         if v == true
           "<script type=\"text/javascript\"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src=\"' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js\" type=\"text/javascript\"%3E%3C/script%3E')); </script> \n        <script type=\"text/javascript\"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>\n        <script type=\"text/javascript\">mpmetrics.track(\"eveything\", { 'referer' : '#{CGI.escapeHTML(ctx[:http_referer].to_s)}' });</script>\n      \n"
         elsif v.is_a?(Proc)

@@ -1,6 +1,6 @@
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>\n   <meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n   <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n   <meta http-equiv=\"Content-Language\" content=\"en-US\"/>\n\n#{      v = ctx[:meta_cache?]
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n  <head>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\"/>\n   <meta content=\"text/css\" http-equiv=\"Content-Style-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n   <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/>\n   <meta content=\"en-US\" http-equiv=\"Content-Language\"/>\n\n#{      v = ctx[:meta_cache?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<meta http-equiv=\"expires\" content=\"Thu, 12 Mar 2004 12:34:12 GMT\"/>\n   <meta http-equiv=\"pragma\" content=\"no-cache\"/>\n\n"
+        "<meta content=\"Thu, 12 Mar 2004 12:34:12 GMT\" http-equiv=\"expires\"/>\n   <meta content=\"no-cache\" http-equiv=\"pragma\"/>\n\n"
       end
 }#{      if v = ctx[:meta_menu]
         if v == true
@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164663\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164663\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282095694\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164663\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]

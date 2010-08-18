@@ -384,10 +384,20 @@ div.message, div.club {
     div.message div.permalink strong, div.club div.permalink strong {
       font-size: 100%; }
 
+body {
+  background: white url(http://megauni.s3.amazonaws.com/bg.gif);
+  padding: 0; }
+
 #the_content {
-  width: 500px;
+  border-radius: 0 0 15px 15px;
+  -moz-border-radius: 0 0 15px 15px;
+  -webkit-border-radius: 0 0 15px 15px;
+  padding: 10px;
+  border-bottom: 2px solid #f00919;
+  width: 280px;
   text-align: center;
-  margin: 0 auto; }
+  margin: 0 0 0 300px;
+  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif); }
 
 #pretension {
   border-radius: 5px;
@@ -460,6 +470,3 @@ div.message, div.club {
       text-align: center; }
     #city_clubs div.club div.message div.body, #political_beauty div.club div.message div.body, #joy_clubs div.club div.message div.body, #random_clubs div.club div.message div.body {
       font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif; }
-
-body {
-  padding: 10px; }

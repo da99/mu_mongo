@@ -403,15 +403,16 @@ div.col {
   float: left;
   left: -50%; }
 
+#mind_control {
+  width: 500px; }
+
 #intro {
   max-width: 250px;
   padding: 0 10px 100px 0;
   text-align: right; }
 
 #guide {
-  width: 250px;
   padding: 10px;
-  margin: 0 10px 0 0;
   background: #ffffcc; }
   #guide ul {
     padding: 0 0 0 20px; }
