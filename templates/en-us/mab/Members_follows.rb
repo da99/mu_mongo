@@ -4,7 +4,9 @@
 # CONTROL models/Member.rb
 # MODEL   controls/Member.rb
 
-div.newspaper! {
+member_nav_bar __FILE__
+
+div.col {
 	show_if('no_stream?') {
 		div('You have not subscribed to anyone\'s life.')
 	}
@@ -22,5 +24,3 @@ div.newspaper! {
 } # === div.stream!
   
 filter_options 'follows'
-
-partial('__nav_bar')

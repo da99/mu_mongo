@@ -13,5 +13,13 @@ class Members_follows < Base_View
   def stream
     [] #compile_messages(app.current_member.stream(current_member_username))
   end
+  
+  def usernames
+    []
+  end
+
+  def clubs_not_owned?
+    []
+  end
 
 end # === follows 

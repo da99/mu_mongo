@@ -4,6 +4,8 @@
 # CONTROL models/Member.rb
 # MODEL   controls/Member.rb
 
+member_nav_bar __FILE__
+
 if_empty 'notifys' do
 	div 'You have no notifys.'
 end
@@ -11,6 +13,4 @@ end
 loop_messages 'notifys'
 
 filter_options 'notifys'
-
-partial('__nav_bar')
 

@@ -7,7 +7,19 @@
 class Members_notifys < Base_View
 
   def title 
-    '...'
+    'Notifys'
   end
   
+  def notifys
+    []
+  end
+
+  def usernames
+    []
+  end
+
+  def clubs_not_owned
+    []
+  end
+
 end # === notifys 
