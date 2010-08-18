@@ -160,7 +160,7 @@ module Base_Control
                                        rescue Errno::ENOENT
                                          false
                                        end
-                         if not mtime_equal
+                         # if not mtime_equal
                            puts("Compiling templated instead of using cached Mustache...") if The_App.development?
                            require( "middleware/#{disguise}_In_Disguise"  )
                            disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
@@ -171,7 +171,7 @@ module Base_Control
                                disguise_class.compile( original ).to_s 
                              )
                            )
-                         end
+                         # end
                            
                          File.read(mustache)
                        end

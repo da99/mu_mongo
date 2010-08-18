@@ -83,7 +83,7 @@ module Base_Club
     
     text(capture {
       
-      ul.club_nav_bar! {
+      ul.nav_bar.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
             li.selected  trip[1] 
@@ -100,7 +100,13 @@ module Base_Club
           li { a('Log-in', :href=>'/log-in/') }
         end
         
-        li { a('Megauni', :href=>'/') }
+        if_not 'logged_in?' do
+          li { a('Megauni', :href=>'/') }
+        end
+        
+        show_if 'logged_in?' do
+          li { a('My Lifes', :href=>'/lifes/') }
+        end
       } # ul
       
     })

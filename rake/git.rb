@@ -23,15 +23,17 @@ namespace 'git' do
   
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
+    sh 'git add . && git add -u'
+    
     unless ENV['allow_compiled_views']
       if `git status`[%r!templates/en-us/mustache/..!]
-        sh 'git checkout -- templates/en-us/mustache/*.*'
+        `git reset HEAD templates/en-us/mustache/*.*`
       end
       if `git status`[%r!public/stylesheets/en-us/..!]
-        sh 'git checkout -- public/stylesheets/en-us/*.*'
+        `git reset HEAD public/stylesheets/en-us/*.*`
       end
-    end
-    sh 'git add . && git add -u'
+    end 
+    
     sh 'git status'
   end
   
@@ -81,8 +83,6 @@ namespace 'git' do
   SKIP_MONGO_CHECK = false'
   task :push do
     
-    prep_work_done = false
-
     # Update DB indexes on production server.
     puts_white "Updating indexes on production DB server..."
     orig_env = ENV['RACK_ENV']
@@ -96,7 +96,6 @@ namespace 'git' do
 
     unless ENV['SKIP_PREP']
       Rake::Task['git:prep_push'].invoke
-      prep_work_done = true
     end
     
     ENV['RACK_ENV'] = orig_env
@@ -116,9 +115,6 @@ namespace 'git' do
       puts_white "Pushing code to Heroku..."
       sh('git push heroku master')
       Launchy.open('http://www.megauni.com/')
-      if prep_work_done
-        sh("git revert HEAD^")
-      end
     end
 
   end
