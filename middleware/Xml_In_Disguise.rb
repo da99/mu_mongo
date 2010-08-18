@@ -14,7 +14,11 @@ class Xml_In_Disguise
     
     vals = {}
 
-    Dir.glob("templates/*/xml/#{file_name}.rb").each { |xml_file|
+    glob_pattern = file_name == '*' ?
+                        "templates/*/xml/#{file_name}.rb" :
+                        file_name
+                        
+    Dir.glob(glob_pattern).each { |xml_file|
 
       file_basename = File.basename(xml_file)
       xml_dir       = File.dirname(xml_file)
