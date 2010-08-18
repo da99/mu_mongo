@@ -6,11 +6,13 @@
 
 member_nav_bar __FILE__
 
-if_empty 'notifys' do
-	div 'You have no notifys.'
-end
+div.col.notifys! {
+  if_empty 'notifys' do
+    div 'You have no notifys.'
+  end
 
-loop_messages 'notifys'
+  loop_messages 'notifys'
+} # === notifys!
 
-filter_options 'notifys'
+div_filter_options 'notifys'
 

@@ -1,24 +1,30 @@
 
 module Base_Member_Life
 
+  def div_filter_options type
+    div.col.filter! {
+      filter_options type
+    }
+  end
+
   def filter_options type
     
-    h4 'Filter by life:'
-    ul {
-      loop('usernames') {
-        li { a! 'username', "href_#{type}"}	
-      }
-    }
-    
-    show_if('clubs_not_owned?') {
-      h4 'Filter by universe:'
+      h4 'Filter by life:'
       ul {
-        loop 'clubs_not_owned' do
-          li { a! 'title', "href_#{type}" }
-        end
+        loop('usernames') {
+          li { a! 'username', "href_#{type}"}	
+        }
       }
-    }
-    
+      
+      show_if('clubs_not_owned?') {
+        h4 'Filter by universe:'
+        ul {
+          loop 'clubs_not_owned' do
+            li { a! 'title', "href_#{type}" }
+          end
+        }
+      }
+      
   end
 
   def member_nav_bar filename

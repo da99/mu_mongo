@@ -23,4 +23,4 @@ div.col {
 	end
 } # === div.stream!
   
-filter_options 'follows'
+div_filter_options 'follows'
