@@ -10,10 +10,10 @@ class Members_lifes < Base_View
     'Your Lifes'
   end
 
-	def lifes
-		# [{'username'=>'Not done', 'href'=>'/no-where'}]
-		current_member.username_menu
-	end
+  def lifes
+    # [{'username'=>'Not done', 'href'=>'/no-where'}]
+    current_member.username_menu
+  end
   
   def session_form_username
     @app.clean_room[:add_username]

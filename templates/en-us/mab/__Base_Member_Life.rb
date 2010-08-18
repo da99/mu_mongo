@@ -12,7 +12,7 @@ module Base_Member_Life
       h4 'Filter by life:'
       ul {
         loop('usernames') {
-          li { a! 'username', "href_#{type}"}	
+          li { a! 'username', "href_#{type}"}  
         }
       }
       

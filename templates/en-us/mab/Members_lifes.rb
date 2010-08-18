@@ -8,11 +8,11 @@ member_nav_bar __FILE__
 
 div.col.lifes! {
 
-	h4 'Your lifes:'
+  h4 'Your lifes:'
 
   loop 'lifes' do
-		a!('username', 'href')
-	end
+    a!('username', 'href')
+  end
 
 } # === div.messages!
 

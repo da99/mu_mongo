@@ -458,13 +458,13 @@ class Member
   #
   def username_hash
     @username_hash ||= \
-			begin
-				hsh = {}
-				find_usernames(:owner_id=>data._id).map { |un| 
-					hsh[un['_id']] = un['username']
-				}
-				hsh
-			end
+      begin
+        hsh = {}
+        find_usernames(:owner_id=>data._id).map { |un| 
+          hsh[un['_id']] = un['username']
+        }
+        hsh
+      end
   end
   
   # Returns: 

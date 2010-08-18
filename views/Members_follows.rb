@@ -9,7 +9,7 @@ class Members_follows < Base_View
   def title 
     'My Follows'
   end
-	
+  
   def stream
     [] #compile_messages(app.current_member.stream(current_member_username))
   end

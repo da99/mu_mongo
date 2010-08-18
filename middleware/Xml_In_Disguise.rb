@@ -6,7 +6,7 @@ class Xml_In_Disguise
   def self.compile_all *args
     vals = compile
     vals.each do |xml_file_name, v|
-			Mab_In_Disguise.save_file( xml_file_name, v.first, v.last)
+      Mab_In_Disguise.save_file( xml_file_name, v.first, v.last)
     end
   end
 

@@ -41,12 +41,12 @@ class Members
     require_log_in!
     render_html_template
   end
-	
+  
   def GET_follows
     require_log_in!
     render_html_template
   end
-	
+  
   def GET_notifys
     require_log_in!
     render_html_template
