@@ -17,7 +17,9 @@ namespace :server do
     exec "thin -p 4567 -R config.ru -t 5 start"
   end
 
-  desc 'Start Shotgun.'
+  desc 'Start Shotgun.
+    shotgun --server=thin --port=4567 --public /no_public config.ru
+  '
   task :shotgun do
     sh 'rake server:db' unless db_running?
     exec "shotgun --server=thin --port=4567 --public /no_public config.ru"

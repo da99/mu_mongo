@@ -3,11 +3,18 @@
 @import base.sass
 @import layout_styles.sass
 
-    
+body
+  background: white url(http://megauni.s3.amazonaws.com/bg.gif)
+  padding: 0
+  
 #the_content
-  width: 500px
+  +rounded_bottom
+  padding: 10px 
+  border-bottom: 2px solid $red
+  width: 280px
   text-align: center
-  margin: 0 auto
+  margin: 0 0 0 300px
+  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
 
 #pretension 
   +rounded
@@ -88,36 +95,3 @@
         font-family: $serif
 
 
-body
-  padding: 10px
-
-// #container
-//   text-align: left
-//   margin: 0 auto
-//   +clearfix
-// 
-// #content
-//   width: 500px
-//   textarea
-//     width: 480px
-// 
-// #clubs
-//   width: 250px
-//   float: left
-//   text-align: right
-//   div.club
-//     border-bottom-width: 0
-// 
-// #messages
-//   width: 450px
-//   float: left
-//   h4
-//     margin: 0 20px 0 0
-//     border-bottom: 1px dashed black
-//       color: $dashed_border
-// 
-// #coming_soon
-//   ul
-//     padding-bottom: 10px
-//     padding-left: 25px
-//     margin-top: -10px
