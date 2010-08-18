@@ -16,6 +16,33 @@ div.col.lifes! {
 
 } # === div.messages!
 
+
+div.col.create! { 
+  
+  # ================= div.flash_msg =============================
+  
+
+  h3 'Add another username.'
+  
+  form.form_username_create!(:action=>"/member/", :method=>"post") {
+    
+    fieldset_hidden {
+      _method_put
+    }
+
+    fieldset {
+      label 'New Username'
+      input.text( :id=>"username_name", :name=>"add_username", :type=>"text", :value=>'{{ session_form_username }}' )
+    }
+
+    div.buttons {
+      button.create 'Save'
+    }
+
+  } # === form.create_account_form!
+
+} # === div.create!
+
 div.col.kill_me! {
   
   p %@

@@ -20,7 +20,7 @@ namespace :server do
   desc 'Start Shotgun.'
   task :shotgun do
     sh 'rake server:db' unless db_running?
-    exec "shotgun --server=thin --port=4567 config.ru"
+    exec "shotgun --server=thin --port=4567 --public /no_public config.ru"
   end
 
   task :nginx do

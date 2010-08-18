@@ -15,4 +15,8 @@ class Members_lifes < Base_View
 		current_member.username_menu
 	end
   
+  def session_form_username
+    @app.clean_room[:add_username]
+  end
+  
 end # === lifes 

@@ -40,7 +40,7 @@ div( :id=>"nav_bar" ) {
         nav_bar_li_unselected '{{username}}', '{{href}}'
       end
       end
-      nav_bar_li :Members, :create_life, "/create-life/", "[ Create Life ]"
+      nav_bar_li :Members, :create_life, "/lifes/", "[ Create Life ]"
     }
   end
 

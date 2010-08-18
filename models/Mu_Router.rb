@@ -154,7 +154,6 @@ class Mu_Router
         path '/lifes' # List of usernames + account deletion option
         
         path '/create-account'
-        path '/create-life'
         path '/today'
         path '/reset-password'                          , nil              , 'POST'
         path '/change-password/{filename}/{cgi_escaped}', 'change_password', %w{GET POST}

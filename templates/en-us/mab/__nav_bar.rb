@@ -46,7 +46,7 @@ div( :id=>"nav_bar" ) {
         end
       end
     show_if 'not_mini_nav_bar?' do
-      nav_bar_li :Members, :create_life, "/create-life/", "[ Create ]"
+      nav_bar_li :Members, :create_life, "/lifes/", "[ Create ]"
     end
     }
   end
