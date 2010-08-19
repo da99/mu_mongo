@@ -158,7 +158,7 @@ div.col.middle! {
 
     show_if 'logged_in?' do
       
-      div.divider 'Lives' 
+      h4.divider 'Lives' 
       
       ul.nav_bar.lives {
         loop 'username_nav' do
@@ -175,7 +175,7 @@ div.col.middle! {
       }
     end
     
-    div.divider 'Egg Timers'
+    h4.divider 'Egg Timers'
     
     ul.nav_bar.to_dos {
       nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
@@ -183,13 +183,13 @@ div.col.middle! {
     }
 
     show_if 'logged_in?' do
-      div.divider 'Clubs'
+      h4.divider 'Clubs'
       ul.nav_bar.news {
         nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
       }
     end
 
-    div.divider 'Old Stuff'
+    h4.divider 'Old Stuff'
     
     ul.nav_bar.old_clubs {
       loop 'old_clubs' do

@@ -7,7 +7,7 @@ div( :id=>"nav_bar" ) {
     p.site_title { 
       a '{{site_title}}', :href=>'/'
     }
-    div.divider {
+    h4.divider {
       '~~ ? ! @ ~~' 
     } 
   }
@@ -30,7 +30,7 @@ div( :id=>"nav_bar" ) {
   }
 
   mustache 'logged_in?' do
-    div.divider 'Lives'
+    h4.divider 'Lives'
     ul {
       mustache 'username_nav' do
       mustache 'selected?' do
@@ -44,7 +44,7 @@ div( :id=>"nav_bar" ) {
     }
   end
 
-  div.divider 'Clubs'
+  h4.divider 'Clubs'
   ul {
     li {
       nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
