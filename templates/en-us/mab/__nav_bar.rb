@@ -11,7 +11,7 @@ div( :id=>"nav_bar" ) {
         a '{{site_title}}', :href=>'/'
       end
     }
-    h4.divider.site_tag_line {
+    h4.site_tag_line {
        '~~ ? ! @ ~~'
     } 
   }
@@ -34,7 +34,7 @@ div( :id=>"nav_bar" ) {
 
   show_if 'logged_in?' do
     show_if 'not_mini_nav_bar?' do
-      h4.divider 'Lifes' 
+      h4 'Lifes' 
     end
     ul.nav_bar.lifes {
       mustache 'username_nav' do
@@ -72,7 +72,7 @@ div( :id=>"nav_bar" ) {
 
     # end # === if development?
 
-  # h4.divider 'Clubs'
+  # h4 'Clubs'
   # ul.clubs {
 
   #   nav_bar_li :Clubs, :list, '/uni/', '[ View All ]'
@@ -84,7 +84,7 @@ div( :id=>"nav_bar" ) {
   
   show_if 'logged_in?' do
 
-    h4.divider 'Your Clubs'
+    h4 'Your Clubs'
 
     ul.nav_bar.your_clubs {
 

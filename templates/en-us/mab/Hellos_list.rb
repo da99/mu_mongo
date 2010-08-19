@@ -57,7 +57,7 @@ div.col.middle! {
 
     show_if 'logged_in?' do
       
-      h4.divider 'Lifes' 
+      h4 'Lifes' 
       
       ul.nav_bar.lifes {
         loop 'usernames' do
@@ -69,14 +69,14 @@ div.col.middle! {
       }
     end
     
-    h4.divider 'Egg Timers'
+    h4 'Egg Timers'
     
     ul.nav_bar.to_dos {
       nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
       nav_bar_li :Timer_new, 'busy-noise', 'New'
     }
 
-    h4.divider 'Old Stuff'
+    h4 'Old Stuff'
     
     ul.nav_bar.old_clubs {
       loop 'old_clubs' do

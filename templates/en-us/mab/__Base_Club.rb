@@ -1,17 +1,18 @@
 
 module Base_Club
 
-  def div_guide! txt, &blok
-    text(capture {
-      div.follow_guide! {
-        div.guide! {
-          h4 txt
-          blok.call
-        }
-
-        club_follow_guide
+  def div_guide txt, &blok
+    div.section.follow_guide! {
+      div.guide! {
+        h3 txt
+        blok.call
       }
-    })
+    }
+  end
+  
+  def div_guide! txt, &blok
+    club_follow_guide
+    div_guide txt, &blok
   end
 
   def club_follow_guide
@@ -19,13 +20,13 @@ module Base_Club
       mustache('logged_in?') {
 
           show_if 'follower_but_not_owner?' do
-            p "You are following this club."
+            h3.following_it! 'You are following this universe.'
           end
     
           show_if 'potential_follower?' do
             show_if 'single_username?' do
-              p {
-                a("Follow this club.", :href=>"{{follow_href}}")
+              div.follow_it! {
+                a.button("Follow this universe.", :href=>"follow_href".m! )
               }
             end
             mustache 'multiple_usernames?' do

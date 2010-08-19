@@ -33,17 +33,20 @@ $text_box_border_green: #38761b
 $text_box_bg: #eaeaf0
 $text_box_bg_dark: #d6d6d6
 
+$padding = 20px
+
 // More info on fonts: http://doctype.com/arial-equivalent-ubuntu
 $impact_font: unquote("impact, arial black, sans-serif")
+$elegant_font: unquote('Palatino,Georgia,"Times New Roman",serif')
 $sans_serif:  unquote("'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif")
 $ui_sans:     unquote("'Nimbus Sans L','segoe ui',sans-serif")
 $serif:       unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif")
 
 
-=first( $padding : 10px )
-  padding-right: $padding
-=last( $padding : 10px )
-  padding-left: $padding
+=first( $_padding : $padding )
+  padding-right: $_padding
+=last( $_padding : $padding )
+  padding-left: $_padding
 
 =dev_bg
   #the_body
@@ -61,6 +64,9 @@ $serif:       unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'C
 
 =large_font_size
   font-size: 16px
+  
+=extra_large_font_size
+  font-size: 18px
 
 =input_text
   font-size: 20px
@@ -163,6 +169,17 @@ a:hover, a:active, a:focus
   color: white
   background: #f00919
 
+a.button
+  padding: 5px
+  &:hover
+    +rounded
+    padding: 5px 7px
+    background: $red
+
+div.a_button
+  text-align: center
+  padding: 10px 5px 0 5px
+
 strong
   color: #3A3A3A
   background: #F6F6F6
@@ -243,44 +260,59 @@ body
       padding: 0 0 10px 0
 
 h1
-  font:
-    family: $serif
-    size: 250%
-    style: italic
-    
-h2
-  font:
-    size: 150%
-    
-h3
   color: $blue
   font:
+    family: $elegant_font
     size: 200%
-    weight: normal
-    family: Palatino,Georgia,"Times New Roman",serif
-    weight: bold
     style: italic
   &.main
+    font:
+      weight: bold
     text:
       align: center
       shadow: 2px 2px 0 $drop_shadow_on_white
+    
+h2
+  color: $blue
+  padding: 0 0 5px 0
+  font:
+    family: $serif
+    style: italic
+    size: 180%
+    
+h3 
+  +small_font_size
+  color: $blue
+  padding: 0
+  text:
+    align: center
+    transform: uppercase 
+  font:
+    family: $sans_serif
+    weight: bold
+
+h4
+  +small_font_size
+  color: $blue
+  padding: 0
+  text-transform: uppercase
+  font:
+    family: $ui_sans
+    weight: bold
+
+h5
+  +extra_large_font_size
+  color: $blue
+  padding: 0 0 3px 0
+  text-transform: none
+  font:
+    family: $sans_serif
+    weight: bold
 
 p
   padding-bottom: 10px
   margin-bottom: 0
-
-h4
-  +large_font_size
-  text-transform: uppercase
-  color: $blue
-  padding: 0
-  font:
-    family: $ui_sans
-    weight: bold
     
-h4.divider
-  +small_font_size
-  
 div.block
   font-size: 16px
   h4
@@ -332,7 +364,6 @@ form
 
 div.body
   +clearfix
-  font-size: 110%
 
 div.news_post
   padding-bottom: 10px

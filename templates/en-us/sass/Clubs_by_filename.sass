@@ -6,7 +6,10 @@
 @import layout_styles.sass
 
 div.col
-  float: left
+  float: right
+  
+div.section
+  padding-bottom: $padding
 
 ul.nav_bar
   +horizontal_nav_bar
@@ -28,13 +31,10 @@ div.keyword
   span.keyword
     color: black
 
-#mind_control
-  width: 500px
-
 #intro
-  max-width: 250px
-  padding: 0 10px 100px 0
-  text-align: right
+  +last
+  max-width: 500px
+  text-align: left
 
 #guide
   padding: 10px
@@ -43,6 +43,11 @@ div.keyword
     padding: 0 0 0 20px
 
 #club_messages
-  +last
-  max-width: 550px
+  max-width: 600px
 
+#follow_it
+  padding: 10px
+  text-align: center
+
+
+  

@@ -1,15 +1,26 @@
 
 class String
   def m!
-    "{{#{self}}}"
+    self[/[^a-z0-9\_]/] ? 
+      self : 
+      "{{#{self}}}"
   end
 end # === class
 
 module Base
   
-  def a! raw_txt, href
-    txt = raw_txt[/[^a-z0-9\_]/] ? raw_txt : raw_txt.m!
-    a(txt, :href=>href.m!)
+  def a! txt, href
+    a(txt.m!, :href=>href.m!)
+  end
+  
+  def a_button txt, href
+    a.button(txt.m!, :href=>href.m!)
+  end
+  
+  def a_button! txt, href
+    div.a_button {
+      a.button(txt.m!, :href=>href.m!)
+    }
   end
 
   def mustache mus, &blok

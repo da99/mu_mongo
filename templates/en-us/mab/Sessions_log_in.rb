@@ -8,7 +8,7 @@ div.the_form! {
   
   # ================= div.flash_msg =============================
 
-    h3 'Log-in'
+    h2 'Log-in'
     
     form.log_in_form!( :action=>"/log-in/", :method=>"post" ) {
     
@@ -28,7 +28,7 @@ div.the_form! {
       
     } # === form.log_in_form!
 
-    h3 "Forgot your password?"
+    h2 "Forgot your password?"
 
     form.reset_password_form!(:action=>'/reset-password/', :method=>"post") {
       fieldset {

@@ -2,7 +2,7 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_shop.sass
 # NAME Clubs_read_shop
 
-h3.club_title! '{{title}}' 
+partial '__club_title'
 
 club_nav_bar(__FILE__)
 

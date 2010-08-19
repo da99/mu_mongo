@@ -9,7 +9,7 @@ div.the_form! {
   # ================= div.flash_msg =============================
 
 
-  h3 'Create a New Account'
+  h2 'Create a New Account'
   
   form.form_member_create!(:action=>"/member/", :method=>"post") {
     

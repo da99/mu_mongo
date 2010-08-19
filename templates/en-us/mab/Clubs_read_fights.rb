@@ -2,7 +2,7 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_fights.sass
 # NAME Clubs_read_fights
 
-h3.club_title! '{{title}}' 
+partial '__club_title'
 
 club_nav_bar(__FILE__)
 

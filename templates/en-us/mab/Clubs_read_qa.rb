@@ -2,11 +2,8 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-h3.main '{{title}}' 
-div.keyword { 
-  span.title 'keyword:'
-  span.keyword 'factor'
-}
+partial '__club_title'
+
 club_nav_bar(__FILE__)
 
 div_centered do

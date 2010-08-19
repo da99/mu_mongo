@@ -45,7 +45,9 @@ module Base_Message
           end
         
           show_if 'title' do
-            strong.title '{{title}}'
+            h5 {
+              a 'title'.m!, :href=>'href'.m!
+            }
           end
 
           div.body( '{{{compiled_body}}}' )
