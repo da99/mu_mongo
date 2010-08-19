@@ -34,14 +34,15 @@ class Test_Club_Create < Test::Unit::TestCase
   
   must 'require a unique filename' do
     filename = Club.find_one({})['filename']
+    old_filename = create_club.data.filename
     club = begin
              Club.create( admin_member,
-              {:filename=>filename, :title=>'title', :teaser=>'teaser'} 
+              {:filename=>old_filename, :title=>'title', :teaser=>'teaser'} 
              )
            rescue Club::Invalid => e
              e.doc
            end
-    assert_equal "Filename, #{filename}, already taken. Please choose another.", club.errors.first
+    assert_equal "Filename, #{old_filename}, already taken. Please choose another.", club.errors.first
   end
 
   must 'require a title' do

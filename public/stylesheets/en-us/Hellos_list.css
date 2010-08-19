@@ -124,22 +124,29 @@ body {
   margin-bottom: 10px; }
 
 #flash_msg {
-  padding: 5px; }
+  padding: 15px;
+  text-align: center; }
   #flash_msg h4 {
     text-transform: uppercase;
     font-weight: bold; }
   #flash_msg div.msg {
     font-size: 14px; }
   #flash_msg div.error_msg, #flash_msg div.errors {
+    padding: 10px;
     font-weight: bold;
     background: #f00919;
     color: white; }
+    #flash_msg div.error_msg h4, #flash_msg div.errors h4 {
+      color: white; }
+    #flash_msg div.error_msg div.msg, #flash_msg div.errors div.msg {
+      color: white; }
   #flash_msg div.success_msg, #flash_msg div.success {
+    padding: 10px;
     background: #ffff99; }
     #flash_msg div.success_msg h4, #flash_msg div.success h4 {
-      color: #214d81; }
+      color: #38761b; }
     #flash_msg div.success_msg div.msg, #flash_msg div.success div.msg {
-      color: #133b00; }
+      color: black; }
 
 #loading {
   font-size: 20px;
@@ -187,13 +194,16 @@ p {
   padding-bottom: 10px;
   margin-bottom: 0; }
 
-h4, div.divider {
-  font-size: 12px;
+h4 {
+  font-size: 16px;
   text-transform: uppercase;
   color: #185dad;
   padding: 0;
   font-family: 'Nimbus Sans L','segoe ui',sans-serif;
   font-weight: bold; }
+
+h4.divider {
+  font-size: 12px; }
 
 div.block {
   font-size: 16px; }
