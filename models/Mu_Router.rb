@@ -25,7 +25,7 @@ class Mu_Router
     }
     
     if redirect_options
-      new_env['redirect_to'] = new_env['PATH_INFO'].sub(find, replace)
+      new_env['redirect_to'] = new_env['PATH_INFO'].sub(redirect_options[1], redirect_options[2])
       return
     end
 

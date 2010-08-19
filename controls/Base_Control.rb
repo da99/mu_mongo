@@ -166,8 +166,6 @@ module Base_Control
                              disguise_class.compile( original ).to_s 
                            )
                          )
-                           
-                         File.read(mustache)
                        end
     
     require "views/#{file_name}.rb"

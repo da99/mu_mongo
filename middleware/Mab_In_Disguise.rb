@@ -50,7 +50,9 @@ class Mab_In_Disguise
   end
 
   def self.compile_all filename = '*', save_it = true
-    Dir.glob("templates/*/mab/#{filename}.rb").each { |mab_file|
+    content = nil
+    path_to_file = filename == '*' ? "templates/*/mab/#{filename}.rb" : filename
+    Dir.glob(path_to_file).each { |mab_file|
       next if mab_file['layout.rb']
       mab_dir       = File.dirname(mab_file)
       layout_file   = File.join(mab_dir, 'layout.rb')
@@ -75,6 +77,7 @@ class Mab_In_Disguise
                       end
       save_file(mab_file, html_file, content) if save_it
     }
+    content
   end
 
   def self.compile file_name
