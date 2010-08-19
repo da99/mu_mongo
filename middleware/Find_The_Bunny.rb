@@ -49,6 +49,10 @@ class Find_The_Bunny
     new_env['the.app.meta'] ||= {}
     results = Mu_Router.detect(new_env)
     return(@app.call(new_env)) if results
+    
+    if new_env['redirect_to']
+      return redirect(new_env['redirect_to'])
+    end
       
     if new_env['PATH_INFO']['/+/']
       new_url = File.join( *(new_env['PATH_INFO'].split('+').reject { |piece| piece == '+'}) )

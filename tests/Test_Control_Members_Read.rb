@@ -51,7 +51,6 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   must 'show profile: /life/{username}/' do
     un = regular_member_3.usernames.first
     get "/life/#{un}/"
-    follow_redirect!
     assert_last_response_ok
   end
 
@@ -59,15 +58,8 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     must "show /life/{username}/#{suffix}/" do
       un = regular_member_3.usernames.first
       get "/life/#{un}/#{suffix}/"
-      follow_redirect!
       assert_last_response_ok
     end
   }
-
-  must 'redirect life/../status/ to life/../news/ with 301 (permanent)' do
-    un = regular_member_3.usernames.first
-    get "/life/#{un}/status/"
-    assert_redirect "/uni/#{un}/news/", 301
-  end
 
 end # === class Test_Control_Members_Read

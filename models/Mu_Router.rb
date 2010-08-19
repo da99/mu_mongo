@@ -2,12 +2,34 @@
 class Mu_Router
 
   def self.maps
-    @maps ||= new.compile
+    @maps ||= begin
+                router = new
+                router.compile
+                @redirects = router.redirects
+                router.url_aliases
+              end
+  end
+  
+  def self.redirects
+    @redirects ||= begin
+                     maps
+                     @redirects
+                   end
   end
 
   def self.detect new_env
     http_meth = new_env['REQUEST_METHOD'].to_s
-    self.maps.detect { |path, control, raw_action_name, raw_http_verbs| 
+    
+    redirect_options = redirects.detect { |rPattern, find, replace| 
+      new_env['PATH_INFO'] =~ rPattern
+    }
+    
+    if redirect_options
+      new_env['redirect_to'] = new_env['PATH_INFO'].sub(find, replace)
+      return
+    end
+
+    maps.detect { |path, control, raw_action_name, raw_http_verbs| 
       action_name = raw_action_name ? 
                       raw_action_name : 
                       path.gsub(%r!\A/|/\Z!, '').split("/").join('-').gsub('-', '_')
@@ -56,11 +78,12 @@ class Mu_Router
   #                                Instance 
   # ==========================================================================================
 
-  attr_reader :prefix, :control, :url_aliases
+  attr_reader :prefix, :control, :url_aliases, :redirects
   def initialize new_prefix = '/', &blok
     @control     = nil
     @prefix      = new_prefix
     @url_aliases = []
+    @redirects   = []
     instance_eval(&blok) if block_given?
   end
   
@@ -95,7 +118,7 @@ class Mu_Router
       end
     end
     
-    sub_and_redirect( '/clubs/{filename}' , 'clubs', 'uni' )
+    sub_and_redirect( %r!\A/clubs\/! , 'clubs', 'uni' )
     
     map '/uni' do
       to Clubs
@@ -207,6 +230,10 @@ class Mu_Router
     @prefix = '/'
     instance_eval &blok
     @prefix = old_prefix
+  end
+  
+  def sub_and_redirect rPattern, find, replace
+    @redirects << [rPattern, find, replace]
   end
   
 end # === class
