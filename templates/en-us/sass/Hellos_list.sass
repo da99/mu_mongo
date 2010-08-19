@@ -9,23 +9,22 @@ body
   
 #the_content
   +rounded_bottom
-  padding: 10px 
+  padding: 30px 30px 50px 30px
   border-bottom: 2px solid $red
   width: 280px
   text-align: center
-  margin: 0 0 0 300px
-  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
+  margin: 0 0 0 150px
+  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 151px 0
 
 #pretension 
   +rounded
   text-align: center
-  // background: $light_highlight
-  // border: 1px unquote(dashed) $dashed_border
   h1
     padding: 0 0 30px 0
   h3.title
     +dashed_border_bottom
     font-style: italic
+    font-family: impact, arial black, serif
     padding: 5px 5px 20px 5px
   h4
     span.title
@@ -34,13 +33,7 @@ body
     +small_font_size
     text-align: center
     text-transform: uppercase
-  ul
-    padding: 0 10px 0 20px
-    font:
-      family: $sans_serif
-      size: 110%
-    li
-      padding: 6px 0 0 0
+
 
 #middle
   border: 0
@@ -64,12 +57,8 @@ body
     font: 
       size: 12px
 
-#nav_bar
-  border-width: 0 
-  padding: 0
-  margin: 0
-  float: none
-  width: auto
+ul.nav_bar
+  +vertical_nav_bar
   text-align: center
   
 #city_clubs, #political_beauty, #joy_clubs, #random_clubs

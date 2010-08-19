@@ -1,7 +1,8 @@
-# ~/megauni/views/Session_Control_log_in.rb
-# ~/megauni/templates/en-us/sass/Session_Control_log_in.sass
+# ~/megauni/views/Sessions_log_in.rb
+# ~/megauni/templates/en-us/sass/Sessions_log_in.sass
 # Session_Control_log_in
 
+partial('__nav_bar')
 
 div.the_form! { 
   
@@ -42,4 +43,3 @@ div.the_form! {
 } # === div.the_form!
 
 
-partial('__nav_bar')

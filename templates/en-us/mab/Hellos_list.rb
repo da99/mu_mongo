@@ -127,7 +127,7 @@ div.col.middle! {
 
 
 
-    ul.help {
+    ul.nav_bar.help {
       
       li {
         a 'Help', :href=>'/help/'
@@ -160,7 +160,7 @@ div.col.middle! {
       
       div.divider 'Lives' 
       
-      ul.lives {
+      ul.nav_bar.lives {
         loop 'username_nav' do
           show_if 'selected?' do
             nav_bar_li_selected '{{username}}'
@@ -177,21 +177,21 @@ div.col.middle! {
     
     div.divider 'Egg Timers'
     
-    ul.to_dos {
+    ul.nav_bar.to_dos {
       nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
       nav_bar_li :Timer_new, 'busy-noise', 'New'
     }
 
     show_if 'logged_in?' do
       div.divider 'Clubs'
-      ul.news {
+      ul.nav_bar.news {
         nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
       }
     end
 
     div.divider 'Old Stuff'
     
-    ul.old_clubs {
+    ul.nav_bar.old_clubs {
       loop 'old_clubs' do
         li { a('{{title}}', :href=>'{{href}}') }
       end

@@ -83,14 +83,14 @@ namespace 'git' do
   SKIP_MONGO_CHECK = false'
   task :push do
     
-    # Update DB indexes on production server.
-    puts_white "Updating indexes on production DB server..."
     orig_env = ENV['RACK_ENV']
-    ENV['RACK_ENV'] = 'production'
-    require 'megauni'
-    Couch_Plastic.ensure_indexes()
 
     unless ENV['SKIP_MONGO_CHECK'] 
+      # Update DB indexes on production server.
+      puts_white "Updating indexes on production DB server..."
+      ENV['RACK_ENV'] = 'production'
+      require 'megauni'
+      Couch_Plastic.ensure_indexes()
       Rake::Task['db:check_size'].invoke
     end
 

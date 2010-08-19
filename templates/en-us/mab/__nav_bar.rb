@@ -11,12 +11,12 @@ div( :id=>"nav_bar" ) {
         a '{{site_title}}', :href=>'/'
       end
     }
-    p.divider.site_tag_line {
+    div.divider.site_tag_line {
        '~~ ? ! @ ~~'
     } 
   }
 
-  ul.help {
+  ul.nav_bar.help {
     
     nav_bar_li :Hello, 'help'
     
@@ -27,16 +27,16 @@ div( :id=>"nav_bar" ) {
     
     show_if 'not_logged_in?' do
       nav_bar_li :Sessions, 'log-in', 'Log-in'
-      # nav_bar_li :Member_Control, 'create-account', 'Join'
+      nav_bar_li :Members, 'create-account', 'Join'
     end
     
   }
 
   show_if 'logged_in?' do
     show_if 'not_mini_nav_bar?' do
-      p.divider 'Lives' 
+      div.divider 'Lives' 
     end
-    ul.lives {
+    ul.nav_bar.lives {
       mustache 'username_nav' do
         show_if 'selected?' do
           nav_bar_li_selected '{{username}}'
@@ -72,21 +72,21 @@ div( :id=>"nav_bar" ) {
 
     # end # === if development?
 
-  p.divider 'Clubs'
-  ul.clubs {
+  # div.divider 'Clubs'
+  # ul.clubs {
 
-    nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
-    
-    show_if 'logged_in?' do
-    end
-  
-  }
+  #   nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
+  #   
+  #   show_if 'logged_in?' do
+  #   end
+  # 
+  # }
   
   show_if 'logged_in?' do
 
-    p.divider 'Your Clubs'
+    div.divider 'Your Clubs'
 
-    ul.your_clubs {
+    ul.nav_bar.your_clubs {
 
       nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'
 
@@ -98,7 +98,7 @@ div( :id=>"nav_bar" ) {
   end
 
   show_if 'mini_nav_bar?' do
-    ul {
+    ul.nav_bar {
       li {
         nav_bar_li :Clubs, :list, '/clubs/', 'Clubs'
       }

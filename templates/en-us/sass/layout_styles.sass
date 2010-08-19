@@ -52,7 +52,10 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
     border-top: 1px solid red
 
 =small_font_size
-  font-size: 80%
+  font-size: 12px
+
+=medium_font_size
+  font-size: 14px
 
 =input_text
   font-size: 20px
@@ -71,15 +74,22 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
 =dashed_border_right
   border-right: 1px dashed $dashed_border
 
-=rounded_bottom
-  border-radius: 0 0 15px 15px 
-  -moz-border-radius: 0 0 15px 15px
-  -webkit-border-radius: 0 0 15px 15px
+=very_left_rounded
+  border-radius: 15px 0 0 15px
+  -moz-border-radius: 15px 0 0 15px
+  -webkit-border-radius: 15px 0 0 15px
   
-=rounded
-  border-radius: 5px 
-  -moz-border-radius: 5px
-  -webkit-border-radius: 5px
+=rounded( $tl : 5px, $tr : 5px, $br : 5px, $bl : 5px)
+  border-radius: $tl $tr $br $bl 
+  -moz-border-radius: $tl $tr $br $bl 
+  -webkit-border-radius: $tl $tr $br $bl 
+  
+=rounded_bottom
+  +rounded( 0, 0, 5px, 5px)
+  
+=rounded_top
+  +rounded( 5px, 5px, 0, 0 )
+  
   
 // Used with +variable_width_centered mixin.
 #outer_shell
@@ -103,61 +113,51 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
   left: -50%
 
 =nav_bar
-  +inline-list
   display: block
-  padding: 0 10px 2px 20px
-  border-bottom: 2px unquote("solid") $light_blue
-  text-align: center
+  list-style-type: none
   li
-    padding: 2px 3px 3px 3px
     a
-      padding: 2px 4px 4px 4px
+      +small_font_size
       font-family: $ui_sans
-      font-size: 80%
       text-transform: uppercase
   li.selected
-    margin-right: 5px
-    padding: 4px 9px 3px 9px
+    +small_font_size
     font:
-      size: 90%
       weight: bold
     text:
-      align: center
       transform: uppercase
-    background-color: $light_blue
-    border-radius: 5px 5px 0 0
-    -moz-border-radius: 5px 5px 0 0
-    -webkit-border-radius: 5px 5px 0 0
-    color: white
+
+=horizontal_nav_bar
+  +inline-list
+  +nav_bar
+  padding: 0 10px 2px 20px
+  border-bottom: 2px solid $light_blue
+  text-align: center
   margin-bottom: 10px
   padding-top: 10px
   padding-left: 0px
   li
+    a
+      padding: 2px 4px 4px 4px
+  li.selected
+    +rounded_top
+    +medium_font_size
+    margin-right: 5px
+    padding: 4px 9px 3px 9px
+    background-color: $light_blue
+    color: white
+  li
     padding: 0
-    
+
+=vertical_nav_bar
+  +nav_bar
+  padding: 0 0 15px 0
+  li.selected
+    color: $blue
+    text-transform: lowercase
+
 ul.nav_bar
   +nav_bar
-
-
-ul.tabs
-  +horizontal-list
-  margin-bottom: -1px
-  padding-left: 15px
-  font-family: $ui_sans
-  a:link, a:visited, a:hover, a:active, a:focus
-    padding: 5px 5px 8px 5px
-  li
-    padding: 5px
-  li.tab_selected
-    background: $light_grey
-    border: 1px solid #717171
-      bottom: 0
-    a:link, a:visited, a:hover, a:active, a:focus
-      background: transparent
-      color: #00233c
-      padding-bottom: 12px
-      text-decoration: none
-      font-family: $ui_sans
 
 a:link, a:visited
   color: $red
@@ -220,31 +220,6 @@ body
     div.msg
       color: $dark_green
 
-#mini_nav_bar, #nav_bar
-  +dashed_border_left
-  width: 200px
-  float: left
-  text-align: left
-  margin-left: 10px
-  padding: 0 0 100px 10px
-  p
-    a:link, a:visited
-      font-size: 20px
-      text-transform: none
-      text-decoration: none
-  p.site_title
-    font-size: 20px
-  ul
-    list-style: none
-    padding: 0 0 10px 0
-    li
-      list-style: none
-      padding: 2px 0 
-      &.selected
-        text-transform: lowercase
-      a
-        padding: 2px 2px 3px 2px
-
 #loading
   +input_text
   text-align: center
@@ -285,17 +260,18 @@ h3
   &.title
     text-align: center
 
-h4, div.divider, p.divider
-  text-transform: uppercase
-  color: $blue
-  font:
-    size: 90%
-    family: $ui_sans
-    weight: bold
-
 p
   padding-bottom: 10px
   margin-bottom: 0
+
+h4, div.divider
+  +small_font_size
+  text-transform: uppercase
+  color: $blue
+  padding: 0
+  font:
+    family: $ui_sans
+    weight: bold
 
 div.block
   font-size: 16px
@@ -369,9 +345,9 @@ div.message, div.club
   border-bottom: 1px dashed #003860
   div.pending, div.accepted, div.declined
     & span
+      +small_font_size
       padding: 0 4px
       text-transform: uppercase
-      font-size: 80%
       font-weight: bold
   div.pending span
     color: $random_orange

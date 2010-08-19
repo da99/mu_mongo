@@ -21,9 +21,9 @@ div.nav_bar! {
 
 
 # =================== These are tabs to show create forms. 
-ul.tabs.create_tabs! {
+ul.create_tabs! {
   
-  li.tab_selected {
+  li.selected {
     a( 'Locations', :href=>"#create_location", :onclick=>"Swiss.tab.select(this); return false;" )
   }
 

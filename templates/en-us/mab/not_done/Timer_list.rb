@@ -241,9 +241,9 @@ div.job.alarm {
 
   } # === div.work!
   
-  ul.tabs { 
+  ul { 
   
-    li.tab_selected { 
+    li.selected { 
       a( 'Instructions:', :href=>'#instructions', :onclick=>"Swiss.tab.select( this ); return false;" )         
     }
     
