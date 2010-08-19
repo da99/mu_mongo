@@ -10,6 +10,7 @@ $pink: #ff477c
 $highlight: #ffff99
 $light_highlight: #ffffcc
 $dashed_border: #003860
+$drop_shadow_on_white = #E1E1E1
 
 $cloud_blue: #33ccff
 $dark_blue: #214d81
@@ -93,27 +94,20 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
 =rounded_top
   +rounded( 5px, 5px, 0, 0 )
   
-  
-// Used with +variable_width_centered mixin.
-#outer_shell
-  overflow: hidden
-  
-// Used with +variable_width_centered mixin.
-#inner_shell
-  position: relative
-  float: left
-  left: 50%
-
 // From:
 //    http://www.tightcss.com/centering/center_variable_width.htm
 // How to center a variable width DIV:
-// 1) Add mixin to original div: +variable_width_centered
-// 2) Wrap div with #inner_shell.
-// 2) Wrap that div with #outer_shell.
-=variable_width_centered
-  position: relative
-  float: left
-  left: -50%
+// 1) Wrap div with :div_centered
+#outer_shell
+  overflow: hidden
+  #inner_shell
+    position: relative
+    float: left
+    left: 50%
+    div.centered
+      position: relative
+      float: left
+      left: -50%
 
 =nav_bar
   display: block
@@ -122,13 +116,10 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
     a
       +small_font_size
       font-family: $ui_sans
-      text-transform: uppercase
   li.selected
     +small_font_size
     font:
       weight: bold
-    text:
-      transform: uppercase
 
 =horizontal_nav_bar
   +inline-list
@@ -144,7 +135,6 @@ $serif: unquote("georgia, 'bitstream vera sans serif', 'lucida grande', 'Century
       padding: 2px 4px 4px 4px
   li.selected
     +rounded_top
-    +medium_font_size
     margin-right: 5px
     padding: 4px 9px 3px 9px
     background-color: $light_blue
@@ -264,11 +254,15 @@ h2
 h3
   color: $blue
   font:
-    family: $serif
     size: 200%
     weight: normal
-  &.title
-    text-align: center
+    family: Palatino,Georgia,"Times New Roman",serif
+    weight: bold
+    style: italic
+  &.main
+    text:
+      align: center
+      shadow: 2px 2px 0 $drop_shadow_on_white
 
 p
   padding-bottom: 10px

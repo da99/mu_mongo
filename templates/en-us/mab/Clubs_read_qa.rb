@@ -2,12 +2,14 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-h3.club_title! '{{title}}' 
-
+h3.main '{{title}}' 
+div.keyword { 
+  span.title 'keyword:'
+  span.keyword 'factor'
+}
 club_nav_bar(__FILE__)
 
-div.outer_shell! do
-  div.inner_shell! do
+div_centered do
     
     div.club_body! {
 
@@ -44,6 +46,5 @@ div.outer_shell! do
 
     } # div.club_body!
     
-  end # div.inner_shell!
 end # div.outer_shell!
     

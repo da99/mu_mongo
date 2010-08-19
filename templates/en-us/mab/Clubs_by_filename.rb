@@ -3,7 +3,11 @@
 # NAME Club_by_filename
 
 
-h3.club_title! '{{club_title}}' 
+h3.main '{{club_title}}' 
+div.keyword { 
+  span.title 'keyword:'
+  span.keyword 'factor'
+}
 
 club_nav_bar(__FILE__)
 
