@@ -75,7 +75,7 @@ div( :id=>"nav_bar" ) {
   # h4.divider 'Clubs'
   # ul.clubs {
 
-  #   nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
+  #   nav_bar_li :Clubs, :list, '/uni/', '[ View All ]'
   #   
   #   show_if 'logged_in?' do
   #   end
@@ -100,7 +100,7 @@ div( :id=>"nav_bar" ) {
   show_if 'mini_nav_bar?' do
     ul.nav_bar {
       li {
-        nav_bar_li :Clubs, :list, '/clubs/', 'Clubs'
+        nav_bar_li :Clubs, :list, '/uni/', 'Clubs'
       }
     }
   end

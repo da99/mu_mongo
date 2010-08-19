@@ -4,7 +4,7 @@ require 'tests/__rack_helper__'
 class Test_Control_Clubs_Update < Test::Unit::TestCase
 
   must 'not allow strangers' do
-    put "/clubs/hearts/", :title=>'new-hearts'
+    put "/uni/hearts/", :title=>'new-hearts'
     follow_redirect!
     assert_equal '/log-in/', last_request.fullpath
   end

@@ -4,14 +4,14 @@ require 'tests/__rack_helper__'
 class Test_Control_Clubs_Edit < Test::Unit::TestCase
 
   must 'require log-in' do
-    get "/clubs/hearts/edit/"
+    get "/uni/hearts/edit/"
     follow_redirect!
     assert_equal "/log-in/", last_request.fullpath
   end
 
   must 'render for admins' do
     log_in_admin
-    get "/clubs/hearts/edit/"
+    get "/uni/hearts/edit/"
     assert_equal 200, last_response.status
   end
 

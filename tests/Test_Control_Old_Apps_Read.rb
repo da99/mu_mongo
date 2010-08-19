@@ -53,10 +53,10 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_match( /This website has moved/, last_response.body  )
   end
 
-  must 'should redirect /back-pain/ to /clubs/back_pain/' do
+  must 'should redirect /back-pain/ to /uni/back_pain/' do
     get '/back-pain/'
     follow_redirect!
-    assert_equal '/clubs/back_pain/', last_request.fullpath
+    assert_equal '/uni/back_pain/', last_request.fullpath
   end
 
   must 'redirect /salud/robots.txt to /robots.txt' do
@@ -68,13 +68,13 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
   must 'redirect /child_care/clubs/child_care/ to /clubs/child_care/' do
     get '/child_care/clubs/child_care/'
     follow_redirect!
-    assert_equal '/clubs/child_care/', last_request.fullpath
+    assert_equal '/uni/child_care/', last_request.fullpath
   end
 
   must 'redirect /back_pain/clubs/back_pain/ to /clubs/back_pain/' do
     get '/back_pain/clubs/back_pain/'
     follow_redirect!
-    assert_equal '/clubs/back_pain/', last_request.fullpath
+    assert_equal '/uni/back_pain/', last_request.fullpath
   end
 
   must 'redirect /skins/jinx/css/main_show.css to /stylesheets/en-us/Hellos_list.css' do

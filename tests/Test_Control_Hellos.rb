@@ -47,10 +47,10 @@ class Test_Control_Hellos < Test::Unit::TestCase
     assert_equal last_response.content_type,  'application/xml; charset=utf-8'
   end
 
-  must "redirect /help/ to /clubs/megauni/" do
+  must "redirect /help/ to /uni/megauni/" do
     get '/help/'
     follow_redirect!
-    assert_equal "/clubs/megauni/", last_request.fullpath
+    assert_equal "/uni/megauni/", last_request.fullpath
   end
 
 

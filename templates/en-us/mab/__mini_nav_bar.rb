@@ -47,7 +47,7 @@ div( :id=>"nav_bar" ) {
   h4.divider 'Clubs'
   ul {
     li {
-      nav_bar_li :Clubs, :list, '/clubs/', '[ View All ]'
+      nav_bar_li :Clubs, :list, '/uni/', '[ View All ]'
     }
     mustache 'logged_in?' do
       nav_bar_li :Clubs, :create, '/club-create/', '[ Create ]'

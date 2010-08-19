@@ -60,7 +60,7 @@ class Members
   %w{e qa news shop predictions random }.each { |path|
     eval(%~
           def GET_life_#{path} un
-            redirect!("/clubs/\#{un}/#{path}/", 301)
+            redirect!("/uni/\#{un}/#{path}/", 301)
           end
          ~)
   }

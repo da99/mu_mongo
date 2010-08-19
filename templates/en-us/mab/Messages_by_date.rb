@@ -12,7 +12,7 @@ div.content! {
   
   show_if 'logged_in?' do
     div {
-      a('Create', :href=>'/clubs/hearts/new/')
+      a('Create', :href=>'/uni/hearts/new/')
     }
   end
 
@@ -20,7 +20,7 @@ div.content! {
     h4 'Archives:'
     div.body {
     
-      a('See all.', :href=>'/clubs/hearts/')
+      a('See all.', :href=>'/uni/hearts/')
       
     }
   }

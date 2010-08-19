@@ -85,7 +85,7 @@ class Mu_Router
         path '/log'   , :doc_log
       end
       
-      map '/clubs/{filename}' do
+      map '/uni/{filename}' do
         path '/by_label/{filename}/', 'by_label'
         map '/by_date' do
           path '/'                  , 'by_date'

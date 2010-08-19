@@ -136,7 +136,7 @@ class Clubs
     env['club_filename'] = filename
     begin
       club = Club.by_filename(filename)
-      redirect!("/clubs/#{club.data.filename}/")
+      redirect!("/uni/#{club.data.filename}/")
     rescue Club::Not_Found
     end
     render_html_template
@@ -146,7 +146,7 @@ class Clubs
     filename = clean_room['keyword'].to_s
     begin
       club = Club.by_filename_or_member_username(filename)
-      redirect!("/clubs/#{club.data.filename}/")
+      redirect!("/uni/#{club.data.filename}/")
     rescue Club::Not_Found
       cgi_filename = CGI.escape(filename)
       redirect!("/club-search/#{cgi_filename}/")

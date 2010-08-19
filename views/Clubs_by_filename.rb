@@ -20,7 +20,7 @@ class Clubs_by_filename < Base_View
   def months
     %w{ 8 4 3 2 1 }.map { |month|
       { :text => Time.local(2007, month).strftime('%B %Y'),
-        :href=>"/clubs/hearts/by_date/2007/#{month}/" 
+        :href=>"/uni/hearts/by_date/2007/#{month}/" 
       }
     }
   end

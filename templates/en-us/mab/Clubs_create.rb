@@ -6,7 +6,7 @@ div.content! {
   
   h4 'Create a Club'
 
-  form(:id=>'form_clubs_create', :action=>"/clubs/", :method=>"post") {
+  form(:id=>'form_clubs_create', :action=>"/uni/", :method=>"post") {
     fieldset {
       label 'Title:'
       input.text :name=>'title', :id=>'create_club_title', :type=>'text', :value=>''
@@ -24,7 +24,7 @@ div.content! {
     }
   }
 
-  a('See complete list of clubs.', :href=>'/clubs/')
+  a('See complete list of clubs.', :href=>'/uni/')
   
 } # === div.content!
 

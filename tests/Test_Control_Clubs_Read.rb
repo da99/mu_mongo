@@ -7,27 +7,27 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     regular_member_1
   end
 
-  must 'render /clubs/' do
-    get '/clubs/'
+  must 'render /uni/' do
+    get '/uni/'
     assert_last_response_ok
   end
 
-  must 'render /clubs/ for members' do
+  must 'render /uni/ for members' do
     log_in_regular_member_1
-    get '/clubs/'
+    get '/uni/'
     assert_last_response_ok
   end
 
   must 'be viewable by non-members' do
     club = create_club
-    get "/clubs/#{club.data.filename}/"
+    get "/uni/#{club.data.filename}/"
     
     assert_match(/#{club.data.title}/, last_response.body)
   end
 
-  must 'render /clubs/{some filename}/ for members' do
+  must 'render /uni/{some filename}/ for members' do
     log_in_regular_member_1
-    get '/clubs/predictions/'
+    get '/uni/predictions/'
     assert_equal 200, last_response.status
   end
 
@@ -150,11 +150,11 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
   # ================ Life Club ===========================
 
-  must 'use /clubs/{filename}/ for life clubs' do
+  must 'use /uni/{filename}/ for life clubs' do
     mem   = regular_member_1
     un_id, un  = mem.username_hash.to_a.first
     life  = Club.by_filename_or_member_username(un)
-    assert_equal "/clubs/#{un}/", life.href
+    assert_equal "/uni/#{un}/", life.href
   end
 
   must 'show "You own this universe" to owner of life club' do
@@ -188,13 +188,13 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     club = create_club(regular_member_1, :filename=>"sf_#{rand(10000)}")
     post "/club-search/", :keyword=>club.data.filename
     follow_redirect!
-    assert_equal "/clubs/#{club.data.filename}/", last_request.fullpath
+    assert_equal "/uni/#{club.data.filename}/", last_request.fullpath
   end
 
   must 'redirect to life club if keyword is a member username' do
     un = regular_member_1.usernames.first
     post "/club-search/", :keyword=>un
-    assert_redirect "/clubs/#{un}/", 303
+    assert_redirect "/uni/#{un}/", 303
   end
 
   # ================= Club Parts ===========================
@@ -202,16 +202,16 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
   %w{ e  qa news magazine fights shop predictions random thanks }.each { |suffix|
     club = nil
     
-    must "render /clubs/..filename../#{suffix}/" do
+    must "render /uni/..filename../#{suffix}/" do
       club ||= create_club(regular_member_1)
-      get "/clubs/#{club.data.filename}/#{suffix}/"
+      get "/uni/#{club.data.filename}/#{suffix}/"
       assert_equal 200, last_response.status
     end
     
-    must "render /clubs/..filename../#{suffix}/ while logged in" do
+    must "render /uni/..filename../#{suffix}/ while logged in" do
       club ||= create_club(regular_member_1)
       log_in_regular_member_1
-      get "/clubs/#{club.data.filename}/#{suffix}/"
+      get "/uni/#{club.data.filename}/#{suffix}/"
       assert_equal 200, last_response.status
     end
   }

@@ -8,28 +8,28 @@ require 'tests/__rack_helper__'
 # on MegaUni.com
 class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
 
-  must 'render /clubs/hearts/' do
-    get '/clubs/hearts/'
+  must 'render /uni/hearts/' do
+    get '/uni/hearts/'
     assert_equal 200, last_response.status
   end
 
   must 'redirects /hearts/ to /club/hearts/' do
     get "/hearts/"
     follow_redirect!
-    assert_equal( "/clubs/hearts/", last_request.fullpath)
+    assert_equal( "/uni/hearts/", last_request.fullpath)
   end
   
-  must 'redirects /hearts/m/ to /clubs/hearts/' do 
+  must 'redirects /hearts/m/ to /uni/hearts/' do 
     get '/hearts/m/'
     follow_redirect! # to /hearts/
     follow_redirect! # finally, to our destination.
-    assert_equal '/clubs/hearts/', last_request.fullpath 
+    assert_equal '/uni/hearts/', last_request.fullpath 
   end
 
-  must 'redirects /blog/ to /clubs/hearts/' do 
+  must 'redirects /blog/ to /uni/hearts/' do 
     get '/blog/'
     follow_redirect!
-    assert_equal '/clubs/hearts/', last_request.fullpath
+    assert_equal '/uni/hearts/', last_request.fullpath
     assert_equal 200, last_response.status
   end
 
@@ -42,14 +42,14 @@ class Test_Control_Surfer_Hearts_Read < Test::Unit::TestCase
   must 'redirects blog archives (e.g. "/blog/2007/8/" ) to news archives. ' do
     get '/blog/2007/8/'
     follow_redirect!
-    assert_equal '/clubs/hearts/by_date/2007/8/', last_request.fullpath
+    assert_equal '/uni/hearts/by_date/2007/8/', last_request.fullpath
   end
 
   must 'redirects archives by_category to messages archives by_label. ' +
      '(E.g.: /heart_links/by_category/16/)' do
       get '/heart_links/by_category/167/'
       follow_redirect!
-      assert_equal '/clubs/hearts/by_label/stuff_for_dudes/', last_request.fullpath 
+      assert_equal '/uni/hearts/by_label/stuff_for_dudes/', last_request.fullpath 
   end
 
   must 'redirects a "/heart_link/10/" to "/mess/10/".' do

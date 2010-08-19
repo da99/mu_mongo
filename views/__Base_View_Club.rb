@@ -11,7 +11,7 @@ module Base_View_Club
 
   def compile_clubs arr
     arr.map { |club|
-      club['href'] = "/clubs/#{club['filename']}/"
+      club['href'] = "/uni/#{club['filename']}/"
       club
     }
   end
@@ -94,13 +94,13 @@ module Base_View_Club
   def old_clubs
     @cache_old_clubs ||= [ 
       { :teaser=>nil, :href=>'/salud/',    :title=>'Salud (Español)'},
-      { :teaser=>nil, :href=>'/clubs/back_pain/',  :title=>'Back Pain'},
-      { :teaser=>nil, :href=>'/clubs/child_care/', :title=>'Child Care'},
-      { :teaser=>nil, :href=>'/clubs/computer/',   :title=>'Computer Use'},
-      { :teaser=>nil, :href=>'/clubs/hair/',      :title=>'Skin & Hair'},
-      { :teaser=>nil, :href=>'/clubs/housing/',   :title=>'Housing & Apartments'},
-      { :teaser=>nil, :href=>'/clubs/health/',    :title=>'Pain & Disease'},
-      { :teaser=>nil, :href=>'/clubs/preggers/',  :title=>'Pregnancy'}
+      { :teaser=>nil, :href=>'/uni/back_pain/',  :title=>'Back Pain'},
+      { :teaser=>nil, :href=>'/uni/child_care/', :title=>'Child Care'},
+      { :teaser=>nil, :href=>'/uni/computer/',   :title=>'Computer Use'},
+      { :teaser=>nil, :href=>'/uni/hair/',      :title=>'Skin & Hair'},
+      { :teaser=>nil, :href=>'/uni/housing/',   :title=>'Housing & Apartments'},
+      { :teaser=>nil, :href=>'/uni/health/',    :title=>'Pain & Disease'},
+      { :teaser=>nil, :href=>'/uni/preggers/',  :title=>'Pregnancy'}
     ]
   end
 

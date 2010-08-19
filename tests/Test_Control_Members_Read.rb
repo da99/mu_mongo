@@ -22,7 +22,7 @@ class Test_Control_Members_Read < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
-  # must 'show a message list from followed clubs at /clubs/{username}/' do
+  # must 'show a message list from followed clubs at /uni/{username}/' do
   #   
   #   content          = create_club_content
   #   club_1, club_2, rest = content[:clubs]
@@ -32,7 +32,7 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   #   club_1.create_follower(mem, un_ids.first)
   #   club_2.create_follower(mem, un_ids.last)
   #   log_in_regular_member_3
-  #   get "/clubs/#{uns.last}/"
+  #   get "/uni/#{uns.last}/"
     # 
     # 
     # 
@@ -67,7 +67,7 @@ class Test_Control_Members_Read < Test::Unit::TestCase
   must 'redirect life/../status/ to life/../news/ with 301 (permanent)' do
     un = regular_member_3.usernames.first
     get "/life/#{un}/status/"
-    assert_redirect "/clubs/#{un}/news/", 301
+    assert_redirect "/uni/#{un}/news/", 301
   end
 
 end # === class Test_Control_Members_Read

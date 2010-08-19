@@ -29,7 +29,7 @@ module Base_Club
               }
             end
             mustache 'multiple_usernames?' do
-              form.form_follow_create!(:action=>"/clubs/follow/", :method=>'post') do
+              form.form_follow_create!(:action=>"/uni/follow/", :method=>'post') do
                 fieldset {
                   label 'Follow this club as: ' 
                   select(:name=>'username') {

@@ -18,7 +18,7 @@ div.content! {
       ul {
         loop 'public_labels' do 
           li {
-            a( '{{filename}}', :href=>"/clubs/hearts/by_label/{{filename}}/")
+            a( '{{filename}}', :href=>"/uni/hearts/by_label/{{filename}}/")
           }
         end
       } # === ul

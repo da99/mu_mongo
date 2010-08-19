@@ -128,7 +128,7 @@ module Base
     
     prefix = case controller
                when :Topic, :Topics
-                 '/clubs'
+                 '/uni'
                else
                  ''
                end

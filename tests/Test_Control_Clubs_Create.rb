@@ -13,14 +13,14 @@ class Test_Control_Clubs_Create < Test::Unit::TestCase
   must 'allow any member to create a Club' do
     create_member_and_log_in
     club = rand_club
-    post '/clubs/', club
+    post '/uni/', club
     follow_redirect!
-    assert_equal "/clubs/#{club[:filename]}/", last_request.fullpath
+    assert_equal "/uni/#{club[:filename]}/", last_request.fullpath
   end
 
   must 'not allow a non-member to create a Club' do
     club = rand_club
-    post '/clubs/', club
+    post '/uni/', club
     follow_redirect!
     assert_equal "/log-in/", last_request.fullpath
   end
