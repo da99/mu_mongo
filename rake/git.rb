@@ -24,16 +24,6 @@ namespace 'git' do
   desc 'Executes: git add . && git add -u && git status'
   task :update do 
     sh 'git add . && git add -u'
-    
-    unless ENV['allow_compiled_views']
-      if `git status`[%r!templates/en-us/mustache/..!]
-        `git reset HEAD templates/en-us/mustache/*.*`
-      end
-      if `git status`[%r!public/stylesheets/en-us/..!]
-        `git reset HEAD public/stylesheets/en-us/*.*`
-      end
-    end 
-    
     sh 'git status'
   end
   
@@ -61,11 +51,10 @@ namespace 'git' do
     Rake::Task['git:commit'].invoke
   end # === task
 
-  
   desc "Prep push code to Heroku."
   task :prep_push do 
     
-    if git_commit_pending? && !ENV['force']
+    if git_commit_pending? 
       puts_red "Commits pending."
       exit(1)
     end
@@ -116,7 +105,6 @@ namespace 'git' do
       sh('git push heroku master')
       Launchy.open('http://www.megauni.com/')
     end
-
   end
 
   desc 'Pushed the code and nothing else.'

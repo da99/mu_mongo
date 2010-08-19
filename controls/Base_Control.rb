@@ -155,23 +155,17 @@ module Base_Control
                          disguise    = (ext == 'html' ? 'mab' : ext).capitalize
                          original    = "templates/#{lang}/#{disguise.downcase}/#{file_name}.rb"
                          time_format = '%M:%d:%H:%m:%Y'
-                         mtime_equal = begin
-                                         File.mtime( original ).strftime(time_format) == File.mtime( mustache ).strftime(time_format)
-                                       rescue Errno::ENOENT
-                                         false
-                                       end
-                         # if not mtime_equal
-                           puts("Compiling templated instead of using cached Mustache...") if The_App.development?
-                           require( "middleware/#{disguise}_In_Disguise"  )
-                           disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
-                           disguise_class.compile_all(file_name)
-                        
-                           Mustache::Generator.new.compile(
-                             Mustache::Parser.new.compile(
-                               disguise_class.compile( original ).to_s 
-                             )
+                         
+                         puts("Compiling templated instead of using cached Mustache...") if The_App.development?
+                         require( "middleware/#{disguise}_In_Disguise"  )
+                         disguise_class = Object.const_get( "#{disguise}_In_Disguise" )
+                         disguise_class.compile_all(file_name)
+
+                         Mustache::Generator.new.compile(
+                           Mustache::Parser.new.compile(
+                             disguise_class.compile( original ).to_s 
                            )
-                         # end
+                         )
                            
                          File.read(mustache)
                        end
