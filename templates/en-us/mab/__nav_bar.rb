@@ -34,9 +34,9 @@ div( :id=>"nav_bar" ) {
 
   show_if 'logged_in?' do
     show_if 'not_mini_nav_bar?' do
-      h4.divider 'Lives' 
+      h4.divider 'Lifes' 
     end
-    ul.nav_bar.lives {
+    ul.nav_bar.lifes {
       mustache 'username_nav' do
         show_if 'selected?' do
           nav_bar_li_selected '{{username}}'

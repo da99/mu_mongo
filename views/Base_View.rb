@@ -217,7 +217,7 @@ class Base_View < Mustache
     @cache_current_member_usernames ||= \
       if current_member
         current_member.username_hash.map { |un_id, un| 
-          {:filename=>un, :username=>un, :username_id=>un_id}
+          {:filename=>un, :username=>un, :username_id=>un_id, :href=>"/life/#{un}/" }
         }
       else
         []

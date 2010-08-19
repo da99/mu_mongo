@@ -5,8 +5,8 @@ class Account_list < Base_View
     'My Account'
   end
 
-  def lives
-    @app.current_member.data.lives.map { |life_cat, life|
+  def lifes
+    @app.current_member.data.lifes.map { |life_cat, life|
       { :category => life_cat,
         :username => life[:username]}
     }

@@ -4,6 +4,8 @@
 
 class Hellos_list < Base_View
   
+  alias_method :usernames, :current_member_usernames
+
   def javascripts
     default_javascripts
   end

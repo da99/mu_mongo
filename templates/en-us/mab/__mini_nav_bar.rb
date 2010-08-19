@@ -30,7 +30,7 @@ div( :id=>"nav_bar" ) {
   }
 
   mustache 'logged_in?' do
-    h4.divider 'Lives'
+    h4.divider 'Lifes'
     ul {
       mustache 'username_nav' do
       mustache 'selected?' do

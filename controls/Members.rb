@@ -57,10 +57,6 @@ class Members
     render_html_template
   end
 
-  def GET_life un
-    redirect!("/clubs/#{un}/")
-  end
-
   %w{e qa news shop predictions random }.each { |path|
     eval(%~
           def GET_life_#{path} un

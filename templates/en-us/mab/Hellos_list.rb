@@ -9,7 +9,88 @@ div.col.pretension! {
   }
 
   h3.title '{{site_tag_line}}'
-  
+
+} # === div
+
+
+div.col.middle! {
+  div.intro! {
+
+
+    form.search_club_form!(:action=>"/club-search/", :method=>"post") {
+      fieldset {
+        label 'Find by keyword:'
+        input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
+      }
+      div.buttons {
+        button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
+      }
+    } # form
+
+    div.footer! {
+      span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
+    } # the_footer
+  } # div.intro!
+
+
+  div.nav_bar! { 
+
+    ul.nav_bar.help {
+      
+      li {
+        a 'Help', :href=>'/help/'
+      }
+      
+      show_if 'logged_in?' do
+        li {
+          a 'Log-out', :href=>'log-out' 
+        }
+      end  
+      
+      show_if 'not_logged_in?' do
+        li {
+          a 'Log-in', :href=>'/log-in/'
+        }
+      end
+      
+    }
+
+    show_if 'logged_in?' do
+      
+      h4.divider 'Lifes' 
+      
+      ul.nav_bar.lifes {
+        loop 'usernames' do
+          nav_bar_li_unselected '{{username}}', '{{href}}'
+        end
+        nav_bar_li :Members, 'follows', "[ Follows ]"
+        nav_bar_li :Members, 'notifys', "[ Notifys ]"
+        nav_bar_li :Members, 'lifes', "[ Create Life ]"
+      }
+    end
+    
+    h4.divider 'Egg Timers'
+    
+    ul.nav_bar.to_dos {
+      nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
+      nav_bar_li :Timer_new, 'busy-noise', 'New'
+    }
+
+    h4.divider 'Old Stuff'
+    
+    ul.nav_bar.old_clubs {
+      loop 'old_clubs' do
+        li { a('{{title}}', :href=>'{{href}}') }
+      end
+    }
+
+  } # === div.nav_bar!
+
+
+} # === div.col
+
+
+
   # h4 %~ A universe lets you: ~
 
   # ul {
@@ -82,7 +163,7 @@ div.col.pretension! {
   # # ul {
   #   
   #   li {
-  #     strong %~Multiple Lives~
+  #     strong %~Multiple Lifes~
   #     span %~: Create different usernames for your work life, home life, babies, pets, fantasy life, etc.~
   #   }
   #   
@@ -98,112 +179,6 @@ div.col.pretension! {
 
   #   
   # } # === ul
-
-
-} # === div
-
-
-div.col.middle! {
-  div.intro! {
-
-
-    form.search_club_form!(:action=>"/club-search/", :method=>"post") {
-      fieldset {
-        label 'Find by keyword:'
-        input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
-      }
-      div.buttons {
-        button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
-      }
-    } # form
-
-    div.footer! {
-      span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-    } # the_footer
-  } # div.intro!
-
-
-  div.nav_bar! { 
-
-
-
-    ul.nav_bar.help {
-      
-      li {
-        a 'Help', :href=>'/help/'
-      }
-      
-      show_if 'logged_in?' do
-        li {
-          a 'Log-out', :href=>'log-out' 
-        }
-        # li {
-        #   a '[ Today ]', :href=>'/today/'
-        # }
-        li {
-          a '[ Account ]', :href=>'/account/'
-        }
-      end  
-      
-      show_if 'not_logged_in?' do
-        li {
-          a 'Log-in', :href=>'/log-in/'
-        }
-        # li {
-        #   a 'Create Account', :href=>'/create-account/'
-        # }
-      end
-      
-    }
-
-    show_if 'logged_in?' do
-      
-      h4.divider 'Lives' 
-      
-      ul.nav_bar.lives {
-        loop 'username_nav' do
-          show_if 'selected?' do
-            nav_bar_li_selected '{{username}}'
-          end
-          show_if 'not_selected?' do
-            nav_bar_li_unselected '{{username}}', '{{href}}'
-          end
-        end
-      show_if 'not_mini_nav_bar?' do
-        nav_bar_li :Members, :create_life, "/lifes/", "[ Create ]"
-      end
-      }
-    end
-    
-    h4.divider 'Egg Timers'
-    
-    ul.nav_bar.to_dos {
-      nav_bar_li :Timer_old, 'my-egg-timer', 'Old'
-      nav_bar_li :Timer_new, 'busy-noise', 'New'
-    }
-
-    show_if 'logged_in?' do
-      h4.divider 'Clubs'
-      ul.nav_bar.news {
-        nav_bar_li :Clubs, :create, '/club-create/', '[ Create Club ]'
-      }
-    end
-
-    h4.divider 'Old Stuff'
-    
-    ul.nav_bar.old_clubs {
-      loop 'old_clubs' do
-        li { a('{{title}}', :href=>'{{href}}') }
-      end
-    }
-
-  } # === div.nav_bar!
-
-
-} # === div.col
-
-
-
 
 
 

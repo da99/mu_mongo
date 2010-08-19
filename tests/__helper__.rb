@@ -195,7 +195,7 @@ class Test::Unit::TestCase
   end
 
   def admin_username
-    self.class.admin_member.data.lives.first.last[:username]
+    self.class.admin_member.data.lifes.first.last[:username]
   end
 
   def admin_password

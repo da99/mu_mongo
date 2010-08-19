@@ -95,13 +95,24 @@ class Mu_Router
       end
     end
     
-    map '/clubs' do
+    sub_and_redirect( '/clubs/{filename}' , 'clubs', 'uni' )
+    
+    map '/uni' do
       to Clubs
+      
+      sections = %w{ e qa news fights shop random thanks predictions magazine}
       
       top_slash do
         path '/club-create/'                 ,  'create'         
         path '/club-search/'                 ,  'club_search'     , 'POST'
         path '/club-search/{filename}/'      ,  'club_search'
+        
+        map '/life/{filename}' do
+          path '/'                        , 'by_filename'
+          sections.each { |suffix|
+            path "/#{suffix}/", "read_#{suffix}"
+          }
+        end
       end
       
       path '/'                , 'list'
@@ -114,15 +125,9 @@ class Mu_Router
         path '/'            ,  'update'          , 'PUT'
         path '/edit/', 'edit'
         path '/follow/'     ,  'follow'       
-        path '/e/'          ,  'read_e'      
-        path '/qa/'         ,  'read_qa'    
-        path '/news/'       ,  'read_news' 
-        path '/fights/'     ,  'read_fights'
-        path '/shop/'       ,  'read_shop'  
-        path '/random/'     ,  'read_random'
-        path '/thanks/'     ,  'read_thanks' 
-        path '/predictions/',  'read_predictions'
-        path '/magazine/',  'read_magazine'
+        sections.each { |suffix|
+          path "/#{suffix}/", "read_#{suffix}"
+        }
       end
     end
     
@@ -159,16 +164,6 @@ class Mu_Router
         path '/change-password/{filename}/{cgi_escaped}', 'change_password', %w{GET POST}
         path '/delete-account-forever-and-ever'         , nil              , 'DELETE'
         
-        map '/life/{filename}' do
-          path '/'                        , 'life'
-          path '/e'                       , 'life_e'
-          path '/qa'                      , 'life_qa'
-          path '/news'                    , 'life_news'
-          path '/status'                  , 'life_status'
-          path '/shop'                    , 'life_shop'
-          path '/predictions'             , 'life_predictions'
-          path '/random'                  , 'life_random'
-        end
       end
     end
   end # === compile

@@ -264,7 +264,7 @@ class Club
   end
 
   def href 
-    "/clubs/#{data.filename}/"
+    "/uni/#{data.filename}/"
   end
   alias_method :href_delete, :href
 
@@ -281,7 +281,7 @@ class Club
   end
 
   def follow_href
-    "/clubs/#{data.filename}/follow/"
+    File.join(href, "/follow/")
   end
 
   def followers

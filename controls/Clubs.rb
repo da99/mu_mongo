@@ -30,7 +30,7 @@ class Clubs
     end
     redirect! club.href
   end
-
+  
   def GET_by_filename filename
     env['results.club'] = club = Club.by_filename_or_member_username(filename)
     env['results.messages_latest'] = Message.latest_by_club_id(club.data._id)
