@@ -8,7 +8,7 @@ div.col.pretension! {
     strong %~ Coming Soon ~
   }
 
-  h3.title '{{site_tag_line}}'
+  h3 '{{site_tag_line}}'
 
 } # === div
 

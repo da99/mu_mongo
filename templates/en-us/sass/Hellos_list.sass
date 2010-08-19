@@ -8,9 +8,9 @@ body
   padding: 0
   
 #the_content
-  +rounded_bottom
-  padding: 30px 30px 50px 30px
-  border-bottom: 2px solid $red
+  +rounded( 0, 0, 60px, 60px)
+  padding: 10px 20px
+  border-bottom: 0px solid $red
   width: 280px
   text-align: center
   margin: 0 0 0 150px
@@ -21,11 +21,13 @@ body
   text-align: center
   h1
     padding: 0 0 30px 0
-  h3.title
+  h3
     +dashed_border_bottom
-    font-style: italic
-    font-family: impact, arial black, serif
-    padding: 5px 5px 20px 5px
+    padding: 5px 5px 10px 5px
+    font:
+      style: italic
+      family: $impact_font
+      weight: normal
   h4
     span.title
       color: $dark_grey
