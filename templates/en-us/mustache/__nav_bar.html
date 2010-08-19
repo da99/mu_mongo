@@ -1,4 +1,4 @@
-" <div id=\"nav_bar\">\n  <div id=\"logo\">\n   <p class=\"english\">\n    <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n   </p>\n   <p class=\"divider site_tag_line\">\n~~ ? ! @ ~~   </p>\n  </div>\n  <ul class=\"help\">\n    <li>\n     <a href=\"/help/\"> Help </a>\n    </li>\n\n#{      if v = ctx[:logged_in?]
+" <div id=\"nav_bar\">\n  <div id=\"logo\">\n   <p class=\"english\">\n    <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n   </p>\n   <div class=\"divider site_tag_line\">\n~~ ? ! @ ~~   </div>\n  </div>\n  <ul class=\"nav_bar help\">\n    <li>\n     <a href=\"/help/\"> Help </a>\n    </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n     <a href=\"/log-out/\"> Log-out </a>\n    </li>\n    <li>\n     <a href=\"/lifes/\"> [ My Lifes ] </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
@@ -10,27 +10,27 @@
       end
 }#{      if v = ctx[:not_logged_in?]
         if v == true
-          "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n"
+          "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n")
+          v.call("<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -114,15 +114,15 @@
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -207,15 +207,15 @@
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -298,19 +298,9 @@
 }</ul>\n\n"; ctx.pop; r }.join
         end
       end
-}<p class=\"divider\">Clubs</p>\n  <ul class=\"clubs\">\n    <li>\n     <a href=\"/clubs/\"> [ View All ] </a>\n    </li>\n\n#{      if v = ctx[:logged_in?]
+}#{      if v = ctx[:logged_in?]
         if v == true
-          ""
-        elsif v.is_a?(Proc)
-          v.call("")
-        else
-          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = ""; ctx.pop; r }.join
-        end
-      end
-}</ul>\n\n#{      if v = ctx[:logged_in?]
-        if v == true
-          "<p class=\"divider\">Your Clubs</p>\n  <ul class=\"your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
+          "<div class=\"divider\">Your Clubs</div>\n  <ul class=\"nav_bar your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n    <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n   </li>\n\n"
         elsif v.is_a?(Proc)
@@ -322,7 +312,7 @@
       end
 }</ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Your Clubs</p>\n  <ul class=\"your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
+          v.call("<div class=\"divider\">Your Clubs</div>\n  <ul class=\"nav_bar your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n    <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n   </li>\n\n"
         elsif v.is_a?(Proc)
@@ -335,7 +325,7 @@
 }</ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Your Clubs</p>\n  <ul class=\"your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Your Clubs</div>\n  <ul class=\"nav_bar your_clubs\">\n    <li>\n     <a href=\"/club-create/\"> [ Create ] </a>\n    </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n    <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n   </li>\n\n"
         elsif v.is_a?(Proc)
@@ -350,12 +340,12 @@
       end
 }#{      if v = ctx[:mini_nav_bar?]
         if v == true
-          "<ul>\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n"
+          "<ul class=\"nav_bar\">\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<ul>\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n")
+          v.call("<ul class=\"nav_bar\">\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<ul>\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<ul class=\"nav_bar\">\n   <li>\n     <li>\n      <a href=\"/clubs/\"> Clubs </a>\n     </li>\n   </li>\n  </ul>\n\n"; ctx.pop; r }.join
         end
       end
 }</div>\n"

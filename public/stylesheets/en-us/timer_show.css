@@ -97,81 +97,16 @@ a img {
   left: 50%; }
 
 ul.nav_bar {
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-  display: inline;
   display: block;
-  padding: 0 10px 2px 20px;
-  border-bottom: 2px solid #1d70d2;
-  text-align: center;
-  margin-bottom: 10px;
-  padding-top: 10px;
-  padding-left: 0px; }
-  ul.nav_bar li {
-    margin: 0px;
-    padding: 0px;
-    display: inline; }
-  ul.nav_bar li {
-    padding: 2px 3px 3px 3px; }
-    ul.nav_bar li a {
-      padding: 2px 4px 4px 4px;
-      font-family: 'Nimbus Sans L','segoe ui',sans-serif;
-      font-size: 80%;
-      text-transform: uppercase; }
+  list-style-type: none; }
+  ul.nav_bar li a {
+    font-size: 12px;
+    font-family: 'Nimbus Sans L','segoe ui',sans-serif;
+    text-transform: uppercase; }
   ul.nav_bar li.selected {
-    margin-right: 5px;
-    padding: 4px 9px 3px 9px;
-    font-size: 90%;
+    font-size: 12px;
     font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    background-color: #1d70d2;
-    border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    -webkit-border-radius: 5px 5px 0 0;
-    color: white; }
-  ul.nav_bar li {
-    padding: 0; }
-
-ul.tabs {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  overflow: hidden;
-  display: inline-block;
-  margin-bottom: -1px;
-  padding-left: 15px;
-  font-family: 'Nimbus Sans L','segoe ui',sans-serif; }
-  ul.tabs {
-    display: block; }
-  ul.tabs li {
-    list-style-type: none;
-    margin-left: 0px;
-    white-space: nowrap;
-    display: inline;
-    float: left;
-    padding-left: 4px;
-    padding-right: 4px; }
-    ul.tabs li.first {
-      padding-left: 0px; }
-    ul.tabs li.last {
-      padding-right: 0px; }
-  ul.tabs a:link, ul.tabs a:visited, ul.tabs a:hover, ul.tabs a:active, ul.tabs a:focus {
-    padding: 5px 5px 8px 5px; }
-  ul.tabs li {
-    padding: 5px; }
-  ul.tabs li.tab_selected {
-    background: #efefef;
-    border: 1px solid #717171;
-      border-bottom: 0; }
-    ul.tabs li.tab_selected a:link, ul.tabs li.tab_selected a:visited, ul.tabs li.tab_selected a:hover, ul.tabs li.tab_selected a:active, ul.tabs li.tab_selected a:focus {
-      background: transparent;
-      color: #00233c;
-      padding-bottom: 12px;
-      text-decoration: none;
-      font-family: 'Nimbus Sans L','segoe ui',sans-serif; }
+    text-transform: uppercase; }
 
 a:link, a:visited {
   color: #f00919;
@@ -232,30 +167,6 @@ body {
     #flash_msg div.success_msg div.msg, #flash_msg div.success div.msg {
       color: #133b00; }
 
-#mini_nav_bar, #nav_bar {
-  border-left: 1px dashed #003860;
-  width: 200px;
-  float: left;
-  text-align: left;
-  margin-left: 10px;
-  padding: 0 0 100px 10px; }
-  #mini_nav_bar p a:link, #mini_nav_bar p a:visited, #nav_bar p a:link, #nav_bar p a:visited {
-    font-size: 20px;
-    text-transform: none;
-    text-decoration: none; }
-  #mini_nav_bar p.site_title, #nav_bar p.site_title {
-    font-size: 20px; }
-  #mini_nav_bar ul, #nav_bar ul {
-    list-style: none;
-    padding: 0 0 10px 0; }
-    #mini_nav_bar ul li, #nav_bar ul li {
-      list-style: none;
-      padding: 2px 0; }
-      #mini_nav_bar ul li.selected, #nav_bar ul li.selected {
-        text-transform: lowercase; }
-      #mini_nav_bar ul li a, #nav_bar ul li a {
-        padding: 2px 2px 3px 2px; }
-
 #loading {
   font-size: 20px;
   font-weight: bold;
@@ -298,16 +209,17 @@ h3 {
   h3.title {
     text-align: center; }
 
-h4, div.divider, p.divider {
-  text-transform: uppercase;
-  color: #185dad;
-  font-size: 90%;
-  font-family: 'Nimbus Sans L','segoe ui',sans-serif;
-  font-weight: bold; }
-
 p {
   padding-bottom: 10px;
   margin-bottom: 0; }
+
+h4, div.divider {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #185dad;
+  padding: 0;
+  font-family: 'Nimbus Sans L','segoe ui',sans-serif;
+  font-weight: bold; }
 
 div.block {
   font-size: 16px; }
@@ -328,7 +240,7 @@ div.form {
 form.hidden {
   display: none; }
 form label, form div.title {
-  font-size: 80%;
+  font-size: 12px;
   text-transform: uppercase;
   font-weight: bold;
   color: #185dad;
@@ -383,9 +295,9 @@ div.message, div.club {
   margin: 0 0 10px 0;
   border-bottom: 1px dashed #003860; }
   div.message div.pending span, div.message div.accepted span, div.message div.declined span, div.club div.pending span, div.club div.accepted span, div.club div.declined span {
+    font-size: 12px;
     padding: 0 4px;
     text-transform: uppercase;
-    font-size: 80%;
     font-weight: bold; }
   div.message div.pending span, div.club div.pending span {
     color: #ffe759; }

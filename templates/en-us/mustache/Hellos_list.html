@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164662\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182943\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164662\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182943\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164662\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182943\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -192,7 +192,7 @@
 }</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<div id=\"the_content\">\n     <div class=\"col\" id=\"pretension\">\n      <div id=\"coming_soon\">\n       <strong> Coming Soon </strong>\n      </div>\n      <h3 class=\"title\">#{CGI.escapeHTML(ctx[:site_tag_line].to_s)}</h3>\n     </div>\n     <div class=\"col\" id=\"middle\">\n      <div id=\"intro\">\n       <form method=\"post\" action=\"/club-search/\" name=\"search_club_form\" id=\"search_club_form\">\n        <fieldset>\n         <label>Find by keyword:</label>\n         <input type=\"text\" class=\"text\" value=\"\" name=\"keyword\" id=\"club_keyword\"/>\n        </fieldset>\n        <div class=\"buttons\">\n         <button class=\"create\" onclick=\"document.getElementById('search_club_form').submit(); return false;\">Go</button>\n        </div>\n       </form>\n       <div id=\"footer\">\n        <span>(c) #{CGI.escapeHTML(ctx[:copyright_year].to_s)} #{CGI.escapeHTML(ctx[:site_domain].to_s)}. Some rights reserved.</span>\n       </div>\n      </div>\n      <div id=\"nav_bar\">\n       <ul class=\"help\">\n        <li>\n         <a href=\"/help/\">Help</a>\n        </li>\n\n#{      if v = ctx[:logged_in?]
+}<div id=\"the_content\">\n     <div class=\"col\" id=\"pretension\">\n      <div id=\"coming_soon\">\n       <strong> Coming Soon </strong>\n      </div>\n      <h3 class=\"title\">#{CGI.escapeHTML(ctx[:site_tag_line].to_s)}</h3>\n     </div>\n     <div class=\"col\" id=\"middle\">\n      <div id=\"intro\">\n       <form method=\"post\" action=\"/club-search/\" name=\"search_club_form\" id=\"search_club_form\">\n        <fieldset>\n         <label>Find by keyword:</label>\n         <input type=\"text\" class=\"text\" value=\"\" name=\"keyword\" id=\"club_keyword\"/>\n        </fieldset>\n        <div class=\"buttons\">\n         <button class=\"create\" onclick=\"document.getElementById('search_club_form').submit(); return false;\">Go</button>\n        </div>\n       </form>\n       <div id=\"footer\">\n        <span>(c) #{CGI.escapeHTML(ctx[:copyright_year].to_s)} #{CGI.escapeHTML(ctx[:site_domain].to_s)}. Some rights reserved.</span>\n       </div>\n      </div>\n      <div id=\"nav_bar\">\n       <ul class=\"nav_bar help\">\n        <li>\n         <a href=\"/help/\">Help</a>\n        </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n         <a href=\"log-out\">Log-out</a>\n        </li>\n        <li>\n         <a href=\"/account/\">[ Account ]</a>\n        </li>\n\n"
         elsif v.is_a?(Proc)
@@ -214,7 +214,7 @@
       end
 }</ul>\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<div class=\"divider\">Lives</div>\n       <ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+          "<div class=\"divider\">Lives</div>\n       <ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -296,7 +296,7 @@
       end
 }</ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"divider\">Lives</div>\n       <ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+          v.call("<div class=\"divider\">Lives</div>\n       <ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -379,7 +379,7 @@
 }</ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n       <ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n       <ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -462,17 +462,17 @@
 }</ul>\n\n"; ctx.pop; r }.join
         end
       end
-}<div class=\"divider\">Egg Timers</div>\n       <ul class=\"to_dos\">\n         <li>\n          <a href=\"/my-egg-timer/\"> Old </a>\n         </li>\n         <li>\n          <a href=\"/busy-noise/\"> New </a>\n         </li>\n       </ul>\n\n#{      if v = ctx[:logged_in?]
+}<div class=\"divider\">Egg Timers</div>\n       <ul class=\"nav_bar to_dos\">\n         <li>\n          <a href=\"/my-egg-timer/\"> Old </a>\n         </li>\n         <li>\n          <a href=\"/busy-noise/\"> New </a>\n         </li>\n       </ul>\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<div class=\"divider\">Clubs</div>\n       <ul class=\"news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n"
+          "<div class=\"divider\">Clubs</div>\n       <ul class=\"nav_bar news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"divider\">Clubs</div>\n       <ul class=\"news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n")
+          v.call("<div class=\"divider\">Clubs</div>\n       <ul class=\"nav_bar news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Clubs</div>\n       <ul class=\"news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Clubs</div>\n       <ul class=\"nav_bar news\">\n         <li>\n          <a href=\"/club-create/\"> [ Create Club ] </a>\n         </li>\n       </ul>\n\n"; ctx.pop; r }.join
         end
       end
-}<div class=\"divider\">Old Stuff</div>\n       <ul class=\"old_clubs\">\n\n#{      if v = ctx[:old_clubs]
+}<div class=\"divider\">Old Stuff</div>\n       <ul class=\"nav_bar old_clubs\">\n\n#{      if v = ctx[:old_clubs]
         if v == true
           "<li>\n         <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n        </li>\n\n"
         elsif v.is_a?(Proc)

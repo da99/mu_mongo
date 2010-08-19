@@ -71,28 +71,6 @@ a img {
   #container {
     display: block; }
 
-#nav_bar {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 220px; }
-
-#loading {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px;
-  padding-left: 240px; }
-
-#content {
-  display: inline;
-  float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 700px; }
-
 form fieldset input.text, form fieldset textarea {
   width: 600px; }
 

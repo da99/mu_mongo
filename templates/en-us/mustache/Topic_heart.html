@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -192,7 +192,7 @@
 }</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<div id=\"the_content\">\n     <div id=\"content\">\n      <ul class=\"faq\">\n       <li>\n        <div class=\"question\">Cholesterol Fear</div>\n        <div class=\"answer\">\n         <span>Buy e-book: </span>\n         <a href=\"http://www.naturalhealthlibrarian.com/ebook.asp?page=Cholesterol\">How to Lower Your Cholesterol Phobia</a>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin D3 + Magnesium Citrate</div>\n        <div class=\"answer\">\n         <p>Vitamin D3 with Magnesium Citrate is the most important for avoiding heart attacks.</p>\n         <p>LifeSpanNutrition.com &#8211; (800) 247-5731 (correo postal)</p>\n         <p>$15 - \"30 Minutes of Sunshine\"</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Omega-3  fish oil - 1000 mg 3-6 times a day</div>\n        <div class=\"answer\">\n         <p>Avoid all blood thinners and medication, like Advil, Tylenol, Ibuprofen, etc.</p>\n         <p>Those medications will thin your blood too much when mixed with Omega-3 fish oils.</p>\n         <p>This is an oil, so take it with food or else you might get very nauseous.</p>\n         <p>Buy a decent brand in your local big-chain pharmacy like Eckerd's, CVS, etc.</p>\n         <p>They are all basically the same. Don't spend too much. </p>\n         <p>Take it 3-6 times a day, 2 or more gelcaps a day. </p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin C &#8211; 1000 mg, 3 times a day.</div>\n        <div class=\"answer\">\n         <p>Buy the pharmacy brand.</p>\n         <p>Buy it either as 500 mg or 1000 mg.</p>\n         <p>The important thing is to take it 3 times a day and develop the habit of taking it each day.</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Longevinex</div>\n        <div class=\"answer\">\n         <p>Improves arteries and prevents calcifications (which clog arteries).</p>\n         <p>Works great for adult diabetes. (More info. on that later.)</p>\n         <p>\n          <a href=\"http://www.longevinex.com/\">Longevinex.com</a>\n         </p>\n        </div>\n       </li>\n      </ul>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <p class=\"divider site_tag_line\">\n~~ ? ! @ ~~        </p>\n       </div>\n       <ul class=\"help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
+}<div id=\"the_content\">\n     <div id=\"content\">\n      <ul class=\"faq\">\n       <li>\n        <div class=\"question\">Cholesterol Fear</div>\n        <div class=\"answer\">\n         <span>Buy e-book: </span>\n         <a href=\"http://www.naturalhealthlibrarian.com/ebook.asp?page=Cholesterol\">How to Lower Your Cholesterol Phobia</a>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin D3 + Magnesium Citrate</div>\n        <div class=\"answer\">\n         <p>Vitamin D3 with Magnesium Citrate is the most important for avoiding heart attacks.</p>\n         <p>LifeSpanNutrition.com &#8211; (800) 247-5731 (correo postal)</p>\n         <p>$15 - \"30 Minutes of Sunshine\"</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Omega-3  fish oil - 1000 mg 3-6 times a day</div>\n        <div class=\"answer\">\n         <p>Avoid all blood thinners and medication, like Advil, Tylenol, Ibuprofen, etc.</p>\n         <p>Those medications will thin your blood too much when mixed with Omega-3 fish oils.</p>\n         <p>This is an oil, so take it with food or else you might get very nauseous.</p>\n         <p>Buy a decent brand in your local big-chain pharmacy like Eckerd's, CVS, etc.</p>\n         <p>They are all basically the same. Don't spend too much. </p>\n         <p>Take it 3-6 times a day, 2 or more gelcaps a day. </p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin C &#8211; 1000 mg, 3 times a day.</div>\n        <div class=\"answer\">\n         <p>Buy the pharmacy brand.</p>\n         <p>Buy it either as 500 mg or 1000 mg.</p>\n         <p>The important thing is to take it 3 times a day and develop the habit of taking it each day.</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Longevinex</div>\n        <div class=\"answer\">\n         <p>Improves arteries and prevents calcifications (which clog arteries).</p>\n         <p>Works great for adult diabetes. (More info. on that later.)</p>\n         <p>\n          <a href=\"http://www.longevinex.com/\">Longevinex.com</a>\n         </p>\n        </div>\n       </li>\n      </ul>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <div class=\"divider site_tag_line\">\n~~ ? ! @ ~~        </div>\n       </div>\n       <ul class=\"nav_bar help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n          <a href=\"/log-out/\"> Log-out </a>\n         </li>\n         <li>\n          <a href=\"/lifes/\"> [ My Lifes ] </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)
@@ -204,27 +204,27 @@
       end
 }#{      if v = ctx[:not_logged_in?]
         if v == true
-          "<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n\n"
+          "<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n         <li>\n          <a href=\"/create-account/\"> Join </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n\n")
+          v.call("<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n         <li>\n          <a href=\"/create-account/\"> Join </a>\n         </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n          <a href=\"/log-in/\"> Log-in </a>\n         </li>\n         <li>\n          <a href=\"/create-account/\"> Join </a>\n         </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -308,15 +308,15 @@
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -401,15 +401,15 @@
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:not_mini_nav_bar?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n\n"
+          "<div class=\"divider\">Lives</div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n\n")
+          v.call("<div class=\"divider\">Lives</div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<ul class=\"lives\">\n\n#{      if v = ctx[:username_nav]
+}<ul class=\"nav_bar lives\">\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -492,19 +492,9 @@
 }</ul>\n\n"; ctx.pop; r }.join
         end
       end
-}<p class=\"divider\">Clubs</p>\n       <ul class=\"clubs\">\n         <li>\n          <a href=\"/clubs/\"> [ View All ] </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
+}#{      if v = ctx[:logged_in?]
         if v == true
-          ""
-        elsif v.is_a?(Proc)
-          v.call("")
-        else
-          v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = ""; ctx.pop; r }.join
-        end
-      end
-}</ul>\n\n#{      if v = ctx[:logged_in?]
-        if v == true
-          "<p class=\"divider\">Your Clubs</p>\n       <ul class=\"your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
+          "<div class=\"divider\">Your Clubs</div>\n       <ul class=\"nav_bar your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n         <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n        </li>\n\n"
         elsif v.is_a?(Proc)
@@ -516,7 +506,7 @@
       end
 }</ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Your Clubs</p>\n       <ul class=\"your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
+          v.call("<div class=\"divider\">Your Clubs</div>\n       <ul class=\"nav_bar your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n         <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n        </li>\n\n"
         elsif v.is_a?(Proc)
@@ -529,7 +519,7 @@
 }</ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Your Clubs</p>\n       <ul class=\"your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Your Clubs</div>\n       <ul class=\"nav_bar your_clubs\">\n         <li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n#{      if v = ctx[:your_clubs]
         if v == true
           "<li>\n         <a href=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</a>\n        </li>\n\n"
         elsif v.is_a?(Proc)
@@ -544,12 +534,12 @@
       end
 }#{      if v = ctx[:mini_nav_bar?]
         if v == true
-          "<ul>\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n"
+          "<ul class=\"nav_bar\">\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<ul>\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n")
+          v.call("<ul class=\"nav_bar\">\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<ul>\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<ul class=\"nav_bar\">\n        <li>\n          <li>\n           <a href=\"/clubs/\"> Clubs </a>\n          </li>\n        </li>\n       </ul>\n\n"; ctx.pop; r }.join
         end
       end
 }</div>\n   </div>\n\n#{      if v = ctx[:include_tracking?]

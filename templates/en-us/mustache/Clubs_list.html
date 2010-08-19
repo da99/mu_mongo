@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282164664\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282182944\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -272,7 +272,7 @@
 }</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"site_title\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <p class=\"divider\">\n~~ ? ! @ ~~        </p>\n       </div>\n       <ul>\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
+}<div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"site_title\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <div class=\"divider\">\n~~ ? ! @ ~~        </div>\n       </div>\n       <ul>\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n          <a href=\"/log-out/\"> Log-out </a>\n         </li>\n         <li>\n          <a href=\"/lifes/\"> [ My Lifes ] </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)
@@ -294,7 +294,7 @@
       end
 }</ul>\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<p class=\"divider\">Lives</p>\n       <ul>\n\n#{      if v = ctx[:username_nav]
+          "<div class=\"divider\">Lives</div>\n       <ul>\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -366,7 +366,7 @@
       end
 }<li>\n          <a href=\"/lifes/\"> [ Create Life ] </a>\n         </li>\n       </ul>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<p class=\"divider\">Lives</p>\n       <ul>\n\n#{      if v = ctx[:username_nav]
+          v.call("<div class=\"divider\">Lives</div>\n       <ul>\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -439,7 +439,7 @@
 }<li>\n          <a href=\"/lifes/\"> [ Create Life ] </a>\n         </li>\n       </ul>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<p class=\"divider\">Lives</p>\n       <ul>\n\n#{      if v = ctx[:username_nav]
+          v.map { |h| ctx.push(h); r = "<div class=\"divider\">Lives</div>\n       <ul>\n\n#{      if v = ctx[:username_nav]
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
@@ -512,7 +512,7 @@
 }<li>\n          <a href=\"/lifes/\"> [ Create Life ] </a>\n         </li>\n       </ul>\n\n"; ctx.pop; r }.join
         end
       end
-}<p class=\"divider\">Clubs</p>\n       <ul>\n        <li>\n          <li class=\"selected\">\n           <span>&lt; [ View All ] &gt;</span>\n          </li>\n        </li>\n\n#{      if v = ctx[:logged_in?]
+}<div class=\"divider\">Clubs</div>\n       <ul>\n        <li>\n          <li class=\"selected\">\n           <span>&lt; [ View All ] &gt;</span>\n          </li>\n        </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n          <a href=\"/club-create/\"> [ Create ] </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)
