@@ -157,7 +157,7 @@ class Club
   def self.life_club_for_username filename, mem
     doc = mem.data.as_hash.clone
     doc['filename']  = filename
-    doc['title']     = "#{filename}'s Universe"
+    doc['title']     = "The Universe of #{filename}"
     doc['_id']       = mem.username_to_username_id(filename)
     doc['owner_id']  = doc['_id']
     club = Club.new doc

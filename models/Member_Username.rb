@@ -14,7 +14,7 @@ class Member_Username
     orig = super(id)
     return orig unless orig
     if not orig.data.title
-      orig.data.title = "#{data.username}'s Universe"
+      orig.data.title = "The Universe of #{data.username}"
     end
     orig
   end
