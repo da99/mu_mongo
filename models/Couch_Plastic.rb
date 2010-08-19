@@ -491,6 +491,19 @@ module Couch_Plastic
               errors << ( err_msg || @error_msg || "#{fld.humanize} is invalid: #{raw.inspect}" )
             end
             
+          when :not_in_array
+            arr = case target_val
+                  when Proc
+                    instance_eval(&target_val)
+                  else
+                    target_val
+                  end
+            if not arr.include?(raw)
+              new_clean_value fld, raw
+            else
+              errors << ( err_msg || @error_msg || "#{fld.humanize} is not allowed: #{raw.inspect}" )
+            end
+            
           when :match
             if raw =~ target_val
               new_clean_value fld, raw

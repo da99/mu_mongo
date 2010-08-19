@@ -1,6 +1,7 @@
 
 class Club
 
+  INVALID_FILENAMES = %w{ help megauni test support admin official indonesia factor happy da01 da01tv miniuni }
   include Couch_Plastic
 
   related_collection :followers
@@ -12,6 +13,7 @@ class Club
   make :filename, 
        [:stripped, /[^a-zA-Z0-9\_\-\+]/ ], 
        :not_empty,
+       [:not_in_array, INVALID_FILENAMES]
        :unique
   make :title, :not_empty
   make :teaser, :not_empty
