@@ -1,4 +1,10 @@
-
+# MAB     ~/megauni/templates/en-us/mab/Clubs_read_e.rb
+# VIEW    ~/megauni/views/Clubs_read_e.rb
+# SASS    ~/megauni/templates/en-us/sass/Clubs_read_e.sass
+# NAME    Clubs_read_e
+# CONTROL models/Club.rb
+# MODEL   controls/Club.rb
+# 
 module MAB_Clubs_read_e
 
   def follow!

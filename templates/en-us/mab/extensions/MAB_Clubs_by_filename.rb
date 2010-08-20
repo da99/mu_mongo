@@ -1,4 +1,10 @@
-
+# MAB     ~/megauni/templates/en-us/mab/Clubs_by_filename.rb
+# VIEW    ~/megauni/views/Clubs_by_filename.rb
+# SASS    ~/megauni/templates/en-us/sass/Clubs_by_filename.sass
+# NAME    Clubs_by_filename
+# CONTROL models/Club.rb
+# MODEL   controls/Club.rb
+# 
 module MAB_Clubs_by_filename
   
   def messages! &blok
