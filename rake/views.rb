@@ -40,6 +40,8 @@ namespace :views do
     ldir      = ("~/megauni/templates/#{lang}")
     dir       = File.join( ldir, 'mab' )
     mab       = File.join( ldir, 'mab',   filename + '.rb'   )
+    mab_mod_class = 'MAB_' + filename
+    mab_mod   = File.join( ldir, 'mab/extensions', mab_mod_class + '.rb' )
     sass      = File.join( ldir, 'sass',  filename + '.sass' )
     view      = File.join( home, 'views', filename + '.rb'   )
     piece_txt = [control_piece, model_piece].compact.join("\n")
@@ -50,6 +52,7 @@ namespace :views do
     templates[mab] = %~
 # VIEW    #{view}
 # SASS    #{sass}
+# MODULE  #{mab_mod}
 # NAME    #{filename}
 #{piece_txt}
 
@@ -62,8 +65,22 @@ partial('__nav_bar')
 
 ~.lstrip
 
+
+      templates[mab_mod] = %~
+# MAB     #{mab}
+# VIEW    #{view}
+# SASS    #{sass}
+# NAME    #{filename}
+#{piece_txt}
+
+module #{mab_mod_class}
+  
+end # === module #{mab_mod_class}
+      ~.lstrip
+
       templates[view] = %~
 # MAB     #{mab}
+# MODULE  #{mab_mod}
 # SASS    #{sass}
 # NAME    #{name}
 #{piece_txt}
@@ -79,6 +96,7 @@ end # === #{name} ~.lstrip
       if sass
         templates[sass] = %~
 // MAB    #{mab}
+// MODULE  #{mab_mod}
 // VIEW   #{view}
 // NAME   #{name}
 // #{control_piece}
