@@ -5,6 +5,10 @@ module BASE_MAB_Clubs
     self.class.to_s.split('Clubs_').last
   end
 
+  def messages! &blok
+    div.col.messsages! &blok
+  end
+
   def loop_messages!
     loop_messages list_name
   end
@@ -12,15 +16,32 @@ module BASE_MAB_Clubs
   def publisher_guide! &blok
     if_empty list_name, &blok
   end
-  
-  def follow!
-    a_button 'Follow', 'href'
+
+  def guide! txt, &blok
+    div.section.guide {
+      h3 txt
+      blok.call
+    }
   end
   
+  def follow!
+    a_button 'Follow', 'href_follow'
+  end
+  
+  attr_reader :perm_level
   %w{ stranger member insider owner }.each { |level|
     eval %~
       def #{level} &blok
-        show_if '#{level}?', &blok
+        @perm_level = :#{level}
+        
+        gath = Gather.new(&blok)
+        show_if '#{level}?' do
+          gath.meths.each { |meth|
+            send("#{level}_\#{meth.first}", *(meth[1]), &(meth.last))
+          }
+        end
+        
+        @perm_level = nil
       end
     ~
   }
@@ -35,4 +56,12 @@ module BASE_MAB_Clubs
     owner &blok
   end
 
+  # ======== CONTENT METHODS ===================
+
+  def about! header, body
+    div.section.about {
+      h3 header.m!
+      div.body body.m!
+    }
+  end
 end # === module

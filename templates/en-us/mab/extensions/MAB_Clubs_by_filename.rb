@@ -26,18 +26,8 @@ module MAB_Clubs_by_filename
       }
   end
 
-  def messages! &blok
-    div.col.messsages! &blok
-  end
-
-  def guide! txt, &blok
-    div.section.guide! {
-      h3 txt
-      blok.call
-    }
-  end
-
   def follow!
+    return super
     show_if('logged_in?') {
 
       div.sections.follow! {
@@ -48,7 +38,7 @@ module MAB_Clubs_by_filename
         show_if 'potential_follower?' do
           show_if 'single_username?' do
             div.follow_it! {
-              a.button("Follow this universe.", :href=>"follow_href".m! )
+              a.button("Follow this universe.", :href=>"href_follow".m! )
             }
           end
           mustache 'multiple_usernames?' do
@@ -89,18 +79,32 @@ module MAB_Clubs_by_filename
     }
   end # === div_follow
 
-  def about!
-    div.section.about {
-      show_if 'owner?' do
-        h3 "This #{'club_type'.m!} is yours:"
-      end
-      if_not 'owner?' do
-        h3 "About this #{'club_type'.m!}:"
-      end
-      div.teaser 'club_teaser'.m!
-    }
+  def stranger_about!
+    about! "About this {{club_type}}:", 'club_teaser'
   end
   
+  def member_about!
+    stranger_about!
+  end
+
+  def insider_about!
+    about! "You're an insider:", 'club_teaser'
+  end
+
+  def owner_about!
+    about! "This {{club_type}} is yours:", 'club_teaser'
+  end
+  
+  %w{ memberships post_membership_plea edit memberships_guide post_membership}.each { |meth|
+    %w{ stranger member insider owner}.each { |level|
+      eval %~
+        def #{level}_#{meth}!
+          div "#{level} :: #{meth} goes here."
+        end
+      ~
+    }
+  }
+
   def edit!
     show_if 'owner?' do
         div.edit_settings! {

@@ -80,10 +80,6 @@ module Base_View_Club
     club.follower?(current_member) && !owner?
   end
 
-  def follow_href
-    club.follow_href
-  end
-  
   def egg_timers_as_clubs
     @cache_egg_timers_as_clubs ||= [ 
       { :teaser=>'Works on old computers.', :href=>'/my-egg-timer/',    :title=>'Old (my-egg_timer)'},

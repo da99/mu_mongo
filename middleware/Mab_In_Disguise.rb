@@ -1,9 +1,7 @@
 
 require 'markaby'
+require 'models/Gather'
 
-# puts "\n"
-# puts caller.join("\n")
-# puts "\n"
 
 MAB_MODS = %w{ 
   Base 

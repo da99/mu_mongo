@@ -298,7 +298,7 @@ class Club
     File.join(href, 'edit/' )
   end
 
-  def follow_href
+  def href_follow
     File.join(href, "/follow/")
   end
 

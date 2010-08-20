@@ -81,7 +81,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     club = create_club
     get club.href
     
-    assert_equal nil, last_response.body[club.follow_href]
+    assert_equal nil, last_response.body[club.href_follow]
   end
 
   must 'not show follow club link to club creator' do
@@ -89,7 +89,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     log_in_regular_member_1
     get club.href
-    assert_equal nil, last_response.body[club.follow_href]
+    assert_equal nil, last_response.body[club.href_follow]
   end
 
   must 'not show "You are following" message to club creator' do
@@ -107,7 +107,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     log_in_regular_member_2
     get club.href
 
-    assert_not_equal club.follow_href, last_response.body[club.follow_href]
+    assert_not_equal club.href_follow, last_response.body[club.href_follow]
   end
 
   must 'show follow club link to members.' do
@@ -116,7 +116,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     log_in_regular_member_2
     get club.href
     
-    assert_equal club.follow_href, last_response.body[club.follow_href]
+    assert_equal club.href_follow, last_response.body[club.href_follow]
   end
 
   must 'allow members to follow someone else\'s club' do

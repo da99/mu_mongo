@@ -106,7 +106,7 @@ module Base_Member_Life
       #   mustache 'potential_follower?' do
       #     mustache 'single_username?' do
       #       p {
-      #         a("Follow this club.", :href=>"{{follow_href}}")
+      #         a("Follow this club.", :href=>"{{href_follow}}")
       #       }
       #     end
       #     mustache 'multiple_usernames?' do

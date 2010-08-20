@@ -7,6 +7,7 @@
 class Clubs_by_filename < Base_View
  
   delegate_to :club, %w{
+    href_follow
     href_delete_follow
     href_delete
     href_members
