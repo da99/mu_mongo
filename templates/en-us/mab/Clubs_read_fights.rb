@@ -6,44 +6,29 @@ partial '__club_title'
 
 club_nav_bar(__FILE__)
 
-div.outer_shell! do
-  div.inner_shell! do
+div_centered do
     
-    div.club_body! {
-      show_if 'logged_in?' do
-        
-        div_guide!('Stuff you can do:') {
-          p %~
-            Express negative feelings. Try to use
-          polite profanity, like meathead instead of 
-          doo-doo head.
-          ~
-        }
-        
-          post_message {
-            css_class  'col'
-            title      'Publish a new:'
-            models     %w{fight complaint debate}
-            input_title 
-            hidden_input(
-              :club_filename => '{{club_filename}}',
-              :privacy       => 'public'
-            )
-          }
-        
-      end # logged_in?
+    messages! do
+      
+      loop_messages 'passions'
 
-      div.col.club_messages! do
-        
-        loop_messages_with_opening(
-          'passions',
-          'Latest Activity:',
-          'Nothing passionate or furious has been published.'
-        )
-        
+      if_empty 'passions' do
+        show_if 'owner?' do
+          div_guide!('Stuff you can do:') {
+            p %~
+              Express negative feelings. Try to use
+            polite profanity, like meathead instead of 
+            doo-doo head.
+            ~
+          }
+        end
       end
       
-    } # div.club_body!
+    end
+    
+    publish! {
+      about!
+      post_message!
+    } # === publish!
 
-  end # div.inner_shell!
-end # div.outer_shell!
+end # div_centered

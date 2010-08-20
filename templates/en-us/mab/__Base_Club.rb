@@ -1,52 +1,6 @@
 
 module Base_Club
 
-  def div_guide txt, &blok
-    div.section.follow_guide! {
-      div.guide! {
-        h3 txt
-        blok.call
-      }
-    }
-  end
-  
-  def div_guide! txt, &blok
-    club_follow_guide
-    div_guide txt, &blok
-  end
-
-  def club_follow_guide
-    text( capture {
-      mustache('logged_in?') {
-
-          show_if 'follower_but_not_owner?' do
-            h3.following_it! 'You are following this universe.'
-          end
-    
-          show_if 'potential_follower?' do
-            show_if 'single_username?' do
-              div.follow_it! {
-                a.button("Follow this universe.", :href=>"follow_href".m! )
-              }
-            end
-            mustache 'multiple_usernames?' do
-              form.form_follow_create!(:action=>"/uni/follow/", :method=>'post') do
-                fieldset {
-                  label 'Follow this club as: ' 
-                  select(:name=>'username') {
-                    mustache('current_member_usernames') {
-                    option('{{username}}', :value=>'{{username}}')
-                  }
-                  }
-                }
-                div.buttons { button 'Follow.' }
-              end
-            end
-          end
-      }
-    })
-  end
-
   def loop_clubs list_name, &blok
     text(capture {
       loop list_name do 

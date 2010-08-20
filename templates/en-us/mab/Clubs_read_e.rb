@@ -1,55 +1,56 @@
 # VIEW ~/megauni/views/Clubs_read_e.rb
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_e.sass
 # NAME Clubs_read_e
+# 
+# Life/Club Encyclopedia
+#   COL 0: messages!
+#     - MESSAGES
+#       - EMPTY?
+#         - Tell me what I should do.
+#     
+#   - OWNER?
+#     COL 1: publish!
+#       - ABOUT THIS Encyclopedia
+#       - PUBLISH MESSAGE
+# 
+#   - AUDIENCE?
+#     COL 1: publish!
+#     - FOLLOW/UNFOLLOW this encyclopedia
+#     - ABOUT THIS Encyclopedia
+#     - PUBLISH MESSAGE
+#     
 
 partial '__club_title'
 
 club_nav_bar(__FILE__)
 
-div.outer_shell! do
-  div.inner_shell! do
+div_centered {
     
-    div.club_body! {
-
-      show_if 'logged_in?' do
-        
-        div.col.mind_control! {
-          
-          div_guide! 'Stuff you can do:' do
-            ul {
-              li 'Write a story. '
-              li 'Post a quotation.'
-              li 'Tell others of related links.'
-            }
-          end
-
-          post_message {
-            css_class  'col'
-            title  'Publish a new:'
-            input_title 
-            models  %w{e_quote e_chapter}
-            hidden_input(
-              :club_filename => '{{club_filename}}',
-              :privacy       => 'public'
-            )
+  div.col.messages! {
+    
+    loop_messages_with_opening 'quotes', 'Quotations'
+    loop_messages_with_opening 'chapters', 'Chapters'
+    
+    if_not('quotes_or_chapters?'){
+      show_if 'owner?' do
+        guide!('Stuff you can do:') {
+          ul {
+            li 'Write a story. '
+            li 'Post a quotation.'
+            li 'Tell others of related links.'
           }
-          
-        } # === mind_control!
-        
-      end # logged_in?
-
-      div.col.club_messages! do
-        
-        show_if('no_quotes_or_chapters?'){
-          div.empty_msg 'Nothing has been posted yet.'
         }
-        
-        loop_messages_with_opening 'quotes', 'Quotations'
-        
-        loop_messages_with_opening 'chapters', 'Chapters'
       end
-      
-    } # div.navigate!
+    }
+    
+  } # === messages!
 
-  end # div.inner_shell!
-end # div.outer_shell!
+  publish! {
+    follow!
+    about!
+    post_message!
+  }
+
+
+} # === div_centered
+
