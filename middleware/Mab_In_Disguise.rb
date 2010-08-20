@@ -51,7 +51,8 @@ class Mab_In_Disguise
 
   def self.compile_all filename = '*', save_it = true
     content = nil
-    path_to_file = filename == '*' ? "templates/*/mab/#{filename}.rb" : filename
+    path_to_file = filename == '*' ? "template
+      extend #{name}s/*/mab/#{filename}.rb" : filename
     Dir.glob(path_to_file).each { |mab_file|
       next if mab_file['layout.rb']
       mab_dir       = File.dirname(mab_file)
@@ -61,12 +62,39 @@ class Mab_In_Disguise
       html_file     = mab_file.sub('mab/', 'mustache/').sub('.rb', '.html')
       template_name = file_basename.sub('.rb', '').to_sym
       
+      controller_name = file_basename.split('_').reject { |str| str =~ /\A[a-z]/ }.join('_')
+      
+      
+      mab = Config_Switches.new {
+        strings :base, :ext, :dir
+        switch :use_base, off
+        switch :use_ext,  off
+      }
+      mab.put {
+        base   "BASE_MAB_#{controller_name}"
+        ext    "MAB_#{file_basename}".sub('.rb', '')
+        dir    File.join(mab_dir, 'extensions')
+      }
+      
+      %w{base ext}.each { |mod|
+          file = "#{mab.get.dir}/#{mab.get.send(mod)}.rb"
+          if File.exists?(file)
+            require file
+            mab.put.send("use_#{mod}")
+          end 
+      }
+
       content       = if is_partial
                         Markaby::Builder.new(:template_name=>template_name) { 
                           eval( File.read(mab_file), nil, mab_file , 1)
                         }
                       else
                         Markaby::Builder.new(:template_name=>template_name) { 
+                          %w{base ext}.each { |name|
+                            if mab.get.send(name)
+                              extend Object.const_get( mab.get.send(name) )
+                            end
+                          }
                           eval(
                             File.read(layout_file).sub("{{content_file}}", file_basename),
                             nil, 

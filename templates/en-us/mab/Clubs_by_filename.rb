@@ -3,26 +3,6 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_by_filename.sass
 # NAME Club_by_filename
 # 
-# Life/Club Homepage
-#   COL 0: messages!
-#     - MESSAGES
-#       - EMPTY?
-#         - Tell me what I should do.
-#     
-#   - OWNER?
-#     COL 1: publish!
-#       - ABOUT THIS LIFE
-#       - EDIT LIFE
-#       - MEMBERS_LIST
-#         - What can you do with this.
-#         - ADD MORE W/ TEXTAREA
-# 
-#   - AUDIENCE?
-#     COL 1: publish!
-#     - FOLLOW/UNFOLLOW
-#     - ABOUT THIS LIFE
-#     - SUBMIT MEMBERSHIP PLEA (if applications allowed)
-#     
 
 partial '__club_title'
 
@@ -39,17 +19,17 @@ div_centered do
     
     follow!
     
-    stranger! {
+    stranger {
       about!
       memberships!
     }
     
-    member_or_insider! {
+    member_or_insider {
       about!
       post_membership_plea!
     }
     
-    owner! {
+    owner {
       about!
       edit!
       memberships_guide!

@@ -112,4 +112,16 @@ module Base_View_Club
                              end
   end
 
+  %w{ stranger member owner insider }.each { |level|
+    eval %~
+      def #{level}?
+        true if The_App.development?
+      end
+    ~
+  }
+
+  def club_type
+    club.life? ? 'life' : 'universe'
+  end
+
 end # === Base_View_Club

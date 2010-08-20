@@ -89,8 +89,8 @@ module MAB_Clubs_by_filename
     }
   end # === div_follow
 
-  def about! txt
-    div.section.about! {
+  def about!
+    div.section.about {
       show_if 'owner?' do
         h3 "This #{'club_type'.m!} is yours:"
       end
@@ -112,10 +112,22 @@ module MAB_Clubs_by_filename
     end
   end
   
+  def memberships_guide!
+    div.section { p 'Memberrship guide goes here.' }
+  end
+
+  def post_membership_plea!
+    div.section { p 'Plea for memberrship. Arrr!' }
+  end
+
+  def post_membership!
+    div.section { p 'Post form membership goes here.' }
+  end
+
   def memberships!
     show_if 'owner?' do
         show_if 'memberships?' do
-          div.section.memberships! {
+          div.section.memberships {
             h4 'Memberships:'
             ul {
               loop 'memberships' do
@@ -125,11 +137,11 @@ module MAB_Clubs_by_filename
           }
         end
         
-        div.section.add_memberships! {
+        div.section.add_memberships {
           h4 'Add Members:'
           p %~Members are given special powers.
           Separate each with a new line.~
-          post_form('add_member') {
+          form_post('add_member' + rand(1000).to_s) {
             textarea ''
           }
         } # === add_memberships!

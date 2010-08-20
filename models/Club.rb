@@ -279,6 +279,7 @@ class Club
   def life_club?
     !!@life_club
   end
+  alias_method :life?, :life_club?
 
   def href 
     "/uni/#{data.filename}/"
