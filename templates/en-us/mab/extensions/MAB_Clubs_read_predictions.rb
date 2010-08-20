@@ -7,5 +7,31 @@
 
 module MAB_Clubs_read_predictions
   
+  def publisher_guide!
+      show_owner_if_empty 'predictions' do
+        guide!( 'Stuff you can do here:' ) {
+          p %~
+            This is where you can publish your thoughts
+          on what will happen in the future.  When
+          you are right, you can yell, "I told you so!"
+          ~
+        }
+      end
+  end
+
+  def post_message!
+
+          post_message {
+            css_class  'col'
+            title  'Post a prediction:'
+            hidden_input(
+              :message_model => 'prediction', 
+              :club_filename => '{{club_filename}}',
+              :privacy       => 'public'
+            )
+          }
+        
+  end
+
 end # === module MAB_Clubs_read_predictions
       

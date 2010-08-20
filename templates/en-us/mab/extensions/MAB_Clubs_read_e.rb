@@ -7,6 +7,22 @@
 # 
 module MAB_Clubs_read_e
 
+  def list_name
+    'quotes_or_chapters'
+  end
+
+  def publisher_guide!
+    show_to_owner_if_empty('quotes_or_chapters?') do
+      guide!('Stuff you can do:') {
+        ul {
+          li 'Write a story. '
+          li 'Post a quotation.'
+          li 'Tell others of related links.'
+        }
+      }
+    end
+  end
+
   def follow!
   end
 

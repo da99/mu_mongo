@@ -1,3 +1,4 @@
+# MODULE templates/en-us/mab/extensions/MAB_Clubs_read_fights.rb
 # VIEW ~/megauni/views/Clubs_read_fights.rb
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_fights.sass
 # NAME Clubs_read_fights
@@ -9,26 +10,23 @@ club_nav_bar(__FILE__)
 div_centered do
     
     messages! do
-      
-      loop_messages 'passions'
-
-      if_empty 'passions' do
-        show_if 'owner?' do
-          div_guide!('Stuff you can do:') {
-            p %~
-              Express negative feelings. Try to use
-            polite profanity, like meathead instead of 
-            doo-doo head.
-            ~
-          }
-        end
-      end
-      
+      loop_messages
+      publisher_guide!
     end
     
     publish! {
-      about!
-      post_message!
+      
+      follow!
+      
+      stranger {
+        about!
+      }
+
+      insider_or_owner {
+        about!
+        post_message!
+      }
+      
     } # === publish!
 
 end # div_centered

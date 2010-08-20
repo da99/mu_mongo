@@ -7,5 +7,40 @@
 
 module MAB_Clubs_read_shop
   
+  def list_name
+    'buys'
+  end
+
+  def loop_messages!
+    loop_messages list_name
+  end
+
+  def publisher_guide!
+      div_guide!( 'Stuff you can do here:' ) {
+        p %~
+          You post your favorite stuff to buy.
+        Tell people: 
+        ~
+        ul {
+          li 'where you bought it.'
+          li 'how much it cost you.'
+          li 'why others should buy it too.'
+        }
+      }
+  end
+  
+  def post_message!
+    post_message {
+      css_class  'col'
+      title  'Recommend a product:'
+      input_title 
+      hidden_input(
+        :message_model => 'buy',
+        :club_filename => '{{club_filename}}',
+        :privacy       => 'public'
+      )
+    }
+  end
+
 end # === module MAB_Clubs_read_shop
       

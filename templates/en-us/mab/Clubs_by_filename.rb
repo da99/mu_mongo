@@ -1,3 +1,4 @@
+# MODULE templates/en-us/mab/extensions/MAB_Clubs_by_filename.rb
 # VIEW ~/megauni/views/Clubs_by_filename.rb
 # SASS ~/megauni/templates/en-us/sass/Clubs_by_filename.sass
 # NAME Club_by_filename
@@ -29,32 +30,33 @@ club_nav_bar(__FILE__)
 
 div_centered do
     
-    div.col.messages! {
-      
-      loop_messages 'messages_latest' 
-      
-      if_empty('messages_latest'){
-        show_if 'owner?' do
-          guide!('Stuff you should do:') {
-            ul {
-              li "Post something in the \"Encyclopedia\" section."
-              li "Write anything in the \"Random\" section."
-              li %~ Recommend a product in the "Shop" section. ~
-              li %~ Ask a question in the "Q & A" section. ~
-            }
-          }
-        end
-      }
-      
-    } # === messages!
+  messages! {
+    loop_messages!
+    publisher_guide!
+  }
 
-    div.col.publish! {
-      
-      follow!
+  publish! {
+    
+    follow!
+    
+    stranger! {
+      about!
+      memberships!
+    }
+    
+    member_or_insider! {
+      about!
+      post_membership_plea!
+    }
+    
+    owner! {
       about!
       edit!
+      memberships_guide!
       memberships!
-      
-    } # === div.publish!
+      post_membership!
+    }
     
+  } # === publish!
+  
 end # === div_centered

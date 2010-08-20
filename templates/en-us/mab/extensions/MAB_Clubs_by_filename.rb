@@ -7,6 +7,25 @@
 # 
 module MAB_Clubs_by_filename
   
+  def list_name
+    'messages_latest' 
+  end
+
+  def publisher_guide!
+      if_empty('messages_latest'){
+        show_if 'owner?' do
+          guide!('Stuff you should do:') {
+            ul {
+              li "Post something in the \"Encyclopedia\" section."
+              li "Write anything in the \"Random\" section."
+              li %~ Recommend a product in the "Shop" section. ~
+              li %~ Ask a question in the "Q & A" section. ~
+            }
+          }
+        end
+      }
+  end
+
   def messages! &blok
     div.col.messsages! &blok
   end

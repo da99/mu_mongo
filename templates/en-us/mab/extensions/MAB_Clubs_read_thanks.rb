@@ -7,5 +7,30 @@
 
 module MAB_Clubs_read_thanks
   
+  def list_name
+    'thanks'
+  end
+
+  def publisher_guide! 
+    div_guide!( 'Stuff you can do here:' ) {
+      p %~
+            Show how this club or it's members 
+          have made your life better.
+          ~
+    }
+  end
+
+  def post_message!
+    post_message {
+      css_class  'col'
+      title  'Post a thank you:'
+      hidden_input(
+        :message_model => 'thank',
+        :club_filename => '{{club_filename}}',
+        :privacy       => 'public'
+      )
+    }
+  end
+
 end # === module MAB_Clubs_read_thanks
       

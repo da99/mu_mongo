@@ -7,6 +7,22 @@
 # 
 module MAB_Clubs_read_fights
 
+  def list_name
+    'passions'
+  end
+
+  def publisher_guide!
+      show_to_owner_if_empty 'passions' do
+        div_guide!('Stuff you can do:') {
+          p %~
+            Express negative feelings. Try to use
+          polite profanity, like meathead instead of 
+          doo-doo head.
+          ~
+        }
+      end
+  end
+
   def post_message!
     post_message {
       css_class  'col'

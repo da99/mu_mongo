@@ -1,3 +1,4 @@
+# MODULE templates/en-us/mab/extensions/MAB_Clubs_read_qa.rb
 # VIEW ~/megauni/views/Clubs_read_qa.rb
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
@@ -8,40 +9,25 @@ club_nav_bar(__FILE__)
 
 div_centered do
     
-    div.club_body! {
+    messages! {
+      loop_messages!
+      publisher_guide!
+    }
 
-      show_if 'logged_in?' do
-        
-        div_guide!('Stuff you can do here:') {
-          p %~
-            Help others by answering questions.
-          ~
-        } # === div_guide!
-
-          post_message {
-            css_class  'col'
-            title  'Publish a new:'
-            models  %w{question plea}
-            input_title
-            hidden_input(
-              :club_filename => '{{club_filename}}',
-              :privacy       => 'public'
-            )
-          }
-        
-      end # logged_in?
+    publish! {
       
-      div.col.club_messages! do
-        
-        loop_messages_with_opening(
-          'questions',
-          'Latest Questions:',
-          'No questions have been asked.'
-        )
-        
-      end
-
-    } # div.club_body!
+      follow!
+      
+      stranger {
+        about!
+      }
+      
+      insider_or_owner {
+        about!
+        post_message!
+      }
+      
+    } # === publish!
     
 end # div.outer_shell!
     
