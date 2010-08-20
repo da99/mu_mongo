@@ -3,7 +3,7 @@ require 'term/ansicolor'
 
 module Color_Puts 
 
-  %w{ white red green }.each { |color|
+  %w{ white red green yellow }.each { |color|
     eval( %~
       def puts_#{color} msg = nil, &blok
         colorize_and_print :#{color}, msg, &blok

@@ -111,17 +111,14 @@ end # === #{name} ~.lstrip
       templates.each do |file, content|
         full_path = File.expand_path(file)
         if File.exists?(full_path)
-          puts_white 'Already existed:'
+          puts_white "Already existed: #{file}"
         else
           # Create file.
           File.open( File.expand_path(full_path), 'w') do |file_io|
             file_io.puts content
           end
-          puts_white 'Created:'
+          puts_yellow "Created: #{file}"
         end
-        
-        puts_white file
-        
       end
 
   end # === describe
