@@ -10,7 +10,7 @@ club_nav_bar(__FILE__)
 
 div_centered {
     
-  div.col.messages! {
+  messages! {
     
     loop_messages_with_opening 'quotes', 'Quotations'
     loop_messages_with_opening 'chapters', 'Chapters'
@@ -20,13 +20,25 @@ div_centered {
 
   publish! {
     
-    follow!
-    
     stranger {
+      follow!
       about
     }
     
-    insider_or_owner {
+    member {
+      follow!
+    }
+
+    insider {
+      follow!
+      about
+      post_message!
+    }
+      
+    owner {
+      club {
+        follow!
+      }
       about
       post_message!
     }

@@ -26,7 +26,7 @@ module MAB_Clubs_by_filename
   def publisher_guide!
       if_empty('messages_latest'){
         show_if 'owner?' do
-          guide!('Stuff you should do:') {
+          guide('Stuff you should do:') {
             ul {
               li "Post something in the \"Encyclopedia\" section."
               li "Write anything in the \"Random\" section."
@@ -111,7 +111,7 @@ module MAB_Clubs_by_filename
   
   # =============== MEMBERSHIPS
   
-  def omni_memberships!
+  def omni_memberships
     security = (ring == :owner ? 'all' : 'public')
     
     show_if 'memberships?' do
@@ -128,10 +128,10 @@ module MAB_Clubs_by_filename
   
 
   def memberships! &blok
-    if block_given?
-      return div.col.memberships! &blok
-    end
-
+      div.col.memberships! &blok
+  end
+  
+  def memberships
     show_if 'owner?' do
         show_if 'memberships?' do
           div.section.memberships {

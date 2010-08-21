@@ -15,7 +15,7 @@ module MAB_Clubs_read_e
 
   def publisher_guide!
     show_to_owner_if_empty('quotes_or_chapters?') do
-      guide!('Stuff you can do:') {
+      guide('Stuff you can do:') {
         ul {
           li 'Write a story. '
           li 'Post a quotation.'

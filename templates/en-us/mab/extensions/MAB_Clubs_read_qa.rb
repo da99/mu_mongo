@@ -16,19 +16,19 @@ module MAB_Clubs_read_qa
   def publisher_guide!
     super { 
       insider {
-        guide!('Stuff you can do here:') {
+        guide('Stuff you can do here:') {
           p %~
             Ask questions.
           ~
-        } # === div_guide!
+        } # === guide
       }
       
       owner {
-        guide!('Stuff you can do here:') {
+        guide('Stuff you can do here:') {
           p %~
             Ask questions and answer them
           ~
-        } # === div_guide!
+        } # === guide
       }
     }
   end

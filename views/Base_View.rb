@@ -47,7 +47,7 @@ class Base_View < Mustache
       end
     ~ % [prop, cache_name, value].map(&:to_s)
   end
-	
+  
   def self.delegate_to receiver, *raw_words
     raw_words.flatten.each { |prop|
       module_eval(

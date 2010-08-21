@@ -28,6 +28,9 @@ div_centered do
     }
     
     owner {
+      club {
+        follow!
+      }
       about
       edit!
     }
@@ -37,17 +40,17 @@ div_centered do
   memberships! {
     
     stranger {
-      memberships!
+      memberships
     }
     
     member_or_insider {
-      memberships!
+      memberships
       post_membership_plea!
     }
     
     owner {
       memberships_guide!
-      memberships!
+      memberships
       post_membership!
     }
     

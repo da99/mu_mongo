@@ -4,28 +4,27 @@ module BASE_MAB
   
   extend Delegator_DSL
 
-  delegate_to "config.get", :rings_used
+  delegate_to "config.get",        :rings_used
   delegate_to "config.get_or_put", :ring
 
   def config
-    @config ||= Config_Switches.new {
-      levels :ring, Club::MEMBERS, nil
-    }
+    @config ||= \
+      Config_Switches.new {
+        levels :ring, Club::MEMBERS, nil
+      }
   end
 
-  def send_with_security_level level, meth_name, *args, &blok
+  def send_within_ring level, meth_name, *args, &blok
+    target = "#{level}_#{meth_name}"
+    omni   = "omni_#{meth_name}"
+
+    final = if respond_to?(omni)
+              omni
+            else
+              target
+            end
     
-    method_should_exists = Club::MEMBERS.detect { |perm|
-                              respond_to?("#{perm}_#{meth_name}")
-                            }
-    
-    method_name = if method_should_exists
-                    "#{level}_#{meth_name}"
-                  else
-                    "omni_#{meth_name}"
-                  end
-    
-    send(method_name, *args, &blok)
+    send(final, *args, &blok)
   end
   
   def ensure_no_one_left
@@ -42,7 +41,7 @@ module BASE_MAB
         gath = Gather.new(&blok)
         show_if '#{level}?' do
           gath.meths.each { |meth|
-            send_with_security_level("#{level}", "\#{meth.first}", *(meth[1]), &(meth.last))
+            send_within_ring("#{level}", "\#{meth.first}", *(meth[1]), &(meth.last))
           }
         end
         
@@ -51,4 +50,18 @@ module BASE_MAB
     ~
   }
 
+  [ %w{ member insider }, %w{ insider owner } ].each { |first, second|
+    eval %~
+      def #{first}_or_#{second} &blok
+        #{first} &blok
+        #{second} &blok
+      end
+    ~
+  }
+
 end # === module
+
+
+
+
+

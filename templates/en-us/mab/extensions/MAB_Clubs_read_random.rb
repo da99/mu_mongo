@@ -11,7 +11,7 @@ module MAB_Clubs_read_random
   
   def publisher_guide!
     show_to_owner_if_empty list_name do
-      guide!( 'Stuff you can do here:' ) {
+      guide( 'Stuff you can do here:' ) {
         p %~
           Post stuff that no one really 
         cares about. Examples:

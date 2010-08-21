@@ -14,10 +14,19 @@ module BASE_MAB_Clubs
   end
   
   def publisher_guide! &blok
-    if_empty list_name, &blok
+    if_empty list_name do
+      div.section.publisher_guide! do
+        owner {
+          publisher_guide
+        }
+        insider {
+          publisher_guide
+        }
+      end
+    end
   end
 
-  def guide! txt, &blok
+  def guide txt, &blok
     div.section.guide {
       h3 txt
       blok.call
@@ -28,18 +37,6 @@ module BASE_MAB_Clubs
     a_button 'Follow', 'href_follow'
   end
   alias_method :omni_follow!, :follow!
-  
-  def member_or_insider &blok
-    member &blok
-    insider &blok
-  end
-
-  def insider_or_owner &blok
-    insider &blok
-    owner &blok
-  end
-
-  # ======== CONTENT METHODS ===================
 
   def about header, body
     div.section.about {

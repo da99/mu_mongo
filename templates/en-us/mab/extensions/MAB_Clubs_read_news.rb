@@ -11,7 +11,7 @@ module MAB_Clubs_read_news
   
   def publisher_guider! list_name
       show_to_owner_if_empty('news') do
-        guide!( 'Stuff you can do here:' ) {
+        guide( 'Stuff you can do here:' ) {
           p %~
             Post only important news. 
           Examples:

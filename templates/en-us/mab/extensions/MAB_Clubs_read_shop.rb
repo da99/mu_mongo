@@ -18,7 +18,7 @@ module MAB_Clubs_read_shop
   end
 
   def publisher_guide!
-      div_guide!( 'Stuff you can do here:' ) {
+      guide( 'Stuff you can do here:' ) {
         p %~
           You post your favorite stuff to buy.
         Tell people: 

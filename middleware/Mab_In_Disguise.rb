@@ -83,8 +83,6 @@ class Mab_In_Disguise
           end 
       }
 
-      ensure_all_permissions_used = false
-
       content       = if is_partial
                         Markaby::Builder.new(:template_name=>template_name) { 
                           eval( File.read(mab_file), nil, mab_file , 1)
@@ -95,7 +93,6 @@ class Mab_In_Disguise
                             if mab.get.send(name)
                               extend Object.const_get( mab.get.send(name) )
                             end
-                            ensure_all_permissions_used = true
                           }
                           eval(
                             File.read(layout_file).sub("{{content_file}}", file_basename),
@@ -103,9 +100,6 @@ class Mab_In_Disguise
                             layout_file, 
                             1
                           )
-                          if ensure_all_permissions_used
-                            ensure_no_one_left
-                          end
                         }
                       end
       save_file(mab_file, html_file, content) if save_it

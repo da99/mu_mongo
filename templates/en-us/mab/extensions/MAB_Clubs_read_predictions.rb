@@ -11,7 +11,7 @@ module MAB_Clubs_read_predictions
   
   def publisher_guide!
       show_owner_if_empty 'predictions' do
-        guide!( 'Stuff you can do here:' ) {
+        guide( 'Stuff you can do here:' ) {
           p %~
             This is where you can publish your thoughts
           on what will happen in the future.  When

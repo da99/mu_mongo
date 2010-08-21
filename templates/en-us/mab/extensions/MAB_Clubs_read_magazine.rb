@@ -11,7 +11,7 @@ module MAB_Clubs_read_magazine
   
   def publisher_guide!
     show_to_owner_if_empty 'storys' do
-      div_guide!( 'Stuff you can do:' ) {
+      guide( 'Stuff you can do:' ) {
         ul {
           li 'Write a story.'
           li 'Review a restaurant.'

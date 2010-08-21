@@ -15,7 +15,7 @@ module MAB_Clubs_read_fights
 
   def publisher_guide!
       show_to_owner_if_empty 'passions' do
-        div_guide!('Stuff you can do:') {
+        guide('Stuff you can do:') {
           p %~
             Express negative feelings. Try to use
           polite profanity, like meathead instead of 
