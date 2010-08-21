@@ -7,6 +7,18 @@
 # 
 module MAB_Clubs_by_filename
   
+  include BASE_MAB
+
+  %w{ post_membership_plea memberships_guide }.each { |meth|
+    %w{ stranger member insider owner}.each { |level|
+      eval %~
+        def #{level}_#{meth}!
+          div "#{level} :: #{meth} goes here."
+        end
+      ~
+    }
+  }
+
   def list_name
     'messages_latest' 
   end
@@ -79,56 +91,47 @@ module MAB_Clubs_by_filename
     }
   end # === div_follow
 
-  def stranger_about!
-    about! "About this {{club_type}}:", 'club_teaser'
+  # =============== ABOUT 
+
+  def stranger_about
+    about "About this {{club_type}}:", 'club_teaser'
   end
   
-  def member_about!
-    stranger_about!
+  def member_about
+    stranger_about
   end
 
-  def insider_about!
-    about! "You're an insider:", 'club_teaser'
+  def insider_about
+    about "You're an insider:", 'club_teaser'
   end
 
-  def owner_about!
-    about! "This {{club_type}} is yours:", 'club_teaser'
+  def owner_about
+    about "This {{club_type}} is yours:", 'You own it. You can edit it, destroy it, or publish to it.'
   end
   
-  %w{ memberships post_membership_plea edit memberships_guide post_membership}.each { |meth|
-    %w{ stranger member insider owner}.each { |level|
-      eval %~
-        def #{level}_#{meth}!
-          div "#{level} :: #{meth} goes here."
-        end
-      ~
-    }
-  }
-
-  def edit!
-    show_if 'owner?' do
-        div.edit_settings! {
-          a_button 'Edit settings.', 'href_edit'   
-          p %~
-            Edit title, teaser, or choose to delete this {{club_type}}
-          ~
-        }
+  # =============== MEMBERSHIPS
+  
+  def omni_memberships!
+    security = (ring == :owner ? 'all' : 'public')
+    
+    show_if 'memberships?' do
+      h3 'Members:'
+    end
+    
+    loop "#{security}_memberships" do
+      div {
+        div 'title'.m!
+        div 'privacy'.m!
+      }
     end
   end
   
-  def memberships_guide!
-    div.section { p 'Memberrship guide goes here.' }
-  end
 
-  def post_membership_plea!
-    div.section { p 'Plea for memberrship. Arrr!' }
-  end
+  def memberships! &blok
+    if block_given?
+      return div.col.memberships! &blok
+    end
 
-  def post_membership!
-    div.section { p 'Post form membership goes here.' }
-  end
-
-  def memberships!
     show_if 'owner?' do
         show_if 'memberships?' do
           div.section.memberships {
@@ -151,10 +154,28 @@ module MAB_Clubs_by_filename
         } # === add_memberships!
     end
   end # === div_memberships
+  # =============== FOR OWNER
+   
+  def owner_edit!
+    div.edit_settings! {
+      a_button 'Edit settings.', 'href_edit'   
+      p %~
+        Edit title, teaser, or choose to delete this {{club_type}}
+      ~
+    }
+  end
+  
+  def owner_memberships_guide!
+    div.section { p 'Memberrship guide goes here.' }
+  end
+
+  def owner_post_membership!
+    div.section { p 'Post form membership goes here.' }
+  end
 
   def publish! &blok
     div.col.publish! &blok
   end
-   
+  
   
 end # === module

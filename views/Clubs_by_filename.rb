@@ -42,8 +42,22 @@ class Clubs_by_filename < Base_View
     end
   end
 
-  def memberships
-    []
+  def memberships?
+    !all_memberships.empty?
+  end
+
+  def all_memberships
+    [ 
+      {'privacy' => 'public', 'title' => 'Editor'},
+      {'privacy' => 'public', 'title' => 'Reader'},
+      {'privacy' => 'private', 'title' => 'Creator'},
+    ]
+  end
+
+  def public_memberships
+    @public_mems ||= all_memberships.select { |mem| 
+      mem['privacy'] == 'public' 
+    }
   end
 
   def following

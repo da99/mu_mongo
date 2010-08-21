@@ -15,23 +15,37 @@ div_centered do
     publisher_guide!
   }
 
-  publish! {
-    
-    follow!
+  about! {
     
     stranger {
-      about!
+      follow!
+      about
+    }
+    
+    member_or_insider {
+      follow!
+      about
+    }
+    
+    owner {
+      about
+      edit!
+    }
+    
+  } # === about!
+
+  memberships! {
+    
+    stranger {
       memberships!
     }
     
     member_or_insider {
-      about!
+      memberships!
       post_membership_plea!
     }
     
     owner {
-      about!
-      edit!
       memberships_guide!
       memberships!
       post_membership!

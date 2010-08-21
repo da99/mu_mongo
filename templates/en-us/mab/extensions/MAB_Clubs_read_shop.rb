@@ -7,6 +7,8 @@
 
 module MAB_Clubs_read_shop
   
+  include BASE_MAB
+  
   def list_name
     'buys'
   end

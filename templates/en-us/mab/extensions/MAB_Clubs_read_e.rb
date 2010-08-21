@@ -6,6 +6,8 @@
 # MODEL   controls/Club.rb
 # 
 module MAB_Clubs_read_e
+  
+  include BASE_MAB
 
   def list_name
     'quotes_or_chapters'
@@ -26,9 +28,6 @@ module MAB_Clubs_read_e
   def follow!
   end
 
-  def about!
-  end
-  
   def post_message!
     post_message {
       css_class  'col'

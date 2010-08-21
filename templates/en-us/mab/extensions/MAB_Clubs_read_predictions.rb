@@ -7,6 +7,8 @@
 
 module MAB_Clubs_read_predictions
   
+  include BASE_MAB
+  
   def publisher_guide!
       show_owner_if_empty 'predictions' do
         guide!( 'Stuff you can do here:' ) {

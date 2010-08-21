@@ -75,6 +75,8 @@ partial('__nav_bar')
 
 module #{mab_mod_class}
   
+  include BASE_MAB
+
 end # === module #{mab_mod_class}
       ~.lstrip
 

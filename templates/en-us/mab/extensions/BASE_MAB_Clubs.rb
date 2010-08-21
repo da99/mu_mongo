@@ -27,24 +27,7 @@ module BASE_MAB_Clubs
   def follow!
     a_button 'Follow', 'href_follow'
   end
-  
-  attr_reader :perm_level
-  %w{ stranger member insider owner }.each { |level|
-    eval %~
-      def #{level} &blok
-        @perm_level = :#{level}
-        
-        gath = Gather.new(&blok)
-        show_if '#{level}?' do
-          gath.meths.each { |meth|
-            send("#{level}_\#{meth.first}", *(meth[1]), &(meth.last))
-          }
-        end
-        
-        @perm_level = nil
-      end
-    ~
-  }
+  alias_method :omni_follow!, :follow!
   
   def member_or_insider &blok
     member &blok
@@ -58,10 +41,15 @@ module BASE_MAB_Clubs
 
   # ======== CONTENT METHODS ===================
 
-  def about! header, body
+  def about header, body
     div.section.about {
       h3 header.m!
       div.body body.m!
     }
   end
+  
+  def about! &blok
+    div.col.about! &blok
+  end
+
 end # === module

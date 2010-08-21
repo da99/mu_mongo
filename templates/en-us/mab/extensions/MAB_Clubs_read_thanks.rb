@@ -7,6 +7,8 @@
 
 module MAB_Clubs_read_thanks
   
+  include BASE_MAB
+  
   def list_name
     'thanks'
   end

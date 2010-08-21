@@ -7,6 +7,8 @@
 
 module MAB_Clubs_read_news
   
+  include BASE_MAB
+  
   def publisher_guider! list_name
       show_to_owner_if_empty('news') do
         guide!( 'Stuff you can do here:' ) {

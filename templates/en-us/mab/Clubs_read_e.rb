@@ -23,11 +23,11 @@ div_centered {
     follow!
     
     stranger {
-      about!
+      about
     }
     
     insider_or_owner {
-      about!
+      about
       post_message!
     }
     

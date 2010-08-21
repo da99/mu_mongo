@@ -7,6 +7,8 @@
 
 module MAB_Clubs_read_magazine
   
+  include BASE_MAB
+  
   def publisher_guide!
     show_to_owner_if_empty 'storys' do
       div_guide!( 'Stuff you can do:' ) {

@@ -32,7 +32,6 @@ class Array
 
 end # === class Array
 
-
 class Base_View < Mustache
   
   include Base_View_Club
@@ -48,10 +47,10 @@ class Base_View < Mustache
       end
     ~ % [prop, cache_name, value].map(&:to_s)
   end
-  
+	
   def self.delegate_to receiver, *raw_words
     raw_words.flatten.each { |prop|
-      class_eval(
+      module_eval(
         delegate_template(receiver, prop)
       )
     }
@@ -59,7 +58,7 @@ class Base_View < Mustache
 
   def self.delegate_date_to receiver, *raw_words
     raw_words.flatten.each { |prop|
-      class_eval(
+      module_eval(
         delegate_template(
           receiver, 
           prop, 

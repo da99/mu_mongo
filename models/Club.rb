@@ -2,6 +2,14 @@
 class Club
 
   include Couch_Plastic
+  
+  MEMBERS = %w{ 
+    stranger
+    member
+    insider
+    owner
+  }.map(&:to_sym)
+
   INVALID_FILENAMES = %w{ 
     help 
     mega
