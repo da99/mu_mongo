@@ -94,30 +94,34 @@ class Mab_In_Disguise
       }
 
       puts "Compiling: #{mab_file}"
-        content       = begin
+        content     = begin
+                        content = \
                         if is_partial
-                        Markaby::Builder.new(:template_name=>template_name) { 
-                          eval( File.read(mab_file), nil, mab_file , 1)
-                        }
-                      else
-                        Markaby::Builder.new(:template_name=>template_name) { 
-                          ext_types.each { |name|
-                            if mab.ask.send("use_#{name}?")
-                              extend Object.const_get( mab.get.send(name) )
-                            end
+                          Markaby::Builder.new(:template_name=>template_name) { 
+                            eval( File.read(mab_file), nil, mab_file , 1)
                           }
-                          eval(
-                            File.read(layout_file).sub("{{content_file}}", file_basename),
-                            nil, 
-                            layout_file, 
-                            1
-                          )
-                        }
-                      end
+                        else
+                          Markaby::Builder.new(:template_name=>template_name) { 
+                            ext_types.each { |name|
+                              if mab.ask.send("use_#{name}?")
+                                extend Object.const_get( mab.get.send(name) )
+                              end
+                            }
+                            eval(
+                              File.read(layout_file).sub("{{content_file}}", file_basename),
+                              nil, 
+                              layout_file, 
+                              1
+                            )
+                          }
+                        end
                         
-      save_file(mab_file, html_file, content) if save_it
+                        
+                        save_file(mab_file, html_file, content) if save_it
+                        
+                        content
                       rescue NoMethodError
-                        "Not done"
+                        "<p>Not done.</p>"
                       end
       
       
