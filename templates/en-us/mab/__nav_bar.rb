@@ -27,7 +27,7 @@ div( :id=>"nav_bar" ) {
     
     show_if 'not_logged_in?' do
       nav_bar_li :Sessions, 'log-in', 'Log-in'
-      nav_bar_li :Members, 'create-account', 'Join'
+      # nav_bar_li :Members, 'create-account', 'Join'
     end
     
   }
