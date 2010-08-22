@@ -93,7 +93,7 @@ class Mab_In_Disguise
           end 
       }
 
-      puts "Compiling: #{mab_file}"
+      puts "Compiling: #{mab_file}" if The_App.development?
         content     = begin
                         content = \
                         if is_partial
