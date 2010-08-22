@@ -1,5 +1,7 @@
+require 'models/Delegator_DSL'
+
 module String_for_Safe_Writer
-  def folder_name 
+  def folder
     File.basename(File.dirname(self))
   end
 	
@@ -12,49 +14,62 @@ class Safe_Writer
 
   extend Delegator_DSL
 	
-  attr_reader :config, :from_file, :write_file
+  attr_reader :config, :file
 	
   delegate_to 'File',       :expand_path
-  delegate_to 'config.ask', :verbose?, :syn_modified_time?
+  delegate_to 'config.ask', :verbose?, :sync_modified_time?
   delegate_to 'config.get',
 			:read_folder, :write_folder, 
 			:read_file,   :write_file
 
   def initialize &configs
+    @file = Class.new {
+      attr_accessor :from, :to
+      
+      def set op, raw_txt
+        txt = raw_txt.dup
+        txt.extend String_for_Safe_Writer
+        instance_variable_set( "@#{op}".to_sym, txt)
+      end
+    }.new
+    
     @config = Config_Switches.new {
-      switch verbose, false
-      switch sync_modified_time, false
+      switch :verbose, false
+      switch :sync_modified_time, false
       arrays :read_folder, :write_folder
       arrays :read_file,   :write_file
     }
 
     @config.put &configs
   end
-      
+
+  def has_from_file?
+    !!(file.from)
+  end
+
   def from raw_file
-		@from_file = expand_path(raw_file)
-		@from_file.extend String_for_Safe_Writer
-		
+		file.set :from, raw_file
 		readable_from_file!
+    self
   end
 
   def write raw_file, raw_content
-    @write_file    = expand_path(raw_file)
-		@write_file.extend String_for_Safe_Writer
-
+    
+    file.set :to, raw_file
     content = raw_content.to_s
 
-    puts("Writing: #{write_file}") if verbose?
-		
-		writable_file!( write_file )
-		
-		File.open( write_file, 'w' ) do |io|
+		writable_file!
+    puts("Writing: #{file.to}") if verbose?
+    
+		File.open( file.to, 'w' ) do |io|
 			io.write content
 		end
 		
 		if sync_modified_time? && has_from_file?
-			touch( from_file, write_file ) 
+			touch( file.from, file.to ) 
 		end
+    
+    self
   end
   
   def touch *args
@@ -66,38 +81,33 @@ class Safe_Writer
   end
 
 	def readable_from_file!
-		validate_file! :read
+		validate_file! read_file, file.from, :read
 	end
 
-	def writable_from_file!
-		validate_file! :write
+	def writable_file!
+		validate_file! write_file, file.to, :write
 	end
 
-	def validate_file! op
-		file         = send("#{op}_file")
-		valid_folder = validate_default_true(read_folder, file.folder)
-		valid_file   = validate_default_true(read_file, file.name)
+	def validate_file! validators, file, op = "unknown action"
+		valid_folder = validate validators, file.folder
+		valid_file   = validate validators, file.name
 			
 		unless valid_folder && valid_file
 			raise "Invalid file for #{op}: #{file}" 
 		end
 	end
-  
-	def validate_default_true validators, val
-		return true if validators.empty?
-		validate validators, val
-	end
 
 	def validate validators, val
-		validators.detect { |dator|
-				case dator
-				when String
-					val == dator
-				when Regexp
-					val =~ dator
-				end
-			}
-
+		return true if validators.empty?
+    
+    validators.detect { |dator|
+      case dator
+      when String
+        val == dator
+      when Regexp
+        val =~ dator
+      end
+    }
 	end
 
 end # === class
