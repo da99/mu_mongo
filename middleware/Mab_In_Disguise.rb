@@ -28,7 +28,6 @@ class Mab_In_Disguise
   
   FILER = Safe_Writer.new do
 
-    verbose if The_App.development?
     sync_modified_time
     
     read_folder   %w{xml mab}
@@ -56,12 +55,12 @@ class Mab_In_Disguise
     
     content      = nil
     path_to_file = filename == '*' ?
-                    "template/**/mab/#{filename}.rb" : 
+                    "templates/**/mab/#{filename}.rb" : 
                     filename
 
     Dir.glob(path_to_file).each { |mab_file|
       
-      next if mab_file[/\Alayout/]
+      next if mab_file.split('/').last[/\Alayout/]
       
       mab_dir       = File.dirname(mab_file)
       layout_file   = File.join(mab_dir, 'layout.rb')
@@ -94,7 +93,9 @@ class Mab_In_Disguise
           end 
       }
 
-      content       = if is_partial
+      puts "Compiling: #{mab_file}"
+        content       = begin
+                        if is_partial
                         Markaby::Builder.new(:template_name=>template_name) { 
                           eval( File.read(mab_file), nil, mab_file , 1)
                         }
@@ -113,8 +114,12 @@ class Mab_In_Disguise
                           )
                         }
                       end
-      
+                        
       save_file(mab_file, html_file, content) if save_it
+                      rescue NoMethodError
+                        "Not done"
+                      end
+      
       
     }
     

@@ -2,15 +2,15 @@ namespace :views do
 
   desc 'Generates mustache and css files from mab and sass files.'
   task :compile do
-    require 'middleware/Mab_In_Disguise'
-    require 'middleware/Xml_In_Disguise'
-    require 'middleware/Render_Css'
-    
     if !ENV['RACK_ENV'] 
       ENV['RACK_ENV'] = 'development'
       require 'megauni'
     end
 
+    require 'middleware/Mab_In_Disguise'
+    require 'middleware/Xml_In_Disguise'
+    require 'middleware/Render_Css'
+    
     Mab_In_Disguise.compile_all
     Xml_In_Disguise.compile_all
     Render_Css.compile_all
