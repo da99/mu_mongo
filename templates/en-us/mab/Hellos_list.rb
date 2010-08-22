@@ -38,7 +38,7 @@ div.col.middle! {
       
       li {
         # a 'Help', :href=>'/help/'
-        span 'Tip: Buy Longevinex. I love it. You will too.'
+        span 'Tip: Link to menopause/osteo is fixed.'
       }
       
       show_if 'logged_in?' do

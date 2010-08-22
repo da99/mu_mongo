@@ -1,5 +1,5 @@
-# MAB   /home/da01tv/MyLife/apps/megauni/templates/en-us/mab/Clubs_read_e.rb
-# SASS  /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_e.sass
+# MAB   templates/en-us/mab/Clubs_read_e.rb
+# SASS  templates/en-us/sass/Clubs_read_e.sass
 # NAME  Clubs_read_e
 
 
@@ -90,6 +90,7 @@ module Base_View_Club
   def old_clubs
     @cache_old_clubs ||= [ 
       { :teaser=>nil, :href=>'/salud/',    :title=>'Salud (Español)'},
+      { :teaser=>nil, :href=>'/uni/meno_osteo/',  :title=>'Menopause + Osteoporosis'},
       { :teaser=>nil, :href=>'/uni/back_pain/',  :title=>'Back Pain'},
       { :teaser=>nil, :href=>'/uni/child_care/', :title=>'Child Care'},
       { :teaser=>nil, :href=>'/uni/computer/',   :title=>'Computer Use'},
