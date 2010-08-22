@@ -8,7 +8,7 @@ div.col.pretension! {
     strong %~ Coming Soon ~
   }
 
-  h3 '{{site_tag_line}}'
+  h1 '{{site_tag_line}}'
 
 } # === div
 
@@ -16,16 +16,15 @@ div.col.pretension! {
 div.col.middle! {
   div.intro! {
 
-
-    form.search_club_form!(:action=>"/club-search/", :method=>"post") {
-      fieldset {
-        label 'Find by keyword:'
-        input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
-      }
-      div.buttons {
-        button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
-      }
-    } # form
+    # form.search_club_form!(:action=>"/club-search/", :method=>"post") {
+    #   fieldset {
+    #     label 'Find by keyword:'
+    #     input.text(:id=>'club_keyword', :name=>'keyword', :type=>'text', :value=>'')
+    #   }
+    #   div.buttons {
+    #     button.create 'Go', :onclick=>"document.getElementById('search_club_form').submit(); return false;"
+    #   }
+    # } # form
 
     div.footer! {
       span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
@@ -38,7 +37,8 @@ div.col.middle! {
     ul.nav_bar.help {
       
       li {
-        a 'Help', :href=>'/help/'
+        # a 'Help', :href=>'/help/'
+        span 'Tip: Buy Longevinex. I love it. You will too.'
       }
       
       show_if 'logged_in?' do
@@ -47,11 +47,11 @@ div.col.middle! {
         }
       end  
       
-      show_if 'not_logged_in?' do
-        li {
-          a 'Log-in', :href=>'/log-in/'
-        }
-      end
+      # show_if 'not_logged_in?' do
+      #   li {
+      #     a 'Log-in', :href=>'/log-in/'
+      #   }
+      # end
       
     }
 

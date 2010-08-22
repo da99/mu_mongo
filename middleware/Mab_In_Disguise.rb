@@ -1,4 +1,4 @@
-
+require 'models/Safe_Writer'
 require 'markaby'
 require 'templates/en-us/mab/extensions/BASE_MAB'
 require 'models/Gather'
@@ -32,7 +32,7 @@ class Mab_In_Disguise
     sync_modified_time
     
     read_folder   %w{xml mab}
-    write_ folder %w{ mustache }
+    write_folder %w{ mustache }
     
   end
 
@@ -101,7 +101,7 @@ class Mab_In_Disguise
                       else
                         Markaby::Builder.new(:template_name=>template_name) { 
                           ext_types.each { |name|
-                            if mab.get.send(name)
+                            if mab.ask.send("use_#{name}?")
                               extend Object.const_get( mab.get.send(name) )
                             end
                           }
