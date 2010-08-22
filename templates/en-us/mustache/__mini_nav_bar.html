@@ -10,12 +10,12 @@
       end
 }#{      if v = ctx[:not_logged_in?]
         if v == true
-          "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n"
+          "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n")
+          v.call("<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n    <li>\n     <a href=\"/create-account/\"> Join </a>\n    </li>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<li>\n     <a href=\"/log-in/\"> Log-in </a>\n    </li>\n\n"; ctx.pop; r }.join
         end
       end
 }</ul>\n\n#{      if v = ctx[:logged_in?]

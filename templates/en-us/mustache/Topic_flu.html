@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282460015\"/>\n\n"
+          "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491958\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282460015\"/>\n\n")
+          v.call("<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491958\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282460015\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491958\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -192,7 +192,7 @@
 }</div>\n\n"; ctx.pop; r }.join
         end
       end
-}<div id=\"the_content\">\n     <div id=\"content\">\n      <ul class=\"faq\">\n       <li>\n        <div class=\"question\">Vitamin C</div>\n        <div class=\"answer\">\n         <p>1000 mg, 3 times a day.</p>\n         <p>Buy it either as 500 mg or 1000 mg. The important thing is to take it 3 times a day or more.</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin D3 + Magnesium Citrate</div>\n        <div class=\"answer\">\n         <p>LifeSpanNutrition.com &#8211; (800) 247-5731 (correo postal)</p>\n         <p>$15 - \"30 Minutes of Sunshine\"</p>\n        </div>\n       </li>\n      </ul>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <h4 class=\"site_tag_line\">\n~~ ? ! @ ~~        </h4>\n       </div>\n       <ul class=\"nav_bar help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
+}<div id=\"the_content\">\n     <div id=\"content\">\n      <ul class=\"faq\">\n       <li>\n        <div class=\"question\">Vitamin C</div>\n        <div class=\"answer\">\n         <p>1000 mg, 3 times a day.</p>\n         <p>Buy it either as 500 mg or 1000 mg. The important thing is to take it 3 times a day or more for prevention.</p>\n         <p>When sick: 2,000 mg every 15 minutes.</p>\n        </div>\n       </li>\n       <li>\n        <div class=\"question\">Vitamin D3 + Magnesium Citrate</div>\n        <div class=\"answer\">\n         <p>LifeSpanNutrition.com &#8211; (800) 247-5731 (correo postal)</p>\n         <p>$15 - \"30 Minutes of Sunshine\"</p>\n        </div>\n       </li>\n      </ul>\n     </div>\n      <div id=\"nav_bar\">\n       <div id=\"logo\">\n        <p class=\"english\">\n         <a href=\"/\">#{CGI.escapeHTML(ctx[:site_title].to_s)}</a>\n        </p>\n        <h4 class=\"site_tag_line\">\n~~ ? ! @ ~~        </h4>\n       </div>\n       <ul class=\"nav_bar help\">\n         <li>\n          <a href=\"/help/\"> Help </a>\n         </li>\n\n#{      if v = ctx[:logged_in?]
         if v == true
           "<li>\n          <a href=\"/log-out/\"> Log-out </a>\n         </li>\n         <li>\n          <a href=\"/lifes/\"> [ My Lifes ] </a>\n         </li>\n\n"
         elsif v.is_a?(Proc)
