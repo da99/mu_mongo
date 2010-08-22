@@ -7,6 +7,10 @@ class Old_App_Redirect
 
   def call new_env
 
+    if new_env['PATH_INFO'] === '/meno-osteo/'
+      return hearty_redirect( '/meno_osteo/' )
+    end
+
     if new_env['PATH_INFO'] === '/' && new_env['HTTP_METHOD'] === 'POST'
       return hearty_redirect( new_env['HTTP_REFERER'] || '/my-egg-timer/' )
     end
