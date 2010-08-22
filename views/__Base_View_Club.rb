@@ -92,6 +92,8 @@ module Base_View_Club
       { :teaser=>nil, :href=>'/salud/',    :title=>'Salud (Español)'},
       { :teaser=>nil, :href=>'/uni/meno_osteo/',  :title=>'Menopause + Osteoporosis'},
       { :teaser=>nil, :href=>'/uni/back_pain/',  :title=>'Back Pain'},
+      { :teaser=>nil, :href=>'/uni/arthritis/',  :title=>'Rhumatoid Arthritis'},
+      { :teaser=>nil, :href=>'/uni/depression/',  :title=>'Depression'},
       { :teaser=>nil, :href=>'/uni/child_care/', :title=>'Child Care'},
       { :teaser=>nil, :href=>'/uni/computer/',   :title=>'Computer Use'},
       { :teaser=>nil, :href=>'/uni/hair/',      :title=>'Skin & Hair'},
