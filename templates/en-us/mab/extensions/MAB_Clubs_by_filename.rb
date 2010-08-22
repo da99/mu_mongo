@@ -23,6 +23,10 @@ module MAB_Clubs_by_filename
     'messages_latest' 
   end
 
+  def owner_publisher_guide
+    raise "not done"
+  end
+
   def publisher_guide!
       if_empty('messages_latest'){
         show_if 'owner?' do

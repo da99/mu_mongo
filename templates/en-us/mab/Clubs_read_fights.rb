@@ -10,7 +10,7 @@ club_nav_bar(__FILE__)
 div_centered do
     
     messages! do
-      loop_messages
+      # loop_messages
       publisher_guide!
     end
     
