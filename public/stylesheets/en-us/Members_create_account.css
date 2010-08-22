@@ -90,23 +90,24 @@ a img {
 
 #outer_shell {
   overflow: hidden; }
-
-#inner_shell {
-  position: relative;
-  float: left;
-  left: 50%; }
+  #outer_shell #inner_shell {
+    position: relative;
+    float: left;
+    left: 50%; }
+    #outer_shell #inner_shell div.centered {
+      position: relative;
+      float: left;
+      left: -50%; }
 
 ul.nav_bar {
   display: block;
   list-style-type: none; }
   ul.nav_bar li a {
     font-size: 12px;
-    font-family: 'Nimbus Sans L','segoe ui',sans-serif;
-    text-transform: uppercase; }
+    font-family: 'Nimbus Sans L','segoe ui',sans-serif; }
   ul.nav_bar li.selected {
     font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase; }
+    font-weight: bold; }
 
 a:link, a:visited {
   color: #f00919;
@@ -116,6 +117,19 @@ a:link, a:visited {
 a:hover, a:active, a:focus {
   color: white;
   background: #f00919; }
+
+a.button {
+  padding: 5px; }
+  a.button:hover {
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    padding: 5px 7px;
+    background: #f00919; }
+
+div.a_button {
+  text-align: center;
+  padding: 10px 5px 0 5px; }
 
 strong {
   color: #3a3a3a;
@@ -201,35 +215,50 @@ body {
       padding: 0 0 10px 0; }
 
 h1 {
-  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
-  font-size: 250%;
+  color: #185dad;
+  font-family: Palatino,Georgia,"Times New Roman",serif;
+  font-size: 200%;
   font-style: italic; }
+  h1.main {
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 0 #e1e1e1; }
 
 h2 {
-  font-size: 150%; }
+  color: #185dad;
+  padding: 0 0 5px 0;
+  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
+  font-style: italic;
+  font-size: 180%; }
 
 h3 {
+  font-size: 12px;
   color: #185dad;
-  font-family: georgia, 'bitstream vera sans serif', 'lucida grande', 'Century Schoolbook L', 'Times New Roman', 'Times', serif;
-  font-size: 200%;
-  font-weight: normal; }
-  h3.title {
-    text-align: center; }
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
+  font-weight: bold; }
+
+h4 {
+  font-size: 12px;
+  color: #185dad;
+  padding: 0;
+  text-transform: uppercase;
+  font-family: 'Nimbus Sans L','segoe ui',sans-serif;
+  font-weight: bold; }
+
+h5 {
+  font-size: 18px;
+  color: #185dad;
+  padding: 0 0 3px 0;
+  text-transform: none;
+  font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
+  font-weight: bold; }
 
 p {
   padding-bottom: 10px;
   margin-bottom: 0; }
-
-h4 {
-  font-size: 16px;
-  text-transform: uppercase;
-  color: #185dad;
-  padding: 0;
-  font-family: 'Nimbus Sans L','segoe ui',sans-serif;
-  font-weight: bold; }
-
-h4.divider {
-  font-size: 12px; }
 
 div.block {
   font-size: 16px; }
@@ -283,8 +312,7 @@ form div.buttons button {
 
 div.body {
   overflow: hidden;
-  display: inline-block;
-  font-size: 110%; }
+  display: inline-block; }
   div.body {
     display: block; }
 
@@ -355,12 +383,10 @@ div.message, div.club {
     border-width: 5px 0 5px 5px; }
   #nav_bar li a {
     font-size: 12px;
-    font-family: 'Nimbus Sans L','segoe ui',sans-serif;
-    text-transform: uppercase; }
+    font-family: 'Nimbus Sans L','segoe ui',sans-serif; }
   #nav_bar li.selected {
     font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase; }
+    font-weight: bold; }
   #nav_bar li.selected {
     color: #185dad;
     text-transform: lowercase; }
