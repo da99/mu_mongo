@@ -59,6 +59,25 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_equal '/uni/back_pain/', last_request.fullpath
   end
 
+  must 'should redirect /meno-osteo/ to /meno_osteo/' do
+    get '/meno-osteo/'
+    follow_redirect!
+    assert_equal '/meno_osteo/', last_request.fullpath
+  end
+
+  must 'should redirect /meno_osteo/ to /uni/meno_osteo/' do
+    get '/meno_osteo/'
+    follow_redirect!
+    assert_equal '/uni/meno_osteo/', last_request.fullpath
+  end
+
+  %w{ meno_osteo heart flu depression dementia }.each { |uni|
+    must "should render /uni/#{uni}/" do
+      get "/uni/#{uni}/"
+      assert_last_response_ok
+    end
+  }
+
   must 'redirect /salud/robots.txt to /robots.txt' do
     get '/salud/robots.txt'
     follow_redirect!
