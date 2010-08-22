@@ -81,13 +81,12 @@ namespace 'git' do
       require 'megauni'
       Couch_Plastic.ensure_indexes()
       Rake::Task['db:check_size'].invoke
+      ENV['RACK_ENV'] = orig_env
     end
 
     unless ENV['SKIP_PREP']
       Rake::Task['git:prep_push'].invoke
     end
-    
-    ENV['RACK_ENV'] = orig_env
     
     if ENV['GEM_UPDATE']
       puts_white "Updating gems on Heroku..."
