@@ -2,6 +2,8 @@ require 'models/Delegator_DSL'
 
 module BASE_MAB
   
+  Method_Overload = Class.new(RuntimeError)
+
   extend Delegator_DSL
 
   delegate_to "config.get",        :rings_used
@@ -17,8 +19,13 @@ module BASE_MAB
   def send_within_ring level, meth_name, *args, &blok
     target = "#{level}_#{meth_name}"
     omni   = "omni_#{meth_name}"
+    
+    target_def = respond_to?(target)
+    omni_def   = respond_to?(omni)
 
-    final = if respond_to?(omni)
+    final = if target_def && omni_def
+              raise Method_Overload, "Can't define both: #{target}, #{omni}"
+            elsif omni_def
               omni
             else
               target
