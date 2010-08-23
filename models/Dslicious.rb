@@ -6,15 +6,13 @@
 module Dslicious
   
   def permutate head, body
-    return( head + body ) if singles?(head, body)
-    
-    if single?(body)
-      return inside_map( 
-              permutate(body, head) 
-             ) { reverse } 
-    end
-
-    head.zip(body) + head.zip(body.reverse)
+    result = []
+    head.inject([]) { |memo, header|
+      body.each { |bodyer|
+        memo << [header, bodyer]
+      }
+      memo
+    }
   end
 
   def inside obj, &blok

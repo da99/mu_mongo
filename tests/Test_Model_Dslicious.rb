@@ -15,7 +15,7 @@ class Test_Model_Dslicious < Test::Unit::TestCase
   must 'permutate: create every combination for: [:a, :b], [:c, :d]' do
     first  = [:a, :b]
     second = [:c, :d]
-    target = first.zip(second) + first.zip(second.reverse)
+    target = [[:a, :c], [:a, :d], [:b, :c], [:b, :d]]
     result = dsl { permutate(first, second) }
     assert_equal target, result
   end
