@@ -11,8 +11,7 @@ club_nav_bar(__FILE__)
 div_centered do
     
   messages! {
-    loop_messages!
-    publisher_guide!
+    loop_messages_or_guide
   }
 
   about! {
@@ -28,7 +27,7 @@ div_centered do
     }
     
     owner {
-      club {
+      not_life? {
         follow!
       }
       about

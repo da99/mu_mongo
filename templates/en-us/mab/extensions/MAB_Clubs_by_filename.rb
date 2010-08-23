@@ -9,37 +9,31 @@ module MAB_Clubs_by_filename
   
   include BASE_MAB
 
-  %w{ post_membership_plea memberships_guide }.each { |meth|
-    %w{ stranger member insider owner}.each { |level|
-      eval %~
-        def #{level}_#{meth}!
-          div "#{level} :: #{meth} goes here."
-        end
-      ~
-    }
-  }
-
   def list_name
     'messages_latest' 
   end
+  
+  # =============== publisher_guide
 
   def owner_publisher_guide
-    raise "not done"
+    guide('Stuff you should do:') {
+      ul {
+        li "Post something in the \"Encyclopedia\" section."
+        li "Write anything in the \"Random\" section."
+        li %~ Recommend a product in the "Shop" section. ~
+        li %~ Ask a question in the "Q & A" section. ~
+      }
+    }
   end
 
-  def publisher_guide!
-      if_empty('messages_latest'){
-        show_if 'owner?' do
-          guide('Stuff you should do:') {
-            ul {
-              li "Post something in the \"Encyclopedia\" section."
-              li "Write anything in the \"Random\" section."
-              li %~ Recommend a product in the "Shop" section. ~
-              li %~ Ask a question in the "Q & A" section. ~
-            }
-          }
-        end
+  def insider_publisher_guide
+    guide('Stuff you should do:') {
+      ul {
+        li "Share a memory in \"Encyclopedia\" section."
+        li "Share fun webpages in \"Random\" section."
+        li %~ Visit "Q & A" section. ~
       }
+    }
   end
 
   def follow!
@@ -110,10 +104,24 @@ module MAB_Clubs_by_filename
   end
 
   def owner_about
-    about "This {{club_type}} is yours:", 'You own it. You can edit it, destroy it, or publish to it.'
+    about \
+      "This {{club_type}} is yours:", 
+      'You own it. You can edit it, destroy it, or publish to it.'
   end
   
   # =============== MEMBERSHIPS
+
+  def memberships! &blok
+      div.col.memberships! &blok
+  end
+  
+  def owner_memberships_guide!
+    div.section { p 'Memberrship guide goes here.' }
+  end
+
+  def owner_post_membership!
+    div.section { p 'Post form membership goes here.' }
+  end
   
   def omni_memberships
     security = (ring == :owner ? 'all' : 'public')
@@ -128,37 +136,31 @@ module MAB_Clubs_by_filename
         div 'privacy'.m!
       }
     end
-  end
-  
-
-  def memberships! &blok
-      div.col.memberships! &blok
-  end
-  
-  def memberships
+    
     show_if 'owner?' do
-        show_if 'memberships?' do
-          div.section.memberships {
-            h4 'Memberships:'
-            ul {
-              loop 'memberships' do
-                li { a! "Withdraw as: name.m", 'href' }
-              end
-            }
+      show_if 'memberships?' do
+        div.section.memberships {
+          h4 'Memberships:'
+          ul {
+            loop 'memberships' do
+              li { a! "Withdraw as: name.m", 'href' }
+            end
           }
-        end
-        
-        div.section.add_memberships {
-          h4 'Add Members:'
-          p %~Members are given special powers.
-          Separate each with a new line.~
-          form_post('add_member' + rand(1000).to_s) {
-            textarea ''
-          }
-        } # === add_memberships!
+        }
+      end
+      
+      div.section.add_memberships {
+        h4 'Add Members:'
+        p %~Members are given special powers.
+        Separate each with a new line.~
+        form_post('add_member' + rand(1000).to_s) {
+          textarea ''
+        }
+      } # === add_memberships!
     end
-  end # === div_memberships
-  # =============== FOR OWNER
+  end
+  
+  # =============== OTHER
    
   def owner_edit!
     div.edit_settings! {
@@ -168,18 +170,5 @@ module MAB_Clubs_by_filename
       ~
     }
   end
-  
-  def owner_memberships_guide!
-    div.section { p 'Memberrship guide goes here.' }
-  end
-
-  def owner_post_membership!
-    div.section { p 'Post form membership goes here.' }
-  end
-
-  def publish! &blok
-    div.col.publish! &blok
-  end
-  
   
 end # === module
