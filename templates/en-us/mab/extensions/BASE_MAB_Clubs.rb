@@ -66,7 +66,7 @@ module BASE_MAB_Clubs
   alias_method :follow, :omni_follow
 
   
-  def owner_not_life? &blok
+  def not_life? &blok
     show_if 'not_life?', &blok
   end
 

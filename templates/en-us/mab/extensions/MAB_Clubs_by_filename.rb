@@ -5,41 +5,27 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 # 
-module MAB_Clubs_by_filename
+
+module MAB_Clubs_by_filename_STRANGER
   
-  include BASE_MAB
-
-  # =============== LISTS
-
-  def omni_messages_list
-    'messages_latest' 
-  end
-
-  def omni_memberships_list
-    level = ring == :owner ? 
-                'all' : 
-                'public'
-     
-    "#{level}_memberships"
+  def about
+    super("About this {{club_type}}:", 'club_teaser')
   end
   
-  def omni_messages
-    level = ring == :owner ? 
-                'all' : 
-                'public'
-    loop_messages "#{level}_messages"
-  end
+end # === module
 
-  # =============== publisher_guide
-
-  def stranger_publisher_guide
+module MAB_Clubs_by_filename_MEMBER
+  
+  def about
+    super("About this {{club_type}}:", 'club_teaser')
   end
   
-  def member_publisher_guide
-  end
+end # === module
 
-  def insider_publisher_guide
-    _guide('Stuff you should do:') {
+module MAB_Clubs_by_filename_INSIDER
+  
+  def publisher_guide
+    guide('Stuff you should do:') {
       ul {
         li "Share a memory in \"Encyclopedia\" section."
         li "Share fun webpages in \"Random\" section."
@@ -47,9 +33,48 @@ module MAB_Clubs_by_filename
       }
     }
   end
+  
+  def about
+    super "You're an insider:", 'club_teaser'
+  end
+end # === module
 
-  def owner_publisher_guide
-    _guide('Stuff you should do:') {
+module MAB_Clubs_by_filename_OWNER
+  
+  def memberships 
+    super('all')
+    
+    show_if 'memberships?' do
+      div.section.memberships {
+        h4 'Memberships:'
+        ul {
+          loop 'all_memberships' do
+            li { a! "Withdraw as: #{'name'.m!}", 'href' }
+          end
+        }
+      }
+    end
+    
+    div.section.add_memberships {
+      h4 'Add Members:'
+      p %~Members are given special powers.
+      Separate each with a new line.~
+      form_post('add_member' + rand(1000).to_s) {
+        textarea '!!add here!!'
+      }
+    } # === add_memberships!
+  end # === memberhips
+
+  def messages
+    loop_messages 'all_messages'
+  end
+
+  def memberships_list
+    'all_memberships'
+  end
+  
+  def publisher_guide
+    guide('Stuff you should do:') {
       ul {
         li "Post something in the \"Encyclopedia\" section."
         li "Write anything in the \"Random\" section."
@@ -58,6 +83,51 @@ module MAB_Clubs_by_filename
       }
     }
   end
+
+  def post_membership!
+    div.section { p 'Post form membership goes here.' }
+  end
+  
+  def memberships_guide!
+    div.section { p 'Memberrship guide goes here.' }
+  end
+  
+  def about
+    super(
+      "This {{club_type}} is yours:", 
+      'You own it. You can edit it, destroy it, or publish to it.'
+    )
+  end
+  
+  def edit!
+    div.edit_settings! {
+      a_button 'Edit settings.', 'href_edit'   
+      p %~
+        Edit title, teaser, or choose to delete this {{club_type}}
+      ~
+    }
+  end
+end # === module
+
+
+module MAB_Clubs_by_filename
+
+  def memberships_list
+    'public_memberships'
+  end
+
+  def publisher_guide
+  end
+
+  def messages_list
+    'messages_latest' 
+  end
+
+  def messages
+    loop_messages "public_messages"
+  end
+
+  # =============== publisher_guide
 
   def follow!
     return super
@@ -112,48 +182,13 @@ module MAB_Clubs_by_filename
     }
   end # === div_follow
 
-  # =============== ABOUT 
-
-  def stranger_about
-    _about "About this {{club_type}}:", 'club_teaser'
-  end
-  
-  def member_about
-    stranger_about
-  end
-
-  def insider_about
-    _about "You're an insider:", 'club_teaser'
-  end
-
-  def owner_about
-    _about \
-      "This {{club_type}} is yours:", 
-      'You own it. You can edit it, destroy it, or publish to it.'
-  end
-  
   # =============== MEMBERSHIPS
 
   def memberships! &blok
-      div.col.memberships! &blok
-  end
-  
-  def owner_memberships_guide!
-    div.section { p 'Memberrship guide goes here.' }
+    div.col.memberships! &blok
   end
 
-  def owner_post_membership!
-    div.section { p 'Post form membership goes here.' }
-  end
-  
-  def omni_post_membership_plea
-    form_post("plea_#{rand(100)}") {
-      p 'not done'
-    }
-  end
-
-  def omni_memberships
-    security = (ring == :owner ? 'all' : 'public')
+  def memberships security = 'public'
     
     show_if 'memberships?' do
       h3 'Members:'
@@ -166,38 +201,13 @@ module MAB_Clubs_by_filename
       }
     end
     
-    show_if 'owner?' do
-      show_if 'memberships?' do
-        div.section.memberships {
-          h4 'Memberships:'
-          ul {
-            loop 'all_memberships' do
-              li { a! "Withdraw as: #{'name'.m!}", 'href' }
-            end
-          }
-        }
-      end
-      
-      div.section.add_memberships {
-        h4 'Add Members:'
-        p %~Members are given special powers.
-        Separate each with a new line.~
-        form_post('add_member' + rand(1000).to_s) {
-          textarea ''
-        }
-      } # === add_memberships!
-    end
-  end
-  
-  # =============== OTHER
+  end # === def
    
-  def owner_edit!
-    div.edit_settings! {
-      a_button 'Edit settings.', 'href_edit'   
-      p %~
-        Edit title, teaser, or choose to delete this {{club_type}}
-      ~
+  def post_membership_plea
+    form_post("plea_#{rand(100)}") {
+      p 'not done'
     }
   end
-  
+
+
 end # === module

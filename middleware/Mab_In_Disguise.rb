@@ -72,7 +72,6 @@ class Mab_In_Disguise
       
       controller_name = file_basename.split('_').reject { |str| str =~ /\A[a-z]/ }.join('_')
       
-      
       mab = Config_Switches.new {
         strings :base, :ext, :dir
         switch :use_base, off
@@ -102,11 +101,15 @@ class Mab_In_Disguise
           else
             Markaby::Builder.new(:template_name=>template_name) { 
               
-              ext_types.each { |name|
-                if mab.ask.send("use_#{name}?")
-                  extend Object.const_get( mab.get.send(name) )
-                end
-              }
+              if mab.ask.use_base?
+                mod_class = Object.const_get( mab.get.base )
+                mod_class.send :include, BASE_MAB
+                extend mod_class
+              end
+            
+              if mab.ask.use_ext?
+                extend Object.const_get( mab.get.ext )
+              end
               
               eval(
                 File.read(layout_file).sub("{{content_file}}", file_basename),
