@@ -12,6 +12,7 @@ div_centered {
     
   messages! {
     
+    loop_messages_or_guide
     loop_messages_with_opening 'quotes', 'Quotations'
     loop_messages_with_opening 'chapters', 'Chapters'
     publisher_guide!
@@ -21,7 +22,6 @@ div_centered {
   publish! {
     
     stranger {
-      follow!
       about
     }
     

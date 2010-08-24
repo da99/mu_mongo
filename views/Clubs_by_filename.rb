@@ -48,17 +48,21 @@ class Clubs_by_filename < Base_View
 
   def all_memberships
     [ 
-      {'privacy' => 'public', 'title' => 'Editor'},
-      {'privacy' => 'public', 'title' => 'Reader'},
-      {'privacy' => 'private', 'title' => 'Creator'},
+      {'privacy' => 'public', 'title' => 'Editor', 'href' => '/none', 'name'=>'Jacqutii'},
+      {'privacy' => 'public', 'title' => 'Reader', 'href' => '/none', 'name'=>'Roger'},
+      {'privacy' => 'private', 'title' => 'Creator', 'href' => '/none', 'name'=>'Jean-Claude'},
     ]
   end
+  alias_method :owner_memberships, :all_memberships
 
   def public_memberships
     @public_mems ||= all_memberships.select { |mem| 
       mem['privacy'] == 'public' 
     }
   end
+  %w{ stranger member insider }.each { |ring|
+    alias_method :"#{ring}_memberships", :public_memberships
+  }
 
   def following
     false

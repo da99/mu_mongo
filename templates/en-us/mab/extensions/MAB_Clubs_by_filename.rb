@@ -9,29 +9,52 @@ module MAB_Clubs_by_filename
   
   include BASE_MAB
 
-  def list_name
+  # =============== LISTS
+
+  def omni_messages_list
     'messages_latest' 
   end
+
+  def omni_memberships_list
+    level = ring == :owner ? 
+                'all' : 
+                'public'
+     
+    "#{level}_memberships"
+  end
   
+  def omni_messages
+    level = ring == :owner ? 
+                'all' : 
+                'public'
+    loop_messages "#{level}_messages"
+  end
+
   # =============== publisher_guide
 
+  def stranger_publisher_guide
+  end
+  
+  def member_publisher_guide
+  end
+
+  def insider_publisher_guide
+    _guide('Stuff you should do:') {
+      ul {
+        li "Share a memory in \"Encyclopedia\" section."
+        li "Share fun webpages in \"Random\" section."
+        li %~ Visit "Q & A" section. ~
+      }
+    }
+  end
+
   def owner_publisher_guide
-    guide('Stuff you should do:') {
+    _guide('Stuff you should do:') {
       ul {
         li "Post something in the \"Encyclopedia\" section."
         li "Write anything in the \"Random\" section."
         li %~ Recommend a product in the "Shop" section. ~
         li %~ Ask a question in the "Q & A" section. ~
-      }
-    }
-  end
-
-  def insider_publisher_guide
-    guide('Stuff you should do:') {
-      ul {
-        li "Share a memory in \"Encyclopedia\" section."
-        li "Share fun webpages in \"Random\" section."
-        li %~ Visit "Q & A" section. ~
       }
     }
   end
@@ -92,7 +115,7 @@ module MAB_Clubs_by_filename
   # =============== ABOUT 
 
   def stranger_about
-    about "About this {{club_type}}:", 'club_teaser'
+    _about "About this {{club_type}}:", 'club_teaser'
   end
   
   def member_about
@@ -100,11 +123,11 @@ module MAB_Clubs_by_filename
   end
 
   def insider_about
-    about "You're an insider:", 'club_teaser'
+    _about "You're an insider:", 'club_teaser'
   end
 
   def owner_about
-    about \
+    _about \
       "This {{club_type}} is yours:", 
       'You own it. You can edit it, destroy it, or publish to it.'
   end
@@ -123,6 +146,12 @@ module MAB_Clubs_by_filename
     div.section { p 'Post form membership goes here.' }
   end
   
+  def omni_post_membership_plea
+    form_post("plea_#{rand(100)}") {
+      p 'not done'
+    }
+  end
+
   def omni_memberships
     security = (ring == :owner ? 'all' : 'public')
     
@@ -142,8 +171,8 @@ module MAB_Clubs_by_filename
         div.section.memberships {
           h4 'Memberships:'
           ul {
-            loop 'memberships' do
-              li { a! "Withdraw as: name.m", 'href' }
+            loop 'all_memberships' do
+              li { a! "Withdraw as: #{'name'.m!}", 'href' }
             end
           }
         }

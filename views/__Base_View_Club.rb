@@ -20,6 +20,10 @@ module Base_View_Club
     @app.env['results.club']
   end
 
+  def not_life?
+    club.life_club?
+  end
+
   def club_href
     club.href
   end

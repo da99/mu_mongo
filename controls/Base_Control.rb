@@ -172,7 +172,7 @@ module Base_Control
     view_class                       = Object.const_get(file_name)
     view_class.raise_on_context_miss = true
     ctx                              = Mustache::Context.new(view_class.new(self))
-    eval(template_content)
+    eval(template_content, nil, file_name, 1)
   end
 
   def render_html_template *args

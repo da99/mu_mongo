@@ -12,16 +12,35 @@ module MAB_Clubs_read_e
   def list_name
     'quotes_or_chapters'
   end
+  
+  def list_names
+    [ 
+      { 'quotes' => 'Quotations'},
+      { 'chapters' => 'Chapters' }
+    ]
+  end
 
-  def publisher_guide!
-    show_to_owner_if_empty('quotes_or_chapters?') do
-      guide('Stuff you can do:') {
-        ul {
-          li 'Write a story. '
-          li 'Post a quotation.'
-          li 'Tell others of related links.'
-        }
+  def insider_publisher_guider
+    guide('Stuff you can do:') {
+      ul {
+        li 'Write a story about this person.'
+        li 'Post a quotation about this person.'
       }
+    }
+  end
+
+  def owner_publisher_guide
+    guide('Stuff you can do:') {
+      ul {
+        li 'Write a story. '
+        li 'Post a quotation.'
+      }
+    }
+  end
+
+  def publisher_guide
+    if_empty list_name do
+      publisher_guide!
     end
   end
 

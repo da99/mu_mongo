@@ -11,24 +11,25 @@ club_nav_bar(__FILE__)
 div_centered do
     
   messages! {
-    loop_messages_or_guide
+    everybody {
+      messages_or_guide
+    }
   }
 
   about! {
     
     stranger {
-      follow!
       about
     }
     
     member_or_insider {
-      follow!
+      follow
       about
     }
     
     owner {
       not_life? {
-        follow!
+        follow
       }
       about
       edit!
@@ -44,7 +45,7 @@ div_centered do
     
     member_or_insider {
       memberships
-      post_membership_plea!
+      post_membership_plea
     }
     
     owner {
