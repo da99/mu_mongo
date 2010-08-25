@@ -1,14 +1,11 @@
 require 'models/Delegator_DSL'
 require 'models/Sentry_Sender'
-require 'models/Rumspringa'
 
 module BASE_MAB
-  
   
   Method_Overload = Class.new(RuntimeError)
   RINGS = Club::MEMBERS
 
-  extend Rumspringa
   extend Delegator_DSL
 
   delegate_to "config.get",        :rings_used
@@ -58,7 +55,9 @@ module BASE_MAB
         mod = "MAB_\#{template_name}_#{level.to_s.upcase}"
         clone = self.clone
         clone.extend Object.const_get(mod)
-        clone.instance_eval &blok
+        show_if "#{level}?" do
+          clone.instance_eval &blok
+        end
         ring nil
       end
     ~

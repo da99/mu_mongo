@@ -1,0 +1,6 @@
+# Ignore sensitive info. in /config dir.
+tests/*
+
+
+
+

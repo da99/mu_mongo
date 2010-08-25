@@ -47,6 +47,7 @@ class Clubs_by_filename < Base_View
   end
 
   def all_memberships
+    return []
     [ 
       {'privacy' => 'public', 'title' => 'Editor', 'href' => '/none', 'name'=>'Jacqutii'},
       {'privacy' => 'public', 'title' => 'Reader', 'href' => '/none', 'name'=>'Roger'},
