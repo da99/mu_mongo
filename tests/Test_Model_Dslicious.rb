@@ -1,6 +1,6 @@
-# models/Dslicious.rb
+# modules/Dslicious.rb
 
-require 'models/Dslicious'
+require 'modules/Dslicious'
 
 class DSL
   include Dslicious

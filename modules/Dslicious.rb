@@ -5,6 +5,11 @@
 #   
 module Dslicious
   
+  def with_extension obj, mod
+    obj.extend mod
+    obj
+  end
+
   def permutate head, body
     result = []
     head.inject([]) { |memo, header|
