@@ -7,8 +7,6 @@
 # 
 module MAB_Clubs_read_fights
   
-  include BASE_MAB
-
   def list_name
     'passions'
   end

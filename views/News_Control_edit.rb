@@ -2,6 +2,8 @@
 # SASS  /home/da01/MyLife/apps/megauni/templates/en-us/sass/News_Control_edit.sass
 # NAME  News_Control_edit
 
+require 'modules/Enum_Map_Html_Menu'
+
 class News_Control_edit < Base_View
   
   def respond_to? raw_meth
@@ -28,15 +30,17 @@ class News_Control_edit < Base_View
   end
 
   def clubs
-    @clubs ||= Club.all_filenames.map_html_menu { |club| 
-      news.data.club_id === club
-    }
+    @clubs ||= \
+               with_extension(Club.all_filenames, Enum_Map_Html_Menu).map_html_menu { |club| 
+                 news.data.club_id === club
+               }
   end
 
   def news_tags
-    @news_tags ||= news.data.tags.map_html_menu { |tag|
-      [ true, {:filename=>tag} ]
-    }
+    @news_tags ||= \
+      with_extension(news.data.tags, Enum_Map_Html_Menu) { |tag|
+        [ true, {:filename=>tag} ]
+      }
   end
 
   def news_href

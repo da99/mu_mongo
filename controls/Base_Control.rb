@@ -1,18 +1,5 @@
 require 'views/Base_View'
-
-
-Hash_Sym_Or_Str_Keys = Class.new(Hash) do
-                          def [](k)
-                            case k
-                              when Symbol
-                                super(k) || super(k.to_s)
-                              when String
-                                super(k) || super(k.to_sym)
-                              else
-                                super
-                              end
-                          end
-                        end
+require 'models/Hash_Sym_Or_Str_Keys'
 
 module Base_Control
 

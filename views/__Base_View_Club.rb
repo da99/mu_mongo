@@ -118,16 +118,24 @@ module Base_View_Club
                              end
   end
 
-  %w{ stranger member owner insider }.each { |level|
-    eval %~
-      def #{level}?
-        true if The_App.development?
-      end
-    ~
-  }
-
   def club_type
     club.life? ? 'life' : 'universe'
+  end
+
+  def stranger?
+    true if not logged_in?
+  end
+
+  def member?
+    true if (logged_in? && !owner? && !insider?)
+  end
+  
+  def owner?
+    false
+  end
+
+  def insider?
+    false
   end
 
 end # === Base_View_Club

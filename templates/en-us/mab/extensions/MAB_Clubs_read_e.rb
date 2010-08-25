@@ -7,8 +7,6 @@
 # 
 module MAB_Clubs_read_e
   
-  include BASE_MAB
-
   def list_name
     'quotes_or_chapters'
   end

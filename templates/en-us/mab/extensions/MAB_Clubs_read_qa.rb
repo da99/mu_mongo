@@ -7,8 +7,6 @@
 
 module MAB_Clubs_read_qa
   
-  include BASE_MAB
-  
   def list_name
     'questions'
   end

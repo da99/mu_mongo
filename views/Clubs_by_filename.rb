@@ -60,7 +60,7 @@ class Clubs_by_filename < Base_View
       mem['privacy'] == 'public' 
     }
   end
-  %w{ stranger member insider }.each { |ring|
+  Club::MEMBERS.each { |ring|
     alias_method :"#{ring}_memberships", :public_memberships
   }
 
