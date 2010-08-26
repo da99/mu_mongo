@@ -6,6 +6,18 @@ class Hellos_list < Base_View
   
   alias_method :usernames, :current_member_usernames
 
+  def meta_cache?
+    meta_menu
+  end
+
+  def meta_menu
+    if !logged_in? & !flash_msg?
+    [ { :name => "Cache-Control", :content => 'public, max-age=600' } ]
+    else
+      []
+    end
+  end
+
   def javascripts
     default_javascripts
   end
