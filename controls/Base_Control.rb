@@ -111,25 +111,22 @@ module Base_Control
   def render_application_xml txt
     response.body = txt
     set_header 'Content-Type', 'application/xml; charset=utf-8'
-    set_header 'Accept-Charset',   'utf-8'
-    set_header 'Cache-Control',    'no-cache'
-    set_header 'Pragma',           'no-cache'
+    set_header_if_nil 'Accept-Charset',   'utf-8'
+    set_header_if_nil 'Cache-Control',    'no-cache'
   end
 
   def render_text_plain txt
     response.body = txt
     set_header 'Content-Type', 'text/plain; charset=utf-8'
-    set_header 'Accept-Charset',   'utf-8'
-    set_header 'Cache-Control',    'no-cache'
-    set_header 'Pragma',           'no-cache'
+    set_header_if_nil 'Accept-Charset',   'utf-8'
+    set_header_if_nil 'Cache-Control',    'no-cache'
   end
 
   def render_text_html txt
     response.body = txt
     set_header 'Content-Type',     'text/html; charset = utf-8'
-    set_header 'Accept-Charset',   'utf-8'
-    set_header 'Cache-Control',    'no-cache'
-    set_header 'Pragma',           'no-cache'
+    set_header_if_nil 'Accept-Charset',   'utf-8'
+    set_header_if_nil 'Cache-Control',    'no-cache'
   end
 
   def process_mustache ext = 'html', alt_file_name = nil
@@ -201,9 +198,15 @@ module Base_Control
     'Content-Disposition', 
     'Content-Type', 
     'Content-Length',
-    'Cache-Control',
-    'Pragma'
+    'Cache-Control'
     ]).uniq
+  end
+
+  def require_valid_header_key key
+    if !valid_header_keys.include?(key)
+      raise ArgumentError, "Invalid header key: #{key.inspect}"
+    end
+    true
   end
 
   def add_valid_header_key raw_key
@@ -212,11 +215,29 @@ module Base_Control
     new_key
   end
 
+  def header_set? key
+    require_valid_header_key key
+    @response.header.has_key?(key)
+  end
+
+  def get_header key
+    require_valid_header_key key
+    @response.header[key]
+  end
+
   def set_header key, raw_val 
-    if !valid_header_keys.include?(key)
-      raise ArgumentError, "Invalid header key: #{key.inspect}"
-    end
+    require_valid_header_key key
     @response.header[key] = raw_val.to_s
+  end
+
+  def set_header_if_nil key, raw_val
+    require_valid_header_key key
+    
+    if @response.header.has_key?(key)
+      @response.header[key]
+    else
+      set_header key, raw_val
+    end
   end
 
   # Set the Content-Type of the response body given a media type or file

@@ -5,6 +5,7 @@ class Hellos
   include Base_Control
 
   def GET_list 
+    set_header 'Cache-Control', 'public, max-age=600'
     render_html_template
   end
 

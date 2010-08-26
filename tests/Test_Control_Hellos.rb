@@ -9,6 +9,11 @@ class Test_Control_Hellos < Test::Unit::TestCase
     assert_equal 200, last_response.status
   end
 
+  must "sets cache header for homepage: /" do
+    get '/' 
+    assert_equal 'public, max-age=', last_response.headers['Cache-Control']['public, max-age=']
+  end
+
   must 'respond to HEAD /' do
     head '/'
     assert_equal 200, last_response.status
@@ -43,8 +48,7 @@ class Test_Control_Hellos < Test::Unit::TestCase
 
   must "shows: sitemap.xml as xml" do
     get '/sitemap.xml' 
-    assert_equal 200, last_response.status
-    assert_equal last_response.content_type,  'application/xml; charset=utf-8'
+    assert_equal 'application/xml; charset=utf-8', last_response.content_type
   end
 
   must "redirect /help/ to /uni/megauni/" do
