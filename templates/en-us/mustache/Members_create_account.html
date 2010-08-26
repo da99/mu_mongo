@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491961\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491961\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" media=\"screen\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282491961\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -546,12 +546,12 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
+          "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
+          v.call("<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      if v = ctx[:not_selected?]
@@ -568,12 +568,12 @@
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
+          "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
+          v.call("<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      if v = ctx[:not_selected?]
@@ -591,12 +591,12 @@
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
+          "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
+          v.call("<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<option value=\"filename\" selected=\"selected\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<option selected=\"selected\" value=\"filename\">#{CGI.escapeHTML(ctx[:name].to_s)}</option>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      if v = ctx[:not_selected?]
