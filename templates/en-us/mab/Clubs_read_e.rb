@@ -18,13 +18,9 @@ div_centered {
     
   } # === messages!
 
-  about! {
+  publish! {
     
     everybody { about }
-    
-  } # === about!
-  
-  publish! {
     
     insider_or_owner {
       post_message

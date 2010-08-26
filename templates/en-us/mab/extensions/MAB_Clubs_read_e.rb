@@ -7,23 +7,27 @@
 # 
 
 module MAB_Clubs_read_e_STRANGER
-end
+end # === module
 
 
 module MAB_Clubs_read_e_MEMBER
-end
+end # === module
 
 module MAB_Clubs_read_e_INSIDER
-  def publisher_guide
-    p 'publisher guide goes here'
-  end
-end
+end # === module
 
 module MAB_Clubs_read_e_OWNER
+  def about
+    about_section(
+      'About this encyclopedia', 
+      'Write important information worth remembering here. Use it as a referece for your {{club_type}}.'
+    )
+  end
+
   def publisher_guide
     p 'publisher guide goes here'
   end
-end
+end # === module
 
 module MAB_Clubs_read_e
   
@@ -52,8 +56,8 @@ module MAB_Clubs_read_e
     }
   end
 
-  def post_message!
-    post_message {
+  def post_message
+    super {
       css_class  'col'
       title  'Publish a new:'
       input_title 

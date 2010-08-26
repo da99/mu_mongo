@@ -50,7 +50,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     get club.href_e
     form = Nokogiri::HTML(last_response.body).css('form#form_club_message_create').first
     
-    assert_equal form.class, Nokogiri::XML::Element
+    assert_equal Nokogiri::XML::Element, form.class
   end
 
   must 'include club filename for :club_filename in message create form' do
@@ -97,7 +97,7 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
 
     log_in_regular_member_1
     get club.href
-    assert_equal 'You are following no one.', last_response.body['You are following no one.']
+    assert_equal nil, last_response.body['following']
   end
 
   must 'not show follow club link to followers.' do
@@ -157,8 +157,8 @@ class Test_Control_Clubs_Read < Test::Unit::TestCase
     assert_equal "/uni/#{un}/", life.href
   end
 
-  must 'show "You own this universe" to owner of life club' do
-    msg = "You own this universe"
+  must 'show "This life is yours" to owner of life club' do
+    msg = "This life is yours"
     mem = regular_member_3
     un_id, un = mem.username_hash.to_a.first
     log_in_regular_member_3

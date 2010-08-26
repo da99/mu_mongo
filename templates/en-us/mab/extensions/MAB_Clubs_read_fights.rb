@@ -13,20 +13,6 @@ module MAB_Clubs_read_fights_MEMBER
 end
 
 module MAB_Clubs_read_fights_INSIDER
-
-  def post_message
-    super {
-      css_class  'col'
-      title      'Publish a new:'
-      models     %w{fight complaint debate}
-      input_title 
-      hidden_input(
-        :club_filename => '{{club_filename}}',
-        :privacy       => 'public'
-      )
-    }
-  end
-  
   def publisher_guide
     guide('Stuff you can do:') {
       p %~
@@ -39,7 +25,14 @@ module MAB_Clubs_read_fights_INSIDER
 end
 
 module MAB_Clubs_read_fights_OWNER
-  include MAB_Clubs_read_fights_INSIDER
+  def publisher_guide
+    guide('Stuff you can do:') {
+      p %~
+        You can start fights or let others 
+        start fightss with you.
+      ~
+    }
+  end
 end
 
 module MAB_Clubs_read_fights
@@ -54,6 +47,19 @@ module MAB_Clubs_read_fights
   
   def publisher_guide
     p 'Nothing posted yet.'
+  end
+
+  def post_message
+    super {
+      css_class  'col'
+      title      'Publish a new:'
+      models     %w{fight complaint debate}
+      input_title 
+      hidden_input(
+        :club_filename => '{{club_filename}}',
+        :privacy       => 'public'
+      )
+    }
   end
 
 end # === module

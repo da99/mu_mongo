@@ -2,19 +2,19 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_shop.sass
 # NAME  Clubs_read_shop
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_shop < Base_View
+
+  include Views::Base_Club
 
   def title 
     return "Shop: #{club_title}" unless club.life_club?
     "#{club_filename}'s Favorite Stuff"
   end
 
-  def no_buys?
-    true
-  end
-
   def buys
-    compile_and_cache( 'messages.buys', app.env['results.buys'])
+    @buys ||= compile_messages( app.env['results.buys'] )
   end
   
 end # === Clubs_read_shop 

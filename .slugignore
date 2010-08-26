@@ -1,6 +1,8 @@
 # Ignore sensitive info. in /config dir.
 tests/*
-
+templates/en-us/mab/*
+templates/en-us/xml/*
+templates/en-us/sass/*
 
 
 

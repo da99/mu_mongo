@@ -4,6 +4,9 @@ require 'views/__Base_View_Member_Life'
 require 'helpers/Anchorify'
 require 'modules/Dslicious'
 
+module Views
+end # === module
+
 class Base_View < Mustache
   
   include Dslicious
