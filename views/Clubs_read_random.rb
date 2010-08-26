@@ -2,7 +2,11 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_random.sass
 # NAME  Clubs_read_random
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_random < Base_View
+  
+  include Views::Base_Club
 
   def title 
     return "Random: #{club_title}" unless club.life_club?
@@ -10,7 +14,7 @@ class Clubs_read_random < Base_View
   end
 
   def randoms
-    compile_and_cache('messages.randoms', app.env['results.randoms'])
+    @randoms ||= compile_messages(app.env['results.randoms'])
   end
   
 end # === Clubs_read_random 

@@ -85,6 +85,7 @@ module BASE_MAB
       div.body body.m!
     }
   end
+  alias_method :about_section, :about
   
   def about! &blok
     div.col.about! &blok

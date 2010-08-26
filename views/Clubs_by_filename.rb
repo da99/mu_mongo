@@ -4,8 +4,12 @@
 # CONTROL ~/megauni/controls/Clubs.rb
 # NAME  Clubs_by_filename
 
+require 'views/extensions/Base_Club'
+
 class Clubs_by_filename < Base_View
  
+  include Views::Base_Club
+
   delegate_to :club, %w{
     href_follow
     href_delete_follow

@@ -2,7 +2,11 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_news.sass
 # NAME  Clubs_read_news
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_news < Base_View
+
+  include Views::Base_Club
 
   def title 
     return "News: #{club_title}" unless club.life_club?
@@ -10,7 +14,7 @@ class Clubs_read_news < Base_View
   end
   
   def news
-    compile_and_cache('messages.news', app.env['results.news'])
+    @news ||= compile_messages(app.env['results.news'])
   end
   
 end # === Clubs_read_news 

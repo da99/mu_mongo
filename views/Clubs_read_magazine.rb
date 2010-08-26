@@ -2,14 +2,18 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_magazine.sass
 # NAME  Clubs_read_magazine
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_magazine < Base_View
+
+  include Views::Base_Club
 
   def title 
     "Magazine: #{club_title}"
   end
 
   def storys
-    compile_and_cache('messages.storys' , app.env['results.magazine'])
+    @storys ||= compile_messages(app.env['results.magazine'])
   end
   
 end # === Clubs_read_magazine 

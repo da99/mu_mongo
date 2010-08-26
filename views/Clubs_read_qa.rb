@@ -2,8 +2,12 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME  Clubs_read_qa
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_qa < Base_View
  
+  include Views::Base_Club
+
   def title 
     return "Q & A: #{club_title}" if not club.life_club?
     "Q & A with #{club_filename}"

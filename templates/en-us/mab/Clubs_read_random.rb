@@ -17,12 +17,11 @@ div_centered {
 
   publish! {
 
-    stranger {
+    everybody {
       about
     }
     
     insider_or_owner {
-      about
       post_message
     }
     

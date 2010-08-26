@@ -2,8 +2,12 @@
 # SASS  ~/megauni/templates/en-us/sass/Clubs_read_e.sass
 # NAME  Clubs_read_e
 
+require 'views/extensions/Base_Club'
+
 class Clubs_read_e < Base_View
  
+  include Views::Base_Club
+
   def title 
     return "Encyclopedia: #{club_title}" unless club.life_club?
     "The Encyclopedia of #{club_filename}"
