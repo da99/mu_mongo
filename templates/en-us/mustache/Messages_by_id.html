@@ -24,12 +24,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282796747\" media=\"screen\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282796747\" media=\"screen\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282795693\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282796747\" media=\"screen\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -252,12 +252,12 @@
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
         "<form class=\"hidden\" method=\"post\" name=\"post_to_username_notify\" id=\"post_to_username_notify\" action=\"#{CGI.escapeHTML(ctx[:href_notify].to_s)}\">\n\n#{      if v = ctx[:notify_menu]
         if v == true
-          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
+          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
+          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
         end
       end
 }<div class=\"buttons\">\n            <div class=\"buttons\">\n             <button class=\"create\">Notify me.</button>\n            </div>\n           </div>\n          </form>\n          <div>\n            <a onclick=\"$('#post_to_username_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;\" href=\"#show-post_to_username_notify\">Notify me </a>\n            <span> of activity for this #{CGI.escapeHTML(ctx[:message_model_in_english].to_s)}.</span>\n          </div>\n\n"
@@ -280,50 +280,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -334,50 +334,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -389,50 +389,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -448,12 +448,12 @@
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
         "<form class=\"hidden\" method=\"post\" name=\"post_to_username_notify\" id=\"post_to_username_notify\" action=\"#{CGI.escapeHTML(ctx[:href_notify].to_s)}\">\n\n#{      if v = ctx[:notify_menu]
         if v == true
-          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
+          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
+          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
         end
       end
 }<div class=\"buttons\">\n            <div class=\"buttons\">\n             <button class=\"create\">Notify me.</button>\n            </div>\n           </div>\n          </form>\n          <div>\n            <a onclick=\"$('#post_to_username_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;\" href=\"#show-post_to_username_notify\">Notify me </a>\n            <span> of activity for this #{CGI.escapeHTML(ctx[:message_model_in_english].to_s)}.</span>\n          </div>\n\n"
@@ -476,50 +476,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -530,50 +530,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -585,50 +585,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -645,12 +645,12 @@
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
         "<form class=\"hidden\" method=\"post\" name=\"post_to_username_notify\" id=\"post_to_username_notify\" action=\"#{CGI.escapeHTML(ctx[:href_notify].to_s)}\">\n\n#{      if v = ctx[:notify_menu]
         if v == true
-          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
+          "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
+          v.call("<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_406_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"radio\">\n            <input type=\"radio\" value=\"#{CGI.escapeHTML(ctx[:username_id].to_s)}\" name=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\" id=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\"/>\n            <label for=\"radio_423_#{CGI.escapeHTML(ctx[:username_id].to_s)}\">#{CGI.escapeHTML(ctx[:username].to_s)}</label>\n           </div>\n\n"; ctx.pop; r }.join
         end
       end
 }<div class=\"buttons\">\n            <div class=\"buttons\">\n             <button class=\"create\">Notify me.</button>\n            </div>\n           </div>\n          </form>\n          <div>\n            <a onclick=\"$('#post_to_username_notify').removeClass('hidden'); $(this).parent('div').remove(); return false;\" href=\"#show-post_to_username_notify\">Notify me </a>\n            <span> of activity for this #{CGI.escapeHTML(ctx[:message_model_in_english].to_s)}.</span>\n          </div>\n\n"
@@ -673,50 +673,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -727,50 +727,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -782,50 +782,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+          "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
+          v.call("<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_327_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\" checked=\"checked\"/>\n             <label for=\"selected_checkbox_847_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_516_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
+        "<div class=\"box\">\n             <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"clubs[]\" id=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\"/>\n             <label for=\"checkbox_587_#{CGI.escapeHTML(ctx[:_id].to_s)}\">#{CGI.escapeHTML(ctx[:title].to_s)}</label>\n            </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
@@ -39350,7 +39350,7 @@
       end
 }</div>\n\n#{      if v = ctx[:logged_in?]
         if v == true
-          "<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_757\" id=\"form_club_message_create_757\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
+          "<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_64\" id=\"form_club_message_create_64\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -39402,7 +39402,7 @@
       end
 }<div class=\"buttons\">\n               <button class=\"create\">Save</button>\n              </div>\n             </form>\n            </div>\n          </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_757\" id=\"form_club_message_create_757\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
+          v.call("<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_64\" id=\"form_club_message_create_64\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -39455,7 +39455,7 @@
 }<div class=\"buttons\">\n               <button class=\"create\">Save</button>\n              </div>\n             </form>\n            </div>\n          </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_757\" id=\"form_club_message_create_757\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
+          v.map { |h| ctx.push(h); r = "<div id=\"reply\">\n           <div id=\"guide\">\n            <h4>Stuff you can do:</h4>\n            <p>\n                Express negative feelings. Try to use\n              polite profanity, like meathead instead of \n              doo-doo head.\n              </p>\n           </div>\n            <div class=\"club_message_create\">\n             <form class=\"\" method=\"post\" name=\"form_club_message_create_64\" id=\"form_club_message_create_64\" action=\"/messages/\">\n              <h4>Publish a new:</h4>\n              <fieldset>\n               <select name=\"message_model\">\n                <option value=\"question\">Question</option>\n                <option value=\"cheer\">Praise &amp; Cheer</option>\n                <option value=\"jeer\">Criticize</option>\n                <option value=\"suggest\">Suggestion</option>\n               </select>\n              </fieldset>\n              <fieldset class=\"hidden\">\n               <input type=\"hidden\" value=\"\" name=\"body_images_cache\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:url].to_s)}\" name=\"return_url\"/>\n               <input type=\"hidden\" value=\"public\" name=\"privacy\"/>\n               <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:_id].to_s)}\" name=\"parent_message_id\"/>\n\n#{      if v = ctx[:single_username?]
         if v == true
           "<input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:first_username].to_s)}\" name=\"username\"/>\n\n"
         elsif v.is_a?(Proc)
@@ -39518,7 +39518,7 @@
           v.map { |h| ctx.push(h); r = "<form class=\"\" method=\"post\" name=\"toggle_form_message_accept\" id=\"toggle_form_message_accept\" action=\"#{CGI.escapeHTML(ctx[:href].to_s)}\">\n        <fieldset class=\"hidden\">\n          <input type=\"hidden\" value=\"put\" name=\"_method\"/>\n         <input type=\"hidden\" value=\"0\" name=\"owner_accept\"/>\n         <input type=\"hidden\" value=\"#{CGI.escapeHTML(ctx[:editor_id].to_s)}\" name=\"editor_id\"/>\n        </fieldset>\n      </form>\n\n"; ctx.pop; r }.join
         end
       end
-}</div>\n   <script type=\"text/javascript\" src=\"/js/vendor/jquery-1.4.2.min.js?1282795693\"></script>\n   <script type=\"text/javascript\" src=\"/js/pages/Megauni_Base.js?1282795693\"></script>\n\n#{      if v = ctx[:include_tracking?]
+}</div>\n   <script type=\"text/javascript\" src=\"/js/vendor/jquery-1.4.2.min.js?1282796747\"></script>\n   <script type=\"text/javascript\" src=\"/js/pages/Megauni_Base.js?1282796747\"></script>\n\n#{      if v = ctx[:include_tracking?]
         if v == true
           "<script type=\"text/javascript\"> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src=\"' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js\" type=\"text/javascript\"%3E%3C/script%3E')); </script> \n        <script type=\"text/javascript\"> try {  var mpmetrics = new MixpanelLib('86bbd0a09d702cd9eef7ba93d59dca93'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>\n        <script type=\"text/javascript\">mpmetrics.track(\"eveything\", { 'referer' : '#{CGI.escapeHTML(ctx[:http_referer].to_s)}' });</script>\n      \n"
         elsif v.is_a?(Proc)
