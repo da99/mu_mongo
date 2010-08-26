@@ -3,6 +3,6 @@ h1.main '{{title}}'
 
 div.keyword { 
   span.title 'keyword:'
-  span.keyword 'factor'
+  span.keyword 'keyword'.m!
 }
 

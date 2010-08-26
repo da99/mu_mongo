@@ -2,9 +2,12 @@
 # SASS  templates/en-us/sass/Clubs_read_e.sass
 # NAME  Clubs_read_e
 
-
 module Base_View_Club
 
+  def keyword
+    club.data.filename
+  end
+  
   def title 
     @app.env['results.club'].data.title
   end
