@@ -5,10 +5,42 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_random
+module MAB_Clubs_read_random_STRANGER
+end
+
+module MAB_Clubs_read_random_MEMBER
+end
+
+module MAB_Clubs_read_random_INSIDER
   
-  def publisher_guide!
-    show_to_owner_if_empty list_name do
+  def post_message
+        super {
+          css_class  'col'
+          title  'Post a random thought:'
+          input_title 
+          hidden_input(
+            :message_model => 'random',
+            :club_filename => '{{club_filename}}',
+            :privacy       => 'public'
+          )
+        }
+  end
+
+  def publisher_guide
+      guide( 'Stuff you can do here:' ) {
+        p %~
+          Post random thoughts about this {{club_type}}:
+        ~
+      }
+  end
+
+end
+
+module MAB_Clubs_read_random_OWNER
+  
+  include MAB_Clubs_read_random_INSIDER
+
+  def publisher_guide
       guide( 'Stuff you can do here:' ) {
         p %~
           Post stuff that no one really 
@@ -20,20 +52,21 @@ module MAB_Clubs_read_random
           li 'Wonder why the world is against you.'
         }
       }
-    end
+  end
+end
+
+module MAB_Clubs_read_random
+  
+  def messages_list
+    'randoms'
   end
 
-  def post_message!
-        post_message {
-          css_class  'col'
-          title  'Post a random thought:'
-          input_title 
-          hidden_input(
-            :message_model => 'random',
-            :club_filename => '{{club_filename}}',
-            :privacy       => 'public'
-          )
-        }
+  def about 
+    super('* * *', '- - -')
+  end
+
+  def publisher_guide
+    p 'Nothing posted yet.'
   end
 
 end # === module MAB_Clubs_read_random

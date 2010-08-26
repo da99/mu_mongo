@@ -10,21 +10,20 @@ club_nav_bar(__FILE__)
 div_centered {
   
     messages! {
-      loop_messages!
-      publisher_guide!
+      everybody {
+        messages_or_guide
+      }
     }
 
     publish! {
       
-      follow!
-
       stranger {
         about
       }
 
       insider_or_owner {
         about
-        post_message!
+        post_message
       }
       
     } # === publish!

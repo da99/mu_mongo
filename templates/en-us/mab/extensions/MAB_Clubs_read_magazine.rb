@@ -5,10 +5,24 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_magazine
-  
-  def publisher_guide!
-    show_to_owner_if_empty 'storys' do
+module MAB_Clubs_read_magazine_STRANGER
+end
+
+module MAB_Clubs_read_magazine_MEMBER
+end
+
+module MAB_Clubs_read_magazine_INSIDER
+  def publisher_guide
+      guide( 'Stuff you can do:' ) {
+        ul {
+          li 'Write a story.'
+        }
+      }
+  end
+end
+
+module MAB_Clubs_read_magazine_OWNER
+  def publisher_guide
       guide( 'Stuff you can do:' ) {
         ul {
           li 'Write a story.'
@@ -16,11 +30,21 @@ module MAB_Clubs_read_magazine
           li 'Write about a family reunion.'
         }
       }
-    end
+  end
+end
+
+module MAB_Clubs_read_magazine
+  
+  def messages_list
+    'storys'
+  end
+  
+  def publisher_guide
+    p 'Nothing posted yet.'
   end
 
-  def post_message!
-      post_message {
+  def post_message
+      super {
         css_class'col'
         title  'Publish a new story:'
         input_title 
@@ -30,6 +54,10 @@ module MAB_Clubs_read_magazine
           :privacy       => 'public'
         )
       }
+  end
+
+  def about
+    super('* * *', '- - -')
   end
 
 end # === module MAB_Clubs_read_magazine

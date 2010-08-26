@@ -5,13 +5,29 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 # 
+
+module MAB_Clubs_read_e_STRANGER
+end
+
+
+module MAB_Clubs_read_e_MEMBER
+end
+
+module MAB_Clubs_read_e_INSIDER
+  def publisher_guide
+    p 'publisher guide goes here'
+  end
+end
+
+module MAB_Clubs_read_e_OWNER
+  def publisher_guide
+    p 'publisher guide goes here'
+  end
+end
+
 module MAB_Clubs_read_e
   
-  def list_name
-    'quotes_or_chapters'
-  end
-  
-  def list_names
+  def messages_list
     [ 
       { 'quotes' => 'Quotations'},
       { 'chapters' => 'Chapters' }
@@ -36,15 +52,6 @@ module MAB_Clubs_read_e
     }
   end
 
-  def publisher_guide
-    if_empty list_name do
-      publisher_guide!
-    end
-  end
-
-  def follow!
-  end
-
   def post_message!
     post_message {
       css_class  'col'
@@ -56,6 +63,13 @@ module MAB_Clubs_read_e
         :privacy       => 'public'
       )
     }
+  end
+  
+  def about
+    super('* * *', '----')
+  end
+
+  def publisher_guide
   end
 
 end # === module

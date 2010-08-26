@@ -6,10 +6,22 @@ module BASE_MAB_Clubs
   end
 
   def messages_or_guide
-    loop_messages messages_list
-    if_empty messages_list do
+    all_lists = case messages_list
+                when String
+                  loop_messages messages_list
+                  messages_list
+                when Array
+                  messages_list.inject([]) { |lists, hash|
+                    list, header = hash.first
+                    loop_messages_with_opening list, header
+                    lists << list
+                  }.join('_or_')
+                end
+    
+    if_not(all_lists + '?') do
       publisher_guide
     end
+    
   end
   
   def omni_follow

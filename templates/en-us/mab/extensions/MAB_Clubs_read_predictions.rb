@@ -5,23 +5,17 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_predictions
+module MAB_Clubs_read_predictions_STRANGER
+end # ======== module
+
+module MAB_Clubs_read_predictions_MEMBER
+end # ======== module
+
+module MAB_Clubs_read_predictions_INSIDER
   
-  def publisher_guide!
-      show_owner_if_empty 'predictions' do
-        guide( 'Stuff you can do here:' ) {
-          p %~
-            This is where you can publish your thoughts
-          on what will happen in the future.  When
-          you are right, you can yell, "I told you so!"
-          ~
-        }
-      end
-  end
+  def post_message
 
-  def post_message!
-
-          post_message {
+          super {
             css_class  'col'
             title  'Post a prediction:'
             hidden_input(
@@ -31,6 +25,47 @@ module MAB_Clubs_read_predictions
             )
           }
         
+  end
+  
+  def publisher_guide
+        guide( 'Stuff you can do here:' ) {
+          p %~
+            Oublish your thoughts
+          on what will happen in the future.
+          ~
+        }
+  end
+  
+end # ======== module
+
+module MAB_Clubs_read_predictions_OWNER
+  
+  include MAB_Clubs_read_predictions_INSIDER
+
+  def publisher_guide
+        guide( 'Stuff you can do here:' ) {
+          p %~
+            This is where you can publish your thoughts
+          on what will happen in the future.  When
+          you are right, you can yell, "I told you so!"
+          ~
+        }
+  end
+  
+end # ======== module
+
+module MAB_Clubs_read_predictions
+
+  def messages_list
+    'predictions'
+  end
+
+  def about
+    super( '* * *', ' - - - ')
+  end
+  
+  def publisher_guide
+    p 'Nothing published so far.'
   end
 
 end # === module MAB_Clubs_read_predictions

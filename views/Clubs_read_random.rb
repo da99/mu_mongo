@@ -9,7 +9,7 @@ class Clubs_read_random < Base_View
     "#{club_filename}'s Random Thoughts & Babble"
   end
 
-  def random
+  def randoms
     compile_and_cache('messages.randoms', app.env['results.randoms'])
   end
   

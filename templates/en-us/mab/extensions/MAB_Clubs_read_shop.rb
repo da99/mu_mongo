@@ -5,17 +5,15 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_shop
+module MAB_Clubs_read_shop_STRANGER
+end # === module 
+
+module MAB_Clubs_read_shop_MEMBER
+end # === module 
+
+module MAB_Clubs_read_shop_INSIDER
   
-  def list_name
-    'buys'
-  end
-
-  def loop_messages!
-    loop_messages list_name
-  end
-
-  def publisher_guide!
+  def publisher_guide
       guide( 'Stuff you can do here:' ) {
         p %~
           You post your favorite stuff to buy.
@@ -28,9 +26,9 @@ module MAB_Clubs_read_shop
         }
       }
   end
-  
-  def post_message!
-    post_message {
+
+  def post_message
+    super {
       css_class  'col'
       title  'Recommend a product:'
       input_title 
@@ -40,6 +38,26 @@ module MAB_Clubs_read_shop
         :privacy       => 'public'
       )
     }
+  end
+  
+end # === module 
+
+module MAB_Clubs_read_shop_OWNER
+  include MAB_Clubs_read_shop_INSIDER
+end # === module 
+
+module MAB_Clubs_read_shop
+  
+  def messages_list
+    'buys'
+  end
+
+  def publisher_guide
+    p 'Nothing posted yet.'
+  end
+
+  def about
+    super('* * *' , '- - -')
   end
 
 end # === module MAB_Clubs_read_shop

@@ -163,11 +163,12 @@ module Base_Message
     
     config = form_config
     config.put {
-      id 'form_club_message_create'
+      id "form_club_message_create_#{rand(1000)}"
       action '/messages/'
     }
+    
     text(capture {
-    div.club_message_create!(div_attrs) do
+    div.club_message_create(config.as_hash) do
       
       form_post config  do
 

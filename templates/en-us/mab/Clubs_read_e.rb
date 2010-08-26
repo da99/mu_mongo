@@ -12,39 +12,25 @@ div_centered {
     
   messages! {
     
-    loop_messages_or_guide
-    loop_messages_with_opening 'quotes', 'Quotations'
-    loop_messages_with_opening 'chapters', 'Chapters'
-    publisher_guide!
+    everybody {
+      messages_or_guide    
+    }  
     
   } # === messages!
 
+  about! {
+    
+    everybody { about }
+    
+  } # === about!
+  
   publish! {
     
-    stranger {
-      about
-    }
-    
-    member {
-      follow!
-    }
-
-    insider {
-      follow!
-      about
-      post_message!
-    }
-      
-    owner {
-      club {
-        follow!
-      }
-      about
-      post_message!
+    insider_or_owner {
+      post_message
     }
     
   } # === publish!
-
 
 } # === div_centered
 

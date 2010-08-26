@@ -5,34 +5,16 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_qa
+module MAB_Clubs_read_qa_STRANGER
+end # === module 
+
+module MAB_Clubs_read_qa_MEMBER
+end # === module 
+
+module MAB_Clubs_read_qa_INSIDER
   
-  def list_name
-    'questions'
-  end
-
-  def publisher_guide!
-    super { 
-      insider {
-        guide('Stuff you can do here:') {
-          p %~
-            Ask questions.
-          ~
-        } # === guide
-      }
-      
-      owner {
-        guide('Stuff you can do here:') {
-          p %~
-            Ask questions and answer them
-          ~
-        } # === guide
-      }
-    }
-  end
-
-  def post_message!
-    post_message {
+  def post_message
+    super {
       css_class  'col'
       title  'Publish a new:'
       models  %w{question plea}
@@ -43,6 +25,43 @@ module MAB_Clubs_read_qa
       )
     }
   end
+  
+  def publisher_guide
+    guide('Stuff you can do here:') {
+      p %~
+        Ask questions.
+      ~
+    } # === guide
+  end
 
+end # === module 
+
+module MAB_Clubs_read_qa_OWNER
+  def publisher_guide
+    owner {
+      guide('Stuff you can do here:') {
+        p %~
+          Ask questions and answer them
+        ~
+      } # === guide
+    }
+  end
+
+end # === module 
+
+module MAB_Clubs_read_qa
+  
+  def messages_list
+    'questions'
+  end
+
+  def publisher_guide
+    p 'No questions have been asked yet.'
+  end
+
+  def about
+    super('* * *', ' - - - ')
+  end
+  
 end # === module MAB_Clubs_read_qa
       

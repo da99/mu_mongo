@@ -5,23 +5,16 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_thanks
+module MAB_Clubs_read_thanks_STRANGER
+end
+
+module MAB_Clubs_read_thanks_MEMBER
+end
+
+module MAB_Clubs_read_thanks_INSIDER
   
-  def list_name
-    'thanks'
-  end
-
-  def publisher_guide! 
-    guide( 'Stuff you can do here:' ) {
-      p %~
-            Show how this club or it's members 
-          have made your life better.
-          ~
-    }
-  end
-
-  def post_message!
-    post_message {
+  def post_message
+    super {
       css_class  'col'
       title  'Post a thank you:'
       hidden_input(
@@ -30,6 +23,45 @@ module MAB_Clubs_read_thanks
         :privacy       => 'public'
       )
     }
+  end
+  
+  def publisher_guide 
+    guide( 'Stuff you can do here:' ) {
+      p %~
+      Give thanks if this {{club_type}}
+      has helped you.
+          ~
+    }
+  end
+  
+end
+
+module MAB_Clubs_read_thanks_OWNER
+  
+  include MAB_Clubs_read_thanks_INSIDER
+
+  def publisher_guide 
+    guide( 'Stuff you can do here:' ) {
+      p %~
+         This is where people can post 
+          their appreciation.
+          ~
+    }
+  end
+end
+
+module MAB_Clubs_read_thanks
+  
+  def messages_list
+    'thanks'
+  end
+
+  def publisher_guide
+    p 'Nothing posted yet.'
+  end
+
+  def about
+    super ' * * *', ' - - -'
   end
 
 end # === module MAB_Clubs_read_thanks

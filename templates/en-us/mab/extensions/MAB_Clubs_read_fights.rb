@@ -5,26 +5,17 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 # 
-module MAB_Clubs_read_fights
-  
-  def list_name
-    'passions'
-  end
 
-  def publisher_guide!
-      show_to_owner_if_empty 'passions' do
-        guide('Stuff you can do:') {
-          p %~
-            Express negative feelings. Try to use
-          polite profanity, like meathead instead of 
-          doo-doo head.
-          ~
-        }
-      end
-  end
+module MAB_Clubs_read_fights_STRANGER
+end
 
-  def post_message!
-    post_message {
+module MAB_Clubs_read_fights_MEMBER
+end
+
+module MAB_Clubs_read_fights_INSIDER
+
+  def post_message
+    super {
       css_class  'col'
       title      'Publish a new:'
       models     %w{fight complaint debate}
@@ -34,6 +25,35 @@ module MAB_Clubs_read_fights
         :privacy       => 'public'
       )
     }
+  end
+  
+  def publisher_guide
+    guide('Stuff you can do:') {
+      p %~
+        Express negative feelings. Try to use
+        polite profanity, like meathead instead of 
+        doo-doo head.
+      ~
+    }
+  end
+end
+
+module MAB_Clubs_read_fights_OWNER
+  include MAB_Clubs_read_fights_INSIDER
+end
+
+module MAB_Clubs_read_fights
+  
+  def messages_list
+    'passions'
+  end
+
+  def about
+    super('* * *', ' - - - ')
+  end
+  
+  def publisher_guide
+    p 'Nothing posted yet.'
   end
 
 end # === module

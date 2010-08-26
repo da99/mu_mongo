@@ -10,13 +10,12 @@ club_nav_bar(__FILE__)
 div_centered do
     
     messages! {
-      loop_messages!
-      publisher_guide!
+      everybody {
+        messages_or_guide
+      }
     }
 
     publish! {
-      
-      follow!
       
       stranger {
         about
@@ -24,7 +23,7 @@ div_centered do
       
       insider_or_owner {
         about
-        post_message!
+        post_message
       }
       
     } # === publish!

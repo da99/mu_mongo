@@ -5,10 +5,17 @@
 # CONTROL models/Club.rb
 # MODEL   controls/Club.rb
 
-module MAB_Clubs_read_news
-  
-  def publisher_guider! list_name
-      show_to_owner_if_empty('news') do
+module MAB_Clubs_read_news_STRANGER
+end
+
+module MAB_Clubs_read_news_MEMBER
+end
+
+module MAB_Clubs_read_news_INSIDER
+end
+
+module MAB_Clubs_read_news_OWNER
+  def publisher_guide
         guide( 'Stuff you can do here:' ) {
           p %~
             Post only important news. 
@@ -21,20 +28,35 @@ module MAB_Clubs_read_news
             li 'You got arrested... again.'
           }
         }
-      end
+  end
+end
+
+
+module MAB_Clubs_read_news
+  
+  def messages_list
+    'news'
   end
 
-  def post_message!
-          post_message {
-            css_class  'col'
-            title  'Post news:'
-            input_title 
-            hidden_input(
-              :message_model => 'news', 
-              :club_filename => '{{club_filename}}',
-              :privacy       => 'public'
-            )
-          }
+  def post_message
+    super {
+      css_class  'col'
+      title  'Post news:'
+      input_title 
+      hidden_input(
+        :message_model => 'news', 
+        :club_filename => '{{club_filename}}',
+        :privacy       => 'public'
+      )
+    }
+  end
+
+  def about
+    super('* * *', ' - - - ')
+  end
+  
+  def publisher_guide
+    p "No news posted yet."
   end
 
 end # === module MAB_Clubs_read_news
