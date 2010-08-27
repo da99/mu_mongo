@@ -7,21 +7,20 @@ body
   background: white url(http://megauni.s3.amazonaws.com/bg.gif)
   padding: 0
   
-#the_content
-  +rounded( 0, 0, 60px, 60px)
-  padding: 10px 20px
-  border-bottom: 0px solid $red
-  width: 280px
-  text-align: center
-  margin: 0 0 0 150px
-  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 151px 0
-
 #pretension 
   +rounded
   text-align: center
+  background: black
+  color: #E1EEFF
+  padding: 23px 90px 23px 480px
+  margin-top: 90px
   h1
     +dashed_border_bottom
-    padding: 5px 5px 10px 5px
+    border-color: #93203D
+    color: $orange
+    padding: 5px 5px 3px 5px
+    width: 300px
+    margin:  0 auto 5px auto
     font:
       style: italic
       family: $impact_font
@@ -33,6 +32,18 @@ body
     +small_font_size
     text-align: center
     text-transform: uppercase
+    
+#middle
+  +rounded( 0, 0, 60px, 60px)
+  padding: 10px 20px
+  border-bottom: 0px solid $red
+  width: 280px
+  text-align: center
+  position: absolute
+  top: 0
+  left: 120px
+  // margin: 0 0 0 150px
+  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) -120px 0
 
 #intro 
   padding: 0 0 10px 0
