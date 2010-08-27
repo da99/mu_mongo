@@ -380,8 +380,6 @@ body {
     margin: 20px 0; }
     #intro #search_club_form fieldset {
       padding-bottom: 0; }
-  #intro #footer {
-    font-size: 12px; }
 
 ul.nav_bar {
   display: block;
@@ -397,3 +395,13 @@ ul.nav_bar {
   ul.nav_bar li.selected {
     color: #185dad;
     text-transform: lowercase; }
+
+strong {
+  background: #185dad;
+  color: white;
+  font-size: 80%;
+  font-weight: normal; }
+
+#footer {
+  color: #666666;
+  font-size: 12px; }
