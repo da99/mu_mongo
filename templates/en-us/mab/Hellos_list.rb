@@ -2,6 +2,47 @@
 # ~/megauni/templates/en-us/sass/Hellos_list.sass
 
 
+div.col.pretension! {
+
+  div.coming_soon! {
+    strong %~ Coming Soon ~
+  }
+
+  h1 '{{site_tag_line}}'
+  
+  p {
+    span 'You can find loads to do with your very own online universe.'
+    
+    span 'An '
+    strong 'encyclopedia'
+    span ' is included to record special moments in your history.'
+    
+    span 'The '
+    strong 'magazine'
+    span ' section is where you can publish stories and articles.'
+    
+    span 'The '
+    strong 'news'
+    span ' section is for important information to alleviate fears of your demise.'
+    
+    span 'The '
+    strong 'predictions'
+    span ' section is for righteous prognosticating. The perfect place to point your finger as you say, "I told \'ya so."'
+    
+    span 'The '
+    strong 'shopping'
+    span ' section is to tell others what they should and should not buy.'
+    
+    span 'Finally, the most important section of them all: The  '
+    strong 'random'
+    span '  section. Post whatever your want in this section. That\'s why it\'s called '
+    strong 'random'
+    span ' ;) '
+    
+  }
+
+} # === div
+
 div.col.middle! {
   div.intro! {
 
@@ -76,46 +117,10 @@ div.col.middle! {
 } # === div.col
 
 
-div.col.pretension! {
+div.footer! {
+  span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
+} # the_footer
 
-  div.coming_soon! {
-    strong %~ Coming Soon ~
-  }
-
-  h1 '{{site_tag_line}}'
-  
-  p {
-    span 'You can find loads to do with your very own online universe.'
-    
-    span 'An '
-    strong 'encyclopedia'
-    span ' is included to record special moments in your history.'
-    
-    span 'The '
-    strong 'magazine'
-    span ' section is where you can publish stories and articles.'
-    
-    span 'The '
-    strong 'news'
-    span ' section is for important information to alleviate fears of your demise.'
-    
-    span 'The '
-    strong 'predictions'
-    span ' section is for righteous prognosticating. The perfect place to point your finger as you say, "I told \'ya so."'
-    
-    span 'The '
-    strong 'shopping'
-    span ' section is to tell others what they should and should not buy.'
-    
-    span 'Finally, the most important section of them all: The  '
-    strong 'random'
-    span '  section. Post whatever your want in this section. That\'s why it\'s called '
-    strong 'random'
-    span ' ;) '
-    
-  }
-
-} # === div
 
 
 
@@ -207,11 +212,6 @@ div.col.pretension! {
 
   #   
   # } # === ul
-
-    div.footer! {
-      span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-    } # the_footer
-
 
 
 
