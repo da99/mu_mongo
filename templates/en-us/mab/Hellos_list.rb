@@ -11,33 +11,26 @@ div.col.pretension! {
   h1 '{{site_tag_line}}'
   
   p {
-    span 'You can find loads to do with your very own online universe.'
+    span 'Includes: '
     
-    span 'An '
     strong 'encyclopedia'
-    span ' is included to record special moments in your history.'
+    span ' section for memorable moments, '
     
-    span 'The '
     strong 'magazine'
-    span ' section is where you can publish stories and articles.'
+    span ' section for stories and articles, '
     
-    span 'The '
     strong 'news'
-    span ' section is for important information to alleviate fears of your demise.'
+    span ' section for timely updates, '
     
-    span 'The '
     strong 'predictions'
-    span ' section is for righteous prognosticating. The perfect place to point your finger as you say, "I told \'ya so."'
+    span ' section, '
     
-    span 'The '
     strong 'shopping'
-    span ' section is to tell others what they should and should not buy.'
+    span ' section to publicize your favorite buys, '
     
-    span 'Finally, the most important section of them all: The  '
+    span 'and a '
     strong 'random'
-    span '  section. Post whatever your want in this section. That\'s why it\'s called '
-    strong 'random'
-    span ' ;) '
+    span 'section where you can post anything.'
     
   }
 
