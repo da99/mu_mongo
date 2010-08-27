@@ -25,6 +25,9 @@ div.col.pretension! {
     strong 'predictions'
     span ' section, '
     
+    strong 'q & a'
+    span ' section where people ask you questions, '
+    
     strong 'shopping'
     span ' section to publicize your favorite buys, '
     
@@ -33,6 +36,25 @@ div.col.pretension! {
     span 'section where you can post anything.'
     
   }
+
+  p { 
+    span %~
+    Your friends can also post stuff to your universe: 
+    ~
+    strong 'stories'
+    span ', '
+    strong 'predictions'
+    span ', '
+    strong 'questions'
+    span ', '
+    strong 'random stuff'
+    span ', etc.'
+  }
+  
+div.footer! {
+  span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
+} # the_footer
+
 
 } # === div
 
@@ -57,8 +79,9 @@ div.col.middle! {
     ul.nav_bar.help {
       
       li {
-        # a 'Help', :href=>'/help/'
-        span 'Tip: Link to menopause/osteo is fixed.'
+        span 'Tip: Link to '
+        a( 'menopause/osteo', :href=>'/uni/meno_osteo/')
+        span ' is fixed.'
       }
       
       show_if 'logged_in?' do
@@ -103,16 +126,17 @@ div.col.middle! {
         li { a('{{title}}', :href=>'{{href}}') }
       end
     }
+    
+    h4 'New Universes'
+    
+    ul.nav_bar.new_stuff {
+      li { a('Vitamin Fanatics', :href=>'/uni/vitamins/') }
+    }
 
   } # === div.nav_bar!
 
 
 } # === div.col
-
-
-div.footer! {
-  span "(c) {{copyright_year}} {{site_domain}}. Some rights reserved."
-} # the_footer
 
 
 
