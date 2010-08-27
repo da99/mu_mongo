@@ -20,12 +20,12 @@
       end
 }<link type=\"image/x-icon\" rel=\"shortcut icon\" href=\"/favicon.ico\"/>\n\n#{      if v = ctx[:not_mobile_request?]
         if v == true
-          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282934908\"/>\n\n"
+          "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282935011\"/>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282934908\"/>\n\n")
+          v.call("<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282935011\"/>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282934908\"/>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<link type=\"text/css\" rel=\"stylesheet\" media=\"screen\" href=\"#{CGI.escapeHTML(ctx[:css_file].to_s)}?time=1282935011\"/>\n\n"; ctx.pop; r }.join
         end
       end
 }#{CGI.escapeHTML(ctx[:head_content].to_s)}\n\n  </head>\n  <body id=\"the_body\">\n\n#{      if v = ctx[:flash_msg?]
@@ -262,50 +262,50 @@
         if v == true
           "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
+          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
       end
 }"
         elsif v.is_a?(Proc)
           v.call("#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
+          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
       end
 }")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
           v.map { |h| ctx.push(h); r = "#{      if v = ctx[:selected?]
         if v == true
-          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+          "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
         elsif v.is_a?(Proc)
-          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
+          v.call("<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n")
         else
           v = [v] unless v.is_a?(Array) # shortcut when passed non-array
-          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_161_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
+          v.map { |h| ctx.push(h); r = "<div class=\"box selected\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\" checked=\"checked\"/>\n           <label for=\"selected_checkbox_707_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"; ctx.pop; r }.join
         end
       end
 }#{      v = ctx[:selected?]
       if v.nil? || v == false || v.respond_to?(:empty?) && v.empty?
-        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_115_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
+        "<div class=\"box\">\n           <input type=\"checkbox\" value=\"#{CGI.escapeHTML(ctx[:filename].to_s)}\" name=\"tags[]\" id=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\"/>\n           <label for=\"checkbox_873_#{CGI.escapeHTML(ctx[:filename].to_s)}\">#{CGI.escapeHTML(ctx[:filename].to_s)}</label>\n          </div>\n\n"
       end
 }"; ctx.pop; r }.join
         end
