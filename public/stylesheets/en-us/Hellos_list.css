@@ -365,9 +365,9 @@ body {
     text-transform: uppercase; }
 
 #middle {
-  border-radius: 0 0 60px 60px;
-  -moz-border-radius: 0 0 60px 60px;
-  -webkit-border-radius: 0 0 60px 60px;
+  border-radius: 0 0 20px 20px;
+  -moz-border-radius: 0 0 20px 20px;
+  -webkit-border-radius: 0 0 20px 20px;
   padding: 10px 20px;
   border-bottom: 0px solid #f00919;
   width: 280px;
@@ -375,7 +375,7 @@ body {
   position: absolute;
   top: 0;
   left: 120px;
-  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) -120px 0; }
+  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 0px 0; }
 
 #intro {
   padding: 0 0 10px 0; }
