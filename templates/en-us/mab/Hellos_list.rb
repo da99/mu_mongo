@@ -11,7 +11,7 @@ div.col.pretension! {
   h1 '{{site_tag_line}}'
   
   p {
-    span 'Includes: '
+    span 'Each universe includes: '
     
     strong 'encyclopedia'
     span ' section for memorable moments, '
