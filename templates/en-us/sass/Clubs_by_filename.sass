@@ -51,10 +51,12 @@ ul.nav_bar
   border: 0
   padding: 0
   width: auto
+  li
+    padding-bottom: 6px
   li.selected
     margin-right: 4px
     border-top: 2px solid $light_blue
-    padding: 4px 0
+    padding: 4px 0 10px 0
     span
       +rounded( 0, 0, 4px, 4px)
       background: $light_blue
@@ -67,7 +69,7 @@ ul.nav_bar
   position: absolute
   left: 30px
   top: 0
-  width: 360px
+  width: 310px
   padding: 20px
   margin: 0 
   background: black
@@ -77,6 +79,7 @@ ul.nav_bar
     text-shadow: none
     font-family: impact
     font-weight: normal
+    font-size: 170%
   div.keyword
     +small_font_size
     padding: 0 0 10px 0

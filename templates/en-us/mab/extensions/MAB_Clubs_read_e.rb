@@ -74,6 +74,7 @@ module MAB_Clubs_read_e
   end
 
   def publisher_guide
+    p 'No posts yet.'
   end
 
 end # === module
