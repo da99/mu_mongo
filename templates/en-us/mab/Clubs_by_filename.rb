@@ -4,11 +4,16 @@
 # NAME Club_by_filename
 # 
 
-partial '__club_title'
+div.pretension! {
+  partial '__club_title'
+  everybody {
+    about
+  }
+  club_nav_bar(__FILE__)
+}
 
-club_nav_bar(__FILE__)
-
-div_centered do
+  
+div.the_rest! do
     
   messages! {
     everybody {
@@ -18,20 +23,20 @@ div_centered do
 
   about! {
     
-    stranger {
-      about
-    }
+    # stranger {
+    #   about
+    # }
     
     member_or_insider {
       follow
-      about
+      # about
     }
     
     owner {
       not_life? {
         follow
       }
-      about
+      # about
       edit!
     }
     

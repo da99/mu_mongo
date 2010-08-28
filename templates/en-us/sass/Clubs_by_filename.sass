@@ -11,30 +11,13 @@ div.col
 div.section
   padding-bottom: $padding
 
-ul.nav_bar
-  +horizontal_nav_bar
-  margin-bottom: 0
 
-#the_body
-  background: white url(http://megauni.s3.amazonaws.com/bg_overlay.gif) repeat-x
 
 #the_content
   +clearfix
-  padding: 10px 10px 50px 10px
+  background: white url(http://megauni.s3.amazonaws.com/bg.gif) repeat 0 -160px
+  padding: 60px 0 50px 0
 
-div.keyword
-  +small_font_size
-  padding: 5px 0 0 0
-  margin: 0
-  color: #666
-  text:
-    align: center
-  span.keyword
-    color: black
-
-#outer_shell
-  background: #FDFDFD 
-  padding-top: 10px
 
 #messages
   max-width: 580px
@@ -50,3 +33,60 @@ div.keyword
 #publish
   max-width: 500px
 
+
+
+
+
+#the_rest
+  +clearfix
+  border-top: 2px solid $light_blue
+  padding: 0 0 0 460px
+  background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 
+  
+ul.nav_bar
+  +vertical_nav_bar
+  margin: 0 -10px 0 0
+  text-align: right
+  background: transparent
+  border: 0
+  padding: 0
+  width: auto
+  li.selected
+    margin-right: 4px
+    border-top: 2px solid $light_blue
+    padding: 4px 0
+    span
+      +rounded( 0, 0, 4px, 4px)
+      background: $light_blue
+      color: white
+      padding: 4px 6px 4px 40px
+
+
+#pretension
+  +rounded( 0, 0, 10px, 10px )
+  position: absolute
+  left: 30px
+  top: 0
+  width: 360px
+  padding: 20px
+  margin: 0 
+  background: black
+  color: $orange
+  h1.main
+    color: $orange
+    text-shadow: none
+    font-family: impact
+    font-weight: normal
+  div.keyword
+    +small_font_size
+    padding: 0 0 10px 0
+    margin: 0
+    color: #666
+    text:
+      align: center
+    span.keyword
+      color: $light_grey
+  h3
+    color: #107CFC
+  div.section
+    color: #E1EEFF

@@ -41,7 +41,7 @@ module Base_Club
       ul.nav_bar.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
-            li.selected  trip[1] 
+            li.selected  { span trip[1] }
           else
             li { a(trip[1], :href=>'{{club_href}}' + trip[2] ) }
           end
@@ -56,7 +56,7 @@ module Base_Club
         end
         
         if_not 'logged_in?' do
-          li { a('Megauni', :href=>'/') }
+          li { a('megaUNI.com', :href=>'/') }
         end
         
         show_if 'logged_in?' do
