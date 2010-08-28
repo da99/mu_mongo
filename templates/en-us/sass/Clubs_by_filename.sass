@@ -43,38 +43,19 @@ div.section
   padding: 0 0 0 460px
   background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 
   
-ul.nav_bar
-  +vertical_nav_bar
-  margin: 0 -10px 0 0
-  text-align: right
-  background: transparent
-  border: 0
-  padding: 0
-  width: auto
-  li
-    padding-bottom: 6px
-  li.selected
-    margin-right: 4px
-    border-top: 2px solid $light_blue
-    padding: 4px 0 10px 0
-    span
-      +rounded( 0, 0, 4px, 4px)
-      background: $light_blue
-      color: white
-      padding: 4px 6px 4px 40px
 
 
 #pretension
-  +rounded( 0, 0, 10px, 10px )
+  +clearfix
   position: absolute
   left: 30px
   top: 0
-  width: 310px
-  padding: 20px
+  width: 350px
   margin: 0 
-  background: black
   color: $orange
   h1.main
+    padding: 20px 2px 0 2px
+    background: black
     color: $orange
     text-shadow: none
     font-family: impact
@@ -82,6 +63,7 @@ ul.nav_bar
     font-size: 170%
   div.keyword
     +small_font_size
+    background: black
     padding: 0 0 10px 0
     margin: 0
     color: #666
@@ -91,5 +73,31 @@ ul.nav_bar
       color: $light_grey
   h3
     color: #107CFC
-  div.section
+    text-align: right
+  div.about
+    +rounded( 0, 0, 0, 10px )
+    background: black
     color: #E1EEFF
+    padding: 0 5px 20px 5px
+    text-align: right
+    float: left
+    width: 230px
+  
+ul.nav_bar
+  +vertical_nav_bar
+  +rounded(0, 0, 10px, 10px)
+  float: left
+  text-align: left
+  background: black
+  border: 0
+  padding: 0 0 20px 0
+  width: 110px
+  li
+    padding-bottom: 6px
+    text-align: center
+  li.selected
+    span
+      +rounded( 4px, 4px, 4px, 4px )
+      background: $light_blue
+      color: white
+      padding: 4px 6px 4px 5px
