@@ -4,12 +4,13 @@
 # NAME Club_by_filename
 # 
 
+club_nav_bar(__FILE__)
+  
 div.pretension! {
   partial '__club_title'
   everybody {
     about
   }
-  club_nav_bar(__FILE__)
 }
 
   
@@ -22,7 +23,8 @@ div.the_rest! do
   }
 
   about! {
-    
+    h3 { span 'about' }
+    p 'rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr '
     # stranger {
     #   about
     # }

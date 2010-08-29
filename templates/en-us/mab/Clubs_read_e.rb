@@ -4,12 +4,13 @@
 # NAME Clubs_read_e
 # 
 
+club_nav_bar(__FILE__)
+  
 div.pretension! {
   partial '__club_title'
   everybody {
     about
   }
-  club_nav_bar(__FILE__)
 }
 
 div.the_rest! {

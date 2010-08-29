@@ -20,10 +20,8 @@ module Base_Club
 
   def club_nav_bar filename
     
-    file     = File.basename(filename).sub('.rb', '')
-    li_span  = lambda { |txt| li.selected { span txt } }
-    li_ahref = lambda { |txt, href| li { a('txt', :href=>href) } }
-    vals = [ 
+    file = File.basename(filename).sub('.rb', '')
+    vals = [
       [/_filename\Z/   , 'Home'               , '']            ,
       [/_e\Z/          , 'Encyclopedia'       , 'e/']          ,
       [/_news\Z/       , 'News'               , 'news/']       ,
@@ -41,7 +39,7 @@ module Base_Club
       ul.nav_bar.club_nav_bar! {
         vals.each { |trip|
           if file =~ trip[0]
-            li.selected  { span trip[1] }
+            li.selected  { trip[1] }
           else
             li { a(trip[1], :href=>'{{club_href}}' + trip[2] ) }
           end

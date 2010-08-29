@@ -6,56 +6,65 @@
 @import layout_styles.sass
 
 div.col
+  +rounded( 5px, 5px, 5px, 5px )
   float: left
+  padding: 0 10px 10px 10px
+  background: white
+  border: 1px dotted #ACA1A3
+  margin: 0 20px 0 0
+  h3
+    text-align: center
+    padding: 0 5px 5px 5px
+    span 
+      +rounded( 0, 0, 5px, 5px )
+      border: 1px dotted #ACA1A3
+      border-width: 0 1px 1px 1px
+      background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
+      padding: 1px 10px 2px 10px
+      font-size: 11px
+      font-family: "lucida grande",tahoma,verdana,arial, "sans-serif"
+  div.message
+    border-style: dotted
+    border-color: #ACA1A3
   
 div.section
   padding-bottom: $padding
 
-
+#the_body
+  background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
 
 #the_content
   +clearfix
-  background: white url(http://megauni.s3.amazonaws.com/bg.gif) repeat 0 -160px
-  padding: 60px 0 50px 0
 
-
-#messages
-  max-width: 580px
-  padding: 0 20px 0 0
-  
-#about
-  max-width: 400px
-  padding: 0 20px 0 0
-  
-#memberships
-  max-width: 400px
-  
-#publish
-  max-width: 500px
-
-
-
-
-
-#the_rest
-  +clearfix
-  border-top: 2px solid $light_blue
-  padding: 0 0 0 460px
-  background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif) 
-  
+ul.nav_bar
+  +horizontal_nav_bar
+  text-align: left
+  border: 0
+  border-top: 10px solid #1D70D2 
+  padding: 0 0 20px 30px
+  margin: 0
+  li.selected
+    +rounded( 0, 0, 5px, 5px )
+    background: $light_blue
+    color: white
+    margin: 0 5px 0 0
+    padding: 4px 8px 5px 10px
 
 
 #pretension
   +clearfix
+  +rounded( 4px, 4px, 8px, 20px )
+  background: black
   position: absolute
   left: 30px
-  top: 0
+  top: 50px
+  padding: 0 5px 0 15px
   width: 350px
   margin: 0 
-  color: $orange
+  text-align: left
   h1.main
-    padding: 20px 2px 0 2px
-    background: black
+    text-align: inherit
+    padding: 15px 0 0 0
     color: $orange
     text-shadow: none
     font-family: impact
@@ -63,41 +72,36 @@ div.section
     font-size: 170%
   div.keyword
     +small_font_size
-    background: black
+    text-align: inherit
     padding: 0 0 10px 0
     margin: 0
     color: #666
-    text:
-      align: center
     span.keyword
       color: $light_grey
   h3
     color: #107CFC
-    text-align: right
+    text-align: inherit
   div.about
     +rounded( 0, 0, 0, 10px )
-    background: black
     color: #E1EEFF
-    padding: 0 5px 20px 5px
-    text-align: right
-    float: left
-    width: 230px
+    padding: 0 0 20px 0
+    text-align: inherit
+
+#the_rest
+  +clearfix
+  padding: 0 0 0 420px
   
-ul.nav_bar
-  +vertical_nav_bar
-  +rounded(0, 0, 10px, 10px)
-  float: left
-  text-align: left
-  background: black
-  border: 0
-  padding: 0 0 20px 0
-  width: 110px
-  li
-    padding-bottom: 6px
-    text-align: center
-  li.selected
-    span
-      +rounded( 4px, 4px, 4px, 4px )
-      background: $light_blue
-      color: white
-      padding: 4px 6px 4px 5px
+#messages
+  max-width: 500px
+  
+// #memberships
+//   max-width: 400px
+//   
+// #publish
+//   max-width: 500px
+// 
+
+
+
+
+  
