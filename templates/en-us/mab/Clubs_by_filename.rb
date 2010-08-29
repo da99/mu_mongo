@@ -17,6 +17,7 @@ div.pretension! {
 div.the_rest! do
     
   messages! {
+    h3 { span 'Latest Activity' }
     everybody {
       messages_or_guide
     }
