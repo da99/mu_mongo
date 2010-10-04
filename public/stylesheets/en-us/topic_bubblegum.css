@@ -110,6 +110,7 @@ ul.nav_bar {
     font-weight: bold; }
 
 a:link, a:visited {
+  padding: 2px 4px;
   color: #f00919;
   font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
   font-weight: bold; }
@@ -557,6 +558,7 @@ ul.nav_bar {
     font-weight: bold; }
 
 a:link, a:visited {
+  padding: 2px 4px;
   color: #f00919;
   font-family: 'Helvetica Neue','HelveticaNeue','bitstream vera sans','Nimbus Sans L','trebuchet ms','segoe ui','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
   font-weight: bold; }
