@@ -4,11 +4,11 @@
 # NAME Clubs_read_e
 # 
 
-partial '__club_title'
-
 club_nav_bar(__FILE__)
+  
+pretension!
 
-div_centered {
+div.substance! {
     
   messages! {
     
@@ -20,13 +20,11 @@ div_centered {
 
   publish! {
     
-    everybody { about }
-    
     insider_or_owner {
       post_message
     }
     
   } # === publish!
 
-} # === div_centered
+} # === div.substance!
 

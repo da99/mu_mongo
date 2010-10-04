@@ -6,42 +6,139 @@
 @import layout_styles.sass
 
 div.col
+  +rounded( 0px, 0px, 5px, 5px )
+  background: white
+  border: 1px dotted #ACA1A3
+  padding: 0 0 7px 0
   float: left
+  h3
+    text-align: center
+    padding: 0 5px 5px 5px
+    span 
+      +rounded( 0, 0, 5px, 5px )
+      border: 1px dotted #ACA1A3
+      border-width: 0 1px 1px 1px
+      background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif) repeat -10px -10px
+      padding: 1px 10px 2px 10px
+      font-size: 11px
+      font-family: "lucida grande",tahoma,verdana,arial, "sans-serif"
+      text-transform: capitalize
+  div.body
+    padding: 0 7px
+  div.message
+    border-style: dotted
+    border-color: #ACA1A3
+    div.body
+      padding: 0
   
-div.section
-  padding-bottom: $padding
+
+#the_body
+  background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
 
 ul.nav_bar
   +horizontal_nav_bar
-
-#the_body
-  background: white url(http://megauni.s3.amazonaws.com/club_bg.png) repeat-x
-
-#the_content
-  +clearfix
-  padding: 10px 10px 50px 10px
-
-div.keyword
-  +small_font_size
-  padding: 5px 0 0 0
+  text-align: center
+  border: 0
+  border-top: 10px solid #1D70D2 
+  padding: 0 0 20px 30px
   margin: 0
-  color: #666
-  text:
-    align: center
-  span.keyword
-    color: black
+  li.selected
+    +rounded( 0, 0, 5px, 5px )
+    background: $light_blue
+    color: white
+    margin: 0 5px 0 0
+    padding: 4px 8px 5px 10px
 
+
+#pretension, div.pretension
+  background: black
+  padding: 0 5px 10px 0
+  text-align: center
+  h1.main
+    text-align: inherit
+    padding: 15px 0 0 0
+    color: $orange
+    text-shadow: none
+    font-family: impact
+    font-weight: normal
+    font-size: 170%
+  div.keyword
+    +small_font_size
+    text-align: inherit
+    padding: 0 0 10px 0
+    margin: 0
+    color: #666
+    span.keyword
+      color: $light_grey
+  h3
+    color: #107CFC
+    text-align: inherit
+  div.about
+    +rounded( 0, 0, 0, 10px )
+    color: #E1EEFF
+    padding: 0 0 20px 0
+    text-align: inherit
+
+#substance
+  +clearfix
+  padding: 20px 0 
+  margin: 0 auto
+  width: 920px
+  
 #messages
-  max-width: 580px
-  padding: 0 20px 0 0
-  
-#about
-  max-width: 400px
-  padding: 0 20px 0 0
-  
-#memberships
-  max-width: 400px
-  
-#publish
-  max-width: 500px
+  width: 600px
 
+#about
+  float: right
+  margin: 0
+  width: 300px
+  
+div.stuff 
+  margin: 0
+  width: 200px
+  float: left
+#col1
+  width: 1000px
+  padding: 10px
+  border: 1px dashed red
+    width: 2px 0
+
+// #memberships
+//   width: 500px
+// 
+
+
+div.centered
+  border: 1px solid red
+  text-align: center
+  div
+    text-align: left
+div.wrap 
+  background: #ffe
+  padding: 10px
+  margin: 0 auto
+  margin-bottom: 20px
+  width: 90%
+
+div.wrap:after
+  content: "."
+  display: block
+  height: 0
+  clear: both
+  visibility: hidden
+  
+div.box 
+  margin: 5px
+  padding: 5px
+  background: #D8D5D2
+  font-size: 11px
+  float: left
+  
+div.col1
+  width: 280px
+  width: 378px
+  border: 1px solid red
+div.col2
+  width: 180px
+div.col3
+  width: 280px

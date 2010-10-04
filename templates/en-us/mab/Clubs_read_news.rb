@@ -3,11 +3,11 @@
 # SASS /home/da01tv/MyLife/apps/megauni/templates/en-us/sass/Clubs_read_news.sass
 # NAME Clubs_read_news
 
-partial '__club_title'
-
 club_nav_bar(__FILE__)
 
-div_centered {
+pretension!
+
+div.substance! {
     
     messages! {
       everybody {
@@ -28,4 +28,4 @@ div_centered {
       
     } # === publish!
       
-} # === div_centered
+} # === div.substance!

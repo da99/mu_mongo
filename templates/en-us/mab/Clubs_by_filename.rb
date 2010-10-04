@@ -4,56 +4,48 @@
 # NAME Club_by_filename
 # 
 
-partial '__club_title'
 
 club_nav_bar(__FILE__)
 
-div_centered do
-    
-  messages! {
-    everybody {
-      messages_or_guide
+pretension!
+
+div.substance! {
+  
+  div.col.messages! {
+    h3 { span 'Latest Activity' }
+    div.body {
+      everybody {
+        messages_or_guide
+      }
     }
   }
 
-  about! {
+  div.col.about! {
     
-    stranger {
-      about
-    }
-    
-    member_or_insider {
-      follow
-      about
-    }
-    
-    owner {
-      not_life? {
-        follow
+      everybody { 
+        about
       }
-      about
-      edit!
-    }
     
   } # === about!
 
-  memberships! {
-    
-    stranger {
-      memberships
-    }
-    
-    member_or_insider {
-      memberships
-      post_membership_plea
-    }
-    
-    owner {
-      memberships_guide!
-      memberships
-      post_membership!
-    }
-    
-  } # === publish!
+} # substance!
+
+  # memberships! {
+  #   
+  #   stranger {
+  #     memberships
+  #   }
+  #   
+  #   member_or_insider {
+  #     memberships
+  #     post_membership_plea
+  #   }
+  #   
+  #   owner {
+  #     memberships_guide!
+  #     memberships
+  #     post_membership!
+  #   }
+  #   
+  # } # === publish!
   
-end # === div_centered

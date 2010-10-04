@@ -11,7 +11,7 @@ div.col.pretension! {
   h1 '{{site_tag_line}}'
   
   p {
-    span 'Each universe includes: '
+    span 'Entertain your friends with your own online universe. Each universe includes: '
     
     strong 'encyclopedia'
     span ' section for memorable moments, '
@@ -71,17 +71,20 @@ div.col.middle! {
       }
     } # form
 
+    p {
+      span 'Tip: Link to '
+      a( 'menopause/osteo', :href=>'/uni/meno_osteo/')
+      span ' is fixed.'
+    }
+
   } # div.intro!
 
 
   div.nav_bar! { 
-
+    
     ul.nav_bar.help {
       
       li {
-        span 'Tip: Link to '
-        a( 'menopause/osteo', :href=>'/uni/meno_osteo/')
-        span ' is fixed.'
       }
       
       show_if 'logged_in?' do

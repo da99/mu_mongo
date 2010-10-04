@@ -23,6 +23,16 @@ class Test_Control_Old_Apps_Read < Test::Unit::TestCase
     assert_match( /over to the new address/, last_response.body )
   end 
 
+  must 'redirect /timer/ to /busy-noise/' do
+    get '/timer/'
+    assert_redirect '/busy-noise/'
+  end
+
+  must 'redirect /myeggtimer%5C/ to /myeggtimer/' do
+    get '/myeggtimer%5C/'
+    assert_redirect "/myeggtimer/"
+  end
+
   must 'should redirect www.busynoise.com/ to /busy-noise/moving.html' do
     domain = 'www.busynoise.com'
     get '/', {}, { 'HTTP_HOST' =>domain  }

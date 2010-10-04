@@ -80,8 +80,8 @@ module BASE_MAB
   end
 
   def about header, body
-    div.section.about {
-      h3 header.m!
+    div.about {
+      h3 { span header.m! }
       div.body body.m!
     }
   end

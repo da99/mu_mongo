@@ -17,7 +17,7 @@ club_nav_bar __FILE__
 
 h3.message_title '{{title}}'
 
-div_centered { 
+div.substance! { 
   
     div.message!{
 
@@ -168,7 +168,7 @@ div_centered {
   
   
     } # === div.message!
-} # === div_centered
+} # === div.substance!
 
 show_if 'logged_in?' do
   render_toggle_forms

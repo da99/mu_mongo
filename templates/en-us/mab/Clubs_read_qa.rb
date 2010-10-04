@@ -3,11 +3,12 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_qa.sass
 # NAME Clubs_read_qa
 
-partial '__club_title'
-
 club_nav_bar(__FILE__)
 
-div_centered do
+pretension!
+
+
+div.substance! do
     
     messages! {
       everybody {

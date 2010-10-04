@@ -21,4 +21,11 @@ class Test_Control_Bad_Requests < Test::Unit::TestCase
     assert_equal "http://www.bing.com/(null)/", last_response.headers['Location']
   end
 
+  %w{ vb forum forums old vbulletin}.each { |dir|
+    must "redirect /#{dir}/ to http://www.bing.com/ if Googlebot" do
+      get "/#{dir}/", {}, 'HTTP_USER_AGENT' => 'SOMETHING Googlebot/5.1'
+      assert_redirect "http://www.bing.com/"
+    end
+  }
+
 end # === class Test_Control_Bad_Requests
