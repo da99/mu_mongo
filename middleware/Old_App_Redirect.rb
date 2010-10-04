@@ -7,15 +7,26 @@ class Old_App_Redirect
 
   def call new_env
 
-    if new_env['PATH_INFO'] === '/meno-osteo/'
+    path_info = new_env['PATH_INFO']
+    bing_site = 'http://www.bing.com/'
+
+    if path_info == '/timer/'
+      return hearty_redirect( '/busy-noise/' )
+    end
+
+    if path_info['/myeggtimer%']
+      return hearty_redirect( '/myeggtimer/' )
+    end
+
+    if path_info === '/meno-osteo/'
       return hearty_redirect( '/meno_osteo/' )
     end
 
-    if new_env['PATH_INFO'] === '/' && new_env['HTTP_METHOD'] === 'POST'
+    if path_info === '/' && new_env['HTTP_METHOD'] === 'POST'
       return hearty_redirect( new_env['HTTP_REFERER'] || '/my-egg-timer/' )
     end
 
-    if new_env['PATH_INFO'] == '/member/' && %w{HEAD GET}.include?(new_env['HTTP_METHOD'])
+    if path_info == '/member/' && %w{HEAD GET}.include?(new_env['HTTP_METHOD'])
       return hearty_redirect('/')
     end
 
@@ -46,9 +57,21 @@ class Old_App_Redirect
       return hearty_redirect("http://www.bing.com/")
     end
 
-    if ua && ua['Yahoo! Slurp/'] && new_env['PATH_INFO']['/SlurpConfirm404']
-      return hearty_redirect("http://www.bing.com/")
-    end
+    if ua 
+      
+      if ua['Yahoo! Slurp/'] && path_info['/SlurpConfirm404']
+        return hearty_redirect( bing_site )
+      end
+      
+      if ua['Googlebot/']
+        wrong_paths = %w{ vb forum forums old vbulletin }.map { |dir| "/#{dir}/" }
+        if wrong_paths.include?(path_info)
+          return hearty_redirect( bing_site )
+        end
+      end
+      
+    end # if ua
+
 
     # =====================================================
     
