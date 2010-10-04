@@ -3,11 +3,11 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_fights.sass
 # NAME Clubs_read_fights
 
-partial '__club_title'
-
 club_nav_bar(__FILE__)
 
-div_centered do
+pretension!
+
+div.substance! do
     
     messages! {
       everybody {
@@ -25,4 +25,4 @@ div_centered do
       
     } # === publish!
 
-end # div_centered
+end # div.substance!

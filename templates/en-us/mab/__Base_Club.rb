@@ -65,6 +65,12 @@ module Base_Club
     })
   end
 
+
+  def pretension!
+    div.pretension! {
+      partial '__club_title'
+    }         
+  end
   
 
 end # === module

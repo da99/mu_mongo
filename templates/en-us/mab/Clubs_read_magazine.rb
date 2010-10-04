@@ -3,11 +3,11 @@
 # SASS ~/megauni/templates/en-us/sass/Clubs_read_magazine.sass
 # NAME Clubs_read_magazine
 
-partial '__club_title'
-
 club_nav_bar(__FILE__)
 
-div_centered do
+pretension!
+
+div.substance! do
     
   messages! {
     messages_or_guide

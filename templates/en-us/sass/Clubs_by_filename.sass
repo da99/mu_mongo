@@ -7,11 +7,10 @@
 
 div.col
   +rounded( 0px, 0px, 5px, 5px )
-  float: left
-  padding: 0 10px 10px 10px
   background: white
   border: 1px dotted #ACA1A3
-  margin: 0 10px 0 0
+  padding: 0 0 7px 0
+  float: left
   h3
     text-align: center
     padding: 0 5px 5px 5px
@@ -19,27 +18,26 @@ div.col
       +rounded( 0, 0, 5px, 5px )
       border: 1px dotted #ACA1A3
       border-width: 0 1px 1px 1px
-      background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
+      background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif) repeat -10px -10px
       padding: 1px 10px 2px 10px
       font-size: 11px
       font-family: "lucida grande",tahoma,verdana,arial, "sans-serif"
       text-transform: capitalize
+  div.body
+    padding: 0 7px
   div.message
     border-style: dotted
     border-color: #ACA1A3
+    div.body
+      padding: 0
   
-div.section
-  padding-bottom: $padding
 
 #the_body
   background: #FDFDFD url(http://megauni.s3.amazonaws.com/bg_overlay.gif)
 
-#the_content
-  +clearfix
-
 ul.nav_bar
   +horizontal_nav_bar
-  text-align: left
+  text-align: center
   border: 0
   border-top: 10px solid #1D70D2 
   padding: 0 0 20px 30px
@@ -52,17 +50,10 @@ ul.nav_bar
     padding: 4px 8px 5px 10px
 
 
-#pretension
-  +clearfix
-  +rounded( 4px, 4px, 8px, 20px )
+#pretension, div.pretension
   background: black
-  position: absolute
-  left: 30px
-  top: 50px
-  padding: 0 5px 0 15px
-  width: 350px
-  margin: 0 
-  text-align: left
+  padding: 0 5px 10px 0
+  text-align: center
   h1.main
     text-align: inherit
     padding: 15px 0 0 0
@@ -88,21 +79,66 @@ ul.nav_bar
     padding: 0 0 20px 0
     text-align: inherit
 
-#the_rest
+#substance
   +clearfix
-  padding: 0 0 0 410px
+  padding: 20px 0 
+  margin: 0 auto
+  width: 920px
   
 #messages
-  max-width: 500px
+  width: 600px
+
+#about
+  float: right
+  margin: 0
+  width: 300px
   
+div.stuff 
+  margin: 0
+  width: 200px
+  float: left
+#col1
+  width: 1000px
+  padding: 10px
+  border: 1px dashed red
+    width: 2px 0
+
 // #memberships
-//   max-width: 400px
-//   
-// #publish
-//   max-width: 500px
+//   width: 500px
 // 
 
 
+div.centered
+  border: 1px solid red
+  text-align: center
+  div
+    text-align: left
+div.wrap 
+  background: #ffe
+  padding: 10px
+  margin: 0 auto
+  margin-bottom: 20px
+  width: 90%
 
-
+div.wrap:after
+  content: "."
+  display: block
+  height: 0
+  clear: both
+  visibility: hidden
   
+div.box 
+  margin: 5px
+  padding: 5px
+  background: #D8D5D2
+  font-size: 11px
+  float: left
+  
+div.col1
+  width: 280px
+  width: 378px
+  border: 1px solid red
+div.col2
+  width: 180px
+div.col3
+  width: 280px

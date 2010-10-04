@@ -4,64 +4,48 @@
 # NAME Club_by_filename
 # 
 
+
 club_nav_bar(__FILE__)
-  
-div.pretension! {
-  partial '__club_title'
-  everybody {
-    about
-  }
-}
 
+pretension!
+
+div.substance! {
   
-div.the_rest! do
-    
-  messages! {
+  div.col.messages! {
     h3 { span 'Latest Activity' }
-    everybody {
-      messages_or_guide
+    div.body {
+      everybody {
+        messages_or_guide
+      }
     }
   }
 
-  about! {
-    h3 { span 'about' }
-    p 'rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr rr rr rrrrrrrrrr '
-    # stranger {
-    #   about
-    # }
+  div.col.about! {
     
-    member_or_insider {
-      follow
-      # about
-    }
-    
-    owner {
-      not_life? {
-        follow
+      everybody { 
+        about
       }
-      # about
-      edit!
-    }
     
   } # === about!
 
-  memberships! {
-    
-    stranger {
-      memberships
-    }
-    
-    member_or_insider {
-      memberships
-      post_membership_plea
-    }
-    
-    owner {
-      memberships_guide!
-      memberships
-      post_membership!
-    }
-    
-  } # === publish!
+} # substance!
+
+  # memberships! {
+  #   
+  #   stranger {
+  #     memberships
+  #   }
+  #   
+  #   member_or_insider {
+  #     memberships
+  #     post_membership_plea
+  #   }
+  #   
+  #   owner {
+  #     memberships_guide!
+  #     memberships
+  #     post_membership!
+  #   }
+  #   
+  # } # === publish!
   
-end # === div_centered

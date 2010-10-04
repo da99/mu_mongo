@@ -6,14 +6,9 @@
 
 club_nav_bar(__FILE__)
   
-div.pretension! {
-  partial '__club_title'
-  everybody {
-    about
-  }
-}
+pretension!
 
-div.the_rest! {
+div.substance! {
     
   messages! {
     
@@ -31,5 +26,5 @@ div.the_rest! {
     
   } # === publish!
 
-} # === div_centered
+} # === div.substance!
 
