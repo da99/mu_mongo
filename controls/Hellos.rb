@@ -24,5 +24,9 @@ class Hellos
   def GET_rss_xml
     render_xml_template
   end
+ 
+  def GET_google_verify
+    render_text_plain "googleb9009ed100e7fc31"
+  end
 
 end # === Hello
